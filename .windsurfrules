@@ -1,0 +1,53 @@
+# ClauseWall — Predatory Clause Detector
+
+## Project Overview
+ClauseWall is a web app that analyzes contracts and legal documents to detect predatory, unfair, or illegal clauses. Users upload a PDF or paste text, and the system analyzes each clause for risk.
+
+## Tech Stack
+- Framework: Next.js 14 (App Router)
+- Language: TypeScript (strict mode)
+- Styling: Tailwind CSS + shadcn/ui
+- Database: Supabase (PostgreSQL)
+- Auth: Supabase Auth
+- Storage: Supabase Storage
+- AI: Groq API (llama-3.1-70b-versatile)
+- PDF Parsing: pdf-parse
+- Animations: Framer Motion
+- Icons: Lucide React
+- Charts: Recharts
+
+## Architecture
+- /app → Pages using App Router
+- /components → Reusable UI components
+- /lib → Core business logic
+- /types → TypeScript interfaces
+- /data → Static JSON data files
+- /scripts → Database seeding scripts
+
+## Key Conventions
+1. Use Server Actions for all API/database calls (not API routes unless necessary)
+2. All async functions MUST have try-catch error handling
+3. All UI must have loading states (use Skeleton components)
+4. Mobile-first responsive design
+5. Use TypeScript interfaces (no 'any' type ever)
+6. Color system:
+   - Safe: green (#22c55e)
+   - Warning: yellow (#eab308)
+   - Dangerous: red (#ef4444)
+   - Illegal: purple (#a855f7)
+7. Risk scores: 0-100 (0=completely safe, 100=extremely dangerous)
+8. All user-facing text must be plain English (no legal jargon)
+9. Dark theme: background #0a0f1e, card #111827
+
+## Database Tables
+- documents: uploaded contracts with overall scores
+- clauses: individual clauses with analysis results
+- legal_rules: jurisdiction-specific laws (the moat)
+- flagged_entities: crowdsourced bad actor tracking
+- reports: user-submitted reports
+
+## Component Patterns
+- Use shadcn/ui as base components
+- Wrap in custom components with domain-specific props
+- Always include aria-labels for accessibility
+- Use Framer Motion for meaningful animations only

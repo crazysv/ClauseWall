@@ -1,0 +1,282 @@
+// ============================================
+// CLAUSEWALL TYPE DEFINITIONS — INDIA EDITION 🇮🇳
+// Matches Supabase database schema exactly
+// ============================================
+
+// ============================================
+// ENUMS / UNION TYPES
+// ============================================
+
+export type RiskLevel = "safe" | "warning" | "dangerous" | "illegal";
+
+export type DocumentType =
+  | "rental"
+  | "employment"
+  | "tos"
+  | "loan"
+  | "freelance"
+  | "sale"
+  | "partnership"
+  | "nda"
+  | "other";
+
+export type AnalysisStatus =
+  | "pending"
+  | "analyzing"
+  | "completed"
+  | "failed";
+
+export type EntityType = "landlord" | "employer" | "company" | "other";
+
+export type ReportType = "predatory" | "illegal" | "misleading" | "other";
+
+// ============================================
+// DATABASE TABLE INTERFACES
+// These match Supabase tables exactly
+// ============================================
+
+/**
+ * Document - A contract/agreement uploaded by user
+ * Table: documents
+ */
+export interface Document {
+  id: string;
+  user_id: string | null;
+  original_filename: string | null;
+  document_type: DocumentType;
+  jurisdiction: string;
+  raw_text: string;
+  overall_risk_score: number;
+  total_clauses: number;
+  safe_count: number;
+  warning_count: number;
+  dangerous_count: number;
+  illegal_count: number;
+  entity_name: string | null;
+  summary: string | null;
+  is_public: boolean;
+  analysis_status: AnalysisStatus;
+  created_at: string;
+  updated_at: string;
+}
+
+/**
+ * Clause - Individual clause extracted from a document
+ * Table: clauses
+ */
+export interface Clause {
+  id: string;
+  document_id: string;
+  clause_number: number;
+  original_text: string;
+  clause_type: string;
+  risk_level: RiskLevel;
+  risk_score: number;
+  explanation: string;
+  legal_issue: string | null;
+  legal_citation: string | null;
+  statute_code: string | null;
+  fair_alternative: string | null;
+  red_flags: string[];
+  percentile: number | null;
+  created_at: string;
+}
+
+/**
+ * LegalRule - Jurisdiction-specific laws (our moat)
+ * Table: legal_rules
+ */
+export interface LegalRule {
+  id: string;
+  jurisdiction: string;
+  document_type: string;
+  clause_type: string;
+  rule_title: string;
+  rule_description: string;
+  statute_code: string;
+  statute_text: string | null;
+  what_makes_it_illegal: string | null;
+  max_penalty: string | null;
+  source_url: string | null;
+  keywords: string[];
+  last_verified: string;
+  created_at: string;
+}
+
+/**
+ * FlaggedEntity - Crowdsourced bad actor tracking
+ * Table: flagged_entities
+ */
+export interface FlaggedEntity {
+  id: string;
+  entity_name: string;
+  entity_type: EntityType;
+  jurisdiction: string | null;
+  total_flags: number;
+  common_violations: string[];
+  avg_risk_score: number;
+  created_at: string;
+  updated_at: string;
+}
+
+/**
+ * Report - User-submitted reports about entities
+ * Table: reports
+ */
+export interface Report {
+  id: string;
+  document_id: string;
+  clause_id: string | null;
+  user_id: string | null;
+  entity_name: string | null;
+  report_type: ReportType;
+  description: string | null;
+  created_at: string;
+}
+
+// ============================================
+// AI / ANALYSIS INTERFACES
+// Used for AI responses and processing
+// ============================================
+
+/**
+ * AI response for a single clause analysis
+ */
+export interface AnalysisResult {
+  risk_level: RiskLevel;
+  risk_score: number;
+  explanation: string;
+  legal_issue: string | null;
+  applicable_law: string | null;
+  fair_alternative: string | null;
+  red_flags: string[];
+}
+
+/**
+ * Single extracted clause before analysis
+ */
+export interface ExtractedClause {
+  clause_number: number;
+  clause_type: string;
+  text: string;
+}
+
+/**
+ * Document metadata extracted by AI
+ */
+export interface DocumentInfo {
+  detected_type: DocumentType | string;
+  detected_jurisdiction: string | null;
+  entity_name: string | null;
+  parties: string[];
+  agreement_date?: string | null;
+  is_stamp_paper?: boolean;
+  stamp_value?: string | null;
+}
+
+/**
+ * Complete extraction result from AI
+ */
+export interface ExtractionResult {
+  clauses: ExtractedClause[];
+  document_info: DocumentInfo;
+}
+
+/**
+ * Complete document analysis result
+ */
+export interface DocumentAnalysis {
+  document: Document;
+  clauses: Clause[];
+  overall_score: number;
+  summary: string;
+  risk_breakdown: {
+    safe: number;
+    warning: number;
+    dangerous: number;
+    illegal: number;
+  };
+}
+
+// ============================================
+// DEMAND LETTER INTERFACES
+// ============================================
+
+/**
+ * Generated demand letter
+ */
+export interface DemandLetter {
+  subject: string;
+  body: string;
+  agencies: string[];
+  legal_references: string[];
+}
+
+// ============================================
+// API / UI INTERFACES
+// ============================================
+
+/**
+ * Analysis progress tracking
+ */
+export interface AnalysisProgress {
+  document_id: string;
+  status: AnalysisStatus;
+  progress: number; // 0-100
+  current_step: string;
+  clauses_analyzed: number;
+  total_clauses: number;
+}
+
+/**
+ * Upload response from API
+ */
+export interface UploadResponse {
+  documentId: string;
+  status: AnalysisStatus;
+  message?: string;
+}
+
+/**
+ * API Error response
+ */
+export interface ApiError {
+  error: string;
+  code?: string;
+  details?: string;
+}
+
+// ============================================
+// COMPONENT PROPS
+// ============================================
+
+/**
+ * Props for ClauseCard component
+ */
+export interface ClauseCardProps {
+  clause: Clause;
+  isExpanded?: boolean;
+  onToggle?: () => void;
+  onFlag?: () => void;
+}
+
+/**
+ * Props for DangerGauge component
+ */
+export interface DangerGaugeProps {
+  score: number;
+  size?: "sm" | "md" | "lg";
+  showLabel?: boolean;
+  animated?: boolean;
+}
+
+/**
+ * Props for SummaryStats component
+ */
+export interface SummaryStatsProps {
+  totalClauses: number;
+  safeCount: number;
+  warningCount: number;
+  dangerousCount: number;
+  illegalCount: number;
+}

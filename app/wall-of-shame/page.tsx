@@ -1,0 +1,181 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import {
+  Skull,
+  AlertTriangle,
+  TrendingUp,
+  MapPin,
+  Flag,
+  Loader2,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { createClient } from "@/lib/supabase/client";
+import { getStateName } from "@/lib/utils/constants";
+import type { FlaggedEntity } from "@/types";
+import { toast } from "sonner";
+
+export default function WallOfShamePage() {
+  const [entities, setEntities] = useState<FlaggedEntity[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const supabase = createClient();
+
+  useEffect(() => {
+    const fetchEntities = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("flagged_entities")
+          .select("*")
+          .order("total_flags", { ascending: false })
+          .limit(50);
+
+        if (error) throw error;
+        setEntities((data as FlaggedEntity[]) || []);
+      } catch (err) {
+        console.error("Failed to load entities:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEntities();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+        <Loader2 className="h-12 w-12 text-red-500 animate-spin" />
+        <p className="text-muted-foreground">Loading Wall of Shame...</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative px-4 sm:px-6 lg:px-8 py-8">
+      {/* Background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-red-500/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl" />
+      </div>
+
+      <div className="relative mx-auto max-w-5xl">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-red-500/10 mb-6">
+            <Skull className="h-8 w-8 text-red-400" />
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-3">
+            Wall of <span className="text-red-400">Shame</span>
+          </h1>
+          <p className="text-muted-foreground max-w-lg mx-auto">
+            Community-flagged entities with a history of predatory contracts.
+            Check here before signing with any landlord, employer, or company.
+          </p>
+        </div>
+
+        {/* Empty State */}
+        {entities.length === 0 && (
+          <Card className="glass border-white/5">
+            <CardContent className="p-12 text-center">
+              <AlertTriangle className="h-12 w-12 text-yellow-500 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold mb-2">No flagged entities yet</h3>
+              <p className="text-muted-foreground mb-6">
+                When users flag landlords, employers, or companies with predatory contracts,
+                they&apos;ll appear here.
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Analyze a contract and flag problematic entities to contribute.
+              </p>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Entities List */}
+        <div className="space-y-4">
+          {entities.map((entity, index) => (
+            <Card
+              key={entity.id}
+              className="glass border-white/5 hover:border-red-500/20 transition-all"
+            >
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex items-start justify-between gap-4">
+                  {/* Left Side */}
+                  <div className="flex items-start gap-4">
+                    <div className="h-12 w-12 rounded-lg bg-red-500/10 flex items-center justify-center flex-shrink-0">
+                      <span className="text-lg font-bold text-red-400">
+                        #{index + 1}
+                      </span>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-lg mb-1">
+                        {entity.entity_name}
+                      </h3>
+                      <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground mb-3">
+                        <Badge variant="outline" className="text-xs">
+                          {entity.entity_type}
+                        </Badge>
+                        {entity.jurisdiction && (
+                          <span className="flex items-center gap-1">
+                            <MapPin className="h-3 w-3" />
+                            {getStateName(entity.jurisdiction)}
+                          </span>
+                        )}
+                      </div>
+                      {entity.common_violations && entity.common_violations.length > 0 && (
+                        <div className="flex flex-wrap gap-2">
+                          {entity.common_violations.slice(0, 3).map((violation, i) => (
+                            <Badge
+                              key={i}
+                              className="bg-red-500/10 text-red-400 border-red-500/20"
+                            >
+                              {violation}
+                            </Badge>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Right Side */}
+                  <div className="text-right flex-shrink-0">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Flag className="h-4 w-4 text-red-400" />
+                      <span className="text-2xl font-bold text-red-400">
+                        {entity.total_flags}
+                      </span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">flags</p>
+                    {entity.avg_risk_score > 0 && (
+                      <div className="mt-2 flex items-center gap-1 text-sm text-muted-foreground">
+                        <TrendingUp className="h-3 w-3" />
+                        Avg score: {entity.avg_risk_score}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Disclaimer */}
+        <div className="mt-12 p-4 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="h-5 w-5 text-yellow-400 flex-shrink-0 mt-0.5" />
+            <div className="text-sm text-yellow-300">
+              <p className="font-medium mb-1">Disclaimer</p>
+              <p className="text-yellow-300/80">
+                This list is community-generated based on user reports. Being listed here
+                does not constitute a legal judgment. Always verify information independently
+                and consult legal professionals when needed.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

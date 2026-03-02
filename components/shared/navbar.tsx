@@ -1,0 +1,107 @@
+"use client";
+
+import Link from "next/link";
+import { useState } from "react";
+import { Shield, Menu, X, Upload, BarChart3, Skull } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+export default function Navbar() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  return (
+    <nav className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/80 backdrop-blur-xl">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2 group">
+            <div className="relative">
+              <Shield className="h-8 w-8 text-blue-500 transition-transform group-hover:scale-110" />
+              <div className="absolute inset-0 h-8 w-8 bg-blue-500/20 blur-xl rounded-full" />
+            </div>
+            <span className="text-xl font-bold tracking-tight">
+              Clause<span className="text-blue-500">Wall</span>
+            </span>
+          </Link>
+
+          {/* Desktop Nav */}
+          <div className="hidden md:flex items-center gap-1">
+            <Link href="/upload">
+              <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground">
+                <Upload className="h-4 w-4" />
+                Analyze
+              </Button>
+            </Link>
+            <Link href="/dashboard">
+              <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground">
+                <BarChart3 className="h-4 w-4" />
+                Dashboard
+              </Button>
+            </Link>
+            <Link href="/wall-of-shame">
+              <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground">
+                <Skull className="h-4 w-4" />
+                Wall of Shame
+              </Button>
+            </Link>
+          </div>
+
+          {/* CTA + Mobile Toggle */}
+          <div className="flex items-center gap-3">
+            <Link href="/upload" className="hidden md:block">
+              <Button size="sm" className="bg-blue-600 hover:bg-blue-700 gap-2">
+                <Upload className="h-4 w-4" />
+                Upload Contract
+              </Button>
+            </Link>
+
+            <button
+              className="md:hidden p-2 text-muted-foreground hover:text-foreground"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label="Toggle menu"
+            >
+              {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {mobileOpen && (
+          <div className="md:hidden border-t border-white/5 py-4 space-y-2">
+            <Link
+              href="/upload"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-3 px-3 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
+            >
+              <Upload className="h-4 w-4" />
+              Analyze Contract
+            </Link>
+            <Link
+              href="/dashboard"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-3 px-3 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
+            >
+              <BarChart3 className="h-4 w-4" />
+              Dashboard
+            </Link>
+            <Link
+              href="/wall-of-shame"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-3 px-3 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
+            >
+              <Skull className="h-4 w-4" />
+              Wall of Shame
+            </Link>
+            <div className="pt-2 px-3">
+              <Link href="/upload" onClick={() => setMobileOpen(false)}>
+                <Button className="w-full bg-blue-600 hover:bg-blue-700 gap-2">
+                  <Upload className="h-4 w-4" />
+                  Upload Contract
+                </Button>
+              </Link>
+            </div>
+          </div>
+        )}
+      </div>
+    </nav>
+  );
+}

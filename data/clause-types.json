@@ -1,0 +1,73 @@
+{
+  "rental": [
+    "rent_payment",
+    "security_deposit",
+    "lock_in_period",
+    "termination_notice",
+    "maintenance_charges",
+    "society_rules",
+    "subletting",
+    "pets_restrictions",
+    "visitor_restrictions",
+    "repair_responsibility",
+    "painting_charges",
+    "late_fees",
+    "possession_handover",
+    "renewal_terms"
+  ],
+  "employment": [
+    "compensation_salary",
+    "variable_pay_bonus",
+    "notice_period",
+    "relieving_terms",
+    "training_bond",
+    "non_compete",
+    "non_solicitation",
+    "confidentiality",
+    "intellectual_property",
+    "probation",
+    "benefits_pf_esi",
+    "leave_policy",
+    "working_hours",
+    "background_check",
+    "termination"
+  ],
+  "loan": [
+    "interest_rate",
+    "processing_fees",
+    "prepayment_penalty",
+    "late_payment_charges",
+    "insurance_bundling",
+    "loan_recall",
+    "collateral",
+    "guarantor",
+    "disbursement",
+    "emi_schedule"
+  ],
+  "tos": [
+    "data_privacy",
+    "consent_clauses",
+    "cancellation_refund",
+    "liability_limitation",
+    "indemnification",
+    "modification_rights",
+    "dispute_resolution",
+    "arbitration",
+    "jurisdiction",
+    "auto_renewal"
+  ],
+  "common": [
+    "force_majeure",
+    "governing_law",
+    "severability",
+    "entire_agreement",
+    "dispute_resolution",
+    "arbitration",
+    "jurisdiction",
+    "notice_requirements",
+    "penalties",
+    "liability_waiver",
+    "indemnification",
+    "general"
+  ]
+}
