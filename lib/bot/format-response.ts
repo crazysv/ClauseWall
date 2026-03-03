@@ -24,32 +24,27 @@ export function formatTelegramResponse(
   options?: {
     appUrl?: string;
     resultUrl?: string;
+    showAnalyzingNote?: boolean;
   }
 ): string {
   const riskEmoji = RISK_EMOJI[result.risk_label] || "📊";
 
   let msg = `🛡️ <b>ClauseWall Quick Scan</b>\n\n`;
-  msg += `📊 Risk Score: <b>${result.risk_score}/100</b> ${riskEmoji} ${result.risk_label}\n`;
   msg += `📄 Type: ${result.document_type_detected} • ${result.total_clauses_found} clauses found\n`;
   msg += `\n━━━━━━━━━━━━━━━━━━━━\n\n`;
 
   if (result.red_flags.length > 0) {
+    msg += `🚨 <b>Potential Issues Found:</b>\n\n`;
     for (const flag of result.red_flags) {
       const emoji = SEVERITY_EMOJI[flag.severity] || "⚠️";
-      const label = flag.severity.toUpperCase();
-      msg += `${emoji} <b>${label}:</b> ${escapeHtml(flag.title)}\n`;
-      msg += `   └ ${escapeHtml(flag.explanation)}`;
-      if (flag.law_reference) {
-        msg += `\n   └ 📖 <i>${escapeHtml(flag.law_reference)}</i>`;
-      }
-      msg += `\n\n`;
+      msg += `${emoji} <b>${escapeHtml(flag.title)}</b>\n`;
+      msg += `   └ ${escapeHtml(flag.explanation)}\n\n`;
     }
   } else {
-    msg += `✅ No major red flags found!\n\n`;
+    msg += `✅ No major red flags found in quick scan!\n\n`;
   }
 
   if (result.safe_highlights.length > 0) {
-    msg += `━━━━━━━━━━━━━━━━━━━━\n\n`;
     for (const h of result.safe_highlights) {
       msg += `✅ ${escapeHtml(h)}\n`;
     }
@@ -59,18 +54,10 @@ export function formatTelegramResponse(
   msg += `━━━━━━━━━━━━━━━━━━━━\n\n`;
   msg += `💬 <i>${escapeHtml(result.one_line_verdict)}</i>\n\n`;
 
-  // Full report link
-  if (options?.resultUrl) {
-    msg += `━━━━━━━━━━━━━━━━━━━━\n\n`;
-    msg += `📋 <b>Full Verified Report:</b>\n`;
-    msg += `${options.resultUrl}\n`;
-    msg += `⏳ <i>Hybrid analysis with 750+ legal rules — ready in ~30-60 seconds</i>\n`;
-    msg += `\n✅ Includes: Negotiation scripts • Penalty info • Verified citations\n\n`;
-  } else if (options?.appUrl) {
-    msg += `🔗 Upload for full report:\n${options.appUrl}/upload\n\n`;
-  }
-
-  msg += `💡 <i>Send another contract anytime — PDF, text, or photo!</i>`;
+  msg += `━━━━━━━━━━━━━━━━━━━━\n\n`;
+  msg += `⏳ <b>Full verified analysis in progress...</b>\n`;
+  msg += `📋 Checking against 750+ Indian legal rules\n`;
+  msg += `⏱️ Results will be sent in ~30-60 seconds`;
 
   return msg;
 }

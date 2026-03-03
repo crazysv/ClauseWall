@@ -138,7 +138,8 @@ async function processMessage(
 async function saveAndTriggerAnalysis(
   extractedText: string,
   result: QuickAnalysisResult,
-  filename: string
+  filename: string,
+  chatId: number
 ): Promise<string | null> {
     console.log("[ClauseWall Bot] saveAndTriggerAnalysis called");
     console.log("[ClauseWall Bot] Text length:", extractedText?.length || 0);
