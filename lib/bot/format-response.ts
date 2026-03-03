@@ -131,7 +131,7 @@ I analyze contracts and flag predatory, illegal, or unfair clauses using Indian 
 🔴 Dangerous one-sided terms
 ⚠️ Warnings worth reviewing
 
-<b>I check against 450+ rules including:</b>
+<b>I check against 750+ rules including:</b>
 • Indian Contract Act 1872
 • Model Tenancy Act 2021
 • State Rent Control Acts
