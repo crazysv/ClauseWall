@@ -185,20 +185,29 @@ async function saveAndTriggerAnalysis(
 
     // Trigger full analysis via separate API call (gets own 60s timeout)
     const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+    console.log("[ClauseWall Bot] App URL:", appUrl);
+    console.log("[ClauseWall Bot] Triggering full analysis for:", doc.id);
+
     if (appUrl) {
-      fetch(`${appUrl}/api/bot/trigger-analysis`, {
+        fetch(`${appUrl}/api/bot/trigger-analysis`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          documentId: doc.id,
-          text: extractedText,
-          documentType,
-          jurisdiction: "ALL-INDIA",
+         documentId: doc.id,
+         text: extractedText,
+         documentType,
+         jurisdiction: "ALL-INDIA",
         }),
-      }).catch((err) => {
-        console.error("[ClauseWall Bot] Failed to trigger analysis:", err);
-      });
-    }
+    })
+    .then((res) => {
+      console.log("[ClauseWall Bot] Trigger response status:", res.status);
+    })
+    .catch((err) => {
+      console.error("[ClauseWall Bot] Failed to trigger analysis:", err);
+    });
+} else {
+  console.error("[ClauseWall Bot] NEXT_PUBLIC_APP_URL not set!");
+}
 
     return doc.id;
   } catch (error) {

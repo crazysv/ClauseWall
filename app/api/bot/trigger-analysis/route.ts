@@ -11,38 +11,51 @@ import { createAdminClient } from "@/lib/supabase/admin";
 export const maxDuration = 60;
 
 export async function POST(request: NextRequest) {
+  console.log("[ClauseWall] Trigger analysis route called");
+  
   try {
-    const { documentId, text, documentType, jurisdiction } =
-      await request.json();
+    const body = await request.json();
+    console.log("[ClauseWall] Trigger body received:", {
+      documentId: body.documentId,
+      textLength: body.text?.length,
+      documentType: body.documentType,
+      jurisdiction: body.jurisdiction,
+    });
+
+    const { documentId, text, documentType, jurisdiction } = body;
 
     if (!documentId || !text) {
+      console.error("[ClauseWall] Missing required fields");
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
       );
     }
 
+    console.log("[ClauseWall] Creating admin client...");
     const supabase = createAdminClient();
+    console.log("[ClauseWall] Admin client created");
 
     // Update status to analyzing
-    await supabase
+    const { error: updateError } = await supabase
       .from("documents")
       .update({ analysis_status: "analyzing" })
       .eq("id", documentId);
 
-    // Return immediately — analysis runs in background
-    // The function stays alive for up to 60s (maxDuration)
+    if (updateError) {
+      console.error("[ClauseWall] Failed to update status:", updateError);
+    } else {
+      console.log("[ClauseWall] Status updated to analyzing");
+    }
+
+    // Start analysis in background
+    console.log("[ClauseWall] Starting background analysis...");
     analyzeDocument(documentId, text, documentType, jurisdiction, supabase)
       .then(() => {
-        console.log(
-          `[ClauseWall] Bot full analysis complete: ${documentId}`
-        );
+        console.log(`[ClauseWall] Bot full analysis complete: ${documentId}`);
       })
       .catch(async (err) => {
-        console.error(
-          `[ClauseWall] Bot full analysis failed: ${documentId}`,
-          err
-        );
+        console.error(`[ClauseWall] Bot full analysis failed: ${documentId}`, err);
         await supabase
           .from("documents")
           .update({
@@ -52,6 +65,7 @@ export async function POST(request: NextRequest) {
           .eq("id", documentId);
       });
 
+    console.log("[ClauseWall] Returning 200 response");
     return NextResponse.json({
       status: "analyzing",
       documentId,
