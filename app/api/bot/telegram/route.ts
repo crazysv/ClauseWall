@@ -141,10 +141,12 @@ async function saveAndTriggerAnalysis(
   filename: string,
   chatId: number
 ): Promise<string | null> {
+  try {
     console.log("[ClauseWall Bot] saveAndTriggerAnalysis called");
     console.log("[ClauseWall Bot] Text length:", extractedText?.length || 0);
     console.log("[ClauseWall Bot] Filename:", filename);
-    try {
+    console.log("[ClauseWall Bot] Chat ID:", chatId);
+
     // Must have enough text for full analysis
     console.log("[ClauseWall Bot] Checking text length:", extractedText?.length || 0);
     if (!extractedText || extractedText.trim().length < 50) {
@@ -190,25 +192,26 @@ async function saveAndTriggerAnalysis(
     console.log("[ClauseWall Bot] Triggering full analysis for:", doc.id);
 
     if (appUrl) {
-        fetch(`${appUrl}/api/bot/trigger-analysis`, {
+      fetch(`${appUrl}/api/bot/trigger-analysis`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-         documentId: doc.id,
-         text: extractedText,
-         documentType,
-         jurisdiction: "ALL-INDIA",
+          documentId: doc.id,
+          text: extractedText,
+          documentType,
+          jurisdiction: "ALL-INDIA",
+          chatId,
         }),
-    })
-    .then((res) => {
-      console.log("[ClauseWall Bot] Trigger response status:", res.status);
-    })
-    .catch((err) => {
-      console.error("[ClauseWall Bot] Failed to trigger analysis:", err);
-    });
-} else {
-  console.error("[ClauseWall Bot] NEXT_PUBLIC_APP_URL not set!");
-}
+      })
+        .then((res) => {
+          console.log("[ClauseWall Bot] Trigger response status:", res.status);
+        })
+        .catch((err) => {
+          console.error("[ClauseWall Bot] Failed to trigger analysis:", err);
+        });
+    } else {
+      console.error("[ClauseWall Bot] NEXT_PUBLIC_APP_URL not set!");
+    }
 
     return doc.id;
   } catch (error) {
@@ -217,23 +220,13 @@ async function saveAndTriggerAnalysis(
   }
 }
 
-// ---- SEND RESULTS WITH LINK ----
+// ---- SEND RESULTS ----
 
 async function sendResults(
   chatId: number,
-  result: QuickAnalysisResult,
-  documentId: string | null
+  result: QuickAnalysisResult
 ) {
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || undefined;
-
-  const resultUrl = documentId && appUrl
-    ? `${appUrl}/results/${documentId}`
-    : undefined;
-
-  await sendMessage(
-    chatId,
-    formatTelegramResponse(result, { appUrl, resultUrl })
-  );
+  await sendMessage(chatId, formatTelegramResponse(result));
 }
 
 // ---- DOCUMENT HANDLER (PDF / TXT) ----
@@ -292,10 +285,10 @@ async function handleDocument(
   const result = await quickAnalyze(text);
 
   // Save to DB + trigger full analysis
-  const documentId = await saveAndTriggerAnalysis(text, result, fileName);
+  await saveAndTriggerAnalysis(text, result, fileName, chatId);
 
-  // Send results with link
-  await sendResults(chatId, result, documentId);
+  // Send quick results
+  await sendResults(chatId, result);
 }
 
 // ---- PHOTO HANDLER (OCR + Analysis) ----
@@ -317,14 +310,15 @@ async function handlePhoto(
     const result = await quickAnalyzeImage(base64, "image/jpeg");
 
     // Save OCR'd text to DB + trigger full analysis
-    const documentId = await saveAndTriggerAnalysis(
+    await saveAndTriggerAnalysis(
       result.extracted_text || "",
       result,
-      "telegram-photo.jpg"
+      "telegram-photo.jpg",
+      chatId
     );
 
-    // Send results with link
-    await sendResults(chatId, result, documentId);
+    // Send quick results
+    await sendResults(chatId, result);
   } catch (error) {
     console.error("[ClauseWall Bot] Photo analysis failed:", error);
     await sendMessage(
@@ -355,14 +349,10 @@ async function handleText(chatId: number, text: string) {
   const result = await quickAnalyze(text);
 
   // Save to DB + trigger full analysis
-  const documentId = await saveAndTriggerAnalysis(
-    text,
-    result,
-    "telegram-text.txt"
-  );
+  await saveAndTriggerAnalysis(text, result, "telegram-text.txt", chatId);
 
-  // Send results with link
-  await sendResults(chatId, result, documentId);
+  // Send quick results
+  await sendResults(chatId, result);
 }
 
 // ---- HELPER ----
