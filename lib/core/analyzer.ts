@@ -1,19 +1,18 @@
 // ============================================
-// MAIN ANALYSIS ORCHESTRATOR
-// Coordinates the entire analysis pipeline
+// MAIN ANALYSIS ORCHESTRATOR — HYBRID VERSION
+// Uses DB-first approach with AI fallback
 // ============================================
 
 import { extractClauses } from "@/lib/ai/clause-extractor";
-import { analyzeClause } from "@/lib/ai/clause-analyzer";
+import { hybridAnalyzeClause } from "@/lib/core/hybrid-analyzer";
 import { calculateWeightedScore, generateSummary, getRiskCounts } from "@/lib/core/scorer";
 import { createClient } from "@/lib/supabase/server";
 import { ANALYSIS_CONFIG } from "@/lib/utils/constants";
-import type { Clause } from "@/types";
 
 /**
- * Analyze a complete document — the main pipeline
- * 1. Extract clauses from text
- * 2. Analyze each clause individually
+ * Analyze a complete document — HYBRID pipeline
+ * 1. Extract clauses from text (AI)
+ * 2. For each clause: DB-first analysis with AI fallback
  * 3. Calculate scores
  * 4. Save everything to database
  */
@@ -44,24 +43,34 @@ export async function analyzeDocument(
         .eq("id", documentId);
     }
 
-    // ---- Step 2: Analyze each clause ----
+    // ---- Step 2: Hybrid analysis for each clause ----
     console.log(
-      `[ClauseWall] Analyzing ${extraction.clauses.length} clauses...`
+      `[ClauseWall] [Hybrid] Analyzing ${extraction.clauses.length} clauses...`
     );
 
-    const analyzedClauses: Omit<Clause, "id" | "created_at">[] = [];
+    const analyzedClauses: any[] = [];
+    let dbMatchCount = 0;
+    let aiFallbackCount = 0;
 
     for (const extractedClause of extraction.clauses) {
       console.log(
-        `[ClauseWall] Analyzing clause ${extractedClause.clause_number}/${extraction.clauses.length}: ${extractedClause.clause_type}`
+        `[ClauseWall] Clause ${extractedClause.clause_number}/${extraction.clauses.length}: ${extractedClause.clause_type}`
       );
 
-      const analysis = await analyzeClause(
+      // Use HYBRID analysis instead of pure AI
+      const analysis = await hybridAnalyzeClause(
         extractedClause.text,
         jurisdiction,
         documentType,
         extractedClause.clause_type
       );
+
+      // Track verification sources
+      if (analysis.verification_source === "database") {
+        dbMatchCount++;
+      } else {
+        aiFallbackCount++;
+      }
 
       analyzedClauses.push({
         document_id: documentId,
@@ -76,7 +85,13 @@ export async function analyzeDocument(
         statute_code: analysis.applicable_law || null,
         fair_alternative: analysis.fair_alternative || null,
         red_flags: analysis.red_flags,
-        percentile: null, // Will be calculated later with comparison engine
+        percentile: null,
+        // NEW hybrid fields
+        verification_source: analysis.verification_source,
+        matched_rule_id: analysis.matched_rule_id || null,
+        negotiation_script: analysis.negotiation_script || null,
+        penalty_info: analysis.penalty_info || null,
+        confidence: analysis.confidence,
       });
 
       // Delay between requests to avoid rate limiting
@@ -84,6 +99,10 @@ export async function analyzeDocument(
         setTimeout(resolve, ANALYSIS_CONFIG.clauseDelayMs)
       );
     }
+
+    console.log(
+      `[ClauseWall] [Hybrid] Results: ${dbMatchCount} DB-verified, ${aiFallbackCount} AI-analyzed`
+    );
 
     // ---- Step 3: Save clauses to database ----
     const { error: clauseError } = await supabase
@@ -98,8 +117,12 @@ export async function analyzeDocument(
     const overallScore = calculateWeightedScore(analyzedClauses);
     const counts = getRiskCounts(analyzedClauses);
 
-    // ---- Step 5: Generate summary ----
-    const summary = generateSummary(
+    // ---- Step 5: Generate summary with verification info ----
+    const verificationRate = analyzedClauses.length > 0
+      ? Math.round((dbMatchCount / analyzedClauses.length) * 100)
+      : 0;
+
+    let summary = generateSummary(
       analyzedClauses.length,
       counts.safe,
       counts.warning,
@@ -107,6 +130,9 @@ export async function analyzeDocument(
       counts.illegal,
       overallScore
     );
+
+    // Append verification info to summary
+    summary += ` | Verification: ${dbMatchCount} of ${analyzedClauses.length} clauses (${verificationRate}%) verified against ClauseWall Legal Database.`;
 
     // ---- Step 6: Update document with results ----
     const { error: updateError } = await supabase
@@ -128,7 +154,7 @@ export async function analyzeDocument(
     }
 
     console.log(
-      `[ClauseWall] ✅ Analysis complete for document ${documentId}. Score: ${overallScore}/100`
+      `[ClauseWall] ✅ Hybrid analysis complete for document ${documentId}. Score: ${overallScore}/100 | DB: ${dbMatchCount} | AI: ${aiFallbackCount}`
     );
   } catch (error) {
     console.error(
@@ -136,7 +162,6 @@ export async function analyzeDocument(
       error
     );
 
-    // Update status to failed
     await supabase
       .from("documents")
       .update({

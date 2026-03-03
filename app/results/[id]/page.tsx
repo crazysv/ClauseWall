@@ -1,12 +1,13 @@
 "use client";
 
-import VerificationBadge from "@/components/results/verification-badge";
-import { ShieldCheck, ShieldAlert, Bot } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import {
   Shield,
+  ShieldCheck,
+  ShieldAlert,
+  Bot,
   AlertTriangle,
   CheckCircle2,
   XCircle,
@@ -19,6 +20,8 @@ import {
   Loader2,
   RefreshCw,
   Scale,
+  MessageSquare,
+  Gavel,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -35,22 +38,44 @@ import {
 import type { Document, Clause } from "@/types";
 import { toast } from "sonner";
 
+// Extended clause type with hybrid fields
+interface HybridClause extends Clause {
+  verification_source?: "database" | "ai";
+  confidence?: "verified" | "partial" | "ai_suggested";
+  matched_rule_id?: string | null;
+  negotiation_script?: string | null;
+  penalty_info?: string | null;
+}
+
 export default function ResultsPage() {
   const params = useParams();
   const documentId = params.id as string;
 
   const [document, setDocument] = useState<Document | null>(null);
-  const [clauses, setClauses] = useState<Clause[]>([]);
+  const [clauses, setClauses] = useState<HybridClause[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [expandedClauses, setExpandedClauses] = useState<Set<string>>(new Set());
   const [refreshing, setRefreshing] = useState(false);
 
-  const [verificationResults, setVerificationResults] = useState<Record<string, any>>({});
-  const [verificationStats, setVerificationStats] = useState<any>(null);
-  const [verifying, setVerifying] = useState(false);
-
   const supabase = createClient();
+
+  // Calculate verification stats from clauses directly
+  const verificationStats = {
+    verified: clauses.filter((c) => c.confidence === "verified").length,
+    partial: clauses.filter((c) => c.confidence === "partial").length,
+    ai_suggested: clauses.filter(
+      (c) => c.confidence === "ai_suggested" || !c.confidence
+    ).length,
+    verification_rate:
+      clauses.length > 0
+        ? Math.round(
+            (clauses.filter((c) => c.confidence === "verified").length /
+              clauses.length) *
+              100
+          )
+        : 0,
+  };
 
   // Fetch document and clauses
   const fetchData = async () => {
@@ -79,7 +104,7 @@ export default function ResultsPage() {
           .order("clause_number", { ascending: true });
 
         if (!clauseError && clauseData) {
-          setClauses(clauseData as Clause[]);
+          setClauses(clauseData as HybridClause[]);
         }
       }
 
@@ -90,57 +115,20 @@ export default function ResultsPage() {
     }
   };
 
-const verifyClausesWithDB = async () => {
-  if (!document || clauses.length === 0) return;
-  
-  setVerifying(true);
-  try {
-    const response = await fetch("/api/verify-clauses", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        documentId,
-        jurisdiction: document.jurisdiction,
-        documentType: document.document_type,
-      }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      setVerificationResults(data.results);
-      setVerificationStats(data.stats);
-      toast.success(
-        `Verification complete! ${data.stats.verified} citations verified.`
-      );
-    } else {
-      toast.error("Verification failed");
-    }
-  } catch (err) {
-    toast.error("Failed to verify citations");
-  } finally {
-    setVerifying(false);
-  }
-};
-
   useEffect(() => {
     fetchData();
   }, [documentId]);
 
   // Poll for updates if still analyzing
   useEffect(() => {
-    if (document?.analysis_status === "analyzing" || document?.analysis_status === "pending") {
-    const interval = setInterval(fetchData, 3000);
-    return () => clearInterval(interval);
-  }
-  }, [document?.analysis_status]);
-
-  // Trigger verification when clauses are loaded
-  useEffect(() => {
-    if (document && clauses.length > 0 && Object.keys(verificationResults).length === 0 && !verifying) {
-      verifyClausesWithDB();
+    if (
+      document?.analysis_status === "analyzing" ||
+      document?.analysis_status === "pending"
+    ) {
+      const interval = setInterval(fetchData, 3000);
+      return () => clearInterval(interval);
     }
-  }, [document, clauses]);
+  }, [document?.analysis_status]);
 
   const handleRefresh = async () => {
     setRefreshing(true);
@@ -213,6 +201,38 @@ const verifyClausesWithDB = async () => {
     }
   };
 
+  // Get verification badge
+  const getVerificationBadge = (clause: HybridClause) => {
+    if (clause.verification_source === "database" && clause.confidence === "verified") {
+      return (
+        <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-500/10 border border-green-500/20">
+          <ShieldCheck className="h-4 w-4 text-green-400" />
+          <span className="text-sm text-green-400 font-medium">
+            ⚖️ Verified — ClauseWall Legal Database
+          </span>
+        </div>
+      );
+    } else if (clause.verification_source === "database") {
+      return (
+        <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
+          <ShieldAlert className="h-4 w-4 text-yellow-400" />
+          <span className="text-sm text-yellow-400 font-medium">
+            ⚠️ Partially Verified — Review Recommended
+          </span>
+        </div>
+      );
+    } else {
+      return (
+        <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-500/10 border border-blue-500/20">
+          <Bot className="h-4 w-4 text-blue-400" />
+          <span className="text-sm text-blue-400 font-medium">
+            🤖 AI Analysis — Verify Independently
+          </span>
+        </div>
+      );
+    }
+  };
+
   // Loading state
   if (loading) {
     return (
@@ -237,7 +257,10 @@ const verifyClausesWithDB = async () => {
   }
 
   // Analyzing state
-  if (document.analysis_status === "pending" || document.analysis_status === "analyzing") {
+  if (
+    document.analysis_status === "pending" ||
+    document.analysis_status === "analyzing"
+  ) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 px-4">
         <div className="relative">
@@ -247,15 +270,16 @@ const verifyClausesWithDB = async () => {
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-2">Analyzing Your Contract</h2>
           <p className="text-muted-foreground max-w-md">
-            Our AI is reviewing each clause under Indian law. This typically takes 30-60 seconds
-            depending on the document length.
+            Checking against 750+ verified Indian legal rules. This typically
+            takes 30-60 seconds.
           </p>
         </div>
         <div className="w-64">
           <Progress value={33} className="h-2" />
         </div>
         <p className="text-sm text-muted-foreground">
-          Status: {document.analysis_status === "pending" ? "Queued" : "Processing"}...
+          Status:{" "}
+          {document.analysis_status === "pending" ? "Queued" : "Processing"}...
         </p>
       </div>
     );
@@ -268,7 +292,8 @@ const verifyClausesWithDB = async () => {
         <XCircle className="h-12 w-12 text-red-500" />
         <h2 className="text-2xl font-bold text-red-400">Analysis Failed</h2>
         <p className="text-muted-foreground text-center max-w-md">
-          {document.summary || "Something went wrong during analysis. Please try again."}
+          {document.summary ||
+            "Something went wrong during analysis. Please try again."}
         </p>
         <Link href="/upload">
           <Button>Try Again</Button>
@@ -311,7 +336,9 @@ const verifyClausesWithDB = async () => {
               disabled={refreshing}
               className="gap-2"
             >
-              <RefreshCw className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`} />
+              <RefreshCw
+                className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`}
+              />
               Refresh
             </Button>
             <Link href={`/letter/${documentId}`}>
@@ -335,13 +362,18 @@ const verifyClausesWithDB = async () => {
                 }}
               >
                 <div className="absolute inset-2 bg-background rounded-full flex items-center justify-center">
-                  <span className="text-3xl font-bold" style={{ color: riskColor }}>
+                  <span
+                    className="text-3xl font-bold"
+                    style={{ color: riskColor }}
+                  >
                     {document.overall_risk_score}
                   </span>
                 </div>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground mb-1">Overall Risk Score</p>
+                <p className="text-sm text-muted-foreground mb-1">
+                  Overall Risk Score
+                </p>
                 <p className="text-xl font-bold" style={{ color: riskColor }}>
                   {getRiskLabel(riskLevel)}
                 </p>
@@ -357,19 +389,27 @@ const verifyClausesWithDB = async () => {
             <CardContent className="p-6 flex flex-col justify-center h-full">
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-green-500">{document.safe_count}</p>
+                  <p className="text-2xl font-bold text-green-500">
+                    {document.safe_count}
+                  </p>
                   <p className="text-xs text-muted-foreground">Safe</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-yellow-500">{document.warning_count}</p>
+                  <p className="text-2xl font-bold text-yellow-500">
+                    {document.warning_count}
+                  </p>
                   <p className="text-xs text-muted-foreground">Warning</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-red-500">{document.dangerous_count}</p>
+                  <p className="text-2xl font-bold text-red-500">
+                    {document.dangerous_count}
+                  </p>
                   <p className="text-xs text-muted-foreground">Dangerous</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-purple-500">{document.illegal_count}</p>
+                  <p className="text-2xl font-bold text-purple-500">
+                    {document.illegal_count}
+                  </p>
                   <p className="text-xs text-muted-foreground">Illegal</p>
                 </div>
               </div>
@@ -379,12 +419,18 @@ const verifyClausesWithDB = async () => {
           {/* Entity */}
           <Card className="glass border-white/5">
             <CardContent className="p-6 flex flex-col justify-center h-full">
-              <p className="text-sm text-muted-foreground mb-2">Identified Entity</p>
+              <p className="text-sm text-muted-foreground mb-2">
+                Identified Entity
+              </p>
               <p className="font-semibold truncate">
                 {document.entity_name || "Not identified"}
               </p>
               {document.entity_name && (
-                <Button variant="ghost" size="sm" className="mt-3 gap-2 text-red-400">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="mt-3 gap-2 text-red-400"
+                >
                   <Flag className="h-3 w-3" />
                   Flag Entity
                 </Button>
@@ -401,46 +447,52 @@ const verifyClausesWithDB = async () => {
                 <Shield className="h-4 w-4 text-blue-400" />
                 Summary
               </h3>
-              <p className="text-muted-foreground leading-relaxed">{document.summary}</p>
+              <p className="text-muted-foreground leading-relaxed">
+                {document.summary}
+              </p>
             </CardContent>
           </Card>
         )}
 
-        {/* Verification Stats */}
-        {verificationStats && (
+        {/* Verification Stats — Now using hybrid data */}
         <Card className="glass border-white/5 mb-8">
-    <CardContent className="p-6">
-      <h3 className="font-semibold mb-3 flex items-center gap-2">
-        <ShieldCheck className="h-4 w-4 text-green-400" />
-        Legal Database Verification
-      </h3>
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="text-center p-3 rounded-lg bg-green-500/10">
-          <p className="text-2xl font-bold text-green-400">{verificationStats.verified}</p>
-          <p className="text-xs text-muted-foreground">Verified ✓</p>
-        </div>
-        <div className="text-center p-3 rounded-lg bg-yellow-500/10">
-          <p className="text-2xl font-bold text-yellow-400">{verificationStats.partial}</p>
-          <p className="text-xs text-muted-foreground">Partial</p>
-        </div>
-        <div className="text-center p-3 rounded-lg bg-blue-500/10">
-          <p className="text-2xl font-bold text-blue-400">{verificationStats.ai_suggested}</p>
-          <p className="text-xs text-muted-foreground">AI-Only</p>
-        </div>
-        <div className="text-center p-3 rounded-lg bg-white/5">
-          <p className="text-2xl font-bold text-foreground">{verificationStats.verification_rate}%</p>
-          <p className="text-xs text-muted-foreground">Match Rate</p>
-        </div>
-      </div>
-      {verifying && (
-        <p className="text-xs text-muted-foreground mt-3 flex items-center gap-2">
-          <Loader2 className="h-3 w-3 animate-spin" />
-          Verifying citations against legal database...
-        </p>
-      )}
-    </CardContent>
-  </Card>
-        )}
+          <CardContent className="p-6">
+            <h3 className="font-semibold mb-3 flex items-center gap-2">
+              <ShieldCheck className="h-4 w-4 text-green-400" />
+              Legal Database Verification
+            </h3>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div className="text-center p-3 rounded-lg bg-green-500/10">
+                <p className="text-2xl font-bold text-green-400">
+                  {verificationStats.verified}
+                </p>
+                <p className="text-xs text-muted-foreground">Verified ✓</p>
+              </div>
+              <div className="text-center p-3 rounded-lg bg-yellow-500/10">
+                <p className="text-2xl font-bold text-yellow-400">
+                  {verificationStats.partial}
+                </p>
+                <p className="text-xs text-muted-foreground">Partial</p>
+              </div>
+              <div className="text-center p-3 rounded-lg bg-blue-500/10">
+                <p className="text-2xl font-bold text-blue-400">
+                  {verificationStats.ai_suggested}
+                </p>
+                <p className="text-xs text-muted-foreground">AI-Only</p>
+              </div>
+              <div className="text-center p-3 rounded-lg bg-white/5">
+                <p className="text-2xl font-bold text-foreground">
+                  {verificationStats.verification_rate}%
+                </p>
+                <p className="text-xs text-muted-foreground">Verified Rate</p>
+              </div>
+            </div>
+            <p className="text-xs text-muted-foreground mt-4 flex items-center gap-2">
+              <ShieldCheck className="h-3 w-3 text-green-400" />
+              Verified citations are cross-referenced against 750+ Indian legal rules
+            </p>
+          </CardContent>
+        </Card>
 
         {/* Clauses */}
         <div className="mb-6 flex items-center justify-between">
@@ -462,7 +514,9 @@ const verifyClausesWithDB = async () => {
             return (
               <Card
                 key={clause.id}
-                className={`glass border-white/5 border-l-4 ${getRiskBorderClass(clause.risk_level)}`}
+                className={`glass border-white/5 border-l-4 ${getRiskBorderClass(
+                  clause.risk_level
+                )}`}
               >
                 <CardContent className="p-4">
                   {/* Header */}
@@ -471,7 +525,7 @@ const verifyClausesWithDB = async () => {
                     onClick={() => toggleClause(clause.id)}
                   >
                     <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
+                      <div className="flex items-center gap-3 mb-2 flex-wrap">
                         {getRiskIcon(clause.risk_level)}
                         <Badge className={getRiskBadgeClass(clause.risk_level)}>
                           {getRiskLabel(clause.risk_level as any)}
@@ -482,6 +536,13 @@ const verifyClausesWithDB = async () => {
                         <Badge variant="outline" className="text-xs">
                           {clause.clause_type}
                         </Badge>
+                        {/* Verification indicator in header */}
+                        {clause.verification_source === "database" && (
+                          <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-xs">
+                            <ShieldCheck className="h-3 w-3 mr-1" />
+                            DB Verified
+                          </Badge>
+                        )}
                       </div>
                       <p className="text-sm text-muted-foreground line-clamp-2 italic">
                         &quot;{clause.original_text.substring(0, 200)}
@@ -502,7 +563,9 @@ const verifyClausesWithDB = async () => {
                     <div className="mt-4 pt-4 border-t border-white/5 space-y-4">
                       {/* Full Text */}
                       <div>
-                        <p className="text-sm font-medium mb-1">Full Clause Text</p>
+                        <p className="text-sm font-medium mb-1">
+                          Full Clause Text
+                        </p>
                         <p className="text-sm text-muted-foreground bg-white/5 p-3 rounded-lg">
                           {clause.original_text}
                         </p>
@@ -511,14 +574,20 @@ const verifyClausesWithDB = async () => {
                       {/* Explanation */}
                       <div>
                         <p className="text-sm font-medium mb-1">Analysis</p>
-                        <p className="text-sm text-muted-foreground">{clause.explanation}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {clause.explanation}
+                        </p>
                       </div>
 
                       {/* Legal Citation */}
                       {clause.legal_citation && (
                         <div>
-                          <p className="text-sm font-medium mb-1 text-blue-400">⚖️ Legal Reference</p>
-                          <p className="text-sm text-blue-300">{clause.legal_citation}</p>
+                          <p className="text-sm font-medium mb-1 text-blue-400">
+                            ⚖️ Legal Reference
+                          </p>
+                          <p className="text-sm text-blue-300">
+                            {clause.legal_citation}
+                          </p>
                         </div>
                       )}
 
@@ -534,10 +603,38 @@ const verifyClausesWithDB = async () => {
                         </div>
                       )}
 
+                      {/* NEW: Negotiation Script */}
+                      {clause.negotiation_script && (
+                        <div>
+                          <p className="text-sm font-medium mb-1 text-purple-400 flex items-center gap-2">
+                            <MessageSquare className="h-4 w-4" />
+                            🗣️ What to Say (Negotiation Script)
+                          </p>
+                          <p className="text-sm text-purple-300 bg-purple-500/10 p-3 rounded-lg italic">
+                            &quot;{clause.negotiation_script}&quot;
+                          </p>
+                        </div>
+                      )}
+
+                      {/* NEW: Penalty Info */}
+                      {clause.penalty_info && (
+                        <div>
+                          <p className="text-sm font-medium mb-1 text-orange-400 flex items-center gap-2">
+                            <Gavel className="h-4 w-4" />
+                            ⚠️ Penalty for Violation
+                          </p>
+                          <p className="text-sm text-orange-300 bg-orange-500/10 p-3 rounded-lg">
+                            {clause.penalty_info}
+                          </p>
+                        </div>
+                      )}
+
                       {/* Red Flags */}
                       {clause.red_flags && clause.red_flags.length > 0 && (
                         <div>
-                          <p className="text-sm font-medium mb-1 text-red-400">🚩 Red Flags</p>
+                          <p className="text-sm font-medium mb-1 text-red-400">
+                            🚩 Red Flags
+                          </p>
                           <ul className="list-disc list-inside text-sm text-red-300 space-y-1">
                             {clause.red_flags.map((flag, i) => (
                               <li key={i}>{flag}</li>
@@ -545,10 +642,11 @@ const verifyClausesWithDB = async () => {
                           </ul>
                         </div>
                       )}
+
                       {/* Verification Badge */}
-                      <VerificationBadge
-                        verification={verificationResults[clause.id] || null}
-                      />
+                      <div className="pt-2">
+                        {getVerificationBadge(clause)}
+                      </div>
                     </div>
                   )}
                 </CardContent>

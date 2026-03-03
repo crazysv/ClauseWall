@@ -12,8 +12,8 @@ import Groq from "groq-sdk";
 const API_KEYS = [
   process.env.GROQ_API_KEY_1,
   process.env.GROQ_API_KEY_2,
+  process.env.GROQ_API_KEY_3,
   // Add more keys here if you have them:
-  // process.env.GROQ_API_KEY_3,
 ].filter(Boolean) as string[];
 
 // Fallback to old single key if new ones not set
@@ -261,3 +261,5 @@ export function getApiStatus() {
     availableKeys: API_KEYS.length - exhaustedKeys.size,
   };
 }
+
+console.log("[ClauseWall] Total Groq keys loaded:", API_KEYS.length);

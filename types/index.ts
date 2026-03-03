@@ -280,3 +280,99 @@ export interface SummaryStatsProps {
   dangerousCount: number;
   illegalCount: number;
 }
+
+// ============================================
+// HYBRID SYSTEM TYPES
+// ============================================
+
+/**
+ * StructuredRule — from structured_rules table
+ */
+export interface StructuredRule {
+  id: string;
+  clause_type: string;
+  jurisdiction: string;
+  document_type: string;
+  sub_type: string;
+  rule_type: 'max_value' | 'min_value' | 'prohibited' | 'required' | 'must_be_mutual' | 'must_be_reasonable' | 'must_disclose';
+  limit_value: number | null;
+  limit_unit: string | null;
+  statute_name: string;
+  statute_section: string | null;
+  statute_code: string;
+  statute_text: string | null;
+  severity: RiskLevel;
+  base_risk_score: number;
+  violation_template: string;
+  fair_alternative: string;
+  negotiation_script: string;
+  penalty: string | null;
+  keywords: string[];
+  is_active: boolean;
+  notes: string | null;
+  last_verified: string;
+  created_at: string;
+}
+
+/**
+ * Values extracted from a clause by AI (lightweight extraction)
+ */
+export interface ExtractedValues {
+  clause_type: string;
+  primary_value: number | null;
+  primary_unit: string | null;
+  secondary_value: number | null;
+  secondary_unit: string | null;
+  property_type: 'residential' | 'commercial' | 'all' | null;
+  is_one_sided: boolean;
+  favors_party: string | null;
+  has_forfeiture: boolean;
+  has_penalty: boolean;
+  raw_amount_text: string | null;
+}
+
+/**
+ * Result from rule engine comparison
+ */
+export interface RuleMatchResult {
+  matched: boolean;
+  rule: StructuredRule | null;
+  violation: boolean;
+  violation_description: string | null;
+  severity: RiskLevel;
+  risk_score: number;
+  statute_code: string | null;
+  statute_text: string | null;
+  fair_alternative: string | null;
+  negotiation_script: string | null;
+  penalty: string | null;
+}
+
+/**
+ * Result from hybrid analysis (DB + AI combined)
+ */
+export interface HybridAnalysisResult {
+  risk_level: RiskLevel;
+  risk_score: number;
+  explanation: string;
+  legal_issue: string | null;
+  applicable_law: string | null;
+  fair_alternative: string | null;
+  red_flags: string[];
+  verification_source: 'database' | 'ai';
+  confidence: 'verified' | 'partial' | 'ai_suggested';
+  matched_rule_id: string | null;
+  negotiation_script: string | null;
+  penalty_info: string | null;
+}
+
+/**
+ * Updated Clause type with verification fields
+ */
+export interface ClauseWithVerification extends Clause {
+  verification_source: 'database' | 'ai';
+  matched_rule_id: string | null;
+  negotiation_script: string | null;
+  penalty_info: string | null;
+  confidence: 'verified' | 'partial' | 'ai_suggested';
+}
