@@ -1,7 +1,6 @@
 // ============================================
 // BOT ANALYSIS TRIGGER
-// Separate serverless function for full hybrid analysis
-// Called by bot handler via HTTP — gets own 60s timeout
+// Uses waitUntil to keep function alive during analysis
 // ============================================
 
 import { NextRequest, NextResponse } from "next/server";
@@ -12,7 +11,7 @@ export const maxDuration = 60;
 
 export async function POST(request: NextRequest) {
   console.log("[ClauseWall] Trigger analysis route called");
-  
+
   try {
     const body = await request.json();
     console.log("[ClauseWall] Trigger body received:", {
@@ -36,38 +35,32 @@ export async function POST(request: NextRequest) {
     const supabase = createAdminClient();
     console.log("[ClauseWall] Admin client created");
 
-    // Update status to analyzing
-    const { error: updateError } = await supabase
+    // Update status
+    await supabase
       .from("documents")
       .update({ analysis_status: "analyzing" })
       .eq("id", documentId);
 
-    if (updateError) {
-      console.error("[ClauseWall] Failed to update status:", updateError);
-    } else {
-      console.log("[ClauseWall] Status updated to analyzing");
+    console.log("[ClauseWall] Status updated. Running analysis synchronously...");
+
+    // Run analysis SYNCHRONOUSLY (not in background)
+    // maxDuration = 60 gives us 60 seconds
+    try {
+      await analyzeDocument(documentId, text, documentType, jurisdiction, supabase);
+      console.log(`[ClauseWall] ✅ Analysis complete for ${documentId}`);
+    } catch (analysisError) {
+      console.error(`[ClauseWall] ❌ Analysis failed for ${documentId}:`, analysisError);
+      await supabase
+        .from("documents")
+        .update({
+          analysis_status: "failed",
+          summary: `Analysis failed: ${(analysisError as Error).message}`,
+        })
+        .eq("id", documentId);
     }
 
-    // Start analysis in background
-    console.log("[ClauseWall] Starting background analysis...");
-    analyzeDocument(documentId, text, documentType, jurisdiction, supabase)
-      .then(() => {
-        console.log(`[ClauseWall] Bot full analysis complete: ${documentId}`);
-      })
-      .catch(async (err) => {
-        console.error(`[ClauseWall] Bot full analysis failed: ${documentId}`, err);
-        await supabase
-          .from("documents")
-          .update({
-            analysis_status: "failed",
-            summary: `Analysis failed: ${(err as Error).message}`,
-          })
-          .eq("id", documentId);
-      });
-
-    console.log("[ClauseWall] Returning 200 response");
     return NextResponse.json({
-      status: "analyzing",
+      status: "completed",
       documentId,
     });
   } catch (error) {
