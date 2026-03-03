@@ -144,12 +144,15 @@ export async function callGeminiVision(
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          contents: [{ role: "user", parts }],
-          generationConfig: {
-            temperature,
-            maxOutputTokens: maxTokens,
-            responseMimeType: "application/json",
-          },
+        contents: [{ role: "user", parts }],
+        generationConfig: {
+        temperature,
+        maxOutputTokens: maxTokens,
+        responseMimeType: "application/json",
+        thinkingConfig: {
+        thinkingBudget: 0,
+        },
+        },
         }),
       });
 
