@@ -1,7 +1,5 @@
 // ============================================
-// FORMAT ANALYSIS RESULTS FOR CHAT PLATFORMS
-// Telegram = HTML formatting
-// WhatsApp = plain text with emojis
+// FORMAT ANALYSIS RESULTS FOR TELEGRAM
 // ============================================
 
 import type { QuickAnalysisResult } from "./quick-analyzer";
@@ -19,11 +17,14 @@ const RISK_EMOJI: Record<string, string> = {
   "Critical Risk": "⛔",
 };
 
-// ---- TELEGRAM (HTML) ----
+// ---- TELEGRAM RESPONSE ----
 
 export function formatTelegramResponse(
   result: QuickAnalysisResult,
-  appUrl?: string
+  options?: {
+    appUrl?: string;
+    resultUrl?: string;
+  }
 ): string {
   const riskEmoji = RISK_EMOJI[result.risk_label] || "📊";
 
@@ -58,8 +59,15 @@ export function formatTelegramResponse(
   msg += `━━━━━━━━━━━━━━━━━━━━\n\n`;
   msg += `💬 <i>${escapeHtml(result.one_line_verdict)}</i>\n\n`;
 
-  if (appUrl) {
-    msg += `🔗 Full report with negotiation scripts:\n${appUrl}\n\n`;
+  // Full report link
+  if (options?.resultUrl) {
+    msg += `━━━━━━━━━━━━━━━━━━━━\n\n`;
+    msg += `📋 <b>Full Verified Report:</b>\n`;
+    msg += `${options.resultUrl}\n`;
+    msg += `⏳ <i>Hybrid analysis with 750+ legal rules — ready in ~30-60 seconds</i>\n`;
+    msg += `\n✅ Includes: Negotiation scripts • Penalty info • Verified citations\n\n`;
+  } else if (options?.appUrl) {
+    msg += `🔗 Upload for full report:\n${options.appUrl}/upload\n\n`;
   }
 
   msg += `💡 <i>Send another contract anytime — PDF, text, or photo!</i>`;
@@ -67,54 +75,7 @@ export function formatTelegramResponse(
   return msg;
 }
 
-// ---- WHATSAPP (plain text) ----
-
-export function formatWhatsAppResponse(
-  result: QuickAnalysisResult,
-  appUrl?: string
-): string {
-  const riskEmoji = RISK_EMOJI[result.risk_label] || "📊";
-
-  let msg = `🛡️ *ClauseWall Quick Scan*\n\n`;
-  msg += `📊 Risk Score: *${result.risk_score}/100* ${riskEmoji} ${result.risk_label}\n`;
-  msg += `📄 Type: ${result.document_type_detected} • ${result.total_clauses_found} clauses\n`;
-  msg += `\n━━━━━━━━━━━━━━\n\n`;
-
-  if (result.red_flags.length > 0) {
-    for (const flag of result.red_flags) {
-      const emoji = SEVERITY_EMOJI[flag.severity] || "⚠️";
-      msg += `${emoji} *${flag.severity.toUpperCase()}:* ${flag.title}\n`;
-      msg += `   → ${flag.explanation}`;
-      if (flag.law_reference) {
-        msg += `\n   📖 _${flag.law_reference}_`;
-      }
-      msg += `\n\n`;
-    }
-  } else {
-    msg += `✅ No major red flags found!\n\n`;
-  }
-
-  if (result.safe_highlights.length > 0) {
-    msg += `━━━━━━━━━━━━━━\n`;
-    for (const h of result.safe_highlights) {
-      msg += `✅ ${h}\n`;
-    }
-    msg += `\n`;
-  }
-
-  msg += `━━━━━━━━━━━━━━\n\n`;
-  msg += `💬 _${result.one_line_verdict}_\n\n`;
-
-  if (appUrl) {
-    msg += `🔗 Full report: ${appUrl}\n\n`;
-  }
-
-  msg += `💡 _Send another contract anytime!_`;
-
-  return msg;
-}
-
-// ---- WELCOME MESSAGES ----
+// ---- WELCOME MESSAGE ----
 
 export function getWelcomeMessageTelegram(): string {
   return `🛡️ <b>Welcome to ClauseWall!</b>
@@ -141,21 +102,6 @@ I analyze contracts and flag predatory, illegal, or unfair clauses using Indian 
 • DPDP Act 2023
 
 <i>Your documents are private and never stored.</i>
-
-Send a contract to get started! 👇`;
-}
-
-export function getWelcomeMessageWhatsApp(): string {
-  return `🛡️ *Welcome to ClauseWall!*
-
-I analyze contracts and flag predatory or illegal clauses under Indian law.
-
-*Send me:*
-📄 A PDF of your contract
-📸 A photo of a paper contract
-📝 Paste the contract text
-
-I'll flag illegal clauses, dangerous terms, and warnings — with exact law citations.
 
 Send a contract to get started! 👇`;
 }

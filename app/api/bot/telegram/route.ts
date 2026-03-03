@@ -1,7 +1,6 @@
 // ============================================
 // TELEGRAM WEBHOOK HANDLER
-// Receives messages → analyzes → sends results
-// Uses after() for non-blocking webhook response
+// Quick scan → instant response → save to DB → trigger full analysis
 // ============================================
 
 import { NextRequest } from "next/server";
@@ -20,9 +19,29 @@ import {
   getWelcomeMessageTelegram,
 } from "@/lib/bot/format-response";
 import { parsePDF } from "@/lib/core/pdf-parser";
+import { createAdminClient } from "@/lib/supabase/admin";
+import type { QuickAnalysisResult } from "@/lib/bot/quick-analyzer";
 
-// Allow up to 60s on Vercel Pro (falls back to 10s on Hobby — still enough)
 export const maxDuration = 60;
+
+// ---- VALID DOCUMENT TYPES ----
+
+const VALID_DOC_TYPES = [
+  "rental",
+  "employment",
+  "tos",
+  "loan",
+  "freelance",
+  "sale",
+  "partnership",
+  "nda",
+  "other",
+];
+
+function mapDocumentType(detected: string): string {
+  const normalized = detected.toLowerCase().replace(/\s+/g, "_");
+  return VALID_DOC_TYPES.includes(normalized) ? normalized : "other";
+}
 
 // ---- TELEGRAM TYPES ----
 
@@ -64,7 +83,6 @@ export async function POST(request: NextRequest) {
 
   const chatId = message.chat.id;
 
-  // Process in background after sending 200 to Telegram
   after(async () => {
     try {
       await processMessage(chatId, message);
@@ -86,7 +104,6 @@ async function processMessage(
   chatId: number,
   message: NonNullable<TelegramUpdate["message"]>
 ) {
-  // /start or /help
   if (
     message.text?.startsWith("/start") ||
     message.text?.startsWith("/help")
@@ -95,28 +112,111 @@ async function processMessage(
     return;
   }
 
-  // PDF or TXT document
   if (message.document) {
     await handleDocument(chatId, message.document);
     return;
   }
 
-  // Photo of paper contract
   if (message.photo && message.photo.length > 0) {
     await handlePhoto(chatId, message.photo);
     return;
   }
 
-  // Pasted text
   if (message.text) {
     await handleText(chatId, message.text);
     return;
   }
 
-  // Anything else
   await sendMessage(
     chatId,
     "📎 Send a <b>PDF</b>, <b>photo</b>, or <b>paste text</b> of a contract to analyze."
+  );
+}
+
+// ---- SAVE DOCUMENT + TRIGGER FULL ANALYSIS ----
+
+async function saveAndTriggerAnalysis(
+  extractedText: string,
+  result: QuickAnalysisResult,
+  filename: string
+): Promise<string | null> {
+  try {
+    // Must have enough text for full analysis
+    if (!extractedText || extractedText.trim().length < 50) {
+      console.log("[ClauseWall Bot] Text too short for full analysis, skipping save");
+      return null;
+    }
+
+    const supabase = createAdminClient();
+    const documentType = mapDocumentType(result.document_type_detected);
+
+    // Save document to Supabase
+    const { data: doc, error: dbError } = await supabase
+      .from("documents")
+      .insert({
+        original_filename: filename,
+        document_type: documentType,
+        jurisdiction: "ALL-INDIA",
+        raw_text: extractedText,
+        analysis_status: "pending",
+        user_id: null,
+        overall_risk_score: result.risk_score,
+        total_clauses: 0,
+        safe_count: 0,
+        warning_count: 0,
+        dangerous_count: 0,
+        illegal_count: 0,
+      })
+      .select("id")
+      .single();
+
+    if (dbError || !doc) {
+      console.error("[ClauseWall Bot] Failed to save document:", dbError);
+      return null;
+    }
+
+    console.log(`[ClauseWall Bot] Document saved: ${doc.id}`);
+
+    // Trigger full analysis via separate API call (gets own 60s timeout)
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+    if (appUrl) {
+      fetch(`${appUrl}/api/bot/trigger-analysis`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          documentId: doc.id,
+          text: extractedText,
+          documentType,
+          jurisdiction: "ALL-INDIA",
+        }),
+      }).catch((err) => {
+        console.error("[ClauseWall Bot] Failed to trigger analysis:", err);
+      });
+    }
+
+    return doc.id;
+  } catch (error) {
+    console.error("[ClauseWall Bot] Save and trigger failed:", error);
+    return null;
+  }
+}
+
+// ---- SEND RESULTS WITH LINK ----
+
+async function sendResults(
+  chatId: number,
+  result: QuickAnalysisResult,
+  documentId: string | null
+) {
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || undefined;
+
+  const resultUrl = documentId && appUrl
+    ? `${appUrl}/results/${documentId}`
+    : undefined;
+
+  await sendMessage(
+    chatId,
+    formatTelegramResponse(result, { appUrl, resultUrl })
   );
 }
 
@@ -134,7 +234,6 @@ async function handleDocument(
   const mime = doc.mime_type || "";
   const fileName = doc.file_name || "document";
 
-  // Validate type
   if (!mime.includes("pdf") && !mime.includes("text")) {
     await sendMessage(
       chatId,
@@ -143,24 +242,21 @@ async function handleDocument(
     return;
   }
 
-  // Size check (bot API limit is 20MB, we cap at 5MB)
   if (doc.file_size && doc.file_size > 5 * 1024 * 1024) {
     await sendMessage(chatId, "📏 File too large. Please send a file under 5MB.");
     return;
   }
 
-  // Show typing + acknowledge
   sendChatAction(chatId);
   await sendMessage(
     chatId,
     `📄 Received <b>${escapeHtml(fileName)}</b>\n🔍 Analyzing...`
   );
 
-  // Download
+  // Download and extract text
   const buffer = await downloadFile(doc.file_id);
-
-  // Extract text
   let text: string;
+
   if (mime.includes("pdf")) {
     text = await parsePDF(buffer);
   } else {
@@ -175,11 +271,15 @@ async function handleDocument(
     return;
   }
 
-  // Analyze + send results
+  // Quick scan
   sendChatAction(chatId);
   const result = await quickAnalyze(text);
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || undefined;
-  await sendMessage(chatId, formatTelegramResponse(result, appUrl));
+
+  // Save to DB + trigger full analysis
+  const documentId = await saveAndTriggerAnalysis(text, result, fileName);
+
+  // Send results with link
+  await sendResults(chatId, result, documentId);
 }
 
 // ---- PHOTO HANDLER (OCR + Analysis) ----
@@ -191,7 +291,6 @@ async function handlePhoto(
   sendChatAction(chatId);
   await sendMessage(chatId, "📸 Photo received!\n🔍 Reading text and analyzing...");
 
-  // Get largest resolution (last in array)
   const photo = photos[photos.length - 1];
 
   try {
@@ -200,8 +299,16 @@ async function handlePhoto(
 
     sendChatAction(chatId);
     const result = await quickAnalyzeImage(base64, "image/jpeg");
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || undefined;
-    await sendMessage(chatId, formatTelegramResponse(result, appUrl));
+
+    // Save OCR'd text to DB + trigger full analysis
+    const documentId = await saveAndTriggerAnalysis(
+      result.extracted_text || "",
+      result,
+      "telegram-photo.jpg"
+    );
+
+    // Send results with link
+    await sendResults(chatId, result, documentId);
   } catch (error) {
     console.error("[ClauseWall Bot] Photo analysis failed:", error);
     await sendMessage(
@@ -230,12 +337,23 @@ async function handleText(chatId: number, text: string) {
 
   sendChatAction(chatId);
   const result = await quickAnalyze(text);
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || undefined;
-  await sendMessage(chatId, formatTelegramResponse(result, appUrl));
+
+  // Save to DB + trigger full analysis
+  const documentId = await saveAndTriggerAnalysis(
+    text,
+    result,
+    "telegram-text.txt"
+  );
+
+  // Send results with link
+  await sendResults(chatId, result, documentId);
 }
 
 // ---- HELPER ----
 
 function escapeHtml(text: string): string {
-  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
 }

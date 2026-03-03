@@ -7,6 +7,7 @@ import { extractClauses } from "@/lib/ai/clause-extractor";
 import { hybridAnalyzeClause } from "@/lib/core/hybrid-analyzer";
 import { calculateWeightedScore, generateSummary, getRiskCounts } from "@/lib/core/scorer";
 import { createClient } from "@/lib/supabase/server";
+import { SupabaseClient } from "@supabase/supabase-js";
 import { ANALYSIS_CONFIG } from "@/lib/utils/constants";
 
 /**
@@ -20,9 +21,10 @@ export async function analyzeDocument(
   documentId: string,
   rawText: string,
   documentType: string,
-  jurisdiction: string
+  jurisdiction: string,
+  externalSupabase?: SupabaseClient
 ): Promise<void> {
-  const supabase = await createClient();
+  const supabase = externalSupabase || (await createClient());
 
   try {
     // ---- Update status to analyzing ----

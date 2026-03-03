@@ -1,7 +1,7 @@
 // ============================================
 // QUICK ANALYZER
 // Text/PDF: Groq only
-// Images: Gemini 2.0 Flash only (Groq vision deprecated)
+// Images: Gemini 2.5 Flash (returns extracted text + analysis)
 // ============================================
 
 import { callGeminiVision } from "@/lib/bot/gemini-client";
@@ -24,6 +24,7 @@ export interface QuickAnalysisResult {
   red_flags: QuickRedFlag[];
   safe_highlights: string[];
   one_line_verdict: string;
+  extracted_text?: string; // Only for image analysis — OCR'd text
 }
 
 // ---- SYSTEM PROMPT FOR TEXT ANALYSIS ----
@@ -72,7 +73,7 @@ Rules:
 - Scoring: 0-30 = Low Risk, 31-55 = Medium Risk, 56-80 = High Risk, 81-100 = Critical Risk
 - If the text is NOT a contract, set risk_score to 0 and say so in verdict`;
 
-// ---- IMAGE ANALYSIS PROMPT ----
+// ---- IMAGE ANALYSIS PROMPT (includes OCR extraction) ----
 
 const IMAGE_PROMPT = `You are ClauseWall, India's AI contract analyzer.
 
@@ -80,7 +81,7 @@ This is a PHOTO of a contract/agreement document.
 
 Step 1: Read ALL text in the image carefully (OCR).
 Step 2: Analyze for predatory, illegal, or unfair clauses under Indian law.
-Step 3: Return analysis as JSON.
+Step 3: Return analysis AND the extracted text as JSON.
 
 Check against: Indian Contract Act 1872, Model Tenancy Act 2021, state Rent Control Acts,
 Payment of Wages Act, Consumer Protection Act 2019, RBI guidelines, RERA, DPDP Act 2023.
@@ -95,10 +96,12 @@ Return ONLY valid JSON (no other text):
     {"severity": "<illegal|dangerous|warning>", "title": "<short title>", "explanation": "<plain English>", "law_reference": "<Indian law or null>"}
   ],
   "safe_highlights": ["<positive aspect>"],
-  "one_line_verdict": "<one sentence>"
+  "one_line_verdict": "<one sentence>",
+  "extracted_text": "<ALL text you read from the image, exactly as written, preserving original structure and formatting>"
 }
 
-If image is unclear or not a contract, say so in the verdict.`;
+IMPORTANT: The "extracted_text" field must contain the COMPLETE text from the image. Do not summarize — include every word.
+If image is unclear or not a contract, say so in the verdict and set extracted_text to empty string.`;
 
 // ============================================
 // TEXT/PDF ANALYSIS — Groq only
@@ -138,22 +141,27 @@ export async function quickAnalyze(
 }
 
 // ============================================
-// IMAGE ANALYSIS — Gemini 2.0 Flash only
+// IMAGE ANALYSIS — Gemini 2.5 Flash (OCR + Analysis)
+// Also returns extracted text for full analysis
 // ============================================
 
 export async function quickAnalyzeImage(
   imageBase64: string,
   mimeType: string = "image/jpeg"
 ): Promise<QuickAnalysisResult> {
-  console.log("[ClauseWall] Image analyze: Using Gemini 2.0 Flash...");
+  console.log("[ClauseWall] Image analyze: Using Gemini 2.5 Flash...");
 
   const response = await callGeminiVision(IMAGE_PROMPT, imageBase64, mimeType, {
     temperature: 0.1,
-    maxTokens: 2048,
+    maxTokens: 8192, // Higher limit to include extracted_text
   });
 
   const parsed = parseAndValidate(response);
-  console.log("[ClauseWall] Image analyze: ✅ Gemini succeeded");
+  console.log(
+    `[ClauseWall] Image analyze: ✅ Gemini succeeded. Extracted ${
+      parsed.extracted_text?.length || 0
+    } chars of text`
+  );
   return parsed;
 }
 
@@ -176,13 +184,21 @@ function parseAndValidate(response: string): QuickAnalysisResult {
 
   if (typeof parsed.risk_score !== "number") parsed.risk_score = 50;
   if (!parsed.risk_label) parsed.risk_label = "Medium Risk";
-  if (!parsed.document_type_detected) parsed.document_type_detected = "other";
-  if (typeof parsed.total_clauses_found !== "number") parsed.total_clauses_found = 0;
+  if (!parsed.document_type_detected)
+    parsed.document_type_detected = "other";
+  if (typeof parsed.total_clauses_found !== "number")
+    parsed.total_clauses_found = 0;
   if (!Array.isArray(parsed.red_flags)) parsed.red_flags = [];
   if (!Array.isArray(parsed.safe_highlights)) parsed.safe_highlights = [];
-  if (!parsed.one_line_verdict) parsed.one_line_verdict = "Analysis completed.";
+  if (!parsed.one_line_verdict)
+    parsed.one_line_verdict = "Analysis completed.";
 
   parsed.risk_score = Math.max(0, Math.min(100, parsed.risk_score));
+
+  // extracted_text is optional — only from image analysis
+  if (parsed.extracted_text && typeof parsed.extracted_text !== "string") {
+    parsed.extracted_text = undefined;
+  }
 
   return parsed;
 }
