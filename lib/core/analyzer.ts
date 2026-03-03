@@ -27,15 +27,24 @@ export async function analyzeDocument(
   const supabase = externalSupabase || (await createClient());
 
   try {
+    console.log(`[ClauseWall] analyzeDocument started for ${documentId}`);
+    console.log(`[ClauseWall] Text length: ${rawText?.length || 0}`);
+    console.log(`[ClauseWall] Document type: ${documentType}, Jurisdiction: ${jurisdiction}`);
+
     // ---- Update status to analyzing ----
-    await supabase
+    const { error: statusError } = await supabase
       .from("documents")
       .update({ analysis_status: "analyzing" })
       .eq("id", documentId);
 
+    if (statusError) {
+      console.error(`[ClauseWall] Failed to update status:`, statusError);
+    }
+
     // ---- Step 1: Extract clauses ----
     console.log(`[ClauseWall] Extracting clauses from document ${documentId}`);
     const extraction = await extractClauses(rawText);
+    console.log(`[ClauseWall] Extraction complete. Found ${extraction.clauses?.length || 0} clauses`);
 
     // Update document with detected entity name if found
     if (extraction.document_info.entity_name) {
