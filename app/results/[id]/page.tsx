@@ -1,5 +1,7 @@
 "use client";
 
+import VerificationBadge from "@/components/results/verification-badge";
+import { ShieldCheck, ShieldAlert, Bot } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
@@ -44,6 +46,10 @@ export default function ResultsPage() {
   const [expandedClauses, setExpandedClauses] = useState<Set<string>>(new Set());
   const [refreshing, setRefreshing] = useState(false);
 
+  const [verificationResults, setVerificationResults] = useState<Record<string, any>>({});
+  const [verificationStats, setVerificationStats] = useState<any>(null);
+  const [verifying, setVerifying] = useState(false);
+
   const supabase = createClient();
 
   // Fetch document and clauses
@@ -84,18 +90,57 @@ export default function ResultsPage() {
     }
   };
 
+const verifyClausesWithDB = async () => {
+  if (!document || clauses.length === 0) return;
+  
+  setVerifying(true);
+  try {
+    const response = await fetch("/api/verify-clauses", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        documentId,
+        jurisdiction: document.jurisdiction,
+        documentType: document.document_type,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      setVerificationResults(data.results);
+      setVerificationStats(data.stats);
+      toast.success(
+        `Verification complete! ${data.stats.verified} citations verified.`
+      );
+    } else {
+      toast.error("Verification failed");
+    }
+  } catch (err) {
+    toast.error("Failed to verify citations");
+  } finally {
+    setVerifying(false);
+  }
+};
+
   useEffect(() => {
     fetchData();
+  }, [documentId]);
 
-    // Poll for updates if still analyzing
-    const interval = setInterval(async () => {
-      if (document?.analysis_status === "analyzing" || document?.analysis_status === "pending") {
-        await fetchData();
-      }
-    }, 3000);
-
+  // Poll for updates if still analyzing
+  useEffect(() => {
+    if (document?.analysis_status === "analyzing" || document?.analysis_status === "pending") {
+    const interval = setInterval(fetchData, 3000);
     return () => clearInterval(interval);
-  }, [documentId, document?.analysis_status]);
+  }
+  }, [document?.analysis_status]);
+
+  // Trigger verification when clauses are loaded
+  useEffect(() => {
+    if (document && clauses.length > 0 && Object.keys(verificationResults).length === 0 && !verifying) {
+      verifyClausesWithDB();
+    }
+  }, [document, clauses]);
 
   const handleRefresh = async () => {
     setRefreshing(true);
@@ -361,6 +406,42 @@ export default function ResultsPage() {
           </Card>
         )}
 
+        {/* Verification Stats */}
+        {verificationStats && (
+        <Card className="glass border-white/5 mb-8">
+    <CardContent className="p-6">
+      <h3 className="font-semibold mb-3 flex items-center gap-2">
+        <ShieldCheck className="h-4 w-4 text-green-400" />
+        Legal Database Verification
+      </h3>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="text-center p-3 rounded-lg bg-green-500/10">
+          <p className="text-2xl font-bold text-green-400">{verificationStats.verified}</p>
+          <p className="text-xs text-muted-foreground">Verified ✓</p>
+        </div>
+        <div className="text-center p-3 rounded-lg bg-yellow-500/10">
+          <p className="text-2xl font-bold text-yellow-400">{verificationStats.partial}</p>
+          <p className="text-xs text-muted-foreground">Partial</p>
+        </div>
+        <div className="text-center p-3 rounded-lg bg-blue-500/10">
+          <p className="text-2xl font-bold text-blue-400">{verificationStats.ai_suggested}</p>
+          <p className="text-xs text-muted-foreground">AI-Only</p>
+        </div>
+        <div className="text-center p-3 rounded-lg bg-white/5">
+          <p className="text-2xl font-bold text-foreground">{verificationStats.verification_rate}%</p>
+          <p className="text-xs text-muted-foreground">Match Rate</p>
+        </div>
+      </div>
+      {verifying && (
+        <p className="text-xs text-muted-foreground mt-3 flex items-center gap-2">
+          <Loader2 className="h-3 w-3 animate-spin" />
+          Verifying citations against legal database...
+        </p>
+      )}
+    </CardContent>
+  </Card>
+        )}
+
         {/* Clauses */}
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-xl font-bold">Clause Analysis</h2>
@@ -464,6 +545,10 @@ export default function ResultsPage() {
                           </ul>
                         </div>
                       )}
+                      {/* Verification Badge */}
+                      <VerificationBadge
+                        verification={verificationResults[clause.id] || null}
+                      />
                     </div>
                   )}
                 </CardContent>
