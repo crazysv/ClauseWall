@@ -126,7 +126,7 @@ export async function callGeminiVision(
 
     try {
       const apiKey = getApiKey();
-      const url = `${BASE_URL}/gemini-2.0-flash:generateContent?key=${apiKey}`;
+      const url = `${BASE_URL}/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
       console.log(`[ClauseWall] Gemini Vision: Using Key ${currentKeyIndex + 1} (attempt ${totalAttempts}/${maxTotalAttempts})`);
 
