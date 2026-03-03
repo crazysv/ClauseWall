@@ -109,14 +109,8 @@ export async function POST(request: NextRequest) {
     // Note: In production, you'd use a queue (like Inngest, QStash, etc.)
     // For hackathon, we run it inline but don't wait for completion
     
-    // Start analysis in background (don't await)
-    analyzeDocument(document.id, text, documentType, jurisdiction)
-      .then(() => {
-        console.log(`[ClauseWall] Analysis completed for ${document.id}`);
-      })
-      .catch((err) => {
-        console.error(`[ClauseWall] Analysis failed for ${document.id}:`, err);
-      });
+    // Analysis will be triggered separately via /api/bot/trigger-analysis
+    console.log(`[ClauseWall] Document created: ${document.id}, waiting for trigger`);
 
     // Return immediately with document ID
     return NextResponse.json({

@@ -137,44 +137,59 @@ export default function UploadPage() {
       setPageState("results");
       toast.success("Quick scan complete!");
 
-      // Step 2: Start Full Analysis in Background
-      const rawText = quickData.raw_text;
-      if (rawText && rawText.trim().length >= 50) {
-        try {
-          let fullResponse: Response;
+      // Step 2: Save to DB + Trigger Full Analysis (same as bot flow)
+    const rawText = quickData.raw_text;
+  if (rawText && rawText.trim().length >= 50) {
+  try {
+    // First save document via /api/analyze (just creates DB record)
+    let analyzeResponse: Response;
 
-          if (activeTab === "upload" && file) {
-            const formData = new FormData();
-            formData.append("file", file);
-            formData.append("documentType", documentType);
-            formData.append("jurisdiction", jurisdiction);
+    if (activeTab === "upload" && file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("documentType", documentType);
+      formData.append("jurisdiction", jurisdiction);
 
-            fullResponse = await fetch("/api/analyze", {
-              method: "POST",
-              body: formData,
-            });
-          } else {
-            fullResponse = await fetch("/api/analyze", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                text: rawText,
-                documentType,
-                jurisdiction,
-                filename: file?.name || "pasted-text.txt",
-              }),
-            });
-          }
+      analyzeResponse = await fetch("/api/analyze", {
+        method: "POST",
+        body: formData,
+      });
+    } else {
+      analyzeResponse = await fetch("/api/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          text: rawText,
+          documentType,
+          jurisdiction,
+          filename: file?.name || "pasted-text.txt",
+        }),
+      });
+    }
 
-          const fullData = await fullResponse.json();
+    const analyzeData = await analyzeResponse.json();
 
-          if (fullResponse.ok && fullData.documentId) {
-            setDocumentId(fullData.documentId);
-          }
-        } catch (fullError) {
-          console.error("[ClauseWall] Full analysis trigger failed:", fullError);
-        }
-      }
+    if (analyzeResponse.ok && analyzeData.documentId) {
+      setDocumentId(analyzeData.documentId);
+
+      // Trigger full analysis via the working bot trigger route
+      fetch("/api/bot/trigger-analysis", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          documentId: analyzeData.documentId,
+          text: rawText,
+          documentType,
+          jurisdiction,
+        }),
+      }).catch((err) => {
+        console.error("[ClauseWall] Trigger failed:", err);
+      });
+    }
+  } catch (fullError) {
+    console.error("[ClauseWall] Full analysis trigger failed:", fullError);
+  }
+}
     } catch (err) {
       const errorMessage = (err as Error).message;
       setError(errorMessage);
