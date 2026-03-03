@@ -32,17 +32,26 @@ export async function analyzeDocument(
     console.log(`[ClauseWall] Document type: ${documentType}, Jurisdiction: ${jurisdiction}`);
 
     // ---- Update status to analyzing ----
-    const { error: statusError } = await supabase
-      .from("documents")
-      .update({ analysis_status: "analyzing" })
-      .eq("id", documentId);
+    // ---- Update status to analyzing ----
+console.log(`[ClauseWall] Updating status to analyzing...`);
+try {
+  const { error: statusError } = await supabase
+    .from("documents")
+    .update({ analysis_status: "analyzing" })
+    .eq("id", documentId);
 
-    if (statusError) {
-      console.error(`[ClauseWall] Failed to update status:`, statusError);
-    }
+  if (statusError) {
+    console.error(`[ClauseWall] Failed to update status:`, statusError);
+  } else {
+    console.log(`[ClauseWall] Status update successful`);
+  }
+} catch (e) {
+  console.error(`[ClauseWall] Status update threw:`, e);
+}
 
-    // ---- Step 1: Extract clauses ----
-    console.log(`[ClauseWall] Extracting clauses from document ${documentId}`);
+// ---- Step 1: Extract clauses ----
+console.log(`[ClauseWall] About to call extractClauses...`);
+console.log(`[ClauseWall] Raw text preview: ${rawText?.substring(0, 100)}...`);
     const extraction = await extractClauses(rawText);
     console.log(`[ClauseWall] Extraction complete. Found ${extraction.clauses?.length || 0} clauses`);
 
