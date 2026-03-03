@@ -1,10 +1,13 @@
 // ============================================
-// QUICK ANALYZER — Single Groq call for bot responses
-// Fast enough for webhook timeout (~3-5 seconds)
+// QUICK ANALYZER
+// Text/PDF: Groq only
+// Images: Gemini 2.0 Flash only (Groq vision deprecated)
 // ============================================
 
+import { callGeminiVision } from "@/lib/bot/gemini-client";
 import { callGroq } from "@/lib/ai/groq-client";
-import Groq from "groq-sdk";
+
+// ---- TYPES ----
 
 export interface QuickRedFlag {
   severity: "illegal" | "dangerous" | "warning";
@@ -23,7 +26,7 @@ export interface QuickAnalysisResult {
   one_line_verdict: string;
 }
 
-// ---- SYSTEM PROMPT FOR QUICK SCAN ----
+// ---- SYSTEM PROMPT FOR TEXT ANALYSIS ----
 
 const QUICK_SYSTEM_PROMPT = `You are ClauseWall — India's AI contract analyzer.
 
@@ -69,14 +72,43 @@ Rules:
 - Scoring: 0-30 = Low Risk, 31-55 = Medium Risk, 56-80 = High Risk, 81-100 = Critical Risk
 - If the text is NOT a contract, set risk_score to 0 and say so in verdict`;
 
-// ---- QUICK TEXT ANALYSIS ----
+// ---- IMAGE ANALYSIS PROMPT ----
+
+const IMAGE_PROMPT = `You are ClauseWall, India's AI contract analyzer.
+
+This is a PHOTO of a contract/agreement document.
+
+Step 1: Read ALL text in the image carefully (OCR).
+Step 2: Analyze for predatory, illegal, or unfair clauses under Indian law.
+Step 3: Return analysis as JSON.
+
+Check against: Indian Contract Act 1872, Model Tenancy Act 2021, state Rent Control Acts,
+Payment of Wages Act, Consumer Protection Act 2019, RBI guidelines, RERA, DPDP Act 2023.
+
+Return ONLY valid JSON (no other text):
+{
+  "risk_score": <0-100>,
+  "risk_label": "<Low Risk|Medium Risk|High Risk|Critical Risk>",
+  "document_type_detected": "<type>",
+  "total_clauses_found": <number>,
+  "red_flags": [
+    {"severity": "<illegal|dangerous|warning>", "title": "<short title>", "explanation": "<plain English>", "law_reference": "<Indian law or null>"}
+  ],
+  "safe_highlights": ["<positive aspect>"],
+  "one_line_verdict": "<one sentence>"
+}
+
+If image is unclear or not a contract, say so in the verdict.`;
+
+// ============================================
+// TEXT/PDF ANALYSIS — Groq only
+// ============================================
 
 export async function quickAnalyze(
   text: string,
   documentType?: string,
   jurisdiction?: string
 ): Promise<QuickAnalysisResult> {
-  // Smart truncation — keep beginning and end (most important parts of contracts)
   const maxChars = 6000;
   let contractText = text;
 
@@ -101,91 +133,56 @@ export async function quickAnalyze(
     { temperature: 0.1, maxTokens: 2048 }
   );
 
-  const parsed = JSON.parse(response) as QuickAnalysisResult;
-
-  // Ensure red_flags is always an array
-  if (!Array.isArray(parsed.red_flags)) parsed.red_flags = [];
-  if (!Array.isArray(parsed.safe_highlights)) parsed.safe_highlights = [];
-
+  const parsed = parseAndValidate(response);
   return parsed;
 }
 
-// ---- QUICK IMAGE ANALYSIS (OCR + Analysis in one call) ----
+// ============================================
+// IMAGE ANALYSIS — Gemini 2.0 Flash only
+// ============================================
 
 export async function quickAnalyzeImage(
   imageBase64: string,
   mimeType: string = "image/jpeg"
 ): Promise<QuickAnalysisResult> {
-  // Get an API key for vision model
-  const API_KEYS = [
-    process.env.GROQ_API_KEY_1,
-    process.env.GROQ_API_KEY_2,
-    process.env.GROQ_API_KEY_3,
-    process.env.GROQ_API_KEY,
-  ].filter(Boolean) as string[];
+  console.log("[ClauseWall] Image analyze: Using Gemini 2.0 Flash...");
 
-  if (API_KEYS.length === 0) throw new Error("No Groq API keys configured");
-
-  const groq = new Groq({ apiKey: API_KEYS[0] });
-
-  const response = await groq.chat.completions.create({
-    model: "llama-3.2-11b-vision-preview", // 11b is faster than 90b
-    messages: [
-      {
-        role: "user",
-        content: [
-          {
-            type: "text",
-            text: `You are ClauseWall, India's AI contract analyzer.
-
-This is a PHOTO of a contract/agreement document.
-
-Step 1: Read ALL text in the image carefully (OCR).
-Step 2: Analyze for predatory, illegal, or unfair clauses under Indian law.
-Step 3: Return analysis as JSON.
-
-Check against: Indian Contract Act 1872, Model Tenancy Act 2021, state Rent Control Acts,
-Payment of Wages Act, Consumer Protection Act 2019, RBI guidelines, RERA, DPDP Act 2023.
-
-Return ONLY valid JSON (no other text):
-{
-  "risk_score": <0-100>,
-  "risk_label": "<Low Risk|Medium Risk|High Risk|Critical Risk>",
-  "document_type_detected": "<type>",
-  "total_clauses_found": <number>,
-  "red_flags": [
-    {"severity": "<illegal|dangerous|warning>", "title": "<short title>", "explanation": "<plain English>", "law_reference": "<Indian law or null>"}
-  ],
-  "safe_highlights": ["<positive aspect>"],
-  "one_line_verdict": "<one sentence>"
-}
-
-If image is unclear or not a contract, say so in the verdict.`,
-          },
-          {
-            type: "image_url",
-            image_url: {
-              url: `data:${mimeType};base64,${imageBase64}`,
-            },
-          },
-        ],
-      },
-    ],
+  const response = await callGeminiVision(IMAGE_PROMPT, imageBase64, mimeType, {
     temperature: 0.1,
-    max_tokens: 2048,
+    maxTokens: 2048,
   });
 
-  const content = response.choices[0]?.message?.content || "";
+  const parsed = parseAndValidate(response);
+  console.log("[ClauseWall] Image analyze: ✅ Gemini succeeded");
+  return parsed;
+}
 
-  // Vision models don't always return clean JSON — extract it
-  const jsonMatch = content.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) {
-    throw new Error("Could not parse analysis from image");
+// ============================================
+// HELPER — Parse and validate response
+// ============================================
+
+function parseAndValidate(response: string): QuickAnalysisResult {
+  let parsed: QuickAnalysisResult;
+
+  try {
+    parsed = JSON.parse(response);
+  } catch {
+    const jsonMatch = response.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      throw new Error("No valid JSON found in response");
+    }
+    parsed = JSON.parse(jsonMatch[0]);
   }
 
-  const parsed = JSON.parse(jsonMatch[0]) as QuickAnalysisResult;
+  if (typeof parsed.risk_score !== "number") parsed.risk_score = 50;
+  if (!parsed.risk_label) parsed.risk_label = "Medium Risk";
+  if (!parsed.document_type_detected) parsed.document_type_detected = "other";
+  if (typeof parsed.total_clauses_found !== "number") parsed.total_clauses_found = 0;
   if (!Array.isArray(parsed.red_flags)) parsed.red_flags = [];
   if (!Array.isArray(parsed.safe_highlights)) parsed.safe_highlights = [];
+  if (!parsed.one_line_verdict) parsed.one_line_verdict = "Analysis completed.";
+
+  parsed.risk_score = Math.max(0, Math.min(100, parsed.risk_score));
 
   return parsed;
 }
