@@ -37,6 +37,7 @@ import {
 } from "@/lib/utils/constants";
 import type { Document, Clause } from "@/types";
 import { toast } from "sonner";
+import ELI5Section from "@/components/results/eli5-section";
 
 // Extended clause type with hybrid fields
 interface HybridClause extends Clause {
@@ -643,6 +644,18 @@ export default function ResultsPage() {
                         </div>
                       )}
 
+                      {/* ELI5 + Hindi + Audio */}
+                      {clause.risk_level !== "safe" && (
+                        <ELI5Section
+                          clauseId={clause.id}
+                          clauseText={clause.original_text}
+                          explanation={clause.explanation}
+                          riskLevel={clause.risk_level}
+                          legalCitation={clause.legal_citation}
+                          clauseType={clause.clause_type}
+                        />
+                      )}
+                      
                       {/* Verification Badge */}
                       <div className="pt-2">
                         {getVerificationBadge(clause)}
