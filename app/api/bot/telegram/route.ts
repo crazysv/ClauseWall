@@ -140,8 +140,12 @@ async function saveAndTriggerAnalysis(
   result: QuickAnalysisResult,
   filename: string
 ): Promise<string | null> {
-  try {
+    console.log("[ClauseWall Bot] saveAndTriggerAnalysis called");
+    console.log("[ClauseWall Bot] Text length:", extractedText?.length || 0);
+    console.log("[ClauseWall Bot] Filename:", filename);
+    try {
     // Must have enough text for full analysis
+    console.log("[ClauseWall Bot] Checking text length:", extractedText?.length || 0);
     if (!extractedText || extractedText.trim().length < 50) {
       console.log("[ClauseWall Bot] Text too short for full analysis, skipping save");
       return null;
@@ -169,6 +173,8 @@ async function saveAndTriggerAnalysis(
       })
       .select("id")
       .single();
+
+    console.log("[ClauseWall Bot] DB insert result:", { doc, dbError });
 
     if (dbError || !doc) {
       console.error("[ClauseWall Bot] Failed to save document:", dbError);
