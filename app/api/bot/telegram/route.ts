@@ -98,17 +98,36 @@ export async function POST(request: NextRequest) {
   return new Response("OK", { status: 200 });
 }
 
+// ---- IN-MEMORY STATE FOR COMPARE ----
+
+const compareState = new Map<number, {
+  step: "waiting_a" | "waiting_b";
+  textA: string;
+  documentType: string;
+}>();
+
 // ---- MESSAGE ROUTER ----
 
 async function processMessage(
   chatId: number,
   message: NonNullable<TelegramUpdate["message"]>
 ) {
+  // Check if user is in compare flow
+  if (compareState.has(chatId)) {
+    await handleCompareStep(chatId, message);
+    return;
+  }
+
   if (
     message.text?.startsWith("/start") ||
     message.text?.startsWith("/help")
   ) {
     await sendMessage(chatId, getWelcomeMessageTelegram());
+    return;
+  }
+
+  if (message.text?.startsWith("/compare")) {
+    await startCompare(chatId);
     return;
   }
 
@@ -129,8 +148,111 @@ async function processMessage(
 
   await sendMessage(
     chatId,
-    "📎 Send a <b>PDF</b>, <b>photo</b>, or <b>paste text</b> of a contract to analyze."
+    "📎 Send a <b>PDF</b>, <b>photo</b>, or <b>paste text</b> of a contract to analyze.\n\n💡 Use /compare to compare two contracts."
   );
+}
+
+// ---- COMPARE HANDLERS ----
+
+async function startCompare(chatId: number) {
+  compareState.set(chatId, {
+    step: "waiting_a",
+    textA: "",
+    documentType: "other",
+  });
+
+  await sendMessage(
+    chatId,
+    `🔍 <b>Contract Comparison Mode</b>\n\n` +
+    `Send me the <b>first contract</b>:\n` +
+    `📄 PDF file\n` +
+    `📝 Paste text\n\n` +
+    `<i>Send /cancel to exit comparison mode</i>`
+  );
+}
+
+async function handleCompareStep(
+  chatId: number,
+  message: NonNullable<TelegramUpdate["message"]>
+) {
+  // Cancel
+  if (message.text?.startsWith("/cancel")) {
+    compareState.delete(chatId);
+    await sendMessage(chatId, "❌ Comparison cancelled.");
+    return;
+  }
+
+  const state = compareState.get(chatId)!;
+
+  // Extract text from message
+  let extractedText = "";
+
+  if (message.document) {
+    const mime = message.document.mime_type || "";
+    if (mime.includes("pdf") || mime.includes("text")) {
+      const buffer = await downloadFile(message.document.file_id);
+      if (mime.includes("pdf")) {
+        extractedText = await parsePDF(buffer);
+      } else {
+        extractedText = buffer.toString("utf-8");
+      }
+    }
+  } else if (message.photo && message.photo.length > 0) {
+    sendChatAction(chatId);
+    const photo = message.photo[message.photo.length - 1];
+    const buffer = await downloadFile(photo.file_id);
+    const base64 = buffer.toString("base64");
+    const result = await quickAnalyzeImage(base64, "image/jpeg");
+    extractedText = result.extracted_text || "";
+  } else if (message.text) {
+    extractedText = message.text;
+  }
+
+  if (!extractedText || extractedText.trim().length < 50) {
+    await sendMessage(
+      chatId,
+      "⚠️ Couldn't extract enough text. Please send a longer contract or try a different format."
+    );
+    return;
+  }
+
+  if (state.step === "waiting_a") {
+    // Got contract A
+    state.textA = extractedText;
+    state.step = "waiting_b";
+    compareState.set(chatId, state);
+
+    await sendMessage(
+      chatId,
+      `✅ <b>Contract A received!</b> (${extractedText.length} chars)\n\n` +
+      `Now send me the <b>second contract</b>:\n` +
+      `📄 PDF file\n` +
+      `📝 Paste text\n\n` +
+      `<i>Send /cancel to exit</i>`
+    );
+  } else if (state.step === "waiting_b") {
+    // Got contract B — compare!
+    compareState.delete(chatId);
+
+    sendChatAction(chatId);
+    await sendMessage(chatId, "🔍 Comparing both contracts...");
+
+    try {
+      const { compareContracts, formatComparisonTelegram } = await import(
+        "@/lib/bot/compare-analyzer"
+      );
+
+      sendChatAction(chatId);
+      const result = await compareContracts(state.textA, extractedText);
+      await sendMessage(chatId, formatComparisonTelegram(result));
+    } catch (error) {
+      console.error("[ClauseWall Bot] Compare failed:", error);
+      await sendMessage(
+        chatId,
+        "❌ Comparison failed. Please try again."
+      );
+    }
+  }
 }
 
 // ---- SAVE DOCUMENT + TRIGGER FULL ANALYSIS ----

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Shield, Menu, X, Upload, BarChart3, Skull } from "lucide-react";
+import { Shield, Menu, X, Upload, BarChart3, Skull, ArrowLeftRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function Navbar() {
@@ -29,6 +29,12 @@ export default function Navbar() {
               <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground">
                 <Upload className="h-4 w-4" />
                 Analyze
+              </Button>
+            </Link>
+            <Link href="/compare">
+              <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground">
+                <ArrowLeftRight className="h-4 w-4" />
+                Compare
               </Button>
             </Link>
             <Link href="/dashboard">
@@ -74,6 +80,14 @@ export default function Navbar() {
             >
               <Upload className="h-4 w-4" />
               Analyze Contract
+            </Link>
+            <Link
+              href="/compare"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-3 px-3 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
+            >
+              <ArrowLeftRight className="h-4 w-4" />
+              Compare Contracts
             </Link>
             <Link
               href="/dashboard"
