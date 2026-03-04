@@ -3,11 +3,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import {
   Shield,
   ShieldCheck,
-  ShieldAlert,
-  Bot,
   AlertTriangle,
   CheckCircle2,
   XCircle,
@@ -15,13 +14,9 @@ import {
   Download,
   Share2,
   Flag,
-  ChevronDown,
-  ChevronUp,
   Loader2,
   RefreshCw,
   Scale,
-  MessageSquare,
-  Gavel,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -37,9 +32,8 @@ import {
 } from "@/lib/utils/constants";
 import type { Document, Clause } from "@/types";
 import { toast } from "sonner";
-import ELI5Section from "@/components/results/eli5-section";
+import ClauseCard from "@/components/results/clause-card";
 
-// Extended clause type with hybrid fields
 interface HybridClause extends Clause {
   verification_source?: "database" | "ai";
   confidence?: "verified" | "partial" | "ai_suggested";
@@ -58,10 +52,10 @@ export default function ResultsPage() {
   const [error, setError] = useState("");
   const [expandedClauses, setExpandedClauses] = useState<Set<string>>(new Set());
   const [refreshing, setRefreshing] = useState(false);
+  const [filterRisk, setFilterRisk] = useState<string>("all");
 
   const supabase = createClient();
 
-  // Calculate verification stats from clauses directly
   const verificationStats = {
     verified: clauses.filter((c) => c.confidence === "verified").length,
     partial: clauses.filter((c) => c.confidence === "partial").length,
@@ -78,10 +72,8 @@ export default function ResultsPage() {
         : 0,
   };
 
-  // Fetch document and clauses
   const fetchData = async () => {
     try {
-      // Fetch document
       const { data: doc, error: docError } = await supabase
         .from("documents")
         .select("*")
@@ -96,7 +88,6 @@ export default function ResultsPage() {
 
       setDocument(doc as Document);
 
-      // Fetch clauses if analysis is complete
       if (doc.analysis_status === "completed") {
         const { data: clauseData, error: clauseError } = await supabase
           .from("clauses")
@@ -120,7 +111,6 @@ export default function ResultsPage() {
     fetchData();
   }, [documentId]);
 
-  // Poll for updates if still analyzing
   useEffect(() => {
     if (
       document?.analysis_status === "analyzing" ||
@@ -149,90 +139,18 @@ export default function ResultsPage() {
   };
 
   const expandAll = () => {
-    setExpandedClauses(new Set(clauses.map((c) => c.id)));
+    setExpandedClauses(new Set(filteredClauses.map((c) => c.id)));
   };
 
   const collapseAll = () => {
     setExpandedClauses(new Set());
   };
 
-  // Get risk color and icon
-  const getRiskIcon = (level: string) => {
-    switch (level) {
-      case "safe":
-        return <CheckCircle2 className="h-4 w-4 text-green-500" />;
-      case "warning":
-        return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
-      case "dangerous":
-        return <XCircle className="h-4 w-4 text-red-500" />;
-      case "illegal":
-        return <Scale className="h-4 w-4 text-purple-500" />;
-      default:
-        return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
-    }
-  };
-
-  const getRiskBorderClass = (level: string) => {
-    switch (level) {
-      case "safe":
-        return "border-l-green-500";
-      case "warning":
-        return "border-l-yellow-500";
-      case "dangerous":
-        return "border-l-red-500";
-      case "illegal":
-        return "border-l-purple-500";
-      default:
-        return "border-l-yellow-500";
-    }
-  };
-
-  const getRiskBadgeClass = (level: string) => {
-    switch (level) {
-      case "safe":
-        return "bg-green-500/20 text-green-400 border-green-500/30";
-      case "warning":
-        return "bg-yellow-500/20 text-yellow-400 border-yellow-500/30";
-      case "dangerous":
-        return "bg-red-500/20 text-red-400 border-red-500/30";
-      case "illegal":
-        return "bg-purple-500/20 text-purple-400 border-purple-500/30";
-      default:
-        return "bg-yellow-500/20 text-yellow-400 border-yellow-500/30";
-    }
-  };
-
-  // Get verification badge
-  const getVerificationBadge = (clause: HybridClause) => {
-    if (clause.verification_source === "database" && clause.confidence === "verified") {
-      return (
-        <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-500/10 border border-green-500/20">
-          <ShieldCheck className="h-4 w-4 text-green-400" />
-          <span className="text-sm text-green-400 font-medium">
-            ⚖️ Verified — ClauseWall Legal Database
-          </span>
-        </div>
-      );
-    } else if (clause.verification_source === "database") {
-      return (
-        <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
-          <ShieldAlert className="h-4 w-4 text-yellow-400" />
-          <span className="text-sm text-yellow-400 font-medium">
-            ⚠️ Partially Verified — Review Recommended
-          </span>
-        </div>
-      );
-    } else {
-      return (
-        <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-500/10 border border-blue-500/20">
-          <Bot className="h-4 w-4 text-blue-400" />
-          <span className="text-sm text-blue-400 font-medium">
-            🤖 AI Analysis — Verify Independently
-          </span>
-        </div>
-      );
-    }
-  };
+  // Filter clauses
+  const filteredClauses =
+    filterRisk === "all"
+      ? clauses
+      : clauses.filter((c) => c.risk_level === filterRisk);
 
   // Loading state
   if (loading) {
@@ -244,7 +162,6 @@ export default function ResultsPage() {
     );
   }
 
-  // Error state
   if (error || !document) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
@@ -257,7 +174,6 @@ export default function ResultsPage() {
     );
   }
 
-  // Analyzing state
   if (
     document.analysis_status === "pending" ||
     document.analysis_status === "analyzing"
@@ -278,23 +194,17 @@ export default function ResultsPage() {
         <div className="w-64">
           <Progress value={33} className="h-2" />
         </div>
-        <p className="text-sm text-muted-foreground">
-          Status:{" "}
-          {document.analysis_status === "pending" ? "Queued" : "Processing"}...
-        </p>
       </div>
     );
   }
 
-  // Failed state
   if (document.analysis_status === "failed") {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4 px-4">
         <XCircle className="h-12 w-12 text-red-500" />
         <h2 className="text-2xl font-bold text-red-400">Analysis Failed</h2>
         <p className="text-muted-foreground text-center max-w-md">
-          {document.summary ||
-            "Something went wrong during analysis. Please try again."}
+          {document.summary || "Something went wrong. Please try again."}
         </p>
         <Link href="/upload">
           <Button>Try Again</Button>
@@ -303,7 +213,6 @@ export default function ResultsPage() {
     );
   }
 
-  // Results view
   const riskLevel = getRiskLevel(document.overall_risk_score);
   const riskColor = RISK_COLORS[riskLevel];
 
@@ -337,9 +246,7 @@ export default function ResultsPage() {
               disabled={refreshing}
               className="gap-2"
             >
-              <RefreshCw
-                className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`}
-              />
+              <RefreshCw className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`} />
               Refresh
             </Button>
             <Link href={`/letter/${documentId}`}>
@@ -354,27 +261,22 @@ export default function ResultsPage() {
         {/* Score Overview */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
           {/* Main Score */}
-          <Card className="glass border-white/5 md:col-span-2 glow-blue">
+          <Card className="bg-gray-900/50 border-gray-800 md:col-span-2">
             <CardContent className="p-6 flex items-center gap-6">
               <div
-                className="relative h-24 w-24 rounded-full flex items-center justify-center"
+                className="relative h-24 w-24 rounded-full flex items-center justify-center flex-shrink-0"
                 style={{
                   background: `conic-gradient(${riskColor} ${document.overall_risk_score}%, transparent 0)`,
                 }}
               >
                 <div className="absolute inset-2 bg-background rounded-full flex items-center justify-center">
-                  <span
-                    className="text-3xl font-bold"
-                    style={{ color: riskColor }}
-                  >
+                  <span className="text-3xl font-bold" style={{ color: riskColor }}>
                     {document.overall_risk_score}
                   </span>
                 </div>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground mb-1">
-                  Overall Risk Score
-                </p>
+                <p className="text-sm text-muted-foreground mb-1">Overall Risk Score</p>
                 <p className="text-xl font-bold" style={{ color: riskColor }}>
                   {getRiskLabel(riskLevel)}
                 </p>
@@ -386,31 +288,23 @@ export default function ResultsPage() {
           </Card>
 
           {/* Stats */}
-          <Card className="glass border-white/5">
+          <Card className="bg-gray-900/50 border-gray-800">
             <CardContent className="p-6 flex flex-col justify-center h-full">
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-green-500">
-                    {document.safe_count}
-                  </p>
+                  <p className="text-2xl font-bold text-green-500">{document.safe_count}</p>
                   <p className="text-xs text-muted-foreground">Safe</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-yellow-500">
-                    {document.warning_count}
-                  </p>
+                  <p className="text-2xl font-bold text-yellow-500">{document.warning_count}</p>
                   <p className="text-xs text-muted-foreground">Warning</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-red-500">
-                    {document.dangerous_count}
-                  </p>
+                  <p className="text-2xl font-bold text-red-500">{document.dangerous_count}</p>
                   <p className="text-xs text-muted-foreground">Dangerous</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-purple-500">
-                    {document.illegal_count}
-                  </p>
+                  <p className="text-2xl font-bold text-purple-500">{document.illegal_count}</p>
                   <p className="text-xs text-muted-foreground">Illegal</p>
                 </div>
               </div>
@@ -418,20 +312,14 @@ export default function ResultsPage() {
           </Card>
 
           {/* Entity */}
-          <Card className="glass border-white/5">
+          <Card className="bg-gray-900/50 border-gray-800">
             <CardContent className="p-6 flex flex-col justify-center h-full">
-              <p className="text-sm text-muted-foreground mb-2">
-                Identified Entity
-              </p>
+              <p className="text-sm text-muted-foreground mb-2">Identified Entity</p>
               <p className="font-semibold truncate">
                 {document.entity_name || "Not identified"}
               </p>
               {document.entity_name && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="mt-3 gap-2 text-red-400"
-                >
+                <Button variant="ghost" size="sm" className="mt-3 gap-2 text-red-400">
                   <Flag className="h-3 w-3" />
                   Flag Entity
                 </Button>
@@ -442,236 +330,126 @@ export default function ResultsPage() {
 
         {/* Summary */}
         {document.summary && (
-          <Card className="glass border-white/5 mb-8">
+          <Card className="bg-gray-900/50 border-gray-800 mb-8">
             <CardContent className="p-6">
               <h3 className="font-semibold mb-2 flex items-center gap-2">
                 <Shield className="h-4 w-4 text-blue-400" />
                 Summary
               </h3>
-              <p className="text-muted-foreground leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed text-sm">
                 {document.summary}
               </p>
             </CardContent>
           </Card>
         )}
 
-        {/* Verification Stats — Now using hybrid data */}
-        <Card className="glass border-white/5 mb-8">
+        {/* Verification Stats */}
+        <Card className="bg-gray-900/50 border-gray-800 mb-8">
           <CardContent className="p-6">
             <h3 className="font-semibold mb-3 flex items-center gap-2">
               <ShieldCheck className="h-4 w-4 text-green-400" />
               Legal Database Verification
             </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div className="text-center p-3 rounded-lg bg-green-500/10">
-                <p className="text-2xl font-bold text-green-400">
-                  {verificationStats.verified}
-                </p>
+                <p className="text-2xl font-bold text-green-400">{verificationStats.verified}</p>
                 <p className="text-xs text-muted-foreground">Verified ✓</p>
               </div>
               <div className="text-center p-3 rounded-lg bg-yellow-500/10">
-                <p className="text-2xl font-bold text-yellow-400">
-                  {verificationStats.partial}
-                </p>
+                <p className="text-2xl font-bold text-yellow-400">{verificationStats.partial}</p>
                 <p className="text-xs text-muted-foreground">Partial</p>
               </div>
               <div className="text-center p-3 rounded-lg bg-blue-500/10">
-                <p className="text-2xl font-bold text-blue-400">
-                  {verificationStats.ai_suggested}
-                </p>
+                <p className="text-2xl font-bold text-blue-400">{verificationStats.ai_suggested}</p>
                 <p className="text-xs text-muted-foreground">AI-Only</p>
               </div>
               <div className="text-center p-3 rounded-lg bg-white/5">
-                <p className="text-2xl font-bold text-foreground">
-                  {verificationStats.verification_rate}%
-                </p>
+                <p className="text-2xl font-bold">{verificationStats.verification_rate}%</p>
                 <p className="text-xs text-muted-foreground">Verified Rate</p>
               </div>
             </div>
-            <p className="text-xs text-muted-foreground mt-4 flex items-center gap-2">
-              <ShieldCheck className="h-3 w-3 text-green-400" />
-              Verified citations are cross-referenced against 750+ Indian legal rules
-            </p>
           </CardContent>
         </Card>
 
-        {/* Clauses */}
-        <div className="mb-6 flex items-center justify-between">
+        {/* Clause Header + Filters */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
           <h2 className="text-xl font-bold">Clause Analysis</h2>
-          <div className="flex gap-2">
-            <Button variant="ghost" size="sm" onClick={expandAll}>
+          <div className="flex items-center gap-2 flex-wrap">
+            {/* Risk Filter */}
+            {[
+              { value: "all", label: "All", count: clauses.length },
+              { value: "illegal", label: "Illegal", count: document.illegal_count, color: "text-purple-400" },
+              { value: "dangerous", label: "Dangerous", count: document.dangerous_count, color: "text-red-400" },
+              { value: "warning", label: "Warning", count: document.warning_count, color: "text-yellow-400" },
+              { value: "safe", label: "Safe", count: document.safe_count, color: "text-green-400" },
+            ].map((filter) => (
+              <button
+                key={filter.value}
+                onClick={() => setFilterRisk(filter.value)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
+                  filterRisk === filter.value
+                    ? "bg-white/10 border-white/20 text-white"
+                    : "bg-white/[0.02] border-white/5 text-gray-500 hover:text-gray-300"
+                }`}
+              >
+                <span className={filter.color}>{filter.count}</span>{" "}
+                {filter.label}
+              </button>
+            ))}
+
+            <span className="text-gray-700">|</span>
+
+            <button
+              onClick={expandAll}
+              className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
+            >
               Expand All
-            </Button>
-            <Button variant="ghost" size="sm" onClick={collapseAll}>
+            </button>
+            <button
+              onClick={collapseAll}
+              className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
+            >
               Collapse All
-            </Button>
+            </button>
           </div>
         </div>
 
-        <div className="space-y-4">
-          {clauses.map((clause) => {
-            const isExpanded = expandedClauses.has(clause.id);
-
-            return (
-              <Card
-                key={clause.id}
-                className={`glass border-white/5 border-l-4 ${getRiskBorderClass(
-                  clause.risk_level
-                )}`}
-              >
-                <CardContent className="p-4">
-                  {/* Header */}
-                  <div
-                    className="flex items-start justify-between cursor-pointer"
-                    onClick={() => toggleClause(clause.id)}
-                  >
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2 flex-wrap">
-                        {getRiskIcon(clause.risk_level)}
-                        <Badge className={getRiskBadgeClass(clause.risk_level)}>
-                          {getRiskLabel(clause.risk_level as any)}
-                        </Badge>
-                        <span className="text-sm text-muted-foreground">
-                          Score: {clause.risk_score}/100
-                        </span>
-                        <Badge variant="outline" className="text-xs">
-                          {clause.clause_type}
-                        </Badge>
-                        {/* Verification indicator in header */}
-                        {clause.verification_source === "database" && (
-                          <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-xs">
-                            <ShieldCheck className="h-3 w-3 mr-1" />
-                            DB Verified
-                          </Badge>
-                        )}
-                      </div>
-                      <p className="text-sm text-muted-foreground line-clamp-2 italic">
-                        &quot;{clause.original_text.substring(0, 200)}
-                        {clause.original_text.length > 200 ? "..." : ""}&quot;
-                      </p>
-                    </div>
-                    <Button variant="ghost" size="sm">
-                      {isExpanded ? (
-                        <ChevronUp className="h-4 w-4" />
-                      ) : (
-                        <ChevronDown className="h-4 w-4" />
-                      )}
-                    </Button>
-                  </div>
-
-                  {/* Expanded Content */}
-                  {isExpanded && (
-                    <div className="mt-4 pt-4 border-t border-white/5 space-y-4">
-                      {/* Full Text */}
-                      <div>
-                        <p className="text-sm font-medium mb-1">
-                          Full Clause Text
-                        </p>
-                        <p className="text-sm text-muted-foreground bg-white/5 p-3 rounded-lg">
-                          {clause.original_text}
-                        </p>
-                      </div>
-
-                      {/* Explanation */}
-                      <div>
-                        <p className="text-sm font-medium mb-1">Analysis</p>
-                        <p className="text-sm text-muted-foreground">
-                          {clause.explanation}
-                        </p>
-                      </div>
-
-                      {/* Legal Citation */}
-                      {clause.legal_citation && (
-                        <div>
-                          <p className="text-sm font-medium mb-1 text-blue-400">
-                            ⚖️ Legal Reference
-                          </p>
-                          <p className="text-sm text-blue-300">
-                            {clause.legal_citation}
-                          </p>
-                        </div>
-                      )}
-
-                      {/* Fair Alternative */}
-                      {clause.fair_alternative && (
-                        <div>
-                          <p className="text-sm font-medium mb-1 text-green-400">
-                            ✅ Fair Alternative
-                          </p>
-                          <p className="text-sm text-green-300 bg-green-500/10 p-3 rounded-lg">
-                            {clause.fair_alternative}
-                          </p>
-                        </div>
-                      )}
-
-                      {/* NEW: Negotiation Script */}
-                      {clause.negotiation_script && (
-                        <div>
-                          <p className="text-sm font-medium mb-1 text-purple-400 flex items-center gap-2">
-                            <MessageSquare className="h-4 w-4" />
-                            🗣️ What to Say (Negotiation Script)
-                          </p>
-                          <p className="text-sm text-purple-300 bg-purple-500/10 p-3 rounded-lg italic">
-                            &quot;{clause.negotiation_script}&quot;
-                          </p>
-                        </div>
-                      )}
-
-                      {/* NEW: Penalty Info */}
-                      {clause.penalty_info && (
-                        <div>
-                          <p className="text-sm font-medium mb-1 text-orange-400 flex items-center gap-2">
-                            <Gavel className="h-4 w-4" />
-                            ⚠️ Penalty for Violation
-                          </p>
-                          <p className="text-sm text-orange-300 bg-orange-500/10 p-3 rounded-lg">
-                            {clause.penalty_info}
-                          </p>
-                        </div>
-                      )}
-
-                      {/* Red Flags */}
-                      {clause.red_flags && clause.red_flags.length > 0 && (
-                        <div>
-                          <p className="text-sm font-medium mb-1 text-red-400">
-                            🚩 Red Flags
-                          </p>
-                          <ul className="list-disc list-inside text-sm text-red-300 space-y-1">
-                            {clause.red_flags.map((flag, i) => (
-                              <li key={i}>{flag}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-
-                      {/* ELI5 + Hindi + Audio */}
-                      {clause.risk_level !== "safe" && (
-                        <ELI5Section
-                          clauseId={clause.id}
-                          clauseText={clause.original_text}
-                          explanation={clause.explanation}
-                          riskLevel={clause.risk_level}
-                          legalCitation={clause.legal_citation}
-                          clauseType={clause.clause_type}
-                        />
-                      )}
-                      
-                      {/* Verification Badge */}
-                      <div className="pt-2">
-                        {getVerificationBadge(clause)}
-                      </div>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            );
-          })}
+        {/* Clause Cards */}
+        <div className="space-y-3">
+          {filteredClauses.map((clause, index) => (
+            <motion.div
+              key={clause.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.03 }}
+            >
+              <ClauseCard
+                clause={clause}
+                isExpanded={expandedClauses.has(clause.id)}
+                onToggle={() => toggleClause(clause.id)}
+                jurisdiction={document.jurisdiction}
+              />
+            </motion.div>
+          ))}
         </div>
 
+        {/* No results for filter */}
+        {filteredClauses.length === 0 && (
+          <div className="text-center py-12 text-gray-500">
+            <p>No {filterRisk} clauses found.</p>
+            <button
+              onClick={() => setFilterRisk("all")}
+              className="text-blue-400 text-sm mt-2 hover:underline"
+            >
+              Show all clauses
+            </button>
+          </div>
+        )}
+
         {/* Bottom Actions */}
-        <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
           <Link href={`/letter/${documentId}`}>
-            <Button size="lg" className="gap-2 bg-blue-600 hover:bg-blue-700">
+            <Button size="lg" className="gap-2 bg-blue-600 hover:bg-blue-700 w-full sm:w-auto">
               <FileText className="h-5 w-5" />
               Generate Legal Notice
             </Button>

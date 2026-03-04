@@ -1,6 +1,7 @@
 // ============================================
 // MAIN ANALYSIS ORCHESTRATOR — HYBRID VERSION
 // Uses DB-first approach with AI fallback
+// WITH REAL-TIME PROGRESS TRACKING
 // ============================================
 
 import { extractClauses } from "@/lib/ai/clause-extractor";
@@ -9,13 +10,30 @@ import { calculateWeightedScore, generateSummary, getRiskCounts } from "@/lib/co
 import { createClient } from "@/lib/supabase/server";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { ANALYSIS_CONFIG } from "@/lib/utils/constants";
+import { addToCommunityDB } from "@/lib/community";
 
 /**
- * Analyze a complete document — HYBRID pipeline
- * 1. Extract clauses from text (AI)
- * 2. For each clause: DB-first analysis with AI fallback
- * 3. Calculate scores
- * 4. Save everything to database
+ * Update analysis progress in database
+ */
+async function updateProgress(
+  supabase: SupabaseClient,
+  documentId: string,
+  progress: number,
+  step: string,
+  clausesAnalyzed: number = 0
+): Promise<void> {
+  await supabase
+    .from("documents")
+    .update({
+      analysis_progress: progress,
+      analysis_step: step,
+      clauses_analyzed: clausesAnalyzed,
+    })
+    .eq("id", documentId);
+}
+
+/**
+ * Analyze a complete document — HYBRID pipeline with progress tracking
  */
 export async function analyzeDocument(
   documentId: string,
@@ -29,55 +47,64 @@ export async function analyzeDocument(
   try {
     console.log(`[ClauseWall] analyzeDocument started for ${documentId}`);
     console.log(`[ClauseWall] Text length: ${rawText?.length || 0}`);
-    console.log(`[ClauseWall] Document type: ${documentType}, Jurisdiction: ${jurisdiction}`);
 
     // ---- Update status to analyzing ----
-    // ---- Update status to analyzing ----
-console.log(`[ClauseWall] Updating status to analyzing...`);
-try {
-  const { error: statusError } = await supabase
-    .from("documents")
-    .update({ analysis_status: "analyzing" })
-    .eq("id", documentId);
+    await supabase
+      .from("documents")
+      .update({
+        analysis_status: "analyzing",
+        analysis_progress: 5,
+        analysis_step: "Preparing document...",
+        clauses_analyzed: 0,
+      })
+      .eq("id", documentId);
 
-  if (statusError) {
-    console.error(`[ClauseWall] Failed to update status:`, statusError);
-  } else {
-    console.log(`[ClauseWall] Status update successful`);
-  }
-} catch (e) {
-  console.error(`[ClauseWall] Status update threw:`, e);
-}
-
-// ---- Step 1: Extract clauses ----
-console.log(`[ClauseWall] About to call extractClauses...`);
-console.log(`[ClauseWall] Raw text preview: ${rawText?.substring(0, 100)}...`);
+    // ---- Step 1: Extract clauses ----
+    await updateProgress(supabase, documentId, 10, "Extracting clauses from document...");
+    
+    console.log(`[ClauseWall] Extracting clauses...`);
     const extraction = await extractClauses(rawText);
-    console.log(`[ClauseWall] Extraction complete. Found ${extraction.clauses?.length || 0} clauses`);
+    console.log(`[ClauseWall] Found ${extraction.clauses?.length || 0} clauses`);
 
-    // Update document with detected entity name if found
-    if (extraction.document_info.entity_name) {
-      await supabase
-        .from("documents")
-        .update({ entity_name: extraction.document_info.entity_name })
-        .eq("id", documentId);
-    }
+    const totalClauses = extraction.clauses.length;
+
+    // Update document with detected entity name and total clauses
+    await supabase
+      .from("documents")
+      .update({
+        entity_name: extraction.document_info.entity_name || null,
+        total_clauses: totalClauses,
+        analysis_progress: 15,
+        analysis_step: `Found ${totalClauses} clauses. Starting analysis...`,
+      })
+      .eq("id", documentId);
 
     // ---- Step 2: Hybrid analysis for each clause ----
-    console.log(
-      `[ClauseWall] [Hybrid] Analyzing ${extraction.clauses.length} clauses...`
-    );
+    console.log(`[ClauseWall] [Hybrid] Analyzing ${totalClauses} clauses...`);
 
     const analyzedClauses: any[] = [];
     let dbMatchCount = 0;
     let aiFallbackCount = 0;
 
-    for (const extractedClause of extraction.clauses) {
-      console.log(
-        `[ClauseWall] Clause ${extractedClause.clause_number}/${extraction.clauses.length}: ${extractedClause.clause_type}`
+    for (let i = 0; i < extraction.clauses.length; i++) {
+      const extractedClause = extraction.clauses[i];
+      const clauseNum = i + 1;
+
+      // Calculate progress: 15% (extraction) + 70% (analysis) = 85% when done
+      const analysisProgress = 15 + Math.round((clauseNum / totalClauses) * 70);
+
+      // Update progress for each clause
+      await updateProgress(
+        supabase,
+        documentId,
+        analysisProgress,
+        `Analyzing clause ${clauseNum}/${totalClauses}: ${extractedClause.clause_type}`,
+        clauseNum
       );
 
-      // Use HYBRID analysis instead of pure AI
+      console.log(`[ClauseWall] Clause ${clauseNum}/${totalClauses}: ${extractedClause.clause_type}`);
+
+      // Use HYBRID analysis
       const analysis = await hybridAnalyzeClause(
         extractedClause.text,
         jurisdiction,
@@ -106,7 +133,6 @@ console.log(`[ClauseWall] Raw text preview: ${rawText?.substring(0, 100)}...`);
         fair_alternative: analysis.fair_alternative || null,
         red_flags: analysis.red_flags,
         percentile: null,
-        // NEW hybrid fields
         verification_source: analysis.verification_source,
         matched_rule_id: analysis.matched_rule_id || null,
         negotiation_script: analysis.negotiation_script || null,
@@ -125,6 +151,8 @@ console.log(`[ClauseWall] Raw text preview: ${rawText?.substring(0, 100)}...`);
     );
 
     // ---- Step 3: Save clauses to database ----
+    await updateProgress(supabase, documentId, 88, "Saving analysis results...", totalClauses);
+
     const { error: clauseError } = await supabase
       .from("clauses")
       .insert(analyzedClauses);
@@ -133,11 +161,34 @@ console.log(`[ClauseWall] Raw text preview: ${rawText?.substring(0, 100)}...`);
       throw new Error(`Failed to save clauses: ${clauseError.message}`);
     }
 
+    // ---- Step 3.5: Add dangerous/illegal clauses to community DB ----
+    await updateProgress(supabase, documentId, 90, "Updating community database...", totalClauses);
+    
+    console.log(`[ClauseWall] [Community] Sharing predatory patterns...`);
+    let communityAdded = 0;
+    for (const clause of analyzedClauses) {
+      if (clause.risk_level === "dangerous" || clause.risk_level === "illegal") {
+        const added = await addToCommunityDB({
+          original_text: clause.original_text,
+          clause_type: clause.clause_type,
+          risk_level: clause.risk_level,
+          document_type: documentType,
+          jurisdiction: jurisdiction,
+          legal_issue: clause.legal_issue,
+          legal_citation: clause.legal_citation,
+        });
+        if (added) communityAdded++;
+      }
+    }
+    console.log(`[ClauseWall] [Community] ${communityAdded} patterns shared`);
+
     // ---- Step 4: Calculate scores ----
+    await updateProgress(supabase, documentId, 95, "Calculating final score...", totalClauses);
+
     const overallScore = calculateWeightedScore(analyzedClauses);
     const counts = getRiskCounts(analyzedClauses);
 
-    // ---- Step 5: Generate summary with verification info ----
+    // ---- Step 5: Generate summary ----
     const verificationRate = analyzedClauses.length > 0
       ? Math.round((dbMatchCount / analyzedClauses.length) * 100)
       : 0;
@@ -151,7 +202,6 @@ console.log(`[ClauseWall] Raw text preview: ${rawText?.substring(0, 100)}...`);
       overallScore
     );
 
-    // Append verification info to summary
     summary += ` | Verification: ${dbMatchCount} of ${analyzedClauses.length} clauses (${verificationRate}%) verified against ClauseWall Legal Database.`;
 
     // ---- Step 6: Update document with results ----
@@ -166,6 +216,9 @@ console.log(`[ClauseWall] Raw text preview: ${rawText?.substring(0, 100)}...`);
         illegal_count: counts.illegal,
         summary,
         analysis_status: "completed",
+        analysis_progress: 100,
+        analysis_step: "Analysis complete!",
+        clauses_analyzed: analyzedClauses.length,
       })
       .eq("id", documentId);
 
@@ -186,6 +239,8 @@ console.log(`[ClauseWall] Raw text preview: ${rawText?.substring(0, 100)}...`);
       .from("documents")
       .update({
         analysis_status: "failed",
+        analysis_progress: 0,
+        analysis_step: "Analysis failed",
         summary: `Analysis failed: ${(error as Error).message}`,
       })
       .eq("id", documentId);

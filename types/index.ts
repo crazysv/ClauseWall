@@ -501,3 +501,45 @@ export interface InsightItem {
   description: string;
   type: "positive" | "warning" | "neutral" | "tip";
 }
+
+// ============================================
+// COMMUNITY CLAUSE DATABASE TYPES
+// ============================================
+
+export interface CommunityClause {
+  id: string;
+  pattern_hash: string;
+  anonymized_text: string;
+  clause_type: string;
+  risk_level: "dangerous" | "illegal";
+  document_type: string;
+  jurisdiction: string;
+  occurrence_count: number;
+  flag_count: number;
+  common_legal_issue: string | null;
+  common_statute: string | null;
+  first_seen_at: string;
+  last_seen_at: string;
+}
+
+export interface CommunityMatch {
+  found: boolean;
+  pattern_hash: string;
+  occurrence_count: number;
+  jurisdictions_seen: string[];
+  first_seen_at: string;
+  common_legal_issue: string | null;
+  match_percentage: number;
+}
+
+// ============================================
+// ANALYSIS PROGRESS TYPES
+// ============================================
+
+export interface AnalysisProgressData {
+  status: AnalysisStatus;
+  progress: number; // 0-100
+  step: string;
+  clauses_analyzed: number;
+  total_clauses: number;
+}
