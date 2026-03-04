@@ -1,0 +1,431 @@
+/* ============================================
+   CLAUSEWALL EXTENSION POPUP
+   Dark theme matching the main app
+   ============================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 380px;
+  max-height: 560px;
+  overflow-y: auto;
+  background: #0f1117;
+  color: #e5e7eb;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
+}
+
+/* ── Header ──────────────────────────────── */
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 16px;
+  background: #111827;
+  border-bottom: 1px solid #1f2937;
+}
+
+.header-icon {
+  font-size: 20px;
+}
+
+.header-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #f9fafb;
+}
+
+/* ── URL Bar ─────────────────────────────── */
+
+.url-bar {
+  padding: 8px 16px;
+  background: #0a0c10;
+  font-size: 11px;
+  color: #6b7280;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-bottom: 1px solid #1f2937;
+}
+
+/* ── Content ─────────────────────────────── */
+
+#content {
+  padding: 16px;
+  flex: 1;
+}
+
+/* ── Score Section ───────────────────────── */
+
+.score-section {
+  text-align: center;
+  padding: 16px 0;
+}
+
+.score-ring {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  position: relative;
+}
+
+.score-ring-inner {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  background: #0f1117;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.score-number {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.score-max {
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.score-label {
+  font-size: 14px;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+/* ── Stats Row ───────────────────────────── */
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin: 16px 0;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 8px 4px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stat-count {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.stat-label {
+  font-size: 9px;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+.stat-safe .stat-count { color: #22c55e; }
+.stat-warning .stat-count { color: #eab308; }
+.stat-dangerous .stat-count { color: #ef4444; }
+.stat-illegal .stat-count { color: #a855f7; }
+
+/* ── Summary ─────────────────────────────── */
+
+.summary {
+  padding: 10px 12px;
+  background: rgba(59, 130, 246, 0.05);
+  border: 1px solid rgba(59, 130, 246, 0.1);
+  border-radius: 8px;
+  font-size: 12px;
+  color: #9ca3af;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+/* ── Issues List ─────────────────────────── */
+
+.issues-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #6b7280;
+  margin-bottom: 10px;
+}
+
+.issue-card {
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  border-left: 3px solid;
+  cursor: default;
+}
+
+.issue-card-dangerous {
+  background: rgba(239, 68, 68, 0.06);
+  border-color: #ef4444;
+}
+
+.issue-card-illegal {
+  background: rgba(168, 85, 247, 0.06);
+  border-color: #a855f7;
+}
+
+.issue-card-warning {
+  background: rgba(234, 179, 8, 0.06);
+  border-color: #eab308;
+}
+
+.issue-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.issue-icon {
+  font-size: 12px;
+}
+
+.issue-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #f3f4f6;
+}
+
+.issue-explanation {
+  font-size: 11px;
+  color: #9ca3af;
+  line-height: 1.5;
+}
+
+.issue-legal {
+  font-size: 10px;
+  color: #6b7280;
+  margin-top: 4px;
+  font-style: italic;
+}
+
+/* ── Action Buttons ──────────────────────── */
+
+.actions {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s ease;
+  text-decoration: none;
+  color: #fff;
+}
+
+.btn-primary {
+  background: #2563eb;
+}
+
+.btn-primary:hover {
+  background: #1d4ed8;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid #374151;
+  color: #d1d5db;
+}
+
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: #4b5563;
+}
+
+.btn-highlight {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+}
+
+.btn-highlight:hover {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+.btn-highlight.active {
+  background: rgba(239, 68, 68, 0.25);
+  border-color: #ef4444;
+}
+
+/* ── Empty / Loading / Error States ──────── */
+
+.state-container {
+  text-align: center;
+  padding: 30px 16px;
+}
+
+.state-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+
+.state-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #f3f4f6;
+  margin-bottom: 6px;
+}
+
+.state-description {
+  font-size: 12px;
+  color: #6b7280;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+/* ── Loading Animation ───────────────────── */
+
+.loading-dots {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+.loading-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #3b82f6;
+  animation: pulse-dot 1.2s ease infinite;
+}
+
+.loading-dot:nth-child(2) { animation-delay: 0.2s; }
+.loading-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* ── Footer ──────────────────────────────── */
+
+.footer {
+  padding: 10px 16px;
+  text-align: center;
+  border-top: 1px solid #1f2937;
+  background: #111827;
+}
+
+.footer a {
+  font-size: 10px;
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* ── Scrollbar ───────────────────────────── */
+
+body::-webkit-scrollbar {
+  width: 4px;
+}
+
+body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: #374151;
+  border-radius: 4px;
+}
+
+/* ── Issues Section ──────────────────────── */
+
+.issues-section {
+  margin-top: 16px;
+  border-top: 1px solid #1f2937;
+  padding-top: 16px;
+}
+
+.issues-title {
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #6b7280;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.issues-list {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.issue-card {
+  cursor: pointer !important;
+  transition: transform 0.15s ease, background 0.15s ease !important;
+}
+
+.issue-card:hover {
+  transform: translateX(4px);
+}
+
+.issue-card:active {
+  transform: translateX(2px);
+}
+
+.issue-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.issue-goto {
+  margin-left: auto;
+  font-size: 12px;
+  opacity: 0.5;
+  transition: opacity 0.15s;
+}
+
+.issue-card:hover .issue-goto {
+  opacity: 1;
+}
+
+/* ── Actions moved up ────────────────────── */
+
+.actions {
+  margin-top: 12px;
+  margin-bottom: 0;
+}

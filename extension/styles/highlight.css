@@ -1,0 +1,192 @@
+/* ============================================
+   CLAUSEWALL — ON-PAGE CLAUSE HIGHLIGHTING
+   ============================================ */
+
+/* ── Highlight Styles ──────────────────────── */
+
+.clausewall-highlighted {
+  position: relative !important;
+  transition: background 0.2s ease, box-shadow 0.3s ease !important;
+}
+
+.clausewall-highlight-dangerous {
+  background: rgba(239, 68, 68, 0.15) !important;
+  border-left: 3px solid #ef4444 !important;
+  padding-left: 12px !important;
+  margin-left: -12px !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+}
+
+.clausewall-highlight-dangerous:hover {
+  background: rgba(239, 68, 68, 0.25) !important;
+}
+
+.clausewall-highlight-illegal {
+  background: rgba(168, 85, 247, 0.15) !important;
+  border-left: 3px solid #a855f7 !important;
+  padding-left: 12px !important;
+  margin-left: -12px !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+}
+
+.clausewall-highlight-illegal:hover {
+  background: rgba(168, 85, 247, 0.25) !important;
+}
+
+.clausewall-highlight-warning {
+  background: rgba(234, 179, 8, 0.12) !important;
+  border-left: 3px solid #eab308 !important;
+  padding-left: 12px !important;
+  margin-left: -12px !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+}
+
+.clausewall-highlight-warning:hover {
+  background: rgba(234, 179, 8, 0.22) !important;
+}
+
+/* ── Tooltip ────────────────────────────────── */
+
+.clausewall-tooltip {
+  position: absolute !important;
+  z-index: 2147483647 !important;
+  max-width: 340px !important;
+  background: #1f2937 !important;
+  border: 1px solid #374151 !important;
+  border-radius: 10px !important;
+  padding: 14px 16px !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5) !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  pointer-events: none !important;
+  animation: clausewall-fade-in 0.15s ease !important;
+}
+
+.clausewall-tooltip-title {
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  color: #f9fafb !important;
+  margin-bottom: 6px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.clausewall-tooltip-explanation {
+  font-size: 12px !important;
+  color: #9ca3af !important;
+  line-height: 1.5 !important;
+  margin-bottom: 8px !important;
+}
+
+.clausewall-tooltip-legal {
+  font-size: 11px !important;
+  color: #6b7280 !important;
+  font-style: italic !important;
+  border-top: 1px solid #374151 !important;
+  padding-top: 8px !important;
+}
+
+.clausewall-tooltip-badge {
+  display: inline-block !important;
+  padding: 2px 8px !important;
+  border-radius: 4px !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+.clausewall-badge-dangerous {
+  background: rgba(239, 68, 68, 0.2) !important;
+  color: #fca5a5 !important;
+}
+
+.clausewall-badge-illegal {
+  background: rgba(168, 85, 247, 0.2) !important;
+  color: #c4b5fd !important;
+}
+
+.clausewall-badge-warning {
+  background: rgba(234, 179, 8, 0.2) !important;
+  color: #fde68a !important;
+}
+
+/* ── Floating Badge ─────────────────────────── */
+
+.clausewall-floating-badge {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  z-index: 2147483646 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 10px 16px !important;
+  background: #111827 !important;
+  border: 1px solid #374151 !important;
+  border-radius: 50px !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+  cursor: pointer !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+  animation: clausewall-slide-up 0.4s ease !important;
+}
+
+.clausewall-floating-badge:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5) !important;
+}
+
+.clausewall-floating-badge-icon {
+  font-size: 18px !important;
+}
+
+.clausewall-floating-badge-score {
+  font-size: 16px !important;
+  font-weight: 800 !important;
+  color: #fff !important;
+}
+
+.clausewall-floating-badge-label {
+  font-size: 11px !important;
+  color: #9ca3af !important;
+  font-weight: 500 !important;
+}
+
+.clausewall-floating-badge-close {
+  margin-left: 4px !important;
+  font-size: 14px !important;
+  color: #6b7280 !important;
+  cursor: pointer !important;
+  padding: 2px 4px !important;
+  border-radius: 50% !important;
+  transition: color 0.15s !important;
+}
+
+.clausewall-floating-badge-close:hover {
+  color: #fff !important;
+}
+
+/* ── Animations ─────────────────────────────── */
+
+@keyframes clausewall-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes clausewall-slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes clausewall-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+}
+
+.clausewall-pulse {
+  animation: clausewall-pulse 2s infinite !important;
+}
