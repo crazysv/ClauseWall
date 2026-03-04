@@ -17,6 +17,7 @@ import {
   Loader2,
   RefreshCw,
   Scale,
+  Swords,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -448,22 +449,28 @@ export default function ResultsPage() {
 
         {/* Bottom Actions */}
         <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
-          <Link href={`/letter/${documentId}`}>
-            <Button size="lg" className="gap-2 bg-blue-600 hover:bg-blue-700 w-full sm:w-auto">
-              <FileText className="h-5 w-5" />
-              Generate Legal Notice
-            </Button>
-          </Link>
-          <Button variant="outline" size="lg" className="gap-2">
-            <Download className="h-5 w-5" />
-            Download Report
-          </Button>
-          <Button variant="outline" size="lg" className="gap-2">
-            <Share2 className="h-5 w-5" />
-            Share Results
-          </Button>
+        <Link href={`/negotiate/${documentId}`}>
+        <Button size="lg" className="gap-2 bg-purple-600 hover:bg-purple-700 w-full sm:w-auto">
+        <Swords className="h-5 w-5" />
+        Negotiation Playbook
+        </Button>
+        </Link>
+        <Link href={`/letter/${documentId}`}>
+        <Button size="lg" className="gap-2 bg-blue-600 hover:bg-blue-700 w-full sm:w-auto">
+        <FileText className="h-5 w-5" />
+        Generate Legal Notice
+        </Button>
+        </Link>
+        <Button variant="outline" size="lg" className="gap-2">
+        <Download className="h-5 w-5" />
+        Download Report
+        </Button>
+        <Button variant="outline" size="lg" className="gap-2">
+        <Share2 className="h-5 w-5" />
+        Share Results
+        </Button>
         </div>
-      </div>
-    </div>
-  );
-}
+        </div>
+        </div>
+        );
+      }

@@ -543,3 +543,37 @@ export interface AnalysisProgressData {
   clauses_analyzed: number;
   total_clauses: number;
 }
+
+// ============================================
+// NEGOTIATION PLAYBOOK TYPES
+// ============================================
+
+export interface NegotiationScript {
+  clause_number: number;
+  clause_type: string;
+  risk_level: string;
+  clause_summary: string;
+  opening_statement: string;
+  counter_responses: {
+    they_say: string;
+    you_say: string;
+  }[];
+  escalation: {
+    action: string;
+    authority: string;
+    law_reference: string;
+  };
+  strength: "strong" | "moderate" | "weak";
+}
+
+export interface NegotiationPlaybook {
+  document_type: string;
+  jurisdiction: string;
+  entity_name: string | null;
+  total_issues: number;
+  priority_order: string;
+  scripts: NegotiationScript[];
+  general_tips: string[];
+  opening_approach: string;
+  closing_statement: string;
+}

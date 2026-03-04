@@ -17,6 +17,8 @@ import {
   BookOpen,
   Lightbulb,
   Users,
+  Swords,     
+  ArrowRight,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import ELI5Section from "@/components/results/eli5-section";
@@ -328,22 +330,51 @@ export default function ClauseCard({ clause, isExpanded, onToggle, jurisdiction 
                   </motion.div>
                 )}
 
-                {activeAction === "negotiate" && clause.negotiation_script && (
+                                {activeAction === "negotiate" && (
                   <motion.div
                     key="negotiate"
                     initial={{ opacity: 0, y: -5 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -5 }}
                     transition={{ duration: 0.15 }}
-                    className="p-4 rounded-lg bg-purple-500/5 border border-purple-500/20"
+                    className="space-y-3"
                   >
-                    <p className="text-xs font-medium text-purple-400 mb-1.5 flex items-center gap-1.5">
-                      <MessageSquare className="h-3.5 w-3.5" />
-                      What to Say — Negotiation Script
-                    </p>
-                    <p className="text-sm text-purple-300 leading-relaxed italic">
-                      &quot;{clause.negotiation_script}&quot;
-                    </p>
+                    {/* Show existing script if available */}
+                    {clause.negotiation_script ? (
+                      <div className="p-4 rounded-lg bg-purple-500/5 border border-purple-500/20">
+                        <p className="text-xs font-medium text-purple-400 mb-2 flex items-center gap-1.5">
+                          <MessageSquare className="h-3.5 w-3.5" />
+                          What to Say — Quick Script
+                        </p>
+                        <p className="text-sm text-purple-300 leading-relaxed italic">
+                          &quot;{clause.negotiation_script}&quot;
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="p-4 rounded-lg bg-purple-500/5 border border-purple-500/20">
+                        <p className="text-xs font-medium text-purple-400 mb-2 flex items-center gap-1.5">
+                          <MessageSquare className="h-3.5 w-3.5" />
+                          Negotiation Script
+                        </p>
+                        <p className="text-sm text-gray-400">
+                          A detailed negotiation script with counter-responses is available in the full playbook.
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Link to full playbook */}
+                    <a
+                      href={`/negotiate/${clause.document_id}`}
+                      className="flex items-center justify-between p-3 rounded-lg bg-blue-500/5 border border-blue-500/20 hover:bg-blue-500/10 transition-colors group"
+                    >
+                      <div className="flex items-center gap-2">
+                        <Swords className="h-4 w-4 text-blue-400" />
+                        <span className="text-sm text-blue-400 font-medium">
+                          View Full Negotiation Playbook
+                        </span>
+                      </div>
+                      <ArrowRight className="h-4 w-4 text-blue-400 group-hover:translate-x-1 transition-transform" />
+                    </a>
                   </motion.div>
                 )}
 
