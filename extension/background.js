@@ -6,7 +6,7 @@
 // ── Config ──────────────────────────────────
 // Change to localhost for local testing:
 // const API_BASE = "http://localhost:3000";
-const API_BASE = "http://localhost:3000";
+const API_BASE = "https://clause-wall.vercel.app";
 const CACHE_DURATION_MS = 60 * 60 * 1000; // 1 hour
 
 // ── Badge Colors ────────────────────────────
