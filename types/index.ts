@@ -58,6 +58,11 @@ export interface Document {
   analysis_status: AnalysisStatus;
   created_at: string;
   updated_at: string;
+  public_share_id: string | null;
+  verification_tier: string | null;
+  qr_generated_at: string | null;
+  share_count: number;
+  share_settings: ShareSettings | null;
 }
 
 /**
@@ -576,4 +581,16 @@ export interface NegotiationPlaybook {
   general_tips: string[];
   opening_approach: string;
   closing_statement: string;
+}
+
+// ============================================
+// QR VERIFICATION TYPES
+// ============================================
+
+export type VerificationTier = "verified" | "reviewed" | "needs_work";
+
+export interface ShareSettings {
+  show_entity: boolean;
+  show_summary: boolean;
+  allow_full_analysis: boolean;
 }

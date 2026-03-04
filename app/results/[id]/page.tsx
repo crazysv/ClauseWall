@@ -34,6 +34,7 @@ import {
 import type { Document, Clause } from "@/types";
 import { toast } from "sonner";
 import ClauseCard from "@/components/results/clause-card";
+import QRSection from "@/components/results/qr-section";
 
 interface HybridClause extends Clause {
   verification_source?: "database" | "ai";
@@ -470,6 +471,8 @@ export default function ResultsPage() {
         Share Results
         </Button>
         </div>
+        {/* QR Verification Badge */}
+        <QRSection document={document} />
         </div>
         </div>
         );
