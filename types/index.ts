@@ -376,3 +376,128 @@ export interface ClauseWithVerification extends Clause {
   penalty_info: string | null;
   confidence: 'verified' | 'partial' | 'ai_suggested';
 }
+
+// ============================================
+// CONTRACT BUILDER TYPES
+// ============================================
+
+export type ContractTemplateType =
+  | "rental"
+  | "employment"
+  | "freelance"
+  | "nda"
+  | "loan"
+  | "partnership"
+  | "sale"
+  | "service"
+  | "mou"
+  | "poa";
+
+export interface TemplateField {
+  name: string;
+  label: string;
+  type: "text" | "number" | "date" | "select" | "textarea" | "currency";
+  required: boolean;
+  placeholder?: string;
+  options?: { value: string; label: string }[];
+  default?: string | number;
+  validation?: {
+    min?: number;
+    max?: number;
+  };
+  helpText?: string;
+  group?: string;
+}
+
+export interface TemplateConfig {
+  type: ContractTemplateType;
+  name: string;
+  description: string;
+  icon: string;
+  fields: TemplateField[];
+  applicableLaws: {
+    name: string;
+    section: string;
+    relevance: string;
+  }[];
+}
+
+export interface GeneratedContract {
+  id: string;
+  user_id: string | null;
+  template_id: string | null;
+  template_type: ContractTemplateType;
+  jurisdiction: string;
+  input_values: Record<string, string | number | boolean>;
+  generated_text: string;
+  generated_clauses: GeneratedClause[];
+  title: string | null;
+  stamp_paper_note: string | null;
+  created_at: string;
+}
+
+export interface GeneratedClause {
+  number: number;
+  title: string;
+  text: string;
+  law_reference: string | null;
+  fairness_note: string | null;
+}
+
+export interface ContractGenerationRequest {
+  template_type: ContractTemplateType;
+  jurisdiction: string;
+  values: Record<string, string | number | boolean>;
+}
+
+export interface ContractGenerationResponse {
+  success: boolean;
+  contract_id?: string;
+  generated_text?: string;
+  generated_clauses?: GeneratedClause[];
+  title?: string;
+  stamp_paper_note?: string;
+  error?: string;
+}
+
+// ============================================
+// PORTFOLIO & DASHBOARD TYPES
+// ============================================
+
+export interface PortfolioStats {
+  totalContracts: number;
+  totalClauses: number;
+  safeClausesCount: number;
+  warningClausesCount: number;
+  dangerousClausesCount: number;
+  illegalClausesCount: number;
+  averageRiskScore: number;
+  estimatedSavings: number;
+  contractsBuilt: number;
+  riskTrend: "improving" | "stable" | "worsening";
+  riskTrendPercentage: number;
+}
+
+export interface RiskDataPoint {
+  date: string;
+  score: number;
+  label: string;
+  documentType: string;
+}
+
+export interface Achievement {
+  code: string;
+  name: string;
+  description: string;
+  icon: string;
+  unlocked: boolean;
+  progress: number;
+  target: number;
+}
+
+export interface InsightItem {
+  icon: string;
+  title: string;
+  description: string;
+  type: "positive" | "warning" | "neutral" | "tip";
+}
