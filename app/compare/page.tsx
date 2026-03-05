@@ -3,7 +3,6 @@
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import {
-  Shield,
   Upload,
   FileText,
   ArrowRight,
@@ -16,6 +15,7 @@ import {
   ArrowLeftRight,
   ChevronDown,
   ChevronUp,
+  Share2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -29,7 +29,8 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import type { ComparisonResult, ClauseComparison } from "@/lib/bot/compare-analyzer";
+import type { ComparisonResult } from "@/lib/bot/compare-analyzer";
+import ComparisonCardModal from "@/components/compare/comparison-card-modal";
 
 type InputMode = "file" | "text";
 
@@ -44,6 +45,7 @@ export default function ComparePage() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<ComparisonResult | null>(null);
   const [expandedClauses, setExpandedClauses] = useState<Set<number>>(new Set());
+  const [showShareCard, setShowShareCard] = useState(false);
 
   const onDropA = useCallback((files: File[]) => {
     if (files[0]) setFileA(files[0]);
@@ -124,21 +126,31 @@ export default function ComparePage() {
 
   const getRiskIcon = (level: string) => {
     switch (level) {
-      case "safe": return <CheckCircle2 className="h-4 w-4 text-green-500" />;
-      case "warning": return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
-      case "dangerous": return <XCircle className="h-4 w-4 text-red-500" />;
-      case "illegal": return <Scale className="h-4 w-4 text-purple-500" />;
-      default: return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
+      case "safe":
+        return <CheckCircle2 className="h-4 w-4 text-green-500" />;
+      case "warning":
+        return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
+      case "dangerous":
+        return <XCircle className="h-4 w-4 text-red-500" />;
+      case "illegal":
+        return <Scale className="h-4 w-4 text-purple-500" />;
+      default:
+        return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
     }
   };
 
   const getRiskColor = (level: string) => {
     switch (level) {
-      case "safe": return "text-green-500";
-      case "warning": return "text-yellow-500";
-      case "dangerous": return "text-red-500";
-      case "illegal": return "text-purple-500";
-      default: return "text-yellow-500";
+      case "safe":
+        return "text-green-500";
+      case "warning":
+        return "text-yellow-500";
+      case "dangerous":
+        return "text-red-500";
+      case "illegal":
+        return "text-purple-500";
+      default:
+        return "text-yellow-500";
     }
   };
 
@@ -174,7 +186,8 @@ export default function ComparePage() {
             </h1>
           </div>
           <p className="text-muted-foreground max-w-xl mx-auto">
-            Upload two contracts side-by-side. ClauseWall will compare them clause-by-clause and tell you which one is safer.
+            Upload two contracts side-by-side. ClauseWall will compare them
+            clause-by-clause and tell you which one is safer.
           </p>
         </div>
 
@@ -396,13 +409,21 @@ export default function ComparePage() {
                       result.score_a
                     )}`}
                   >
-                    <p className={`text-5xl font-bold ${getScoreColor(result.score_a)}`}>
+                    <p
+                      className={`text-5xl font-bold ${getScoreColor(
+                        result.score_a
+                      )}`}
+                    >
                       {result.score_a}
                     </p>
                     <p className="text-sm text-muted-foreground mt-1">
                       /100 Risk Score
                     </p>
-                    <p className={`text-sm font-medium mt-2 ${getScoreColor(result.score_a)}`}>
+                    <p
+                      className={`text-sm font-medium mt-2 ${getScoreColor(
+                        result.score_a
+                      )}`}
+                    >
                       {result.label_a}
                     </p>
                   </div>
@@ -429,13 +450,21 @@ export default function ComparePage() {
                       result.score_b
                     )}`}
                   >
-                    <p className={`text-5xl font-bold ${getScoreColor(result.score_b)}`}>
+                    <p
+                      className={`text-5xl font-bold ${getScoreColor(
+                        result.score_b
+                      )}`}
+                    >
                       {result.score_b}
                     </p>
                     <p className="text-sm text-muted-foreground mt-1">
                       /100 Risk Score
                     </p>
-                    <p className={`text-sm font-medium mt-2 ${getScoreColor(result.score_b)}`}>
+                    <p
+                      className={`text-sm font-medium mt-2 ${getScoreColor(
+                        result.score_b
+                      )}`}
+                    >
                       {result.label_b}
                     </p>
                   </div>
@@ -504,11 +533,15 @@ export default function ComparePage() {
                         </div>
                         <div className="flex items-center gap-4">
                           <div className="flex items-center gap-1">
-                            <span className="text-xs text-muted-foreground">A:</span>
+                            <span className="text-xs text-muted-foreground">
+                              A:
+                            </span>
                             {getRiskIcon(comp.contract_a.risk_level)}
                           </div>
                           <div className="flex items-center gap-1">
-                            <span className="text-xs text-muted-foreground">B:</span>
+                            <span className="text-xs text-muted-foreground">
+                              B:
+                            </span>
                             {getRiskIcon(comp.contract_b.risk_level)}
                           </div>
                           {expandedClauses.has(i) ? (
@@ -528,7 +561,11 @@ export default function ComparePage() {
                               </p>
                               <div className="flex items-center gap-2 mb-1">
                                 {getRiskIcon(comp.contract_a.risk_level)}
-                                <span className={`text-sm font-medium ${getRiskColor(comp.contract_a.risk_level)}`}>
+                                <span
+                                  className={`text-sm font-medium ${getRiskColor(
+                                    comp.contract_a.risk_level
+                                  )}`}
+                                >
                                   {comp.contract_a.value}
                                 </span>
                               </div>
@@ -542,7 +579,11 @@ export default function ComparePage() {
                               </p>
                               <div className="flex items-center gap-2 mb-1">
                                 {getRiskIcon(comp.contract_b.risk_level)}
-                                <span className={`text-sm font-medium ${getRiskColor(comp.contract_b.risk_level)}`}>
+                                <span
+                                  className={`text-sm font-medium ${getRiskColor(
+                                    comp.contract_b.risk_level
+                                  )}`}
+                                >
                                   {comp.contract_b.value}
                                 </span>
                               </div>
@@ -590,7 +631,23 @@ export default function ComparePage() {
                 <ArrowLeftRight className="h-5 w-5" />
                 Compare Again
               </Button>
+              <Button
+                size="lg"
+                onClick={() => setShowShareCard(true)}
+                className="gap-2 bg-blue-600 hover:bg-blue-700"
+              >
+                <Share2 className="h-5 w-5" />
+                Share Comparison
+              </Button>
             </div>
+
+            {/* Comparison Card Modal */}
+            <ComparisonCardModal
+              isOpen={showShareCard}
+              onClose={() => setShowShareCard(false)}
+              data={result}
+              documentType={documentType}
+            />
           </>
         )}
       </div>

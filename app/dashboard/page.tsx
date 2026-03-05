@@ -12,6 +12,7 @@ import {
   Upload,
   Shield,
   Sparkles,
+  Gift,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -46,6 +47,7 @@ export default function DashboardPage() {
   const [contractsBuilt, setContractsBuilt] = useState(0);
 
   const supabase = createClient();
+  const currentYear = new Date().getFullYear();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -183,8 +185,7 @@ export default function DashboardPage() {
             </h1>
             <p className="text-muted-foreground">
               {documents.length} contract{documents.length !== 1 ? "s" : ""} analyzed
-              {contractsBuilt > 0 &&
-                ` · ${contractsBuilt} built`}
+              {contractsBuilt > 0 && ` · ${contractsBuilt} built`}
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -203,6 +204,50 @@ export default function DashboardPage() {
           </div>
         </motion.div>
 
+        {/* ── CONTRACT WRAPPED CTA ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+        >
+          <Card className="relative overflow-hidden border-0 bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-pink-500/10">
+            {/* Animated background glow */}
+            <div className="absolute inset-0 overflow-hidden">
+              <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-purple-500/20 to-transparent rounded-full blur-3xl animate-pulse" />
+              <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-tl from-pink-500/20 to-transparent rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
+            </div>
+
+            <CardContent className="relative p-5 sm:p-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-4">
+                  <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-purple-500 via-blue-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/25">
+                    <Gift className="h-7 w-7 text-white" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="text-lg font-bold text-white">
+                        Your {currentYear} Contract Wrapped
+                      </h3>
+                      <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-[10px] border-0">
+                        NEW
+                      </Badge>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      See your contract journey — stats, savings, badges & more!
+                    </p>
+                  </div>
+                </div>
+                <Link href="/wrapped">
+                  <Button className="bg-gradient-to-r from-purple-600 via-blue-600 to-pink-600 hover:from-purple-700 hover:via-blue-700 hover:to-pink-700 gap-2 shadow-lg shadow-purple-500/25 w-full sm:w-auto">
+                    <Sparkles className="h-4 w-4" />
+                    View Wrapped
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
         {/* ── SECTION 1: Portfolio Stats ── */}
         {stats && <PortfolioStatsSection stats={stats} />}
 
@@ -212,9 +257,7 @@ export default function DashboardPage() {
             <RiskTrendChart data={chartData} />
           </div>
           <div className="lg:col-span-2">
-            {stats && (
-              <InsightsSection stats={stats} documents={documents} />
-            )}
+            {stats && <InsightsSection stats={stats} documents={documents} />}
           </div>
         </div>
 

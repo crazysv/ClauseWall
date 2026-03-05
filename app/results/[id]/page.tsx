@@ -38,6 +38,8 @@ import QRSection from "@/components/results/qr-section";
 import EntityReputation from "@/components/results/entity-reputation";
 import MismatchBanner from "@/components/results/mismatch-banner";
 import ScoreCardModal from "@/components/results/score-card-modal";
+import VideoCardModal from "@/components/results/video-card-modal";
+import { Video } from "lucide-react";
 
 interface HybridClause extends Clause {
   verification_source?: "database" | "ai";
@@ -59,6 +61,7 @@ export default function ResultsPage() {
   const [refreshing, setRefreshing] = useState(false);
   const [filterRisk, setFilterRisk] = useState<string>("all");
   const [showScoreCard, setShowScoreCard] = useState(false);
+  const [showVideoCard, setShowVideoCard] = useState(false);
 
   const supabase = createClient();
 
@@ -508,6 +511,15 @@ export default function ResultsPage() {
             <Share2 className="h-5 w-5" />
             Share Score Card
           </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            className="gap-2"
+            onClick={() => setShowVideoCard(true)}
+          >
+            <Video className="h-5 w-5" />
+            Animated Video
+          </Button>
         </div>
 
         {/* QR Verification Badge */}
@@ -517,6 +529,13 @@ export default function ResultsPage() {
         <ScoreCardModal
           isOpen={showScoreCard}
           onClose={() => setShowScoreCard(false)}
+          document={document}
+          clauses={clauses}
+          verificationRate={verificationStats.verification_rate}
+        />
+        <VideoCardModal
+          isOpen={showVideoCard}
+          onClose={() => setShowVideoCard(false)}
           document={document}
           clauses={clauses}
           verificationRate={verificationStats.verification_rate}

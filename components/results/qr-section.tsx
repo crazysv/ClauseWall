@@ -16,6 +16,7 @@ import {
   EyeOff,
   FileText,
   Users,
+  Code2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -36,6 +37,7 @@ import {
 import type { ShareSettings } from "@/lib/qr";
 import { getStateName, getDocumentTypeLabel } from "@/lib/utils/constants";
 import type { Document } from "@/types";
+import EmbedCodeModal from "@/components/embed/embed-code-modal";
 
 interface QRSectionProps {
   document: Document;
@@ -51,6 +53,7 @@ export default function QRSection({ document: doc }: QRSectionProps) {
   const [generating, setGenerating] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [showEmbed, setShowEmbed] = useState(false);
   const badgeRef = useRef<HTMLDivElement>(null);
 
   const tier = getVerificationTier(doc.overall_risk_score);
@@ -442,6 +445,15 @@ export default function QRSection({ document: doc }: QRSectionProps) {
             <Button
               variant="outline"
               size="sm"
+              onClick={() => setShowEmbed(true)}
+              className="gap-2"
+            >
+              <Code2 className="h-3.5 w-3.5" />
+              Embed Code
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
               onClick={downloadPNG}
               className="gap-2"
             >
@@ -469,6 +481,15 @@ export default function QRSection({ document: doc }: QRSectionProps) {
                 <Copy className="h-3.5 w-3.5" />
               )}
               Copy Link
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowEmbed(true)}
+              className="gap-2"
+            >
+              <Code2 className="h-3.5 w-3.5" />
+              Embed Code
             </Button>
           </div>
 
@@ -725,6 +746,12 @@ export default function QRSection({ document: doc }: QRSectionProps) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      {/* Embed Code Modal */}
+        <EmbedCodeModal
+          isOpen={showEmbed}
+          onClose={() => setShowEmbed(false)}
+          shareId={shareId!}
+      />
     </>
   );
 }
