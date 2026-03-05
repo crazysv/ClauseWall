@@ -37,6 +37,7 @@ import ClauseCard from "@/components/results/clause-card";
 import QRSection from "@/components/results/qr-section";
 import EntityReputation from "@/components/results/entity-reputation";
 import MismatchBanner from "@/components/results/mismatch-banner";
+import ScoreCardModal from "@/components/results/score-card-modal";
 
 interface HybridClause extends Clause {
   verification_source?: "database" | "ai";
@@ -57,6 +58,7 @@ export default function ResultsPage() {
   const [expandedClauses, setExpandedClauses] = useState<Set<string>>(new Set());
   const [refreshing, setRefreshing] = useState(false);
   const [filterRisk, setFilterRisk] = useState<string>("all");
+  const [showScoreCard, setShowScoreCard] = useState(false);
 
   const supabase = createClient();
 
@@ -483,32 +485,43 @@ export default function ResultsPage() {
           </div>
         )}
 
-        {/* Bottom Actions */}
+                {/* Bottom Actions */}
         <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
-        <Link href={`/negotiate/${documentId}`}>
-        <Button size="lg" className="gap-2 bg-purple-600 hover:bg-purple-700 w-full sm:w-auto">
-        <Swords className="h-5 w-5" />
-        Negotiation Playbook
-        </Button>
-        </Link>
-        <Link href={`/letter/${documentId}`}>
-        <Button size="lg" className="gap-2 bg-blue-600 hover:bg-blue-700 w-full sm:w-auto">
-        <FileText className="h-5 w-5" />
-        Generate Legal Notice
-        </Button>
-        </Link>
-        <Button variant="outline" size="lg" className="gap-2">
-        <Download className="h-5 w-5" />
-        Download Report
-        </Button>
-        <Button variant="outline" size="lg" className="gap-2">
-        <Share2 className="h-5 w-5" />
-        Share Results
-        </Button>
+          <Link href={`/negotiate/${documentId}`}>
+            <Button size="lg" className="gap-2 bg-purple-600 hover:bg-purple-700 w-full sm:w-auto">
+              <Swords className="h-5 w-5" />
+              Negotiation Playbook
+            </Button>
+          </Link>
+          <Link href={`/letter/${documentId}`}>
+            <Button size="lg" className="gap-2 bg-blue-600 hover:bg-blue-700 w-full sm:w-auto">
+              <FileText className="h-5 w-5" />
+              Generate Legal Notice
+            </Button>
+          </Link>
+          <Button
+            variant="outline"
+            size="lg"
+            className="gap-2"
+            onClick={() => setShowScoreCard(true)}
+          >
+            <Share2 className="h-5 w-5" />
+            Share Score Card
+          </Button>
         </div>
+
         {/* QR Verification Badge */}
         <QRSection document={document} />
-        </div>
-        </div>
-        );
-      }
+
+        {/* Score Card Share Modal */}
+        <ScoreCardModal
+          isOpen={showScoreCard}
+          onClose={() => setShowScoreCard(false)}
+          document={document}
+          clauses={clauses}
+          verificationRate={verificationStats.verification_rate}
+        />
+      </div>
+    </div>
+  );
+}
