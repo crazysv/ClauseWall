@@ -45,6 +45,8 @@ export interface Document {
   original_filename: string | null;
   document_type: DocumentType;
   jurisdiction: string;
+  detected_jurisdiction: string | null;
+  detected_document_type: string | null;
   raw_text: string;
   overall_risk_score: number;
   total_clauses: number;

@@ -135,11 +135,11 @@ export default function ClauseCard({ clause, isExpanded, onToggle, jurisdiction 
       color: "green",
     },
     {
-      key: "negotiate",
-      icon: <MessageSquare className="h-3.5 w-3.5" />,
-      label: "What to Say",
-      available: !!clause.negotiation_script,
-      color: "purple",
+    key: "negotiate",
+    icon: <MessageSquare className="h-3.5 w-3.5" />,
+    label: "What to Say",
+    available: clause.risk_level !== "safe",
+    color: "purple",
     },
     {
       key: "penalty",

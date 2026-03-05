@@ -137,6 +137,9 @@ export default function UploadPage() {
       setPageState("results");
       toast.success("Quick scan complete!");
 
+      // Scroll to top to show results
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
       // Step 2: Save to DB + Trigger Full Analysis (same as bot flow)
     const rawText = quickData.raw_text;
   if (rawText && rawText.trim().length >= 50) {

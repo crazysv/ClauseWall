@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import {
   Skull,
   AlertTriangle,
@@ -8,18 +9,34 @@ import {
   MapPin,
   Flag,
   Loader2,
+  Search,
+  Shield,
+  Users,
+  ArrowRight,
+  ExternalLink,
+  Filter,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { createClient } from "@/lib/supabase/client";
-import { getStateName } from "@/lib/utils/constants";
+import { getStateName, JURISDICTIONS } from "@/lib/utils/constants";
 import type { FlaggedEntity } from "@/types";
-import { toast } from "sonner";
 
 export default function WallOfShamePage() {
   const [entities, setEntities] = useState<FlaggedEntity[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterJurisdiction, setFilterJurisdiction] = useState("all");
+  const [totalDocuments, setTotalDocuments] = useState(0);
 
   const supabase = createClient();
 
@@ -30,10 +47,18 @@ export default function WallOfShamePage() {
           .from("flagged_entities")
           .select("*")
           .order("total_flags", { ascending: false })
-          .limit(50);
+          .limit(100);
 
         if (error) throw error;
         setEntities((data as FlaggedEntity[]) || []);
+
+        // Get total documents count for stats
+        const { count } = await supabase
+          .from("documents")
+          .select("*", { count: "exact", head: true })
+          .eq("analysis_status", "completed");
+
+        setTotalDocuments(count || 0);
       } catch (err) {
         console.error("Failed to load entities:", err);
       } finally {
@@ -43,6 +68,82 @@ export default function WallOfShamePage() {
 
     fetchEntities();
   }, []);
+
+  // Filter entities
+  const filteredEntities = entities.filter((entity) => {
+    const matchesSearch =
+      searchQuery === "" ||
+      entity.entity_name.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesJurisdiction =
+      filterJurisdiction === "all" ||
+      entity.jurisdiction === filterJurisdiction;
+
+    return matchesSearch && matchesJurisdiction;
+  });
+
+  // Stats
+  const totalFlags = entities.reduce((sum, e) => sum + (e.total_flags || 0), 0);
+  const avgRiskScore =
+    entities.length > 0
+      ? Math.round(
+          entities.reduce((sum, e) => sum + (e.avg_risk_score || 0), 0) /
+            entities.length
+        )
+      : 0;
+
+  // Get rank badge
+  const getRankBadge = (index: number) => {
+    if (index === 0)
+      return (
+        <span className="text-2xl" title="Most flagged">
+          🥇
+        </span>
+      );
+    if (index === 1)
+      return (
+        <span className="text-2xl" title="2nd most flagged">
+          🥈
+        </span>
+      );
+    if (index === 2)
+      return (
+        <span className="text-2xl" title="3rd most flagged">
+          🥉
+        </span>
+      );
+    return (
+      <div className="h-10 w-10 rounded-lg bg-red-500/10 flex items-center justify-center">
+        <span className="text-sm font-bold text-red-400">#{index + 1}</span>
+      </div>
+    );
+  };
+
+  const getRiskBadge = (score: number) => {
+    if (score >= 80)
+      return (
+        <Badge className="bg-purple-500/15 text-purple-400 border-purple-500/30 text-[10px]">
+          ⛔ Critical
+        </Badge>
+      );
+    if (score >= 60)
+      return (
+        <Badge className="bg-red-500/15 text-red-400 border-red-500/30 text-[10px]">
+          🔴 High Risk
+        </Badge>
+      );
+    if (score >= 30)
+      return (
+        <Badge className="bg-yellow-500/15 text-yellow-400 border-yellow-500/30 text-[10px]">
+          🟡 Medium
+        </Badge>
+      );
+    return (
+      <Badge className="bg-green-500/15 text-green-400 border-green-500/30 text-[10px]">
+        🟢 Low
+      </Badge>
+    );
+  };
 
   if (loading) {
     return (
@@ -63,7 +164,7 @@ export default function WallOfShamePage() {
 
       <div className="relative mx-auto max-w-5xl">
         {/* Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-red-500/10 mb-6">
             <Skull className="h-8 w-8 text-red-400" />
           </div>
@@ -76,45 +177,152 @@ export default function WallOfShamePage() {
           </p>
         </div>
 
+        {/* Stats */}
+        {entities.length > 0 && (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+            <Card className="bg-gray-900/50 border-gray-800">
+              <CardContent className="p-4 text-center">
+                <p className="text-2xl font-bold text-red-400">
+                  {entities.length}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Flagged Entities
+                </p>
+              </CardContent>
+            </Card>
+            <Card className="bg-gray-900/50 border-gray-800">
+              <CardContent className="p-4 text-center">
+                <p className="text-2xl font-bold text-orange-400">
+                  {totalFlags}
+                </p>
+                <p className="text-xs text-muted-foreground">Total Flags</p>
+              </CardContent>
+            </Card>
+            <Card className="bg-gray-900/50 border-gray-800">
+              <CardContent className="p-4 text-center">
+                <p className="text-2xl font-bold text-purple-400">
+                  {avgRiskScore}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Avg Risk Score
+                </p>
+              </CardContent>
+            </Card>
+            <Card className="bg-gray-900/50 border-gray-800">
+              <CardContent className="p-4 text-center">
+                <p className="text-2xl font-bold text-blue-400">
+                  {totalDocuments}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Contracts Scanned
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {/* Search & Filter */}
+        <div className="flex flex-col sm:flex-row gap-3 mb-6">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search by entity name..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-9 bg-gray-900/50 border-gray-800"
+            />
+          </div>
+          <Select
+            value={filterJurisdiction}
+            onValueChange={setFilterJurisdiction}
+          >
+            <SelectTrigger className="w-full sm:w-[200px] bg-gray-900/50 border-gray-800">
+              <Filter className="h-4 w-4 mr-2 text-muted-foreground" />
+              <SelectValue placeholder="All States" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All States</SelectItem>
+              {JURISDICTIONS.map((j) => (
+                <SelectItem key={j.value} value={j.value}>
+                  {j.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
         {/* Empty State */}
         {entities.length === 0 && (
           <Card className="glass border-white/5">
             <CardContent className="p-12 text-center">
-              <AlertTriangle className="h-12 w-12 text-yellow-500 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">No flagged entities yet</h3>
-              <p className="text-muted-foreground mb-6">
-                When users flag landlords, employers, or companies with predatory contracts,
-                they&apos;ll appear here.
+              <Shield className="h-12 w-12 text-green-500 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold mb-2">
+                No Flagged Entities Yet
+              </h3>
+              <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+                When users flag landlords, employers, or companies with
+                predatory contracts, they&apos;ll appear here. Be the first to
+                contribute!
               </p>
-              <p className="text-sm text-muted-foreground">
-                Analyze a contract and flag problematic entities to contribute.
+              <Link href="/upload">
+                <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
+                  <Shield className="h-4 w-4" />
+                  Analyze a Contract
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Filtered Empty State */}
+        {entities.length > 0 && filteredEntities.length === 0 && (
+          <Card className="glass border-white/5">
+            <CardContent className="p-8 text-center">
+              <Search className="h-8 w-8 text-muted-foreground mx-auto mb-3" />
+              <p className="text-muted-foreground">
+                No entities found matching your search.
               </p>
+              <button
+                onClick={() => {
+                  setSearchQuery("");
+                  setFilterJurisdiction("all");
+                }}
+                className="text-blue-400 text-sm mt-2 hover:underline"
+              >
+                Clear filters
+              </button>
             </CardContent>
           </Card>
         )}
 
         {/* Entities List */}
         <div className="space-y-4">
-          {entities.map((entity, index) => (
+          {filteredEntities.map((entity, index) => (
             <Card
               key={entity.id}
-              className="glass border-white/5 hover:border-red-500/20 transition-all"
+              className={`bg-gray-900/50 border-gray-800 hover:border-red-500/20 transition-all overflow-hidden ${
+                index < 3 ? "border-red-500/20" : ""
+              }`}
             >
+              {/* Top 3 get a red stripe */}
+              {index < 3 && <div className="h-0.5 bg-red-500" />}
+
               <CardContent className="p-4 sm:p-6">
                 <div className="flex items-start justify-between gap-4">
                   {/* Left Side */}
                   <div className="flex items-start gap-4">
-                    <div className="h-12 w-12 rounded-lg bg-red-500/10 flex items-center justify-center flex-shrink-0">
-                      <span className="text-lg font-bold text-red-400">
-                        #{index + 1}
-                      </span>
+                    <div className="flex-shrink-0 mt-1">
+                      {getRankBadge(index)}
                     </div>
                     <div>
                       <h3 className="font-semibold text-lg mb-1">
                         {entity.entity_name}
                       </h3>
                       <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground mb-3">
-                        <Badge variant="outline" className="text-xs">
+                        <Badge
+                          variant="outline"
+                          className="text-xs border-white/10"
+                        >
                           {entity.entity_type}
                         </Badge>
                         {entity.jurisdiction && (
@@ -123,35 +331,43 @@ export default function WallOfShamePage() {
                             {getStateName(entity.jurisdiction)}
                           </span>
                         )}
+                        {getRiskBadge(entity.avg_risk_score)}
                       </div>
-                      {entity.common_violations && entity.common_violations.length > 0 && (
-                        <div className="flex flex-wrap gap-2">
-                          {entity.common_violations.slice(0, 3).map((violation, i) => (
-                            <Badge
-                              key={i}
-                              className="bg-red-500/10 text-red-400 border-red-500/20"
-                            >
-                              {violation}
-                            </Badge>
-                          ))}
-                        </div>
-                      )}
+
+                      {/* Common Violations */}
+                      {entity.common_violations &&
+                        entity.common_violations.length > 0 && (
+                          <div className="flex flex-wrap gap-2">
+                            {entity.common_violations
+                              .slice(0, 4)
+                              .map((violation, i) => (
+                                <Badge
+                                  key={i}
+                                  className="bg-red-500/10 text-red-300 border-red-500/20 text-xs"
+                                >
+                                  {violation.length > 50
+                                    ? violation.substring(0, 50) + "..."
+                                    : violation}
+                                </Badge>
+                              ))}
+                          </div>
+                        )}
                     </div>
                   </div>
 
                   {/* Right Side */}
                   <div className="text-right flex-shrink-0">
-                    <div className="flex items-center gap-2 mb-2">
+                    <div className="flex items-center gap-2 mb-1">
                       <Flag className="h-4 w-4 text-red-400" />
                       <span className="text-2xl font-bold text-red-400">
                         {entity.total_flags}
                       </span>
                     </div>
-                    <p className="text-xs text-muted-foreground">flags</p>
+                    <p className="text-xs text-muted-foreground mb-2">flags</p>
                     {entity.avg_risk_score > 0 && (
-                      <div className="mt-2 flex items-center gap-1 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-1 text-sm text-muted-foreground justify-end">
                         <TrendingUp className="h-3 w-3" />
-                        Avg score: {entity.avg_risk_score}
+                        Avg: {entity.avg_risk_score}/100
                       </div>
                     )}
                   </div>
@@ -161,6 +377,22 @@ export default function WallOfShamePage() {
           ))}
         </div>
 
+        {/* CTA */}
+        {entities.length > 0 && (
+          <div className="mt-12 text-center">
+            <p className="text-muted-foreground mb-4">
+              Know a predatory landlord or company? Help others by flagging
+              them.
+            </p>
+            <Link href="/upload">
+              <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
+                <Shield className="h-4 w-4" />
+                Analyze & Flag a Contract
+              </Button>
+            </Link>
+          </div>
+        )}
+
         {/* Disclaimer */}
         <div className="mt-12 p-4 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
           <div className="flex items-start gap-3">
@@ -168,9 +400,10 @@ export default function WallOfShamePage() {
             <div className="text-sm text-yellow-300">
               <p className="font-medium mb-1">Disclaimer</p>
               <p className="text-yellow-300/80">
-                This list is community-generated based on user reports. Being listed here
-                does not constitute a legal judgment. Always verify information independently
-                and consult legal professionals when needed.
+                This list is community-generated based on anonymous user
+                reports. Being listed here does not constitute a legal judgment.
+                Always verify information independently and consult legal
+                professionals when needed.
               </p>
             </div>
           </div>

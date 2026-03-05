@@ -14,6 +14,14 @@ import {
   BookOpen,
   ChevronRight,
   Blocks,
+  QrCode,
+  Chrome,
+  MessageSquare,
+  Smartphone,
+  Globe,
+  Sparkles,
+  Users,
+  BadgeCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -32,6 +40,31 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative px-4 sm:px-6 lg:px-8 pt-20 pb-32">
         <div className="mx-auto max-w-7xl text-center">
+          {/* New Feature Badges */}
+          <div className="animate-fade-in-up mb-6 flex flex-wrap items-center justify-center gap-2">
+            <Badge
+              variant="outline"
+              className="px-3 py-1 text-xs border-green-500/30 bg-green-500/5 text-green-400"
+            >
+              <Chrome className="h-3 w-3 mr-1" />
+              Browser Extension
+            </Badge>
+            <Badge
+              variant="outline"
+              className="px-3 py-1 text-xs border-purple-500/30 bg-purple-500/5 text-purple-400"
+            >
+              <QrCode className="h-3 w-3 mr-1" />
+              QR Verification
+            </Badge>
+            <Badge
+              variant="outline"
+              className="px-3 py-1 text-xs border-blue-500/30 bg-blue-500/5 text-blue-400"
+            >
+              <MessageSquare className="h-3 w-3 mr-1" />
+              Negotiation Scripts
+            </Badge>
+          </div>
+
           <div className="animate-fade-in-up mb-8">
             <Badge
               variant="outline"
@@ -57,9 +90,8 @@ export default function HomePage() {
             <span className="text-red-400 font-medium">designed to trap you</span>
             , cites the{" "}
             <span className="text-blue-400 font-medium">exact Indian laws they violate</span>
-            , and builds a{" "}
-            <span className="text-green-400 font-medium">wall of protection</span>{" "}
-            around you.
+            , and helps you{" "}
+            <span className="text-green-400 font-medium">negotiate with confidence</span>.
           </p>
 
           <div className="animate-fade-in-up stagger-3 mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -73,14 +105,14 @@ export default function HomePage() {
                 <ArrowRight className="h-5 w-5" />
               </Button>
             </Link>
-            <Link href="#how-it-works">
+            <Link href="#features">
               <Button
                 variant="outline"
                 size="lg"
                 className="text-lg px-8 py-6 gap-2 border-white/10 hover:bg-white/5"
               >
                 <Eye className="h-5 w-5" />
-                See How It Works
+                See All Features
               </Button>
             </Link>
           </div>
@@ -92,7 +124,7 @@ export default function HomePage() {
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4 text-green-500" />
-              <span>No Data Stored</span>
+              <span>750+ Legal Rules</span>
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4 text-green-500" />
@@ -100,7 +132,42 @@ export default function HomePage() {
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4 text-green-500" />
-              <span>Real Legal Citations</span>
+              <span>Browser Extension</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* NEW: Extension Highlight Banner */}
+      <section className="relative px-4 sm:px-6 lg:px-8 pb-16">
+        <div className="mx-auto max-w-5xl">
+          <div className="glass rounded-2xl p-6 sm:p-8 border border-green-500/20 bg-gradient-to-r from-green-500/5 to-blue-500/5">
+            <div className="flex flex-col md:flex-row items-center gap-6">
+              <div className="flex-shrink-0">
+                <div className="h-16 w-16 rounded-2xl bg-green-500/10 flex items-center justify-center">
+                  <Chrome className="h-8 w-8 text-green-400" />
+                </div>
+              </div>
+              <div className="flex-1 text-center md:text-left">
+                <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
+                  <h3 className="text-xl font-bold">Browser Extension</h3>
+                  <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-[10px]">
+                    NEW
+                  </Badge>
+                </div>
+                <p className="text-muted-foreground text-sm">
+                  Automatically scan Terms of Service on any website. Visit Spotify, Uber, or any app&apos;s
+                  legal page — ClauseWall highlights dangerous clauses in real-time.
+                </p>
+              </div>
+              <div className="flex-shrink-0">
+                <Link href="#extension">
+                  <Button className="bg-green-600 hover:bg-green-700 gap-2">
+                    <Globe className="h-4 w-4" />
+                    Learn More
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -190,7 +257,7 @@ export default function HomePage() {
       </section>
 
       {/* Features */}
-      <section className="relative px-4 sm:px-6 lg:px-8 py-24 border-t border-white/5">
+      <section id="features" className="relative px-4 sm:px-6 lg:px-8 py-24 border-t border-white/5">
         <div className="mx-auto max-w-7xl">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold">
@@ -198,20 +265,21 @@ export default function HomePage() {
             </h2>
             <p className="mt-4 text-muted-foreground max-w-xl mx-auto">
               ChatGPT gives vague advice. ClauseWall gives you exact Indian laws, risk scores,
-              and legal notices.
+              negotiation scripts, and legal notices.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Existing Features */}
             <Card className="glass border-white/5 hover:border-blue-500/20 transition-all hover:glow-blue group">
               <CardContent className="p-6">
                 <div className="h-12 w-12 rounded-xl bg-blue-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                   <Scale className="h-6 w-6 text-blue-400" />
                 </div>
-                <h3 className="text-lg font-semibold mb-2">State-Aware Analysis</h3>
+                <h3 className="text-lg font-semibold mb-2">750+ Legal Rules</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Not generic advice. We check YOUR state&apos;s specific laws — Maharashtra Rent
-                  Control Act, Delhi Rent Act, Karnataka Rent Act, and more.
+                  Verified against Indian Contract Act, RERA, Model Tenancy Act, and state-specific
+                  laws. Not AI guesses — real legal database.
                 </p>
               </CardContent>
             </Card>
@@ -237,15 +305,70 @@ export default function HomePage() {
                 <h3 className="text-lg font-semibold mb-2">Legal Notice Generator</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   Don&apos;t just find problems — fight back. Auto-generate a professional legal
-                  notice under Indian law citing every violation.
+                  notice citing every violation.
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="glass border-white/5 hover:border-purple-500/20 transition-all hover:glow-purple group">
+            {/* NEW Feature Cards */}
+            <Card className="glass border-white/5 hover:border-purple-500/20 transition-all group relative overflow-hidden">
+              <div className="absolute top-3 right-3">
+                <Badge className="bg-purple-500/20 text-purple-400 border-purple-500/30 text-[10px]">
+                  NEW
+                </Badge>
+              </div>
               <CardContent className="p-6">
                 <div className="h-12 w-12 rounded-xl bg-purple-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <BookOpen className="h-6 w-6 text-purple-400" />
+                  <MessageSquare className="h-6 w-6 text-purple-400" />
+                </div>
+                <h3 className="text-lg font-semibold mb-2">Negotiation Playbook</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Get exact scripts for what to say to your landlord. Counter-responses for every
+                  pushback. Share to WhatsApp.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card id="extension" className="glass border-white/5 hover:border-green-500/20 transition-all group relative overflow-hidden">
+              <div className="absolute top-3 right-3">
+                <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-[10px]">
+                  NEW
+                </Badge>
+              </div>
+              <CardContent className="p-6">
+                <div className="h-12 w-12 rounded-xl bg-green-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Chrome className="h-6 w-6 text-green-400" />
+                </div>
+                <h3 className="text-lg font-semibold mb-2">Browser Extension</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Auto-scan Terms of Service on any website. Extension highlights dangerous clauses
+                  in real-time. Works on Chrome, Brave, Edge.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="glass border-white/5 hover:border-blue-500/20 transition-all group relative overflow-hidden">
+              <div className="absolute top-3 right-3">
+                <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30 text-[10px]">
+                  NEW
+                </Badge>
+              </div>
+              <CardContent className="p-6">
+                <div className="h-12 w-12 rounded-xl bg-blue-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <QrCode className="h-6 w-6 text-blue-400" />
+                </div>
+                <h3 className="text-lg font-semibold mb-2">QR Verification Badge</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  &quot;Scan Before You Sign&quot; — Generate a QR badge for your contract. Tenant scans,
+                  sees verification status. Build trust.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="glass border-white/5 hover:border-yellow-500/20 transition-all group">
+              <CardContent className="p-6">
+                <div className="h-12 w-12 rounded-xl bg-yellow-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <BookOpen className="h-6 w-6 text-yellow-400" />
                 </div>
                 <h3 className="text-lg font-semibold mb-2">Fair Alternative Suggestions</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
@@ -255,15 +378,15 @@ export default function HomePage() {
               </CardContent>
             </Card>
 
-            <Card className="glass border-white/5 hover:border-yellow-500/20 transition-all group">
+            <Card className="glass border-white/5 hover:border-orange-500/20 transition-all group">
               <CardContent className="p-6">
-                <div className="h-12 w-12 rounded-xl bg-yellow-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <Eye className="h-6 w-6 text-yellow-400" />
+                <div className="h-12 w-12 rounded-xl bg-orange-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Users className="h-6 w-6 text-orange-400" />
                 </div>
-                <h3 className="text-lg font-semibold mb-2">Comparison Engine</h3>
+                <h3 className="text-lg font-semibold mb-2">Community Intelligence</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  &quot;This deposit clause is harsher than 94% of similar agreements in
-                  Mumbai.&quot; Know exactly where you stand.
+                  &quot;This clause pattern has been flagged 47 times in Mumbai.&quot; Learn from
+                  others&apos; experiences. Crowdsourced protection.
                 </p>
               </CardContent>
             </Card>
@@ -275,8 +398,8 @@ export default function HomePage() {
                 </div>
                 <h3 className="text-lg font-semibold mb-2">Wall of Shame</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Community-powered. &quot;This landlord&apos;s contracts have been flagged 47
-                  times.&quot; Check before you sign.
+                  &quot;This landlord&apos;s contracts have been flagged 47
+                  times.&quot; Check entity reputation before you sign.
                 </p>
               </CardContent>
             </Card>
@@ -315,8 +438,8 @@ export default function HomePage() {
               <div className="text-sm font-medium text-purple-400 mb-2">Step 2</div>
               <h3 className="text-xl font-semibold mb-3">Analyze</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                ClauseWall breaks down every clause, checks against Indian laws and your
-                state&apos;s specific regulations, and scores each one.
+                Quick scan in 5 seconds. Full verified analysis in 60 seconds with 750+ legal rules
+                and state-specific regulations.
               </p>
             </div>
 
@@ -327,9 +450,33 @@ export default function HomePage() {
               <div className="text-sm font-medium text-green-400 mb-2">Step 3</div>
               <h3 className="text-xl font-semibold mb-3">Protect</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Get your risk report, generate a legal notice, and sign with confidence — or
-                walk away with proof.
+                Get negotiation scripts, generate legal notices, share QR badge — or walk away
+                with proof.
               </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="relative px-4 sm:px-6 lg:px-8 py-16 border-t border-white/5">
+        <div className="mx-auto max-w-5xl">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="text-center">
+              <div className="text-4xl font-bold text-blue-400">750+</div>
+              <div className="text-sm text-muted-foreground mt-1">Legal Rules</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-green-400">21</div>
+              <div className="text-sm text-muted-foreground mt-1">Indian States</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-purple-400">10</div>
+              <div className="text-sm text-muted-foreground mt-1">Contract Types</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-yellow-400">5 sec</div>
+              <div className="text-sm text-muted-foreground mt-1">Quick Scan</div>
             </div>
           </div>
         </div>
@@ -346,16 +493,34 @@ export default function HomePage() {
             Lakhs of Indians sign predatory rental agreements every year. Employment bonds
             with illegal clauses trap workers. Build your wall.
           </p>
-          <Link href="/upload">
-            <Button
-              size="lg"
-              className="bg-blue-600 hover:bg-blue-700 text-lg px-10 py-7 gap-3 shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-105"
-            >
-              <Shield className="h-5 w-5" />
-              Build Your Wall — It&apos;s Free
-              <ChevronRight className="h-5 w-5" />
-            </Button>
-          </Link>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link href="/upload">
+              <Button
+                size="lg"
+                className="bg-blue-600 hover:bg-blue-700 text-lg px-10 py-7 gap-3 shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-105"
+              >
+                <Shield className="h-5 w-5" />
+                Build Your Wall — It&apos;s Free
+                <ChevronRight className="h-5 w-5" />
+              </Button>
+            </Link>
+          </div>
+
+          {/* Trust Badges */}
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-4 text-xs text-muted-foreground">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
+              <BadgeCheck className="h-3.5 w-3.5 text-green-400" />
+              Verified Legal Database
+            </div>
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
+              <Smartphone className="h-3.5 w-3.5 text-blue-400" />
+              Works on Mobile
+            </div>
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
+              <Chrome className="h-3.5 w-3.5 text-purple-400" />
+              Browser Extension
+            </div>
+          </div>
         </div>
       </section>
     </div>

@@ -35,6 +35,8 @@ import type { Document, Clause } from "@/types";
 import { toast } from "sonner";
 import ClauseCard from "@/components/results/clause-card";
 import QRSection from "@/components/results/qr-section";
+import EntityReputation from "@/components/results/entity-reputation";
+import MismatchBanner from "@/components/results/mismatch-banner";
 
 interface HybridClause extends Clause {
   verification_source?: "database" | "ai";
@@ -112,6 +114,11 @@ export default function ResultsPage() {
   useEffect(() => {
     fetchData();
   }, [documentId]);
+
+  // Scroll to top when page loads
+  useEffect(() => {
+  window.scrollTo({ top: 0, behavior: "instant" });
+  }, []);
 
   useEffect(() => {
     if (
@@ -260,6 +267,23 @@ export default function ResultsPage() {
           </div>
         </div>
 
+                {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+          {/* ... header content ... */}
+        </div>
+
+        {/* Mismatch Warning (Jurisdiction or Document Type) */}
+        <MismatchBanner
+          documentId={documentId}
+          selectedJurisdiction={document.jurisdiction}
+          detectedJurisdiction={document.detected_jurisdiction}
+          selectedDocType={document.document_type}
+          detectedDocType={document.detected_document_type}
+        />
+
+        {/* Score Overview */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8"></div>
+
         {/* Score Overview */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
           {/* Main Score */}
@@ -313,19 +337,13 @@ export default function ResultsPage() {
             </CardContent>
           </Card>
 
-          {/* Entity */}
+                    {/* Entity */}
           <Card className="bg-gray-900/50 border-gray-800">
             <CardContent className="p-6 flex flex-col justify-center h-full">
               <p className="text-sm text-muted-foreground mb-2">Identified Entity</p>
               <p className="font-semibold truncate">
                 {document.entity_name || "Not identified"}
               </p>
-              {document.entity_name && (
-                <Button variant="ghost" size="sm" className="mt-3 gap-2 text-red-400">
-                  <Flag className="h-3 w-3" />
-                  Flag Entity
-                </Button>
-              )}
             </CardContent>
           </Card>
         </div>
@@ -344,6 +362,23 @@ export default function ResultsPage() {
             </CardContent>
           </Card>
         )}
+
+                {/* Entity Reputation */}
+        <div className="mb-8">
+          <EntityReputation
+            entityName={document.entity_name}
+            documentId={documentId}
+            jurisdiction={document.jurisdiction}
+            documentType={document.document_type}
+            overallRiskScore={document.overall_risk_score}
+            dangerousClauses={clauses
+              .filter((c) => c.risk_level === "dangerous")
+              .map((c) => c.explanation)}
+            illegalClauses={clauses
+              .filter((c) => c.risk_level === "illegal")
+              .map((c) => c.explanation)}
+          />
+        </div>
 
         {/* Verification Stats */}
         <Card className="bg-gray-900/50 border-gray-800 mb-8">

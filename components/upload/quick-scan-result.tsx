@@ -460,8 +460,10 @@ export default function QuickScanResult({
                 )}
 
                 {/* CTA Button */}
-                <Link href={`/results/${documentId}`}>
-                  <Button className="w-full bg-green-600 hover:bg-green-700 gap-2 py-6 text-lg shadow-lg shadow-green-500/20 group">
+                <Link href={`/results/${documentId}`} scroll={true}>
+                  <Button 
+                    className="w-full bg-green-600 hover:bg-green-700 gap-2 py-6 text-lg shadow-lg shadow-green-500/20 group"
+                  >
                     <FileText className="h-5 w-5" />
                     View Full Report
                     <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />

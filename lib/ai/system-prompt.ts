@@ -237,8 +237,59 @@ RULES:
 6. If no clear numbering, create logical numbered sections.
 7. Include ALL clauses, even seemingly harmless ones.
 8. The entity_name should be the landlord, employer, or company — not the tenant/employee/consumer.
-9. Detect Indian state names: Maharashtra, Karnataka, Delhi, Tamil Nadu, etc.
-10. If stamp paper value is mentioned, include it in document_info.`;
+
+ENTITY EXTRACTION PRIORITY (CRITICAL — this determines feature quality):
+Follow this EXACT priority order to find entity_name:
+
+PRIORITY 1 — Company names containing legal suffixes:
+   Pvt Ltd, Private Limited, Ltd, LLP, LLC, Inc,
+   Developers, Properties, Realty, Enterprises,
+   Solutions, Technologies, Associates, Consultants,
+   Group, Holdings, Builders, Infra, Infrastructure
+
+PRIORITY 2 — Text appearing AFTER these markers:
+   "between" (first party is usually the entity),
+   "entered into by", "executed by", "by and between",
+   "Licensor:", "Lessor:", "Owner:", "First Party:",
+   "Employer:", "Company:", "Lender:", "Bank:"
+
+PRIORITY 3 — Text appearing BEFORE:
+   "(hereinafter referred to as the Licensor)",
+   "(hereinafter called the Owner)",
+   "(hereinafter referred to as the Company)",
+   "(hereinafter referred to as the Employer)",
+   "(hereinafter referred to as the First Party)"
+
+PRIORITY 4 — For Terms of Service documents:
+   Extract company/platform name from title or header.
+   "Uber Terms of Service" → entity_name: "Uber Technologies"
+   "Zomato Terms of Use" → entity_name: "Zomato"
+   If no company name, use the domain/website name.
+
+PRIORITY 5 — Person names (Mr./Mrs./Shri/Smt./Dr.):
+   If only a person name is found, EXTRACT IT.
+   A person name is ALWAYS better than null.
+   Common in rental agreements: "Mr. Rajesh Sharma" → entity_name: "Mr. Rajesh Sharma"
+
+PRIORITY 6 — NEVER return null unless the document truly has NO identifiable party.
+   This is extremely rare. Even generic contracts mention someone.
+
+Common Indian examples:
+   "This Leave and License Agreement is entered into between: Sharma Properties Pvt Ltd (Licensor) AND Rohit Kumar (Licensee)"
+   → entity_name: "Sharma Properties Pvt Ltd"
+
+   "This agreement is executed by the Owner Mr. Rajesh Sharma"
+   → entity_name: "Mr. Rajesh Sharma"
+
+   "Agreement between ABC Realty LLP and Mr. Rahul Mehta"
+   → entity_name: "ABC Realty LLP"
+
+   "RENTAL AGREEMENT\n1. Security Deposit: The tenant shall pay..."
+   → Look for ANY name anywhere. If truly none exists, return null.
+
+9. Detect Indian state names: Maharashtra, Karnataka, Delhi, Tamil Nadu, Uttar Pradesh, Gujarat, Rajasthan, West Bengal, Kerala, Telangana, Andhra Pradesh, Punjab, Haryana, etc.
+10. If stamp paper value is mentioned, include it in document_info.
+11. entity_name is the MOST IMPORTANT field in document_info. Always try to extract it. A wrong guess is better than null.`;
 
 
 export const DEMAND_LETTER_PROMPT = `You are a professional legal letter writer specializing in Indian law. Generate a formal but firm demand/legal notice based on the contract analysis results provided.

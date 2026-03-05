@@ -11,6 +11,7 @@ import { createClient } from "@/lib/supabase/server";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { ANALYSIS_CONFIG } from "@/lib/utils/constants";
 import { addToCommunityDB } from "@/lib/community";
+import { extractEntityFallback, normalizeEntityName, isValidEntityName } from "@/lib/core/entity-extractor";
 
 /**
  * Update analysis progress in database
@@ -68,11 +69,67 @@ export async function analyzeDocument(
 
     const totalClauses = extraction.clauses.length;
 
-    // Update document with detected entity name and total clauses
+        // ---- Entity Extraction: AI first, regex fallback ----
+    let entityName = extraction.document_info.entity_name || null;
+
+        if (!entityName) {
+      console.log(
+        `[ClauseWall] AI entity extraction missed. Running regex fallback...`
+      );
+      const fallbackEntity = extractEntityFallback(rawText, documentType);
+      
+      if (fallbackEntity) {
+        // Validate the regex-extracted entity too
+        if (isValidEntityName(fallbackEntity, rawText)) {
+          entityName = fallbackEntity;
+          console.log(
+            `[ClauseWall] ✅ Regex fallback found valid entity: ${entityName}`
+          );
+        } else {
+          console.log(
+            `[ClauseWall] ⚠️ Regex fallback found "${fallbackEntity}" but rejected as invalid`
+          );
+        }
+      } else {
+        console.log(
+          `[ClauseWall] ⚠️ No entity found by AI or regex fallback`
+        );
+      }
+    }
+
+    // Normalize entity name for consistent matching
+    if (entityName) {
+      entityName = normalizeEntityName(entityName);
+      console.log(`[ClauseWall] Final entity (normalized): ${entityName}`);
+    } else {
+      console.log(`[ClauseWall] Final entity: none`);
+    } 
+
+            // Get AI-detected jurisdiction (may differ from user selection)
+    const detectedJurisdiction = extraction.document_info.detected_jurisdiction || null;
+    
+    if (detectedJurisdiction && detectedJurisdiction !== jurisdiction) {
+      console.log(
+        `[ClauseWall] ⚠️ Jurisdiction mismatch: User selected "${jurisdiction}", AI detected "${detectedJurisdiction}"`
+      );
+    }
+
+    // Get AI-detected document type (may differ from user selection)
+    const detectedDocType = extraction.document_info.detected_type || null;
+    
+    if (detectedDocType && detectedDocType !== documentType && detectedDocType !== "other") {
+      console.log(
+        `[ClauseWall] ⚠️ Document type mismatch: User selected "${documentType}", AI detected "${detectedDocType}"`
+      );
+    }
+
+    // Update document with detected entity name, jurisdiction, document type, and total clauses
     await supabase
       .from("documents")
       .update({
-        entity_name: extraction.document_info.entity_name || null,
+        entity_name: entityName,
+        detected_jurisdiction: detectedJurisdiction,
+        detected_document_type: detectedDocType,
         total_clauses: totalClauses,
         analysis_progress: 15,
         analysis_step: `Found ${totalClauses} clauses. Starting analysis...`,
