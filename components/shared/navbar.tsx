@@ -2,11 +2,24 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Shield, Menu, X, Upload, BarChart3, Skull, ArrowLeftRight, Hammer } from "lucide-react";
+import {
+  Shield,
+  Menu,
+  X,
+  Upload,
+  BarChart3,
+  Skull,
+  ArrowLeftRight,
+  Hammer,
+  Volume2,
+  VolumeX,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useSound } from "@/lib/audio/sound-context";
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { isMuted, toggleMute } = useSound();
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/80 backdrop-blur-xl">
@@ -26,39 +39,77 @@ export default function Navbar() {
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-1">
             <Link href="/upload">
-              <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="gap-2 text-muted-foreground hover:text-foreground"
+              >
                 <Upload className="h-4 w-4" />
                 Analyze
               </Button>
             </Link>
             <Link href="/builder">
-              <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="gap-2 text-muted-foreground hover:text-foreground"
+              >
                 <Hammer className="h-4 w-4" />
                 Builder
               </Button>
             </Link>
             <Link href="/compare">
-              <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="gap-2 text-muted-foreground hover:text-foreground"
+              >
                 <ArrowLeftRight className="h-4 w-4" />
                 Compare
               </Button>
             </Link>
             <Link href="/dashboard">
-              <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="gap-2 text-muted-foreground hover:text-foreground"
+              >
                 <BarChart3 className="h-4 w-4" />
                 Dashboard
               </Button>
             </Link>
             <Link href="/wall-of-shame">
-              <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="gap-2 text-muted-foreground hover:text-foreground"
+              >
                 <Skull className="h-4 w-4" />
                 Wall of Shame
               </Button>
             </Link>
           </div>
 
-          {/* CTA + Mobile Toggle */}
-          <div className="flex items-center gap-3">
+          {/* Sound Toggle + CTA + Mobile Toggle */}
+          <div className="flex items-center gap-2">
+            {/* Sound Toggle */}
+            <button
+              onClick={toggleMute}
+              className="relative p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/5 transition-all"
+              aria-label={isMuted ? "Unmute sound effects" : "Mute sound effects"}
+              title={isMuted ? "Sound effects off" : "Sound effects on"}
+            >
+              {isMuted ? (
+                <VolumeX className="h-4 w-4" />
+              ) : (
+                <Volume2 className="h-4 w-4" />
+              )}
+              {/* Active indicator dot */}
+              {!isMuted && (
+                <span className="absolute top-1.5 right-1.5 h-1.5 w-1.5 rounded-full bg-blue-500" />
+              )}
+            </button>
+
             <Link href="/upload" className="hidden md:block">
               <Button size="sm" className="bg-blue-600 hover:bg-blue-700 gap-2">
                 <Upload className="h-4 w-4" />
@@ -71,7 +122,11 @@ export default function Navbar() {
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="Toggle menu"
             >
-              {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              {mobileOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
             </button>
           </div>
         </div>
@@ -119,6 +174,20 @@ export default function Navbar() {
               <Skull className="h-4 w-4" />
               Wall of Shame
             </Link>
+
+            {/* Mobile Sound Toggle */}
+            <button
+              onClick={toggleMute}
+              className="flex items-center gap-3 px-3 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors w-full"
+            >
+              {isMuted ? (
+                <VolumeX className="h-4 w-4" />
+              ) : (
+                <Volume2 className="h-4 w-4" />
+              )}
+              {isMuted ? "Unmute Sound Effects" : "Mute Sound Effects"}
+            </button>
+
             <div className="pt-2 px-3">
               <Link href="/upload" onClick={() => setMobileOpen(false)}>
                 <Button className="w-full bg-blue-600 hover:bg-blue-700 gap-2">

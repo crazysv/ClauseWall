@@ -1,27 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Shield,
   ShieldCheck,
-  AlertTriangle,
-  CheckCircle2,
   XCircle,
   FileText,
-  Download,
-  Share2,
-  Flag,
   Loader2,
   RefreshCw,
-  Scale,
-  Swords,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { createClient } from "@/lib/supabase/client";
 import {
@@ -33,13 +25,17 @@ import {
 } from "@/lib/utils/constants";
 import type { Document, Clause } from "@/types";
 import { toast } from "sonner";
+import { useSound } from "@/lib/audio/sound-context";
 import ClauseCard from "@/components/results/clause-card";
 import QRSection from "@/components/results/qr-section";
 import EntityReputation from "@/components/results/entity-reputation";
 import MismatchBanner from "@/components/results/mismatch-banner";
 import ScoreCardModal from "@/components/results/score-card-modal";
 import VideoCardModal from "@/components/results/video-card-modal";
-import { Video } from "lucide-react";
+import ContractDNAModal from "@/components/results/contract-dna-modal";
+import { XRayOverlay } from "@/components/results/xray-mode";
+import FloatingActions from "@/components/results/floating-actions";
+import ClauseAutopsyModal from "@/components/results/clause-autopsy-modal";
 
 interface HybridClause extends Clause {
   verification_source?: "database" | "ai";
@@ -60,10 +56,33 @@ export default function ResultsPage() {
   const [expandedClauses, setExpandedClauses] = useState<Set<string>>(new Set());
   const [refreshing, setRefreshing] = useState(false);
   const [filterRisk, setFilterRisk] = useState<string>("all");
+
+  // Modal states
   const [showScoreCard, setShowScoreCard] = useState(false);
   const [showVideoCard, setShowVideoCard] = useState(false);
+  const [showDNA, setShowDNA] = useState(false);
+  const [showXRay, setShowXRay] = useState(false);
+
+  // 🔬 AUTOPSY
+  const [autopsyClause, setAutopsyClause] = useState<HybridClause | null>(null);
+
+  // 🔥 ROAST MODE
+  const [isRoastMode, setIsRoastMode] = useState(false);
+  const [roastCache, setRoastCache] = useState<Map<string, string>>(new Map());
+  const [roastLoading, setRoastLoading] = useState(false);
+  const roastFetched = useRef(false);
+
+  // Sound system
+  const { playRiskSound, isMuted } = useSound();
+  const soundTriggered = useRef(false);
+  const isMutedRef = useRef(isMuted);
 
   const supabase = createClient();
+
+  // Keep mute ref in sync
+  useEffect(() => {
+    isMutedRef.current = isMuted;
+  }, [isMuted]);
 
   const verificationStats = {
     verified: clauses.filter((c) => c.confidence === "verified").length,
@@ -120,9 +139,8 @@ export default function ResultsPage() {
     fetchData();
   }, [documentId]);
 
-  // Scroll to top when page loads
   useEffect(() => {
-  window.scrollTo({ top: 0, behavior: "instant" });
+    window.scrollTo({ top: 0, behavior: "instant" });
   }, []);
 
   useEffect(() => {
@@ -134,6 +152,130 @@ export default function ResultsPage() {
       return () => clearInterval(interval);
     }
   }, [document?.analysis_status]);
+
+  // ═══════════════════════════════════════════
+  // 🔊 SOUND EFFECT + SCREEN SHAKE TRIGGER
+  // ═══════════════════════════════════════════
+  useEffect(() => {
+    if (soundTriggered.current) return;
+    if (!document || document.analysis_status !== "completed") return;
+    if (clauses.length === 0) return;
+
+    soundTriggered.current = true;
+
+    const sessionKey = `clausewall_sound_played_${documentId}`;
+    if (sessionStorage.getItem(sessionKey)) return;
+    sessionStorage.setItem(sessionKey, "true");
+
+    const timeout = setTimeout(() => {
+      const riskLevel = getRiskLevel(document.overall_risk_score);
+      playRiskSound(riskLevel);
+
+      if (!isMutedRef.current) {
+        const prefersReducedMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)"
+        ).matches;
+
+        if (!prefersReducedMotion) {
+          const body = window.document.body;
+
+          if (riskLevel === "illegal") {
+            body.classList.add("screen-shake-intense", "red-vignette");
+            setTimeout(() => {
+              body.classList.remove("screen-shake-intense", "red-vignette");
+            }, 1000);
+          } else if (riskLevel === "dangerous") {
+            body.classList.add("screen-shake-subtle");
+            setTimeout(() => {
+              body.classList.remove("screen-shake-subtle");
+            }, 400);
+          }
+        }
+      }
+    }, 600);
+
+    return () => clearTimeout(timeout);
+  }, [document?.analysis_status, clauses.length, documentId, playRiskSound]);
+
+  // ═══════════════════════════════════════════
+  // 🔥 ROAST MODE LOGIC
+  // ═══════════════════════════════════════════
+  const fetchRoasts = useCallback(async () => {
+    if (roastFetched.current || clauses.length === 0) return;
+
+    const roastableClauses = clauses.filter(
+      (c) => c.risk_level === "dangerous" || c.risk_level === "illegal"
+    );
+
+    if (roastableClauses.length === 0) {
+      toast.info("No dangerous or illegal clauses to roast! 🎉");
+      setIsRoastMode(false);
+      return;
+    }
+
+    setRoastLoading(true);
+
+    try {
+      const res = await fetch("/api/roast", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          clauses: roastableClauses.map((c) => ({
+            id: c.id,
+            clause_number: c.clause_number,
+            clause_type: c.clause_type,
+            original_text: c.original_text,
+            risk_level: c.risk_level,
+            explanation: c.explanation,
+          })),
+          jurisdiction: document?.jurisdiction,
+          documentType: document?.document_type,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || data.error) {
+        throw new Error(data.error || "Roast failed");
+      }
+
+      if (data.roasts && typeof data.roasts === "object") {
+        const newCache = new Map<string, string>();
+        for (const [id, text] of Object.entries(data.roasts)) {
+          if (typeof text === "string") {
+            newCache.set(id, text);
+          }
+        }
+        setRoastCache(newCache);
+        roastFetched.current = true;
+        toast.success(`${newCache.size} clauses roasted! 🔥`);
+      }
+    } catch (err) {
+      console.error("[ClauseWall] Roast fetch failed:", err);
+      toast.error("Failed to generate roasts. Try again.");
+      setIsRoastMode(false);
+    } finally {
+      setRoastLoading(false);
+    }
+  }, [clauses, document?.jurisdiction, document?.document_type]);
+
+  const handleToggleRoast = useCallback(() => {
+    if (isRoastMode) {
+      // Turning OFF — instant, no API call
+      setIsRoastMode(false);
+      toast("Roast mode off. Back to business. 📋");
+    } else {
+      // Turning ON
+      setIsRoastMode(true);
+
+      if (!roastFetched.current) {
+        // First time — fetch roasts
+        fetchRoasts();
+      } else {
+        toast("🔥 Roast mode activated!");
+      }
+    }
+  }, [isRoastMode, fetchRoasts]);
 
   const handleRefresh = async () => {
     setRefreshing(true);
@@ -152,6 +294,11 @@ export default function ResultsPage() {
     setExpandedClauses(newExpanded);
   };
 
+  const filteredClauses =
+    filterRisk === "all"
+      ? clauses
+      : clauses.filter((c) => c.risk_level === filterRisk);
+
   const expandAll = () => {
     setExpandedClauses(new Set(filteredClauses.map((c) => c.id)));
   };
@@ -159,12 +306,6 @@ export default function ResultsPage() {
   const collapseAll = () => {
     setExpandedClauses(new Set());
   };
-
-  // Filter clauses
-  const filteredClauses =
-    filterRisk === "all"
-      ? clauses
-      : clauses.filter((c) => c.risk_level === filterRisk);
 
   // Loading state
   if (loading) {
@@ -250,7 +391,9 @@ export default function ResultsPage() {
               <span>•</span>
               <span>{getStateName(document.jurisdiction)}</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold">Analysis Results</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold">
+              Analysis Results
+            </h1>
           </div>
           <div className="flex gap-2">
             <Button
@@ -260,24 +403,15 @@ export default function ResultsPage() {
               disabled={refreshing}
               className="gap-2"
             >
-              <RefreshCw className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`} />
+              <RefreshCw
+                className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`}
+              />
               Refresh
             </Button>
-            <Link href={`/letter/${documentId}`}>
-              <Button size="sm" className="gap-2 bg-blue-600 hover:bg-blue-700">
-                <FileText className="h-4 w-4" />
-                Generate Notice
-              </Button>
-            </Link>
           </div>
         </div>
 
-                {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-          {/* ... header content ... */}
-        </div>
-
-        {/* Mismatch Warning (Jurisdiction or Document Type) */}
+        {/* Mismatch Warning */}
         <MismatchBanner
           documentId={documentId}
           selectedJurisdiction={document.jurisdiction}
@@ -287,11 +421,7 @@ export default function ResultsPage() {
         />
 
         {/* Score Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8"></div>
-
-        {/* Score Overview */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          {/* Main Score */}
           <Card className="bg-gray-900/50 border-gray-800 md:col-span-2">
             <CardContent className="p-6 flex items-center gap-6">
               <div
@@ -318,7 +448,6 @@ export default function ResultsPage() {
             </CardContent>
           </Card>
 
-          {/* Stats */}
           <Card className="bg-gray-900/50 border-gray-800">
             <CardContent className="p-6 flex flex-col justify-center h-full">
               <div className="grid grid-cols-2 gap-4">
@@ -342,7 +471,6 @@ export default function ResultsPage() {
             </CardContent>
           </Card>
 
-                    {/* Entity */}
           <Card className="bg-gray-900/50 border-gray-800">
             <CardContent className="p-6 flex flex-col justify-center h-full">
               <p className="text-sm text-muted-foreground mb-2">Identified Entity</p>
@@ -368,7 +496,7 @@ export default function ResultsPage() {
           </Card>
         )}
 
-                {/* Entity Reputation */}
+        {/* Entity Reputation */}
         <div className="mb-8">
           <EntityReputation
             entityName={document.entity_name}
@@ -417,13 +545,32 @@ export default function ResultsPage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
           <h2 className="text-xl font-bold">Clause Analysis</h2>
           <div className="flex items-center gap-2 flex-wrap">
-            {/* Risk Filter */}
             {[
               { value: "all", label: "All", count: clauses.length },
-              { value: "illegal", label: "Illegal", count: document.illegal_count, color: "text-purple-400" },
-              { value: "dangerous", label: "Dangerous", count: document.dangerous_count, color: "text-red-400" },
-              { value: "warning", label: "Warning", count: document.warning_count, color: "text-yellow-400" },
-              { value: "safe", label: "Safe", count: document.safe_count, color: "text-green-400" },
+              {
+                value: "illegal",
+                label: "Illegal",
+                count: document.illegal_count,
+                color: "text-purple-400",
+              },
+              {
+                value: "dangerous",
+                label: "Dangerous",
+                count: document.dangerous_count,
+                color: "text-red-400",
+              },
+              {
+                value: "warning",
+                label: "Warning",
+                count: document.warning_count,
+                color: "text-yellow-400",
+              },
+              {
+                value: "safe",
+                label: "Safe",
+                count: document.safe_count,
+                color: "text-green-400",
+              },
             ].map((filter) => (
               <button
                 key={filter.value}
@@ -434,8 +581,7 @@ export default function ResultsPage() {
                     : "bg-white/[0.02] border-white/5 text-gray-500 hover:text-gray-300"
                 }`}
               >
-                <span className={filter.color}>{filter.count}</span>{" "}
-                {filter.label}
+                <span className={filter.color}>{filter.count}</span> {filter.label}
               </button>
             ))}
 
@@ -470,6 +616,9 @@ export default function ResultsPage() {
                 isExpanded={expandedClauses.has(clause.id)}
                 onToggle={() => toggleClause(clause.id)}
                 jurisdiction={document.jurisdiction}
+                onAutopsy={() => setAutopsyClause(clause)}
+                isRoastMode={isRoastMode}
+                roastText={roastCache.get(clause.id) || null}
               />
             </motion.div>
           ))}
@@ -488,59 +637,68 @@ export default function ResultsPage() {
           </div>
         )}
 
-                {/* Bottom Actions */}
-        <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
-          <Link href={`/negotiate/${documentId}`}>
-            <Button size="lg" className="gap-2 bg-purple-600 hover:bg-purple-700 w-full sm:w-auto">
-              <Swords className="h-5 w-5" />
-              Negotiation Playbook
-            </Button>
-          </Link>
-          <Link href={`/letter/${documentId}`}>
-            <Button size="lg" className="gap-2 bg-blue-600 hover:bg-blue-700 w-full sm:w-auto">
-              <FileText className="h-5 w-5" />
-              Generate Legal Notice
-            </Button>
-          </Link>
-          <Button
-            variant="outline"
-            size="lg"
-            className="gap-2"
-            onClick={() => setShowScoreCard(true)}
-          >
-            <Share2 className="h-5 w-5" />
-            Share Score Card
-          </Button>
-          <Button
-            variant="outline"
-            size="lg"
-            className="gap-2"
-            onClick={() => setShowVideoCard(true)}
-          >
-            <Video className="h-5 w-5" />
-            Animated Video
-          </Button>
-        </div>
-
         {/* QR Verification Badge */}
         <QRSection document={document} />
-
-        {/* Score Card Share Modal */}
-        <ScoreCardModal
-          isOpen={showScoreCard}
-          onClose={() => setShowScoreCard(false)}
-          document={document}
-          clauses={clauses}
-          verificationRate={verificationStats.verification_rate}
-        />
-        <VideoCardModal
-          isOpen={showVideoCard}
-          onClose={() => setShowVideoCard(false)}
-          document={document}
-          clauses={clauses}
-          verificationRate={verificationStats.verification_rate}
-        />
       </div>
+
+      {/* ── Floating Action Sidebar ── */}
+      <FloatingActions
+        document={document}
+        clauses={clauses}
+        onOpenDNA={() => setShowDNA(true)}
+        onOpenXRay={() => setShowXRay(true)}
+        onOpenScoreCard={() => setShowScoreCard(true)}
+        onOpenVideoCard={() => setShowVideoCard(true)}
+        isRoastMode={isRoastMode}
+        roastLoading={roastLoading}
+        onToggleRoast={handleToggleRoast}
+      />
+
+      {/* ── X-Ray Overlay ── */}
+      <AnimatePresence>
+        {showXRay && (
+          <XRayOverlay
+            document={document}
+            clauses={clauses}
+            onClose={() => setShowXRay(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* ── DNA Modal ── */}
+      <ContractDNAModal
+        isOpen={showDNA}
+        onClose={() => setShowDNA(false)}
+        contractDoc={document}
+        clauses={clauses}
+      />
+
+      {/* ── Score Card Modal ── */}
+      <ScoreCardModal
+        isOpen={showScoreCard}
+        onClose={() => setShowScoreCard(false)}
+        document={document}
+        clauses={clauses}
+        verificationRate={verificationStats.verification_rate}
+      />
+
+      {/* ── Video Card Modal ── */}
+      <VideoCardModal
+        isOpen={showVideoCard}
+        onClose={() => setShowVideoCard(false)}
+        document={document}
+        clauses={clauses}
+        verificationRate={verificationStats.verification_rate}
+      />
+
+      {/* ── Clause Autopsy Modal ── */}
+      <ClauseAutopsyModal
+        isOpen={!!autopsyClause}
+        onClose={() => setAutopsyClause(null)}
+        clause={autopsyClause}
+        jurisdiction={document.jurisdiction}
+        documentType={document.document_type}
+      />
     </div>
   );
 }

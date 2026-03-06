@@ -14,11 +14,12 @@ import {
   Bot,
   MessageSquare,
   Gavel,
-  BookOpen,
   Lightbulb,
   Users,
-  Swords,     
+  Swords,
   ArrowRight,
+  Scan,
+  Flame,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import ELI5Section from "@/components/results/eli5-section";
@@ -51,11 +52,22 @@ interface ClauseCardProps {
   isExpanded: boolean;
   onToggle: () => void;
   jurisdiction: string;
+  onAutopsy?: () => void;
+  isRoastMode?: boolean;
+  roastText?: string | null;
 }
 
 type ActionTab = "legal" | "fair" | "negotiate" | "penalty" | "eli5" | "community" | null;
 
-export default function ClauseCard({ clause, isExpanded, onToggle, jurisdiction }: ClauseCardProps) {
+export default function ClauseCard({
+  clause,
+  isExpanded,
+  onToggle,
+  jurisdiction,
+  onAutopsy,
+  isRoastMode = false,
+  roastText,
+}: ClauseCardProps) {
   const [activeAction, setActiveAction] = useState<ActionTab>(null);
 
   const toggleAction = (tab: ActionTab) => {
@@ -92,7 +104,10 @@ export default function ClauseCard({ clause, isExpanded, onToggle, jurisdiction 
 
   const risk = riskConfig[clause.risk_level as keyof typeof riskConfig] || riskConfig.warning;
 
-  // Verification badge (small inline)
+  // Should show roast for this clause?
+  const showRoast = isRoastMode && !!roastText && (clause.risk_level === "dangerous" || clause.risk_level === "illegal");
+
+  // Verification badge
   const verificationBadge = () => {
     if (clause.verification_source === "database" && clause.confidence === "verified") {
       return (
@@ -118,7 +133,7 @@ export default function ClauseCard({ clause, isExpanded, onToggle, jurisdiction 
     );
   };
 
-  // Action buttons config — only show buttons for data that exists
+  // Action buttons config
   const actionButtons: { key: ActionTab; icon: React.ReactNode; label: string; available: boolean; color: string }[] = [
     {
       key: "legal",
@@ -135,11 +150,11 @@ export default function ClauseCard({ clause, isExpanded, onToggle, jurisdiction 
       color: "green",
     },
     {
-    key: "negotiate",
-    icon: <MessageSquare className="h-3.5 w-3.5" />,
-    label: "What to Say",
-    available: clause.risk_level !== "safe",
-    color: "purple",
+      key: "negotiate",
+      icon: <MessageSquare className="h-3.5 w-3.5" />,
+      label: "What to Say",
+      available: clause.risk_level !== "safe",
+      color: "purple",
     },
     {
       key: "penalty",
@@ -193,11 +208,16 @@ export default function ClauseCard({ clause, isExpanded, onToggle, jurisdiction 
     return isActive ? colors.active : colors.inactive;
   };
 
+  const showAutopsy =
+    (clause.risk_level === "dangerous" || clause.risk_level === "illegal") && !!onAutopsy;
+
   return (
     <div
-      className={`rounded-xl border border-white/5 border-l-4 ${risk.borderClass} bg-gray-900/50 overflow-hidden transition-all`}
+      className={`rounded-xl border border-white/5 border-l-4 ${risk.borderClass} bg-gray-900/50 overflow-hidden transition-all ${
+        showRoast ? "ring-1 ring-orange-500/20" : ""
+      }`}
     >
-      {/* ── HEADER (always visible, click to expand) ── */}
+      {/* ── HEADER ── */}
       <div
         className="flex items-start justify-between p-4 cursor-pointer hover:bg-white/[0.02] transition-colors"
         onClick={onToggle}
@@ -211,6 +231,12 @@ export default function ClauseCard({ clause, isExpanded, onToggle, jurisdiction 
               {clause.clause_type}
             </Badge>
             {verificationBadge()}
+            {showRoast && (
+              <Badge className="bg-orange-500/15 text-orange-400 border-orange-500/30 text-[10px] px-1.5 gap-1">
+                <Flame className="h-3 w-3" />
+                Roasted
+              </Badge>
+            )}
           </div>
           <p className="text-sm text-gray-400 line-clamp-2 italic">
             &quot;{clause.original_text.substring(0, 180)}
@@ -233,7 +259,6 @@ export default function ClauseCard({ clause, isExpanded, onToggle, jurisdiction 
             className="overflow-hidden"
           >
             <div className="px-4 pb-4 space-y-4">
-              {/* Divider */}
               <div className="border-t border-white/5" />
 
               {/* Full Clause Text */}
@@ -244,15 +269,44 @@ export default function ClauseCard({ clause, isExpanded, onToggle, jurisdiction 
                 </p>
               </div>
 
-              {/* Analysis (always visible — this is the main value) */}
-              <div>
-                <p className="text-xs font-medium text-gray-500 mb-1.5">Analysis</p>
-                <p className="text-sm text-gray-300 leading-relaxed">
-                  {clause.explanation}
-                </p>
-              </div>
+              {/* ── ROAST or ANALYSIS ── */}
+              <AnimatePresence mode="wait">
+                {showRoast ? (
+                  <motion.div
+                    key="roast"
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -5 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <p className="text-xs font-medium text-orange-400 mb-1.5 flex items-center gap-1.5">
+                      <Flame className="h-3.5 w-3.5" />
+                      Roasted Analysis 🔥
+                    </p>
+                    <div className="p-4 rounded-lg bg-gradient-to-br from-orange-500/10 to-red-500/10 border border-orange-500/20">
+                      <p className="text-sm text-orange-200 leading-relaxed">
+                        {roastText}
+                      </p>
+                    </div>
+                    <p className="text-[10px] text-gray-600 mt-1.5 italic">
+                      ⚠️ Roast mode — entertainment + education. Formal legal analysis is above when roast mode is off.
+                    </p>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="analysis"
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -5 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <p className="text-xs font-medium text-gray-500 mb-1.5">Analysis</p>
+                    <p className="text-sm text-gray-300 leading-relaxed">{clause.explanation}</p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
-              {/* Red Flags (always visible — critical info) */}
+              {/* Red Flags */}
               {clause.red_flags && clause.red_flags.length > 0 && (
                 <div>
                   <p className="text-xs font-medium text-red-400 mb-1.5">🚩 Red Flags</p>
@@ -267,7 +321,26 @@ export default function ClauseCard({ clause, isExpanded, onToggle, jurisdiction 
                 </div>
               )}
 
-              {/* ── ACTION BUTTONS ROW ── */}
+              {/* Autopsy CTA */}
+              {showAutopsy && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onAutopsy!();
+                  }}
+                  className="w-full flex items-center justify-between p-3 rounded-lg bg-gradient-to-r from-purple-500/10 to-red-500/10 border border-purple-500/20 hover:border-purple-500/40 hover:from-purple-500/15 hover:to-red-500/15 transition-all group"
+                >
+                  <div className="flex items-center gap-2">
+                    <Scan className="h-4 w-4 text-purple-400" />
+                    <span className="text-sm font-medium text-purple-300">
+                      🔬 Dissect This Clause Word by Word
+                    </span>
+                  </div>
+                  <ArrowRight className="h-4 w-4 text-purple-400 group-hover:translate-x-1 transition-transform" />
+                </button>
+              )}
+
+              {/* Action Buttons */}
               {availableActions.length > 0 && (
                 <div>
                   <p className="text-xs font-medium text-gray-500 mb-2">Deep Dive</p>
@@ -290,7 +363,7 @@ export default function ClauseCard({ clause, isExpanded, onToggle, jurisdiction 
                 </div>
               )}
 
-              {/* ── EXPANDABLE ACTION CONTENT (only one at a time) ── */}
+              {/* Expandable Action Content */}
               <AnimatePresence mode="wait">
                 {activeAction === "legal" && clause.legal_citation && (
                   <motion.div
@@ -305,9 +378,7 @@ export default function ClauseCard({ clause, isExpanded, onToggle, jurisdiction 
                       <Scale className="h-3.5 w-3.5" />
                       Legal Reference
                     </p>
-                    <p className="text-sm text-blue-300 leading-relaxed">
-                      {clause.legal_citation}
-                    </p>
+                    <p className="text-sm text-blue-300 leading-relaxed">{clause.legal_citation}</p>
                   </motion.div>
                 )}
 
@@ -324,13 +395,11 @@ export default function ClauseCard({ clause, isExpanded, onToggle, jurisdiction 
                       <CheckCircle2 className="h-3.5 w-3.5" />
                       Fair Alternative — What This Clause Should Say
                     </p>
-                    <p className="text-sm text-green-300 leading-relaxed">
-                      {clause.fair_alternative}
-                    </p>
+                    <p className="text-sm text-green-300 leading-relaxed">{clause.fair_alternative}</p>
                   </motion.div>
                 )}
 
-                                {activeAction === "negotiate" && (
+                {activeAction === "negotiate" && (
                   <motion.div
                     key="negotiate"
                     initial={{ opacity: 0, y: -5 }}
@@ -339,7 +408,6 @@ export default function ClauseCard({ clause, isExpanded, onToggle, jurisdiction 
                     transition={{ duration: 0.15 }}
                     className="space-y-3"
                   >
-                    {/* Show existing script if available */}
                     {clause.negotiation_script ? (
                       <div className="p-4 rounded-lg bg-purple-500/5 border border-purple-500/20">
                         <p className="text-xs font-medium text-purple-400 mb-2 flex items-center gap-1.5">
@@ -362,7 +430,6 @@ export default function ClauseCard({ clause, isExpanded, onToggle, jurisdiction 
                       </div>
                     )}
 
-                    {/* Link to full playbook */}
                     <a
                       href={`/negotiate/${clause.document_id}`}
                       className="flex items-center justify-between p-3 rounded-lg bg-blue-500/5 border border-blue-500/20 hover:bg-blue-500/10 transition-colors group"
@@ -391,9 +458,7 @@ export default function ClauseCard({ clause, isExpanded, onToggle, jurisdiction 
                       <Gavel className="h-3.5 w-3.5" />
                       Penalty for Violation
                     </p>
-                    <p className="text-sm text-orange-300 leading-relaxed">
-                      {clause.penalty_info}
-                    </p>
+                    <p className="text-sm text-orange-300 leading-relaxed">{clause.penalty_info}</p>
                   </motion.div>
                 )}
 
@@ -436,7 +501,7 @@ export default function ClauseCard({ clause, isExpanded, onToggle, jurisdiction 
                   )}
               </AnimatePresence>
 
-              {/* ── VERIFICATION BADGE (always visible at bottom) ── */}
+              {/* Verification Badge */}
               <div className="pt-1">
                 {clause.verification_source === "database" && clause.confidence === "verified" ? (
                   <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-500/5 border border-green-500/15">

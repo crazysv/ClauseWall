@@ -126,6 +126,8 @@ export async function hybridAnalyzeClause(
         matched_rule_id: ruleResult.rule.id,
         negotiation_script: ruleResult.negotiation_script || null,
         penalty_info: ruleResult.penalty || null,
+        extracted_value: values.primary_value ?? null,
+        extracted_unit: values.primary_unit ?? null,
       };
     }
 
@@ -149,6 +151,8 @@ export async function hybridAnalyzeClause(
         matched_rule_id: ruleResult.rule?.id || null,
         negotiation_script: null,
         penalty_info: null,
+        extracted_value: values.primary_value ?? null,
+        extracted_unit: values.primary_unit ?? null,
       };
     }
 
@@ -177,6 +181,8 @@ export async function hybridAnalyzeClause(
       matched_rule_id: null,
       negotiation_script: null,
       penalty_info: null,
+      extracted_value: values.primary_value ?? null,
+      extracted_unit: values.primary_unit ?? null,
     };
   } catch (error) {
     console.error("[ClauseWall] Hybrid analysis failed, falling back to AI:", error);
@@ -200,6 +206,8 @@ export async function hybridAnalyzeClause(
         matched_rule_id: null,
         negotiation_script: null,
         penalty_info: null,
+        extracted_value: null,
+        extracted_unit: null,
       };
     } catch (fallbackError) {
       console.error("[ClauseWall] Complete analysis failure:", fallbackError);
@@ -217,6 +225,8 @@ export async function hybridAnalyzeClause(
         matched_rule_id: null,
         negotiation_script: null,
         penalty_info: null,
+        extracted_value: null,
+        extracted_unit: null,
       };
     }
   }

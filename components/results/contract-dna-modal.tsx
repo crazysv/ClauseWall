@@ -1,0 +1,305 @@
+"use client";
+
+import { useState, useRef, useMemo, useCallback } from "react";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { Button } from "@/components/ui/button";
+import { Download, Share2, Copy, Check } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "sonner";
+import {
+  clausesToNodes,
+  generateContractId,
+  generateUniqueHex,
+  DNA_STYLES,
+  DNAStyle,
+  DNANode,
+  getDefaultStyle,
+} from "@/lib/dna/utils";
+import { detectPersonality } from "@/lib/dna/personality";
+import FingerprintStyle from "@/components/results/dna/fingerprint-style";
+import WaveformStyle from "@/components/results/dna/waveform-style";
+import HeartbeatStyle from "@/components/results/dna/heartbeat-style";
+import ConstellationStyle from "@/components/results/dna/constellation-style";
+import SkylineStyle from "@/components/results/dna/skyline-style";
+import HelixStyle from "@/components/results/dna/helix-style";
+import type { Document, Clause } from "@/types";
+
+interface Props {
+  isOpen: boolean;
+  onClose: () => void;
+  contractDoc: Document;
+  clauses: Clause[];
+}
+
+export default function ContractDNAModal({ isOpen, onClose, contractDoc, clauses }: Props) {
+  const defaultStyle = getDefaultStyle(contractDoc.document_type);
+  const [style, setStyle] = useState<DNAStyle>(defaultStyle);
+  const [hoveredNode, setHoveredNode] = useState<DNANode | null>(null);
+  const [copied, setCopied] = useState(false);
+  const svgContainerRef = useRef<HTMLDivElement>(null);
+
+  const nodes = useMemo(() => clausesToNodes(clauses), [clauses]);
+  const personality = useMemo(
+    () => detectPersonality(nodes, contractDoc.overall_risk_score),
+    [nodes, contractDoc.overall_risk_score]
+  );
+  const contractId = useMemo(() => generateContractId(contractDoc.id), [contractDoc.id]);
+  const uniqueColor = useMemo(() => generateUniqueHex(clauses), [clauses]);
+
+  const handleHover = useCallback((node: DNANode | null) => {
+    setHoveredNode(node);
+  }, []);
+
+  const renderStyle = () => {
+    const props = { nodes, animated: true, onHover: handleHover };
+    switch (style) {
+      case "fingerprint":
+        return <FingerprintStyle {...props} />;
+      case "waveform":
+        return <WaveformStyle {...props} />;
+      case "heartbeat":
+        return <HeartbeatStyle {...props} />;
+      case "constellation":
+        return <ConstellationStyle {...props} />;
+      case "skyline":
+        return <SkylineStyle {...props} />;
+      case "helix":
+        return <HelixStyle {...props} />;
+    }
+  };
+
+  const handleDownloadSVG = () => {
+    const svgEl = svgContainerRef.current?.querySelector("svg");
+    if (!svgEl) return;
+    const clone = svgEl.cloneNode(true) as SVGElement;
+    clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    const svgData = new XMLSerializer().serializeToString(clone);
+    const blob = new Blob([svgData], { type: "image/svg+xml" });
+    const url = URL.createObjectURL(blob);
+    const a = Object.assign(window.document.createElement("a"), {
+      href: url,
+      download: `clausewall-dna-${contractId}-${style}.svg`,
+    });
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success("SVG downloaded!");
+  };
+
+  const handleDownloadPNG = () => {
+    const svgEl = svgContainerRef.current?.querySelector("svg");
+    if (!svgEl) return;
+
+    const clone = svgEl.cloneNode(true) as SVGElement;
+    clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    const svgData = new XMLSerializer().serializeToString(clone);
+
+    const canvas = window.document.createElement("canvas");
+    const scale = 2;
+    canvas.width = 1200 * scale;
+    canvas.height = 800 * scale;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    ctx.scale(scale, scale);
+    ctx.fillStyle = "#0A0A0F";
+    ctx.fillRect(0, 0, 1200, 800);
+
+    const img = new Image();
+    img.onload = () => {
+      ctx.drawImage(img, 50, 30, 1100, 620);
+
+      // Footer
+      ctx.fillStyle = "white";
+      ctx.font = "bold 28px system-ui, sans-serif";
+      ctx.fillText(`${personality.emoji} ${personality.name}`, 50, 700);
+      ctx.font = "16px system-ui, sans-serif";
+      ctx.fillStyle = "#94A3B8";
+      ctx.fillText(`${contractId} • Contract DNA • clausewall.com`, 50, 730);
+
+      // Color swatch
+      ctx.fillStyle = uniqueColor;
+      ctx.beginPath();
+      ctx.arc(1130, 710, 15, 0, Math.PI * 2);
+      ctx.fill();
+
+      const url = canvas.toDataURL("image/png");
+      const a = Object.assign(window.document.createElement("a"), {
+        href: url,
+        download: `clausewall-dna-${contractId}-${style}.png`,
+      });
+      a.click();
+      toast.success("PNG downloaded!");
+    };
+    img.src = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgData)));
+  };
+
+  const handleCopyId = () => {
+    navigator.clipboard.writeText(contractId);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+    toast.success("Contract ID copied!");
+  };
+
+  return (
+  <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+    <DialogContent className="max-w-3xl bg-[#0A0A0F] border-gray-800 p-0 gap-0 overflow-hidden">
+      {/* Accessible title (visually hidden) */}
+      <VisuallyHidden>
+        <DialogTitle>Contract DNA Visualization</DialogTitle>
+      </VisuallyHidden>
+
+      {/* Header */}
+    <div className="flex items-center gap-3 p-5 border-b border-gray-800/50">
+        <div
+            className="w-8 h-8 rounded-lg"
+            style={{
+                background: `linear-gradient(135deg, ${personality.gradient[0]}, ${personality.gradient[1]})`,
+            }}
+        />
+        <div>
+            <h2 className="font-bold text-lg">Contract DNA</h2>
+            <p className="text-xs text-muted-foreground">
+                {personality.emoji} {personality.name} — {personality.description}
+            </p>
+        </div>
+    </div>
+
+        {/* Style Selector */}
+        <div className="flex items-center gap-2 px-5 pt-4 pb-2 overflow-x-auto">
+          {DNA_STYLES.map((s) => (
+            <button
+              key={s.id}
+              onClick={() => setStyle(s.id)}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium border transition-all whitespace-nowrap ${
+                style === s.id
+                  ? "bg-white/10 border-white/20 text-white"
+                  : "bg-white/[0.02] border-white/5 text-gray-500 hover:text-gray-300 hover:border-white/10"
+              }`}
+            >
+              <span>{s.icon}</span>
+              <span>{s.name}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Visualization */}
+        <div className="relative px-5 py-3">
+          <div
+            ref={svgContainerRef}
+            className="relative w-full aspect-[3/2] bg-black/40 rounded-xl overflow-hidden border border-white/5"
+            style={{
+              background: `linear-gradient(180deg, ${personality.gradient[0]}30, ${personality.gradient[1]}15)`,
+            }}
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={style}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                className="w-full h-full p-4"
+              >
+                {renderStyle()}
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Hover Tooltip */}
+            <AnimatePresence>
+              {hoveredNode && (
+                <motion.div
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 5 }}
+                  className="absolute bottom-3 left-3 right-3 bg-gray-900/95 backdrop-blur-sm rounded-lg p-3 border border-gray-700/50 pointer-events-none"
+                >
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="font-semibold text-sm">
+                      Clause {hoveredNode.clauseNumber}
+                    </span>
+                    <span
+                      className="px-2 py-0.5 rounded text-[10px] font-bold uppercase"
+                      style={{
+                        backgroundColor: `${hoveredNode.riskColor}20`,
+                        color: hoveredNode.riskColor,
+                      }}
+                    >
+                      {hoveredNode.riskLevel}
+                    </span>
+                    <span className="text-xs text-gray-500">{hoveredNode.clauseType}</span>
+                  </div>
+                  <p className="text-gray-400 text-xs leading-relaxed">
+                    {hoveredNode.explanation.slice(0, 140)}
+                    {hoveredNode.explanation.length > 140 ? "..." : ""}
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="px-5 pb-5">
+          {/* Contract Info */}
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={handleCopyId}
+                className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-xs font-mono text-gray-400 hover:text-white transition-colors"
+              >
+                {contractId}
+                {copied ? <Check className="h-3 w-3 text-green-400" /> : <Copy className="h-3 w-3" />}
+              </button>
+              <div className="flex items-center gap-1.5">
+                <div
+                  className="w-4 h-4 rounded-full border border-white/20"
+                  style={{ backgroundColor: uniqueColor }}
+                />
+                <span className="text-xs font-mono text-gray-500">{uniqueColor}</span>
+              </div>
+            </div>
+            <span className="text-xs text-gray-600">
+              {nodes.length} clauses • Score {contractDoc.overall_risk_score}/100
+            </span>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2"
+              onClick={handleDownloadPNG}
+            >
+              <Download className="h-4 w-4" />
+              PNG
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2"
+              onClick={handleDownloadSVG}
+            >
+              <Download className="h-4 w-4" />
+              SVG
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2"
+              onClick={() => {
+                const url = `${window.location.origin}/results/${contractDoc.id}`;
+                navigator.clipboard.writeText(url);
+                toast.success("Link copied!");
+              }}
+            >
+              <Share2 className="h-4 w-4" />
+              Share
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}

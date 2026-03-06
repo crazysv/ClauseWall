@@ -195,6 +195,8 @@ export async function analyzeDocument(
         negotiation_script: analysis.negotiation_script || null,
         penalty_info: analysis.penalty_info || null,
         confidence: analysis.confidence,
+        extracted_value: analysis.extracted_value ?? null,
+        extracted_unit: analysis.extracted_unit ?? null,
       });
 
       // Delay between requests to avoid rate limiting

@@ -87,6 +87,8 @@ export interface Clause {
   red_flags: string[];
   percentile: number | null;
   created_at: string;
+  extracted_value: number | null;   
+  extracted_unit: string | null;
 }
 
 /**
@@ -371,6 +373,8 @@ export interface HybridAnalysisResult {
   matched_rule_id: string | null;
   negotiation_script: string | null;
   penalty_info: string | null;
+  extracted_value: number | null;    
+  extracted_unit: string | null;
 }
 
 /**
@@ -595,4 +599,39 @@ export interface ShareSettings {
   show_entity: boolean;
   show_summary: boolean;
   allow_full_analysis: boolean;
+}
+
+// ============================================
+// CLAUSE AUTOPSY TYPES
+// ============================================
+
+export interface AutopsyViolation {
+  phrase: string;
+  severity: RiskLevel;
+  issue: string;
+  explanation: string;
+  statute: string | null;
+  penalty: string | null;
+}
+
+export interface AutopsyResult {
+  violations: AutopsyViolation[];
+  total_violations: number;
+  most_severe: RiskLevel;
+  dissection_summary: string;
+}
+
+export interface AutopsyDisplaySegment {
+  text: string;
+  type: "violation" | "neutral";
+  violation_index?: number;
+}
+
+// ============================================
+// CONTRACT ROAST TYPES
+// ============================================
+
+export interface RoastResult {
+  roasts: Record<string, string>; // clauseId → roast text
+  total_roasted: number;
 }
