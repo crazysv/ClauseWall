@@ -36,6 +36,11 @@ import ContractDNAModal from "@/components/results/contract-dna-modal";
 import { XRayOverlay } from "@/components/results/xray-mode";
 import FloatingActions from "@/components/results/floating-actions";
 import ClauseAutopsyModal from "@/components/results/clause-autopsy-modal";
+import EscapeCTA from "@/components/results/escape-cta";
+import SimulatorCTA from "@/components/results/simulator-cta";
+import PowerBalanceMeter from "@/components/results/power-balance-meter";
+import ClauseRewriteModal from "@/components/results/clause-rewrite-modal";
+import MoodRingBackground from "@/components/results/mood-ring-background";
 
 interface HybridClause extends Clause {
   verification_source?: "database" | "ai";
@@ -65,6 +70,13 @@ export default function ResultsPage() {
 
   // 🔬 AUTOPSY
   const [autopsyClause, setAutopsyClause] = useState<HybridClause | null>(null);
+
+  const [rewriteClause, setRewriteClause] = useState<HybridClause | null>(null);
+
+  // 🌈 MOOD RING
+  const [activeClauseIndex, setActiveClauseIndex] = useState<number | null>(null);
+  const [isInClauseZone, setIsInClauseZone] = useState(false);
+  const clauseListRef = useRef<HTMLDivElement>(null);
 
   // 🔥 ROAST MODE
   const [isRoastMode, setIsRoastMode] = useState(false);
@@ -197,6 +209,97 @@ export default function ResultsPage() {
     return () => clearTimeout(timeout);
   }, [document?.analysis_status, clauses.length, documentId, playRiskSound]);
 
+  const filteredClauses =
+    filterRisk === "all"
+      ? clauses
+      : clauses.filter((c) => c.risk_level === filterRisk);
+
+  // ═══════════════════════════════════════════
+  // 🌈 MOOD RING — SCROLL TRACKING
+  // ═══════════════════════════════════════════
+  useEffect(() => {
+    const container = clauseListRef.current;
+    if (!container || filteredClauses.length === 0) return;
+
+    let ticking = false;
+
+    const updateActiveClause = () => {
+      const cards = container.querySelectorAll("[data-clause-index]");
+      if (cards.length === 0) {
+        setIsInClauseZone(false);
+        setActiveClauseIndex(null);
+        return;
+      }
+
+      // Check if clause zone is visible at all
+      const containerRect = container.getBoundingClientRect();
+      const inZone =
+        containerRect.top < window.innerHeight && containerRect.bottom > 0;
+      setIsInClauseZone(inZone);
+
+      if (!inZone) {
+        setActiveClauseIndex(null);
+        return;
+      }
+
+      // Find clause card closest to viewport center
+      const viewportCenter = window.innerHeight / 2;
+      let closestIndex = -1;
+      let closestDistance = Infinity;
+
+      cards.forEach((card) => {
+        const rect = card.getBoundingClientRect();
+        // Skip cards fully off-screen
+        if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+
+        const cardCenter = rect.top + rect.height / 2;
+        const distance = Math.abs(cardCenter - viewportCenter);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = parseInt(
+            card.getAttribute("data-clause-index") || "-1"
+          );
+        }
+      });
+
+      if (closestIndex >= 0) {
+        setActiveClauseIndex(closestIndex);
+      }
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateActiveClause();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    updateActiveClause(); // Initial check
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [filteredClauses.length, filterRisk]);
+
+  // Derived mood risk level
+  const activeMoodRisk =
+    activeClauseIndex !== null && activeClauseIndex < filteredClauses.length
+      ? filteredClauses[activeClauseIndex].risk_level
+      : null;
+
+  // Scroll-to-clause for mood bar dot clicks
+  const scrollToClause = useCallback((index: number) => {
+    const el = clauseListRef.current?.querySelector(
+      `[data-clause-index="${index}"]`
+    );
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, []);
+
   // ═══════════════════════════════════════════
   // 🔥 ROAST MODE LOGIC
   // ═══════════════════════════════════════════
@@ -294,11 +397,6 @@ export default function ResultsPage() {
     setExpandedClauses(newExpanded);
   };
 
-  const filteredClauses =
-    filterRisk === "all"
-      ? clauses
-      : clauses.filter((c) => c.risk_level === filterRisk);
-
   const expandAll = () => {
     setExpandedClauses(new Set(filteredClauses.map((c) => c.id)));
   };
@@ -372,7 +470,13 @@ export default function ResultsPage() {
   const riskColor = RISK_COLORS[riskLevel];
 
   return (
-    <div className="relative px-4 sm:px-6 lg:px-8 py-8">
+    <>
+      {/* 🌈 Mood Ring Background */}
+      <MoodRingBackground
+        activeRiskLevel={activeMoodRisk}
+        isInClauseZone={isInClauseZone}
+      />
+      <div className="relative px-4 sm:px-6 lg:px-8 py-8">
       {/* Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
@@ -496,6 +600,13 @@ export default function ResultsPage() {
           </Card>
         )}
 
+        {/* Power Balance */}
+        <div className="mb-8">
+          <PowerBalanceMeter
+            powerBalance={document.power_balance ?? null}
+          />
+        </div>
+
         {/* Entity Reputation */}
         <div className="mb-8">
           <EntityReputation
@@ -541,104 +652,123 @@ export default function ResultsPage() {
           </CardContent>
         </Card>
 
-        {/* Clause Header + Filters */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-          <h2 className="text-xl font-bold">Clause Analysis</h2>
-          <div className="flex items-center gap-2 flex-wrap">
-            {[
-              { value: "all", label: "All", count: clauses.length },
-              {
-                value: "illegal",
-                label: "Illegal",
-                count: document.illegal_count,
-                color: "text-purple-400",
-              },
-              {
-                value: "dangerous",
-                label: "Dangerous",
-                count: document.dangerous_count,
-                color: "text-red-400",
-              },
-              {
-                value: "warning",
-                label: "Warning",
-                count: document.warning_count,
-                color: "text-yellow-400",
-              },
-              {
-                value: "safe",
-                label: "Safe",
-                count: document.safe_count,
-                color: "text-green-400",
-              },
-            ].map((filter) => (
+                {/* ═══ CLAUSE SECTION — MOOD RING ZONE ═══ */}
+        <div>
+          {/* Clause Header + Filters */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+            <h2 className="text-xl font-bold">Clause Analysis</h2>
+            <div className="flex items-center gap-2 flex-wrap">
+              {[
+                { value: "all", label: "All", count: clauses.length },
+                {
+                  value: "illegal",
+                  label: "Illegal",
+                  count: document.illegal_count,
+                  color: "text-purple-400",
+                },
+                {
+                  value: "dangerous",
+                  label: "Dangerous",
+                  count: document.dangerous_count,
+                  color: "text-red-400",
+                },
+                {
+                  value: "warning",
+                  label: "Warning",
+                  count: document.warning_count,
+                  color: "text-yellow-400",
+                },
+                {
+                  value: "safe",
+                  label: "Safe",
+                  count: document.safe_count,
+                  color: "text-green-400",
+                },
+              ].map((filter) => (
+                <button
+                  key={filter.value}
+                  onClick={() => setFilterRisk(filter.value)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
+                    filterRisk === filter.value
+                      ? "bg-white/10 border-white/20 text-white"
+                      : "bg-white/[0.02] border-white/5 text-gray-500 hover:text-gray-300"
+                  }`}
+                >
+                  <span className={filter.color}>{filter.count}</span>{" "}
+                  {filter.label}
+                </button>
+              ))}
+
+              <span className="text-gray-700">|</span>
+
               <button
-                key={filter.value}
-                onClick={() => setFilterRisk(filter.value)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
-                  filterRisk === filter.value
-                    ? "bg-white/10 border-white/20 text-white"
-                    : "bg-white/[0.02] border-white/5 text-gray-500 hover:text-gray-300"
-                }`}
+                onClick={expandAll}
+                className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
               >
-                <span className={filter.color}>{filter.count}</span> {filter.label}
+                Expand All
               </button>
+              <button
+                onClick={collapseAll}
+                className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
+              >
+                Collapse All
+              </button>
+            </div>
+          </div>
+
+          {/* Clause Cards */}
+          <div className="space-y-3" ref={clauseListRef}>
+            {filteredClauses.map((clause, index) => (
+              <motion.div
+                key={clause.id}
+                data-clause-index={index}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.03 }}
+              >
+                <ClauseCard
+                  clause={clause}
+                  isExpanded={expandedClauses.has(clause.id)}
+                  onToggle={() => toggleClause(clause.id)}
+                  jurisdiction={document.jurisdiction}
+                  onAutopsy={() => setAutopsyClause(clause)}
+                  onRewrite={() => setRewriteClause(clause)}
+                  isRoastMode={isRoastMode}
+                  roastText={roastCache.get(clause.id) || null}
+                />
+              </motion.div>
             ))}
-
-            <span className="text-gray-700">|</span>
-
-            <button
-              onClick={expandAll}
-              className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
-            >
-              Expand All
-            </button>
-            <button
-              onClick={collapseAll}
-              className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
-            >
-              Collapse All
-            </button>
           </div>
-        </div>
 
-        {/* Clause Cards */}
-        <div className="space-y-3">
-          {filteredClauses.map((clause, index) => (
-            <motion.div
-              key={clause.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.03 }}
-            >
-              <ClauseCard
-                clause={clause}
-                isExpanded={expandedClauses.has(clause.id)}
-                onToggle={() => toggleClause(clause.id)}
-                jurisdiction={document.jurisdiction}
-                onAutopsy={() => setAutopsyClause(clause)}
-                isRoastMode={isRoastMode}
-                roastText={roastCache.get(clause.id) || null}
-              />
-            </motion.div>
-          ))}
+          {/* No results for filter */}
+          {filteredClauses.length === 0 && (
+            <div className="text-center py-12 text-gray-500">
+              <p>No {filterRisk} clauses found.</p>
+              <button
+                onClick={() => setFilterRisk("all")}
+                className="text-blue-400 text-sm mt-2 hover:underline"
+              >
+                Show all clauses
+              </button>
+            </div>
+          )}
         </div>
-
-        {/* No results for filter */}
-        {filteredClauses.length === 0 && (
-          <div className="text-center py-12 text-gray-500">
-            <p>No {filterRisk} clauses found.</p>
-            <button
-              onClick={() => setFilterRisk("all")}
-              className="text-blue-400 text-sm mt-2 hover:underline"
-            >
-              Show all clauses
-            </button>
-          </div>
-        )}
 
         {/* QR Verification Badge */}
         <QRSection document={document} />
+
+        {/* Escape Plan CTA */}
+        <EscapeCTA
+          documentId={documentId}
+          dangerousCount={document.dangerous_count}
+          illegalCount={document.illegal_count}
+        />
+
+        {/* Simulator CTA */}
+        <SimulatorCTA
+          documentId={documentId}
+          overallRiskScore={document.overall_risk_score}
+        />
       </div>
 
       {/* ── Floating Action Sidebar ── */}
@@ -699,6 +829,16 @@ export default function ResultsPage() {
         jurisdiction={document.jurisdiction}
         documentType={document.document_type}
       />
+
+      {/* ── Clause Rewrite Modal ── */}
+      <ClauseRewriteModal
+        isOpen={!!rewriteClause}
+        onClose={() => setRewriteClause(null)}
+        clause={rewriteClause}
+        jurisdiction={document.jurisdiction}
+        documentType={document.document_type}
+      />
     </div>
+  </>
   );
 }

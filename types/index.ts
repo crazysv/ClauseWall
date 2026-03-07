@@ -65,6 +65,7 @@ export interface Document {
   qr_generated_at: string | null;
   share_count: number;
   share_settings: ShareSettings | null;
+  power_balance: PowerBalance | null;
 }
 
 /**
@@ -634,4 +635,202 @@ export interface AutopsyDisplaySegment {
 export interface RoastResult {
   roasts: Record<string, string>; // clauseId → roast text
   total_roasted: number;
+}
+
+// ============================================
+// ESCAPE PLAN TYPES
+// ============================================
+
+export interface VoidClause {
+  clause_number: number;
+  clause_text: string;
+  why_void: string;
+  law: string;
+  law_explanation: string;
+  void_type: "fully_void" | "partially_void";
+  enforceable_portion: string | null;
+  recoverable_amount: number;
+  recovery_method: string;
+}
+
+export interface EscapeAuthority {
+  name: string;
+  for: string;
+  jurisdiction: string;
+  cost: string;
+  timeline: string;
+  how_to_file: string;
+}
+
+export interface EscapeStep {
+  step_number: number;
+  title: string;
+  description: string;
+  action_type: "awareness" | "notice" | "negotiate" | "complaint" | "refund";
+  timeframe: string;
+  details: string;
+  link_to?: "letter" | "negotiate" | null;
+  authorities?: EscapeAuthority[];
+}
+
+export interface RecoveryBreakdown {
+  items: {
+    label: string;
+    amount: number;
+    explanation: string;
+  }[];
+  interest_rate: string;
+  interest_amount: number;
+  total: number;
+}
+
+export interface EscapePlan {
+  severity: "low" | "medium" | "high" | "critical";
+  can_escape: boolean;
+  summary: string;
+  void_clauses: VoidClause[];
+  escape_steps: EscapeStep[];
+  recovery: RecoveryBreakdown;
+  total_recoverable: number;
+  estimated_timeline: string;
+  success_probability: "low" | "medium" | "high" | "very_high";
+  success_explanation: string;
+  warnings: string[];
+  immediate_actions: string[];
+}
+
+// ============================================
+// CONTRACT SIMULATOR TYPES
+// ============================================
+
+export interface SimUpfrontCost {
+  label: string;
+  amount: number;
+  is_refundable: boolean;
+  refund_conditions: string | null;
+  fair_amount: number;
+  issue: string | null;
+}
+
+export interface SimMonthlyCost {
+  label: string;
+  amount: number;
+  escalation_percent: number;
+  escalation_frequency_months: number;
+  fair_amount: number;
+}
+
+export interface SimExitCost {
+  label: string;
+  amount: number;
+  condition: string;
+  fair_amount: number;
+  issue: string | null;
+}
+
+export interface SimPenalty {
+  amount: number;
+  description: string;
+  is_legal: boolean;
+  law: string | null;
+}
+
+export interface SimDangerZone {
+  month_start: number;
+  month_end: number;
+  label: string;
+  description: string;
+  severity: "warning" | "critical";
+}
+
+export interface SimScenario {
+  label: string;
+  total_cost: number;
+  deposit_returned: number;
+  penalty: number;
+  net_cost: number;
+}
+
+export interface SimulatorData {
+  contract_duration_months: number;
+  document_type: string;
+  upfront_costs: SimUpfrontCost[];
+  monthly_costs: SimMonthlyCost[];
+  exit_costs: SimExitCost[];
+  penalties: {
+    early_exit_during_lockin: SimPenalty | null;
+    early_exit_after_lockin: SimPenalty | null;
+    late_rent_per_day: SimPenalty | null;
+  };
+  lock_in: {
+    months: number;
+    applies_to: string;
+    is_mutual: boolean;
+    fair_months: number;
+    issue: string | null;
+  };
+  notice_period: {
+    days: number;
+    fair_days: number;
+    issue: string | null;
+  };
+  deposit_refund: {
+    total_deposit: number;
+    refund_timeline_days: number;
+    conditions: string;
+    refundable_if_full_term: boolean;
+    refundable_if_early_exit: boolean;
+    deductions: number;
+  };
+  danger_zones: SimDangerZone[];
+  scenarios: SimScenario[];
+  overpayment_vs_fair: number;
+  worst_case_total: number;
+  fair_contract_total: number;
+  summary: string;
+}
+
+// ============================================
+// POWER BALANCE TYPES
+// ============================================
+
+export interface PowerCategory {
+  name: string;
+  key: string;
+  party_a_percent: number;
+  party_b_percent: number;
+  description: string;
+  key_clause: string | null;
+}
+
+export interface PowerBalance {
+  party_a_name: string;
+  party_b_name: string;
+  party_a_role: string;
+  party_b_role: string;
+  overall_party_a: number;
+  overall_party_b: number;
+  categories: PowerCategory[];
+  verdict: string;
+  verdict_description: string;
+  fairness_score: number;
+}
+
+// ============================================
+// CLAUSE REWRITE TYPES
+// ============================================
+
+export interface RewriteChange {
+  label: string;
+  original: string;
+  rewritten: string;
+  legal_basis: string | null;
+}
+
+export interface RewriteResult {
+  rewritten_clause: string;
+  changes: RewriteChange[];
+  total_changes: number;
+  legal_compliance_note: string;
+  tone: "formal" | "friendly" | "assertive";
 }

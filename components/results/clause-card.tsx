@@ -20,6 +20,7 @@ import {
   ArrowRight,
   Scan,
   Flame,
+  Pencil,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import ELI5Section from "@/components/results/eli5-section";
@@ -53,6 +54,7 @@ interface ClauseCardProps {
   onToggle: () => void;
   jurisdiction: string;
   onAutopsy?: () => void;
+  onRewrite?: () => void;
   isRoastMode?: boolean;
   roastText?: string | null;
 }
@@ -65,6 +67,7 @@ export default function ClauseCard({
   onToggle,
   jurisdiction,
   onAutopsy,
+  onRewrite,
   isRoastMode = false,
   roastText,
 }: ClauseCardProps) {
@@ -337,6 +340,25 @@ export default function ClauseCard({
                     </span>
                   </div>
                   <ArrowRight className="h-4 w-4 text-purple-400 group-hover:translate-x-1 transition-transform" />
+                </button>
+              )}
+
+              {/* Rewrite CTA */}
+              {clause.risk_level !== "safe" && !!onRewrite && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onRewrite();
+                  }}
+                  className="w-full flex items-center justify-between p-3 rounded-lg bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 hover:border-emerald-500/40 hover:from-emerald-500/15 hover:to-teal-500/15 transition-all group"
+                >
+                  <div className="flex items-center gap-2">
+                    <Pencil className="h-4 w-4 text-emerald-400" />
+                    <span className="text-sm font-medium text-emerald-300">
+                      ✏️ Rewrite This Clause (Fair + Legal)
+                    </span>
+                  </div>
+                  <ArrowRight className="h-4 w-4 text-emerald-400 group-hover:translate-x-1 transition-transform" />
                 </button>
               )}
 

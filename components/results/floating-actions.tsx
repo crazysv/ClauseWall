@@ -21,6 +21,8 @@ import {
   Search,
   Zap,
   Share2,
+  DoorOpen,
+  Gamepad2,
 } from "lucide-react";
 import { toast } from "sonner";
 import { generateReport } from "@/lib/pdf/report-generator";
@@ -84,6 +86,13 @@ const ACTION_GROUPS: ActionGroup[] = [
         color: "#F97316",
         bg: "rgba(249, 115, 22, 0.15)",
       },
+      {
+        id: "simulate",
+        label: "Simulator",
+        icon: Gamepad2,
+        color: "#06B6D4",
+        bg: "rgba(6, 182, 212, 0.15)",
+      },
     ],
   },
   {
@@ -107,6 +116,14 @@ const ACTION_GROUPS: ActionGroup[] = [
         color: "#3B82F6",
         bg: "rgba(59, 130, 246, 0.15)",
       },
+      {
+        id: "escape",
+        label: "Escape Plan",
+        icon: DoorOpen,
+        color: "#F97316",
+        bg: "rgba(249, 115, 22, 0.15)",
+      },
+
     ],
   },
   {
@@ -197,6 +214,18 @@ export default function FloatingActions({
 
       case "battle":
         router.push(`/battle/${doc.id}`);
+        setIsOpen(false);
+        setExpandedGroup(null);
+        break;
+
+      case "simulate":
+        router.push(`/simulate/${doc.id}`);
+        setIsOpen(false);
+        setExpandedGroup(null);
+        break;
+
+      case "escape":
+        router.push(`/escape/${doc.id}`);
         setIsOpen(false);
         setExpandedGroup(null);
         break;

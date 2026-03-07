@@ -9,6 +9,7 @@ import Providers from "@/components/providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://clausewall.vercel.app"),
   title: "ClauseWall — India's First AI Contract Analyzer",
   description:
     "India's first AI-powered predatory clause detector. Upload any rental agreement, employment contract, or loan document and instantly find unfair, dangerous, or illegal clauses under Indian law.",

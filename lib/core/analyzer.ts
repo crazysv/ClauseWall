@@ -12,6 +12,7 @@ import { SupabaseClient } from "@supabase/supabase-js";
 import { ANALYSIS_CONFIG } from "@/lib/utils/constants";
 import { addToCommunityDB } from "@/lib/community";
 import { extractEntityFallback, normalizeEntityName, isValidEntityName } from "@/lib/core/entity-extractor";
+import { extractPowerBalance } from "@/lib/ai/power-extractor";
 
 /**
  * Update analysis progress in database
@@ -240,6 +241,32 @@ export async function analyzeDocument(
       }
     }
     console.log(`[ClauseWall] [Community] ${communityAdded} patterns shared`);
+    
+    // ---- Step 3.6: Power Balance Analysis ----
+    await updateProgress(supabase, documentId, 92, "Analyzing power balance...", totalClauses);
+
+    let powerBalance = null;
+    try {
+      console.log(`[ClauseWall] [Power] Extracting power balance...`);
+      powerBalance = await extractPowerBalance(
+        analyzedClauses.map((c) => ({
+          clause_number: c.clause_number,
+          clause_type: c.clause_type,
+          risk_level: c.risk_level,
+          risk_score: c.risk_score,
+          explanation: c.explanation,
+        })),
+        documentType,
+        jurisdiction,
+        entityName
+      );
+      console.log(
+        `[ClauseWall] [Power] ⚖️ Balance: ${powerBalance.overall_party_a}/${powerBalance.overall_party_b} — ${powerBalance.verdict}`
+      );
+    } catch (powerError) {
+      console.error("[ClauseWall] [Power] Power balance analysis failed (non-fatal):", powerError);
+      // Non-fatal — analysis continues without power balance
+    }
 
     // ---- Step 4: Calculate scores ----
     await updateProgress(supabase, documentId, 95, "Calculating final score...", totalClauses);
@@ -278,6 +305,7 @@ export async function analyzeDocument(
         analysis_progress: 100,
         analysis_step: "Analysis complete!",
         clauses_analyzed: analyzedClauses.length,
+        power_balance: powerBalance,
       })
       .eq("id", documentId);
 

@@ -241,3 +241,35 @@ body.red-vignette::after {
     display: none;
   }
 }
+
+/* ============================================
+   🌈 CONTRACT MOOD RING
+   Ambient background + heartbeat for dangerous zones
+   ============================================ */
+
+@keyframes moodHeartbeat {
+  0%, 100% { opacity: 0.15; }
+  30% { opacity: 0.5; }
+  50% { opacity: 0.7; }
+  70% { opacity: 0.5; }
+}
+
+@keyframes moodDotPulse {
+  0%, 100% { box-shadow: 0 0 0 0 currentColor; }
+  50% { box-shadow: 0 0 0 4px currentColor; }
+}
+
+.mood-heartbeat {
+  animation: moodHeartbeat 1.8s ease-in-out infinite;
+}
+
+.mood-dot-pulse {
+  animation: moodDotPulse 2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mood-heartbeat,
+  .mood-dot-pulse {
+    animation: none !important;
+  }
+}
