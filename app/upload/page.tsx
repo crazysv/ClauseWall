@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import {
   Upload,
@@ -11,6 +11,7 @@ import {
   ClipboardPaste,
   Zap,
   Shield,
+  Cpu,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -27,12 +28,22 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DOCUMENT_TYPES, JURISDICTIONS } from "@/lib/utils/constants";
 import { toast } from "sonner";
 import QuickScanResult from "@/components/upload/quick-scan-result";
+import {
+  loadModel,
+  warmUpModel,
+  getModelStatus,
+  classifyDocument,
+} from "@/lib/ml";
 import type { QuickAnalysisResult } from "@/lib/bot/quick-analyzer";
+import type { MLScanResult } from "@/lib/ml/types";
+import type { ModelStatus } from "@/lib/ml/types";
 
+// CHANGED: Removed "ml-preview" — only 3 states now
 type PageState = "upload" | "scanning" | "results";
 
+const MIN_ML_DISPLAY_MS = 5000; // ML results shown for at least 5 seconds
+
 export default function UploadPage() {
-  // Upload state
   const [file, setFile] = useState<File | null>(null);
   const [pastedText, setPastedText] = useState("");
   const [documentType, setDocumentType] = useState("");
@@ -40,10 +51,42 @@ export default function UploadPage() {
   const [activeTab, setActiveTab] = useState("upload");
   const [error, setError] = useState("");
 
-  // Quick scan state
   const [pageState, setPageState] = useState<PageState>("upload");
-  const [quickScanResult, setQuickScanResult] = useState<QuickAnalysisResult | null>(null);
+
+  // ML state
+  const [mlResult, setMlResult] = useState<MLScanResult | null>(null);
+  const [mlStatus, setMlStatus] = useState<ModelStatus>("idle");
+
+  // Quick scan state — CHANGED: removed isQuickScanLoading, quickScanReady
+  const [quickScanResult, setQuickScanResult] =
+    useState<QuickAnalysisResult | null>(null);
   const [documentId, setDocumentId] = useState<string | null>(null);
+
+  // Preload ML model on mount
+  useEffect(() => {
+    const preload = async () => {
+      setMlStatus("loading");
+      const loaded = await loadModel();
+      if (loaded) {
+        await warmUpModel();
+        setMlStatus("ready");
+      } else {
+        setMlStatus("error");
+      }
+    };
+    preload();
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const status = getModelStatus();
+      setMlStatus(status);
+      if (status === "ready" || status === "error") {
+        clearInterval(interval);
+      }
+    }, 500);
+    return () => clearInterval(interval);
+  }, []);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setError("");
@@ -78,6 +121,134 @@ export default function UploadPage() {
     maxSize: 10 * 1024 * 1024,
   });
 
+  const getClientSideText = async (): Promise<string | null> => {
+  if (activeTab === "paste" && pastedText.trim().length >= 50) {
+    return pastedText;
+  }
+
+  if (activeTab === "upload" && file) {
+    if (file.type === "text/plain") {
+      return await file.text();
+    }
+
+    if (file.type === "application/pdf") {
+      try {
+        const { extractTextFromPDFClient } = await import(
+          "@/lib/pdf/client-parser"
+        );
+        const text = await extractTextFromPDFClient(file);
+        if (text) {
+          console.log(
+            `[ClauseWall] PDF parsed client-side: ${text.length} chars`
+          );
+        }
+        return text; // null if parsing failed — ML skipped, quick scan handles it
+      } catch {
+        console.warn("[ClauseWall] Client PDF import failed, skipping ML");
+        return null;
+      }
+    }
+
+    return null;
+  }
+
+  return null;
+};
+
+  const runQuickScan = async (inputFile: File | null, inputText: string) => {
+    let quickResponse: Response;
+
+    if (activeTab === "upload" && inputFile) {
+      const formData = new FormData();
+      formData.append("file", inputFile);
+      formData.append("documentType", documentType);
+      formData.append("jurisdiction", jurisdiction);
+
+      quickResponse = await fetch("/api/quick-scan", {
+        method: "POST",
+        body: formData,
+      });
+    } else {
+      quickResponse = await fetch("/api/quick-scan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          text: inputText,
+          documentType,
+          jurisdiction,
+        }),
+      });
+    }
+
+    const quickData = await quickResponse.json();
+
+    if (!quickResponse.ok) {
+      throw new Error(quickData.error || "Quick scan failed");
+    }
+
+    return quickData;
+  };
+
+  const triggerFullAnalysis = async (
+    rawText: string,
+    inputFile: File | null
+  ) => {
+    if (!rawText || rawText.trim().length < 50) return;
+
+    try {
+      let analyzeResponse: Response;
+
+      if (activeTab === "upload" && inputFile) {
+        const formData = new FormData();
+        formData.append("file", inputFile);
+        formData.append("documentType", documentType);
+        formData.append("jurisdiction", jurisdiction);
+
+        analyzeResponse = await fetch("/api/analyze", {
+          method: "POST",
+          body: formData,
+        });
+      } else {
+        analyzeResponse = await fetch("/api/analyze", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            text: rawText,
+            documentType,
+            jurisdiction,
+            filename: inputFile?.name || "pasted-text.txt",
+          }),
+        });
+      }
+
+      const analyzeData = await analyzeResponse.json();
+
+      if (analyzeResponse.ok && analyzeData.documentId) {
+        setDocumentId(analyzeData.documentId);
+
+        fetch("/api/bot/trigger-analysis", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            documentId: analyzeData.documentId,
+            text: rawText,
+            documentType,
+            jurisdiction,
+          }),
+        }).catch((err) => {
+          console.error("[ClauseWall] Trigger failed:", err);
+        });
+      }
+    } catch (fullError) {
+      console.error("[ClauseWall] Full analysis trigger failed:", fullError);
+    }
+  };
+
+  /**
+   * MAIN HANDLER — Unified progressive flow
+   * ML instant → Quick Scan enhances → Full Analysis in background
+   * All shown on ONE screen
+   */
   const handleAnalyze = async () => {
     setError("");
 
@@ -98,101 +269,63 @@ export default function UploadPage() {
       return;
     }
 
-    setPageState("scanning");
-    toast.info("Running quick scan...");
-
     try {
-      // Step 1: Quick Scan
-      let quickResponse: Response;
+      let mlRan = false;
 
-      if (activeTab === "upload" && file) {
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("documentType", documentType);
-        formData.append("jurisdiction", jurisdiction);
+      // --- STEP 1: ML Instant Scan (client-side, <100ms) ---
+      const clientText = await getClientSideText();
+      let mlStartTime = 0;
 
-        quickResponse = await fetch("/api/quick-scan", {
-          method: "POST",
-          body: formData,
-        });
-      } else {
-        quickResponse = await fetch("/api/quick-scan", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            text: pastedText,
-            documentType,
-            jurisdiction,
-          }),
-        });
+      if (clientText && mlStatus === "ready") {
+        mlStartTime = Date.now();
+        const mlScanResult = await classifyDocument(clientText);
+  
+        if (mlScanResult && mlScanResult.totalClauses > 0) {
+          setMlResult(mlScanResult);
+          setPageState("results"); // Show results IMMEDIATELY with ML data
+          mlRan = true;
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          toast.success(
+            `⚡ Instant scan: ${mlScanResult.totalClauses} clauses in ${mlScanResult.inferenceTimeMs.toFixed(0)}ms`
+          );
+        }
       }
 
-      const quickData = await quickResponse.json();
-
-      if (!quickResponse.ok) {
-        throw new Error(quickData.error || "Quick scan failed");
+      // If ML didn't run (PDF or model not ready), show spinner
+      if (!mlRan) {
+        setPageState("scanning");
+        toast.info("Running quick scan...");
       }
 
+      // --- STEP 2: Quick Scan (API, 3-5 seconds) ---
+      const quickData = await runQuickScan(
+        activeTab === "upload" ? file : null,
+        pastedText
+      );
+
+      // --- STEP 2.5: Ensure ML results are visible for minimum time ---
+      if (mlRan && mlStartTime > 0) {
+        const elapsed = Date.now() - mlStartTime;
+        const remaining = MIN_ML_DISPLAY_MS - elapsed;
+  
+        if (remaining > 0) {
+          await new Promise((resolve) => setTimeout(resolve, remaining));
+        }
+      }
+
+      // NOW set quick scan result (enhances ML data)
       setQuickScanResult(quickData);
-      setPageState("results");
-      toast.success("Quick scan complete!");
 
-      // Scroll to top to show results
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      // If no ML ran, NOW transition to results
+      if (!mlRan) {
+        setPageState("results");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      // If ML ran, component re-renders with quickScanResult — progressive enhancement
 
-      // Step 2: Save to DB + Trigger Full Analysis (same as bot flow)
-    const rawText = quickData.raw_text;
-  if (rawText && rawText.trim().length >= 50) {
-  try {
-    // First save document via /api/analyze (just creates DB record)
-    let analyzeResponse: Response;
-
-    if (activeTab === "upload" && file) {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("documentType", documentType);
-      formData.append("jurisdiction", jurisdiction);
-
-      analyzeResponse = await fetch("/api/analyze", {
-        method: "POST",
-        body: formData,
-      });
-    } else {
-      analyzeResponse = await fetch("/api/analyze", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          text: rawText,
-          documentType,
-          jurisdiction,
-          filename: file?.name || "pasted-text.txt",
-        }),
-      });
-    }
-
-    const analyzeData = await analyzeResponse.json();
-
-    if (analyzeResponse.ok && analyzeData.documentId) {
-      setDocumentId(analyzeData.documentId);
-
-      // Trigger full analysis via the working bot trigger route
-      fetch("/api/bot/trigger-analysis", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          documentId: analyzeData.documentId,
-          text: rawText,
-          documentType,
-          jurisdiction,
-        }),
-      }).catch((err) => {
-        console.error("[ClauseWall] Trigger failed:", err);
-      });
-    }
-  } catch (fullError) {
-    console.error("[ClauseWall] Full analysis trigger failed:", fullError);
-  }
-}
+      // --- STEP 3: Full Analysis (background, 30-60 seconds) ---
+      const rawText = quickData.raw_text;
+      await triggerFullAnalysis(rawText, activeTab === "upload" ? file : null);
     } catch (err) {
       const errorMessage = (err as Error).message;
       setError(errorMessage);
@@ -201,9 +334,11 @@ export default function UploadPage() {
     }
   };
 
+  // CHANGED: Simplified — removed isQuickScanLoading, quickScanReady
   const handleReset = () => {
     setPageState("upload");
     setQuickScanResult(null);
+    setMlResult(null);
     setDocumentId(null);
     setFile(null);
     setPastedText("");
@@ -228,7 +363,7 @@ export default function UploadPage() {
       </div>
 
       <div className="relative mx-auto max-w-3xl">
-        {/* SCANNING STATE */}
+        {/* SCANNING STATE — Only shows when ML didn't run */}
         {pageState === "scanning" && (
           <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6">
             <div className="relative">
@@ -244,20 +379,43 @@ export default function UploadPage() {
           </div>
         )}
 
-        {/* RESULTS STATE */}
-        {pageState === "results" && quickScanResult && (
+        {/* RESULTS STATE — Unified progressive screen */}
+        {pageState === "results" && (quickScanResult || mlResult) && (
           <>
             <div className="text-center mb-8">
               <h1 className="text-3xl sm:text-4xl font-bold mb-3">
-                🚦 Quick <span className="gradient-text">Scan Results</span>
+                {!quickScanResult && mlResult ? (
+                  <>
+                    ⚡ Instant{" "}
+                    <span className="gradient-text">Analysis</span>
+                  </>
+                ) : (
+                  <>
+                    🛡️ Contract{" "}
+                    <span className="gradient-text">Analysis</span>
+                  </>
+                )}
               </h1>
               <p className="text-muted-foreground">
-                Instant AI analysis of your contract
+                {!quickScanResult && mlResult
+                  ? "On-device scan complete • Enhancing with AI..."
+                  : "AI analysis of your contract"}
               </p>
+              {mlResult && quickScanResult && (
+                <Badge
+                  variant="outline"
+                  className="mt-2 border-amber-500/30 text-amber-400 gap-1"
+                >
+                  <Cpu className="h-3 w-3" />
+                  Pre-scanned on-device in{" "}
+                  {mlResult.inferenceTimeMs.toFixed(0)}ms
+                </Badge>
+              )}
             </div>
 
             <QuickScanResult
               result={quickScanResult}
+              mlResult={mlResult}
               documentId={documentId}
               onReset={handleReset}
             />
@@ -280,12 +438,33 @@ export default function UploadPage() {
                 Upload your document or paste the text. Get instant red flags in
                 5 seconds, then a full verified analysis in 60 seconds.
               </p>
+
+              {/* ML Model Status Badge */}
+              <div className="mt-3 flex justify-center">
+                {mlStatus === "ready" && (
+                  <Badge
+                    variant="outline"
+                    className="border-green-500/30 text-green-400 gap-1"
+                  >
+                    <Cpu className="h-3 w-3" />
+                    On-device AI ready
+                  </Badge>
+                )}
+                {mlStatus === "loading" && (
+                  <Badge
+                    variant="outline"
+                    className="border-blue-500/30 text-blue-400 gap-1"
+                  >
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                    Loading on-device AI...
+                  </Badge>
+                )}
+              </div>
             </div>
 
             {/* Upload Card */}
             <Card className="glass border-white/5 glow-blue">
               <CardContent className="p-6 sm:p-8">
-                {/* Tabs: Upload vs Paste */}
                 <Tabs
                   value={activeTab}
                   onValueChange={setActiveTab}
@@ -308,7 +487,6 @@ export default function UploadPage() {
                     </TabsTrigger>
                   </TabsList>
 
-                  {/* Upload Tab */}
                   <TabsContent value="upload" className="mt-6">
                     {!file ? (
                       <div
@@ -367,7 +545,6 @@ export default function UploadPage() {
                     )}
                   </TabsContent>
 
-                  {/* Paste Tab */}
                   <TabsContent value="paste" className="mt-6">
                     <Textarea
                       placeholder="Paste your contract text here...
@@ -391,7 +568,6 @@ Example:
                   </TabsContent>
                 </Tabs>
 
-                {/* Document Type & Jurisdiction */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                   <div>
                     <label className="text-sm font-medium mb-2 block">
@@ -436,7 +612,6 @@ Example:
                   </div>
                 </div>
 
-                {/* Error Message */}
                 {error && (
                   <div className="flex items-center gap-2 text-red-400 text-sm mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20">
                     <AlertCircle className="h-4 w-4 flex-shrink-0" />
@@ -444,20 +619,31 @@ Example:
                   </div>
                 )}
 
-                {/* Analyze Button */}
                 <Button
                   onClick={handleAnalyze}
-                  disabled={
-                    !hasContent || !documentType || !jurisdiction
-                  }
+                  disabled={!hasContent || !documentType || !jurisdiction}
                   className="w-full bg-blue-600 hover:bg-blue-700 py-6 text-lg gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-500/20"
                 >
-                  <Zap className="h-5 w-5" />
-                  Quick Scan Contract
+                  {mlStatus === "ready" ? (
+                    <>
+                      <Zap className="h-5 w-5" />
+                      Instant Scan Contract
+                    </>
+                  ) : (
+                    <>
+                      <Zap className="h-5 w-5" />
+                      Quick Scan Contract
+                    </>
+                  )}
                 </Button>
 
-                {/* How it works */}
                 <div className="mt-4 flex items-center justify-center gap-6 text-xs text-muted-foreground">
+                  {mlStatus === "ready" && (
+                    <div className="flex items-center gap-1">
+                      <Cpu className="h-3 w-3 text-amber-500" />
+                      ML scan: instant
+                    </div>
+                  )}
                   <div className="flex items-center gap-1">
                     <Zap className="h-3 w-3 text-yellow-500" />
                     Quick scan: 5 sec
@@ -468,7 +654,6 @@ Example:
                   </div>
                 </div>
 
-                {/* Privacy Note */}
                 <p className="text-xs text-muted-foreground text-center mt-4">
                   🔒 Your document is analyzed in real-time and not permanently
                   stored. We take your privacy seriously.
@@ -476,7 +661,6 @@ Example:
               </CardContent>
             </Card>
 
-            {/* Supported Types */}
             <div className="mt-8 text-center">
               <p className="text-sm text-muted-foreground mb-3">
                 Supported document types:

@@ -1,0 +1,17 @@
+{
+  "max_features": 3061,
+  "ngram_range": [
+    1,
+    2
+  ],
+  "model_version": "1.0.2",
+  "training_samples": 1600,
+  "test_accuracy": 0.9625,
+  "classes": [
+    "safe",
+    "warning",
+    "dangerous",
+    "illegal"
+  ],
+  "confidence_threshold": 0.65
+}

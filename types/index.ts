@@ -542,6 +542,12 @@ export interface CommunityMatch {
   first_seen_at: string;
   common_legal_issue: string | null;
   match_percentage: number;
+  match_type?: "exact" | "semantic" | "fuzzy";
+  semantic_stats?: {
+    total_similar_patterns: number;
+    illegal_percentage: number;
+    dangerous_percentage: number;
+  } | null;
 }
 
 // ============================================

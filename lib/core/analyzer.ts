@@ -177,6 +177,22 @@ export async function analyzeDocument(
         aiFallbackCount++;
       }
 
+      // ---- NEW: Check community match BEFORE adding ----
+      let communityMatch = null;
+      if (analysis.risk_level === "dangerous" || analysis.risk_level === "illegal") {
+        const { checkCommunityMatch } = await import("@/lib/community");
+        communityMatch = await checkCommunityMatch(
+          extractedClause.text,
+          extractedClause.clause_type
+        );
+    
+        if (communityMatch) {
+          console.log(
+            `[ClauseWall] [Community] Match found for clause ${clauseNum}: ${communityMatch.match_type} (${communityMatch.match_percentage}%)`
+          );
+        }
+      }
+
       analyzedClauses.push({
         document_id: documentId,
         clause_number: extractedClause.clause_number,
@@ -198,6 +214,8 @@ export async function analyzeDocument(
         confidence: analysis.confidence,
         extracted_value: analysis.extracted_value ?? null,
         extracted_unit: analysis.extracted_unit ?? null,
+        // ---- NEW: Store community match data ----
+        community_match: communityMatch ? JSON.stringify(communityMatch) : null,
       });
 
       // Delay between requests to avoid rate limiting

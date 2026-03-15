@@ -46,6 +46,7 @@ interface HybridClause {
   matched_rule_id?: string | null;
   negotiation_script?: string | null;
   penalty_info?: string | null;
+  community_match?: string | null;
 }
 
 interface ClauseCardProps {
@@ -518,6 +519,7 @@ export default function ClauseCard({
                         clauseType={clause.clause_type}
                         jurisdiction={jurisdiction}
                         riskLevel={clause.risk_level}
+                        communityMatch={clause.community_match}
                       />
                     </motion.div>
                   )}
