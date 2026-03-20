@@ -37,6 +37,13 @@ import {
 import type { QuickAnalysisResult } from "@/lib/bot/quick-analyzer";
 import type { MLScanResult } from "@/lib/ml/types";
 import type { ModelStatus } from "@/lib/ml/types";
+import PrivacyToggle from "@/components/upload/privacy-toggle";
+import PrivacyDashboard from "@/components/upload/privacy-dashboard";
+import PreSendReviewModal from "@/components/upload/pre-send-review-modal";
+import { usePrivacy, redactClauses } from "@/lib/privacy";
+import type { RedactionResult } from "@/lib/privacy";
+import { splitIntoClauses } from "@/lib/ml/clause-splitter";
+import MicButton from "@/components/voice/mic-button";
 
 // CHANGED: Removed "ml-preview" — only 3 states now
 type PageState = "upload" | "scanning" | "results";
@@ -56,6 +63,16 @@ export default function UploadPage() {
   // ML state
   const [mlResult, setMlResult] = useState<MLScanResult | null>(null);
   const [mlStatus, setMlStatus] = useState<ModelStatus>("idle");
+
+  // Privacy state
+  const { level: privacyLevel, addStep, clearSteps, setBytesSent } = usePrivacy();
+  const [redactionStats, setRedactionStats] = useState<RedactionResult["stats"] | null>(null);
+  const [showPreSendReview, setShowPreSendReview] = useState(false);
+  const [redactedClausesForReview, setRedactedClausesForReview] = useState<string[]>([]);
+  const [pendingQuickScanData, setPendingQuickScanData] = useState<{
+    file: File | null;
+    text: string;
+  } | null>(null);
 
   // Quick scan state — CHANGED: removed isQuickScanLoading, quickScanReady
   const [quickScanResult, setQuickScanResult] =
@@ -249,8 +266,10 @@ export default function UploadPage() {
    * ML instant → Quick Scan enhances → Full Analysis in background
    * All shown on ONE screen
    */
-  const handleAnalyze = async () => {
+    const handleAnalyze = async () => {
     setError("");
+    clearSteps();
+    setRedactionStats(null);
 
     if (activeTab === "upload" && !file) {
       setError("Please upload a document first");
@@ -272,58 +291,113 @@ export default function UploadPage() {
     try {
       let mlRan = false;
 
-      // --- STEP 1: ML Instant Scan (client-side, <100ms) ---
+      // --- STEP 1: Extract text client-side ---
+      addStep({ id: "text_extract", label: "Extracting text from document...", status: "pending", location: "device", timestamp: Date.now() });
+
       const clientText = await getClientSideText();
+
+      addStep({ id: "text_extract", label: clientText ? `Text extracted (${clientText.length} chars)` : "Text extraction skipped", status: clientText ? "done" : "error", location: "device", timestamp: Date.now() });
+
+      // --- STEP 2: ML Instant Scan ---
       let mlStartTime = 0;
 
       if (clientText && mlStatus === "ready") {
+        addStep({ id: "ml_classify", label: "Running on-device ML classification...", status: "pending", location: "device", timestamp: Date.now() });
+
         mlStartTime = Date.now();
         const mlScanResult = await classifyDocument(clientText);
-  
+
         if (mlScanResult && mlScanResult.totalClauses > 0) {
           setMlResult(mlScanResult);
-          setPageState("results"); // Show results IMMEDIATELY with ML data
+          setPageState("results");
           mlRan = true;
           window.scrollTo({ top: 0, behavior: "smooth" });
+
+          addStep({ id: "ml_classify", label: `ML classified ${mlScanResult.totalClauses} clauses in ${mlScanResult.inferenceTimeMs.toFixed(0)}ms`, status: "done", location: "device", timestamp: Date.now() });
+
           toast.success(
             `⚡ Instant scan: ${mlScanResult.totalClauses} clauses in ${mlScanResult.inferenceTimeMs.toFixed(0)}ms`
           );
         }
       }
 
-      // If ML didn't run (PDF or model not ready), show spinner
+      // --- MAXIMUM PRIVACY: Stop here ---
+      if (privacyLevel === "maximum" && mlRan) {
+        setBytesSent(0);
+        addStep({ id: "complete", label: "Analysis complete — zero data sent", status: "done", location: "device", timestamp: Date.now() });
+        toast.success("🔒 Maximum privacy: All processing done on-device");
+        return;
+      }
+
       if (!mlRan) {
         setPageState("scanning");
         toast.info("Running quick scan...");
       }
 
-      // --- STEP 2: Quick Scan (API, 3-5 seconds) ---
+      // --- STEP 3: PII Redaction (Balanced mode) ---
+      if (privacyLevel === "balanced" && clientText) {
+        addStep({ id: "pii_redact", label: "Redacting personal information...", status: "pending", location: "device", timestamp: Date.now() });
+
+        const clauses = splitIntoClauses(clientText);
+        const clauseTexts = clauses.map((c) => c.text);
+        const { redactedClauses: redacted, totalRedactions } = redactClauses(clauseTexts);
+
+        setRedactionStats(totalRedactions);
+
+        addStep({ id: "pii_redact", label: `${totalRedactions.total} PII items redacted`, status: "done", location: "device", timestamp: Date.now() });
+
+        // Show pre-send review
+        if (totalRedactions.total > 0) {
+          setRedactedClausesForReview(redacted);
+          setPendingQuickScanData({
+            file: activeTab === "upload" ? file : null,
+            text: pastedText,
+          });
+          setShowPreSendReview(true);
+
+          // Wait for minimum ML display time
+          if (mlRan && mlStartTime > 0) {
+            const elapsed = Date.now() - mlStartTime;
+            const remaining = MIN_ML_DISPLAY_MS - elapsed;
+            if (remaining > 0) {
+              await new Promise((resolve) => setTimeout(resolve, remaining));
+            }
+          }
+
+          return; // Wait for user approval in modal
+        }
+      }
+
+      // --- STEP 4: Quick Scan ---
+      addStep({ id: "ai_send", label: "Sending for AI analysis...", status: "pending", location: "server", timestamp: Date.now() });
+
       const quickData = await runQuickScan(
         activeTab === "upload" ? file : null,
         pastedText
       );
 
-      // --- STEP 2.5: Ensure ML results are visible for minimum time ---
+      const sentBytes = JSON.stringify(quickData).length;
+      setBytesSent(sentBytes);
+
+      addStep({ id: "ai_send", label: `AI analysis complete (${(sentBytes / 1024).toFixed(1)} KB sent)`, status: "done", location: "server", timestamp: Date.now() });
+
+      // Ensure ML minimum display time
       if (mlRan && mlStartTime > 0) {
         const elapsed = Date.now() - mlStartTime;
         const remaining = MIN_ML_DISPLAY_MS - elapsed;
-  
         if (remaining > 0) {
           await new Promise((resolve) => setTimeout(resolve, remaining));
         }
       }
 
-      // NOW set quick scan result (enhances ML data)
       setQuickScanResult(quickData);
 
-      // If no ML ran, NOW transition to results
       if (!mlRan) {
         setPageState("results");
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
-      // If ML ran, component re-renders with quickScanResult — progressive enhancement
 
-      // --- STEP 3: Full Analysis (background, 30-60 seconds) ---
+      // --- STEP 5: Full Analysis ---
       const rawText = quickData.raw_text;
       await triggerFullAnalysis(rawText, activeTab === "upload" ? file : null);
     } catch (err) {
@@ -331,6 +405,44 @@ export default function UploadPage() {
       setError(errorMessage);
       toast.error(errorMessage);
       setPageState("upload");
+    }
+  };
+
+  /**
+   * Handle user approving pre-send review
+   */
+  const handlePreSendApprove = async () => {
+    setShowPreSendReview(false);
+
+    if (!pendingQuickScanData) return;
+
+    try {
+      addStep({ id: "ai_send", label: "Sending anonymized clauses to AI...", status: "pending", location: "server", timestamp: Date.now() });
+
+      const quickData = await runQuickScan(
+        pendingQuickScanData.file,
+        pendingQuickScanData.text
+      );
+
+      const sentBytes = JSON.stringify(quickData).length;
+      setBytesSent(sentBytes);
+
+      addStep({ id: "ai_send", label: `AI analysis complete (${(sentBytes / 1024).toFixed(1)} KB sent)`, status: "done", location: "server", timestamp: Date.now() });
+
+      setQuickScanResult(quickData);
+
+      if (!mlResult) {
+        setPageState("results");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      const rawText = quickData.raw_text;
+      await triggerFullAnalysis(rawText, pendingQuickScanData.file);
+    } catch (err) {
+      toast.error((err as Error).message);
+      setPageState("upload");
+    } finally {
+      setPendingQuickScanData(null);
     }
   };
 
@@ -343,6 +455,8 @@ export default function UploadPage() {
     setFile(null);
     setPastedText("");
     setError("");
+    clearSteps();
+    setRedactionStats(null);
   };
 
   const removeFile = () => {
@@ -419,6 +533,11 @@ export default function UploadPage() {
               documentId={documentId}
               onReset={handleReset}
             />
+
+            {/* Privacy Dashboard */}
+            <div className="mt-4">
+              <PrivacyDashboard redactionStats={redactionStats} />
+            </div>
           </>
         )}
 
@@ -549,10 +668,10 @@ export default function UploadPage() {
                     <Textarea
                       placeholder="Paste your contract text here...
 
-Example:
-1. RENT: The Licensee agrees to pay a monthly rent of ₹25,000...
-2. SECURITY DEPOSIT: The Licensee shall deposit ₹1,50,000...
-3. LOCK-IN PERIOD: The Licensee cannot terminate this agreement for the first 11 months..."
+                                Example:
+                                1. RENT: The Licensee agrees to pay a monthly rent of ₹25,000...
+                                2. SECURITY DEPOSIT: The Licensee shall deposit ₹1,50,000...
+                                3. LOCK-IN PERIOD: The Licensee cannot terminate this agreement for the first 11 months..."
                       value={pastedText}
                       onChange={(e) => setPastedText(e.target.value)}
                       className="min-h-[250px] bg-white/5 border-white/10 resize-none text-sm font-mono"
@@ -567,6 +686,11 @@ Example:
                     </div>
                   </TabsContent>
                 </Tabs>
+
+                {/* Privacy Mode Toggle */}
+                <div className="mb-6">
+                  <PrivacyToggle />
+                </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                   <div>
@@ -679,6 +803,22 @@ Example:
             </div>
           </>
         )}
+
+        {/* Voice Mic Button */}
+        <MicButton />
+
+        {/* Pre-Send Review Modal */}
+        <PreSendReviewModal
+          isOpen={showPreSendReview}
+          onClose={() => {
+            setShowPreSendReview(false);
+            setPendingQuickScanData(null);
+          }}
+          onApprove={handlePreSendApprove}
+          redactedClauses={redactedClausesForReview}
+          redactionStats={redactionStats || { total: 0, names: 0, ids: 0, contacts: 0, addresses: 0, financial: 0 }}
+          originalClauseCount={redactedClausesForReview.length}
+        />
       </div>
     </div>
   );

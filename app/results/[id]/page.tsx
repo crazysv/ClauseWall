@@ -41,6 +41,16 @@ import SimulatorCTA from "@/components/results/simulator-cta";
 import PowerBalanceMeter from "@/components/results/power-balance-meter";
 import ClauseRewriteModal from "@/components/results/clause-rewrite-modal";
 import MoodRingBackground from "@/components/results/mood-ring-background";
+import ProofSection from "@/components/results/proof-section";
+import ShareRoomModal from "@/components/collab/share-room-modal";
+import MicButton from "@/components/voice/mic-button";
+import StateMachineCTA from "@/components/statemachine/statemachine-cta";
+import StateMachineModal from "@/components/statemachine/state-machine-modal";
+import type { StateMachineReport } from "@/lib/statemachine/types";
+import DeliberationCTA from "@/components/deliberation/deliberation-cta";
+import DocumentDeliberation from "@/components/deliberation/document-deliberation";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import type { DeliberationResult, DeliberationProgress, ClauseDeliberation } from "@/lib/deliberation/types";
 
 interface HybridClause extends Clause {
   verification_source?: "database" | "ai";
@@ -48,6 +58,8 @@ interface HybridClause extends Clause {
   matched_rule_id?: string | null;
   negotiation_script?: string | null;
   penalty_info?: string | null;
+  community_match?: string | null;
+  proof_data?: string | null;
 }
 
 export default function ResultsPage() {
@@ -61,6 +73,14 @@ export default function ResultsPage() {
   const [expandedClauses, setExpandedClauses] = useState<Set<string>>(new Set());
   const [refreshing, setRefreshing] = useState(false);
   const [filterRisk, setFilterRisk] = useState<string>("all");
+  const [showCollab, setShowCollab] = useState(false);
+  const [showStateMachineModal, setShowStateMachineModal] = useState(false);
+
+  // Deliberation state
+  const [deliberationResult, setDeliberationResult] = useState<DeliberationResult | null>(null);
+  const [isRunningDeliberation, setIsRunningDeliberation] = useState(false);
+  const [deliberationProgress, setDeliberationProgress] = useState<DeliberationProgress | null>(null);
+  const [showDeliberationView, setShowDeliberationView] = useState(false);
 
   // Modal states
   const [showScoreCard, setShowScoreCard] = useState(false);
@@ -153,6 +173,12 @@ export default function ResultsPage() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
+  }, []);
+
+  useEffect(() => {
+    const handler = () => setShowCollab(true);
+    window.addEventListener("clausewall:collaborate", handler);
+    return () => window.removeEventListener("clausewall:collaborate", handler);
   }, []);
 
   useEffect(() => {
@@ -386,6 +412,40 @@ export default function ResultsPage() {
     setRefreshing(false);
     toast.success("Results refreshed");
   };
+
+  // ═══════════════════════════════════════════
+  // ⚔️ FULL DOCUMENT DELIBERATION
+  // ═══════════════════════════════════════════
+  const runFullDeliberation = useCallback(async () => {
+    setIsRunningDeliberation(true);
+    setDeliberationProgress({
+      totalClauses: clauses.length,
+      currentClause: 1,
+      currentAgent: "predator",
+      status: "predator_arguing",
+      message: "Starting adversarial deliberation...",
+    });
+    try {
+      const res = await fetch("/api/deliberation/run", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ documentId }),
+      });
+      const data = await res.json();
+      if (data.success && data.result) {
+        setDeliberationResult(data.result as DeliberationResult);
+        toast.success("Adversarial deliberation complete!");
+      } else {
+        toast.error(data.error || "Deliberation failed");
+      }
+    } catch (error) {
+      console.error("[ClauseWall] Full deliberation failed:", error);
+      toast.error("Deliberation failed. Please try again.");
+    } finally {
+      setIsRunningDeliberation(false);
+      setDeliberationProgress(null);
+    }
+  }, [documentId, clauses.length]);
 
   const toggleClause = (clauseId: string) => {
     const newExpanded = new Set(expandedClauses);
@@ -731,10 +791,16 @@ export default function ResultsPage() {
                   isExpanded={expandedClauses.has(clause.id)}
                   onToggle={() => toggleClause(clause.id)}
                   jurisdiction={document.jurisdiction}
+                  documentType={document.document_type}
                   onAutopsy={() => setAutopsyClause(clause)}
                   onRewrite={() => setRewriteClause(clause)}
                   isRoastMode={isRoastMode}
                   roastText={roastCache.get(clause.id) || null}
+                  deliberation={
+                    deliberationResult?.deliberations?.find(
+                      (d) => d.clauseIndex === clause.clause_number || d.clauseId === clause.id
+                    ) || null
+                  }
                 />
               </motion.div>
             ))}
@@ -757,6 +823,18 @@ export default function ResultsPage() {
         {/* QR Verification Badge */}
         <QRSection document={document} />
 
+        {/* Blockchain Proof */}
+        <ProofSection
+          proofHash={document.proof_hash}
+          proofCid={document.proof_cid}
+          proofTimestamp={document.proof_timestamp}
+          proofStatus={document.proof_status}
+          tsaToken={document.tsa_token}
+          tsaSerial={document.tsa_serial}
+          overallRiskScore={document.overall_risk_score}
+          totalClauses={document.total_clauses}
+        />
+
         {/* Escape Plan CTA */}
         <EscapeCTA
           documentId={documentId}
@@ -768,6 +846,23 @@ export default function ResultsPage() {
         <SimulatorCTA
           documentId={documentId}
           overallRiskScore={document.overall_risk_score}
+        />
+
+        {/* State Machine CTA */}
+        {document.state_machine_data && (
+          <StateMachineCTA
+            report={document.state_machine_data as unknown as StateMachineReport}
+            onExplore={() => setShowStateMachineModal(true)}
+          />
+        )}
+
+        {/* ⚔️ Adversarial Deliberation CTA */}
+        <DeliberationCTA
+          result={deliberationResult}
+          isLoading={isRunningDeliberation}
+          progress={deliberationProgress}
+          onRun={runFullDeliberation}
+          onView={() => setShowDeliberationView(true)}
         />
       </div>
 
@@ -837,6 +932,79 @@ export default function ResultsPage() {
         clause={rewriteClause}
         jurisdiction={document.jurisdiction}
         documentType={document.document_type}
+      />
+
+      {/* ── State Machine Modal ── */}
+      {document.state_machine_data && (
+        <StateMachineModal
+          report={document.state_machine_data as unknown as StateMachineReport}
+          isOpen={showStateMachineModal}
+          onClose={() => setShowStateMachineModal(false)}
+          documentId={documentId}
+        />
+      )}
+
+      {/* ── Collaboration Modal ── */}
+      <ShareRoomModal
+        isOpen={showCollab}
+        onClose={() => setShowCollab(false)}
+        documentId={documentId}
+      />
+
+      {/* ── Document Deliberation Modal ── */}
+      {deliberationResult && (
+        <Dialog open={showDeliberationView} onOpenChange={setShowDeliberationView}>
+          <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto bg-gray-950 border-white/10">
+            <DocumentDeliberation
+              result={deliberationResult}
+              onClauseClick={(index) => {
+                setShowDeliberationView(false);
+                setFilterRisk("all");
+                const targetClause = clauses[index];
+                if (targetClause) {
+                  setExpandedClauses(new Set([targetClause.id]));
+                  setTimeout(() => {
+                    const el = window.document.querySelector(`[data-clause-index="${index}"]`);
+                    el?.scrollIntoView({ behavior: "smooth", block: "center" });
+                  }, 100);
+                }
+              }}
+            />
+          </DialogContent>
+        </Dialog>
+      )}
+
+      {/* ── Voice Mic Button ── */}
+      <MicButton
+        documentId={documentId}
+        onCommand={(intent, params) => {
+          switch (intent) {
+            case "SCORE": setShowScoreCard(true); break;
+            case "DNA": setShowDNA(true); break;
+            case "XRAY": setShowXRay(true); break;
+            case "NEGOTIATE": window.location.href = `/negotiate/${documentId}`; break;
+            case "LEGAL_NOTICE": window.location.href = `/letter/${documentId}`; break;
+            case "ESCAPE": window.location.href = `/escape/${documentId}`; break;
+            case "BATTLE": window.location.href = `/battle/${documentId}`; break;
+            case "SHARE":
+              navigator.clipboard.writeText(window.location.href);
+              toast.success("Link copied!");
+              break;
+            case "NAVIGATE_CLAUSE":
+              const idx = (params.clause_number as number) - 1;
+              if (idx >= 0 && idx < clauses.length) {
+                setFilterRisk("all");
+                setExpandedClauses(new Set([clauses[idx].id]));
+                setTimeout(() => {
+                  const el = window.document.querySelector(`[data-clause-index="${idx}"]`);
+                  el?.scrollIntoView({ behavior: "smooth", block: "center" });
+                }, 100);
+              }
+              break;
+            case "STOP":
+              break;
+          }
+        }}
       />
     </div>
   </>

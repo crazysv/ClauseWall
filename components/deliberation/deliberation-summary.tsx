@@ -1,0 +1,156 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { Swords, ArrowRight, Loader2 } from "lucide-react";
+import type {
+  ClauseDeliberation,
+  AgentRole,
+} from "@/lib/deliberation/types";
+
+// ============================================
+// PROPS
+// ============================================
+
+interface DeliberationSummaryProps {
+  deliberation: ClauseDeliberation | null;
+  onViewDebate: () => void;
+  onTriggerDeliberation?: () => void;
+  isLoading?: boolean;
+  currentAgent?: AgentRole | null;
+}
+
+// ============================================
+// VERDICT CONFIG
+// ============================================
+
+const verdictConfig: Record<string, { color: string; emoji: string; label: string }> = {
+  fair: { color: "text-emerald-400", emoji: "✅", label: "FAIR" },
+  partially_fair: { color: "text-amber-400", emoji: "⚠️", label: "PARTIALLY FAIR" },
+  unfair: { color: "text-red-400", emoji: "❌", label: "UNFAIR" },
+  illegal: { color: "text-purple-400", emoji: "⛔", label: "ILLEGAL" },
+};
+
+const agentInfo: Record<string, { icon: string; name: string }> = {
+  predator: { icon: "🔴", name: "Defense Counsel" },
+  guardian: { icon: "🟢", name: "Consumer Advocate" },
+  arbiter: { icon: "⚖️", name: "Judicial Arbiter" },
+};
+
+// ============================================
+// COMPONENT
+// ============================================
+
+export default function DeliberationSummary({
+  deliberation,
+  onViewDebate,
+  onTriggerDeliberation,
+  isLoading = false,
+  currentAgent = null,
+}: DeliberationSummaryProps) {
+  // ── STATE 3: Loading ──
+  if (isLoading) {
+    const agent = currentAgent ? agentInfo[currentAgent] : null;
+    const step = currentAgent === "predator" ? 1 : currentAgent === "guardian" ? 2 : currentAgent === "arbiter" ? 3 : 1;
+    const percent = Math.round((step / 3) * 100);
+
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="p-3 rounded-lg bg-amber-500/[0.04] border border-amber-500/15"
+      >
+        <div className="flex items-center gap-2 mb-2">
+          <Loader2 className="h-3.5 w-3.5 text-amber-400 animate-spin" />
+          <span className="text-xs font-medium text-amber-300">
+            Agents deliberating...
+          </span>
+        </div>
+        {agent && (
+          <p className="text-xs text-white/60 mb-2">
+            {agent.icon} {agent.name} is{" "}
+            {currentAgent === "arbiter" ? "deliberating" : "arguing"}...
+          </p>
+        )}
+        <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
+          <motion.div
+            className="h-full bg-amber-500 rounded-full"
+            initial={{ width: 0 }}
+            animate={{ width: `${percent}%` }}
+            transition={{ duration: 0.4 }}
+          />
+        </div>
+        <p className="text-[10px] text-white/40 mt-1">
+          Step {step} of 3
+        </p>
+      </motion.div>
+    );
+  }
+
+  // ── STATE 1: Has deliberation data ──
+  if (deliberation) {
+    const v = verdictConfig[deliberation.arbiterVerdict.verdict] || verdictConfig.partially_fair;
+    const predConf = Math.round(deliberation.predatorArgument.confidence * 100);
+    const guardConf = Math.round(deliberation.guardianArgument.confidence * 100);
+    const arbConf = Math.round(deliberation.arbiterVerdict.confidence * 100);
+
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 4 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="p-3 rounded-lg bg-white/[0.03] border border-white/10 hover:border-white/20 transition-colors cursor-pointer group"
+        onClick={onViewDebate}
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="flex items-center gap-1.5">
+              <span className={`text-xs font-bold ${v.color}`}>
+                {v.emoji} {v.label}
+              </span>
+              <span className="text-[10px] text-white/40">
+                ({arbConf}%)
+              </span>
+            </div>
+            <span className="text-white/20">|</span>
+            <div className="flex items-center gap-2 text-[10px] text-white/50">
+              <span>🔴 {predConf}%</span>
+              <span className="text-white/20">vs</span>
+              <span>🟢 {guardConf}%</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-1 text-xs text-blue-400 group-hover:text-blue-300 shrink-0 ml-2">
+            <span className="hidden sm:inline">View Debate</span>
+            <ArrowRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" />
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
+
+  // ── STATE 2: No deliberation, not loading ──
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 4 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="p-3 rounded-lg bg-white/[0.02] border border-white/8 hover:border-white/15 transition-colors cursor-pointer group"
+      onClick={onTriggerDeliberation}
+    >
+      <div className="flex items-center justify-between">
+        <div className="min-w-0">
+          <div className="flex items-center gap-2 mb-0.5">
+            <Swords className="h-3.5 w-3.5 text-amber-400/70" />
+            <span className="text-xs font-medium text-white/70">
+              Three AI agents can debate this clause
+            </span>
+          </div>
+          <p className="text-[10px] text-white/40 ml-[22px]">
+            A corporate lawyer, a rights advocate, and a judge
+          </p>
+        </div>
+        <div className="flex items-center gap-1 text-xs text-amber-400/70 group-hover:text-amber-300 shrink-0 ml-2">
+          <span className="hidden sm:inline">Debate</span>
+          <ArrowRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" />
+        </div>
+      </div>
+    </motion.div>
+  );
+}

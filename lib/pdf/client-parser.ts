@@ -1,11 +1,12 @@
 // ============================================
 // CLIENT-SIDE PDF TEXT EXTRACTOR
-// Uses pdfjs-dist in browser — enables ML scan for PDFs
+// Uses pdfjs-dist for text PDFs
+// Falls back to Tesseract.js OCR for scanned PDFs
 // Works OFFLINE — worker served from /public
-// Returns null on failure (graceful fallback)
 // ============================================
 
 import type { TextItem } from "pdfjs-dist/types/src/display/api";
+import type { OCRProgressCallback } from "@/lib/ocr";
 
 let pdfjsLib: typeof import("pdfjs-dist") | null = null;
 let isWorkerSetup = false;
@@ -16,7 +17,6 @@ async function getPdfJs() {
   pdfjsLib = await import("pdfjs-dist");
 
   if (!isWorkerSetup) {
-    // Local worker — works offline
     pdfjsLib.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
     isWorkerSetup = true;
   }
@@ -24,9 +24,52 @@ async function getPdfJs() {
   return pdfjsLib;
 }
 
+/**
+ * Extract text from PDF — tries text layer first, falls back to OCR
+ */
 export async function extractTextFromPDFClient(
-  file: File
+  file: File,
+  onProgress?: OCRProgressCallback
 ): Promise<string | null> {
+  try {
+    // Step 1: Try text layer extraction (fast, works for digital PDFs)
+    const text = await extractTextLayer(file);
+
+    if (text && text.length >= 50) {
+      console.log(
+        `[ClauseWall] PDF text layer: ${text.length} chars`
+      );
+      return text;
+    }
+
+    // Step 2: Text layer empty/short — likely scanned PDF, try OCR
+    console.log(
+      "[ClauseWall] PDF text layer empty — attempting OCR..."
+    );
+    onProgress?.(5, "Scanned PDF detected. Starting OCR...");
+
+    const { ocrPDF } = await import("@/lib/ocr");
+    const ocrText = await ocrPDF(file, onProgress);
+
+    if (ocrText) {
+      console.log(
+        `[ClauseWall] PDF OCR: ${ocrText.length} chars`
+      );
+      return ocrText;
+    }
+
+    console.warn("[ClauseWall] Both text extraction and OCR failed");
+    return null;
+  } catch (error) {
+    console.error("[ClauseWall] Client PDF parsing failed:", error);
+    return null;
+  }
+}
+
+/**
+ * Extract text from PDF text layer only (no OCR)
+ */
+async function extractTextLayer(file: File): Promise<string | null> {
   try {
     const pdfjs = await getPdfJs();
 
@@ -54,20 +97,8 @@ export async function extractTextFromPDFClient(
       .replace(/\s{3,}/g, " ")
       .trim();
 
-    if (fullText.length < 50) {
-      console.warn(
-        "[ClauseWall] Client PDF: text too short — likely scanned/image-based"
-      );
-      return null;
-    }
-
-    console.log(
-      `[ClauseWall] Client PDF: extracted ${fullText.length} chars from ${pdf.numPages} pages`
-    );
-
-    return fullText;
-  } catch (error) {
-    console.error("[ClauseWall] Client PDF parsing failed:", error);
+    return fullText.length >= 50 ? fullText : null;
+  } catch {
     return null;
   }
 }

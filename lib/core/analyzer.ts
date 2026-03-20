@@ -216,6 +216,8 @@ export async function analyzeDocument(
         extracted_unit: analysis.extracted_unit ?? null,
         // ---- NEW: Store community match data ----
         community_match: communityMatch ? JSON.stringify(communityMatch) : null,
+        // ---- NEW: Store neurosymbolic proof tree ----
+        proof_data: analysis.proof_tree ? JSON.stringify(analysis.proof_tree) : null,
       });
 
       // Delay between requests to avoid rate limiting
@@ -259,6 +261,18 @@ export async function analyzeDocument(
       }
     }
     console.log(`[ClauseWall] [Community] ${communityAdded} patterns shared`);
+
+    // ---- Step 3.55: Enrich clauses with Knowledge Graph ----
+    await updateProgress(supabase, documentId, 91, "Enriching with legal knowledge graph...", totalClauses);
+
+    try {
+      const { enrichDocumentClauses } = await import("@/lib/graph");
+      const enrichedCount = await enrichDocumentClauses(documentId, jurisdiction);
+      console.log(`[ClauseWall] [Graph] ✅ Enriched ${enrichedCount} clauses with knowledge graph`);
+    } catch (graphError) {
+      console.error("[ClauseWall] [Graph] Non-fatal enrichment error:", graphError);
+      // Non-fatal — analysis continues without graph enrichment
+    }
     
     // ---- Step 3.6: Power Balance Analysis ----
     await updateProgress(supabase, documentId, 92, "Analyzing power balance...", totalClauses);
@@ -308,6 +322,87 @@ export async function analyzeDocument(
 
     summary += ` | Verification: ${dbMatchCount} of ${analyzedClauses.length} clauses (${verificationRate}%) verified against ClauseWall Legal Database.`;
 
+    // ---- Step 5.5: Generate Blockchain Proof ----
+    await updateProgress(supabase, documentId, 97, "Generating blockchain proof...", totalClauses);
+
+    let proofHash: string | null = null;
+    let proofCid: string | null = null;
+    let proofTimestamp: string | null = null;
+    let proofStatus: string | null = null;
+    let tsaToken: string | null = null;
+    let tsaSerial: string | null = null;
+
+    try {
+      const { generateAndPinProof } = await import("@/lib/proof");
+
+      const proofResult = await generateAndPinProof(
+        {
+          document_type: documentType,
+          jurisdiction,
+          overall_risk_score: overallScore,
+          total_clauses: analyzedClauses.length,
+          safe_count: counts.safe,
+          warning_count: counts.warning,
+          dangerous_count: counts.dangerous,
+          illegal_count: counts.illegal,
+        },
+        analyzedClauses.map((c: any) => ({
+          clause_number: c.clause_number,
+          clause_type: c.clause_type,
+          risk_level: c.risk_level,
+          risk_score: c.risk_score,
+          verification_source: c.verification_source,
+          legal_citation: c.legal_citation,
+        })),
+        verificationRate
+      );
+
+      if (proofResult.success) {
+        proofHash = proofResult.proof_hash;
+        proofCid = proofResult.cid;
+        proofTimestamp = proofResult.timestamp;
+        proofStatus = proofResult.cid ? "pinned" : proofResult.tsa_token ? "verified" : "hash_only";
+        tsaToken = proofResult.tsa_token;
+        tsaSerial = proofResult.tsa_serial;
+
+        console.log(
+          `[ClauseWall] [Proof] ✅ Hash: ${proofHash?.substring(0, 16)}... TSA: ${tsaSerial || "none"} IPFS: ${proofCid || "none"}`
+        );
+      }
+    } catch (proofError) {
+      console.error("[ClauseWall] [Proof] Non-fatal error:", proofError);
+    }
+
+    // ---- Step 5.7: State Machine Extraction (non-blocking) ----
+    try {
+      await updateProgress(supabase, documentId, 98, "Extracting contract state machine...", totalClauses);
+      const { extractAndAnalyzeStateMachine } = await import("@/lib/statemachine");
+      const stateMachineReport = await extractAndAnalyzeStateMachine(
+        rawText,
+        documentType,
+        jurisdiction,
+        documentId,
+        analyzedClauses.map((c: { original_text: string; clause_type: string; clause_number: number }) => ({
+          text: c.original_text,
+          type: c.clause_type,
+          index: c.clause_number - 1,
+        }))
+      );
+
+      if (stateMachineReport) {
+        await supabase
+          .from("documents")
+          .update({ state_machine_data: stateMachineReport })
+          .eq("id", documentId);
+        console.log(
+          `[ClauseWall] [StateMachine] ✅ Stored: ${stateMachineReport.stateMachine.metadata.totalStates} states, ${stateMachineReport.trapAnalysis.length} traps`
+        );
+      }
+    } catch (smError) {
+      console.error("[ClauseWall] [StateMachine] Non-fatal extraction error:", smError);
+      // Non-blocking — analysis continues without state machine
+    }
+
     // ---- Step 6: Update document with results ----
     const { error: updateError } = await supabase
       .from("documents")
@@ -324,6 +419,12 @@ export async function analyzeDocument(
         analysis_step: "Analysis complete!",
         clauses_analyzed: analyzedClauses.length,
         power_balance: powerBalance,
+        proof_hash: proofHash,
+        proof_cid: proofCid,
+        proof_timestamp: proofTimestamp,
+        proof_status: proofStatus,
+        tsa_token: tsaToken,
+        tsa_serial: tsaSerial,
       })
       .eq("id", documentId);
 

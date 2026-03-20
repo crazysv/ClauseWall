@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 import Navbar from "@/components/shared/navbar";
 import Footer from "@/components/shared/footer";
 import Providers from "@/components/providers";
+import { VoiceProvider } from "@/lib/voice/voice-context";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -43,10 +44,12 @@ export default function RootLayout({
         className={`${inter.className} min-h-screen bg-background text-foreground antialiased`}
       >
         <Providers>
-          <Navbar />
-          <main className="min-h-[calc(100vh-140px)]">{children}</main>
-          <Footer />
-          <Toaster richColors position="top-right" />
+          <VoiceProvider>
+            <Navbar />
+            <main className="min-h-[calc(100vh-140px)]">{children}</main>
+            <Footer />
+            <Toaster richColors position="top-right" />
+          </VoiceProvider>
         </Providers>
       </body>
     </html>

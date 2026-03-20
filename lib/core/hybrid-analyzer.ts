@@ -14,7 +14,9 @@ import { extractValues } from "@/lib/ai/value-extractor";
 import { analyzeClause } from "@/lib/ai/clause-analyzer";
 import { matchAgainstRules } from "@/lib/core/rule-engine";
 import { callGroq } from "@/lib/ai/groq-client";
+import { runNeurosymbolicAnalysis } from "@/lib/reasoning";
 import type { HybridAnalysisResult } from "@/types";
+import type { ProofTree } from "@/lib/reasoning/types";
 
 /**
  * Generate a plain-English explanation using AI
@@ -113,6 +115,16 @@ export async function hybridAnalyzeClause(
         redFlags.push("Contains financial penalty clause");
       }
 
+      // ---- NEUROSYMBOLIC REASONING: Formal proof tree ----
+      let proofTree: ProofTree | null = null;
+      try {
+        proofTree = await runNeurosymbolicAnalysis(
+          clauseText, values, jurisdiction, documentType, refinedClauseType
+        );
+      } catch (reasoningErr) {
+        console.error("[ClauseWall] [Reasoning] Non-fatal error:", reasoningErr);
+      }
+
       return {
         risk_level: ruleResult.severity,
         risk_score: ruleResult.risk_score,
@@ -128,6 +140,7 @@ export async function hybridAnalyzeClause(
         penalty_info: ruleResult.penalty || null,
         extracted_value: values.primary_value ?? null,
         extracted_unit: values.primary_unit ?? null,
+        proof_tree: proofTree,
       };
     }
 
@@ -153,6 +166,7 @@ export async function hybridAnalyzeClause(
         penalty_info: null,
         extracted_value: values.primary_value ?? null,
         extracted_unit: values.primary_unit ?? null,
+        proof_tree: null,
       };
     }
 
@@ -167,6 +181,16 @@ export async function hybridAnalyzeClause(
       documentType,
       refinedClauseType
     );
+
+    // ---- NEUROSYMBOLIC REASONING for AI path (may still find formal violations) ----
+    let aiProofTree: ProofTree | null = null;
+    try {
+      aiProofTree = await runNeurosymbolicAnalysis(
+        clauseText, values, jurisdiction, documentType, refinedClauseType
+      );
+    } catch (reasoningErr) {
+      console.error("[ClauseWall] [Reasoning] Non-fatal error (AI path):", reasoningErr);
+    }
 
     return {
       risk_level: aiResult.risk_level,
@@ -183,6 +207,7 @@ export async function hybridAnalyzeClause(
       penalty_info: null,
       extracted_value: values.primary_value ?? null,
       extracted_unit: values.primary_unit ?? null,
+      proof_tree: aiProofTree,
     };
   } catch (error) {
     console.error("[ClauseWall] Hybrid analysis failed, falling back to AI:", error);

@@ -25,6 +25,15 @@ import {
 import { Badge } from "@/components/ui/badge";
 import ELI5Section from "@/components/results/eli5-section";
 import CommunityInsight from "@/components/results/community-insight";
+import { Network } from "lucide-react";
+import KnowledgeGraphModal from "@/components/results/knowledge-graph-modal";
+import DeceptionTab from "@/components/results/deception-tab";
+import ProofSummary from "@/components/results/proof-summary";
+import ProofTreeModal from "@/components/results/proof-tree-modal";
+import type { ProofTree } from "@/lib/reasoning/types";
+import DeliberationSummary from "@/components/deliberation/deliberation-summary";
+import DeliberationModal from "@/components/deliberation/deliberation-modal";
+import type { ClauseDeliberation, AgentRole } from "@/lib/deliberation/types";
 
 interface HybridClause {
   id: string;
@@ -47,6 +56,7 @@ interface HybridClause {
   negotiation_script?: string | null;
   penalty_info?: string | null;
   community_match?: string | null;
+  proof_data?: string | null;
 }
 
 interface ClauseCardProps {
@@ -54,25 +64,85 @@ interface ClauseCardProps {
   isExpanded: boolean;
   onToggle: () => void;
   jurisdiction: string;
+  documentType?: string;
   onAutopsy?: () => void;
   onRewrite?: () => void;
   isRoastMode?: boolean;
   roastText?: string | null;
+  deliberation?: ClauseDeliberation | null;
 }
 
-type ActionTab = "legal" | "fair" | "negotiate" | "penalty" | "eli5" | "community" | null;
+type ActionTab = "legal" | "fair" | "negotiate" | "penalty" | "eli5" | "community" | "deception" | "debate" | null;
 
 export default function ClauseCard({
   clause,
   isExpanded,
   onToggle,
   jurisdiction,
+  documentType = "rental",
   onAutopsy,
   onRewrite,
   isRoastMode = false,
   roastText,
+  deliberation: initialDeliberation,
 }: ClauseCardProps) {
   const [activeAction, setActiveAction] = useState<ActionTab>(null);
+  const [showProofModal, setShowProofModal] = useState(false);
+  const [showGraph, setShowGraph] = useState(false);
+
+  // Deliberation state
+  const [showDeliberationModal, setShowDeliberationModal] = useState(false);
+  const [isDeliberating, setIsDeliberating] = useState(false);
+  const [currentDelibAgent, setCurrentDelibAgent] = useState<AgentRole | null>(null);
+  const [localDeliberation, setLocalDeliberation] = useState<ClauseDeliberation | null>(
+    initialDeliberation || null
+  );
+
+  async function runSingleDeliberation() {
+    setIsDeliberating(true);
+    setCurrentDelibAgent("predator");
+    try {
+      // Simulate agent progression for UX feedback
+      const guardianTimer = setTimeout(() => setCurrentDelibAgent("guardian"), 3000);
+      const arbiterTimer = setTimeout(() => setCurrentDelibAgent("arbiter"), 6000);
+
+      const res = await fetch("/api/deliberation/single", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          clauseText: clause.original_text,
+          documentType,
+          jurisdiction,
+          clauseType: clause.clause_type,
+        }),
+      });
+
+      clearTimeout(guardianTimer);
+      clearTimeout(arbiterTimer);
+
+      const data = await res.json();
+      if (data.success && data.deliberation) {
+        setLocalDeliberation(data.deliberation as ClauseDeliberation);
+      }
+    } catch (error) {
+      console.error("[ClauseWall] Single deliberation failed:", error);
+    } finally {
+      setIsDeliberating(false);
+      setCurrentDelibAgent(null);
+    }
+  }
+
+  // Parse proof tree data
+  let proofTree: ProofTree | null = null;
+  try {
+    if (clause.proof_data) {
+      proofTree = typeof clause.proof_data === "string"
+        ? JSON.parse(clause.proof_data)
+        : clause.proof_data;
+    }
+  } catch {
+    // Invalid proof data — ignore
+  }
 
   const toggleAction = (tab: ActionTab) => {
     setActiveAction((prev) => (prev === tab ? null : tab));
@@ -181,6 +251,20 @@ export default function ClauseCard({
       available: clause.risk_level === "dangerous" || clause.risk_level === "illegal",
       color: "orange",
     },
+    {
+      key: "deception" as ActionTab,
+      icon: <AlertTriangle className="h-3.5 w-3.5" />,
+      label: "🎭 Deception",
+      available: clause.risk_level !== "safe",
+      color: "red",
+    },
+    {
+      key: "debate" as ActionTab,
+      icon: <Swords className="h-3.5 w-3.5" />,
+      label: "⚔️ Debate",
+      available: clause.risk_level !== "safe",
+      color: "amber",
+    },
   ];
 
   const availableActions = actionButtons.filter((a) => a.available);
@@ -206,6 +290,14 @@ export default function ClauseCard({
       yellow: {
         active: "bg-yellow-500/20 border-yellow-500/40 text-yellow-400",
         inactive: "bg-white/[0.03] border-white/10 text-gray-400 hover:text-yellow-400 hover:border-yellow-500/30",
+      },
+      red: {
+        active: "bg-red-500/20 border-red-500/40 text-red-400",
+        inactive: "bg-white/[0.03] border-white/10 text-gray-400 hover:text-red-400 hover:border-red-500/30",
+      },
+      amber: {
+        active: "bg-amber-500/20 border-amber-500/40 text-amber-400",
+        inactive: "bg-white/[0.03] border-white/10 text-gray-400 hover:text-amber-400 hover:border-amber-500/30",
       },
     };
     const colors = colorMap[btn.color] || colorMap.blue;
@@ -325,6 +417,12 @@ export default function ClauseCard({
                 </div>
               )}
 
+              {/* Neurosymbolic Proof Summary */}
+              <ProofSummary
+                proofTree={proofTree}
+                onViewProof={() => setShowProofModal(true)}
+              />
+
               {/* Autopsy CTA */}
               {showAutopsy && (
                 <button
@@ -360,6 +458,25 @@ export default function ClauseCard({
                     </span>
                   </div>
                   <ArrowRight className="h-4 w-4 text-emerald-400 group-hover:translate-x-1 transition-transform" />
+                </button>
+              )}
+
+              {/* Knowledge Graph CTA */}
+              {clause.risk_level !== "safe" && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowGraph(true);
+                  }}
+                  className="w-full flex items-center justify-between p-3 rounded-lg bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 hover:border-cyan-500/40 hover:from-cyan-500/15 hover:to-blue-500/15 transition-all group"
+                >
+                  <div className="flex items-center gap-2">
+                    <Network className="h-4 w-4 text-cyan-400" />
+                    <span className="text-sm font-medium text-cyan-300">
+                      🕸️ View Legal Knowledge Map
+                    </span>
+                  </div>
+                  <ArrowRight className="h-4 w-4 text-cyan-400 group-hover:translate-x-1 transition-transform" />
                 </button>
               )}
 
@@ -523,6 +640,42 @@ export default function ClauseCard({
                       />
                     </motion.div>
                   )}
+                  
+                  {activeAction === "deception" && clause.risk_level !== "safe" && (
+                  <motion.div
+                    key="deception"
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -5 }}
+                    transition={{ duration: 0.15 }}
+                  >
+                    <DeceptionTab
+                      clauseId={clause.id}
+                      clauseText={clause.original_text}
+                      clauseType={clause.clause_type}
+                      jurisdiction={jurisdiction}
+                      documentType={documentType}
+                    />
+                  </motion.div>
+                )}
+
+                {activeAction === "debate" && clause.risk_level !== "safe" && (
+                  <motion.div
+                    key="debate"
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -5 }}
+                    transition={{ duration: 0.15 }}
+                  >
+                    <DeliberationSummary
+                      deliberation={localDeliberation}
+                      onViewDebate={() => setShowDeliberationModal(true)}
+                      onTriggerDeliberation={runSingleDeliberation}
+                      isLoading={isDeliberating}
+                      currentAgent={currentDelibAgent}
+                    />
+                  </motion.div>
+                )}
               </AnimatePresence>
 
               {/* Verification Badge */}
@@ -554,6 +707,37 @@ export default function ClauseCard({
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Knowledge Graph Modal */}
+      {showGraph && (
+        <KnowledgeGraphModal
+          isOpen={showGraph}
+          onClose={() => setShowGraph(false)}
+          clauseType={clause.clause_type}
+          jurisdiction={jurisdiction}
+          clauseText={clause.original_text}
+          riskLevel={clause.risk_level}
+        />
+      )}
+
+      {/* Neurosymbolic Proof Tree Modal */}
+      {proofTree && (
+        <ProofTreeModal
+          proofTree={proofTree}
+          isOpen={showProofModal}
+          onClose={() => setShowProofModal(false)}
+        />
+      )}
+
+      {/* Adversarial Deliberation Modal */}
+      {localDeliberation && (
+        <DeliberationModal
+          deliberation={localDeliberation}
+          isOpen={showDeliberationModal}
+          onClose={() => setShowDeliberationModal(false)}
+        />
+      )}
+
     </div>
   );
 }

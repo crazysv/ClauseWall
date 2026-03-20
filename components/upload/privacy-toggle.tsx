@@ -1,0 +1,99 @@
+"use client";
+
+import { Shield, ShieldCheck, ShieldOff, Info } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { usePrivacy } from "@/lib/privacy";
+import type { PrivacyLevel } from "@/lib/privacy";
+
+const PRIVACY_CONFIG: Record<
+  PrivacyLevel,
+  {
+    label: string;
+    description: string;
+    icon: React.ReactNode;
+    color: string;
+    borderColor: string;
+    bgColor: string;
+    badgeColor: string;
+  }
+> = {
+  maximum: {
+    label: "Maximum Privacy",
+    description: "ML only • No data sent • Works offline",
+    icon: <ShieldCheck className="h-4 w-4" />,
+    color: "text-green-400",
+    borderColor: "border-green-500/30",
+    bgColor: "bg-green-500/10",
+    badgeColor: "bg-green-500/15 text-green-400 border-green-500/30",
+  },
+  balanced: {
+    label: "Balanced",
+    description: "Anonymized clauses sent • PII redacted",
+    icon: <Shield className="h-4 w-4" />,
+    color: "text-blue-400",
+    borderColor: "border-blue-500/30",
+    bgColor: "bg-blue-500/10",
+    badgeColor: "bg-blue-500/15 text-blue-400 border-blue-500/30",
+  },
+  standard: {
+    label: "Standard",
+    description: "Full text sent to AI • Best accuracy",
+    icon: <ShieldOff className="h-4 w-4" />,
+    color: "text-yellow-400",
+    borderColor: "border-yellow-500/30",
+    bgColor: "bg-yellow-500/10",
+    badgeColor: "bg-yellow-500/15 text-yellow-400 border-yellow-500/30",
+  },
+};
+
+const LEVELS: PrivacyLevel[] = ["maximum", "balanced", "standard"];
+
+export default function PrivacyToggle() {
+  const { level, setLevel } = usePrivacy();
+  const config = PRIVACY_CONFIG[level];
+
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <label className="text-xs font-medium text-muted-foreground flex items-center gap-1.5">
+          <Shield className="h-3 w-3" />
+          Privacy Mode
+        </label>
+        <Badge variant="outline" className={`text-[10px] gap-1 ${config.badgeColor}`}>
+          {config.icon}
+          {config.label}
+        </Badge>
+      </div>
+
+      <div className="flex gap-1 p-1 rounded-lg bg-white/5 border border-white/5">
+        {LEVELS.map((l) => {
+          const c = PRIVACY_CONFIG[l];
+          const isActive = level === l;
+
+          return (
+            <button
+              key={l}
+              onClick={() => setLevel(l)}
+              className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-md text-xs font-medium transition-all ${
+                isActive
+                  ? `${c.bgColor} ${c.color} ${c.borderColor} border`
+                  : "text-muted-foreground hover:text-white hover:bg-white/5"
+              }`}
+            >
+              {c.icon}
+              <span className="hidden sm:inline">{c.label}</span>
+              <span className="sm:hidden">
+                {l === "maximum" ? "Max" : l === "balanced" ? "Bal" : "Std"}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
+      <p className="text-[10px] text-muted-foreground flex items-center gap-1">
+        <Info className="h-3 w-3 flex-shrink-0" />
+        {config.description}
+      </p>
+    </div>
+  );
+}

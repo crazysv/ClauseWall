@@ -66,6 +66,14 @@ export interface Document {
   share_count: number;
   share_settings: ShareSettings | null;
   power_balance: PowerBalance | null;
+  proof_hash: string | null;
+  proof_cid: string | null;
+  proof_timestamp: string | null;
+  proof_status: string | null;
+  tsa_token: string | null;
+  tsa_serial: string | null;
+  state_machine_data: Record<string, unknown> | null;
+  deliberation_data?: Record<string, unknown> | null;
 }
 
 /**
@@ -376,6 +384,8 @@ export interface HybridAnalysisResult {
   penalty_info: string | null;
   extracted_value: number | null;    
   extracted_unit: string | null;
+  /** Neurosymbolic proof tree (if formal reasoning was applied) */
+  proof_tree?: import("@/lib/reasoning/types").ProofTree | null;
 }
 
 /**
@@ -839,4 +849,100 @@ export interface RewriteResult {
   total_changes: number;
   legal_compliance_note: string;
   tone: "formal" | "friendly" | "assertive";
+}
+
+// ============================================
+// ADVERSARIAL CLAUSE DETECTION TYPES
+// ============================================
+
+export type DeceptionSeverity = "low" | "medium" | "high";
+
+export type DeceptionLevel = "none" | "low" | "medium" | "high" | "extreme";
+
+export interface DisguiseTechnique {
+  technique: string;
+  label: string;
+  phrase: string;
+  explanation: string;
+  severity: DeceptionSeverity;
+}
+
+export interface AdversarialResult {
+  deception_score: number;
+  deception_level: DeceptionLevel;
+  disguise_techniques: DisguiseTechnique[];
+  decoded_meaning: string;
+  hidden_powers: string[];
+  cross_references: string[];
+  vague_terms: string[];
+  one_sided_triggers: string[];
+  surface_reading: string;
+  true_reading: string;
+  risk_amplification: number;
+}
+
+// ============================================
+// COLLABORATIVE REVIEW TYPES
+// ============================================
+
+export interface CollabRoom {
+  id: string;
+  document_id: string;
+  room_code: string;
+  created_by: string | null;
+  host_name: string;
+  host_session_id: string;
+  is_active: boolean;
+  max_participants: number;
+  expires_at: string;
+  created_at: string;
+}
+
+export interface CollabParticipant {
+  user_id: string;
+  user_name: string;
+  user_color: string;
+  role: "host" | "collaborator" | "viewer";
+  current_clause: string | null;
+  joined_at: string;
+}
+
+export interface CollabAnnotation {
+  id: string;
+  room_id: string;
+  clause_id: string;
+  author_id: string;
+  author_name: string;
+  author_color: string;
+  content: string;
+  parent_id: string | null;
+  reactions: Record<string, number>;
+  created_at: string;
+}
+
+export interface CollabVote {
+  id: string;
+  room_id: string;
+  clause_id: string;
+  voter_id: string;
+  voter_name: string;
+  vote: "negotiate" | "accept" | "reject";
+  created_at: string;
+}
+
+export interface VoteSummary {
+  clause_id: string;
+  negotiate_count: number;
+  accept_count: number;
+  reject_count: number;
+  total_voters: number;
+  consensus: boolean;
+  consensus_action: string | null;
+}
+
+export interface CollabRoomState {
+  room: CollabRoom;
+  participants: CollabParticipant[];
+  annotations: Record<string, CollabAnnotation[]>;
+  votes: Record<string, VoteSummary>;
 }

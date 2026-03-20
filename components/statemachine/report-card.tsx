@@ -1,0 +1,80 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { ArrowRight, Shield, AlertTriangle, Skull, Activity } from "lucide-react";
+import type { StateMachineReport, SafetyLevel } from "@/lib/statemachine/types";
+
+interface ReportCardProps {
+  report: StateMachineReport;
+  onExplore: () => void;
+}
+
+const SAFETY_STYLES: Record<SafetyLevel, { border: string; bg: string; icon: typeof Shield; color: string }> = {
+  safe: { border: "border-emerald-500/30", bg: "bg-emerald-500/5", icon: Shield, color: "text-emerald-400" },
+  moderate: { border: "border-amber-500/30", bg: "bg-amber-500/5", icon: AlertTriangle, color: "text-amber-400" },
+  dangerous: { border: "border-red-500/30", bg: "bg-red-500/5", icon: Skull, color: "text-red-400" },
+  critical: { border: "border-red-600/50", bg: "bg-red-500/5", icon: Skull, color: "text-red-500" },
+};
+
+export default function ReportCard({ report, onExplore }: ReportCardProps) {
+  const sm = report.stateMachine;
+  const style = SAFETY_STYLES[report.overallSafety];
+  const SafetyIcon = style.icon;
+
+  // First sentence only
+  const summaryShort = report.summary.split(".")[0] + ".";
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: 0.1 }}
+      className={`rounded-xl border ${style.border} ${style.bg} p-5`}
+    >
+      <div className="flex items-center gap-2 mb-4">
+        <span className="text-lg">🔄</span>
+        <h3 className="font-semibold text-sm">Contract State Machine Analysis</h3>
+      </div>
+
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+        <div className="p-2.5 rounded-lg bg-white/[0.03] border border-white/5 text-center">
+          <p className="text-lg font-bold text-blue-400">{sm.metadata.totalStates}</p>
+          <p className="text-[10px] text-gray-500">States</p>
+        </div>
+        <div className="p-2.5 rounded-lg bg-white/[0.03] border border-white/5 text-center">
+          <p className="text-lg font-bold text-cyan-400">{sm.metadata.totalTransitions}</p>
+          <p className="text-[10px] text-gray-500">Transitions</p>
+        </div>
+        <div className="p-2.5 rounded-lg bg-white/[0.03] border border-white/5 text-center">
+          <p className={`text-lg font-bold ${report.trapAnalysis.length > 0 ? "text-red-400" : "text-green-400"}`}>
+            {report.trapAnalysis.length}
+          </p>
+          <p className="text-[10px] text-gray-500">Traps {report.trapAnalysis.length > 0 && "💀"}</p>
+        </div>
+        <div className="p-2.5 rounded-lg bg-white/[0.03] border border-white/5 text-center">
+          <div className="flex items-center justify-center gap-1">
+            <SafetyIcon className={`h-4 w-4 ${style.color}`} />
+            <p className={`text-xs font-bold uppercase ${style.color}`}>
+              {report.overallSafety}
+            </p>
+          </div>
+          <p className="text-[10px] text-gray-500 mt-0.5">Safety</p>
+        </div>
+      </div>
+
+      <p className="text-xs text-gray-400 mb-4 flex items-start gap-1.5">
+        {report.trapAnalysis.length > 0 && <AlertTriangle className="h-3.5 w-3.5 text-amber-400 flex-shrink-0 mt-0.5" />}
+        {summaryShort}
+      </p>
+
+      <button
+        onClick={onExplore}
+        className="flex items-center gap-2 text-sm font-medium text-blue-400 hover:text-blue-300 transition-colors group"
+      >
+        <Activity className="h-4 w-4" />
+        Explore State Machine
+        <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
+      </button>
+    </motion.div>
+  );
+}

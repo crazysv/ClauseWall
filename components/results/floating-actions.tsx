@@ -23,6 +23,7 @@ import {
   Share2,
   DoorOpen,
   Gamepad2,
+  Users,
 } from "lucide-react";
 import { toast } from "sonner";
 import { generateReport } from "@/lib/pdf/report-generator";
@@ -92,6 +93,13 @@ const ACTION_GROUPS: ActionGroup[] = [
         icon: Gamepad2,
         color: "#06B6D4",
         bg: "rgba(6, 182, 212, 0.15)",
+      },
+      {
+        id: "collaborate",
+        label: "Collaborate",
+        icon: Users,
+        color: "#3B82F6",
+        bg: "rgba(59, 130, 246, 0.15)",
       },
     ],
   },
@@ -206,6 +214,15 @@ export default function FloatingActions({
 
   const handleAction = async (actionId: string) => {
     switch (actionId) {
+      case "collaborate":
+        setIsOpen(false);
+        setExpandedGroup(null);
+        // Emit event — parent will handle
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(new CustomEvent("clausewall:collaborate"));
+        }
+        break;
+
       case "dna":
         onOpenDNA();
         setIsOpen(false);
