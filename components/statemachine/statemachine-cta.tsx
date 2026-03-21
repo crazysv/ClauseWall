@@ -46,6 +46,7 @@ export default function StateMachineCTA({ report, onExplore }: StateMachineCTAPr
             <p className="text-xs text-gray-400 mt-0.5">
               See how your contract executes over time and where you could get trapped.
             </p>
+            <p className="text-[10px] text-white/30 mt-0.5">Find hidden trap paths in your contract&apos;s timeline</p>
           </div>
         </div>
         <ArrowRight className="h-4 w-4 text-gray-500 flex-shrink-0" />

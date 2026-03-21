@@ -74,6 +74,7 @@ export interface Document {
   tsa_serial: string | null;
   state_machine_data: Record<string, unknown> | null;
   deliberation_data?: Record<string, unknown> | null;
+  temporal_data?: Record<string, unknown> | null;
 }
 
 /**
@@ -945,4 +946,170 @@ export interface CollabRoomState {
   participants: CollabParticipant[];
   annotations: Record<string, CollabAnnotation[]>;
   votes: Record<string, VoteSummary>;
+}
+
+// ============================================
+// CONTRACT TIME BOMB DEFUSER TYPES
+// ============================================
+
+export type DeadlineType =
+  | "notice_period"
+  | "renewal_window"
+  | "penalty_trigger"
+  | "lock_in_expiry"
+  | "grace_period"
+  | "escalation"
+  | "payment_due"
+  | "auto_renewal"
+  | "termination_window"
+  | "price_increase"
+  | "review_period"
+  | "warranty_expiry"
+  | "dispute_deadline"
+  | "compliance_deadline"
+  | "other";
+
+export type DeadlineUrgency = "critical" | "high" | "medium" | "low";
+
+export type DeadlineSeverity = "catastrophic" | "major" | "moderate" | "minor";
+
+export type DeadlineStatus =
+  | "upcoming"
+  | "warning"
+  | "urgent"
+  | "action_taken"
+  | "missed"
+  | "expired"
+  | "defused";
+
+export type ActionTemplateType =
+  | "termination_notice"
+  | "renewal_rejection"
+  | "refund_request"
+  | "payment_reminder"
+  | "dispute_notice"
+  | "compliance_report"
+  | "general_notice"
+  | "none";
+
+export interface ExtractedDeadline {
+  deadline_type: DeadlineType;
+  title: string;
+  description: string;
+  clause_reference: string;
+  clause_number: number;
+  relative_days: number;
+  relative_description: string;
+  is_recurring: boolean;
+  recurrence_interval_days: number | null;
+  financial_impact: number | null;
+  financial_description: string;
+  consequence_if_missed: string;
+  consequence_severity: DeadlineSeverity;
+  action_required: string;
+  action_template_type: ActionTemplateType;
+  linked_deadline_index: number | null;
+  warning_days: number[];
+}
+
+export interface DeadlineChain {
+  chain_name: string;
+  description: string;
+  deadline_indices: number[];
+  total_financial_risk: number;
+  chain_type: "sequential" | "parallel" | "conditional";
+}
+
+export interface TemporalExtractionResult {
+  signing_date_detected: string | null;
+  contract_duration_days: number | null;
+  contract_end_date_relative: number | null;
+  deadlines: ExtractedDeadline[];
+  deadline_chains: DeadlineChain[];
+  overall_temporal_risk: "low" | "medium" | "high" | "extreme";
+  temporal_risk_summary: string;
+}
+
+export interface ContractDeadline {
+  id: string;
+  document_id: string;
+  user_id: string;
+  clause_id: string | null;
+  deadline_date: string;
+  warning_start_date: string;
+  deadline_type: DeadlineType;
+  title: string;
+  description: string;
+  financial_impact: number | null;
+  financial_description: string;
+  consequence_if_missed: string;
+  consequence_severity: DeadlineSeverity;
+  action_required: string;
+  action_template: string | null;
+  status: DeadlineStatus;
+  urgency: DeadlineUrgency;
+  is_recurring: boolean;
+  recurrence_interval_days: number | null;
+  next_occurrence_date: string | null;
+  reminder_30d_sent: boolean;
+  reminder_14d_sent: boolean;
+  reminder_7d_sent: boolean;
+  reminder_3d_sent: boolean;
+  reminder_1d_sent: boolean;
+  reminder_today_sent: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface DeadlineReminderSettings {
+  user_id: string;
+  telegram_chat_id: string | null;
+  telegram_enabled: boolean;
+  email_enabled: boolean;
+  push_enabled: boolean;
+  push_subscription: string | null;
+  in_app_enabled: boolean;
+  reminder_time: string;
+  timezone: string;
+}
+
+export interface DeadlineNotification {
+  id: string;
+  user_id: string;
+  deadline_id: string;
+  notification_type: "telegram" | "email" | "push" | "in_app";
+  days_before: number;
+  sent_at: string;
+  delivered: boolean;
+  read: boolean;
+}
+
+export interface TimelineEvent {
+  date: string;
+  deadline: ContractDeadline;
+  position: "past" | "today" | "upcoming" | "far";
+  days_from_now: number;
+  urgency_color: string;
+}
+
+export interface ICSEvent {
+  title: string;
+  description: string;
+  start_date: Date;
+  end_date: Date;
+  alarms: { days_before: number }[];
+  location: string;
+  url: string;
+}
+
+export interface DeadlineStats {
+  total: number;
+  critical: number;
+  high: number;
+  medium: number;
+  low: number;
+  defused: number;
+  missed: number;
+  total_financial_exposure: number;
+  next_critical: ContractDeadline | null;
 }

@@ -110,7 +110,7 @@ export default function StateMachineModal({
             <div className="flex items-center gap-3">
               <span className="text-lg">🔄</span>
               <div>
-                <h2 className="font-semibold text-sm sm:text-base">Contract State Machine</h2>
+                <h2 className="font-semibold text-sm sm:text-base">Trap Detector</h2>
                 <p className="text-xs text-gray-400">
                   {sm.metadata.totalStates} states · {sm.metadata.totalTransitions} transitions · {report.trapAnalysis.length} traps
                 </p>
@@ -232,6 +232,7 @@ export default function StateMachineModal({
                         key={trap.stateId}
                         trap={trap}
                         stateMachine={sm}
+                        documentId={documentId}
                         onHighlightPath={(path) => {
                           setSelectedPath(path);
                           setGraphMode("path");

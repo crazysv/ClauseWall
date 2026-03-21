@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import {
   Shield,
   Menu,
@@ -20,6 +21,10 @@ import { useSound } from "@/lib/audio/sound-context";
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { isMuted, toggleMute } = useSound();
+  const pathname = usePathname();
+
+  const isActive = (href: string, exact = false) =>
+    exact ? pathname === href : pathname.startsWith(href);
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/80 backdrop-blur-xl">
@@ -42,7 +47,7 @@ export default function Navbar() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="gap-2 text-muted-foreground hover:text-foreground"
+                className={`gap-2 transition-colors ${isActive('/upload') || isActive('/results') ? 'text-foreground font-medium border-b-2 border-blue-500 rounded-b-none' : 'text-muted-foreground hover:text-foreground'}`}
               >
                 <Upload className="h-4 w-4" />
                 Analyze
@@ -52,7 +57,7 @@ export default function Navbar() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="gap-2 text-muted-foreground hover:text-foreground"
+                className={`gap-2 transition-colors ${isActive('/builder') ? 'text-foreground font-medium border-b-2 border-blue-500 rounded-b-none' : 'text-muted-foreground hover:text-foreground'}`}
               >
                 <Hammer className="h-4 w-4" />
                 Builder
@@ -62,7 +67,7 @@ export default function Navbar() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="gap-2 text-muted-foreground hover:text-foreground"
+                className={`gap-2 transition-colors ${isActive('/compare') ? 'text-foreground font-medium border-b-2 border-blue-500 rounded-b-none' : 'text-muted-foreground hover:text-foreground'}`}
               >
                 <ArrowLeftRight className="h-4 w-4" />
                 Compare
@@ -72,7 +77,7 @@ export default function Navbar() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="gap-2 text-muted-foreground hover:text-foreground"
+                className={`gap-2 transition-colors ${isActive('/dashboard') ? 'text-foreground font-medium border-b-2 border-blue-500 rounded-b-none' : 'text-muted-foreground hover:text-foreground'}`}
               >
                 <BarChart3 className="h-4 w-4" />
                 Dashboard
@@ -82,7 +87,7 @@ export default function Navbar() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="gap-2 text-muted-foreground hover:text-foreground"
+                className={`gap-2 transition-colors ${isActive('/wall-of-shame') ? 'text-foreground font-medium border-b-2 border-blue-500 rounded-b-none' : 'text-muted-foreground hover:text-foreground'}`}
               >
                 <Skull className="h-4 w-4" />
                 Wall of Shame
@@ -137,7 +142,7 @@ export default function Navbar() {
             <Link
               href="/upload"
               onClick={() => setMobileOpen(false)}
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
+              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive('/upload') || isActive('/results') ? 'text-foreground bg-white/5' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
             >
               <Upload className="h-4 w-4" />
               Analyze Contract
@@ -145,7 +150,7 @@ export default function Navbar() {
             <Link
               href="/builder"
               onClick={() => setMobileOpen(false)}
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
+              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive('/builder') ? 'text-foreground bg-white/5' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
             >
               <Hammer className="h-4 w-4" />
               Contract Builder
@@ -153,7 +158,7 @@ export default function Navbar() {
             <Link
               href="/compare"
               onClick={() => setMobileOpen(false)}
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
+              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive('/compare') ? 'text-foreground bg-white/5' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
             >
               <ArrowLeftRight className="h-4 w-4" />
               Compare Contracts
@@ -161,7 +166,7 @@ export default function Navbar() {
             <Link
               href="/dashboard"
               onClick={() => setMobileOpen(false)}
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
+              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive('/dashboard') ? 'text-foreground bg-white/5' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
             >
               <BarChart3 className="h-4 w-4" />
               Dashboard
@@ -169,7 +174,7 @@ export default function Navbar() {
             <Link
               href="/wall-of-shame"
               onClick={() => setMobileOpen(false)}
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
+              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive('/wall-of-shame') ? 'text-foreground bg-white/5' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
             >
               <Skull className="h-4 w-4" />
               Wall of Shame

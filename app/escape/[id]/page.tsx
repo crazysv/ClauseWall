@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { RelatedActions } from "@/components/shared/related-actions";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   DoorOpen,
@@ -798,18 +799,6 @@ export default function EscapePlanPage() {
 
         {/* ── Action Bar ── */}
         <div className="flex flex-wrap gap-3">
-          <Link href={`/letter/${documentId}`}>
-            <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
-              <FileText className="h-4 w-4" />
-              Generate Legal Notice
-            </Button>
-          </Link>
-          <Link href={`/negotiate/${documentId}`}>
-            <Button variant="outline" className="gap-2">
-              <Swords className="h-4 w-4" />
-              Negotiation Playbook
-            </Button>
-          </Link>
           <Button
             variant="outline"
             className="gap-2"
@@ -822,13 +811,10 @@ export default function EscapePlanPage() {
             )}
             {copied ? "Copied!" : "Copy Plan"}
           </Button>
-          <Link href={`/results/${documentId}`}>
-            <Button variant="outline" className="gap-2">
-              <ArrowLeft className="h-4 w-4" />
-              Back to Analysis
-            </Button>
-          </Link>
         </div>
+
+        {/* Related Actions */}
+        <RelatedActions documentId={documentId} currentPage="escape" />
       </div>
     </div>
   );

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import { RelatedActions } from "@/components/shared/related-actions";
 import {
   FileText,
   Download,
@@ -410,6 +411,9 @@ export default function LetterPage() {
             </div>
           </div>
         </div>
+
+        {/* Related Actions */}
+        <RelatedActions documentId={documentId} currentPage="letter" />
       </div>
     </div>
   );

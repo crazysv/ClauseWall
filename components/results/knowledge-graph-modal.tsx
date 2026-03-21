@@ -149,7 +149,7 @@ export default function KnowledgeGraphModal({
               <Network className="h-4 w-4 text-cyan-400" />
             </div>
             <div>
-              <h2 className="font-bold text-lg">Legal Knowledge Map</h2>
+              <h2 className="font-bold text-lg">Legal Web</h2>
               <p className="text-xs text-muted-foreground">
                 {formattedClauseType} • {jurisdiction}
               </p>
@@ -188,7 +188,7 @@ export default function KnowledgeGraphModal({
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20">
               <Loader2 className="h-8 w-8 text-cyan-400 animate-spin mb-3" />
-              <p className="text-sm text-muted-foreground">Loading legal knowledge graph...</p>
+              <p className="text-sm text-muted-foreground">Loading legal web data...</p>
             </div>
           ) : error ? (
             <div className="flex flex-col items-center justify-center py-20">

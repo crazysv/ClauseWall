@@ -40,31 +40,6 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative px-4 sm:px-6 lg:px-8 pt-20 pb-32">
         <div className="mx-auto max-w-7xl text-center">
-          {/* New Feature Badges */}
-          <div className="animate-fade-in-up mb-6 flex flex-wrap items-center justify-center gap-2">
-            <Badge
-              variant="outline"
-              className="px-3 py-1 text-xs border-green-500/30 bg-green-500/5 text-green-400"
-            >
-              <Chrome className="h-3 w-3 mr-1" />
-              Browser Extension
-            </Badge>
-            <Badge
-              variant="outline"
-              className="px-3 py-1 text-xs border-purple-500/30 bg-purple-500/5 text-purple-400"
-            >
-              <QrCode className="h-3 w-3 mr-1" />
-              QR Verification
-            </Badge>
-            <Badge
-              variant="outline"
-              className="px-3 py-1 text-xs border-blue-500/30 bg-blue-500/5 text-blue-400"
-            >
-              <MessageSquare className="h-3 w-3 mr-1" />
-              Negotiation Scripts
-            </Badge>
-          </div>
-
           <div className="animate-fade-in-up mb-8">
             <Badge
               variant="outline"
@@ -271,6 +246,7 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Existing Features */}
+            <Link href="/upload" className="block">
             <Card className="glass border-white/5 hover:border-blue-500/20 transition-all hover:glow-blue group">
               <CardContent className="p-6">
                 <div className="h-12 w-12 rounded-xl bg-blue-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
@@ -283,7 +259,9 @@ export default function HomePage() {
                 </p>
               </CardContent>
             </Card>
+            </Link>
 
+            <Link href="/upload" className="block">
             <Card className="glass border-white/5 hover:border-red-500/20 transition-all hover:glow-red group">
               <CardContent className="p-6">
                 <div className="h-12 w-12 rounded-xl bg-red-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
@@ -296,7 +274,9 @@ export default function HomePage() {
                 </p>
               </CardContent>
             </Card>
+            </Link>
 
+            <Link href="/upload" className="block">
             <Card className="glass border-white/5 hover:border-green-500/20 transition-all hover:glow-green group">
               <CardContent className="p-6">
                 <div className="h-12 w-12 rounded-xl bg-green-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
@@ -309,8 +289,10 @@ export default function HomePage() {
                 </p>
               </CardContent>
             </Card>
+            </Link>
 
             {/* NEW Feature Cards */}
+            <Link href="/upload" className="block">
             <Card className="glass border-white/5 hover:border-purple-500/20 transition-all group relative overflow-hidden">
               <div className="absolute top-3 right-3">
                 <Badge className="bg-purple-500/20 text-purple-400 border-purple-500/30 text-[10px]">
@@ -328,6 +310,7 @@ export default function HomePage() {
                 </p>
               </CardContent>
             </Card>
+            </Link>
 
             <Card id="extension" className="glass border-white/5 hover:border-green-500/20 transition-all group relative overflow-hidden">
               <div className="absolute top-3 right-3">
@@ -391,6 +374,7 @@ export default function HomePage() {
               </CardContent>
             </Card>
 
+            <Link href="/wall-of-shame" className="block">
             <Card className="glass border-white/5 hover:border-red-500/20 transition-all hover:glow-red group">
               <CardContent className="p-6">
                 <div className="h-12 w-12 rounded-xl bg-red-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
@@ -403,6 +387,7 @@ export default function HomePage() {
                 </p>
               </CardContent>
             </Card>
+            </Link>
           </div>
         </div>
       </section>

@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { Scale, Bot, ChevronRight, ShieldCheck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import type { ProofTree } from "@/lib/reasoning/types";
@@ -9,9 +10,10 @@ import { getProofSummary } from "@/lib/reasoning/proof-formatter";
 interface ProofSummaryProps {
   proofTree: ProofTree | null;
   onViewProof: () => void;
+  documentId?: string;
 }
 
-export default function ProofSummary({ proofTree, onViewProof }: ProofSummaryProps) {
+export default function ProofSummary({ proofTree, onViewProof, documentId }: ProofSummaryProps) {
   if (!proofTree) {
     // No formal proof — show AI-only badge
     return (
@@ -104,6 +106,31 @@ export default function ProofSummary({ proofTree, onViewProof }: ProofSummaryPro
         </span>
         <ChevronRight className={`h-4 w-4 ${colors.icon} group-hover:translate-x-0.5 transition-transform`} />
       </div>
+
+      {/* Cross-links for proven violations */}
+      {documentId && proofTree && (
+        proofTree.verdict === 'proven_illegal' ||
+        proofTree.verdict === 'proven_dangerous'
+      ) && (
+        <div className="flex flex-wrap items-center gap-2 mt-2 pt-2 border-t border-white/5">
+          <span className="text-[10px] text-white/20">Next:</span>
+          <Link
+            href={`/negotiate/${documentId}`}
+            onClick={(e) => e.stopPropagation()}
+            className="text-[10px] text-emerald-400/60 hover:text-emerald-400 transition-colors"
+          >
+            Get negotiation script →
+          </Link>
+          <span className="text-white/10">·</span>
+          <Link
+            href={`/letter/${documentId}`}
+            onClick={(e) => e.stopPropagation()}
+            className="text-[10px] text-amber-400/60 hover:text-amber-400 transition-colors"
+          >
+            Generate legal notice →
+          </Link>
+        </div>
+      )}
     </motion.button>
   );
 }

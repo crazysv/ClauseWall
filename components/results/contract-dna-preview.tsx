@@ -43,7 +43,7 @@ export default function ContractDNAPreview({ document: doc, clauses, onViewDNA }
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
               <Dna className="h-4 w-4 text-purple-400" />
-              <h3 className="font-semibold text-sm">Contract DNA</h3>
+              <h3 className="font-semibold text-sm">Contract Personality</h3>
               <span className="text-xs text-gray-500 font-mono">{contractId}</span>
             </div>
             <p className="text-lg font-bold">

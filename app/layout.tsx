@@ -6,6 +6,7 @@ import Navbar from "@/components/shared/navbar";
 import Footer from "@/components/shared/footer";
 import Providers from "@/components/providers";
 import { VoiceProvider } from "@/lib/voice/voice-context";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -39,17 +40,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark" suppressHydrationWarning>
       <body
         className={`${inter.className} min-h-screen bg-background text-foreground antialiased`}
       >
         <Providers>
-          <VoiceProvider>
-            <Navbar />
-            <main className="min-h-[calc(100vh-140px)]">{children}</main>
-            <Footer />
-            <Toaster richColors position="top-right" />
-          </VoiceProvider>
+          <TooltipProvider delayDuration={300}>
+            <VoiceProvider>
+              <Navbar />
+              <main className="min-h-[calc(100vh-140px)]">{children}</main>
+              <Footer />
+              <Toaster richColors position="top-right" />
+            </VoiceProvider>
+          </TooltipProvider>
         </Providers>
       </body>
     </html>

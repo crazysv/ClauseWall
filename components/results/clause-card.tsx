@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronDown,
@@ -21,11 +22,15 @@ import {
   Scan,
   Flame,
   Pencil,
+  Network,
+  Eye,
+  Target,
+  BookOpen,
+  FileText,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import ELI5Section from "@/components/results/eli5-section";
 import CommunityInsight from "@/components/results/community-insight";
-import { Network } from "lucide-react";
 import KnowledgeGraphModal from "@/components/results/knowledge-graph-modal";
 import DeceptionTab from "@/components/results/deception-tab";
 import ProofSummary from "@/components/results/proof-summary";
@@ -70,9 +75,11 @@ interface ClauseCardProps {
   isRoastMode?: boolean;
   roastText?: string | null;
   deliberation?: ClauseDeliberation | null;
+  documentId?: string;
 }
 
 type ActionTab = "legal" | "fair" | "negotiate" | "penalty" | "eli5" | "community" | "deception" | "debate" | null;
+type TabGroup = 'understand' | 'legal' | 'action' | null;
 
 export default function ClauseCard({
   clause,
@@ -85,10 +92,15 @@ export default function ClauseCard({
   isRoastMode = false,
   roastText,
   deliberation: initialDeliberation,
+  documentId,
 }: ClauseCardProps) {
   const [activeAction, setActiveAction] = useState<ActionTab>(null);
   const [showProofModal, setShowProofModal] = useState(false);
   const [showGraph, setShowGraph] = useState(false);
+
+  // Tab group state
+  const [activeGroup, setActiveGroup] = useState<TabGroup>(null);
+  const [activeSubTab, setActiveSubTab] = useState<string | null>(null);
 
   // Deliberation state
   const [showDeliberationModal, setShowDeliberationModal] = useState(false);
@@ -102,7 +114,6 @@ export default function ClauseCard({
     setIsDeliberating(true);
     setCurrentDelibAgent("predator");
     try {
-      // Simulate agent progression for UX feedback
       const guardianTimer = setTimeout(() => setCurrentDelibAgent("guardian"), 3000);
       const arbiterTimer = setTimeout(() => setCurrentDelibAgent("arbiter"), 6000);
 
@@ -144,9 +155,51 @@ export default function ClauseCard({
     // Invalid proof data — ignore
   }
 
-  const toggleAction = (tab: ActionTab) => {
-    setActiveAction((prev) => (prev === tab ? null : tab));
+  // Sync grouped tabs with legacy activeAction for content rendering
+  const handleGroupClick = (groupId: TabGroup) => {
+    if (activeGroup === groupId) {
+      setActiveGroup(null);
+      setActiveSubTab(null);
+      setActiveAction(null);
+    } else {
+      setActiveGroup(groupId);
+      const visibleTabs = getVisibleSubTabs(groupId);
+      const firstTab = visibleTabs[0]?.id || null;
+      setActiveSubTab(firstTab);
+      setActiveAction(firstTab as ActionTab);
+    }
   };
+
+  const handleSubTabClick = (tabId: string) => {
+    setActiveSubTab(tabId);
+    setActiveAction(tabId as ActionTab);
+  };
+
+  // Determine which sub-tabs are visible for each group
+  function getVisibleSubTabs(groupId: TabGroup): { id: string; label: string }[] {
+    switch (groupId) {
+      case 'understand':
+        return [
+          ...(clause.risk_level !== "safe" ? [{ id: 'eli5', label: 'Plain English' }] : []),
+          ...(clause.risk_level !== "safe" ? [{ id: 'deception', label: 'Hidden Traps' }] : []),
+        ];
+      case 'legal':
+        return [
+          ...(clause.legal_citation ? [{ id: 'legal', label: 'Legal Reference' }] : []),
+          ...(clause.fair_alternative ? [{ id: 'fair', label: 'Fair Version' }] : []),
+          ...(clause.penalty_info ? [{ id: 'penalty', label: 'Penalty Info' }] : []),
+          ...((clause.risk_level === "dangerous" || clause.risk_level === "illegal") ? [{ id: 'community', label: 'Community Data' }] : []),
+          ...(proofTree ? [{ id: 'proof', label: 'Legal Proof' }] : []),
+        ];
+      case 'action':
+        return [
+          ...(clause.risk_level !== "safe" ? [{ id: 'negotiate', label: 'Negotiation Script' }] : []),
+          ...(clause.risk_level !== "safe" ? [{ id: 'debate', label: 'AI Debate' }] : []),
+        ];
+      default:
+        return [];
+    }
+  }
 
   // Risk styling
   const riskConfig = {
@@ -185,7 +238,7 @@ export default function ClauseCard({
   const verificationBadge = () => {
     if (clause.verification_source === "database" && clause.confidence === "verified") {
       return (
-        <Badge className="bg-green-500/15 text-green-400 border-green-500/30 text-[10px] px-1.5 gap-1">
+        <Badge className="bg-green-500/15 text-green-400 border-green-500/30 text-[10px] px-1.5 gap-1" title="Verified against Indian legal database">
           <ShieldCheck className="h-3 w-3" />
           Verified
         </Badge>
@@ -193,119 +246,29 @@ export default function ClauseCard({
     }
     if (clause.verification_source === "database") {
       return (
-        <Badge className="bg-yellow-500/15 text-yellow-400 border-yellow-500/30 text-[10px] px-1.5 gap-1">
+        <Badge className="bg-yellow-500/15 text-yellow-400 border-yellow-500/30 text-[10px] px-1.5 gap-1" title="Partially verified against legal database">
           <ShieldAlert className="h-3 w-3" />
           Partial
         </Badge>
       );
     }
     return (
-      <Badge className="bg-blue-500/15 text-blue-400 border-blue-500/30 text-[10px] px-1.5 gap-1">
+      <Badge className="bg-blue-500/15 text-blue-400 border-blue-500/30 text-[10px] px-1.5 gap-1" title="AI-based assessment, not formally verified">
         <Bot className="h-3 w-3" />
         AI
       </Badge>
     );
   };
 
-  // Action buttons config
-  const actionButtons: { key: ActionTab; icon: React.ReactNode; label: string; available: boolean; color: string }[] = [
-    {
-      key: "legal",
-      icon: <Scale className="h-3.5 w-3.5" />,
-      label: "Legal Ref",
-      available: !!clause.legal_citation,
-      color: "blue",
-    },
-    {
-      key: "fair",
-      icon: <CheckCircle2 className="h-3.5 w-3.5" />,
-      label: "Fair Version",
-      available: !!clause.fair_alternative,
-      color: "green",
-    },
-    {
-      key: "negotiate",
-      icon: <MessageSquare className="h-3.5 w-3.5" />,
-      label: "What to Say",
-      available: clause.risk_level !== "safe",
-      color: "purple",
-    },
-    {
-      key: "penalty",
-      icon: <Gavel className="h-3.5 w-3.5" />,
-      label: "Penalty",
-      available: !!clause.penalty_info,
-      color: "orange",
-    },
-    {
-      key: "eli5",
-      icon: <Lightbulb className="h-3.5 w-3.5" />,
-      label: "Explain Simple",
-      available: clause.risk_level !== "safe",
-      color: "yellow",
-    },
-    {
-      key: "community",
-      icon: <Users className="h-3.5 w-3.5" />,
-      label: "Community",
-      available: clause.risk_level === "dangerous" || clause.risk_level === "illegal",
-      color: "orange",
-    },
-    {
-      key: "deception" as ActionTab,
-      icon: <AlertTriangle className="h-3.5 w-3.5" />,
-      label: "🎭 Deception",
-      available: clause.risk_level !== "safe",
-      color: "red",
-    },
-    {
-      key: "debate" as ActionTab,
-      icon: <Swords className="h-3.5 w-3.5" />,
-      label: "⚔️ Debate",
-      available: clause.risk_level !== "safe",
-      color: "amber",
-    },
-  ];
-
-  const availableActions = actionButtons.filter((a) => a.available);
-
-  const getButtonStyle = (btn: typeof actionButtons[0], isActive: boolean) => {
-    const colorMap: Record<string, { active: string; inactive: string }> = {
-      blue: {
-        active: "bg-blue-500/20 border-blue-500/40 text-blue-400",
-        inactive: "bg-white/[0.03] border-white/10 text-gray-400 hover:text-blue-400 hover:border-blue-500/30",
-      },
-      green: {
-        active: "bg-green-500/20 border-green-500/40 text-green-400",
-        inactive: "bg-white/[0.03] border-white/10 text-gray-400 hover:text-green-400 hover:border-green-500/30",
-      },
-      purple: {
-        active: "bg-purple-500/20 border-purple-500/40 text-purple-400",
-        inactive: "bg-white/[0.03] border-white/10 text-gray-400 hover:text-purple-400 hover:border-purple-500/30",
-      },
-      orange: {
-        active: "bg-orange-500/20 border-orange-500/40 text-orange-400",
-        inactive: "bg-white/[0.03] border-white/10 text-gray-400 hover:text-orange-400 hover:border-orange-500/30",
-      },
-      yellow: {
-        active: "bg-yellow-500/20 border-yellow-500/40 text-yellow-400",
-        inactive: "bg-white/[0.03] border-white/10 text-gray-400 hover:text-yellow-400 hover:border-yellow-500/30",
-      },
-      red: {
-        active: "bg-red-500/20 border-red-500/40 text-red-400",
-        inactive: "bg-white/[0.03] border-white/10 text-gray-400 hover:text-red-400 hover:border-red-500/30",
-      },
-      amber: {
-        active: "bg-amber-500/20 border-amber-500/40 text-amber-400",
-        inactive: "bg-white/[0.03] border-white/10 text-gray-400 hover:text-amber-400 hover:border-amber-500/30",
-      },
-    };
-    const colors = colorMap[btn.color] || colorMap.blue;
-    return isActive ? colors.active : colors.inactive;
-  };
-
   const showAutopsy =
     (clause.risk_level === "dangerous" || clause.risk_level === "illegal") && !!onAutopsy;
+
+  // Tab group config
+  const tabGroups: { id: TabGroup; label: string; icon: React.ReactNode }[] = [
+    { id: 'understand', label: 'Understand', icon: <Lightbulb className="w-4 h-4" /> },
+    { id: 'legal', label: 'Legal', icon: <Scale className="w-4 h-4" /> },
+    { id: 'action', label: 'Take Action', icon: <Target className="w-4 h-4" /> },
+  ];
 
   return (
     <div
@@ -322,7 +285,7 @@ export default function ClauseCard({
           <div className="flex items-center gap-2 mb-1.5 flex-wrap">
             {risk.icon}
             <Badge className={risk.badgeClass}>{risk.label}</Badge>
-            <span className="text-xs text-gray-500">Score: {clause.risk_score}/100</span>
+            <span className="text-xs text-gray-500" title="Risk score for this clause (0-100)">Score: {clause.risk_score}/100</span>
             <Badge variant="outline" className="text-[10px] border-white/10 text-gray-500">
               {clause.clause_type}
             </Badge>
@@ -334,12 +297,13 @@ export default function ClauseCard({
               </Badge>
             )}
           </div>
-          <p className="text-sm text-gray-400 line-clamp-2 italic">
-            &quot;{clause.original_text.substring(0, 180)}
-            {clause.original_text.length > 180 ? "..." : ""}&quot;
+          {/* Collapsed preview: show AI explanation instead of raw text */}
+          <p className="text-sm text-white/60 line-clamp-2 italic">
+            &quot;{(clause.explanation || clause.original_text || "").substring(0, 120)}
+            {(clause.explanation || clause.original_text || "").length > 120 ? "..." : ""}&quot;
           </p>
         </div>
-        <button className="p-1 ml-2 text-gray-500 flex-shrink-0">
+        <button className="p-1 ml-2 text-gray-500 flex-shrink-0" aria-label={isExpanded ? "Collapse clause" : "Expand clause"}>
           {isExpanded ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
         </button>
       </div>
@@ -417,298 +381,339 @@ export default function ClauseCard({
                 </div>
               )}
 
-              {/* Neurosymbolic Proof Summary */}
+              {/* Legal Proof Summary */}
               <ProofSummary
                 proofTree={proofTree}
                 onViewProof={() => setShowProofModal(true)}
+                documentId={documentId}
               />
 
-              {/* Autopsy CTA */}
-              {showAutopsy && (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onAutopsy!();
-                  }}
-                  className="w-full flex items-center justify-between p-3 rounded-lg bg-gradient-to-r from-purple-500/10 to-red-500/10 border border-purple-500/20 hover:border-purple-500/40 hover:from-purple-500/15 hover:to-red-500/15 transition-all group"
-                >
-                  <div className="flex items-center gap-2">
-                    <Scan className="h-4 w-4 text-purple-400" />
-                    <span className="text-sm font-medium text-purple-300">
-                      🔬 Dissect This Clause Word by Word
-                    </span>
-                  </div>
-                  <ArrowRight className="h-4 w-4 text-purple-400 group-hover:translate-x-1 transition-transform" />
-                </button>
-              )}
-
-              {/* Rewrite CTA */}
-              {clause.risk_level !== "safe" && !!onRewrite && (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onRewrite();
-                  }}
-                  className="w-full flex items-center justify-between p-3 rounded-lg bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 hover:border-emerald-500/40 hover:from-emerald-500/15 hover:to-teal-500/15 transition-all group"
-                >
-                  <div className="flex items-center gap-2">
-                    <Pencil className="h-4 w-4 text-emerald-400" />
-                    <span className="text-sm font-medium text-emerald-300">
-                      ✏️ Rewrite This Clause (Fair + Legal)
-                    </span>
-                  </div>
-                  <ArrowRight className="h-4 w-4 text-emerald-400 group-hover:translate-x-1 transition-transform" />
-                </button>
-              )}
-
-              {/* Knowledge Graph CTA */}
+              {/* ── QUICK ACTIONS — Compact CTA Row ── */}
               {clause.risk_level !== "safe" && (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowGraph(true);
-                  }}
-                  className="w-full flex items-center justify-between p-3 rounded-lg bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 hover:border-cyan-500/40 hover:from-cyan-500/15 hover:to-blue-500/15 transition-all group"
-                >
-                  <div className="flex items-center gap-2">
-                    <Network className="h-4 w-4 text-cyan-400" />
-                    <span className="text-sm font-medium text-cyan-300">
-                      🕸️ View Legal Knowledge Map
-                    </span>
-                  </div>
-                  <ArrowRight className="h-4 w-4 text-cyan-400 group-hover:translate-x-1 transition-transform" />
-                </button>
+                <div className="flex flex-wrap items-center gap-2 py-2">
+                  <span className="text-[10px] text-white/30 font-medium uppercase tracking-wider mr-1">
+                    Quick Actions
+                  </span>
+
+                  {showAutopsy && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onAutopsy!();
+                      }}
+                      className="inline-flex items-center gap-1.5 text-xs py-1.5 px-3 rounded-md border border-white/10 text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+                    >
+                      <Scan className="w-3.5 h-3.5" />
+                      Breakdown
+                    </button>
+                  )}
+
+                  {!!onRewrite && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onRewrite();
+                      }}
+                      className="inline-flex items-center gap-1.5 text-xs py-1.5 px-3 rounded-md border border-white/10 text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+                    >
+                      <Pencil className="w-3.5 h-3.5" />
+                      Rewrite
+                    </button>
+                  )}
+
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowGraph(true);
+                    }}
+                    className="inline-flex items-center gap-1.5 text-xs py-1.5 px-3 rounded-md border border-white/10 text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+                  >
+                    <Network className="w-3.5 h-3.5" />
+                    Legal Web
+                  </button>
+                </div>
               )}
 
-              {/* Action Buttons */}
-              {availableActions.length > 0 && (
+              {/* ── TAB GROUP NAVIGATION ── */}
+              {clause.risk_level !== "safe" && (
                 <div>
-                  <p className="text-xs font-medium text-gray-500 mb-2">Deep Dive</p>
-                  <div className="flex flex-wrap gap-2">
-                    {availableActions.map((btn) => {
-                      const isActive = activeAction === btn.key;
+                  {/* Level 1: Group Buttons */}
+                  <div className="flex border-b border-white/10">
+                    {tabGroups.map((group) => {
+                      const visibleTabs = getVisibleSubTabs(group.id);
+                      if (visibleTabs.length === 0) return null;
+                      const isActive = activeGroup === group.id;
+
                       return (
                         <button
-                          key={btn.key}
-                          onClick={() => toggleAction(btn.key)}
-                          className={`flex items-center gap-1.5 px-3 py-2 rounded-lg border text-xs font-medium transition-all ${getButtonStyle(btn, isActive)}`}
+                          key={group.id}
+                          onClick={() => handleGroupClick(group.id)}
+                          className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 px-3 text-xs sm:text-sm font-medium transition-colors duration-200 border-b-2 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none ${
+                            isActive
+                              ? "text-white border-blue-500 bg-white/5"
+                              : "text-white/50 border-transparent hover:text-white/70 hover:bg-white/[0.02]"
+                          }`}
                         >
-                          {btn.icon}
-                          {btn.label}
-                          {isActive && <ChevronUp className="h-3 w-3 ml-0.5" />}
+                          {group.icon}
+                          {group.label}
                         </button>
                       );
                     })}
                   </div>
+
+                  {/* Level 2: Sub-tabs + Content */}
+                  <AnimatePresence>
+                    {activeGroup && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="overflow-hidden"
+                      >
+                        {/* Sub-tab buttons */}
+                        <div className="flex gap-1 px-2 py-1.5 bg-white/[0.02] border-b border-white/5 overflow-x-auto scrollbar-hide">
+                          {getVisibleSubTabs(activeGroup).map((subTab) => (
+                            <button
+                              key={subTab.id}
+                              onClick={() => handleSubTabClick(subTab.id)}
+                              className={`text-xs py-1.5 px-3 rounded transition-colors duration-150 ${
+                                activeSubTab === subTab.id
+                                  ? "text-white bg-white/10"
+                                  : "text-white/40 hover:text-white/60 hover:bg-white/5"
+                              }`}
+                            >
+                              {subTab.label}
+                            </button>
+                          ))}
+                        </div>
+
+                        {/* Tab Content */}
+                        {activeSubTab && (
+                          <div className="pt-3">
+                            <AnimatePresence mode="wait">
+                              {activeSubTab === "legal" && clause.legal_citation && (
+                                <motion.div
+                                  key="legal"
+                                  initial={{ opacity: 0, y: -5 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  exit={{ opacity: 0, y: -5 }}
+                                  transition={{ duration: 0.15 }}
+                                  className="p-4 rounded-lg bg-blue-500/5 border border-blue-500/20"
+                                >
+                                  <p className="text-xs font-medium text-blue-400 mb-1.5 flex items-center gap-1.5">
+                                    <Scale className="h-3.5 w-3.5" />
+                                    Legal Reference
+                                  </p>
+                                  <p className="text-sm text-blue-300 leading-relaxed">{clause.legal_citation}</p>
+                                </motion.div>
+                              )}
+
+                              {activeSubTab === "fair" && clause.fair_alternative && (
+                                <motion.div
+                                  key="fair"
+                                  initial={{ opacity: 0, y: -5 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  exit={{ opacity: 0, y: -5 }}
+                                  transition={{ duration: 0.15 }}
+                                  className="p-4 rounded-lg bg-green-500/5 border border-green-500/20"
+                                >
+                                  <p className="text-xs font-medium text-green-400 mb-1.5 flex items-center gap-1.5">
+                                    <CheckCircle2 className="h-3.5 w-3.5" />
+                                    Fair Alternative — What This Clause Should Say
+                                  </p>
+                                  <p className="text-sm text-green-300 leading-relaxed">{clause.fair_alternative}</p>
+                                  {/* Negotiate link for risky clauses */}
+                                  {documentId && clause.risk_level !== 'safe' && (
+                                    <Link
+                                      href={`/negotiate/${documentId}`}
+                                      className="inline-flex items-center gap-1 text-[10px] text-primary/50 hover:text-primary transition-colors mt-3"
+                                    >
+                                      Want help negotiating this? Get scripts →
+                                    </Link>
+                                  )}
+                                </motion.div>
+                              )}
+
+                              {activeSubTab === "negotiate" && (
+                                <motion.div
+                                  key="negotiate"
+                                  initial={{ opacity: 0, y: -5 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  exit={{ opacity: 0, y: -5 }}
+                                  transition={{ duration: 0.15 }}
+                                  className="space-y-3"
+                                >
+                                  {clause.negotiation_script ? (
+                                    <div className="p-4 rounded-lg bg-purple-500/5 border border-purple-500/20">
+                                      <p className="text-xs font-medium text-purple-400 mb-2 flex items-center gap-1.5">
+                                        <MessageSquare className="h-3.5 w-3.5" />
+                                        Negotiation Script
+                                      </p>
+                                      <p className="text-sm text-purple-300 leading-relaxed italic">
+                                        &quot;{clause.negotiation_script}&quot;
+                                      </p>
+                                    </div>
+                                  ) : (
+                                    <div className="p-4 rounded-lg bg-purple-500/5 border border-purple-500/20">
+                                      <p className="text-xs font-medium text-purple-400 mb-2 flex items-center gap-1.5">
+                                        <MessageSquare className="h-3.5 w-3.5" />
+                                        Negotiation Script
+                                      </p>
+                                      <p className="text-sm text-gray-400">
+                                        A detailed negotiation script with counter-responses is available in the full playbook.
+                                      </p>
+                                    </div>
+                                  )}
+
+                                  <a
+                                    href={`/negotiate/${clause.document_id}`}
+                                    className="flex items-center justify-between p-3 rounded-lg bg-blue-500/5 border border-blue-500/20 hover:bg-blue-500/10 transition-colors group"
+                                  >
+                                    <div className="flex items-center gap-2">
+                                      <Swords className="h-4 w-4 text-blue-400" />
+                                      <span className="text-sm text-blue-400 font-medium">
+                                        View Full Negotiation Playbook
+                                      </span>
+                                    </div>
+                                    <ArrowRight className="h-4 w-4 text-blue-400 group-hover:translate-x-1 transition-transform" />
+                                  </a>
+                                </motion.div>
+                              )}
+
+                              {activeSubTab === "penalty" && clause.penalty_info && (
+                                <motion.div
+                                  key="penalty"
+                                  initial={{ opacity: 0, y: -5 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  exit={{ opacity: 0, y: -5 }}
+                                  transition={{ duration: 0.15 }}
+                                  className="p-4 rounded-lg bg-orange-500/5 border border-orange-500/20"
+                                >
+                                  <p className="text-xs font-medium text-orange-400 mb-1.5 flex items-center gap-1.5">
+                                    <Gavel className="h-3.5 w-3.5" />
+                                    Penalty for Violation
+                                  </p>
+                                  <p className="text-sm text-orange-300 leading-relaxed">{clause.penalty_info}</p>
+                                </motion.div>
+                              )}
+
+                              {activeSubTab === "eli5" && clause.risk_level !== "safe" && (
+                                <motion.div
+                                  key="eli5"
+                                  initial={{ opacity: 0, y: -5 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  exit={{ opacity: 0, y: -5 }}
+                                  transition={{ duration: 0.15 }}
+                                >
+                                  <ELI5Section
+                                    clauseId={clause.id}
+                                    clauseText={clause.original_text}
+                                    explanation={clause.explanation}
+                                    riskLevel={clause.risk_level}
+                                    legalCitation={clause.legal_citation}
+                                    clauseType={clause.clause_type}
+                                  />
+                                </motion.div>
+                              )}
+
+                              {activeSubTab === "community" &&
+                                (clause.risk_level === "dangerous" || clause.risk_level === "illegal") && (
+                                  <motion.div
+                                    key="community"
+                                    initial={{ opacity: 0, y: -5 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -5 }}
+                                    transition={{ duration: 0.15 }}
+                                  >
+                                    <CommunityInsight
+                                      clauseId={clause.id}
+                                      clauseText={clause.original_text}
+                                      clauseType={clause.clause_type}
+                                      jurisdiction={jurisdiction}
+                                      riskLevel={clause.risk_level}
+                                      communityMatch={clause.community_match}
+                                    />
+                                  </motion.div>
+                                )}
+
+                              {activeSubTab === "deception" && clause.risk_level !== "safe" && (
+                                <motion.div
+                                  key="deception"
+                                  initial={{ opacity: 0, y: -5 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  exit={{ opacity: 0, y: -5 }}
+                                  transition={{ duration: 0.15 }}
+                                >
+                                  <DeceptionTab
+                                    clauseId={clause.id}
+                                    clauseText={clause.original_text}
+                                    clauseType={clause.clause_type}
+                                    jurisdiction={jurisdiction}
+                                    documentType={documentType}
+                                  />
+                                </motion.div>
+                              )}
+
+                              {activeSubTab === "debate" && clause.risk_level !== "safe" && (
+                                <motion.div
+                                  key="debate"
+                                  initial={{ opacity: 0, y: -5 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  exit={{ opacity: 0, y: -5 }}
+                                  transition={{ duration: 0.15 }}
+                                >
+                                  <DeliberationSummary
+                                    deliberation={localDeliberation}
+                                    onViewDebate={() => setShowDeliberationModal(true)}
+                                    onTriggerDeliberation={runSingleDeliberation}
+                                    isLoading={isDeliberating}
+                                    currentAgent={currentDelibAgent}
+                                    documentId={documentId}
+                                  />
+                                </motion.div>
+                              )}
+
+                              {activeSubTab === "proof" && proofTree && (
+                                <motion.div
+                                  key="proof"
+                                  initial={{ opacity: 0, y: -5 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  exit={{ opacity: 0, y: -5 }}
+                                  transition={{ duration: 0.15 }}
+                                  className="p-4 rounded-lg bg-blue-500/5 border border-blue-500/20"
+                                >
+                                  <p className="text-xs font-medium text-blue-400 mb-2 flex items-center gap-1.5">
+                                    <ShieldCheck className="h-3.5 w-3.5" />
+                                    Legal Proof
+                                  </p>
+                                  <p className="text-xs text-white/40 mb-3">
+                                    Step-by-step logical proof of this clause&apos;s legality
+                                  </p>
+                                  <button
+                                    onClick={() => setShowProofModal(true)}
+                                    className="flex items-center gap-2 text-sm text-blue-400 hover:text-blue-300 transition-colors"
+                                  >
+                                    View Full Proof Tree <ArrowRight className="h-3.5 w-3.5" />
+                                  </button>
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </div>
+                        )}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               )}
 
-              {/* Expandable Action Content */}
-              <AnimatePresence mode="wait">
-                {activeAction === "legal" && clause.legal_citation && (
-                  <motion.div
-                    key="legal"
-                    initial={{ opacity: 0, y: -5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -5 }}
-                    transition={{ duration: 0.15 }}
-                    className="p-4 rounded-lg bg-blue-500/5 border border-blue-500/20"
-                  >
-                    <p className="text-xs font-medium text-blue-400 mb-1.5 flex items-center gap-1.5">
-                      <Scale className="h-3.5 w-3.5" />
-                      Legal Reference
-                    </p>
-                    <p className="text-sm text-blue-300 leading-relaxed">{clause.legal_citation}</p>
-                  </motion.div>
-                )}
-
-                {activeAction === "fair" && clause.fair_alternative && (
-                  <motion.div
-                    key="fair"
-                    initial={{ opacity: 0, y: -5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -5 }}
-                    transition={{ duration: 0.15 }}
-                    className="p-4 rounded-lg bg-green-500/5 border border-green-500/20"
-                  >
-                    <p className="text-xs font-medium text-green-400 mb-1.5 flex items-center gap-1.5">
-                      <CheckCircle2 className="h-3.5 w-3.5" />
-                      Fair Alternative — What This Clause Should Say
-                    </p>
-                    <p className="text-sm text-green-300 leading-relaxed">{clause.fair_alternative}</p>
-                  </motion.div>
-                )}
-
-                {activeAction === "negotiate" && (
-                  <motion.div
-                    key="negotiate"
-                    initial={{ opacity: 0, y: -5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -5 }}
-                    transition={{ duration: 0.15 }}
-                    className="space-y-3"
-                  >
-                    {clause.negotiation_script ? (
-                      <div className="p-4 rounded-lg bg-purple-500/5 border border-purple-500/20">
-                        <p className="text-xs font-medium text-purple-400 mb-2 flex items-center gap-1.5">
-                          <MessageSquare className="h-3.5 w-3.5" />
-                          What to Say — Quick Script
-                        </p>
-                        <p className="text-sm text-purple-300 leading-relaxed italic">
-                          &quot;{clause.negotiation_script}&quot;
-                        </p>
-                      </div>
-                    ) : (
-                      <div className="p-4 rounded-lg bg-purple-500/5 border border-purple-500/20">
-                        <p className="text-xs font-medium text-purple-400 mb-2 flex items-center gap-1.5">
-                          <MessageSquare className="h-3.5 w-3.5" />
-                          Negotiation Script
-                        </p>
-                        <p className="text-sm text-gray-400">
-                          A detailed negotiation script with counter-responses is available in the full playbook.
-                        </p>
-                      </div>
-                    )}
-
-                    <a
-                      href={`/negotiate/${clause.document_id}`}
-                      className="flex items-center justify-between p-3 rounded-lg bg-blue-500/5 border border-blue-500/20 hover:bg-blue-500/10 transition-colors group"
-                    >
-                      <div className="flex items-center gap-2">
-                        <Swords className="h-4 w-4 text-blue-400" />
-                        <span className="text-sm text-blue-400 font-medium">
-                          View Full Negotiation Playbook
-                        </span>
-                      </div>
-                      <ArrowRight className="h-4 w-4 text-blue-400 group-hover:translate-x-1 transition-transform" />
-                    </a>
-                  </motion.div>
-                )}
-
-                {activeAction === "penalty" && clause.penalty_info && (
-                  <motion.div
-                    key="penalty"
-                    initial={{ opacity: 0, y: -5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -5 }}
-                    transition={{ duration: 0.15 }}
-                    className="p-4 rounded-lg bg-orange-500/5 border border-orange-500/20"
-                  >
-                    <p className="text-xs font-medium text-orange-400 mb-1.5 flex items-center gap-1.5">
-                      <Gavel className="h-3.5 w-3.5" />
-                      Penalty for Violation
-                    </p>
-                    <p className="text-sm text-orange-300 leading-relaxed">{clause.penalty_info}</p>
-                  </motion.div>
-                )}
-
-                {activeAction === "eli5" && clause.risk_level !== "safe" && (
-                  <motion.div
-                    key="eli5"
-                    initial={{ opacity: 0, y: -5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -5 }}
-                    transition={{ duration: 0.15 }}
-                  >
-                    <ELI5Section
-                      clauseId={clause.id}
-                      clauseText={clause.original_text}
-                      explanation={clause.explanation}
-                      riskLevel={clause.risk_level}
-                      legalCitation={clause.legal_citation}
-                      clauseType={clause.clause_type}
-                    />
-                  </motion.div>
-                )}
-
-                {activeAction === "community" &&
-                  (clause.risk_level === "dangerous" || clause.risk_level === "illegal") && (
-                    <motion.div
-                      key="community"
-                      initial={{ opacity: 0, y: -5 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -5 }}
-                      transition={{ duration: 0.15 }}
-                    >
-                      <CommunityInsight
-                        clauseId={clause.id}
-                        clauseText={clause.original_text}
-                        clauseType={clause.clause_type}
-                        jurisdiction={jurisdiction}
-                        riskLevel={clause.risk_level}
-                        communityMatch={clause.community_match}
-                      />
-                    </motion.div>
-                  )}
-                  
-                  {activeAction === "deception" && clause.risk_level !== "safe" && (
-                  <motion.div
-                    key="deception"
-                    initial={{ opacity: 0, y: -5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -5 }}
-                    transition={{ duration: 0.15 }}
-                  >
-                    <DeceptionTab
-                      clauseId={clause.id}
-                      clauseText={clause.original_text}
-                      clauseType={clause.clause_type}
-                      jurisdiction={jurisdiction}
-                      documentType={documentType}
-                    />
-                  </motion.div>
-                )}
-
-                {activeAction === "debate" && clause.risk_level !== "safe" && (
-                  <motion.div
-                    key="debate"
-                    initial={{ opacity: 0, y: -5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -5 }}
-                    transition={{ duration: 0.15 }}
-                  >
-                    <DeliberationSummary
-                      deliberation={localDeliberation}
-                      onViewDebate={() => setShowDeliberationModal(true)}
-                      onTriggerDeliberation={runSingleDeliberation}
-                      isLoading={isDeliberating}
-                      currentAgent={currentDelibAgent}
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              {/* Verification Badge */}
-              <div className="pt-1">
-                {clause.verification_source === "database" && clause.confidence === "verified" ? (
-                  <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-500/5 border border-green-500/15">
-                    <ShieldCheck className="h-4 w-4 text-green-400" />
-                    <span className="text-xs text-green-400 font-medium">
-                      ⚖️ Verified — ClauseWall Legal Database
-                    </span>
-                  </div>
-                ) : clause.verification_source === "database" ? (
-                  <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-yellow-500/5 border border-yellow-500/15">
-                    <ShieldAlert className="h-4 w-4 text-yellow-400" />
-                    <span className="text-xs text-yellow-400 font-medium">
-                      ⚠️ Partially Verified — Review Recommended
-                    </span>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-500/5 border border-blue-500/15">
-                    <Bot className="h-4 w-4 text-blue-400" />
-                    <span className="text-xs text-blue-400 font-medium">
-                      🤖 AI Analysis — Verify Independently
-                    </span>
-                  </div>
-                )}
-              </div>
+              {/* Verification badge REMOVED from bottom — only in header now */}
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Knowledge Graph Modal */}
+      {/* Legal Web Modal */}
       {showGraph && (
         <KnowledgeGraphModal
           isOpen={showGraph}
@@ -720,7 +725,7 @@ export default function ClauseCard({
         />
       )}
 
-      {/* Neurosymbolic Proof Tree Modal */}
+      {/* Proof Tree Modal */}
       {proofTree && (
         <ProofTreeModal
           proofTree={proofTree}
@@ -729,7 +734,7 @@ export default function ClauseCard({
         />
       )}
 
-      {/* Adversarial Deliberation Modal */}
+      {/* AI Debate Modal */}
       {localDeliberation && (
         <DeliberationModal
           deliberation={localDeliberation}

@@ -24,6 +24,7 @@ import {
   DoorOpen,
   Gamepad2,
   Users,
+  Wrench,
 } from "lucide-react";
 import { toast } from "sonner";
 import { generateReport } from "@/lib/pdf/report-generator";
@@ -52,6 +53,7 @@ interface ActionItem {
 interface ActionGroup {
   id: string;
   label: string;
+  subtitle: string;
   icon: typeof Menu;
   color: string;
   bg: string;
@@ -62,41 +64,42 @@ const ACTION_GROUPS: ActionGroup[] = [
   {
     id: "inspect",
     label: "Inspect",
+    subtitle: "Visualize and verify",
     icon: Search,
     color: "#A855F7",
     bg: "rgba(168, 85, 247, 0.15)",
     actions: [
       {
         id: "dna",
-        label: "Contract DNA",
+        label: "Contract Personality",
         icon: Dna,
         color: "#A855F7",
         bg: "rgba(168, 85, 247, 0.15)",
       },
       {
         id: "xray",
-        label: "X-Ray Mode",
+        label: "Deep Scan View",
         icon: Scan,
         color: "#8B5CF6",
         bg: "rgba(139, 92, 246, 0.15)",
       },
       {
         id: "battle",
-        label: "Battle",
+        label: "Benchmark",
         icon: BarChart3,
         color: "#F97316",
         bg: "rgba(249, 115, 22, 0.15)",
       },
       {
         id: "simulate",
-        label: "Simulator",
+        label: "Cost Calculator",
         icon: Gamepad2,
         color: "#06B6D4",
         bg: "rgba(6, 182, 212, 0.15)",
       },
       {
         id: "collaborate",
-        label: "Collaborate",
+        label: "Review Room",
         icon: Users,
         color: "#3B82F6",
         bg: "rgba(59, 130, 246, 0.15)",
@@ -106,6 +109,7 @@ const ACTION_GROUPS: ActionGroup[] = [
   {
     id: "action",
     label: "Take Action",
+    subtitle: "Negotiate, dispute, or exit",
     icon: Zap,
     color: "#EC4899",
     bg: "rgba(236, 72, 153, 0.15)",
@@ -137,6 +141,7 @@ const ACTION_GROUPS: ActionGroup[] = [
   {
     id: "share",
     label: "Share & Export",
+    subtitle: "Share your results",
     icon: Share2,
     color: "#10B981",
     bg: "rgba(16, 185, 129, 0.15)",
@@ -367,6 +372,7 @@ export default function FloatingActions({
                             />
                           </div>
                           <span className="text-sm font-medium">{group.label}</span>
+                          <p className="text-[10px] text-white/25 font-normal">{group.subtitle}</p>
                         </div>
                         {isExpanded ? (
                           <ChevronDown className="h-4 w-4 text-gray-500" />
@@ -492,6 +498,9 @@ export default function FloatingActions({
                     />
                   </div>
                 </motion.button>
+
+                {/* Roast Mode subtitle */}
+                <p className="text-[10px] text-white/20 px-3 pb-1">Fun mode — roasts your contract</p>
               </motion.div>
             ) : (
               <motion.button
@@ -501,13 +510,17 @@ export default function FloatingActions({
                 exit={{ x: -10, opacity: 0 }}
                 transition={{ type: "spring", damping: 25, stiffness: 350 }}
                 onClick={() => setIsOpen(true)}
-                className="ml-3 flex items-center justify-center w-11 h-11 rounded-xl bg-gray-900/90 backdrop-blur-md border border-gray-700/50 text-gray-400 hover:text-white hover:bg-gray-800/90 hover:border-gray-600/50 transition-all shadow-lg"
+                className="ml-3 flex flex-col items-center gap-1 w-16 py-3 rounded-xl bg-gray-900/90 backdrop-blur-md border border-gray-700/50 text-gray-400 hover:text-white hover:bg-gray-800/90 hover:border-gray-600/50 transition-all shadow-lg"
               >
                 {isRoastMode ? (
                   <Flame className="h-5 w-5 text-orange-400 animate-bounce" />
                 ) : (
-                  <Menu className="h-5 w-5" />
+                  <Wrench className="h-5 w-5" />
                 )}
+                <span className="text-[10px] font-medium text-white/50">Tools</span>
+                <span className="text-[9px] text-white/30">
+                  ({ACTION_GROUPS.reduce((sum, g) => sum + g.actions.length, 0)})
+                </span>
               </motion.button>
             )}
           </AnimatePresence>
@@ -680,7 +693,7 @@ export default function FloatingActions({
                   <Menu className="h-4 w-4" />
                 )}
                 <span className="text-sm font-medium">
-                  {isRoastMode ? "Tools 🔥" : "Tools"}
+                  {isRoastMode ? "Tools 🔥" : `Tools (${ACTION_GROUPS.reduce((sum, g) => sum + g.actions.length, 0)})`}
                 </span>
               </button>
             </motion.div>

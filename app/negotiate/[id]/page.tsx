@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { RelatedActions } from "@/components/shared/related-actions";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowLeft,
@@ -739,21 +740,8 @@ export default function NegotiatePage() {
           </motion.div>
         )}
 
-        {/* Bottom Actions */}
-        <div className="flex flex-wrap gap-3 justify-center print:hidden">
-          <Link href={`/results/${documentId}`}>
-            <Button variant="outline" className="gap-2">
-              <ArrowLeft className="h-4 w-4" />
-              Back to Analysis
-            </Button>
-          </Link>
-          <Link href={`/letter/${documentId}`}>
-            <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
-              <FileText className="h-4 w-4" />
-              Generate Legal Notice
-            </Button>
-          </Link>
-        </div>
+        {/* Related Actions */}
+        <RelatedActions documentId={documentId} currentPage="negotiate" />
 
         {/* Disclaimer */}
         <p className="text-xs text-gray-600 text-center mt-8 print:hidden">

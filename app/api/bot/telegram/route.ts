@@ -131,6 +131,16 @@ async function processMessage(
     return;
   }
 
+  if (message.text?.startsWith("/link")) {
+    await handleLink(chatId);
+    return;
+  }
+
+  if (message.text?.startsWith("/deadlines")) {
+    await handleDeadlines(chatId);
+    return;
+  }
+
   if (message.document) {
     await handleDocument(chatId, message.document);
     return;
@@ -484,4 +494,144 @@ function escapeHtml(text: string): string {
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
+}
+
+// ---- TIMEBOMB: /link ----
+
+async function handleLink(chatId: number) {
+  try {
+    const supabase = createAdminClient();
+
+    // Upsert the chat ID into reminder settings
+    // We match by telegram_chat_id since the user may not be authenticated via Telegram
+    const { error } = await supabase
+      .from("deadline_reminder_settings")
+      .upsert(
+        {
+          telegram_chat_id: String(chatId),
+          telegram_enabled: true,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: "telegram_chat_id" }
+      );
+
+    if (error) {
+      // If upsert fails (likely no unique constraint on telegram_chat_id),
+      // try to update any existing row with this chat_id
+      await supabase
+        .from("deadline_reminder_settings")
+        .update({
+          telegram_chat_id: String(chatId),
+          telegram_enabled: true,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("telegram_chat_id", String(chatId));
+    }
+
+    await sendMessage(
+      chatId,
+      [
+        "✅ <b>Telegram Linked Successfully!</b>",
+        "",
+        "Your chat ID has been saved. You'll now receive deadline reminders here.",
+        "",
+        "🕐 <b>Next steps:</b>",
+        "1. Go to ClauseWall → analyze a contract",
+        "2. Activate the Time Bomb Defuser",
+        "3. Enable Telegram reminders in settings",
+        "",
+        "Use /deadlines to check your upcoming deadlines.",
+      ].join("\n")
+    );
+  } catch (error) {
+    console.error("[Bot] Link error:", error);
+    await sendMessage(
+      chatId,
+      "❌ Failed to link account. Please try again later."
+    );
+  }
+}
+
+// ---- TIMEBOMB: /deadlines ----
+
+async function handleDeadlines(chatId: number) {
+  try {
+    const supabase = createAdminClient();
+
+    // Find user by telegram chat ID
+    const { data: settings } = await supabase
+      .from("deadline_reminder_settings")
+      .select("user_id")
+      .eq("telegram_chat_id", String(chatId))
+      .single();
+
+    if (!settings?.user_id) {
+      await sendMessage(
+        chatId,
+        [
+          "⚠️ <b>Account not linked</b>",
+          "",
+          "Send /link first to connect your Telegram account to ClauseWall.",
+        ].join("\n")
+      );
+      return;
+    }
+
+    // Fetch upcoming deadlines
+    const { data: deadlines } = await supabase
+      .from("contract_deadlines")
+      .select("*")
+      .eq("user_id", settings.user_id)
+      .in("status", ["upcoming", "warning", "urgent"])
+      .order("deadline_date", { ascending: true })
+      .limit(10);
+
+    if (!deadlines || deadlines.length === 0) {
+      await sendMessage(
+        chatId,
+        [
+          "🎉 <b>No upcoming deadlines!</b>",
+          "",
+          "You have no active contract deadlines. Upload a contract to ClauseWall and activate the Time Bomb Defuser.",
+        ].join("\n")
+      );
+      return;
+    }
+
+    const lines = ["🕐 <b>Your Upcoming Deadlines</b>", ""];
+
+    for (const d of deadlines) {
+      const daysUntil = Math.ceil(
+        (new Date(d.deadline_date).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+      );
+      const emoji =
+        daysUntil <= 3
+          ? "🔴"
+          : daysUntil <= 7
+            ? "🟠"
+            : daysUntil <= 30
+              ? "🟡"
+              : "🔵";
+
+      lines.push(
+        `${emoji} <b>${escapeHtml(d.title)}</b>`,
+        `   ⏰ ${daysUntil <= 0 ? "OVERDUE" : `${daysUntil} days`} • ${new Date(d.deadline_date).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}`,
+        ""
+      );
+    }
+
+    lines.push(
+      `📊 Total: ${deadlines.length} active deadline${deadlines.length !== 1 ? "s" : ""}`,
+      "",
+      "🔗 <a href=\"https://clause-wall.vercel.app/dashboard\">View all on ClauseWall</a>"
+    );
+
+    await sendMessage(chatId, lines.join("\n"));
+  } catch (error) {
+    console.error("[Bot] Deadlines error:", error);
+    await sendMessage(
+      chatId,
+      "❌ Failed to fetch deadlines. Please try again."
+    );
+  }
 }

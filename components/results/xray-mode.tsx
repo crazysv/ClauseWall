@@ -204,7 +204,7 @@ function OverlayContent({
         <div className="flex items-center gap-3 overflow-x-auto">
           <div className="flex items-center gap-2 flex-shrink-0">
             <Scan className="h-4 w-4 text-purple-400" />
-            <span className="font-semibold text-sm">X-Ray</span>
+            <span className="font-semibold text-sm">Deep Scan</span>
           </div>
           <div className="hidden sm:flex items-center gap-3 ml-3">
             {riskCounts.illegal > 0 && (

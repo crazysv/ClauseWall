@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ChevronDown, ExternalLink, AlertTriangle } from "lucide-react";
+import Link from "next/link";
+import { ChevronDown, ExternalLink, AlertTriangle, DoorOpen, MessageSquare } from "lucide-react";
 import type {
   TrapStateAnalysis,
   ContractStateMachine,
@@ -14,6 +15,7 @@ interface TrapStateCardProps {
   trap: TrapStateAnalysis;
   stateMachine: ContractStateMachine;
   onHighlightPath?: (path: StatePath) => void;
+  documentId?: string;
 }
 
 const SEVERITY_STYLES: Record<TrapSeverity, { badge: string; border: string }> = {
@@ -22,7 +24,7 @@ const SEVERITY_STYLES: Record<TrapSeverity, { badge: string; border: string }> =
   medium: { badge: "bg-amber-500/20 text-amber-400 border-amber-500/30", border: "border-l-amber-400" },
 };
 
-export default function TrapStateCard({ trap, stateMachine, onHighlightPath }: TrapStateCardProps) {
+export default function TrapStateCard({ trap, stateMachine, onHighlightPath, documentId }: TrapStateCardProps) {
   const [expanded, setExpanded] = useState(false);
   const style = SEVERITY_STYLES[trap.severity];
 
@@ -179,6 +181,26 @@ export default function TrapStateCard({ trap, stateMachine, onHighlightPath }: T
             <ExternalLink className="h-3 w-3" />
             Highlight on Graph
           </button>
+        )}
+
+        {/* Cross-links */}
+        {documentId && (
+          <>
+            <Link
+              href={`/escape/${documentId}`}
+              className="inline-flex items-center gap-1.5 text-[11px] text-emerald-400/70 hover:text-emerald-400 transition-colors"
+            >
+              <DoorOpen className="w-3 h-3" />
+              Get escape plan →
+            </Link>
+            <Link
+              href={`/negotiate/${documentId}`}
+              className="inline-flex items-center gap-1.5 text-[11px] text-blue-400/70 hover:text-blue-400 transition-colors"
+            >
+              <MessageSquare className="w-3 h-3" />
+              Negotiate →
+            </Link>
+          </>
         )}
       </div>
     </motion.div>

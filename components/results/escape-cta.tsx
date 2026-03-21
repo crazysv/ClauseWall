@@ -17,7 +17,7 @@ export default function EscapeCTA({ documentId, dangerousCount, illegalCount }: 
 
   return (
     <Link href={`/escape/${documentId}`}>
-      <div className="mt-6 p-4 rounded-xl bg-gradient-to-r from-orange-500/10 via-red-500/10 to-orange-500/10 border border-orange-500/20 hover:border-orange-500/40 hover:from-orange-500/15 hover:to-orange-500/15 transition-all cursor-pointer group">
+      <div className="p-4 rounded-xl bg-gradient-to-r from-orange-500/10 via-red-500/10 to-orange-500/10 border border-orange-500/20 hover:border-orange-500/40 hover:from-orange-500/15 hover:to-orange-500/15 transition-all cursor-pointer group">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2.5 rounded-xl bg-orange-500/15 group-hover:bg-orange-500/25 transition-colors">

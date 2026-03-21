@@ -40,7 +40,7 @@ export default function DeliberationModal({
         <DialogHeader className="p-4 sm:p-6 pb-0">
           <DialogTitle className="flex items-center gap-2 text-lg">
             <span>⚔️</span>
-            <span>Adversarial Deliberation</span>
+            <span>AI Debate</span>
           </DialogTitle>
         </DialogHeader>
 

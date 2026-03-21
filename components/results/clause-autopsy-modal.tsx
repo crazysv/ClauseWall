@@ -307,7 +307,7 @@ export default function ClauseAutopsyModal({
     if (!result || !clause) return;
 
     const lines = [
-      "🔬 CLAUSE AUTOPSY — ClauseWall",
+      "🔬 CLAUSE BREAKDOWN — ClauseWall",
       "",
       `Clause #${clause.clause_number} — ${clause.clause_type}`,
       "",
@@ -334,7 +334,7 @@ export default function ClauseAutopsyModal({
 
     navigator.clipboard.writeText(lines.join("\n"));
     setCopied(true);
-    toast.success("Autopsy copied to clipboard");
+    toast.success("Breakdown copied to clipboard");
     setTimeout(() => setCopied(false), 2000);
   }, [result, clause]);
 
@@ -379,7 +379,7 @@ export default function ClauseAutopsyModal({
                   <Scan className="h-5 w-5 text-purple-400" />
                 </div>
                 <div>
-                  <h2 className="font-bold text-lg">Clause Autopsy</h2>
+                  <h2 className="font-bold text-lg">Clause Breakdown</h2>
                   <p className="text-xs text-gray-500">
                     Clause #{clause.clause_number} •{" "}
                     {clause.clause_type.replace(/_/g, " ")}
@@ -662,7 +662,7 @@ export default function ClauseAutopsyModal({
                   {result.dissection_summary && (
                     <div>
                       <p className="text-xs font-medium text-gray-500 mb-2 uppercase tracking-wider">
-                        Autopsy Summary
+                        Breakdown Summary
                       </p>
                       <div className="p-4 rounded-xl bg-white/[0.03] border border-white/5">
                         <p className="text-sm text-gray-300 leading-relaxed">

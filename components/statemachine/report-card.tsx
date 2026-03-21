@@ -1,12 +1,14 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, Shield, AlertTriangle, Skull, Activity } from "lucide-react";
+import { ArrowRight, Shield, AlertTriangle, Skull, Activity, DoorOpen } from "lucide-react";
 import type { StateMachineReport, SafetyLevel } from "@/lib/statemachine/types";
 
 interface ReportCardProps {
   report: StateMachineReport;
   onExplore: () => void;
+  documentId?: string;
 }
 
 const SAFETY_STYLES: Record<SafetyLevel, { border: string; bg: string; icon: typeof Shield; color: string }> = {
@@ -16,7 +18,7 @@ const SAFETY_STYLES: Record<SafetyLevel, { border: string; bg: string; icon: typ
   critical: { border: "border-red-600/50", bg: "bg-red-500/5", icon: Skull, color: "text-red-500" },
 };
 
-export default function ReportCard({ report, onExplore }: ReportCardProps) {
+export default function ReportCard({ report, onExplore, documentId }: ReportCardProps) {
   const sm = report.stateMachine;
   const style = SAFETY_STYLES[report.overallSafety];
   const SafetyIcon = style.icon;
@@ -33,7 +35,7 @@ export default function ReportCard({ report, onExplore }: ReportCardProps) {
     >
       <div className="flex items-center gap-2 mb-4">
         <span className="text-lg">🔄</span>
-        <h3 className="font-semibold text-sm">Contract State Machine Analysis</h3>
+        <h3 className="font-semibold text-sm">Trap Detector Analysis</h3>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
@@ -75,6 +77,17 @@ export default function ReportCard({ report, onExplore }: ReportCardProps) {
         Explore State Machine
         <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
       </button>
+
+      {/* Cross-link to escape when traps exist */}
+      {documentId && report.trapAnalysis && report.trapAnalysis.length > 0 && (
+        <Link
+          href={`/escape/${documentId}`}
+          className="text-[11px] text-emerald-400/50 hover:text-emerald-400 transition-colors mt-2 inline-flex items-center gap-1"
+        >
+          <DoorOpen className="w-3 h-3" />
+          {report.trapAnalysis.length} trap{report.trapAnalysis.length !== 1 ? 's' : ''} found — Get escape plan →
+        </Link>
+      )}
     </motion.div>
   );
 }

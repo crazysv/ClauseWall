@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -11,10 +11,14 @@ import {
   FileText,
   Loader2,
   RefreshCw,
+  ChevronDown,
+  BarChart3,
 } from "lucide-react";
+import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { Skeleton } from "@/components/ui/skeleton";
 import { createClient } from "@/lib/supabase/client";
 import {
   getRiskLevel,
@@ -30,27 +34,32 @@ import ClauseCard from "@/components/results/clause-card";
 import QRSection from "@/components/results/qr-section";
 import EntityReputation from "@/components/results/entity-reputation";
 import MismatchBanner from "@/components/results/mismatch-banner";
-import ScoreCardModal from "@/components/results/score-card-modal";
-import VideoCardModal from "@/components/results/video-card-modal";
-import ContractDNAModal from "@/components/results/contract-dna-modal";
-import { XRayOverlay } from "@/components/results/xray-mode";
 import FloatingActions from "@/components/results/floating-actions";
-import ClauseAutopsyModal from "@/components/results/clause-autopsy-modal";
 import EscapeCTA from "@/components/results/escape-cta";
 import SimulatorCTA from "@/components/results/simulator-cta";
 import PowerBalanceMeter from "@/components/results/power-balance-meter";
+import { NextSteps } from "@/components/results/next-steps";
 import ClauseRewriteModal from "@/components/results/clause-rewrite-modal";
 import MoodRingBackground from "@/components/results/mood-ring-background";
 import ProofSection from "@/components/results/proof-section";
-import ShareRoomModal from "@/components/collab/share-room-modal";
 import MicButton from "@/components/voice/mic-button";
 import StateMachineCTA from "@/components/statemachine/statemachine-cta";
 import StateMachineModal from "@/components/statemachine/state-machine-modal";
+
+// Lazy-load heavy modals (rarely opened on first render)
+const ScoreCardModal = dynamic(() => import("@/components/results/score-card-modal"), { ssr: false });
+const VideoCardModal = dynamic(() => import("@/components/results/video-card-modal"), { ssr: false });
+const ContractDNAModal = dynamic(() => import("@/components/results/contract-dna-modal"), { ssr: false });
+const XRayOverlay = dynamic(() => import("@/components/results/xray-mode").then(m => m.XRayOverlay), { ssr: false });
+const ClauseAutopsyModal = dynamic(() => import("@/components/results/clause-autopsy-modal"), { ssr: false });
+const ShareRoomModal = dynamic(() => import("@/components/collab/share-room-modal"), { ssr: false });
 import type { StateMachineReport } from "@/lib/statemachine/types";
 import DeliberationCTA from "@/components/deliberation/deliberation-cta";
 import DocumentDeliberation from "@/components/deliberation/document-deliberation";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import type { DeliberationResult, DeliberationProgress, ClauseDeliberation } from "@/lib/deliberation/types";
+import { TimebombCTA } from "@/components/timebomb/timebomb-cta";
+import type { TemporalExtractionResult } from "@/types";
 
 interface HybridClause extends Clause {
   verification_source?: "database" | "ai";
@@ -75,6 +84,10 @@ export default function ResultsPage() {
   const [filterRisk, setFilterRisk] = useState<string>("all");
   const [showCollab, setShowCollab] = useState(false);
   const [showStateMachineModal, setShowStateMachineModal] = useState(false);
+
+  // UX Overhaul: Sort + Collapsible
+  const [sortByRisk, setSortByRisk] = useState(true);
+  const [analysisDetailsOpen, setAnalysisDetailsOpen] = useState(false);
 
   // Deliberation state
   const [deliberationResult, setDeliberationResult] = useState<DeliberationResult | null>(null);
@@ -235,10 +248,28 @@ export default function ResultsPage() {
     return () => clearTimeout(timeout);
   }, [document?.analysis_status, clauses.length, documentId, playRiskSound]);
 
-  const filteredClauses =
-    filterRisk === "all"
-      ? clauses
-      : clauses.filter((c) => c.risk_level === filterRisk);
+  // Risk sort order (memoized)
+  const sortedClauses = useMemo(() => {
+    const riskOrder: Record<string, number> = {
+      illegal: 0,
+      dangerous: 1,
+      warning: 2,
+      safe: 3,
+    };
+    return [...clauses].sort((a, b) => {
+      const aOrder = riskOrder[a.risk_level] ?? 4;
+      const bOrder = riskOrder[b.risk_level] ?? 4;
+      if (aOrder !== bOrder) return aOrder - bOrder;
+      return (b.risk_score ?? 0) - (a.risk_score ?? 0);
+    });
+  }, [clauses]);
+
+  const filteredClauses = useMemo(() => {
+    const baseClauses = sortByRisk ? sortedClauses : clauses;
+    return filterRisk === "all"
+      ? baseClauses
+      : baseClauses.filter((c) => c.risk_level === filterRisk);
+  }, [clauses, sortedClauses, sortByRisk, filterRisk]);
 
   // ═══════════════════════════════════════════
   // 🌈 MOOD RING — SCROLL TRACKING
@@ -423,7 +454,7 @@ export default function ResultsPage() {
       currentClause: 1,
       currentAgent: "predator",
       status: "predator_arguing",
-      message: "Starting adversarial deliberation...",
+      message: "Starting AI debate...",
     });
     try {
       const res = await fetch("/api/deliberation/run", {
@@ -434,7 +465,7 @@ export default function ResultsPage() {
       const data = await res.json();
       if (data.success && data.result) {
         setDeliberationResult(data.result as DeliberationResult);
-        toast.success("Adversarial deliberation complete!");
+        toast.success("AI debate complete!");
       } else {
         toast.error(data.error || "Deliberation failed");
       }
@@ -465,12 +496,23 @@ export default function ResultsPage() {
     setExpandedClauses(new Set());
   };
 
-  // Loading state
+  // Loading state — skeleton layout
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-        <Loader2 className="h-12 w-12 text-blue-500 animate-spin" />
-        <p className="text-muted-foreground">Loading results...</p>
+      <div className="min-h-screen bg-background p-4 sm:p-8 max-w-5xl mx-auto">
+        <Skeleton className="h-8 w-64 mb-2" />
+        <Skeleton className="h-4 w-96 mb-8" />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+          {[1, 2, 3, 4].map(i => (
+            <Skeleton key={i} className="h-24 rounded-xl" />
+          ))}
+        </div>
+        <Skeleton className="h-32 rounded-xl mb-6" />
+        <div className="space-y-3">
+          {[1, 2, 3].map(i => (
+            <Skeleton key={i} className="h-20 rounded-xl" />
+          ))}
+        </div>
       </div>
     );
   }
@@ -536,7 +578,7 @@ export default function ResultsPage() {
         activeRiskLevel={activeMoodRisk}
         isInClauseZone={isInClauseZone}
       />
-      <div className="relative px-4 sm:px-6 lg:px-8 py-8">
+      <div className="relative px-4 sm:px-6 lg:px-8 py-8 pb-24 sm:pb-8">
       {/* Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
@@ -566,6 +608,7 @@ export default function ResultsPage() {
               onClick={handleRefresh}
               disabled={refreshing}
               className="gap-2"
+              aria-label="Re-analyze contract"
             >
               <RefreshCw
                 className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`}
@@ -585,11 +628,12 @@ export default function ResultsPage() {
         />
 
         {/* Score Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
           <Card className="bg-gray-900/50 border-gray-800 md:col-span-2">
             <CardContent className="p-6 flex items-center gap-6">
               <div
                 className="relative h-24 w-24 rounded-full flex items-center justify-center flex-shrink-0"
+                title="Overall contract risk score. 0 = safe, 100 = extremely dangerous"
                 style={{
                   background: `conic-gradient(${riskColor} ${document.overall_risk_score}%, transparent 0)`,
                 }}
@@ -660,60 +704,114 @@ export default function ResultsPage() {
           </Card>
         )}
 
-        {/* Power Balance */}
-        <div className="mb-8">
-          <PowerBalanceMeter
-            powerBalance={document.power_balance ?? null}
-          />
-        </div>
-
-        {/* Entity Reputation */}
-        <div className="mb-8">
-          <EntityReputation
-            entityName={document.entity_name}
-            documentId={documentId}
-            jurisdiction={document.jurisdiction}
-            documentType={document.document_type}
-            overallRiskScore={document.overall_risk_score}
-            dangerousClauses={clauses
-              .filter((c) => c.risk_level === "dangerous")
-              .map((c) => c.explanation)}
-            illegalClauses={clauses
-              .filter((c) => c.risk_level === "illegal")
-              .map((c) => c.explanation)}
-          />
-        </div>
-
-        {/* Verification Stats */}
-        <Card className="bg-gray-900/50 border-gray-800 mb-8">
-          <CardContent className="p-6">
-            <h3 className="font-semibold mb-3 flex items-center gap-2">
-              <ShieldCheck className="h-4 w-4 text-green-400" />
-              Legal Database Verification
-            </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <div className="text-center p-3 rounded-lg bg-green-500/10">
-                <p className="text-2xl font-bold text-green-400">{verificationStats.verified}</p>
-                <p className="text-xs text-muted-foreground">Verified ✓</p>
-              </div>
-              <div className="text-center p-3 rounded-lg bg-yellow-500/10">
-                <p className="text-2xl font-bold text-yellow-400">{verificationStats.partial}</p>
-                <p className="text-xs text-muted-foreground">Partial</p>
-              </div>
-              <div className="text-center p-3 rounded-lg bg-blue-500/10">
-                <p className="text-2xl font-bold text-blue-400">{verificationStats.ai_suggested}</p>
-                <p className="text-xs text-muted-foreground">AI-Only</p>
-              </div>
-              <div className="text-center p-3 rounded-lg bg-white/5">
-                <p className="text-2xl font-bold">{verificationStats.verification_rate}%</p>
-                <p className="text-xs text-muted-foreground">Verified Rate</p>
-              </div>
+        {/* ═══ ANALYSIS DETAILS — Collapsible ═══ */}
+        <div className="rounded-xl border border-white/10 bg-white/[0.02] overflow-hidden mb-8">
+          <button
+            onClick={() => setAnalysisDetailsOpen(!analysisDetailsOpen)}
+            className="w-full flex items-center justify-between p-4 hover:bg-white/[0.02] transition-colors"
+            aria-label={analysisDetailsOpen ? "Collapse analysis details" : "Expand analysis details"}
+          >
+            <div className="flex items-center gap-3">
+              <BarChart3 className="w-4 h-4 text-white/50" />
+              <span className="text-sm font-medium text-white/80">
+                Analysis Details
+              </span>
             </div>
-          </CardContent>
-        </Card>
+
+            {!analysisDetailsOpen && (
+              <div className="flex items-center gap-4 text-xs text-white/40">
+                <span>
+                  {clauses.length} clauses • {verificationStats.verification_rate}% verified
+                </span>
+              </div>
+            )}
+
+            <ChevronDown
+              className={`w-4 h-4 text-white/40 transition-transform duration-200 ${
+                analysisDetailsOpen ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+
+          <AnimatePresence>
+            {analysisDetailsOpen && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="overflow-hidden"
+              >
+                <div className="px-4 pb-4 space-y-4">
+                  {/* Power Balance */}
+                  <PowerBalanceMeter
+                    powerBalance={document.power_balance ?? null}
+                  />
+
+                  {/* Entity Reputation */}
+                  <EntityReputation
+                    entityName={document.entity_name}
+                    documentId={documentId}
+                    jurisdiction={document.jurisdiction}
+                    documentType={document.document_type}
+                    overallRiskScore={document.overall_risk_score}
+                    dangerousClauses={clauses
+                      .filter((c) => c.risk_level === "dangerous")
+                      .map((c) => c.explanation)}
+                    illegalClauses={clauses
+                      .filter((c) => c.risk_level === "illegal")
+                      .map((c) => c.explanation)}
+                  />
+
+                  {/* Verification Stats */}
+                  <Card className="bg-gray-900/50 border-gray-800">
+                    <CardContent className="p-6">
+                      <h3 className="font-semibold mb-3 flex items-center gap-2">
+                        <ShieldCheck className="h-4 w-4 text-green-400" />
+                        Legal Database Verification
+                      </h3>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <div className="text-center p-3 rounded-lg bg-green-500/10">
+                          <p className="text-2xl font-bold text-green-400">{verificationStats.verified}</p>
+                          <p className="text-xs text-muted-foreground">Verified ✓</p>
+                        </div>
+                        <div className="text-center p-3 rounded-lg bg-yellow-500/10">
+                          <p className="text-2xl font-bold text-yellow-400">{verificationStats.partial}</p>
+                          <p className="text-xs text-muted-foreground">Partial</p>
+                        </div>
+                        <div className="text-center p-3 rounded-lg bg-blue-500/10">
+                          <p className="text-2xl font-bold text-blue-400">{verificationStats.ai_suggested}</p>
+                          <p className="text-xs text-muted-foreground">AI-Only</p>
+                        </div>
+                        <div className="text-center p-3 rounded-lg bg-white/5">
+                          <p className="text-2xl font-bold">{verificationStats.verification_rate}%</p>
+                          <p className="text-xs text-muted-foreground">Verified Rate</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* ═══ NEXT STEPS ═══ */}
+        <div className="mb-8">
+          <NextSteps
+            overallRiskScore={document.overall_risk_score ?? 0}
+            illegalCount={document.illegal_count ?? 0}
+            dangerousCount={document.dangerous_count ?? 0}
+            warningCount={document.warning_count ?? 0}
+            documentId={documentId}
+            hasStateMachine={!!document.state_machine_data}
+            hasDeliberation={!!deliberationResult}
+            entityName={document.entity_name || undefined}
+          />
+        </div>
 
                 {/* ═══ CLAUSE SECTION — MOOD RING ZONE ═══ */}
-        <div>
+        <div id="clause-list">
           {/* Clause Header + Filters */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
             <h2 className="text-xl font-bold">Clause Analysis</h2>
@@ -762,6 +860,16 @@ export default function ResultsPage() {
               <span className="text-gray-700">|</span>
 
               <button
+                onClick={() => setSortByRisk(!sortByRisk)}
+                className="text-xs text-white/40 hover:text-white/60 transition-colors"
+                aria-label="Toggle sort order"
+              >
+                {sortByRisk ? '↕ Sort by order' : '↕ Sort by risk'}
+              </button>
+
+              <span className="text-gray-700">|</span>
+
+              <button
                 onClick={expandAll}
                 className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
               >
@@ -775,6 +883,13 @@ export default function ResultsPage() {
               </button>
             </div>
           </div>
+
+          {/* Sort indicator */}
+          {sortByRisk && (
+            <p className="text-xs text-white/30 mb-2">
+              Sorted by risk level — most critical first
+            </p>
+          )}
 
           {/* Clause Cards */}
           <div className="space-y-3" ref={clauseListRef}>
@@ -801,6 +916,7 @@ export default function ResultsPage() {
                       (d) => d.clauseIndex === clause.clause_number || d.clauseId === clause.id
                     ) || null
                   }
+                  documentId={documentId}
                 />
               </motion.div>
             ))}
@@ -820,8 +936,64 @@ export default function ResultsPage() {
           )}
         </div>
 
+        {/* ── Explore Deeper ── */}
+        <div className="mt-8 space-y-4">
+          <div className="flex items-center gap-3">
+            <h3 className="text-sm font-semibold text-white/60">
+              Explore Deeper
+            </h3>
+            <div className="flex-1 border-t border-white/5" />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <EscapeCTA
+                documentId={documentId}
+                dangerousCount={document.dangerous_count}
+                illegalCount={document.illegal_count}
+              />
+            </div>
+
+            <div>
+              <SimulatorCTA
+                documentId={documentId}
+                overallRiskScore={document.overall_risk_score}
+              />
+            </div>
+
+            <div id="statemachine-cta">
+              {document.state_machine_data && (
+                <StateMachineCTA
+                  report={document.state_machine_data as unknown as StateMachineReport}
+                  onExplore={() => setShowStateMachineModal(true)}
+                />
+              )}
+            </div>
+
+            <div id="deliberation-cta">
+              <DeliberationCTA
+                result={deliberationResult}
+                isLoading={isRunningDeliberation}
+                progress={deliberationProgress}
+                onRun={runFullDeliberation}
+                onView={() => setShowDeliberationView(true)}
+              />
+            </div>
+
+            <div id="timebomb-cta">
+              <TimebombCTA
+                documentId={documentId}
+                temporalData={(document?.temporal_data as unknown as TemporalExtractionResult) || null}
+                hasActivated={false}
+              />
+            </div>
+          </div>
+        </div>
+
         {/* QR Verification Badge */}
-        <QRSection document={document} />
+        <div id="qr-section" className="mt-8">
+          <QRSection document={document} />
+        </div>
 
         {/* Blockchain Proof */}
         <ProofSection
@@ -833,36 +1005,6 @@ export default function ResultsPage() {
           tsaSerial={document.tsa_serial}
           overallRiskScore={document.overall_risk_score}
           totalClauses={document.total_clauses}
-        />
-
-        {/* Escape Plan CTA */}
-        <EscapeCTA
-          documentId={documentId}
-          dangerousCount={document.dangerous_count}
-          illegalCount={document.illegal_count}
-        />
-
-        {/* Simulator CTA */}
-        <SimulatorCTA
-          documentId={documentId}
-          overallRiskScore={document.overall_risk_score}
-        />
-
-        {/* State Machine CTA */}
-        {document.state_machine_data && (
-          <StateMachineCTA
-            report={document.state_machine_data as unknown as StateMachineReport}
-            onExplore={() => setShowStateMachineModal(true)}
-          />
-        )}
-
-        {/* ⚔️ Adversarial Deliberation CTA */}
-        <DeliberationCTA
-          result={deliberationResult}
-          isLoading={isRunningDeliberation}
-          progress={deliberationProgress}
-          onRun={runFullDeliberation}
-          onView={() => setShowDeliberationView(true)}
         />
       </div>
 

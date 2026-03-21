@@ -117,7 +117,7 @@ export default function DeliberationCTA({
             </div>
             <div>
               <h4 className="text-sm font-semibold text-amber-300">
-                ⚔️ Adversarial Deliberation Complete
+                ⚔️ AI Debate Complete
               </h4>
               <p className="text-xs text-gray-400 mt-0.5">
                 3 agents debated {summary.totalClauses} clauses —{" "}
@@ -155,8 +155,9 @@ export default function DeliberationCTA({
           </div>
           <div>
             <p className="font-semibold text-amber-300">
-              ⚔️ Run Adversarial Deliberation
+               ⚔️ Run AI Debate
             </p>
+            <p className="text-xs text-white/40">Three AI agents argue whether each clause is fair</p>
             <p className="text-sm text-gray-400 mt-0.5">
               Three AI agents — a corporate lawyer, a consumer rights advocate,
               and a retired judge — will debate every clause in this contract.

@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { Swords, ArrowRight, Loader2 } from "lucide-react";
 import type {
   ClauseDeliberation,
@@ -17,6 +18,7 @@ interface DeliberationSummaryProps {
   onTriggerDeliberation?: () => void;
   isLoading?: boolean;
   currentAgent?: AgentRole | null;
+  documentId?: string;
 }
 
 // ============================================
@@ -46,6 +48,7 @@ export default function DeliberationSummary({
   onTriggerDeliberation,
   isLoading = false,
   currentAgent = null,
+  documentId,
 }: DeliberationSummaryProps) {
   // ── STATE 3: Loading ──
   if (isLoading) {
@@ -122,6 +125,49 @@ export default function DeliberationSummary({
             <ArrowRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" />
           </div>
         </div>
+
+        {/* Cross-links for unfavorable verdicts */}
+        {documentId && deliberation && (
+          deliberation.arbiterVerdict.verdict === 'illegal' ||
+          deliberation.arbiterVerdict.verdict === 'unfair'
+        ) && (
+          <div className="flex flex-wrap items-center gap-2 mt-2 pt-2 border-t border-white/5">
+            <span className="text-[10px] text-white/20">Next:</span>
+            {deliberation.arbiterVerdict.verdict === 'illegal' ? (
+              <>
+                <Link
+                  href={`/letter/${documentId}`}
+                  className="text-[10px] text-amber-400/60 hover:text-amber-400 transition-colors"
+                >
+                  Agents agree — Generate legal notice →
+                </Link>
+                <span className="text-white/10">·</span>
+                <Link
+                  href={`/negotiate/${documentId}`}
+                  className="text-[10px] text-emerald-400/60 hover:text-emerald-400 transition-colors"
+                >
+                  Negotiate →
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link
+                  href={`/negotiate/${documentId}`}
+                  className="text-[10px] text-emerald-400/60 hover:text-emerald-400 transition-colors"
+                >
+                  Flagged unfair — Get negotiation script →
+                </Link>
+                <span className="text-white/10">·</span>
+                <Link
+                  href={`/letter/${documentId}`}
+                  className="text-[10px] text-amber-400/60 hover:text-amber-400 transition-colors"
+                >
+                  Legal notice →
+                </Link>
+              </>
+            )}
+          </div>
+        )}
       </motion.div>
     );
   }

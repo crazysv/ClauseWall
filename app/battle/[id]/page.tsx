@@ -3,6 +3,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import { RelatedActions } from "@/components/shared/related-actions";
 import { motion } from "framer-motion";
 import {
   ArrowLeft,
@@ -421,17 +422,6 @@ export default function BattlePage() {
 
           {/* Bottom Actions */}
           <div className="mt-8 flex flex-wrap gap-3 justify-center">
-            <Link href={`/results/${documentId}`}>
-              <Button variant="outline" className="gap-2">
-                <ArrowLeft className="h-4 w-4" />
-                Back to Results
-              </Button>
-            </Link>
-            <Link href={`/negotiate/${documentId}`}>
-              <Button className="gap-2 bg-purple-600 hover:bg-purple-700">
-                ⚔️ Negotiate
-              </Button>
-            </Link>
             <Button
               variant="outline"
               className="gap-2"
@@ -444,6 +434,9 @@ export default function BattlePage() {
               Share
             </Button>
           </div>
+
+          {/* Related Actions */}
+          <RelatedActions documentId={documentId} currentPage="battle" />
         </>
       )}
     </div>
@@ -600,6 +593,7 @@ function ScoreComparisonCard({ comparison: comp }: { comparison: ScoreComparison
               </span>
             </div>
           </div>
+
         </div>
 
         <p className="text-[11px] mt-2" style={{ color: severity.text }}>

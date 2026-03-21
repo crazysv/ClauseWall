@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { RelatedActions } from "@/components/shared/related-actions";
 import { motion } from "framer-motion";
 import {
   Gamepad2,
@@ -680,15 +681,10 @@ export default function SimulatorPage() {
             {copied ? <Check className="h-4 w-4 text-green-400" /> : <Copy className="h-4 w-4" />}
             {copied ? "Copied!" : "Copy Breakdown"}
           </Button>
-          <Link href={`/escape/${documentId}`}>
-            <Button variant="outline" className="gap-2">🚪 Escape Plan</Button>
-          </Link>
-          <Link href={`/results/${documentId}`}>
-            <Button variant="outline" className="gap-2">
-              <ArrowLeft className="h-4 w-4" /> Back to Analysis
-            </Button>
-          </Link>
         </div>
+
+        {/* Related Actions */}
+        <RelatedActions documentId={documentId} currentPage="simulate" />
       </div>
     </div>
   );

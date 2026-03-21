@@ -7,6 +7,7 @@ import Link from "next/link";
 import StateGraph from "@/components/statemachine/state-graph";
 import ReportCard from "@/components/statemachine/report-card";
 import TrapStateCard from "@/components/statemachine/trap-state-card";
+import { RelatedActions } from "@/components/shared/related-actions";
 import type { StateMachineReport } from "@/lib/statemachine/types";
 
 export default function StateMachinePage({
@@ -89,7 +90,7 @@ export default function StateMachinePage({
             <ArrowLeft className="h-4 w-4" />
           </Link>
           <div>
-            <h1 className="font-semibold text-sm sm:text-base">Contract State Machine</h1>
+            <h1 className="font-semibold text-sm sm:text-base">Trap Detector</h1>
             <p className="text-xs text-gray-500">ClauseWall</p>
           </div>
         </div>
@@ -115,7 +116,7 @@ export default function StateMachinePage({
                   Extracting...
                 </>
               ) : (
-                "Generate State Machine Analysis"
+                "Generate Trap Analysis"
               )}
             </button>
           </motion.div>
@@ -132,7 +133,7 @@ export default function StateMachinePage({
             />
 
             {/* Report card */}
-            <ReportCard report={report} onExplore={() => {}} />
+            <ReportCard report={report} onExplore={() => {}} documentId={params.id} />
 
             {/* Trap state cards */}
             {report.trapAnalysis.length > 0 && (
@@ -145,6 +146,7 @@ export default function StateMachinePage({
                     key={trap.stateId}
                     trap={trap}
                     stateMachine={report.stateMachine}
+                    documentId={params.id}
                   />
                 ))}
               </div>
@@ -164,6 +166,9 @@ export default function StateMachinePage({
                 </ul>
               </div>
             )}
+
+            {/* Related Actions */}
+            <RelatedActions documentId={params.id} currentPage="statemachine" />
           </div>
         )}
       </div>

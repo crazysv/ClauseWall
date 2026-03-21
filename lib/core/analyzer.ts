@@ -403,6 +403,29 @@ export async function analyzeDocument(
       // Non-blocking — analysis continues without state machine
     }
 
+    // ---- Step 5.8: Temporal Extraction (Time Bomb Defuser) ----
+    let temporalData = null;
+    try {
+      await updateProgress(supabase, documentId, 99, "Extracting temporal obligations...", totalClauses);
+      const { extractTemporalObligations } = await import("@/lib/timebomb");
+      temporalData = await extractTemporalObligations(
+        rawText,
+        documentType,
+        jurisdiction,
+        analyzedClauses.map((c: { clause_number: number; original_text: string; clause_type: string }) => ({
+          clause_number: c.clause_number,
+          original_text: c.original_text,
+          clause_type: c.clause_type,
+        }))
+      );
+      console.log(
+        `[ClauseWall] [TimeBomb] ✅ Extracted ${temporalData.deadlines.length} temporal deadlines, risk: ${temporalData.overall_temporal_risk}`
+      );
+    } catch (temporalError) {
+      console.error("[ClauseWall] [TimeBomb] Non-fatal temporal extraction error:", temporalError);
+      // Non-blocking — analysis continues without temporal data
+    }
+
     // ---- Step 6: Update document with results ----
     const { error: updateError } = await supabase
       .from("documents")
@@ -425,6 +448,7 @@ export async function analyzeDocument(
         proof_status: proofStatus,
         tsa_token: tsaToken,
         tsa_serial: tsaSerial,
+        temporal_data: temporalData,
       })
       .eq("id", documentId);
 

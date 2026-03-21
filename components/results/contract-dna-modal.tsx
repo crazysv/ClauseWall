@@ -115,7 +115,7 @@ export default function ContractDNAModal({ isOpen, onClose, contractDoc, clauses
       ctx.fillText(`${personality.emoji} ${personality.name}`, 50, 700);
       ctx.font = "16px system-ui, sans-serif";
       ctx.fillStyle = "#94A3B8";
-      ctx.fillText(`${contractId} • Contract DNA • clausewall.com`, 50, 730);
+      ctx.fillText(`${contractId} • Contract Personality • clausewall.com`, 50, 730);
 
       // Color swatch
       ctx.fillStyle = uniqueColor;
@@ -146,7 +146,7 @@ export default function ContractDNAModal({ isOpen, onClose, contractDoc, clauses
     <DialogContent className="max-w-3xl bg-[#0A0A0F] border-gray-800 p-0 gap-0 overflow-hidden">
       {/* Accessible title (visually hidden) */}
       <VisuallyHidden>
-        <DialogTitle>Contract DNA Visualization</DialogTitle>
+        <DialogTitle>Contract Personality Visualization</DialogTitle>
       </VisuallyHidden>
 
       {/* Header */}
@@ -158,7 +158,7 @@ export default function ContractDNAModal({ isOpen, onClose, contractDoc, clauses
             }}
         />
         <div>
-            <h2 className="font-bold text-lg">Contract DNA</h2>
+            <h2 className="font-bold text-lg">Contract Personality</h2>
             <p className="text-xs text-muted-foreground">
                 {personality.emoji} {personality.name} — {personality.description}
             </p>
