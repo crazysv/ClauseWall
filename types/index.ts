@@ -75,6 +75,7 @@ export interface Document {
   state_machine_data: Record<string, unknown> | null;
   deliberation_data?: Record<string, unknown> | null;
   temporal_data?: Record<string, unknown> | null;
+  poison_pill_data?: Record<string, unknown> | null;
 }
 
 /**
@@ -1112,4 +1113,358 @@ export interface DeadlineStats {
   missed: number;
   total_financial_exposure: number;
   next_critical: ContractDeadline | null;
+}
+
+// ============================================
+// CROSS-CONTRACT VAULT TYPES
+// ============================================
+
+export type ConflictType =
+  | "direct_contradiction"
+  | "obligation_overlap"
+  | "ip_conflict"
+  | "non_compete_clash"
+  | "exclusivity_violation"
+  | "jurisdiction_conflict"
+  | "confidentiality_breach"
+  | "time_commitment_impossible"
+  | "financial_conflict"
+  | "termination_cascade"
+  | "insurance_gap"
+  | "coverage_overlap"
+  | "other";
+
+export type ConflictSeverity = "critical" | "high" | "medium" | "low";
+
+export type GapCategory =
+  | "health_insurance"
+  | "life_insurance"
+  | "disability"
+  | "dental"
+  | "vision"
+  | "accident"
+  | "liability"
+  | "legal_protection"
+  | "ip_protection"
+  | "termination_protection"
+  | "notice_period"
+  | "severance"
+  | "gratuity"
+  | "retirement"
+  | "maternity"
+  | "data_privacy"
+  | "dispute_resolution"
+  | "other";
+
+export type WhatIfScenario =
+  | "job_loss"
+  | "city_relocation"
+  | "marriage"
+  | "divorce"
+  | "child_birth"
+  | "disability"
+  | "hospitalization"
+  | "business_start"
+  | "property_purchase"
+  | "loan_default"
+  | "death"
+  | "retirement"
+  | "company_acquisition"
+  | "lawsuit"
+  | "natural_disaster"
+  | "custom";
+
+export interface CrossContractConflict {
+  id: string;
+  conflict_type: ConflictType;
+  severity: ConflictSeverity;
+  title: string;
+  description: string;
+  document_a_id: string;
+  document_a_title: string;
+  document_a_clause: string;
+  document_a_clause_number: number;
+  document_b_id: string;
+  document_b_title: string;
+  document_b_clause: string;
+  document_b_clause_number: number;
+  legal_implication: string;
+  legal_citation: string | null;
+  resolution_suggestion: string;
+  financial_risk: number | null;
+  affects_documents: string[];
+}
+
+export interface CoverageGap {
+  id: string;
+  category: GapCategory;
+  title: string;
+  description: string;
+  importance: "essential" | "recommended" | "optional";
+  estimated_annual_risk: number | null;
+  contracts_checked: string[];
+  suggestion: string;
+}
+
+export interface CascadingFailure {
+  id: string;
+  trigger_event: string;
+  trigger_document_id: string;
+  trigger_document_title: string;
+  chain: CascadeStep[];
+  total_financial_impact: number;
+  probability: "likely" | "possible" | "unlikely";
+  prevention_steps: string[];
+}
+
+export interface CascadeStep {
+  step_number: number;
+  document_id: string;
+  document_title: string;
+  clause_reference: string;
+  what_happens: string;
+  financial_impact: number | null;
+  time_delay: string;
+  can_be_prevented: boolean;
+  prevention_action: string | null;
+}
+
+export interface FinancialExposure {
+  total_worst_case: number;
+  total_monthly_obligations: number;
+  total_deposits_at_risk: number;
+  total_penalties_possible: number;
+  by_contract: ContractExposure[];
+  by_category: CategoryExposure[];
+}
+
+export interface ContractExposure {
+  document_id: string;
+  document_title: string;
+  document_type: string;
+  monthly_obligation: number;
+  deposits: number;
+  max_penalty: number;
+  worst_case_total: number;
+}
+
+export interface CategoryExposure {
+  category: string;
+  total: number;
+  contracts: string[];
+}
+
+export interface UnifiedObligation {
+  id: string;
+  document_id: string;
+  document_title: string;
+  document_type: string;
+  obligation_type: "payment" | "action" | "restriction" | "deadline";
+  title: string;
+  description: string;
+  frequency:
+    | "one_time"
+    | "daily"
+    | "weekly"
+    | "monthly"
+    | "quarterly"
+    | "semi_annual"
+    | "annual"
+    | "on_event";
+  amount: number | null;
+  next_due: string | null;
+  risk_if_missed: string;
+  risk_level: RiskLevel;
+}
+
+export interface WhatIfResult {
+  scenario: WhatIfScenario;
+  scenario_title: string;
+  scenario_description: string;
+  affected_contracts: WhatIfContractImpact[];
+  total_financial_impact: number;
+  immediate_actions: string[];
+  timeline: WhatIfTimelineStep[];
+  overall_severity:
+    | "devastating"
+    | "severe"
+    | "moderate"
+    | "manageable"
+    | "minimal";
+  protection_score: number;
+}
+
+export interface WhatIfContractImpact {
+  document_id: string;
+  document_title: string;
+  document_type: string;
+  impact_level: "terminated" | "breached" | "modified" | "unaffected";
+  impact_description: string;
+  financial_impact: number | null;
+  clauses_triggered: string[];
+  rights_lost: string[];
+  rights_gained: string[];
+}
+
+export interface WhatIfTimelineStep {
+  day: number;
+  title: string;
+  description: string;
+  contracts_affected: string[];
+  financial_impact: number | null;
+  action_required: string | null;
+}
+
+export interface VaultAnalysisResult {
+  id: string;
+  user_id: string;
+  analyzed_at: string;
+  document_ids: string[];
+  conflicts: CrossContractConflict[];
+  coverage_gaps: CoverageGap[];
+  cascading_failures: CascadingFailure[];
+  financial_exposure: FinancialExposure;
+  unified_obligations: UnifiedObligation[];
+  risk_score: number;
+  risk_summary: string;
+  what_if_results: WhatIfResult[];
+}
+
+export interface VaultSummaryStats {
+  total_contracts: number;
+  total_clauses: number;
+  total_conflicts: number;
+  critical_conflicts: number;
+  coverage_gaps: number;
+  essential_gaps: number;
+  total_financial_exposure: number;
+  total_monthly_obligations: number;
+  cascading_failure_chains: number;
+  overall_vault_risk: "low" | "medium" | "high" | "extreme";
+  worst_scenario: string;
+  worst_scenario_impact: number;
+}
+
+// ==================== POISON PILL INTERCONNECTION TYPES ====================
+
+export type TrapPatternType =
+  | 'infinite_loop'
+  | 'escalation_trap'
+  | 'waiver_chain'
+  | 'scope_creep'
+  | 'silent_amendment'
+  | 'deposit_trap'
+  | 'termination_asymmetry'
+  | 'insurance_void'
+  | 'jurisdiction_trap'
+  | 'data_hostage'
+  | 'custom';
+
+export type TrapSeverity = 'devastating' | 'severe' | 'moderate' | 'minor';
+
+export interface ClauseConnection {
+  from_clause_number: number;
+  to_clause_number: number;
+  connection_type:
+    | 'enables'
+    | 'amplifies'
+    | 'blocks_escape'
+    | 'triggers'
+    | 'compounds'
+    | 'overrides'
+    | 'references'
+    | 'depends_on';
+  description: string;
+  strength: 'strong' | 'moderate' | 'weak';
+}
+
+export interface TrapMechanism {
+  step_number: number;
+  clause_number: number;
+  clause_type: string;
+  clause_text_snippet: string;
+  role_in_trap: string;
+  individual_risk: RiskLevel;
+  contribution_to_trap: string;
+}
+
+export interface PoisonPillTrap {
+  id: string;
+  pattern_type: TrapPatternType;
+  trap_name: string;
+  severity: TrapSeverity;
+  title: string;
+  description: string;
+  how_it_works: string;
+  real_world_impact: string;
+  mechanisms: TrapMechanism[];
+  connections: ClauseConnection[];
+  individual_risk_average: number;
+  combined_risk_score: number;
+  risk_multiplier: number;
+  financial_worst_case: number | null;
+  financial_explanation: string;
+  trigger_event: string;
+  escape_difficulty: 'impossible' | 'very_hard' | 'hard' | 'moderate' | 'easy';
+  escape_options: string[];
+  legal_citations: string[];
+  negotiation_priority: 'must_change' | 'should_change' | 'nice_to_change';
+  which_clause_to_target: number;
+  why_target_this_clause: string;
+}
+
+export interface InterconnectionNode {
+  clause_number: number;
+  clause_type: string;
+  clause_text_snippet: string;
+  risk_level: RiskLevel;
+  x: number;
+  y: number;
+  is_part_of_trap: boolean;
+  trap_ids: string[];
+  connection_count: number;
+}
+
+export interface InterconnectionEdge {
+  from_clause: number;
+  to_clause: number;
+  connection_type: ClauseConnection['connection_type'];
+  strength: ClauseConnection['strength'];
+  trap_id: string | null;
+  label: string;
+}
+
+export interface InterconnectionCluster {
+  id: string;
+  clause_numbers: number[];
+  trap_id: string | null;
+  density: number;
+  risk_level: RiskLevel;
+}
+
+export interface InterconnectionGraph {
+  nodes: InterconnectionNode[];
+  edges: InterconnectionEdge[];
+  clusters: InterconnectionCluster[];
+}
+
+export interface NegotiationTarget {
+  priority: number;
+  clause_number: number;
+  clause_type: string;
+  why: string;
+  traps_broken: string[];
+  difficulty: 'easy' | 'medium' | 'hard';
+  suggested_change: string;
+}
+
+export interface PoisonPillAnalysisResult {
+  traps: PoisonPillTrap[];
+  graph: InterconnectionGraph;
+  combined_trap_score: number;
+  trap_density: number;
+  most_dangerous_trap: PoisonPillTrap | null;
+  most_connected_clause: number | null;
+  risk_amplification_summary: string;
+  negotiation_roadmap: NegotiationTarget[];
 }

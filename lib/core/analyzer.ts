@@ -426,6 +426,35 @@ export async function analyzeDocument(
       // Non-blocking — analysis continues without temporal data
     }
 
+    // ---- Step 5.9: Poison Pill Detection (Clause Interconnection Traps) ----
+    let poisonPillData = null;
+    try {
+      await updateProgress(supabase, documentId, 99, "Detecting clause interconnection traps...", totalClauses);
+      const { analyzePoisonPills } = await import("@/lib/poisonpill");
+      poisonPillData = await analyzePoisonPills(
+        analyzedClauses.map((c: any) => ({
+          clause_number: c.clause_number,
+          original_text: c.original_text,
+          clause_type: c.clause_type,
+          risk_level: c.risk_level,
+          risk_score: c.risk_score,
+          explanation: c.explanation,
+          legal_citation: c.legal_citation || null,
+          extracted_value: c.extracted_value || null,
+          extracted_unit: c.extracted_unit || null,
+        })),
+        documentType,
+        jurisdiction,
+        entityName || null
+      );
+      console.log(
+        `[ClauseWall] [PoisonPill] ✅ ${poisonPillData.traps.length} traps found, score: ${poisonPillData.combined_trap_score}/100`
+      );
+    } catch (poisonPillError) {
+      console.error("[ClauseWall] [PoisonPill] Non-fatal detection error:", poisonPillError);
+      // Non-blocking — analysis continues without poison pill data
+    }
+
     // ---- Step 6: Update document with results ----
     const { error: updateError } = await supabase
       .from("documents")
@@ -449,6 +478,7 @@ export async function analyzeDocument(
         tsa_token: tsaToken,
         tsa_serial: tsaSerial,
         temporal_data: temporalData,
+        poison_pill_data: poisonPillData,
       })
       .eq("id", documentId);
 

@@ -39,6 +39,7 @@ import PortfolioStatsSection from "@/components/dashboard/portfolio-stats";
 import RiskTrendChart from "@/components/dashboard/risk-trend-chart";
 import AchievementsSection from "@/components/dashboard/achievements-section";
 import InsightsSection from "@/components/dashboard/insights-section";
+import { VaultCTA } from "@/components/vault/vault-cta";
 
 // Stats Logic
 import { computePortfolioStats, buildRiskChartData } from "@/lib/stats/portfolio-stats";
@@ -318,7 +319,10 @@ export default function DashboardPage() {
           <AchievementsSection achievements={achievements} />
         )}
 
-        {/* ── SECTION 3.5: Upcoming Deadlines ── */}
+        {/* ── SECTION 3.5: Contract Vault CTA ── */}
+        {documents.length >= 2 && <VaultCTA />}
+
+        {/* ── SECTION 3.6: Upcoming Deadlines ── */}
         <UpcomingDeadlinesSection />
 
         {/* ── SECTION 4: Recent Documents ── */}

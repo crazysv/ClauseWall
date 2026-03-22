@@ -11,6 +11,7 @@ import {
   BarChart3,
   Skull,
   ArrowLeftRight,
+  FileStack,
   Hammer,
   Volume2,
   VolumeX,
@@ -71,6 +72,16 @@ export default function Navbar() {
               >
                 <ArrowLeftRight className="h-4 w-4" />
                 Compare
+              </Button>
+            </Link>
+            <Link href="/vault">
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`gap-2 transition-colors ${isActive('/vault') ? 'text-foreground font-medium border-b-2 border-indigo-500 rounded-b-none' : 'text-muted-foreground hover:text-foreground'}`}
+              >
+                <FileStack className="h-4 w-4" />
+                Vault
               </Button>
             </Link>
             <Link href="/dashboard">
@@ -162,6 +173,14 @@ export default function Navbar() {
             >
               <ArrowLeftRight className="h-4 w-4" />
               Compare Contracts
+            </Link>
+            <Link
+              href="/vault"
+              onClick={() => setMobileOpen(false)}
+              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive('/vault') ? 'text-foreground bg-white/5' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
+            >
+              <FileStack className="h-4 w-4" />
+              Contract Vault
             </Link>
             <Link
               href="/dashboard"

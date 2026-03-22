@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Shield,
   ShieldCheck,
+  FileStack,
   XCircle,
   FileText,
   Loader2,
@@ -59,7 +60,9 @@ import DocumentDeliberation from "@/components/deliberation/document-deliberatio
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import type { DeliberationResult, DeliberationProgress, ClauseDeliberation } from "@/lib/deliberation/types";
 import { TimebombCTA } from "@/components/timebomb/timebomb-cta";
-import type { TemporalExtractionResult } from "@/types";
+import type { TemporalExtractionResult, PoisonPillAnalysisResult } from "@/types";
+import { PoisonPillCTA } from "@/components/poisonpill/poison-pill-cta";
+import { PoisonPillSection } from "@/components/poisonpill/poison-pill-section";
 
 interface HybridClause extends Clause {
   verification_source?: "database" | "ai";
@@ -987,7 +990,43 @@ export default function ResultsPage() {
                 hasActivated={false}
               />
             </div>
+
+            <div id="vault-cta">
+              <Link href="/vault">
+                <Card className="cursor-pointer hover:brightness-110 transition-all bg-gradient-to-br from-indigo-500/5 to-violet-500/5 border-indigo-500/15 h-full">
+                  <CardContent className="p-5">
+                    <div className="flex items-center gap-4">
+                      <div className="p-3 rounded-xl bg-indigo-500/10">
+                        <FileStack className="w-6 h-6 text-indigo-400" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="text-sm font-semibold text-white">Contract Vault</h4>
+                        <p className="text-xs text-white/40 mt-0.5">
+                          Cross-analyze all your contracts for conflicts, gaps & hidden risks
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            </div>
+
+            <div id="poisonpill-cta">
+              <PoisonPillCTA
+                documentId={documentId}
+                poisonPillData={(document?.poison_pill_data as unknown as PoisonPillAnalysisResult) || null}
+                totalClauses={document.total_clauses || 0}
+              />
+            </div>
           </div>
+        </div>
+
+        {/* ── Poison Pill Interconnection Analysis ── */}
+        <div id="poison-pill-section" className="mt-8">
+          <PoisonPillSection
+            documentId={documentId}
+            poisonPillData={(document?.poison_pill_data as unknown as PoisonPillAnalysisResult) || null}
+          />
         </div>
 
         {/* QR Verification Badge */}
