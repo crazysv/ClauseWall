@@ -352,6 +352,19 @@ export default function WallOfShamePage() {
                               ))}
                           </div>
                         )}
+
+                      {/* Collective info */}
+                      {entity.total_flags >= 3 && (
+                        <div className="mt-2">
+                          <Link href={`/collective`}>
+                            <Badge className="bg-amber-500/10 text-amber-400 border-amber-500/20 text-xs gap-1.5 cursor-pointer hover:bg-amber-500/20 transition-colors">
+                              <Users className="h-3 w-3" />
+                              Collective Available — Join {entity.total_flags}+ affected people
+                              <ArrowRight className="h-3 w-3" />
+                            </Badge>
+                          </Link>
+                        </div>
+                      )}
                     </div>
                   </div>
 

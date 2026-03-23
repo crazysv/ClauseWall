@@ -15,6 +15,9 @@ import {
   Hammer,
   Volume2,
   VolumeX,
+  Handshake,
+  Users,
+  Scale,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSound } from "@/lib/audio/sound-context";
@@ -102,6 +105,36 @@ export default function Navbar() {
               >
                 <Skull className="h-4 w-4" />
                 Wall of Shame
+              </Button>
+            </Link>
+            <Link href="/collective">
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`gap-2 transition-colors ${isActive('/collective') ? 'text-foreground font-medium border-b-2 border-amber-500 rounded-b-none' : 'text-muted-foreground hover:text-foreground'}`}
+              >
+                <Users className="h-4 w-4" />
+                Collectives
+              </Button>
+            </Link>
+            <Link href="/negotiate/live">
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`gap-2 transition-colors ${isActive('/negotiate/live') ? 'text-foreground font-medium border-b-2 border-emerald-500 rounded-b-none' : 'text-muted-foreground hover:text-foreground'}`}
+              >
+                <Handshake className="h-4 w-4" />
+                Negotiate
+              </Button>
+            </Link>
+            <Link href="/lawchange">
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`gap-2 transition-colors ${isActive('/lawchange') ? 'text-foreground font-medium border-b-2 border-indigo-500 rounded-b-none' : 'text-muted-foreground hover:text-foreground'}`}
+              >
+                <Scale className="h-4 w-4" />
+                Law Monitor
               </Button>
             </Link>
           </div>
@@ -197,6 +230,30 @@ export default function Navbar() {
             >
               <Skull className="h-4 w-4" />
               Wall of Shame
+            </Link>
+            <Link
+              href="/collective"
+              onClick={() => setMobileOpen(false)}
+              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive('/collective') ? 'text-foreground bg-white/5' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
+            >
+              <Users className="h-4 w-4" />
+              Collectives
+            </Link>
+            <Link
+              href="/negotiate/live"
+              onClick={() => setMobileOpen(false)}
+              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive('/negotiate/live') ? 'text-foreground bg-white/5' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
+            >
+              <Handshake className="h-4 w-4" />
+              Live Negotiate
+            </Link>
+            <Link
+              href="/lawchange"
+              onClick={() => setMobileOpen(false)}
+              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive('/lawchange') ? 'text-foreground bg-white/5' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
+            >
+              <Scale className="h-4 w-4" />
+              Law Monitor
             </Link>
 
             {/* Mobile Sound Toggle */}

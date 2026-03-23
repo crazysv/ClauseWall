@@ -47,6 +47,18 @@ import MicButton from "@/components/voice/mic-button";
 import StateMachineCTA from "@/components/statemachine/statemachine-cta";
 import StateMachineModal from "@/components/statemachine/state-machine-modal";
 
+// Law Change Retroactive Banner
+const RetroactiveBanner = dynamic(
+  () => import("@/components/lawchange/retroactive-banner"),
+  { ssr: false }
+);
+
+// Collective Bargaining
+const EntityIntelligenceCard = dynamic(
+  () => import("@/components/collective/entity-intelligence-card"),
+  { ssr: false }
+);
+
 // Lazy-load heavy modals (rarely opened on first render)
 const ScoreCardModal = dynamic(() => import("@/components/results/score-card-modal"), { ssr: false });
 const VideoCardModal = dynamic(() => import("@/components/results/video-card-modal"), { ssr: false });
@@ -630,6 +642,9 @@ export default function ResultsPage() {
           detectedDocType={document.detected_document_type}
         />
 
+        {/* Law Change Retroactive Banner */}
+        <RetroactiveBanner documentId={documentId} />
+
         {/* Score Overview */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
           <Card className="bg-gray-900/50 border-gray-800 md:col-span-2">
@@ -764,6 +779,14 @@ export default function ResultsPage() {
                     illegalClauses={clauses
                       .filter((c) => c.risk_level === "illegal")
                       .map((c) => c.explanation)}
+                  />
+
+                  {/* Community Intelligence */}
+                  <EntityIntelligenceCard
+                    entityName={document.entity_name}
+                    documentId={documentId}
+                    jurisdiction={document.jurisdiction || 'pan_india'}
+                    documentType={document.document_type || 'other'}
                   />
 
                   {/* Verification Stats */}

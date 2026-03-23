@@ -438,8 +438,8 @@ export default function SimulatorPage() {
               <TrendingUp className="h-5 w-5 text-cyan-400" />
               Cost Over Time
             </h2>
-            <div className="h-64 sm:h-80">
-              <ResponsiveContainer width="100%" height="100%">
+            <div className="h-64 sm:h-80 min-h-[16rem]">
+              <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
                 <AreaChart data={chartData} margin={{ top: 5, right: 5, bottom: 5, left: 5 }}>
                   <defs>
                     <linearGradient id="contractGrad" x1="0" y1="0" x2="0" y2="1">

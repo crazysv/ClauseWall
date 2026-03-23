@@ -18,6 +18,7 @@ import {
   X,
   Timer,
   ChevronRight,
+  Handshake,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -40,6 +41,8 @@ import RiskTrendChart from "@/components/dashboard/risk-trend-chart";
 import AchievementsSection from "@/components/dashboard/achievements-section";
 import InsightsSection from "@/components/dashboard/insights-section";
 import { VaultCTA } from "@/components/vault/vault-cta";
+import MyCollectivesSection from "@/components/collective/my-collectives-section";
+import LawChangeDashboardWidget from "@/components/lawchange/law-change-dashboard-widget";
 
 // Stats Logic
 import { computePortfolioStats, buildRiskChartData } from "@/lib/stats/portfolio-stats";
@@ -322,8 +325,49 @@ export default function DashboardPage() {
         {/* ── SECTION 3.5: Contract Vault CTA ── */}
         {documents.length >= 2 && <VaultCTA />}
 
+        {/* ── SECTION 3.55: Live Negotiation CTA ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.32 }}
+        >
+          <Card className="relative overflow-hidden border-0 bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-blue-500/10">
+            <div className="absolute inset-0 overflow-hidden">
+              <div className="absolute -top-1/2 -right-1/2 w-full h-full bg-gradient-to-bl from-emerald-500/10 to-transparent rounded-full blur-3xl" />
+            </div>
+            <CardContent className="relative p-5 sm:p-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-4">
+                  <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-blue-500 flex items-center justify-center shadow-lg shadow-emerald-500/25">
+                    <Handshake className="h-7 w-7 text-white" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="text-lg font-bold text-white">Live Negotiation Companion</h3>
+                      <Badge className="bg-gradient-to-r from-emerald-500 to-blue-500 text-white text-[10px] border-0 animate-pulse">NEW</Badge>
+                    </div>
+                    <p className="text-sm text-muted-foreground">Real-time legal intelligence for in-person negotiations</p>
+                  </div>
+                </div>
+                <Link href="/negotiate/live">
+                  <Button className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 gap-2 shadow-lg shadow-emerald-500/20 w-full sm:w-auto">
+                    <Handshake className="h-4 w-4" />
+                    Start Session
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* ── SECTION 3.58: My Collectives ── */}
+        <MyCollectivesSection />
+
         {/* ── SECTION 3.6: Upcoming Deadlines ── */}
         <UpcomingDeadlinesSection />
+
+        {/* ── SECTION 3.7: Law Monitor ── */}
+        <LawChangeDashboardWidget />
 
         {/* ── SECTION 4: Recent Documents ── */}
         <motion.div

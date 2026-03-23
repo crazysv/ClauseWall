@@ -1468,3 +1468,572 @@ export interface PoisonPillAnalysisResult {
   risk_amplification_summary: string;
   negotiation_roadmap: NegotiationTarget[];
 }
+
+// ============================================
+// LIVE NEGOTIATION COMPANION TYPES
+// ============================================
+
+export type NegotiationMode =
+  | "quick_lookup"
+  | "bluff_detector"
+  | "audio_companion"
+  | "camera_scanner"
+  | "progress_tracker";
+
+export type PressureTacticType =
+  | "false_consensus"
+  | "ultimatum"
+  | "bandwagon"
+  | "minimization"
+  | "urgency"
+  | "authority_appeal"
+  | "emotional"
+  | "false_legal_claim"
+  | "flattery"
+  | "guilt_trip"
+  | "comparison"
+  | "information_asymmetry"
+  | "other";
+
+export type BluffCheckResult =
+  | "true_claim"
+  | "false_claim"
+  | "partially_true"
+  | "unverifiable"
+  | "misleading";
+
+export type NegotiationClauseStatus =
+  | "pending"
+  | "negotiating"
+  | "won"
+  | "conceded"
+  | "compromised"
+  | "deadlocked"
+  | "skipped";
+
+export interface PressureTactic {
+  type: PressureTacticType;
+  trigger_phrases: string[];
+  name: string;
+  description: string;
+  counter_strategy: string;
+  counter_scripts: CounterScript[];
+  legal_context: string | null;
+}
+
+export interface CounterScript {
+  they_say: string;
+  you_say: string;
+  tone: "firm" | "polite" | "assertive" | "questioning";
+  legal_backing: string | null;
+}
+
+export interface BluffAnalysis {
+  id: string;
+  claim_text: string;
+  claim_topic: string;
+  result: BluffCheckResult;
+  actual_legal_position: string;
+  statute_name: string | null;
+  statute_code: string | null;
+  legal_limit: string | null;
+  their_claim_value: string | null;
+  difference: string | null;
+  what_to_say: string;
+  confidence: "high" | "medium" | "low";
+  source: "database" | "ai";
+}
+
+export interface QuickLookupResult {
+  query: string;
+  clause_type_detected: string | null;
+  jurisdiction_detected: string | null;
+  legal_answer: string;
+  legal_limit: string | null;
+  statute: string | null;
+  what_to_say: string;
+  related_rules: StructuredRuleMatch[];
+  source: "database" | "ai" | "hybrid";
+}
+
+export interface StructuredRuleMatch {
+  rule_id: string;
+  clause_type: string;
+  rule_type: string;
+  limit_value: number | null;
+  limit_unit: string | null;
+  statute_name: string;
+  statute_code: string;
+  negotiation_script: string | null;
+  severity: string;
+}
+
+export interface AudioTranscriptionChunk {
+  id: string;
+  text: string;
+  timestamp: number;
+  duration: number;
+  is_final: boolean;
+  detected_tactics: DetectedTactic[];
+  detected_bluffs: BluffAnalysis[];
+}
+
+export interface DetectedTactic {
+  tactic_type: PressureTacticType;
+  matched_phrase: string;
+  counter_response: string;
+  confidence: "high" | "medium" | "low";
+}
+
+export interface CameraFrame {
+  id: string;
+  image_data: string;
+  extracted_text: string | null;
+  clauses_detected: CameraClause[];
+  timestamp: number;
+}
+
+export interface CameraClause {
+  text: string;
+  risk_level: RiskLevel;
+  risk_reason: string;
+  clause_type: string | null;
+  legal_issue: string | null;
+  bounding_box: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  } | null;
+}
+
+export interface NegotiationSession {
+  id: string;
+  started_at: string;
+  document_type: string;
+  jurisdiction: string;
+  entity_name: string;
+  clauses: NegotiationClauseItem[];
+  transcript_chunks: AudioTranscriptionChunk[];
+  bluff_checks: BluffAnalysis[];
+  lookups: QuickLookupResult[];
+  camera_frames: CameraFrame[];
+  notes: string[];
+  overall_score: NegotiationScore;
+}
+
+export interface NegotiationClauseItem {
+  id: string;
+  clause_summary: string;
+  clause_type: string | null;
+  original_terms: string;
+  your_ask: string;
+  status: NegotiationClauseStatus;
+  final_terms: string | null;
+  leverage_used: string[];
+  notes: string;
+}
+
+export interface NegotiationScore {
+  total_clauses: number;
+  won: number;
+  conceded: number;
+  compromised: number;
+  pending: number;
+  deadlocked: number;
+  win_percentage: number;
+  strongest_win: string | null;
+  biggest_concession: string | null;
+}
+
+export interface WhisperTranscriptionRequest {
+  audio_blob: Blob;
+  language: string;
+}
+
+export interface WhisperTranscriptionResponse {
+  text: string;
+  language: string;
+  duration: number;
+}
+
+// ==================== COLLECTIVE BARGAINING ENGINE TYPES ====================
+
+export type CollectiveStatus =
+  | 'forming'
+  | 'active'
+  | 'threshold_reached'
+  | 'action_taken'
+  | 'resolved'
+  | 'dormant';
+
+export type CollectiveActionType =
+  | 'joint_legal_notice'
+  | 'consumer_forum_complaint'
+  | 'rti_application'
+  | 'media_report'
+  | 'authority_complaint'
+  | 'negotiation_demand';
+
+export type MemberRole = 'member' | 'lead' | 'coordinator';
+
+export type CollectiveMessageType = 'announcement' | 'discussion' | 'vote' | 'update' | 'milestone';
+
+export type CollectiveVoteType = 'action_approval' | 'lead_election' | 'strategy_decision' | 'settlement_offer';
+
+export interface EntityPattern {
+  entity_name: string;
+  entity_type: string;
+  normalized_name: string;
+  total_flags: number;
+  total_documents: number;
+  common_violations: CommonViolation[];
+  avg_risk_score: number;
+  total_financial_exposure: number;
+  jurisdictions: string[];
+  document_types: string[];
+  first_flagged: string;
+  last_flagged: string;
+  has_active_collective: boolean;
+  collective_id: string | null;
+}
+
+export interface CommonViolation {
+  clause_type: string;
+  violation_description: string;
+  occurrence_count: number;
+  occurrence_percentage: number;
+  legal_citation: string | null;
+  severity: string;
+  avg_financial_impact: number | null;
+}
+
+export interface Collective {
+  id: string;
+  entity_name: string;
+  entity_type: string;
+  normalized_entity_name: string;
+  status: CollectiveStatus;
+  member_count: number;
+  threshold: number;
+  total_documents: number;
+  common_violations: CommonViolation[];
+  total_financial_exposure: number;
+  individual_avg_exposure: number;
+  jurisdictions: string[];
+  primary_jurisdiction: string;
+  document_type: string;
+  created_at: string;
+  updated_at: string;
+  activated_at: string | null;
+  description: string;
+  action_history: CollectiveAction[];
+}
+
+export interface CollectiveMembership {
+  id: string;
+  collective_id: string;
+  user_id: string;
+  anonymous_id: string;
+  role: MemberRole;
+  joined_at: string;
+  document_id: string;
+  financial_exposure: number | null;
+  violation_types: string[];
+  is_active: boolean;
+  opted_in_to_action: boolean;
+  opted_in_to_communication: boolean;
+}
+
+export interface CollectiveAction {
+  id: string;
+  collective_id: string;
+  action_type: CollectiveActionType;
+  title: string;
+  description: string;
+  status: 'proposed' | 'voting' | 'approved' | 'in_progress' | 'completed' | 'rejected';
+  proposed_by: string;
+  proposed_at: string;
+  vote_result: VoteResult | null;
+  generated_document: string | null;
+  participants_count: number;
+  completed_at: string | null;
+}
+
+export interface VoteResult {
+  total_votes: number;
+  yes_votes: number;
+  no_votes: number;
+  abstain_votes: number;
+  passed: boolean;
+  required_majority: number;
+}
+
+export interface CollectiveVote {
+  id: string;
+  action_id: string;
+  user_id: string;
+  anonymous_id: string;
+  vote: 'yes' | 'no' | 'abstain';
+  voted_at: string;
+}
+
+export interface CollectiveMessage {
+  id: string;
+  collective_id: string;
+  sender_anonymous_id: string;
+  message_type: CollectiveMessageType;
+  content: string;
+  created_at: string;
+  is_pinned: boolean;
+  reply_to: string | null;
+}
+
+export interface LeverageCalculation {
+  individual: {
+    legal_fees_estimate: number;
+    recovery_potential: number;
+    time_estimate_months: number;
+    success_probability: number;
+    cost_benefit_ratio: number;
+    verdict: 'worth_it' | 'risky' | 'not_worth_it';
+  };
+  collective: {
+    total_legal_fees: number;
+    per_person_fees: number;
+    total_recovery_potential: number;
+    per_person_recovery: number;
+    time_estimate_months: number;
+    success_probability: number;
+    cost_benefit_ratio: number;
+    verdict: 'highly_recommended' | 'recommended' | 'worth_considering';
+    multiplier: number;
+  };
+  comparison_summary: string;
+}
+
+export interface LegalAidOrganization {
+  id?: string;
+  name: string;
+  type: 'government' | 'ngo' | 'legal_aid' | 'consumer_forum' | 'rights_org';
+  description: string;
+  coverage: string;
+  services: string[];
+  contact_phone: string | null;
+  contact_email: string | null;
+  website: string | null;
+  address: string | null;
+  free_service: boolean;
+  eligibility: string | null;
+  jurisdictions?: string[];
+  specializations?: string[];
+}
+
+export interface EntityIntelligence {
+  entity: EntityPattern;
+  collective: Collective | null;
+  user_membership: CollectiveMembership | null;
+  leverage: LeverageCalculation | null;
+  matching_legal_aid: LegalAidOrganization[];
+  recommended_actions: string[];
+  strength_assessment: 'very_strong' | 'strong' | 'moderate' | 'weak';
+}
+
+export interface CollectiveNotification {
+  id: string;
+  collective_id: string;
+  user_id: string;
+  type:
+    | 'member_joined'
+    | 'threshold_reached'
+    | 'action_proposed'
+    | 'vote_started'
+    | 'vote_completed'
+    | 'action_completed'
+    | 'new_message'
+    | 'milestone';
+  title: string;
+  description: string;
+  read: boolean;
+  created_at: string;
+}
+
+export interface MediaReport {
+  title: string;
+  subtitle: string;
+  entity_name: string;
+  entity_type: string;
+  member_count: number;
+  total_financial_exposure: number;
+  common_violations: CommonViolation[];
+  key_statistics: { label: string; value: string }[];
+  timeline: { date: string; event: string }[];
+  legal_basis: string[];
+  contact_info: string;
+  generated_at: string;
+}
+
+// ==================== LAW CHANGE IMPACT ENGINE TYPES ====================
+
+export type LawChangeSource =
+  | "indian_kanoon"
+  | "prs_legislative"
+  | "egazette"
+  | "rbi"
+  | "irdai"
+  | "trai"
+  | "state_gazette"
+  | "manual";
+
+export type LawChangeType =
+  | "court_judgment"
+  | "amendment"
+  | "new_act"
+  | "circular"
+  | "notification"
+  | "regulation"
+  | "order"
+  | "guideline"
+  | "repeal";
+
+export type LawChangeStatus =
+  | "scraped"
+  | "classified"
+  | "impact_analyzed"
+  | "notifications_sent"
+  | "expired"
+  | "invalid";
+
+export type ImpactSeverity =
+  | "rights_gained"
+  | "rights_lost"
+  | "obligation_added"
+  | "obligation_removed"
+  | "limit_changed"
+  | "clause_voided"
+  | "protection_added"
+  | "protection_removed"
+  | "neutral_clarification";
+
+export interface LawChange {
+  id: string;
+  source: LawChangeSource;
+  source_url: string;
+  change_type: LawChangeType;
+  title: string;
+  summary: string;
+  full_text: string | null;
+  date_published: string;
+  date_effective: string | null;
+  date_scraped: string;
+  court_name: string | null;
+  case_number: string | null;
+  act_name: string | null;
+  section_affected: string | null;
+  affected_clause_types: string[];
+  affected_jurisdictions: string[];
+  affected_document_types: string[];
+  impact_type: ImpactSeverity;
+  status: LawChangeStatus;
+  classification_confidence: "high" | "medium" | "low";
+  is_verified: boolean;
+  raw_scraped_data: Record<string, unknown> | null;
+}
+
+export interface LawChangeImpact {
+  id: string;
+  law_change_id: string;
+  document_id: string;
+  user_id: string;
+  clause_id: string | null;
+  clause_number: number | null;
+  clause_type: string;
+  impact_description: string;
+  impact_severity: ImpactSeverity;
+  financial_impact: number | null;
+  financial_description: string | null;
+  action_required: string;
+  action_letter: string | null;
+  new_legal_citation: string;
+  old_legal_position: string;
+  new_legal_position: string;
+  notified: boolean;
+  notified_at: string | null;
+  notification_channels: string[];
+  user_acknowledged: boolean;
+  acknowledged_at: string | null;
+  created_at: string;
+}
+
+export interface LawChangeClassification {
+  clause_types: string[];
+  jurisdictions: string[];
+  document_types: string[];
+  impact_type: ImpactSeverity;
+  confidence: "high" | "medium" | "low";
+  reasoning: string;
+}
+
+export interface LawChangeSummary {
+  total_changes_monitored: number;
+  changes_this_week: number;
+  changes_this_month: number;
+  affected_contracts: number;
+  unacknowledged_impacts: number;
+  latest_changes: LawChange[];
+  pending_impacts: LawChangeImpact[];
+}
+
+export interface RetroactiveAnalysis {
+  document_id: string;
+  signing_date: string;
+  changes_since_signing: LawChangeImpact[];
+  total_changes: number;
+  rights_gained: number;
+  rights_lost: number;
+  total_financial_impact: number;
+  summary: string;
+}
+
+export interface ScrapingResult {
+  source: LawChangeSource;
+  success: boolean;
+  changes_found: number;
+  new_changes: number;
+  error: string | null;
+  duration_ms: number;
+}
+
+export interface DailyScrapingReport {
+  date: string;
+  sources_checked: number;
+  sources_succeeded: number;
+  sources_failed: number;
+  total_changes_found: number;
+  new_changes: number;
+  results: ScrapingResult[];
+}
+
+export interface PendingLawChange {
+  id: string;
+  title: string;
+  description: string;
+  expected_date: string | null;
+  probability: "likely" | "possible" | "unlikely";
+  source: string;
+  affected_clause_types: string[];
+  affected_jurisdictions: string[];
+  what_to_prepare: string;
+}
+
+export interface LawChangeNotification {
+  id: string;
+  user_id: string;
+  law_change_id: string;
+  impact_id: string;
+  title: string;
+  body: string;
+  urgency: "critical" | "important" | "informational";
+  read: boolean;
+  created_at: string;
+}

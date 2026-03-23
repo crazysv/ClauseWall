@@ -455,6 +455,58 @@ export async function analyzeDocument(
       // Non-blocking — analysis continues without poison pill data
     }
 
+    // ---- Step 5.95: Collective Intelligence Feed (non-blocking) ----
+    try {
+      if (entityName) {
+        const { getEntityIntelligence } = await import("@/lib/collective");
+        const intelligence = await getEntityIntelligence(
+          entityName,
+          undefined,
+          documentId,
+          jurisdiction,
+          documentType
+        );
+        if (intelligence?.collective) {
+          console.log(
+            `[ClauseWall] [Collective] ✅ Entity "${entityName}" — ${intelligence.entity.total_flags} flags, collective: ${intelligence.collective.status} (${intelligence.collective.member_count} members)`
+          );
+        } else if (intelligence?.entity) {
+          console.log(
+            `[ClauseWall] [Collective] ℹ️ Entity "${entityName}" — ${intelligence.entity.total_flags} flags, no collective yet`
+          );
+        }
+      }
+    } catch (collectiveError) {
+      console.error("[ClauseWall] [Collective] Non-fatal intelligence error:", collectiveError);
+      // Non-blocking — analysis continues without collective data
+    }
+
+    // ---- Step 5.96: Retroactive Law Change Check (non-blocking) ----
+    let lawChangesData = null;
+    try {
+      const { analyzeRetroactiveImpact } = await import("@/lib/lawchange");
+      const signingDate = temporalData?.signing_date_detected || null;
+      lawChangesData = await analyzeRetroactiveImpact(
+        documentId,
+        signingDate,
+        documentType,
+        jurisdiction,
+        analyzedClauses.map((c: any) => ({
+          clause_type: c.clause_type,
+          clause_number: c.clause_number,
+          original_text: c.original_text,
+        }))
+      );
+      if (lawChangesData && lawChangesData.total_changes > 0) {
+        console.log(
+          `[ClauseWall] [LawChange] ✅ Retroactive: ${lawChangesData.total_changes} changes since signing`
+        );
+      }
+    } catch (lawChangeError) {
+      console.error("[ClauseWall] [LawChange] Retroactive check failed (non-fatal):", lawChangeError);
+      // Non-blocking — analysis continues without law change data
+    }
+
     // ---- Step 6: Update document with results ----
     const { error: updateError } = await supabase
       .from("documents")
@@ -479,6 +531,7 @@ export async function analyzeDocument(
         tsa_serial: tsaSerial,
         temporal_data: temporalData,
         poison_pill_data: poisonPillData,
+        law_changes_data: lawChangesData,
       })
       .eq("id", documentId);
 
