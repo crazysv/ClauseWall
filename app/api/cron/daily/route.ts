@@ -64,6 +64,23 @@ export async function GET(request: NextRequest) {
       };
     }
 
+    // ─── Job 3: Complaint hearing reminders ───
+    try {
+      const { getUpcomingHearings } = await import(
+        "@/lib/complaint/case-tracker"
+      );
+      console.log("[Daily Cron] Starting complaint hearing reminder check...");
+      const hearings = await getUpcomingHearings();
+      console.log(`[Daily Cron] Found ${hearings.length} upcoming complaint hearings`);
+      results.complaint_hearings = { count: hearings.length };
+    } catch (hearingError) {
+      console.error("[Daily Cron] Complaint hearing check failed:", hearingError);
+      results.complaint_hearings = {
+        error: (hearingError as Error).message,
+        count: 0,
+      };
+    }
+
     return NextResponse.json(results);
   } catch (error) {
     console.error("[Daily Cron] Error:", error);

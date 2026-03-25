@@ -18,6 +18,9 @@ import {
   Handshake,
   Users,
   Scale,
+  Mic,
+  Gavel,
+  FileSearch,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSound } from "@/lib/audio/sound-context";
@@ -137,6 +140,36 @@ export default function Navbar() {
                 Law Monitor
               </Button>
             </Link>
+            <Link href="/voice">
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`gap-2 transition-colors ${isActive('/voice') ? 'text-foreground font-medium border-b-2 border-emerald-500 rounded-b-none' : 'text-muted-foreground hover:text-foreground'}`}
+              >
+                <Mic className="h-4 w-4" />
+                Voice Aid
+              </Button>
+            </Link>
+            <Link href="/complaint">
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`gap-2 transition-colors ${isActive('/complaint') ? 'text-foreground font-medium border-b-2 border-orange-500 rounded-b-none' : 'text-muted-foreground hover:text-foreground'}`}
+              >
+                <Gavel className="h-4 w-4" />
+                Complain
+              </Button>
+            </Link>
+            <Link href="/shadow">
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`gap-2 transition-colors ${isActive('/shadow') ? 'text-foreground font-medium border-b-2 border-amber-500 rounded-b-none' : 'text-muted-foreground hover:text-foreground'}`}
+              >
+                <FileSearch className="h-4 w-4" />
+                Shadow
+              </Button>
+            </Link>
           </div>
 
           {/* Sound Toggle + CTA + Mobile Toggle */}
@@ -254,6 +287,30 @@ export default function Navbar() {
             >
               <Scale className="h-4 w-4" />
               Law Monitor
+            </Link>
+            <Link
+              href="/voice"
+              onClick={() => setMobileOpen(false)}
+              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive('/voice') ? 'text-foreground bg-white/5' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
+            >
+              <Mic className="h-4 w-4" />
+              🎤 Voice Aid
+            </Link>
+            <Link
+              href="/complaint"
+              onClick={() => setMobileOpen(false)}
+              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive('/complaint') ? 'text-foreground bg-white/5' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
+            >
+              <Gavel className="h-4 w-4" />
+              ⚖️ File Complaint
+            </Link>
+            <Link
+              href="/shadow"
+              onClick={() => setMobileOpen(false)}
+              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive('/shadow') ? 'text-foreground bg-white/5' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
+            >
+              <FileSearch className="h-4 w-4" />
+              🔍 Shadow Detector
             </Link>
 
             {/* Mobile Sound Toggle */}

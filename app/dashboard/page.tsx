@@ -43,6 +43,7 @@ import InsightsSection from "@/components/dashboard/insights-section";
 import { VaultCTA } from "@/components/vault/vault-cta";
 import MyCollectivesSection from "@/components/collective/my-collectives-section";
 import LawChangeDashboardWidget from "@/components/lawchange/law-change-dashboard-widget";
+import ComplaintDashboardWidgetWrapper from "@/components/complaint/complaint-dashboard-widget-wrapper";
 
 // Stats Logic
 import { computePortfolioStats, buildRiskChartData } from "@/lib/stats/portfolio-stats";
@@ -368,6 +369,9 @@ export default function DashboardPage() {
 
         {/* ── SECTION 3.7: Law Monitor ── */}
         <LawChangeDashboardWidget />
+
+        {/* ── SECTION 3.8: Complaint Filings ── */}
+        <ComplaintDashboardWidgetWrapper />
 
         {/* ── SECTION 4: Recent Documents ── */}
         <motion.div

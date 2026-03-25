@@ -262,4 +262,174 @@ export function getApiStatus() {
   };
 }
 
+/**
+ * Call Groq Chat API WITHOUT forcing JSON response format.
+ * Useful for freeform text responses (voice aid, explanations).
+ */
+export async function callGroqChat(
+  messages: GroqMessage[],
+  options?: {
+    temperature?: number;
+    maxTokens?: number;
+    retries?: number;
+  }
+): Promise<string> {
+  const {
+    temperature = 0.3,
+    maxTokens = 1024,
+    retries = 3,
+  } = options || {};
+
+  let lastError: Error | null = null;
+  let totalAttempts = 0;
+  const maxTotalAttempts = retries * API_KEYS.length;
+
+  while (totalAttempts < maxTotalAttempts) {
+    totalAttempts++;
+
+    try {
+      const groq = getGroqClient();
+
+      const response = await groq.chat.completions.create({
+        model: "llama-3.3-70b-versatile",
+        messages,
+        temperature,
+        max_tokens: maxTokens,
+      });
+
+      const content = response.choices[0]?.message?.content;
+      if (!content) throw new Error("Empty response from Groq API");
+
+      return content;
+    } catch (error: any) {
+      lastError = error;
+      const errorMessage = error?.message || String(error);
+      const statusCode = error?.status || error?.statusCode;
+
+      if (statusCode === 429 || errorMessage.includes("rate_limit") || errorMessage.includes("Rate limit")) {
+        const switched = switchToNextKey();
+        if (!switched) {
+          const waitTime = extractWaitTime(errorMessage);
+          await new Promise((resolve) => setTimeout(resolve, waitTime * 1000));
+          exhaustedKeys.clear();
+        }
+        continue;
+      }
+
+      if (errorMessage.includes("Invalid API Key")) {
+        if (!switchToNextKey()) throw new Error("All Groq API keys are invalid.");
+        continue;
+      }
+
+      if (statusCode === 503 || statusCode === 500) {
+        const delay = Math.pow(2, totalAttempts) * 1000;
+        await new Promise((resolve) => setTimeout(resolve, delay));
+        continue;
+      }
+
+      if (totalAttempts < maxTotalAttempts) {
+        const delay = Math.pow(2, totalAttempts % retries) * 1000;
+        await new Promise((resolve) => setTimeout(resolve, delay));
+      }
+    }
+  }
+
+  throw new Error(`Groq Chat failed after ${totalAttempts} attempts: ${lastError?.message}`);
+}
+
+/**
+ * Call Groq Whisper API for audio transcription.
+ * Reuses the same key rotation and retry logic as callGroq.
+ */
+export async function callGroqWhisper(
+  audioBuffer: Buffer | ArrayBuffer,
+  language: string,
+  audioFormat: string = 'webm'
+): Promise<{ text: string; language: string }> {
+  let lastError: Error | null = null;
+  let totalAttempts = 0;
+  const maxTotalAttempts = 3 * API_KEYS.length;
+
+  while (totalAttempts < maxTotalAttempts) {
+    totalAttempts++;
+
+    try {
+      // Get current API key directly (Whisper uses REST, not SDK)
+      let attempts = 0;
+      while (exhaustedKeys.has(currentKeyIndex) && attempts < API_KEYS.length) {
+        currentKeyIndex = (currentKeyIndex + 1) % API_KEYS.length;
+        attempts++;
+      }
+      if (attempts >= API_KEYS.length) {
+        exhaustedKeys.clear();
+      }
+
+      const apiKey = API_KEYS[currentKeyIndex] || "";
+
+      console.log(`[ClauseWall] Whisper: Using Key ${currentKeyIndex + 1} (attempt ${totalAttempts}/${maxTotalAttempts})`);
+
+      // Build FormData
+      const mimeType = audioFormat === 'ogg' ? 'audio/ogg'
+        : audioFormat === 'wav' ? 'audio/wav'
+        : audioFormat === 'mp3' ? 'audio/mp3'
+        : 'audio/webm';
+
+      const buffer = audioBuffer instanceof Buffer ? audioBuffer : Buffer.from(new Uint8Array(audioBuffer));
+      const uint8 = new Uint8Array(buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength));
+      const blob = new Blob([uint8.buffer as ArrayBuffer], { type: mimeType });
+
+      const formData = new FormData();
+      formData.append('file', blob, `audio.${audioFormat}`);
+      formData.append('model', 'whisper-large-v3-turbo');
+      formData.append('response_format', 'json');
+      if (language) {
+        formData.append('language', language);
+      }
+
+      const response = await fetch('https://api.groq.com/openai/v1/audio/transcriptions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+        },
+        body: formData,
+      });
+
+      if (response.status === 429) {
+        console.log('[ClauseWall] Whisper: Rate limited (429)');
+        switchToNextKey();
+        continue;
+      }
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`[ClauseWall] Whisper error: ${response.status}`, errorText.substring(0, 200));
+
+        if (response.status === 401 || response.status === 403) {
+          if (!switchToNextKey()) throw new Error("All Groq API keys are invalid for Whisper");
+          continue;
+        }
+
+        throw new Error(`Whisper API failed: ${response.status} — ${errorText.substring(0, 200)}`);
+      }
+
+      const data = await response.json();
+
+      return {
+        text: data.text || '',
+        language: language || 'unknown',
+      };
+    } catch (error: any) {
+      lastError = error;
+      console.error(`[ClauseWall] Whisper attempt ${totalAttempts} failed:`, error.message);
+
+      if (totalAttempts < maxTotalAttempts) {
+        const delay = Math.pow(2, totalAttempts % 3) * 1000;
+        await new Promise((resolve) => setTimeout(resolve, delay));
+      }
+    }
+  }
+
+  throw new Error(`Groq Whisper failed after ${totalAttempts} attempts: ${lastError?.message}`);
+}
+
 console.log("[ClauseWall] Total Groq keys loaded:", API_KEYS.length);

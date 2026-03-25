@@ -111,3 +111,51 @@ export async function getWebhookInfo(): Promise<any> {
   const response = await fetch(`${BASE_URL}${token}/getWebhookInfo`);
   return response.json();
 }
+
+/**
+ * Send a voice message (OGG/Opus) to a Telegram chat
+ */
+export async function sendVoice(
+  chatId: number,
+  audioBuffer: Buffer,
+  caption?: string
+): Promise<void> {
+  const token = getToken();
+
+  const uint8 = new Uint8Array(audioBuffer.buffer.slice(audioBuffer.byteOffset, audioBuffer.byteOffset + audioBuffer.byteLength));
+  const blob = new Blob([uint8.buffer as ArrayBuffer], { type: "audio/ogg" });
+
+  const formData = new FormData();
+  formData.append("chat_id", String(chatId));
+  formData.append("voice", blob, "voice.ogg");
+  if (caption) {
+    formData.append("caption", caption);
+  }
+
+  const response = await fetch(`${BASE_URL}${token}/sendVoice`, {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await response.json();
+
+  if (!data.ok) {
+    console.error("[ClauseWall Bot] sendVoice failed:", data.description);
+    // Fallback: send text instead
+    if (caption) {
+      await sendMessage(chatId, caption);
+    }
+  }
+}
+
+/**
+ * Show "uploading voice" indicator in chat
+ */
+export async function sendChatActionUpload(chatId: number): Promise<void> {
+  const token = getToken();
+  await fetch(`${BASE_URL}${token}/sendChatAction`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ chat_id: chatId, action: "upload_voice" }),
+  }).catch(() => {}); // Fire and forget
+}

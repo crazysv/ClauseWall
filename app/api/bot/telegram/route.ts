@@ -50,6 +50,7 @@ interface TelegramUpdate {
     message_id: number;
     chat: { id: number; first_name?: string };
     text?: string;
+    caption?: string;
     document?: {
       file_id: string;
       file_name?: string;
@@ -62,6 +63,12 @@ interface TelegramUpdate {
       width: number;
       height: number;
     }>;
+    voice?: {
+      file_id: string;
+      duration: number;
+      mime_type?: string;
+      file_size?: number;
+    };
   };
 }
 
@@ -141,6 +148,37 @@ async function processMessage(
     return;
   }
 
+  // Voice-Aid: /voice command
+  if (message.text?.startsWith("/voice")) {
+    const { handleVoiceCommand } = await import("@/lib/voice-aid/telegram-voice-handler");
+    await handleVoiceCommand(chatId);
+    return;
+  }
+
+  // Voice-Aid: /language command
+  if (message.text?.startsWith("/language")) {
+    const { handleLanguageCommand } = await import("@/lib/voice-aid/telegram-voice-handler");
+    await handleLanguageCommand(chatId);
+    return;
+  }
+
+  // Voice-Aid: /lang_xx command
+  if (message.text?.match(/^\/lang_[a-z]{2}$/)) {
+    const { handleSetLanguage, isLanguageSetCommand } = await import("@/lib/voice-aid/telegram-voice-handler");
+    const langCode = isLanguageSetCommand(message.text);
+    if (langCode) {
+      await handleSetLanguage(chatId, langCode);
+      return;
+    }
+  }
+
+  // Voice-Aid: Incoming voice message
+  if (message.voice) {
+    const { handleVoiceMessage } = await import("@/lib/voice-aid/telegram-voice-handler");
+    await handleVoiceMessage(chatId, message.voice.file_id, message.voice.duration);
+    return;
+  }
+
   if (message.document) {
     await handleDocument(chatId, message.document);
     return;
@@ -158,7 +196,7 @@ async function processMessage(
 
   await sendMessage(
     chatId,
-    "📎 Send a <b>PDF</b>, <b>photo</b>, or <b>paste text</b> of a contract to analyze.\n\n💡 Use /compare to compare two contracts."
+    "📎 Send a <b>PDF</b>, <b>photo</b>, or <b>paste text</b> of a contract to analyze.\n\n🎤 Send a <b>voice message</b> to use Voice Aid.\n💡 Use /compare to compare two contracts."
   );
 }
 

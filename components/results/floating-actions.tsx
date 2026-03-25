@@ -25,6 +25,7 @@ import {
   Gamepad2,
   Users,
   Wrench,
+  Calculator,
 } from "lucide-react";
 import { toast } from "sonner";
 import { generateReport } from "@/lib/pdf/report-generator";
@@ -96,6 +97,13 @@ const ACTION_GROUPS: ActionGroup[] = [
         icon: Gamepad2,
         color: "#06B6D4",
         bg: "rgba(6, 182, 212, 0.15)",
+      },
+      {
+        id: "ruin-calculator",
+        label: "Financial Risk",
+        icon: Calculator,
+        color: "#EF4444",
+        bg: "rgba(239, 68, 68, 0.15)",
       },
       {
         id: "collaborate",
@@ -242,6 +250,12 @@ export default function FloatingActions({
 
       case "simulate":
         router.push(`/simulate/${doc.id}`);
+        setIsOpen(false);
+        setExpandedGroup(null);
+        break;
+
+      case "ruin-calculator":
+        router.push(`/ruin-calculator/${doc.id}`);
         setIsOpen(false);
         setExpandedGroup(null);
         break;

@@ -76,6 +76,7 @@ export interface Document {
   deliberation_data?: Record<string, unknown> | null;
   temporal_data?: Record<string, unknown> | null;
   poison_pill_data?: Record<string, unknown> | null;
+  shadow_analysis_data?: Record<string, unknown> | null;
 }
 
 /**
@@ -2036,4 +2037,568 @@ export interface LawChangeNotification {
   urgency: "critical" | "important" | "informational";
   read: boolean;
   created_at: string;
+}
+
+// ==================== VOICE-FIRST LEGAL AID TYPES ====================
+
+export type SupportedLanguage =
+  | 'hi' | 'mr' | 'ta' | 'te'
+  | 'bn' | 'kn' | 'gu' | 'ml'
+  | 'pa' | 'or' | 'as' | 'ur'
+  | 'en';
+
+export interface LanguageConfig {
+  code: SupportedLanguage;
+  name: string;
+  nativeName: string;
+  flag: string;
+  bhashiniCode: string;
+  whisperCode: string;
+  webSpeechCode: string;
+  tier: 1 | 2 | 3;
+  sttSupported: boolean;
+  ttsSupported: boolean;
+  greeting: string;
+  freshStartPhrases: string[];
+  helpPhrases: string[];
+}
+
+export type STTProvider = 'groq_whisper' | 'web_speech' | 'bhashini';
+export type TTSProvider = 'bhashini' | 'web_speech';
+
+export interface STTResult {
+  text: string;
+  language: SupportedLanguage;
+  confidence: number;
+  provider: STTProvider;
+  duration_ms: number;
+}
+
+export interface TTSResult {
+  audioUrl: string | null;
+  audioBuffer: ArrayBuffer | null;
+  provider: TTSProvider;
+  language: SupportedLanguage;
+  duration_ms: number;
+}
+
+export type VoiceSessionStatus = 'active' | 'expired' | 'ended';
+export type VoiceMessageRole = 'user' | 'assistant';
+
+export interface VoiceSession {
+  id: string;
+  user_id: string | null;
+  telegram_chat_id: string | null;
+  language: SupportedLanguage;
+  status: VoiceSessionStatus;
+  document_id: string | null;
+  context_summary: string | null;
+  messages: VoiceMessage[];
+  created_at: string;
+  last_message_at: string;
+  expires_at: string;
+}
+
+export interface VoiceMessage {
+  id: string;
+  session_id: string;
+  role: VoiceMessageRole;
+  text: string;
+  language: SupportedLanguage;
+  audio_url: string | null;
+  metadata: VoiceMessageMetadata | null;
+  created_at: string;
+}
+
+export interface VoiceMessageMetadata {
+  stt_provider?: STTProvider;
+  tts_provider?: TTSProvider;
+  stt_confidence?: number;
+  groq_tokens_used?: number;
+  response_time_ms?: number;
+  had_photo?: boolean;
+  photo_ocr_text?: string;
+  document_id?: string;
+  clause_numbers_discussed?: number[];
+}
+
+export interface VoiceAnalysisRequest {
+  audio?: ArrayBuffer | Blob;
+  photo?: ArrayBuffer | Blob;
+  text?: string;
+  language: SupportedLanguage;
+  session_id?: string;
+  telegram_chat_id?: string;
+  user_id?: string | null;
+}
+
+export interface VoiceAnalysisResponse {
+  text: string;
+  audio_url: string | null;
+  audio_base64: string | null;
+  language: SupportedLanguage;
+  session_id: string;
+  document_id: string | null;
+  analysis_summary: string | null;
+  action_items: string[];
+  clauses_discussed: number[];
+  needs_follow_up: boolean;
+}
+
+export interface VoicePageState {
+  isListening: boolean;
+  isProcessing: boolean;
+  isSpeaking: boolean;
+  currentLanguage: SupportedLanguage;
+  session: VoiceSession | null;
+  messages: VoiceMessage[];
+  error: string | null;
+  micPermission: 'granted' | 'denied' | 'prompt' | 'unsupported';
+}
+
+export interface BhashiniConfig {
+  userId: string;
+  apiKey: string;
+  pipelineId: string;
+  inferenceUrl: string;
+}
+
+export interface BhashiniSTTRequest {
+  audio: string;
+  sourceLanguage: string;
+  audioFormat: string;
+  samplingRate: number;
+}
+
+export interface BhashiniTTSRequest {
+  text: string;
+  sourceLanguage: string;
+  gender: 'male' | 'female';
+}
+
+export interface BhashiniResponse {
+  output: Array<{
+    source: string;
+    target?: string;
+  }>;
+  audio?: Array<{
+    audioContent: string;
+    audioUri?: string;
+  }>;
+}
+
+// ==================== COMPLAINT FILING TYPES ====================
+
+export type AuthorityType =
+  | 'consumer_forum_district'
+  | 'consumer_forum_state'
+  | 'consumer_forum_national'
+  | 'rera_state'
+  | 'rent_control'
+  | 'rbi_ombudsman'
+  | 'insurance_ombudsman'
+  | 'irdai'
+  | 'labour_commissioner'
+  | 'industrial_tribunal'
+  | 'trai'
+  | 'tdsat'
+  | 'ccpa'
+  | 'cyber_crime'
+  | 'district_magistrate'
+  | 'legal_aid';
+
+export type AuthorityLevel = 'district' | 'state' | 'national';
+
+export type ComplaintStatus =
+  | 'draft'
+  | 'documents_ready'
+  | 'filing_guided'
+  | 'filed'
+  | 'acknowledged'
+  | 'hearing_scheduled'
+  | 'hearing_completed'
+  | 'order_received'
+  | 'resolved'
+  | 'appealed'
+  | 'closed';
+
+export type FilingMethod = 'online' | 'offline' | 'both';
+
+export interface Authority {
+  id: string;
+  type: AuthorityType;
+  level: AuthorityLevel;
+  name: string;
+  short_name: string;
+  state: string | null;
+  district: string | null;
+  address: string;
+  phone: string | null;
+  email: string | null;
+  portal_url: string | null;
+  portal_name: string | null;
+  filing_method: FilingMethod;
+  jurisdiction_description: string;
+  working_hours: string | null;
+  pincode: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  is_active: boolean;
+}
+
+export interface AuthorityRecommendation {
+  primary: Authority;
+  alternatives: Authority[];
+  reasoning: string;
+  escalation_path: AuthorityEscalation[];
+  limitation_period: LimitationInfo;
+  jurisdiction_basis: string;
+}
+
+export interface AuthorityEscalation {
+  step: number;
+  authority: Authority;
+  condition: string;
+  timeline: string;
+}
+
+export interface LimitationInfo {
+  period_years: number;
+  start_event: string;
+  deadline: string | null;
+  is_expired: boolean;
+  days_remaining: number | null;
+  extension_possible: boolean;
+  extension_reason: string | null;
+}
+
+export interface FeeCalculation {
+  authority_type: AuthorityType;
+  claim_amount: number;
+  filing_fee: number;
+  is_free: boolean;
+  fee_breakdown: FeeBreakdownItem[];
+  payment_modes: string[];
+  payable_to: string;
+  notes: string[];
+}
+
+export interface FeeBreakdownItem {
+  description: string;
+  amount: number;
+}
+
+export type ComplaintDocumentType =
+  | 'consumer_complaint_form'
+  | 'rera_complaint_form'
+  | 'rbi_ombudsman_form'
+  | 'labour_complaint'
+  | 'insurance_ombudsman_form'
+  | 'legal_notice'
+  | 'affidavit'
+  | 'vakalatnama'
+  | 'memorandum_of_parties'
+  | 'synopsis'
+  | 'supporting_analysis';
+
+export interface ComplaintDocument {
+  id: string;
+  type: ComplaintDocumentType;
+  title: string;
+  content: string;
+  pdf_url: string | null;
+  fields: Record<string, string>;
+  format_notes: string;
+}
+
+export interface ComplaintFiling {
+  id: string;
+  user_id: string;
+  document_id: string;
+  authority_id: string;
+  authority_type: AuthorityType;
+  status: ComplaintStatus;
+  complaint_title: string;
+  complainant_name: string;
+  complainant_address: string;
+  complainant_phone: string;
+  complainant_email: string;
+  respondent_name: string;
+  respondent_address: string;
+  respondent_type: string;
+  claim_amount: number;
+  claim_description: string;
+  facts_of_case: string;
+  legal_grounds: string[];
+  relief_sought: string[];
+  supporting_clauses: string[];
+  complaint_documents: ComplaintDocument[];
+  fee_calculation: FeeCalculation;
+  filing_guide_completed_steps: number[];
+  case_number: string | null;
+  filing_date: string | null;
+  next_hearing_date: string | null;
+  hearing_history: HearingRecord[];
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface HearingRecord {
+  date: string;
+  type: string;
+  summary: string | null;
+  next_date: string | null;
+  documents_needed: string[];
+  outcome: string | null;
+}
+
+export interface FilingGuide {
+  authority_type: AuthorityType;
+  authority_name: string;
+  portal_url: string | null;
+  total_steps: number;
+  steps: FilingGuideStep[];
+  documents_checklist: DocumentChecklistItem[];
+  estimated_time: string;
+  important_notes: string[];
+  common_mistakes: string[];
+  helpline: string | null;
+}
+
+export interface FilingGuideStep {
+  step_number: number;
+  title: string;
+  description: string;
+  action_type: 'navigate' | 'fill_form' | 'upload' | 'pay' | 'submit' | 'note_down' | 'physical_visit';
+  url: string | null;
+  form_fields: FormFieldGuide[] | null;
+  copy_paste_data: Record<string, string> | null;
+  screenshot_description: string | null;
+  tips: string[];
+}
+
+export interface FormFieldGuide {
+  field_name: string;
+  field_value: string;
+  field_location: string;
+  notes: string | null;
+}
+
+export interface DocumentChecklistItem {
+  document: string;
+  required: boolean;
+  available: boolean;
+  how_to_get: string | null;
+  notes: string | null;
+}
+
+export interface ComplaintSummary {
+  total_filings: number;
+  active_filings: number;
+  resolved: number;
+  upcoming_hearings: HearingReminder[];
+  pending_actions: PendingAction[];
+}
+
+export interface HearingReminder {
+  filing_id: string;
+  case_number: string;
+  authority_name: string;
+  hearing_date: string;
+  days_until: number;
+  documents_needed: string[];
+  preparation_notes: string | null;
+}
+
+export interface PendingAction {
+  filing_id: string;
+  action: string;
+  deadline: string | null;
+  priority: 'high' | 'medium' | 'low';
+}
+
+export interface JurisdictionInput {
+  document_type: string;
+  jurisdiction: string;
+  district: string | null;
+  clause_types: string[];
+  risk_levels: string[];
+  claim_amount: number | null;
+  respondent_type: string | null;
+  contract_date: string | null;
+}
+
+export interface AuthorityRoutingResult {
+  recommendations: AuthorityRecommendation[];
+  fee_calculations: FeeCalculation[];
+  limitation_check: LimitationInfo;
+  jurisdiction_analysis: string;
+  total_authorities_applicable: number;
+}
+
+// ==================== SHADOW AGREEMENT DETECTOR TYPES ====================
+
+export type EvidenceType =
+  | 'whatsapp_chat'
+  | 'email'
+  | 'sms_screenshot'
+  | 'audio_recording'
+  | 'handwritten_note'
+  | 'property_listing'
+  | 'job_posting'
+  | 'broker_message'
+  | 'other_text';
+
+export type EvidenceFormat = 'txt' | 'zip' | 'eml' | 'image' | 'audio' | 'pdf' | 'text';
+
+export type MismatchType =
+  | 'direct_contradiction'
+  | 'missing_promise'
+  | 'weakened_promise'
+  | 'hidden_condition'
+  | 'amount_mismatch'
+  | 'timeline_mismatch'
+  | 'scope_mismatch';
+
+export type MismatchSeverity = 'critical' | 'major' | 'minor' | 'info';
+
+export type LegalEnforceability =
+  | 'strongly_enforceable'
+  | 'moderately_enforceable'
+  | 'weakly_enforceable'
+  | 'not_enforceable'
+  | 'needs_legal_review';
+
+export interface EvidenceSource {
+  id: string;
+  type: EvidenceType;
+  format: EvidenceFormat;
+  filename: string | null;
+  raw_text: string;
+  parsed_date_range: {
+    earliest: string | null;
+    latest: string | null;
+  };
+  parties_detected: string[];
+  storage_url: string | null;
+  metadata: EvidenceMetadata;
+}
+
+export interface EvidenceMetadata {
+  message_count?: number;
+  participant_count?: number;
+  word_count: number;
+  language_detected?: string;
+  ocr_confidence?: number;
+  transcription_confidence?: number;
+  processing_time_ms: number;
+}
+
+export interface ExtractedPromise {
+  id: string;
+  evidence_source_id: string;
+  promise_text: string;
+  context_text: string;
+  promised_by: string;
+  promised_to: string;
+  date: string | null;
+  category: string;
+  specific_value: string | null;
+  confidence: 'high' | 'medium' | 'low';
+}
+
+export interface ContractMismatch {
+  id: string;
+  promise: ExtractedPromise;
+  clause_number: number | null;
+  clause_id: string | null;
+  clause_text: string | null;
+  mismatch_type: MismatchType;
+  severity: MismatchSeverity;
+  promise_says: string;
+  contract_says: string;
+  explanation: string;
+  legal_significance: LegalSignificance;
+  financial_impact: number | null;
+  financial_description: string | null;
+  recommendation: string;
+}
+
+export interface LegalSignificance {
+  enforceability: LegalEnforceability;
+  applicable_laws: ShadowLegalCitation[];
+  reasoning: string;
+  evidence_strength: string;
+  precedent_cases: string[];
+}
+
+export interface ShadowLegalCitation {
+  act: string;
+  section: string;
+  relevance: string;
+}
+
+export interface ShadowAnalysis {
+  id: string;
+  document_id: string;
+  user_id: string;
+  evidence_sources: EvidenceSource[];
+  total_promises_found: number;
+  total_mismatches: number;
+  critical_mismatches: number;
+  major_mismatches: number;
+  minor_mismatches: number;
+  promises: ExtractedPromise[];
+  mismatches: ContractMismatch[];
+  overall_trust_score: number;
+  summary: string;
+  report_url: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface WhatsAppMessage {
+  date: string;
+  time: string;
+  sender: string;
+  message: string;
+  is_media: boolean;
+  is_system: boolean;
+}
+
+export interface WhatsAppChat {
+  messages: WhatsAppMessage[];
+  participants: string[];
+  date_range: { start: string; end: string };
+  message_count: number;
+}
+
+export interface ShadowAnalysisRequest {
+  document_id: string;
+  evidence: Array<{
+    type: EvidenceType;
+    format: EvidenceFormat;
+    content: string | ArrayBuffer;
+    filename?: string;
+  }>;
+}
+
+export interface ShadowAnalysisResponse {
+  analysis: ShadowAnalysis;
+  mismatches: ContractMismatch[];
+  report_url: string | null;
+  processing_time_ms: number;
+}
+
+export interface PromiseVsContractRow {
+  promise_date: string | null;
+  promise_source: string;
+  promise_text: string;
+  contract_clause: string;
+  contract_text: string | null;
+  mismatch_type: MismatchType;
+  severity: MismatchSeverity;
+  legal_status: string;
+  action: string;
 }

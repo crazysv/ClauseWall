@@ -47,6 +47,12 @@ import MicButton from "@/components/voice/mic-button";
 import StateMachineCTA from "@/components/statemachine/statemachine-cta";
 import StateMachineModal from "@/components/statemachine/state-machine-modal";
 
+// Voice-First Legal Aid
+const VoiceFloatingButton = dynamic(
+  () => import("@/components/voice-aid/voice-floating-button"),
+  { ssr: false }
+);
+
 // Law Change Retroactive Banner
 const RetroactiveBanner = dynamic(
   () => import("@/components/lawchange/retroactive-banner"),
@@ -75,6 +81,8 @@ import { TimebombCTA } from "@/components/timebomb/timebomb-cta";
 import type { TemporalExtractionResult, PoisonPillAnalysisResult } from "@/types";
 import { PoisonPillCTA } from "@/components/poisonpill/poison-pill-cta";
 import { PoisonPillSection } from "@/components/poisonpill/poison-pill-section";
+import ComplaintCTA from "@/components/complaint/complaint-cta";
+import ShadowCTA from "@/components/shadow/shadow-cta";
 
 interface HybridClause extends Clause {
   verification_source?: "database" | "ai";
@@ -987,6 +995,26 @@ export default function ResultsPage() {
               />
             </div>
 
+            <div id="ruin-calculator-cta">
+              <Link href={`/ruin-calculator/${documentId}`}>
+                <Card className="cursor-pointer hover:brightness-110 transition-all bg-gradient-to-br from-red-500/5 to-orange-500/5 border-red-500/15 h-full">
+                  <CardContent className="p-5">
+                    <div className="flex items-center gap-4">
+                      <div className="p-3 rounded-xl bg-red-500/10">
+                        <BarChart3 className="w-6 h-6 text-red-400" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="text-sm font-semibold text-white">Financial Risk Calculator</h4>
+                        <p className="text-xs text-white/40 mt-0.5">
+                          Monte Carlo simulation: see the real cost of this contract over 36 months
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            </div>
+
             <div id="statemachine-cta">
               {document.state_machine_data && (
                 <StateMachineCTA
@@ -1039,6 +1067,22 @@ export default function ResultsPage() {
                 documentId={documentId}
                 poisonPillData={(document?.poison_pill_data as unknown as PoisonPillAnalysisResult) || null}
                 totalClauses={document.total_clauses || 0}
+              />
+            </div>
+
+            <div id="complaint-cta">
+              <ComplaintCTA
+                documentId={documentId}
+                dangerousCount={document.dangerous_count}
+                illegalCount={document.illegal_count}
+                entityName={document.entity_name}
+              />
+            </div>
+
+            <div id="shadow-cta">
+              <ShadowCTA
+                documentId={documentId}
+                shadowData={document.shadow_analysis_data as { trust_score?: number; total_mismatches?: number; critical_mismatches?: number; has_analysis?: boolean } | null}
               />
             </div>
           </div>
@@ -1211,6 +1255,7 @@ export default function ResultsPage() {
         }}
       />
     </div>
+    <VoiceFloatingButton />
   </>
   );
 }
