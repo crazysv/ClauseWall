@@ -71,3 +71,53 @@ Respond in JSON.`,
     };
   }
 }
+
+/**
+ * Respond to a user question in any supported regional language.
+ * For Hindi: uses the existing Hindi responder.
+ * For other languages: generates English answer, then translates.
+ */
+export async function respondInLanguage(
+  text: string,
+  language: string
+): Promise<string> {
+  // Hindi/Hinglish: use dedicated responder
+  if (language === "hi" || language === "hinglish") {
+    const result = await getHindiResponse(text, {});
+    return result.answer;
+  }
+
+  // English: just respond in English
+  if (language === "en") {
+    const result = await getHindiResponse(text, {}, "en");
+    return result.answer;
+  }
+
+  // Other languages: get English response, then translate
+  try {
+    const { translateText } = await import("@/lib/bhasha/translator");
+    const { LANGUAGE_CONFIGS } = await import("@/lib/bhasha/constants");
+    const config = LANGUAGE_CONFIGS[language as keyof typeof LANGUAGE_CONFIGS];
+
+    if (!config) {
+      const result = await getHindiResponse(text, {}, "en");
+      return result.answer;
+    }
+
+    // Get English response from AI
+    const englishResult = await getHindiResponse(text, {}, "en");
+
+    // Translate to target language
+    const translated = await translateText(
+      englishResult.answer,
+      "en" as any,
+      language as any
+    );
+
+    return translated.translated_text;
+  } catch (error) {
+    console.error(`[ClauseWall] respondInLanguage(${language}) failed:`, error);
+    const result = await getHindiResponse(text, {}, "en");
+    return result.answer;
+  }
+}

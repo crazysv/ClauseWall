@@ -44,6 +44,8 @@ import { usePrivacy, redactClauses } from "@/lib/privacy";
 import type { RedactionResult } from "@/lib/privacy";
 import { splitIntoClauses } from "@/lib/ml/clause-splitter";
 import MicButton from "@/components/voice/mic-button";
+import { LanguageSelector } from "@/components/bhasha/language-selector";
+import type { SupportedLanguage } from "@/types/bhasha";
 
 // CHANGED: Removed "ml-preview" — only 3 states now
 type PageState = "upload" | "scanning" | "results";
@@ -55,6 +57,7 @@ export default function UploadPage() {
   const [pastedText, setPastedText] = useState("");
   const [documentType, setDocumentType] = useState("");
   const [jurisdiction, setJurisdiction] = useState("");
+  const [sourceLanguage, setSourceLanguage] = useState<SupportedLanguage | "auto">("auto");
   const [activeTab, setActiveTab] = useState("upload");
   const [error, setError] = useState("");
 
@@ -220,6 +223,7 @@ export default function UploadPage() {
         formData.append("file", inputFile);
         formData.append("documentType", documentType);
         formData.append("jurisdiction", jurisdiction);
+        formData.append("sourceLanguage", sourceLanguage);
 
         analyzeResponse = await fetch("/api/analyze", {
           method: "POST",
@@ -233,6 +237,7 @@ export default function UploadPage() {
             text: rawText,
             documentType,
             jurisdiction,
+            sourceLanguage,
             filename: inputFile?.name || "pasted-text.txt",
           }),
         });
@@ -251,6 +256,7 @@ export default function UploadPage() {
             text: rawText,
             documentType,
             jurisdiction,
+            sourceLanguage,
           }),
         }).catch((err) => {
           console.error("[ClauseWall] Trigger failed:", err);
@@ -734,6 +740,20 @@ export default function UploadPage() {
                       </SelectContent>
                     </Select>
                   </div>
+                </div>
+
+                {/* Language Selector */}
+                <div className="mb-6">
+                  <label className="text-sm font-medium mb-2 block">
+                    Document Language
+                  </label>
+                  <LanguageSelector
+                    value={sourceLanguage}
+                    onChange={setSourceLanguage}
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Auto-detect works for most documents. Select manually for better accuracy.
+                  </p>
                 </div>
 
                 {error && (

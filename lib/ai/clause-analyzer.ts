@@ -6,6 +6,8 @@
 import { callGroq } from "./groq-client";
 import { CLAUSE_ANALYSIS_SYSTEM_PROMPT } from "./system-prompt";
 import type { AnalysisResult, RiskLevel } from "@/types";
+import type { SupportedLanguage } from "@/types/bhasha";
+import { getMultilingualAnalysisPrompt } from "@/lib/bhasha/multilingual-prompts";
 
 /**
  * Analyze a single clause for predatory/illegal content
@@ -14,13 +16,25 @@ export async function analyzeClause(
   clauseText: string,
   jurisdiction: string,
   documentType: string,
-  clauseType: string
+  clauseType: string,
+  sourceLanguage?: SupportedLanguage,
+  outputLanguage?: SupportedLanguage
 ): Promise<AnalysisResult> {
   try {
+    // Use multilingual prompt when source or output is non-English
+    const isMultilingual = (sourceLanguage && sourceLanguage !== "en") ||
+      (outputLanguage && outputLanguage !== "en");
+    const systemPrompt = isMultilingual
+      ? getMultilingualAnalysisPrompt(
+          sourceLanguage || "en",
+          outputLanguage || "en"
+        )
+      : CLAUSE_ANALYSIS_SYSTEM_PROMPT;
+
     const response = await callGroq([
       {
         role: "system",
-        content: CLAUSE_ANALYSIS_SYSTEM_PROMPT,
+        content: systemPrompt,
       },
       {
   role: "user",

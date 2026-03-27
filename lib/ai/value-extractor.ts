@@ -6,6 +6,9 @@
 
 import { callGroq } from "./groq-client";
 import type { ExtractedValues } from "@/types";
+import type { SupportedLanguage } from "@/types/bhasha";
+import { convertNumerals, preprocessDocumentNumerals } from "@/lib/bhasha/numeral-converter";
+import { getMultilingualValueExtractionPrompt } from "@/lib/bhasha/multilingual-prompts";
 
 const VALUE_EXTRACTION_PROMPT = `You are a contract clause value extractor for Indian legal contracts. 
 Your ONLY job is to extract structured numeric values and metadata from contract clauses.
@@ -36,12 +39,23 @@ CRITICAL RULES:
 export async function extractValues(
   clauseText: string,
   clauseType: string,
-  documentType: string
+  documentType: string,
+  sourceLanguage?: SupportedLanguage
 ): Promise<ExtractedValues> {
   try {
+    // Pre-process regional numerals to Arabic before AI extraction
+    const processedText = sourceLanguage && sourceLanguage !== "en"
+      ? preprocessDocumentNumerals(clauseText)
+      : clauseText;
+
+    // Use multilingual prompt for non-English
+    const prompt = sourceLanguage && sourceLanguage !== "en"
+      ? getMultilingualValueExtractionPrompt(sourceLanguage)
+      : VALUE_EXTRACTION_PROMPT;
+
     const response = await callGroq(
       [
-        { role: "system", content: VALUE_EXTRACTION_PROMPT },
+        { role: "system", content: prompt },
         {
           role: "user",
           content: `Extract values from this ${documentType} clause:
@@ -49,7 +63,7 @@ export async function extractValues(
 Clause type hint: ${clauseType}
 
 Clause text:
-"${clauseText}"`,
+"${processedText}"`,
         },
       ],
       {

@@ -26,6 +26,7 @@ export function computePortfolioStats(
       contractsBuilt,
       riskTrend: "stable",
       riskTrendPercentage: 0,
+      documentTypeCounts: {},
     };
   }
 
@@ -64,6 +65,11 @@ export function computePortfolioStats(
     contractsBuilt,
     riskTrend: trend,
     riskTrendPercentage: percentage,
+    documentTypeCounts: completed.reduce((acc, d) => {
+      const t = d.document_type || 'unknown';
+      acc[t] = (acc[t] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>),
   };
 }
 

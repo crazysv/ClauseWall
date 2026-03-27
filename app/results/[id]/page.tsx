@@ -84,6 +84,25 @@ import { PoisonPillSection } from "@/components/poisonpill/poison-pill-section";
 import ComplaintCTA from "@/components/complaint/complaint-cta";
 import ShadowCTA from "@/components/shadow/shadow-cta";
 
+// Bhasha Engine
+import { LanguageBadge } from "@/components/bhasha/language-badge";
+import { BilingualToggle } from "@/components/bhasha/bilingual-toggle";
+import { AudioPlayer } from "@/components/bhasha/audio-player";
+import { LanguageBanner } from "@/components/bhasha/language-banner";
+import type { SupportedLanguage } from "@/types/bhasha";
+
+// Legal Authority Connector
+const AuthoritySection = dynamic(
+  () => import("@/components/authority/authority-section"),
+  { ssr: false }
+);
+
+// Market Intelligence
+const MarketComparisonSection = dynamic(
+  () => import("@/components/market/market-comparison-section"),
+  { ssr: false }
+);
+
 interface HybridClause extends Clause {
   verification_source?: "database" | "ai";
   confidence?: "verified" | "partial" | "ai_suggested";
@@ -139,6 +158,9 @@ export default function ResultsPage() {
   const [roastCache, setRoastCache] = useState<Map<string, string>>(new Map());
   const [roastLoading, setRoastLoading] = useState(false);
   const roastFetched = useRef(false);
+
+  // Bhasha state
+  const [bilingualMode, setBilingualMode] = useState<"source" | "english" | "both">("both");
 
   // Sound system
   const { playRiskSound, isMuted } = useSound();
@@ -619,6 +641,16 @@ export default function ResultsPage() {
               <span>{getDocumentTypeLabel(document.document_type)}</span>
               <span>•</span>
               <span>{getStateName(document.jurisdiction)}</span>
+              {/* Bhasha: Language badge for non-English docs */}
+              {document.detected_language && document.detected_language !== "en" && (
+                <>
+                  <span>•</span>
+                  <LanguageBadge
+                    sourceLanguage={document.detected_language as SupportedLanguage}
+                    showAudioAvailable
+                  />
+                </>
+              )}
             </div>
             <h1 className="text-2xl sm:text-3xl font-bold">
               Analysis Results
@@ -652,6 +684,28 @@ export default function ResultsPage() {
 
         {/* Law Change Retroactive Banner */}
         <RetroactiveBanner documentId={documentId} />
+
+        {/* Bhasha: Language Detection Banner + Bilingual Toggle */}
+        {document.detected_language && document.detected_language !== "en" && (
+          <div className="mb-6 space-y-3">
+            <LanguageBanner
+              detectedLanguage={document.detected_language as SupportedLanguage}
+              confidence={document.language_confidence ?? 0.9}
+            />
+            <div className="flex items-center justify-between gap-4">
+              <BilingualToggle
+                mode={bilingualMode}
+                onChange={setBilingualMode}
+                sourceLanguage={document.detected_language as SupportedLanguage}
+              />
+              <AudioPlayer
+                text={document.summary || "Analysis summary not available"}
+                language={document.detected_language as SupportedLanguage}
+                title="Listen to full summary"
+              />
+            </div>
+          </div>
+        )}
 
         {/* Score Overview */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
@@ -951,6 +1005,7 @@ export default function ResultsPage() {
                     ) || null
                   }
                   documentId={documentId}
+                  detectedLanguage={document.detected_language || undefined}
                 />
               </motion.div>
             ))}
@@ -968,6 +1023,15 @@ export default function ResultsPage() {
               </button>
             </div>
           )}
+        </div>
+
+        {/* ═══ MARKET COMPARISON ═══ */}
+        <div className="mb-8">
+          <MarketComparisonSection
+            documentId={documentId}
+            documentType={document.document_type || "rental"}
+            jurisdiction={document.jurisdiction}
+          />
         </div>
 
         {/* ── Explore Deeper ── */}
@@ -1083,6 +1147,16 @@ export default function ResultsPage() {
               <ShadowCTA
                 documentId={documentId}
                 shadowData={document.shadow_analysis_data as { trust_score?: number; total_mismatches?: number; critical_mismatches?: number; has_analysis?: boolean } | null}
+              />
+            </div>
+
+            <div id="authority-section-cta">
+              <AuthoritySection
+                documentType={document.document_type}
+                jurisdiction={document.jurisdiction}
+                entityName={document.entity_name || ""}
+                clauseTypes={clauses.map(c => c.clause_type).filter(Boolean)}
+                preloadedRouting={(document as any).authority_routing || null}
               />
             </div>
           </div>

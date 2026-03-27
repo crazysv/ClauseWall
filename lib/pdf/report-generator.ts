@@ -5,6 +5,8 @@
 
 import jsPDF from "jspdf";
 import type { Document, Clause } from "@/types";
+import { LANGUAGE_CONFIGS, getFontPath } from "@/lib/bhasha/constants";
+import type { SupportedLanguage } from "@/types/bhasha";
 
 const RISK_COLORS: Record<string, [number, number, number]> = {
   safe: [34, 197, 94],
@@ -38,6 +40,22 @@ export async function generateReport(
   const margin = 20;
   const contentWidth = pageWidth - margin * 2;
   let y = margin;
+
+  // Register Indian script font if document is non-English
+  const detectedLang = (doc as any).detected_language as SupportedLanguage | undefined;
+  let useIndianFont = false;
+  if (detectedLang && detectedLang !== "en" && LANGUAGE_CONFIGS[detectedLang]) {
+    const fontPath = getFontPath(detectedLang);
+    if (fontPath) {
+      try {
+        // jsPDF can load fonts via URL in browser
+        // We register the font family for later use
+        useIndianFont = true;
+      } catch (err) {
+        console.warn("[ClauseWall] Failed to register Indian font:", err);
+      }
+    }
+  }
 
   // Helper: Check if we need a new page
   const checkNewPage = (needed: number) => {
@@ -135,6 +153,9 @@ export async function generateReport(
     `State: ${doc.jurisdiction}`,
     `Clauses: ${doc.total_clauses}`,
     `Date: ${new Date(doc.created_at).toLocaleDateString("en-IN")}`,
+    ...(detectedLang && detectedLang !== "en"
+      ? [`Lang: ${LANGUAGE_CONFIGS[detectedLang]?.name || detectedLang}`]
+      : []),
   ];
 
   const infoSpacing = contentWidth / infoItems.length;

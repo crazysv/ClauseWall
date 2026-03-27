@@ -105,6 +105,14 @@ export function buildNegotiationUserPrompt(
     legal_citation: string | null;
     fair_alternative: string | null;
     negotiation_script: string | null;
+  }[],
+  marketContext?: {
+    clause_type: string;
+    median_value: number;
+    percentile_rank: number;
+    sample_count: number;
+    scope_label: string;
+    unit: string;
   }[]
 ): string {
   const clauseList = clauses
@@ -115,7 +123,13 @@ Text: "${c.original_text.substring(0, 300)}"
 Issue: ${c.explanation}
 Law: ${c.legal_citation || "Not specified"}
 Fair version: ${c.fair_alternative || "Not specified"}
-Existing script: ${c.negotiation_script || "None"}`
+Existing script: ${c.negotiation_script || "None"}${(() => {
+        const mc = marketContext?.find(m => m.clause_type === c.clause_type);
+        if (mc) {
+          return `\nMarket data: The median ${c.clause_type.replace(/_/g, ' ')} in ${mc.scope_label} is ${mc.median_value} ${mc.unit} based on ${mc.sample_count} contracts. The counterparty's value is at the ${mc.percentile_rank}th percentile.`;
+        }
+        return '';
+      })()}`
     )
     .join("\n\n");
 

@@ -9,6 +9,8 @@ import {
   buildNegotiationUserPrompt,
 } from "@/lib/ai/negotiation-prompt";
 import type { NegotiationPlaybook, NegotiationScript } from "@/types";
+import { translateText } from "@/lib/bhasha/translator";
+import type { SupportedLanguage } from "@/types/bhasha";
 
 interface ClauseInput {
   clause_number: number;
@@ -34,7 +36,8 @@ export async function generateNegotiationPlaybook(
   documentType: string,
   jurisdiction: string,
   entityName: string | null,
-  clauses: ClauseInput[]
+  clauses: ClauseInput[],
+  outputLanguage?: string
 ): Promise<GeneratePlaybookResult> {
   try {
     // Filter to only risky clauses
@@ -125,6 +128,52 @@ export async function generateNegotiationPlaybook(
     };
 
     console.log(`[ClauseWall] Playbook generated: ${playbook.total_issues} scripts`);
+
+    // Translate user-facing scripts to output language
+    if (outputLanguage && outputLanguage !== "en") {
+      try {
+        const lang = outputLanguage as SupportedLanguage;
+
+        // Translate opening and closing
+        if (playbook.opening_approach) {
+          const t = await translateText(playbook.opening_approach, "en", lang);
+          playbook.opening_approach = t.translated_text;
+        }
+        if (playbook.closing_statement) {
+          const t = await translateText(playbook.closing_statement, "en", lang);
+          playbook.closing_statement = t.translated_text;
+        }
+
+        // Translate each script's spoken lines
+        for (const script of playbook.scripts) {
+          // opening_statement
+          if (script.opening_statement) {
+            const t = await translateText(script.opening_statement, "en", lang);
+            script.opening_statement = t.translated_text;
+          }
+          // counter_responses array
+          if (script.counter_responses) {
+            for (const cr of script.counter_responses) {
+              if (cr.you_say) {
+                const t = await translateText(cr.you_say, "en", lang);
+                cr.you_say = t.translated_text;
+              }
+              if (cr.they_say) {
+                const t = await translateText(cr.they_say, "en", lang);
+                cr.they_say = t.translated_text;
+              }
+            }
+          }
+          // escalation.action
+          if (script.escalation?.action) {
+            const t = await translateText(script.escalation.action, "en", lang);
+            script.escalation.action = t.translated_text;
+          }
+        }
+      } catch (err) {
+        console.warn("[ClauseWall] Negotiation translation failed, returning English:", err);
+      }
+    }
 
     return {
       success: true,

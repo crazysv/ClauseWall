@@ -13,6 +13,10 @@ import { ANALYSIS_CONFIG } from "@/lib/utils/constants";
 import { addToCommunityDB } from "@/lib/community";
 import { extractEntityFallback, normalizeEntityName, isValidEntityName } from "@/lib/core/entity-extractor";
 import { extractPowerBalance } from "@/lib/ai/power-extractor";
+import { determineJurisdiction } from "@/lib/authority/jurisdiction-router";
+import type { SupportedLanguage } from "@/types/bhasha";
+import { detectLanguage, detectLanguageQuick } from "@/lib/bhasha/language-detector";
+import { preprocessDocumentNumerals } from "@/lib/bhasha/numeral-converter";
 
 /**
  * Update analysis progress in database
@@ -42,7 +46,9 @@ export async function analyzeDocument(
   rawText: string,
   documentType: string,
   jurisdiction: string,
-  externalSupabase?: SupabaseClient
+  externalSupabase?: SupabaseClient,
+  sourceLanguage?: SupportedLanguage | "auto",
+  outputLanguage?: SupportedLanguage
 ): Promise<void> {
   const supabase = externalSupabase || (await createClient());
 
@@ -50,14 +56,61 @@ export async function analyzeDocument(
     console.log(`[ClauseWall] analyzeDocument started for ${documentId}`);
     console.log(`[ClauseWall] Text length: ${rawText?.length || 0}`);
 
+    // ---- Language Detection ----
+    let detectedLang: SupportedLanguage = "en";
+    let langConfidence = 1.0;
+    const isAutoDetect = !sourceLanguage || sourceLanguage === "auto";
+    const effectiveSourceLang: SupportedLanguage = (sourceLanguage && sourceLanguage !== "auto")
+      ? sourceLanguage : "en";
+    const effectiveOutputLang: SupportedLanguage = outputLanguage || effectiveSourceLang;
+
+    if (isAutoDetect && rawText) {
+      // Quick synchronous detection first
+      const quickDetect = detectLanguageQuick(rawText.substring(0, 2000));
+      detectedLang = quickDetect.language;
+      langConfidence = quickDetect.confidence;
+      console.log(`[ClauseWall] Quick language detection: ${detectedLang} (${langConfidence})`);
+
+      // Full async detection if not English and not very confident
+      if (detectedLang !== "en" || langConfidence < 0.9) {
+        try {
+          const fullDetect = await detectLanguage(rawText.substring(0, 3000));
+          detectedLang = fullDetect.primary_language;
+          langConfidence = fullDetect.confidence;
+          console.log(`[ClauseWall] Full language detection: ${detectedLang} (${langConfidence})`);
+        } catch {
+          console.warn("[ClauseWall] Full language detection failed, using quick result");
+        }
+      }
+    } else if (sourceLanguage && sourceLanguage !== "auto") {
+      detectedLang = sourceLanguage;
+      langConfidence = 1.0;
+    }
+
+    const isMultilingual = detectedLang !== "en";
+    const finalSourceLang: SupportedLanguage = isAutoDetect ? detectedLang : effectiveSourceLang;
+    const finalOutputLang: SupportedLanguage = outputLanguage || (isMultilingual ? detectedLang : "en");
+
+    console.log(`[ClauseWall] Language: source=${finalSourceLang}, output=${finalOutputLang}, multilingual=${isMultilingual}`);
+
+    // Pre-process numerals for non-English text
+    const processedText = isMultilingual ? preprocessDocumentNumerals(rawText) : rawText;
+
     // ---- Update status to analyzing ----
     await supabase
       .from("documents")
       .update({
         analysis_status: "analyzing",
         analysis_progress: 5,
-        analysis_step: "Preparing document...",
+        analysis_step: isMultilingual
+          ? `Detected ${detectedLang.toUpperCase()} document. Preparing analysis...`
+          : "Preparing document...",
         clauses_analyzed: 0,
+        source_language: finalSourceLang,
+        detected_language: detectedLang,
+        output_language: finalOutputLang,
+        language_confidence: langConfidence,
+        is_multilingual: isMultilingual,
       })
       .eq("id", documentId);
 
@@ -65,7 +118,7 @@ export async function analyzeDocument(
     await updateProgress(supabase, documentId, 10, "Extracting clauses from document...");
     
     console.log(`[ClauseWall] Extracting clauses...`);
-    const extraction = await extractClauses(rawText);
+    const extraction = await extractClauses(processedText, isMultilingual ? finalSourceLang : undefined);
     console.log(`[ClauseWall] Found ${extraction.clauses?.length || 0} clauses`);
 
     const totalClauses = extraction.clauses.length;
@@ -507,6 +560,17 @@ export async function analyzeDocument(
       // Non-blocking — analysis continues without law change data
     }
 
+    // ---- Step 5.97: Market Intelligence Benchmark Update (non-blocking) ----
+    try {
+      const { incrementalBenchmarkUpdate } = await import("@/lib/market/aggregator");
+      // Fire-and-forget — don't await to keep pipeline fast
+      incrementalBenchmarkUpdate(documentId).catch((marketErr: any) => {
+        console.error("[ClauseWall] [Market] Incremental update failed (non-fatal):", marketErr);
+      });
+    } catch (marketImportError) {
+      console.error("[ClauseWall] [Market] Import failed (non-fatal):", marketImportError);
+    }
+
     // ---- Step 6: Update document with results ----
     const { error: updateError } = await supabase
       .from("documents")
@@ -537,6 +601,26 @@ export async function analyzeDocument(
 
     if (updateError) {
       throw new Error(`Failed to update document: ${updateError.message}`);
+    }
+
+    // ---- Step 7 (non-blocking): Authority Routing ----
+    try {
+      const clauseTypes = analyzedClauses.map((c: any) => c.clause_type).filter(Boolean);
+      const routingResult = await determineJurisdiction({
+        document_type: documentType || "other",
+        jurisdiction: jurisdiction || "general",
+        claim_amount: undefined,
+        counterparty_type: undefined,
+        clause_types: clauseTypes,
+        entity_name: entityName || undefined,
+      });
+      await supabase
+        .from("documents")
+        .update({ authority_routing: routingResult })
+        .eq("id", documentId);
+      console.log(`[ClauseWall] ⚖️ Authority routing computed: ${routingResult.dispute_category}`);
+    } catch (routingError) {
+      console.warn("[ClauseWall] Authority routing failed (non-fatal):", routingError);
     }
 
     console.log(

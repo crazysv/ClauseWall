@@ -26,6 +26,7 @@ import {
   Users,
   Wrench,
   Calculator,
+  Building2,
 } from "lucide-react";
 import { toast } from "sonner";
 import { generateReport } from "@/lib/pdf/report-generator";
@@ -142,6 +143,13 @@ const ACTION_GROUPS: ActionGroup[] = [
         icon: DoorOpen,
         color: "#F97316",
         bg: "rgba(249, 115, 22, 0.15)",
+      },
+      {
+        id: "legal-help",
+        label: "Legal Authority",
+        icon: Building2,
+        color: "#8B5CF6",
+        bg: "rgba(139, 92, 246, 0.15)",
       },
 
     ],
@@ -262,6 +270,12 @@ export default function FloatingActions({
 
       case "escape":
         router.push(`/escape/${doc.id}`);
+        setIsOpen(false);
+        setExpandedGroup(null);
+        break;
+
+      case "legal-help":
+        window.document.getElementById("authority-section-cta")?.scrollIntoView({ behavior: "smooth", block: "center" });
         setIsOpen(false);
         setExpandedGroup(null);
         break;

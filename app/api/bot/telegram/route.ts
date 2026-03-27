@@ -70,6 +70,12 @@ interface TelegramUpdate {
       file_size?: number;
     };
   };
+  callback_query?: {
+    id: string;
+    from: { id: number };
+    message?: { chat: { id: number } };
+    data?: string;
+  };
 }
 
 // ---- WEBHOOK ENDPOINT ----
@@ -84,6 +90,31 @@ export async function POST(request: NextRequest) {
   }
 
   const message = update.message;
+  const callbackQuery = update.callback_query;
+
+  // Handle callback queries (inline keyboard)
+  if (callbackQuery?.data?.startsWith("bhasha_")) {
+    const chatId = callbackQuery.message?.chat.id;
+    if (chatId) {
+      const langCode = callbackQuery.data.replace("bhasha_", "");
+      bhashaLanguageState.set(chatId, langCode);
+
+      const { LANGUAGE_CONFIGS } = await import("@/lib/bhasha/constants");
+      const config = LANGUAGE_CONFIGS[langCode as keyof typeof LANGUAGE_CONFIGS];
+      const langName = config ? `${config.nativeName} (${config.name})` : langCode;
+
+      // Answer the callback
+      await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/answerCallbackQuery`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ callback_query_id: callbackQuery.id, text: `✅ ${langName}` }),
+      });
+
+      await sendMessage(chatId, `✅ Language set to <b>${langName}</b>\n\nNow send me a contract in ${langName} — I'll analyze it in your language!`);
+    }
+    return new Response("OK", { status: 200 });
+  }
+
   if (!message) {
     return new Response("OK", { status: 200 });
   }
@@ -113,6 +144,10 @@ const compareState = new Map<number, {
   documentType: string;
 }>();
 
+// ---- BHASHA LANGUAGE STATE ----
+
+const bhashaLanguageState = new Map<number, string>();
+
 // ---- MESSAGE ROUTER ----
 
 async function processMessage(
@@ -130,6 +165,11 @@ async function processMessage(
     message.text?.startsWith("/help")
   ) {
     await sendMessage(chatId, getWelcomeMessageTelegram());
+    return;
+  }
+
+  if (message.text?.startsWith("/bhasha")) {
+    await handleBhashaCommand(chatId);
     return;
   }
 
@@ -672,4 +712,43 @@ async function handleDeadlines(chatId: number) {
       "❌ Failed to fetch deadlines. Please try again."
     );
   }
+}
+
+// ---- BHASHA: LANGUAGE PICKER ----
+
+async function handleBhashaCommand(chatId: number) {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  if (!token) return;
+
+  await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      chat_id: chatId,
+      text: "🌐 <b>Choose your language / अपनी भाषा चुनें</b>\n\nI'll analyze contracts and reply in your language:",
+      parse_mode: "HTML",
+      reply_markup: {
+        inline_keyboard: [
+          [
+            { text: "English", callback_data: "bhasha_en" },
+            { text: "हिन्दी", callback_data: "bhasha_hi" },
+            { text: "मराठी", callback_data: "bhasha_mr" },
+            { text: "বাংলা", callback_data: "bhasha_bn" },
+          ],
+          [
+            { text: "தமிழ்", callback_data: "bhasha_ta" },
+            { text: "తెలుగు", callback_data: "bhasha_te" },
+            { text: "ಕನ್ನಡ", callback_data: "bhasha_kn" },
+            { text: "ગુજરાતી", callback_data: "bhasha_gu" },
+          ],
+          [
+            { text: "മലയാളം", callback_data: "bhasha_ml" },
+            { text: "ਪੰਜਾਬੀ", callback_data: "bhasha_pa" },
+            { text: "ଓଡ଼ିଆ", callback_data: "bhasha_or" },
+            { text: "اردو", callback_data: "bhasha_ur" },
+          ],
+        ],
+      },
+    }),
+  });
 }

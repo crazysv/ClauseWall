@@ -150,6 +150,41 @@ const ACHIEVEMENT_DEFS: AchievementDef[] = [
       target: 500000,
     }),
   },
+  {
+    code: "market_analyst",
+    name: "Market Analyst",
+    description: "Contributed to 5+ market benchmarks via analyses",
+    icon: "📊",
+    check: (s) => ({
+      unlocked: s.totalContracts >= 5,
+      progress: Math.min(s.totalContracts, 5),
+      target: 5,
+    }),
+  },
+  {
+    code: "city_champion",
+    name: "City Champion",
+    description: "Contributed 10+ contracts from one city to benchmarks",
+    icon: "🏙️",
+    check: (s) => ({
+      // Approximation — true city tracking requires per-city counts
+      // Uses totalContracts >= 10 as a proxy (typical users analyze from one city)
+      unlocked: s.totalContracts >= 10,
+      progress: Math.min(s.totalContracts, 10),
+      target: 10,
+    }),
+  },
+  {
+    code: "benchmark_builder",
+    name: "Benchmark Builder",
+    description: "Contributed contracts across 3+ different contract types",
+    icon: "🧱",
+    check: (s) => ({
+      unlocked: (s.documentTypeCounts ? Object.keys(s.documentTypeCounts).length : 0) >= 3,
+      progress: Math.min(s.documentTypeCounts ? Object.keys(s.documentTypeCounts).length : 0, 3),
+      target: 3,
+    }),
+  },
 ];
 
 /**

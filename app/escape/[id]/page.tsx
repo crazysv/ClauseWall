@@ -36,6 +36,12 @@ import { createClient } from "@/lib/supabase/client";
 import { getStateName, getDocumentTypeLabel } from "@/lib/utils/constants";
 import { toast } from "sonner";
 import type { Document, EscapePlan } from "@/types";
+import dynamic from "next/dynamic";
+
+const AuthoritySection = dynamic(
+  () => import("@/components/authority/authority-section"),
+  { ssr: false }
+);
 
 const STEP_ICONS: Record<string, React.ReactNode> = {
   awareness: <Shield className="h-5 w-5" />,
@@ -811,6 +817,17 @@ export default function EscapePlanPage() {
             )}
             {copied ? "Copied!" : "Copy Plan"}
           </Button>
+        </div>
+
+        {/* ── File Your Complaint Here ── */}
+        <div className="mt-8">
+          <AuthoritySection
+            documentType={document.document_type}
+            jurisdiction={document.jurisdiction}
+            entityName={document.entity_name || ""}
+            clauseTypes={plan.void_clauses.map(vc => vc.why_void).filter(Boolean)}
+            preloadedRouting={(document as any).authority_routing || null}
+          />
         </div>
 
         {/* Related Actions */}

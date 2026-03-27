@@ -77,6 +77,11 @@ export interface Document {
   temporal_data?: Record<string, unknown> | null;
   poison_pill_data?: Record<string, unknown> | null;
   shadow_analysis_data?: Record<string, unknown> | null;
+  source_language?: string;
+  detected_language?: string;
+  output_language?: string;
+  language_confidence?: number;
+  is_multilingual?: boolean;
 }
 
 /**
@@ -501,6 +506,7 @@ export interface PortfolioStats {
   contractsBuilt: number;
   riskTrend: "improving" | "stable" | "worsening";
   riskTrendPercentage: number;
+  documentTypeCounts?: Record<string, number>;
 }
 
 export interface RiskDataPoint {
@@ -2601,4 +2607,235 @@ export interface PromiseVsContractRow {
   severity: MismatchSeverity;
   legal_status: string;
   action: string;
+}
+
+// ============================================
+// CONTRACT WATCHDOG TYPES
+// ToS/Privacy Policy change monitoring system
+// ============================================
+
+export type CompanySector =
+  | "ride_hailing"
+  | "food_delivery"
+  | "ecommerce"
+  | "payments"
+  | "social"
+  | "streaming"
+  | "travel"
+  | "banking"
+  | "telecom"
+  | "edtech"
+  | "government"
+  | "other";
+
+export type TosDocType = "tos" | "privacy" | "refund" | "community";
+
+export type ScrapeFrequency = "daily" | "weekly" | "biweekly" | "monthly";
+
+export type ScrapeStatus = "success" | "partial" | "failed" | "blocked";
+
+export type ChangeClassification =
+  | "rights_gained"
+  | "rights_lost"
+  | "obligation_added"
+  | "obligation_removed"
+  | "liability_changed"
+  | "data_usage_changed"
+  | "dispute_resolution_changed"
+  | "pricing_terms_changed"
+  | "termination_changed"
+  | "neutral_clarification";
+
+export type ChangeSeverity = "critical" | "major" | "minor" | "cosmetic";
+
+export type ChangeDirection = "pro_company" | "pro_consumer" | "neutral";
+
+export type OverallDirection = "pro_company" | "pro_consumer" | "neutral" | "mixed";
+
+export type ScoreTrend = "improving" | "declining" | "stable";
+
+export type AlertType = "email" | "telegram" | "inapp" | "push";
+
+export type AlertSensitivity = "all_changes" | "major_and_critical" | "critical_only";
+
+export type CampaignStatus = "draft" | "active" | "delivered" | "resolved";
+
+/** Database row: monitored_companies */
+export interface MonitoredCompany {
+  id: string;
+  name: string;
+  slug: string;
+  logo_url: string | null;
+  sector: CompanySector;
+  website: string;
+  tos_urls: Array<{ label: string; url: string; type: TosDocType }>;
+  scrape_config: Record<string, unknown> | null;
+  scrape_frequency: ScrapeFrequency;
+  current_tos_score: number | null;
+  score_trend: ScoreTrend | null;
+  total_changes: number;
+  pro_company_changes: number;
+  pro_consumer_changes: number;
+  last_scraped_at: string | null;
+  last_change_detected: string | null;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+/** Database row: tos_snapshots */
+export interface TosSnapshot {
+  id: string;
+  company_id: string;
+  tos_type: TosDocType;
+  version_number: number;
+  raw_html: string | null;
+  clean_text: string;
+  text_hash: string;
+  word_count: number | null;
+  readability_score: number | null;
+  section_count: number | null;
+  url_scraped: string;
+  scrape_status: ScrapeStatus;
+  scrape_error: string | null;
+  scraped_at: string;
+  analyzed: boolean;
+  created_at: string;
+}
+
+/** Single semantic change within a ToS update */
+export interface SemanticChange {
+  section_title: string;
+  old_text: string;
+  new_text: string;
+  change_type: ChangeClassification;
+  severity: ChangeSeverity;
+  direction: ChangeDirection;
+  user_impact_summary: string;
+  legal_implications: string;
+  affected_user_actions: string[];
+  confidence: number;
+}
+
+/** Legality issue found in a ToS change */
+export interface WatchdogLegalityIssue {
+  change_index: number;
+  law_name: string;
+  section: string;
+  violation_description: string;
+  severity: "critical" | "major";
+}
+
+/** Database row: tos_changes */
+export interface TosChange {
+  id: string;
+  company_id: string;
+  old_snapshot_id: string | null;
+  new_snapshot_id: string;
+  tos_type: TosDocType;
+  change_number: number | null;
+  changes: SemanticChange[];
+  total_changes: number;
+  critical_count: number;
+  major_count: number;
+  minor_count: number;
+  cosmetic_count: number;
+  pro_company_count: number;
+  pro_consumer_count: number;
+  neutral_count: number;
+  overall_direction: OverallDirection | null;
+  legality_issues: WatchdogLegalityIssue[] | null;
+  summary: string | null;
+  is_published: boolean;
+  detected_at: string;
+  analyzed_at: string | null;
+  created_at: string;
+}
+
+/** Database row: user_watchlist */
+export interface UserWatchlistEntry {
+  id: string;
+  user_id: string;
+  company_id: string;
+  alert_email: boolean;
+  alert_telegram: boolean;
+  alert_inapp: boolean;
+  sensitivity: AlertSensitivity;
+  telegram_chat_id: string | null;
+  created_at: string;
+}
+
+/** Database row: watchdog_alerts */
+export interface WatchdogAlert {
+  id: string;
+  user_id: string;
+  company_id: string;
+  change_id: string;
+  alert_type: AlertType;
+  title: string;
+  body: string;
+  severity: ChangeSeverity;
+  is_read: boolean;
+  sent_at: string;
+  read_at: string | null;
+  created_at: string;
+}
+
+/** Database row: optout_campaigns */
+export interface OptoutCampaign {
+  id: string;
+  company_id: string;
+  change_id: string;
+  title: string;
+  description: string;
+  legal_basis: string;
+  objection_template: string;
+  status: CampaignStatus;
+  signatory_count: number;
+  target_count: number;
+  company_email: string | null;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+/** Database row: campaign_signatories */
+export interface CampaignSignatory {
+  id: string;
+  campaign_id: string;
+  user_id: string | null;
+  display_name: string;
+  email: string | null;
+  signed_at: string;
+}
+
+/** ToS Score breakdown for radar chart */
+export interface TosScoreBreakdown {
+  consumer_rights: number;
+  data_privacy: number;
+  dispute_resolution: number;
+  transparency: number;
+  change_frequency: number;
+  fairness: number;
+}
+
+/** Company with joined data for UI display */
+export interface MonitoredCompanyWithChanges extends MonitoredCompany {
+  recent_changes?: TosChange[];
+  score_breakdown?: TosScoreBreakdown;
+}
+
+/** Change with company info for feed display */
+export interface TosChangeWithCompany extends TosChange {
+  company?: MonitoredCompany;
+}
+
+/** Alert with company info for display */
+export interface WatchdogAlertWithCompany extends WatchdogAlert {
+  company?: MonitoredCompany;
+}
+
+/** Campaign with company info for display */
+export interface OptoutCampaignWithCompany extends OptoutCampaign {
+  company?: MonitoredCompany;
 }

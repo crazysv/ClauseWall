@@ -15,6 +15,8 @@ import {
   Scale,
   Send,
   RefreshCw,
+  Building2,
+  ArrowRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -411,6 +413,36 @@ export default function LetterPage() {
             </div>
           </div>
         </div>
+
+        {/* Notice Follow-Up: File at Authority */}
+        {letter && (
+          <Card className="mt-6 border-blue-500/20 bg-blue-500/5">
+            <CardContent className="p-5">
+              <div className="flex items-center gap-2 mb-3">
+                <Building2 className="h-5 w-5 text-blue-400" />
+                <h3 className="font-semibold">Notice sent? If no response in 15 days, file here:</h3>
+              </div>
+
+              {/* Mini Escalation Preview */}
+              <div className="flex items-center gap-2 mb-4">
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-green-500/15 border border-green-500/30">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-green-400" />
+                  <span className="text-xs font-medium text-green-400">Step 1: Legal Notice</span>
+                </div>
+                <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                <Link href="/authority" className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-500/15 border border-blue-500/30 hover:bg-blue-500/25 transition-colors">
+                  <Building2 className="h-3.5 w-3.5 text-blue-400" />
+                  <span className="text-xs font-medium text-blue-400">Step 2: File at Authority →</span>
+                </Link>
+              </div>
+
+              <p className="text-xs text-muted-foreground">
+                Under Indian consumer law, if the opposing party does not respond to your legal notice
+                within 15 days, you can escalate by filing a formal complaint at the appropriate forum.
+              </p>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Related Actions */}
         <RelatedActions documentId={documentId} currentPage="letter" />

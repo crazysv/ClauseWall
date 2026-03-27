@@ -15,6 +15,8 @@ import {
   ArrowRight,
   ExternalLink,
   Filter,
+  Building2,
+  Gavel,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -37,6 +39,7 @@ export default function WallOfShamePage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterJurisdiction, setFilterJurisdiction] = useState("all");
   const [totalDocuments, setTotalDocuments] = useState(0);
+  const [marketAvgRisk, setMarketAvgRisk] = useState<number | null>(null);
 
   const supabase = createClient();
 
@@ -59,6 +62,26 @@ export default function WallOfShamePage() {
           .eq("analysis_status", "completed");
 
         setTotalDocuments(count || 0);
+
+        // Fetch market average risk score
+        try {
+          const marketRes = await fetch("/api/market/stats");
+          const marketData = await marketRes.json();
+          if (marketData.success && marketData.stats) {
+            // Use entity_risk_summary or overall average
+            const { data: benchmarkData } = await supabase
+              .from("market_benchmarks")
+              .select("mean_value")
+              .eq("benchmark_type", "overall_risk_score")
+              .eq("scope_type", "national")
+              .maybeSingle();
+            if (benchmarkData?.mean_value) {
+              setMarketAvgRisk(Math.round(benchmarkData.mean_value));
+            }
+          }
+        } catch {
+          // Non-critical — market comparison is optional
+        }
       } catch (err) {
         console.error("Failed to load entities:", err);
       } finally {
@@ -332,6 +355,17 @@ export default function WallOfShamePage() {
                           </span>
                         )}
                         {getRiskBadge(entity.avg_risk_score)}
+                        {marketAvgRisk !== null && entity.avg_risk_score > 0 && (
+                          <Badge
+                            className={`text-[10px] ${
+                              entity.avg_risk_score > marketAvgRisk
+                                ? "bg-red-500/10 text-red-300 border-red-500/20"
+                                : "bg-green-500/10 text-green-300 border-green-500/20"
+                            }`}
+                          >
+                            Market avg: {marketAvgRisk} | This entity: {entity.avg_risk_score}
+                          </Badge>
+                        )}
                       </div>
 
                       {/* Common Violations */}
@@ -365,6 +399,23 @@ export default function WallOfShamePage() {
                           </Link>
                         </div>
                       )}
+
+                      {/* File Complaint at Authority */}
+                      <div className="mt-2">
+                        <Link href={`/authority?entity=${encodeURIComponent(entity.entity_name)}&jurisdiction=${entity.jurisdiction || 'general'}`}>
+                          <Badge className="bg-purple-500/10 text-purple-400 border-purple-500/20 text-xs gap-1.5 cursor-pointer hover:bg-purple-500/20 transition-colors">
+                            <Gavel className="h-3 w-3" />
+                            File complaint →{" "}
+                            {(entity.entity_type as string) === "landlord" ? "Rent Authority" :
+                             (entity.entity_type as string) === "employer" ? "Labour Court" :
+                             (entity.entity_type as string) === "bank" || (entity.entity_type as string) === "nbfc" ? "RBI Ombudsman" :
+                             (entity.entity_type as string) === "insurance" ? "IRDAI" :
+                             (entity.entity_type as string) === "telecom" ? "TRAI/TDSAT" :
+                             "Consumer Forum"}
+                            {entity.jurisdiction ? ` in ${getStateName(entity.jurisdiction)}` : ""}
+                          </Badge>
+                        </Link>
+                      </div>
                     </div>
                   </div>
 

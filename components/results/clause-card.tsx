@@ -39,6 +39,10 @@ import type { ProofTree } from "@/lib/reasoning/types";
 import DeliberationSummary from "@/components/deliberation/deliberation-summary";
 import DeliberationModal from "@/components/deliberation/deliberation-modal";
 import type { ClauseDeliberation, AgentRole } from "@/lib/deliberation/types";
+import { AudioPlayerInline } from "@/components/bhasha/audio-player-inline";
+import { TerminologyTooltip } from "@/components/bhasha/terminology-tooltip";
+import { getTermsForLanguage } from "@/lib/bhasha/legal-terminology";
+import type { SupportedLanguage } from "@/types/bhasha";
 
 interface HybridClause {
   id: string;
@@ -76,6 +80,7 @@ interface ClauseCardProps {
   roastText?: string | null;
   deliberation?: ClauseDeliberation | null;
   documentId?: string;
+  detectedLanguage?: string;
 }
 
 type ActionTab = "legal" | "fair" | "negotiate" | "penalty" | "eli5" | "community" | "deception" | "debate" | null;
@@ -93,6 +98,7 @@ export default function ClauseCard({
   roastText,
   deliberation: initialDeliberation,
   documentId,
+  detectedLanguage,
 }: ClauseCardProps) {
   const [activeAction, setActiveAction] = useState<ActionTab>(null);
   const [showProofModal, setShowProofModal] = useState(false);
@@ -295,6 +301,14 @@ export default function ClauseCard({
                 <Flame className="h-3 w-3" />
                 Roasted
               </Badge>
+            )}
+            {/* Bhasha: Inline audio for non-English docs */}
+            {detectedLanguage && detectedLanguage !== "en" && (
+              <AudioPlayerInline
+                text={clause.explanation || clause.original_text}
+                language={detectedLanguage as SupportedLanguage}
+                size="sm"
+              />
             )}
           </div>
           {/* Collapsed preview: show AI explanation instead of raw text */}

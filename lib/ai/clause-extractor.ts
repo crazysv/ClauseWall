@@ -7,6 +7,9 @@
 import { callGroq } from "./groq-client";
 import { CLAUSE_EXTRACTION_PROMPT } from "./system-prompt";
 import type { ExtractedClause, DocumentInfo, ExtractionResult } from "@/types";
+import type { SupportedLanguage } from "@/types/bhasha";
+import { getMultilingualExtractionPrompt } from "@/lib/bhasha/multilingual-prompts";
+import { convertNumerals } from "@/lib/bhasha/numeral-converter";
 
 // ============================================
 // ENTITY VALIDATION — Reject hallucinated names
@@ -172,7 +175,8 @@ function sanitizeEntityName(name: string | null | undefined): string | null {
  * Extract individual clauses from a document
  */
 export async function extractClauses(
-  documentText: string
+  documentText: string,
+  sourceLanguage?: SupportedLanguage
 ): Promise<ExtractionResult> {
   try {
     // Truncate if too long (Groq has context limits)
@@ -183,14 +187,23 @@ export async function extractClauses(
           "\n\n[Document truncated due to length — remaining clauses not shown]"
         : documentText;
 
+    // Use multilingual prompt for non-English documents
+    const isMultilingual = sourceLanguage && sourceLanguage !== "en";
+    const systemPrompt = isMultilingual
+      ? getMultilingualExtractionPrompt(sourceLanguage)
+      : CLAUSE_EXTRACTION_PROMPT;
+    const userMessage = isMultilingual
+      ? `Extract all clauses from this ${sourceLanguage} legal document and respond in JSON format:\n\n${truncatedText}`
+      : `Extract all clauses from this Indian legal document and respond in JSON format:\n\n${truncatedText}`;
+
     const response = await callGroq([
       {
         role: "system",
-        content: CLAUSE_EXTRACTION_PROMPT,
+        content: systemPrompt,
       },
       {
         role: "user",
-        content: `Extract all clauses from this Indian legal document and respond in JSON format:\n\n${truncatedText}`,
+        content: userMessage,
       },
     ]);
 

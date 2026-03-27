@@ -81,6 +81,24 @@ export async function GET(request: NextRequest) {
       };
     }
 
+    // ─── Job 4: Contract Watchdog — ToS scrape + analysis ───
+    try {
+      const { runWatchdogCron } = await import(
+        "@/lib/watchdog/cron-handler"
+      );
+      console.log("[Daily Cron] Starting Contract Watchdog scan...");
+      const watchdogResult = await runWatchdogCron(10);
+      console.log("[Daily Cron] Watchdog result:", watchdogResult);
+      results.watchdog = watchdogResult;
+    } catch (watchdogError) {
+      console.error("[Daily Cron] Watchdog scan failed:", watchdogError);
+      results.watchdog = {
+        error: (watchdogError as Error).message,
+        companies_processed: 0,
+        changes_detected: 0,
+      };
+    }
+
     return NextResponse.json(results);
   } catch (error) {
     console.error("[Daily Cron] Error:", error);
