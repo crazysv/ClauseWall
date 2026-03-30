@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ClauseWall | The Editorial Authority in Legal Tech</title>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary-fixed-dim": "#d2bbff",
+                        "surface-dim": "#dad7f3",
+                        "on-primary-container": "#8aa4cf",
+                        "error": "#ba1a1a",
+                        "secondary": "#755b00",
+                        "on-background": "#1a1a2e",
+                        "surface-tint": "#455f87",
+                        "secondary-fixed-dim": "#e6c364",
+                        "on-primary-fixed-variant": "#2d486d",
+                        "inverse-surface": "#2f2e43",
+                        "on-tertiary-container": "#b48fff",
+                        "primary-fixed-dim": "#adc8f5",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface-variant": "#43474e",
+                        "surface-container-highest": "#e2e0fc",
+                        "on-secondary-fixed-variant": "#584400",
+                        "outline-variant": "#c4c6cf",
+                        "primary-container": "#1e3a5f",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#f5f2ff",
+                        "on-tertiary-fixed": "#25005a",
+                        "on-surface": "#1a1a2e",
+                        "primary-fixed": "#d5e3ff",
+                        "background": "#fcf8ff",
+                        "surface-container": "#efecff",
+                        "tertiary-container": "#4a00a4",
+                        "secondary-container": "#fed977",
+                        "on-secondary-fixed": "#241a00",
+                        "tertiary": "#2f006f",
+                        "primary": "#022448",
+                        "inverse-primary": "#adc8f5",
+                        "surface-container-high": "#e8e5ff",
+                        "outline": "#74777f",
+                        "secondary-fixed": "#ffe08f",
+                        "surface-variant": "#e2e0fc",
+                        "surface": "#fcf8ff",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed": "#001c3b",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#5a00c6",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#f2efff",
+                        "surface-bright": "#fcf8ff",
+                        "on-secondary-container": "#785d00",
+                        "tertiary-fixed": "#eaddff"
+                    },
+                    fontFamily: {
+                        "headline": ["Newsreader", "serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .premium-gradient {
+            background: linear-gradient(135deg, #022448 0%, #1e3a5f 100%);
+        }
+        .paper-stack {
+            box-shadow: 
+                0 1px 1px rgba(0,0,0,0.05), 
+                0 10px 0 -5px #ffffff, 
+                0 10px 1px -4px rgba(0,0,0,0.05), 
+                0 20px 0 -10px #f5f2ff, 
+                0 20px 1px -9px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md shadow-sm dark:shadow-none">
+<div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
+<div class="flex items-center gap-8">
+<span class="font-headline text-2xl font-bold text-[#022448] dark:text-[#fcf8ff]">ClauseWall</span>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-slate-600 dark:text-slate-400 font-body text-sm hover:text-[#022448] transition-colors" href="#">Analysis</a>
+<a class="text-slate-600 dark:text-slate-400 font-body text-sm hover:text-[#022448] transition-colors" href="#">Features</a>
+<a class="text-slate-600 dark:text-slate-400 font-body text-sm hover:text-[#022448] transition-colors" href="#">About</a>
+</div>
+</div>
+<button class="premium-gradient text-on-primary px-6 py-2.5 rounded font-body text-sm font-semibold tracking-wide hover:opacity-90 active:scale-95 transition-all">
+                Get Started
+            </button>
+</div>
+</nav>
+<main class="pt-24 overflow-x-hidden">
+<!-- Hero Section -->
+<section class="max-w-7xl mx-auto px-8 py-20 md:py-32 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+<div class="lg:col-span-7 space-y-8">
+<h1 class="font-headline text-5xl md:text-7xl text-primary leading-[1.1] tracking-tight">
+                    The Weight of Authority <br/><span class="italic text-primary-container">Behind Your Contracts</span>
+</h1>
+<p class="font-body text-lg md:text-xl text-on-surface-variant max-w-xl leading-relaxed">
+                    ClauseWall's AI engine dismantles complex legal jargon in seconds, identifying hidden risks and unfair clauses before you sign.
+                </p>
+<div class="flex flex-wrap gap-4 pt-4">
+<button class="premium-gradient text-on-primary px-8 py-4 rounded font-body font-bold text-sm uppercase tracking-widest hover:shadow-xl transition-all">
+                        Secure Your Review
+                    </button>
+<button class="border border-secondary text-secondary px-8 py-4 rounded font-body font-bold text-sm uppercase tracking-widest hover:bg-surface-container-high transition-all">
+                        Learn More
+                    </button>
+</div>
+</div>
+<div class="lg:col-span-5 relative">
+<div class="absolute -top-12 -left-12 w-64 h-64 bg-secondary-container/20 rounded-full blur-3xl -z-10"></div>
+<div class="bg-surface-container-lowest p-6 rounded shadow-2xl border border-outline-variant/10 paper-stack rotate-2 hover:rotate-0 transition-transform duration-500">
+<img class="w-full h-auto rounded grayscale-[20%] contrast-110" data-alt="Close-up of elegant fountain pen resting on a legal document with professional warm lighting and shallow depth of field" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwhEAmyvzxTfxa3qrie8aCz9_O3UD9b8tB-kKPrkUMEZI6bZmtUTEcOgxYFgIbKdglZ6GAtQAK5Sp35aGO7QBZf2nUEAAXJojwtCjTBea0uHX4_thpviBQ55T644QMPvbxppgIfhtj6SzF7T5kqeG3U43n2WtvBVeKTJtgS7LfEAUFfBjcI8yn4k1phoGjv1Ll-z6er5jjPiw-1jQxMDZvD7gaqyPZCTR09MtJoJjfR5bG4usn0aDMfN1wGhvR7FC6g2jVcPZEbHQ"/>
+</div>
+</div>
+</section>
+<!-- Trust Stats -->
+<section class="bg-surface-container-low py-16">
+<div class="max-w-7xl mx-auto px-8">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+<div class="space-y-3">
+<span class="material-symbols-outlined text-secondary text-4xl" style="font-variation-settings: 'FILL' 1;">description</span>
+<div class="font-headline text-3xl font-bold text-primary">50k+</div>
+<div class="font-label text-xs uppercase tracking-[0.15em] text-on-surface-variant">Clauses Analyzed</div>
+</div>
+<div class="space-y-3">
+<span class="material-symbols-outlined text-secondary text-4xl" style="font-variation-settings: 'FILL' 1;">verified</span>
+<div class="font-headline text-3xl font-bold text-primary">99.9%</div>
+<div class="font-label text-xs uppercase tracking-[0.15em] text-on-surface-variant">Accuracy Rate</div>
+</div>
+<div class="space-y-3">
+<span class="material-symbols-outlined text-secondary text-4xl" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<div class="font-headline text-3xl font-bold text-primary">Sub-second</div>
+<div class="font-label text-xs uppercase tracking-[0.15em] text-on-surface-variant">Analysis Speed</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Analysis Interface Preview -->
+<section class="py-24 max-w-7xl mx-auto px-8">
+<div class="text-center mb-16">
+<span class="font-label text-xs uppercase tracking-[0.2em] text-secondary font-bold">The Interface</span>
+<h2 class="font-headline text-4xl mt-4 text-primary italic">Precision in Every Highlight</h2>
+</div>
+<div class="bg-surface-container-lowest rounded shadow-sm p-8 md:p-12 relative border border-outline-variant/10">
+<!-- Toolbar Simulation -->
+<div class="flex items-center justify-between border-b border-surface-container-highest pb-6 mb-8">
+<div class="flex gap-4">
+<div class="w-32 h-4 bg-surface-container rounded-full"></div>
+<div class="w-20 h-4 bg-surface-container-high rounded-full"></div>
+</div>
+<div class="flex gap-2">
+<div class="w-8 h-8 rounded-full bg-surface-container"></div>
+<div class="w-8 h-8 rounded-full bg-surface-container"></div>
+</div>
+</div>
+<!-- Document Content -->
+<div class="space-y-10 font-body text-on-surface leading-loose max-w-4xl mx-auto">
+<p class="text-sm text-outline-variant italic mb-8">Document ID: CW-8829-PRO</p>
+<div class="relative group">
+<span class="bg-[#16a34a]/10 border-l-4 border-[#16a34a] px-2 py-1 cursor-help transition-all">
+                            1.1 DATA PROTECTION. The Provider shall maintain industry-standard administrative, physical, and technical safeguards to protect the security and confidentiality of Client Data.
+                        </span>
+<div class="absolute left-full ml-4 top-0 w-64 p-4 bg-white shadow-xl border border-[#16a34a]/20 rounded opacity-0 group-hover:opacity-100 transition-opacity z-10">
+<span class="font-label text-[10px] uppercase text-[#16a34a] font-bold">Safe Clause</span>
+<p class="text-xs mt-2 text-on-surface-variant">Standard protective language. Aligns with GDPR and CCPA compliance frameworks.</p>
+</div>
+</div>
+<div class="relative group">
+<p>The Service Level Agreement (SLA) governs the availability of the Services. Client acknowledges that the Company may modify these terms at its sole discretion upon notice.</p>
+<span class="bg-[#d97706]/10 border-l-4 border-[#d97706] px-2 py-1 cursor-help transition-all">
+                            1.4 UNILATERAL MODIFICATION. The Company reserves the right to change pricing and service levels with 24-hour digital notice.
+                        </span>
+<div class="absolute left-full ml-4 top-0 w-64 p-4 bg-white shadow-xl border border-[#d97706]/20 rounded opacity-0 group-hover:opacity-100 transition-opacity z-10">
+<span class="font-label text-[10px] uppercase text-[#d97706] font-bold">Warning</span>
+<p class="text-xs mt-2 text-on-surface-variant">Ambiguous notification timeline. 24-hour notice is typically considered insufficient for enterprise changes.</p>
+</div>
+</div>
+<div class="relative group">
+<span class="bg-[#dc2626]/10 border-l-4 border-[#dc2626] px-2 py-1 cursor-help transition-all">
+                            3.2 INDEMNIFICATION LIMITS. Client agrees to indemnify the Company against all third-party claims, including those arising from the Company's own gross negligence.
+                        </span>
+<div class="absolute left-full ml-4 top-0 w-64 p-4 bg-white shadow-xl border border-[#dc2626]/20 rounded opacity-0 group-hover:opacity-100 transition-opacity z-10">
+<span class="font-label text-[10px] uppercase text-[#dc2626] font-bold">Danger</span>
+<p class="text-xs mt-2 text-on-surface-variant">High-liability trap. Broad indemnification for "gross negligence" is often unconscionable and highly risky.</p>
+</div>
+</div>
+<div class="relative group">
+<span class="bg-[#7c3aed]/10 border-l-4 border-[#7c3aed] px-2 py-1 cursor-help transition-all">
+                            5.7 DISPUTE RESOLUTION. Any legal action brought by the Client must be filed in the courts of a jurisdiction where the Company holds no physical presence and where consumer rights are waived.
+                        </span>
+<div class="absolute left-full ml-4 top-0 w-64 p-4 bg-white shadow-xl border border-[#7c3aed]/20 rounded opacity-0 group-hover:opacity-100 transition-opacity z-10">
+<span class="font-label text-[10px] uppercase text-[#7c3aed] font-bold">Illegal Clause</span>
+<p class="text-xs mt-2 text-on-surface-variant">Non-compliant. Provisions requiring waiver of fundamental consumer rights are void in many jurisdictions including CA and NY.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Feature Grid -->
+<section class="bg-surface-container py-24">
+<div class="max-w-7xl mx-auto px-8">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="bg-surface-container-lowest p-10 rounded shadow-sm hover:shadow-md transition-shadow">
+<div class="w-12 h-12 rounded bg-primary-container/10 flex items-center justify-center mb-8">
+<span class="material-symbols-outlined text-primary text-2xl">neurology</span>
+</div>
+<h3 class="font-headline text-2xl mb-4 text-primary">AI Risk Detection</h3>
+<p class="text-on-surface-variant leading-relaxed">Neural networks trained on thousands of contracts to identify exploitative language and hidden liabilities in real-time.</p>
+</div>
+<div class="bg-surface-container-lowest p-10 rounded shadow-sm hover:shadow-md transition-shadow">
+<div class="w-12 h-12 rounded bg-primary-container/10 flex items-center justify-center mb-8">
+<span class="material-symbols-outlined text-primary text-2xl">menu_book</span>
+</div>
+<h3 class="font-headline text-2xl mb-4 text-primary">Expert Citations</h3>
+<p class="text-on-surface-variant leading-relaxed">Every flag comes with direct citations to relevant consumer protection statutes, empowering your legal stance.</p>
+</div>
+<div class="bg-surface-container-lowest p-10 rounded shadow-sm hover:shadow-md transition-shadow">
+<div class="w-12 h-12 rounded bg-primary-container/10 flex items-center justify-center mb-8">
+<span class="material-symbols-outlined text-primary text-2xl">speed</span>
+</div>
+<h3 class="font-headline text-2xl mb-4 text-primary">Real-time Scoring</h3>
+<p class="text-on-surface-variant leading-relaxed">Get a comprehensive 'Guardian Score' for your contract, instantly visualizing your safety level before signing.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Testimonial -->
+<section class="py-24 px-8 max-w-5xl mx-auto">
+<div class="text-center space-y-8">
+<span class="font-headline text-6xl text-secondary-container leading-none select-none">“</span>
+<blockquote class="font-headline text-2xl md:text-3xl text-primary italic leading-relaxed px-4">
+                    ClauseWall flagged a hidden 'Arbitration' clause in my employment contract that would have stripped my rights. It literally saved my career before it even started.
+                </blockquote>
+<div class="pt-6">
+<div class="font-body font-bold text-on-surface uppercase tracking-widest text-sm">Senior Legal Professional</div>
+<div class="text-outline text-xs mt-1">Verified User Engagement</div>
+</div>
+</div>
+</section>
+<!-- Final CTA Area -->
+<section class="py-24 max-w-7xl mx-auto px-8">
+<div class="premium-gradient rounded-xl p-12 md:p-20 text-center relative overflow-hidden">
+<div class="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -mr-24 -mt-24 blur-3xl"></div>
+<h2 class="font-headline text-4xl md:text-5xl text-white mb-8 relative z-10">Ready to Review with Confidence?</h2>
+<p class="text-primary-fixed-dim text-lg mb-12 max-w-2xl mx-auto relative z-10">Join thousands of legal professionals and proactive signatories who trust ClauseWall for every signature.</p>
+<button class="bg-white text-primary px-10 py-5 rounded font-body font-bold text-sm uppercase tracking-widest hover:bg-surface-container-high transition-all relative z-10">
+                    Review Your First Contract
+                </button>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-[#022448] dark:bg-slate-950 text-white dark:text-slate-200">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12 px-12 py-16 w-full max-w-7xl mx-auto">
+<div>
+<span class="font-headline text-xl font-bold text-white block mb-6">ClauseWall</span>
+<p class="font-body text-sm leading-relaxed text-slate-300 max-w-xs">
+                    Automating contract intelligence to protect individual rights and corporate integrity through advanced neural analysis.
+                </p>
+</div>
+<div class="grid grid-cols-2 gap-8">
+<div class="space-y-4">
+<h4 class="font-label text-xs uppercase tracking-widest font-bold text-slate-400">Product</h4>
+<ul class="space-y-2">
+<li><a class="text-slate-300 hover:text-white transition-colors text-sm" href="#">Analysis</a></li>
+<li><a class="text-slate-300 hover:text-white transition-colors text-sm" href="#">Pricing</a></li>
+<li><a class="text-slate-300 hover:text-white transition-colors text-sm" href="#">Features</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h4 class="font-label text-xs uppercase tracking-widest font-bold text-slate-400">Company</h4>
+<ul class="space-y-2">
+<li><a class="text-slate-300 hover:text-white transition-colors text-sm" href="#">About</a></li>
+<li><a class="text-slate-300 hover:text-white transition-colors text-sm" href="#">Careers</a></li>
+<li><a class="text-slate-300 hover:text-white transition-colors text-sm" href="#">Contact</a></li>
+</ul>
+</div>
+</div>
+<div class="space-y-6">
+<h4 class="font-label text-xs uppercase tracking-widest font-bold text-slate-400">Legal</h4>
+<ul class="space-y-2">
+<li><a class="text-slate-300 hover:text-white transition-colors text-sm" href="#">Privacy Policy</a></li>
+<li><a class="text-slate-300 hover:text-white transition-colors text-sm" href="#">Terms of Service</a></li>
+</ul>
+<div class="pt-4 border-t border-white/10 text-xs text-slate-400 font-body">
+                    © 2024 ClauseWall. The Editorial Authority in Legal Tech.
+                </div>
+</div>
+</div>
+</footer>
+</body></html>

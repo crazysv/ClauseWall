@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ClauseWall | Your Contracts Are Hiding Things From You</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "secondary": "#00675e",
+              "on-primary-fixed-variant": "#1a0099",
+              "on-surface-variant": "#535b71",
+              "on-tertiary-fixed-variant": "#560094",
+              "on-tertiary-fixed": "#270048",
+              "tertiary": "#8126cf",
+              "primary": "#4a40e0",
+              "on-secondary-fixed-variant": "#00675e",
+              "error-container": "#f74b6d",
+              "background": "#f6f6ff",
+              "on-secondary-fixed": "#004841",
+              "error": "#b41340",
+              "on-primary": "#f4f1ff",
+              "surface-variant": "#d1dcff",
+              "tertiary-dim": "#740ec2",
+              "primary-dim": "#3d30d4",
+              "on-surface": "#272e42",
+              "inverse-surface": "#060e20",
+              "on-error-container": "#510017",
+              "on-primary-fixed": "#000000",
+              "secondary-fixed-dim": "#7ae7d8",
+              "on-tertiary-container": "#4a0080",
+              "primary-container": "#9795ff",
+              "inverse-primary": "#8582ff",
+              "secondary-dim": "#005a52",
+              "error-dim": "#a70138",
+              "surface-tint": "#4a40e0",
+              "secondary-fixed": "#89f5e7",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-low": "#eef0ff",
+              "outline": "#6f768e",
+              "on-background": "#272e42",
+              "secondary-container": "#89f5e7",
+              "surface-bright": "#f6f6ff",
+              "on-secondary": "#bffff5",
+              "outline-variant": "#a5adc6",
+              "on-error": "#ffefef",
+              "tertiary-fixed-dim": "#c488ff",
+              "surface-container-highest": "#d1dcff",
+              "surface-container": "#e2e7ff",
+              "tertiary-container": "#ce9bff",
+              "on-primary-container": "#14007e",
+              "on-tertiary": "#fbefff",
+              "inverse-on-surface": "#959cb5",
+              "surface": "#f6f6ff",
+              "tertiary-fixed": "#ce9bff",
+              "surface-dim": "#c7d4fa",
+              "primary-fixed-dim": "#8885ff",
+              "surface-container-high": "#d9e2ff",
+              "primary-fixed": "#9795ff",
+              "on-secondary-container": "#005c54"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(20px);
+      }
+      .hero-gradient {
+        background: linear-gradient(135deg, #4a40e0 0%, #9795ff 100%);
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-container">
+<!-- TopAppBar -->
+<nav class="fixed top-0 w-full z-50 bg-indigo-50/70 backdrop-blur-xl shadow-sm shadow-indigo-100/20">
+<div class="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto">
+<div class="text-xl font-extrabold text-indigo-700 flex items-center gap-2 font-headline">
+<span class="material-symbols-outlined">shield</span>
+                ClauseWall
+            </div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="text-slate-600 font-medium hover:text-indigo-500 transition-colors" href="#">Features</a>
+<a class="text-slate-600 font-medium hover:text-indigo-500 transition-colors" href="#">How It Works</a>
+<a class="text-slate-600 font-medium hover:text-indigo-500 transition-colors" href="#">Wall of Shame</a>
+<a class="bg-primary text-on-primary px-6 py-2 rounded-full font-bold hover:scale-95 transition-transform duration-200" href="#">Login</a>
+</div>
+<button class="md:hidden text-indigo-700">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</nav>
+<!-- Hero Section -->
+<header class="relative pt-32 pb-16 px-6 overflow-hidden">
+<div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+<div class="z-10">
+<h1 class="font-headline text-5xl md:text-6xl font-extrabold tracking-tight leading-tight text-on-surface mb-6">
+                    Your Contracts Are <span class="text-primary">Hiding Things</span> From You
+                </h1>
+<p class="text-lg text-on-surface-variant mb-10 max-w-lg leading-relaxed">
+                    AI-powered contract analysis built specifically for Indian law. Scan rental agreements, employment letters, and T&amp;Cs to find predatory clauses before you sign.
+                </p>
+<div class="flex flex-col sm:flex-row gap-4">
+<button class="hero-gradient text-on-primary px-8 py-4 rounded-full font-bold text-lg shadow-xl shadow-primary/20 flex items-center justify-center gap-2 hover:scale-105 transition-transform">
+<span class="material-symbols-outlined">upload_file</span>
+                        Upload Contract
+                    </button>
+<button class="bg-surface-container-lowest text-primary px-8 py-4 rounded-full font-bold text-lg flex items-center justify-center gap-2 hover:bg-surface-container-low transition-colors">
+                        See Demo Analysis
+                    </button>
+</div>
+</div>
+<div class="relative">
+<!-- Visual: Floating glassy contract mockup -->
+<div class="glass-card rounded-xl p-6 shadow-2xl shadow-indigo-200/50 border-0 transform rotate-2 relative z-10">
+<div class="flex items-center gap-2 mb-4 border-b border-surface-container pb-4">
+<span class="material-symbols-outlined text-primary">description</span>
+<span class="font-bold text-on-surface">Rental_Agreement.pdf</span>
+</div>
+<div class="space-y-4">
+<div class="h-4 bg-surface-container w-3/4 rounded-full"></div>
+<div class="p-3 bg-error-container/10 rounded-lg relative overflow-hidden group">
+<div class="h-4 bg-error-container/40 w-full rounded-full mb-2"></div>
+<div class="h-4 bg-error-container/40 w-5/6 rounded-full"></div>
+<span class="absolute -right-2 top-2 bg-error text-white text-[10px] px-2 py-0.5 rounded-full font-bold shadow-lg">DANGEROUS CLAUSE</span>
+</div>
+<div class="h-4 bg-surface-container w-full rounded-full"></div>
+<div class="p-3 bg-secondary-container/20 rounded-lg">
+<div class="h-4 bg-secondary-container/60 w-2/3 rounded-full mb-2"></div>
+<span class="bg-secondary text-white text-[10px] px-2 py-0.5 rounded-full font-bold">FAIR TERM</span>
+</div>
+<div class="h-4 bg-surface-container w-1/2 rounded-full"></div>
+<div class="p-3 bg-tertiary-container/20 rounded-lg">
+<div class="h-4 bg-tertiary-container/60 w-4/5 rounded-full"></div>
+<span class="bg-tertiary text-white text-[10px] px-2 py-0.5 rounded-full font-bold">ILLEGAL UNDER RERA</span>
+</div>
+</div>
+</div>
+<!-- Decorative element -->
+<div class="absolute -top-10 -right-10 w-64 h-64 bg-primary/10 blur-3xl rounded-full"></div>
+<div class="absolute -bottom-10 -left-10 w-64 h-64 bg-tertiary/10 blur-3xl rounded-full"></div>
+</div>
+</div>
+</header>
+<!-- Stats Bar -->
+<section class="px-6 py-8">
+<div class="max-w-7xl mx-auto flex flex-wrap justify-center gap-4">
+<div class="bg-surface-container-low px-6 py-3 rounded-full flex items-center gap-2 font-semibold text-on-surface">
+<span class="text-primary font-bold">10,000+</span> Scanned
+            </div>
+<div class="bg-surface-container-low px-6 py-3 rounded-full flex items-center gap-2 font-semibold text-on-surface">
+<span class="text-primary font-bold">50+</span> Indian Laws
+            </div>
+<div class="bg-surface-container-low px-6 py-3 rounded-full flex items-center gap-2 font-semibold text-on-surface">
+<span class="text-primary font-bold">30+</span> Clause Types
+            </div>
+<div class="bg-surface-container-low px-6 py-3 rounded-full flex items-center gap-2 font-semibold text-on-surface">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">verified</span>
+                100% Free
+            </div>
+</div>
+</section>
+<!-- Problem Section -->
+<section class="bg-surface-container-low py-24 px-6">
+<div class="max-w-7xl mx-auto">
+<div class="text-center mb-16">
+<h2 class="font-headline text-3xl md:text-4xl font-extrabold text-on-surface mb-4">Ever Signed Something You Didn't Fully Understand?</h2>
+<p class="text-on-surface-variant max-w-2xl mx-auto">Standard contracts are often written to protect only the author. We level the playing field.</p>
+</div>
+<div class="grid md:grid-cols-3 gap-8">
+<div class="bg-surface-container-lowest p-8 rounded-lg shadow-xl shadow-indigo-900/5 border-l-8 border-yellow-500">
+<span class="material-symbols-outlined text-yellow-600 mb-4 text-3xl">warning</span>
+<h3 class="font-headline text-xl font-bold mb-3">Hidden Penalties</h3>
+<p class="text-on-surface-variant leading-relaxed">Microscopic text detailing 18% monthly interest or arbitrary 'maintenance' fees that kick in without notice.</p>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-lg shadow-xl shadow-indigo-900/5 border-l-8 border-tertiary">
+<span class="material-symbols-outlined text-tertiary mb-4 text-3xl">gavel</span>
+<h3 class="font-headline text-xl font-bold mb-3">Illegal Clauses</h3>
+<p class="text-on-surface-variant leading-relaxed">Terms that violate the Consumer Protection Act or Model Tenancy Act but are still slipped into Indian contracts.</p>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-lg shadow-xl shadow-indigo-900/5 border-l-8 border-error">
+<span class="material-symbols-outlined text-error mb-4 text-3xl">balance</span>
+<h3 class="font-headline text-xl font-bold mb-3">One-Sided Terms</h3>
+<p class="text-on-surface-variant leading-relaxed">Clauses giving the other party "sole discretion" to terminate while locking you into 3-year commitments.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- How It Works -->
+<section class="py-24 px-6 bg-indigo-50/50">
+<div class="max-w-7xl mx-auto">
+<h2 class="font-headline text-3xl md:text-4xl font-extrabold text-center mb-16">Three Steps to Contract Safety</h2>
+<div class="grid md:grid-cols-3 gap-12">
+<div class="text-center group">
+<div class="w-16 h-16 bg-primary text-on-primary rounded-2xl flex items-center justify-center font-black text-2xl mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform">1</div>
+<h3 class="font-headline text-xl font-bold mb-3">Upload or Paste</h3>
+<p class="text-on-surface-variant">Simply drag your PDF or paste the text of the agreement you're about to sign.</p>
+</div>
+<div class="text-center group">
+<div class="w-16 h-16 bg-primary text-on-primary rounded-2xl flex items-center justify-center font-black text-2xl mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform">2</div>
+<h3 class="font-headline text-xl font-bold mb-3">AI + Legal Analysis</h3>
+<p class="text-on-surface-variant">Our engine cross-references clauses with Indian legal precedents and consumer laws.</p>
+</div>
+<div class="text-center group">
+<div class="w-16 h-16 bg-primary text-on-primary rounded-2xl flex items-center justify-center font-black text-2xl mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform">3</div>
+<h3 class="font-headline text-xl font-bold mb-3">Get Your Report</h3>
+<p class="text-on-surface-variant">Receive a color-coded breakdown of risks, legal citations, and suggested edits.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Features Grid -->
+<section class="py-24 px-6">
+<div class="max-w-7xl mx-auto">
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest p-8 rounded-lg shadow-sm hover:shadow-xl transition-shadow border-t-4 border-primary">
+<span class="material-symbols-outlined text-primary text-3xl mb-4">psychology</span>
+<h4 class="font-headline font-bold text-lg mb-2">AI Risk Detection</h4>
+<p class="text-on-surface-variant text-sm">Advanced NLP detects predatory language patterns and hidden traps in seconds.</p>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest p-8 rounded-lg shadow-sm hover:shadow-xl transition-shadow border-t-4 border-secondary">
+<span class="material-symbols-outlined text-secondary text-3xl mb-4">menu_book</span>
+<h4 class="font-headline font-bold text-lg mb-2">Indian Law Citations</h4>
+<p class="text-on-surface-variant text-sm">Every flag includes specific sections of Indian IPC, RERA, or IT Acts.</p>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest p-8 rounded-lg shadow-sm hover:shadow-xl transition-shadow border-t-4 border-tertiary">
+<span class="material-symbols-outlined text-tertiary text-3xl mb-4">account_tree</span>
+<h4 class="font-headline font-bold text-lg mb-2">Proof Trees</h4>
+<p class="text-on-surface-variant text-sm">Visual flowcharts showing how a specific clause can be used against you in court.</p>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface-container-lowest p-8 rounded-lg shadow-sm hover:shadow-xl transition-shadow border-t-4 border-yellow-500">
+<span class="material-symbols-outlined text-yellow-600 text-3xl mb-4">chat</span>
+<h4 class="font-headline font-bold text-lg mb-2">Negotiation Scripts</h4>
+<p class="text-on-surface-variant text-sm">Exact talking points to use when asking to remove a problematic clause.</p>
+</div>
+<!-- Card 5 -->
+<div class="bg-surface-container-lowest p-8 rounded-lg shadow-sm hover:shadow-xl transition-shadow border-t-4 border-error">
+<span class="material-symbols-outlined text-error text-3xl mb-4">mail</span>
+<h4 class="font-headline font-bold text-lg mb-2">Legal Notice Generator</h4>
+<p class="text-on-surface-variant text-sm">Draft professional responses if a party tries to enforce an illegal clause.</p>
+</div>
+<!-- Card 6 -->
+<div class="bg-surface-container-lowest p-8 rounded-lg shadow-sm hover:shadow-xl transition-shadow border-t-4 border-indigo-400">
+<span class="material-symbols-outlined text-indigo-400 text-3xl mb-4">exit_to_app</span>
+<h4 class="font-headline font-bold text-lg mb-2">Escape Planner</h4>
+<p class="text-on-surface-variant text-sm">Step-by-step guide on how to legally terminate a contract without penalties.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive Preview -->
+<section class="bg-on-surface py-24 px-6 overflow-hidden">
+<div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16">
+<div class="lg:w-1/2">
+<h2 class="font-headline text-3xl md:text-4xl font-extrabold text-surface mb-6">See the Truth Behind the Legalese</h2>
+<p class="text-outline-variant text-lg mb-8">Our interface simplifies complex legal jargon into actionable intelligence. Know exactly what you're agreeing to with clear risk scores and legal context.</p>
+<ul class="space-y-4">
+<li class="flex items-center gap-3 text-surface">
+<span class="material-symbols-outlined text-secondary">check_circle</span>
+                        Verified Legal Precedents
+                    </li>
+<li class="flex items-center gap-3 text-surface">
+<span class="material-symbols-outlined text-secondary">check_circle</span>
+                        Market-Standard Comparisons
+                    </li>
+</ul>
+</div>
+<div class="lg:w-1/2 relative">
+<div class="glass-card rounded-2xl p-8 border-0 shadow-2xl shadow-black/50">
+<div class="bg-error-container/20 border-l-4 border-error p-6 rounded-lg mb-6">
+<div class="flex items-center justify-between mb-4">
+<span class="text-error font-black uppercase text-xs tracking-widest">High Risk Detected</span>
+<span class="material-symbols-outlined text-error">report</span>
+</div>
+<h5 class="text-on-surface font-bold mb-2">Clause 14.2: Arbitrary Lock-in</h5>
+<p class="text-on-surface-variant text-sm italic mb-4">"...the Licensee shall be liable to pay full rent for the remaining period if vacated before 24 months, regardless of notice..."</p>
+<div class="bg-white/50 p-4 rounded-lg">
+<p class="text-on-surface text-xs font-semibold mb-2">WHY THIS IS DANGEROUS:</p>
+<p class="text-on-surface-variant text-xs">This is a 'one-sided penalty' and is often struck down by Indian Courts if there's no reciprocal penalty for the Landlord. See <span class="text-primary underline">Model Tenancy Act Sec 13</span>.</p>
+</div>
+</div>
+</div>
+<!-- Floating Badge -->
+<div class="absolute -bottom-6 -left-6 bg-secondary text-on-primary p-4 rounded-xl shadow-2xl flex items-center gap-3">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">shield</span>
+<div>
+<div class="text-[10px] uppercase font-bold opacity-80">Safe Score</div>
+<div class="text-xl font-black">42/100</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Testimonial -->
+<section class="py-24 px-6 bg-surface-container">
+<div class="max-w-4xl mx-auto">
+<div class="bg-surface-container-lowest p-12 rounded-lg shadow-2xl shadow-indigo-900/10 border-l-[8px] border-primary relative">
+<span class="material-symbols-outlined text-primary-container absolute -top-8 -left-4 text-7xl opacity-50">format_quote</span>
+<p class="text-2xl font-medium text-on-surface italic mb-8 relative z-10">
+                    "ClauseWall saved me from a rental deposit trap in Bangalore. It flagged a clause about non-refundable painting charges that violated the Model Tenancy Act. I negotiated it out and saved ₹45,000."
+                </p>
+<div class="flex items-center gap-4">
+<img alt="Priya S." class="w-14 h-14 rounded-full object-cover" data-alt="headshot of a young Indian woman smiling warmly, professional setting, soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALxNpgbKECoQV-Y33mt3YgI86vGNzWYMBHCPAwRdKJeqluRKb7XTgi9IlmgSGf8d7mIdQIBWQU6ngq6RxGeRywVKj1sTDrMZ-myax1y8St7159ucp4y8dMaqCrjXd4Eyk5MX1dHBTqlEoRNGGSfBgfAQZnKLd5Ximd3II_wano-Vx0XuvsIfzaqtktlZKhYF7VtiViT_WBRU1ALjqeUHjTNfCPfeqtNjT4JlQ0q6Am1eVUU1un1sIBJxdkG1bm4I4ut0WJm4dnZZ8"/>
+<div>
+<h6 class="font-bold text-on-surface">Priya S.</h6>
+<p class="text-on-surface-variant text-sm">Product Designer, Bangalore</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Wall of Shame Teaser -->
+<section class="py-24 px-6 bg-surface-container-low">
+<div class="max-w-7xl mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+<div>
+<h2 class="font-headline text-3xl md:text-4xl font-extrabold mb-4">Wall of Shame</h2>
+<p class="text-on-surface-variant">Companies with the most predatory contracts flagged by our community.</p>
+</div>
+<a class="text-primary font-bold flex items-center gap-2 hover:translate-x-2 transition-transform" href="#">
+                    View Full Wall of Shame
+                    <span class="material-symbols-outlined">arrow_forward</span>
+</a>
+</div>
+<div class="grid md:grid-cols-3 gap-6">
+<!-- Shame Card 1 -->
+<div class="bg-surface-container-lowest p-6 rounded-lg shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center font-bold text-slate-400">CO</div>
+<span class="bg-error-container text-on-error-container px-2 py-1 rounded text-[10px] font-black">CRITICAL</span>
+</div>
+<h5 class="font-bold text-on-surface mb-1">MegaCorp Real Estate</h5>
+<p class="text-on-surface-variant text-xs mb-4">12 Predatory Clauses Found</p>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-error w-[85%] h-full"></div>
+</div>
+<div class="mt-2 text-[10px] font-bold text-error">Risk Score: 8.9/10</div>
+</div>
+<!-- Shame Card 2 -->
+<div class="bg-surface-container-lowest p-6 rounded-lg shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center font-bold text-slate-400">FL</div>
+<span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-[10px] font-black">WARNING</span>
+</div>
+<h5 class="font-bold text-on-surface mb-1">QuickHire Solutions</h5>
+<p class="text-on-surface-variant text-xs mb-4">5 Predatory Clauses Found</p>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-yellow-500 w-[60%] h-full"></div>
+</div>
+<div class="mt-2 text-[10px] font-bold text-yellow-600">Risk Score: 6.2/10</div>
+</div>
+<!-- Shame Card 3 -->
+<div class="bg-surface-container-lowest p-6 rounded-lg shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center font-bold text-slate-400">ST</div>
+<span class="bg-tertiary-container text-on-tertiary-container px-2 py-1 rounded text-[10px] font-black">ILLEGAL</span>
+</div>
+<h5 class="font-bold text-on-surface mb-1">SmartStay Co-living</h5>
+<p class="text-on-surface-variant text-xs mb-4">8 Predatory Clauses Found</p>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-tertiary w-[75%] h-full"></div>
+</div>
+<div class="mt-2 text-[10px] font-bold text-tertiary">Risk Score: 7.5/10</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Final CTA -->
+<section class="py-24 px-6">
+<div class="max-w-5xl mx-auto hero-gradient rounded-xl p-12 md:p-20 text-center relative overflow-hidden shadow-2xl shadow-primary/40">
+<div class="absolute top-0 right-0 p-10 opacity-10">
+<span class="material-symbols-outlined text-[200px]" style="font-variation-settings: 'FILL' 1;">shield</span>
+</div>
+<h2 class="font-headline text-4xl md:text-5xl font-extrabold text-on-primary mb-6 relative z-10">Don't Sign Until You Scan</h2>
+<p class="text-on-primary/80 text-lg mb-12 max-w-xl mx-auto relative z-10">Join 10,000+ Indians protecting themselves from predatory contracts. Fast, free, and legally accurate.</p>
+<button class="bg-surface-container-lowest text-primary px-12 py-5 rounded-full font-black text-xl shadow-2xl hover:scale-105 transition-transform relative z-10">
+                Scan Your Contract Now
+            </button>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-slate-900 w-full rounded-t-[3rem] mt-20">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-8 px-8 py-16 max-w-7xl mx-auto">
+<div>
+<div class="text-lg font-bold text-white uppercase tracking-widest mb-6">ClauseWall</div>
+<p class="font-['Inter'] text-sm text-slate-400 leading-relaxed">Leveling the legal playing field for every Indian citizen.</p>
+</div>
+<div>
+<h6 class="text-white font-semibold mb-6">Product</h6>
+<ul class="space-y-4 font-['Inter'] text-sm text-slate-400">
+<li><a class="hover:text-indigo-300 transition-transform hover:translate-x-1 block" href="#">Analysis Engine</a></li>
+<li><a class="hover:text-indigo-300 transition-transform hover:translate-x-1 block" href="#">Wall of Shame</a></li>
+<li><a class="hover:text-indigo-300 transition-transform hover:translate-x-1 block" href="#">Pricing</a></li>
+</ul>
+</div>
+<div>
+<h6 class="text-white font-semibold mb-6">Legal</h6>
+<ul class="space-y-4 font-['Inter'] text-sm text-slate-400">
+<li><a class="hover:text-indigo-300 transition-transform hover:translate-x-1 block" href="#">Privacy Policy</a></li>
+<li><a class="hover:text-indigo-300 transition-transform hover:translate-x-1 block" href="#">Terms of Service</a></li>
+<li><a class="hover:text-indigo-300 transition-transform hover:translate-x-1 block" href="#">Disclaimer</a></li>
+</ul>
+</div>
+<div>
+<h6 class="text-white font-semibold mb-6">Connect</h6>
+<ul class="space-y-4 font-['Inter'] text-sm text-slate-400">
+<li><a class="hover:text-indigo-300 transition-transform hover:translate-x-1 block" href="#">Twitter</a></li>
+<li><a class="hover:text-indigo-300 transition-transform hover:translate-x-1 block" href="#">LinkedIn</a></li>
+<li><a class="hover:text-indigo-300 transition-transform hover:translate-x-1 block" href="#">Contact Support</a></li>
+</ul>
+</div>
+</div>
+<div class="px-8 pb-12 max-w-7xl mx-auto border-t border-slate-800 pt-8">
+<p class="font-['Inter'] text-sm text-slate-500">© 2024 ClauseWall. Built for India.</p>
+</div>
+</footer>
+</body></html>

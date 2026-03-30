@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-surface-variant": "#d8c3ad",
+              "primary-fixed": "#ffddb8",
+              "on-tertiary": "#580063",
+              "tertiary-fixed": "#ffd6fb",
+              "on-error": "#690005",
+              "secondary-fixed": "#e9ddff",
+              "primary": "#ffc174",
+              "primary-container": "#f59e0b",
+              "surface": "#131315",
+              "on-surface": "#e5e1e4",
+              "inverse-surface": "#e5e1e4",
+              "surface-variant": "#353437",
+              "inverse-primary": "#855300",
+              "secondary": "#d0bcff",
+              "on-tertiary-fixed": "#36003d",
+              "tertiary": "#ffb3ff",
+              "background": "#131315",
+              "primary-fixed-dim": "#ffb95f",
+              "on-primary": "#472a00",
+              "on-tertiary-container": "#780086",
+              "on-primary-container": "#613b00",
+              "on-background": "#e5e1e4",
+              "error": "#ffb4ab",
+              "surface-container-lowest": "#0e0e10",
+              "tertiary-fixed-dim": "#fda9ff",
+              "surface-container-high": "#2a2a2c",
+              "surface-bright": "#39393b",
+              "error-container": "#93000a",
+              "surface-dim": "#131315",
+              "on-secondary-fixed-variant": "#5516be",
+              "on-secondary": "#3c0091",
+              "inverse-on-surface": "#313032",
+              "on-secondary-container": "#c4abff",
+              "surface-tint": "#ffb95f",
+              "on-primary-fixed": "#2a1700",
+              "tertiary-container": "#f785ff",
+              "surface-container-low": "#1c1b1d",
+              "secondary-fixed-dim": "#d0bcff",
+              "on-secondary-fixed": "#23005c",
+              "outline": "#a08e7a",
+              "on-primary-fixed-variant": "#653e00",
+              "surface-container-highest": "#353437",
+              "outline-variant": "#534434",
+              "on-tertiary-fixed-variant": "#7d008c",
+              "on-error-container": "#ffdad6",
+              "secondary-container": "#571bc1",
+              "surface-container": "#201f22"
+            },
+            fontFamily: {
+              "headline": ["Newsreader"],
+              "body": ["Manrope"],
+              "label": ["Manrope"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-card {
+        background: rgba(53, 52, 55, 0.4);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+      .ghost-border {
+        border: 1px solid rgba(83, 68, 52, 0.15);
+      }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary/30 selection:text-primary-fixed">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/60 backdrop-blur-xl flex justify-between items-center px-8 md:px-16 py-6 max-w-full shadow-[0_40px_40px_rgba(0,0,0,0.08)]">
+<div class="text-2xl font-serif italic text-[#E5E1E4] font-headline tracking-wide">ClauseWall</div>
+<div class="hidden md:flex items-center gap-12">
+<a class="text-[#D8C3AD] font-medium hover:text-[#F59E0B] transition-colors duration-300 font-['Newsreader'] tracking-wide" href="#">Platform</a>
+<a class="text-[#D8C3AD] font-medium hover:text-[#F59E0B] transition-colors duration-300 font-['Newsreader'] tracking-wide" href="#">Solutions</a>
+<a class="text-[#D8C3AD] font-medium hover:text-[#F59E0B] transition-colors duration-300 font-['Newsreader'] tracking-wide" href="#">Intelligence</a>
+<a class="text-[#D8C3AD] font-medium hover:text-[#F59E0B] transition-colors duration-300 font-['Newsreader'] tracking-wide" href="#">Pricing</a>
+</div>
+<button class="bg-gradient-to-br from-primary to-primary-container text-on-primary px-6 py-2.5 rounded-lg font-bold scale-95 active:scale-90 transition-transform">
+            Exclusive Access
+        </button>
+</nav>
+<main class="pt-32">
+<!-- Hero Section -->
+<section class="relative px-8 md:px-20 py-24 md:py-40 flex flex-col items-center text-center overflow-hidden">
+<!-- Atmospheric Glows -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-primary/5 blur-[120px] rounded-full -z-10"></div>
+<div class="absolute bottom-0 right-0 w-[400px] h-[400px] bg-tertiary/5 blur-[100px] rounded-full -z-10"></div>
+<h1 class="font-headline text-5xl md:text-8xl lg:text-9xl mb-12 tracking-tight leading-[1.1] max-w-6xl">
+                The <span class="italic text-primary">Gold Standard</span> of Contract Analysis
+            </h1>
+<p class="font-body text-lg md:text-xl text-on-surface-variant max-w-2xl mb-16 leading-relaxed">
+                Elevate your legal strategy with sovereign intelligence. ClauseWall provides a sanctuary for complex document verification and risk mitigation.
+            </p>
+<div class="flex flex-col md:flex-row items-center gap-8">
+<button class="bg-gradient-to-br from-primary to-primary-container text-on-primary px-10 py-5 rounded-lg font-bold text-lg shadow-2xl shadow-primary/20 hover:scale-[1.02] transition-transform">
+                    Begin Analysis
+                </button>
+<a class="text-tertiary font-bold tracking-widest uppercase text-sm hover:opacity-80 transition-opacity flex items-center gap-2" href="#">
+                    Explore the Vault
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+<!-- Refined Stats -->
+<div class="mt-32 grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-32">
+<div class="flex flex-col items-center">
+<span class="font-headline text-4xl text-primary-fixed mb-2">50,000+</span>
+<span class="font-label text-xs tracking-widest uppercase text-on-surface-variant/60">Analyzed</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="font-headline text-4xl text-primary-fixed mb-2">99.9%</span>
+<span class="font-label text-xs tracking-widest uppercase text-on-surface-variant/60">Accuracy</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="font-headline text-4xl text-primary-fixed mb-2">Instant</span>
+<span class="font-label text-xs tracking-widest uppercase text-on-surface-variant/60">Protection</span>
+</div>
+</div>
+</section>
+<!-- Luxe Preview Section -->
+<section class="px-8 md:px-20 py-24 bg-surface-container-low">
+<div class="max-w-7xl mx-auto">
+<div class="glass-card ghost-border rounded-2xl p-8 md:p-16 relative overflow-hidden">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+<!-- Contract Sidebar -->
+<div class="lg:col-span-4 space-y-8">
+<h3 class="font-headline text-2xl mb-8">Risk Intelligence</h3>
+<div class="space-y-4">
+<div class="bg-surface-container p-4 rounded-xl flex items-center justify-between group cursor-default hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-[#34d399]"></div>
+<span class="font-body text-sm">Intellectual Property</span>
+</div>
+<span class="bg-[#34d399]/10 text-[#34d399] px-2 py-1 rounded text-[10px] font-bold uppercase tracking-tighter">Safe</span>
+</div>
+<div class="bg-surface-container p-4 rounded-xl flex items-center justify-between group cursor-default hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-[#fb923c]"></div>
+<span class="font-body text-sm">Termination Clause</span>
+</div>
+<span class="bg-[#fb923c]/10 text-[#fb923c] px-2 py-1 rounded text-[10px] font-bold uppercase tracking-tighter">Warning</span>
+</div>
+<div class="bg-surface-container p-4 rounded-xl flex items-center justify-between group cursor-default hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-[#f43f5e]"></div>
+<span class="font-body text-sm">Liability Caps</span>
+</div>
+<span class="bg-[#f43f5e]/10 text-[#f43f5e] px-2 py-1 rounded text-[10px] font-bold uppercase tracking-tighter">Danger</span>
+</div>
+<div class="bg-surface-container p-4 rounded-xl flex items-center justify-between group cursor-default hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-[#c026d3]"></div>
+<span class="font-body text-sm">Regulatory Breach</span>
+</div>
+<span class="bg-[#c026d3]/15 text-[#c026d3] px-2 py-1 rounded text-[10px] font-bold uppercase tracking-tighter">Illegal</span>
+</div>
+</div>
+</div>
+<!-- Document View -->
+<div class="lg:col-span-8 bg-surface-container-lowest p-8 md:p-12 rounded-xl shadow-inner relative">
+<div class="absolute top-0 right-0 p-4">
+<span class="material-symbols-outlined text-on-surface-variant/20">verified</span>
+</div>
+<h2 class="font-headline text-3xl mb-12 border-b border-outline-variant/10 pb-6 italic">Master Service Agreement</h2>
+<div class="space-y-8 font-body text-sm leading-relaxed text-on-surface-variant">
+<p>Section 4.2: <span class="bg-[#34d399]/10 text-[#34d399] px-1 rounded">All intellectual property rights</span> created under this Agreement shall vest exclusively in the Client upon full payment of the applicable fees.</p>
+<p>Section 7.1: <span class="bg-[#fb923c]/10 text-[#fb923c] px-1 rounded">Either party may terminate</span> this agreement for convenience upon providing no less than ninety (90) days written notice to the other party, subject to outstanding task orders.</p>
+<p>Section 12.4: <span class="bg-[#f43f5e]/10 text-[#f43f5e] px-1 rounded">NOTWITHSTANDING ANYTHING TO THE CONTRARY</span>, THE TOTAL AGGREGATE LIABILITY OF THE PROVIDER SHALL BE LIMITED TO THE TOTAL SUM OF ZERO DOLLARS ($0.00).</p>
+<p>Section 15.9: <span class="bg-[#c026d3]/15 text-[#c026d3] px-1 rounded">Compliance with non-existent jurisdiction</span> laws including the Outer Space Treaty of 1967 as applied to terrestrial residential zoning.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Feature Sections -->
+<section class="px-8 md:px-20 py-32 space-y-32">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-20">
+<div class="flex-1 space-y-8">
+<span class="material-symbols-outlined text-6xl text-primary" data-weight="fill">precision_manufacturing</span>
+<h2 class="font-headline text-4xl md:text-5xl">AI Precision with Sovereign Counsel.</h2>
+<p class="font-body text-on-surface-variant leading-relaxed text-lg">Our proprietary neural networks are trained exclusively on premium legal precedents, ensuring that every nuance of your contract is measured against global gold standards.</p>
+</div>
+<div class="flex-1 w-full aspect-square bg-surface-container rounded-2xl overflow-hidden relative group">
+<img alt="Abstract digital network" class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" data-alt="Abstract 3D render of interconnected gold and purple crystal nodes representing complex legal neural networks in a dark space" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBn6746UwDkbq_p_nUY6KhwfmiGWPb8iWMVhC9kfqAA2bzDB9RTMAQrPHsCGR4EiJI2rNgoRFGlXnRERQx_tVjxPtYYXsTgMma65Sdmw4TTPeuRYbgD2_t1PDuyEHO0zjGAH4jdnvDXVhAOI3hNKaBVG93vhys8nhT8RXMQXtgoTVOA3evW81SoP4QPp17mteEP0jdVPYpOO1B1So_d-LV2UN57NMzCno0XghpcYDBVkxqn3cfRdRsTFb-jfBb_bOCut2bYUq5romk"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent"></div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row-reverse items-center gap-20">
+<div class="flex-1 space-y-8">
+<span class="material-symbols-outlined text-6xl text-primary" data-weight="fill">encrypted</span>
+<h2 class="font-headline text-4xl md:text-5xl">Your Private Vault of Legal Intel.</h2>
+<p class="font-body text-on-surface-variant leading-relaxed text-lg">Security is not a feature; it is our foundation. Every analysis is conducted in an isolated zero-trust environment, ensuring your intellectual assets remain yours alone.</p>
+</div>
+<div class="flex-1 w-full aspect-square bg-surface-container rounded-2xl overflow-hidden relative group">
+<img alt="Cyber security vault" class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" data-alt="Cinematic shot of a high-tech obsidian vault door with golden laser security patterns and soft violet atmospheric lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiYh_plTuaJ7n-JQQJ-VZXgnYGDOBEsAk26qQNnkLvS7Mi7hMbI2PokBidzx8HatlfPUFip_6cfL45i0Uiv0PtX3aFfzHaHX9dPegg0Z_4tCkPf4vFGC99jln99L65kYLYJnmAHr1a-RYzvcH1qxLUX0qhQLrgkZ4zggtOKsdzZU1QZIWfRn0N71cM5I1t071RHMA51oxStVr7Rz5kw-PjpPH4jZ5kCgOp2jOXlsBEySoNr-ycqhVdp7sI2jiEvLJzuZ-1E5dbyOw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent"></div>
+</div>
+</div>
+</section>
+<!-- Social Proof (Floating Testimonials) -->
+<section class="px-8 md:px-20 py-32 bg-surface-container-lowest overflow-hidden">
+<div class="max-w-7xl mx-auto text-center mb-24">
+<h2 class="font-headline text-4xl md:text-5xl italic">Vouched by the Vanguard</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+<div class="glass-card ghost-border p-8 rounded-2xl shadow-xl hover:-translate-y-2 transition-transform duration-500">
+<div class="mb-6 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">format_quote</span>
+</div>
+<p class="font-body text-on-surface leading-loose italic mb-10">"ClauseWall has redefined our entire legal workflow. It’s the difference between guessing and knowing."</p>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest"></div>
+<div>
+<div class="font-bold text-sm">Marcus Sterling</div>
+<div class="text-[10px] uppercase tracking-widest text-on-surface-variant/60">GC at Arcanum Ltd.</div>
+</div>
+</div>
+</div>
+<div class="glass-card ghost-border p-8 rounded-2xl shadow-xl hover:-translate-y-2 transition-transform duration-500 md:translate-y-12">
+<div class="mb-6 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">format_quote</span>
+</div>
+<p class="font-body text-on-surface leading-loose italic mb-10">"The UI feels like a private gallery. It’s the first legal tool I actually enjoy using every morning."</p>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest"></div>
+<div>
+<div class="font-bold text-sm">Elena Voss</div>
+<div class="text-[10px] uppercase tracking-widest text-on-surface-variant/60">Partner at Voss &amp; Grey</div>
+</div>
+</div>
+</div>
+<div class="glass-card ghost-border p-8 rounded-2xl shadow-xl hover:-translate-y-2 transition-transform duration-500">
+<div class="mb-6 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">format_quote</span>
+</div>
+<p class="font-body text-on-surface leading-loose italic mb-10">"Accuracy that rivals top-tier associates with a speed that is simply impossible for humans."</p>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest"></div>
+<div>
+<div class="font-bold text-sm">Julian Thorne</div>
+<div class="text-[10px] uppercase tracking-widest text-on-surface-variant/60">Director, Apex Equity</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Final CTA -->
+<section class="relative px-8 md:px-20 py-48 overflow-hidden bg-surface-container-low text-center">
+<div class="absolute inset-0 bg-gradient-to-b from-surface to-surface-container-lowest"></div>
+<!-- Glow background -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-primary/10 to-tertiary/10 blur-[140px] rounded-full"></div>
+<div class="relative z-10 max-w-4xl mx-auto space-y-16">
+<h2 class="font-headline text-5xl md:text-7xl">Enter the ClauseWall Vault</h2>
+<p class="font-body text-xl text-on-surface-variant/80">Step into the future of legal certainty. Your sovereign journey starts here.</p>
+<button class="bg-gradient-to-br from-primary to-primary-container text-on-primary px-16 py-6 rounded-lg font-bold text-xl shadow-[0_0_50px_rgba(245,158,11,0.2)] hover:scale-105 transition-transform">
+                    Gain Access Now
+                </button>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full border-t border-[#534434]/15 bg-[#131315] flex flex-col md:flex-row justify-between items-center px-10 md:px-20 py-12 w-full">
+<div class="flex flex-col items-center md:items-start gap-4 mb-8 md:mb-0">
+<div class="text-lg font-serif text-[#E5E1E4] font-headline">ClauseWall</div>
+<p class="font-['Manrope'] text-[0.6875rem] tracking-widest uppercase text-[#D8C3AD]/60">© 2024 ClauseWall. All rights reserved. Sovereign Counsel.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-8">
+<a class="font-['Manrope'] text-[0.6875rem] tracking-widest uppercase text-[#D8C3AD]/60 hover:text-[#F59E0B] transition-opacity opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="font-['Manrope'] text-[0.6875rem] tracking-widest uppercase text-[#D8C3AD]/60 hover:text-[#F59E0B] transition-opacity opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+<a class="font-['Manrope'] text-[0.6875rem] tracking-widest uppercase text-[#D8C3AD]/60 hover:text-[#F59E0B] transition-opacity opacity-80 hover:opacity-100" href="#">Legal Disclaimer</a>
+<a class="font-['Manrope'] text-[0.6875rem] tracking-widest uppercase text-[#D8C3AD]/60 hover:text-[#F59E0B] transition-opacity opacity-80 hover:opacity-100" href="#">Regulatory Disclosure</a>
+</div>
+</footer>
+</body></html>
