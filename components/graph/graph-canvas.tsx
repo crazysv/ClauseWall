@@ -48,7 +48,7 @@ interface SimNode extends VisNode {
   fy?: number | null;
 }
 
-export default function GraphCanvas({ data, highlightType }: GraphCanvasProps) {
+export function GraphCanvas({ data, highlightType }: GraphCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [hoveredNode, setHoveredNode] = useState<SimNode | null>(null);
@@ -356,7 +356,7 @@ export default function GraphCanvas({ data, highlightType }: GraphCanvasProps) {
 
   if (!data || data.nodes.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full text-gray-500 text-sm">
+      <div className="flex items-center justify-center h-full text-slate-500 dark:text-slate-400 text-sm">
         No graph data to visualize
       </div>
     );
@@ -370,8 +370,8 @@ export default function GraphCanvas({ data, highlightType }: GraphCanvasProps) {
       <canvas ref={canvasRef} className="w-full h-full" />
 
       {/* Legend */}
-      <div className="absolute bottom-3 left-3 p-2 rounded-lg bg-black/70 border border-white/10">
-        <p className="text-[9px] text-gray-500 mb-1.5 font-medium">NODE TYPES</p>
+      <div className="absolute bottom-3 left-3 p-2 rounded-xl bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border border-white/10">
+        <p className="text-[9px] text-slate-500 dark:text-slate-400 mb-1.5 font-medium">NODE TYPES</p>
         <div className="flex flex-wrap gap-x-3 gap-y-1">
           {presentTypes.map((type) => (
             <div key={type} className="flex items-center gap-1">
@@ -379,7 +379,7 @@ export default function GraphCanvas({ data, highlightType }: GraphCanvasProps) {
                 className="w-2.5 h-2.5 rounded-full"
                 style={{ backgroundColor: NODE_COLORS[type] || "#6B7280" }}
               />
-              <span className="text-[9px] text-gray-400">
+              <span className="text-[9px] text-slate-400">
                 {type.replace(/_/g, " ")}
               </span>
             </div>
@@ -388,8 +388,8 @@ export default function GraphCanvas({ data, highlightType }: GraphCanvasProps) {
       </div>
 
       {/* Controls hint */}
-      <div className="absolute top-3 right-3 p-2 rounded-lg bg-black/70 border border-white/10">
-        <p className="text-[9px] text-gray-500">Scroll: Zoom • Drag: Move nodes</p>
+      <div className="absolute top-3 right-3 p-2 rounded-xl bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border border-white/10">
+        <p className="text-[9px] text-slate-500 dark:text-slate-400">Scroll: Zoom • Drag: Move nodes</p>
       </div>
     </div>
   );

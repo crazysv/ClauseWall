@@ -61,7 +61,7 @@ export default function EvidenceBundlePage() {
   };
 
   return (
-    <main className="min-h-screen bg-background">
+    <main role="main" className="min-h-screen bg-background">
       <div className="max-w-2xl mx-auto px-4 py-8">
         <Link href={`/evidence/${caseId}`} className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground mb-6">
           <ArrowLeft className="h-3 w-3" />Back to Case
@@ -84,11 +84,7 @@ export default function EvidenceBundlePage() {
             <button
               key={bt.value}
               onClick={() => setBundleType(bt.value)}
-              className={`w-full text-left rounded-lg border p-4 transition-all ${
-                bundleType === bt.value
-                  ? "border-blue-500/50 bg-blue-500/5"
-                  : "border-white/5 bg-white/[0.02] hover:border-white/10"
-              }`}
+              className={`w-full text-left rounded-lg border p-4 transition-all ${ bundleType === bt.value ? "border-blue-500/50 bg-blue-500/5" : "border-white/5 bg-white dark:bg-slate-900/[0.02] hover:border-white/10" }`}
             >
               <p className="text-sm font-medium text-foreground">{bt.label}</p>
               <p className="text-xs text-muted-foreground mt-0.5">{bt.desc}</p>
@@ -98,12 +94,13 @@ export default function EvidenceBundlePage() {
 
         {/* Title */}
         <div className="space-y-2 mb-6">
-          <label className="text-sm font-medium text-foreground">Bundle Title</label>
+          <label htmlFor="bundle-title" className="text-sm font-medium text-foreground">Bundle Title</label>
           <input
+            id="bundle-title"
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full rounded-lg bg-white/5 border border-white/10 px-4 py-3 text-sm text-foreground focus:outline-none focus:border-blue-500/50"
+            className="w-full rounded-lg bg-white dark:bg-slate-900/5 border border-white/10 px-4 py-3 text-sm text-foreground focus:outline-none focus:border-blue-500/50"
           />
         </div>
 
@@ -115,12 +112,12 @@ export default function EvidenceBundlePage() {
             { label: "Table of Contents / Index", checked: includeIndex, onChange: setIncludeIndex },
             { label: "Chain of Custody Report", checked: includeChain, onChange: setIncludeChain },
           ].map((opt) => (
-            <label key={opt.label} className="flex items-center gap-3 p-3 rounded-lg bg-white/[0.02] border border-white/5 cursor-pointer hover:bg-white/[0.04]">
+            <label key={opt.label} className="flex items-center gap-3 p-3 rounded-lg bg-white dark:bg-slate-900/[0.02] border border-white/5 cursor-pointer hover:bg-white dark:bg-slate-900/[0.04]">
               <input
                 type="checkbox"
                 checked={opt.checked}
                 onChange={(e) => opt.onChange(e.target.checked)}
-                className="rounded border-white/20 bg-white/5 text-blue-500 focus:ring-blue-500"
+                className="rounded border-white/20 bg-white dark:bg-slate-900/5 text-blue-500 focus:ring-blue-500"
               />
               <span className="text-sm text-foreground">{opt.label}</span>
             </label>

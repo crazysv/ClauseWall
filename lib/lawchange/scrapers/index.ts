@@ -95,7 +95,6 @@ export async function runAllScrapers(): Promise<DailyScrapingReport> {
   let totalChangesFound = 0;
   let totalNewChanges = 0;
 
-  console.log(`[Scraper] 🔍 Starting daily scraping run for ${today}...`);
 
   // Define all scrapers
   const scrapers = [
@@ -108,7 +107,6 @@ export async function runAllScrapers(): Promise<DailyScrapingReport> {
   ];
 
   for (const scraper of scrapers) {
-    console.log(`[Scraper]   📡 Scraping ${scraper.name}...`);
 
     try {
       const { result, changes } = await scraper.fn();
@@ -117,15 +115,9 @@ export async function runAllScrapers(): Promise<DailyScrapingReport> {
       if (changes.length > 0) {
         const { inserted, duplicates } = await storeScrapedChanges(changes);
         result.new_changes = inserted;
-        console.log(
-          `[Scraper]   ✅ ${scraper.name}: ${changes.length} found, ${inserted} new, ${duplicates} duplicates`
-        );
+
       } else {
-        console.log(
-          `[Scraper]   ${result.success ? "✅" : "❌"} ${scraper.name}: ${
-            result.error || "0 results"
-          }`
-        );
+
       }
 
       results.push(result);
@@ -179,9 +171,6 @@ export async function runAllScrapers(): Promise<DailyScrapingReport> {
     results,
   };
 
-  console.log(
-    `[Scraper] 📊 Daily report: ${report.sources_succeeded}/${report.sources_checked} sources succeeded, ${totalChangesFound} total changes, ${totalNewChanges} new`
-  );
 
   return report;
 }

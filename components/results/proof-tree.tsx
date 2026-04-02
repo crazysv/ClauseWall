@@ -16,61 +16,64 @@ import {
   ChevronDown,
   ChevronUp,
   X,
+  ShieldCheck,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import type { ProofNode, ProofTree } from "@/lib/reasoning/types";
 
 // ---- Node icon mapping ----
-
 function getNodeIcon(type: ProofNode["type"]) {
   switch (type) {
-    case "extraction": return <BarChart3 className="h-3.5 w-3.5" />;
-    case "fact": return <FileText className="h-3.5 w-3.5" />;
-    case "rule": return <Scale className="h-3.5 w-3.5" />;
-    case "condition_check": return <Search className="h-3.5 w-3.5" />;
-    case "comparison": return <Zap className="h-3.5 w-3.5" />;
-    case "inference": return <Link2 className="h-3.5 w-3.5" />;
-    case "conclusion": return <CheckCircle2 className="h-3.5 w-3.5" />;
-    default: return <HelpCircle className="h-3.5 w-3.5" />;
+    case "extraction": return <BarChart3 className="h-4 w-4" />;
+    case "fact": return <FileText className="h-4 w-4" />;
+    case "rule": return <Scale className="h-4 w-4" />;
+    case "condition_check": return <Search className="h-4 w-4" />;
+    case "comparison": return <Zap className="h-4 w-4" />;
+    case "inference": return <Link2 className="h-4 w-4" />;
+    case "conclusion": return <CheckCircle2 className="h-4 w-4" />;
+    default: return <HelpCircle className="h-4 w-4" />;
   }
 }
 
 function getStatusIcon(status: ProofNode["status"]) {
   switch (status) {
-    case "proven": return <CheckCircle2 className="h-3 w-3 text-green-400" />;
-    case "failed": return <XCircle className="h-3 w-3 text-red-400" />;
-    case "uncertain": return <AlertTriangle className="h-3 w-3 text-amber-400" />;
-    case "assumed": return <HelpCircle className="h-3 w-3 text-blue-400" />;
+    case "proven": return <CheckCircle2 className="h-4 w-4 text-emerald-500" />;
+    case "failed": return <XCircle className="h-4 w-4 text-rose-500" />;
+    case "uncertain": return <AlertTriangle className="h-4 w-4 text-amber-500" />;
+    case "assumed": return <HelpCircle className="h-4 w-4 text-blue-500" />;
   }
 }
 
-function getNodeColors(node: ProofNode): { bg: string; border: string; text: string; icon: string } {
+function getNodeColors(node: ProofNode): { bg: string; border: string; text: string; icon: string; leftBorder: string } {
   if (node.type === "conclusion") {
-    const risk = node.metadata.riskLevel;
-    if (risk === "illegal") return { bg: "bg-red-500/10", border: "border-red-500/40", text: "text-red-300", icon: "text-red-400" };
-    if (risk === "dangerous") return { bg: "bg-orange-500/10", border: "border-orange-500/40", text: "text-orange-300", icon: "text-orange-400" };
-    if (risk === "safe") return { bg: "bg-emerald-500/10", border: "border-emerald-500/40", text: "text-emerald-300", icon: "text-emerald-400" };
-    return { bg: "bg-amber-500/10", border: "border-amber-500/40", text: "text-amber-300", icon: "text-amber-400" };
+    const risk = node.metadata?.riskLevel || (node.metadata as any)?.risk;
+    if (risk === "illegal") return { bg: "bg-white", border: "border-purple-200", text: "text-purple-900", icon: "text-purple-600", leftBorder: "border-l-purple-600" };
+    if (risk === "dangerous") return { bg: "bg-white", border: "border-rose-200", text: "text-rose-900", icon: "text-rose-600", leftBorder: "border-l-rose-500" };
+    if (risk === "safe") return { bg: "bg-white", border: "border-emerald-200", text: "text-emerald-900", icon: "text-emerald-600", leftBorder: "border-l-emerald-500" };
+    return { bg: "bg-white", border: "border-amber-200", text: "text-amber-900", icon: "text-amber-600", leftBorder: "border-l-amber-500" };
   }
 
-  if (node.status === "failed") return { bg: "bg-red-500/5", border: "border-red-500/30", text: "text-red-300", icon: "text-red-400" };
-  if (node.status === "uncertain") return { bg: "bg-amber-500/5", border: "border-amber-500/30 border-dashed", text: "text-amber-300", icon: "text-amber-400" };
+  if (node.status === "failed") return { bg: "bg-rose-50", border: "border-rose-200", text: "text-rose-900", icon: "text-rose-600", leftBorder: "border-l-rose-400" };
+  if (node.status === "uncertain") return { bg: "bg-amber-50", border: "border-amber-200 border-dashed", text: "text-amber-800", icon: "text-amber-500", leftBorder: "border-l-amber-400" };
 
   switch (node.type) {
-    case "rule": return { bg: "bg-blue-500/8", border: "border-blue-500/30", text: "text-blue-300", icon: "text-blue-400" };
+    case "rule": 
+      return { bg: "bg-amber-50", border: "border-amber-200", text: "text-amber-900", icon: "text-amber-600", leftBorder: "border-l-amber-500" };
+    case "fact":
+    case "extraction": 
+      return { bg: "bg-blue-50", border: "border-blue-200", text: "text-blue-900", icon: "text-blue-600", leftBorder: "border-l-blue-500" };
     case "comparison": {
       const passed = node.metadata.comparisonResult;
       return passed
-        ? { bg: "bg-red-500/8", border: "border-red-500/30", text: "text-red-300", icon: "text-red-400" }
-        : { bg: "bg-green-500/8", border: "border-green-500/30", text: "text-green-300", icon: "text-green-400" };
+        ? { bg: "bg-rose-50", border: "border-rose-200", text: "text-rose-900", icon: "text-rose-600", leftBorder: "border-l-rose-400" }
+        : { bg: "bg-emerald-50", border: "border-emerald-200", text: "text-emerald-900", icon: "text-emerald-600", leftBorder: "border-l-emerald-400" };
     }
-    case "extraction": return { bg: "bg-purple-500/8", border: "border-purple-500/30", text: "text-purple-300", icon: "text-purple-400" };
-    default: return { bg: "bg-white/[0.03]", border: "border-white/10", text: "text-gray-300", icon: "text-gray-400" };
+    default: 
+      return { bg: "bg-white", border: "border-slate-200", text: "text-slate-800", icon: "text-slate-500", leftBorder: "border-l-slate-300" };
   }
 }
 
 // ---- Props ----
-
 interface ProofTreeViewProps {
   proofTree: ProofTree;
   mode: "visual" | "text";
@@ -80,7 +83,6 @@ interface ProofTreeViewProps {
 }
 
 // ---- Tree Node Component ----
-
 function TreeNodeCard({
   node,
   depth,
@@ -110,6 +112,29 @@ function TreeNodeCard({
     ? Math.round(node.metadata.confidence * 100)
     : null;
 
+  // Render Verdict badge for the root conclusion node
+  const renderVerdictBadge = () => {
+    if (depth !== 0) return null;
+    const risk = (node.metadata as any)?.riskLevel || (node.metadata as any)?.risk;
+    
+    let pillColor = "bg-slate-500";
+    let pillText = "Proven";
+
+    if (risk === "illegal") { pillColor = "bg-purple-600"; pillText = "Proven Illegal"; }
+    else if (risk === "dangerous") { pillColor = "bg-rose-500"; pillText = "Proven Dangerous"; }
+    else if (risk === "safe") { pillColor = "bg-emerald-500"; pillText = "Proven Safe"; }
+    else if (risk === "warning") { pillColor = "bg-amber-500 text-white"; pillText = "Proven Warning"; }
+
+    return (
+      <div className="flex justify-center mb-6">
+        <Badge className={`${pillColor} text-white hover:${pillColor} px-4 md:px-6 py-2 rounded-full text-sm font-black uppercase tracking-widest shadow-md flex items-center gap-2`}>
+          <ShieldCheck className="w-5 h-5 text-white" />
+          {pillText}
+        </Badge>
+      </div>
+    );
+  };
+
   return (
     <motion.div
       initial={prefersReduced ? {} : { opacity: 0, y: 10 }}
@@ -117,15 +142,17 @@ function TreeNodeCard({
       transition={{ duration: 0.2, delay: prefersReduced ? 0 : staggerIndex * 0.05 }}
       className="relative"
     >
-      {/* Connecting line from parent */}
+      {renderVerdictBadge()}
+
+      {/* Connecting line up to parent */}
       {depth > 0 && (
-        <div className="absolute -top-3 left-5 h-3 w-px bg-white/10" />
+        <div className="absolute -top-4 left-6 h-4 w-[2px] bg-slate-300" />
       )}
 
       {/* Node card */}
       <motion.button
         animate={{
-          opacity: isWalkthroughActive && !isActive ? 0.4 : 1,
+          opacity: isWalkthroughActive && !isActive ? 0.6 : 1,
           scale: isActive ? 1.02 : 1,
         }}
         transition={{ duration: 0.2 }}
@@ -141,33 +168,29 @@ function TreeNodeCard({
         }}
         tabIndex={0}
         aria-label={`${node.type} node: ${node.label}. Status: ${node.status}`}
-        className={`w-full text-left p-3 rounded-lg border transition-all ${colors.bg} ${colors.border} ${
-          isActive
-            ? "ring-2 ring-cyan-500/50 shadow-lg shadow-cyan-500/10"
-            : "hover:brightness-125"
-        }`}
+        className={`w-full text-left p-4 rounded-xl border border-l-4 shadow-sm dark:shadow-slate-900/20 transition-all duration-200 ${colors.bg} ${colors.border} ${colors.leftBorder} ${ isActive ? "ring-2 ring-indigo-500/50 shadow-md bg-indigo-50 border-indigo-200" : "hover:shadow-md hover:border-slate-300 dark:border-slate-600" } ${depth === 0 ? "mb-2 shadow-md border-l-8 p-5" : ""}`}
       >
-        <div className="flex items-start justify-between gap-2">
-          <div className="flex items-start gap-2 min-w-0">
-            <span className={`mt-0.5 flex-shrink-0 ${colors.icon}`}>
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex items-start gap-3 min-w-0">
+            <span className={`mt-0.5 flex-shrink-0 bg-white dark:bg-card p-1 rounded-md shadow-sm dark:shadow-slate-900/20 border border-slate-100 ${colors.icon}`}>
               {getNodeIcon(node.type)}
             </span>
             <div className="min-w-0">
-              <p className={`text-xs font-medium leading-snug ${colors.text}`}>
+              <p className={`text-sm ${depth === 0 ? "font-black text-lg" : "font-bold"} leading-snug ${colors.text}`}>
                 {label}
               </p>
               {node.type === "comparison" && node.metadata.leftOperand !== undefined && (
-                <p className="text-[10px] text-gray-500 mt-0.5 font-mono">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-mono font-medium bg-white dark:bg-slate-900 px-2 py-0.5 inline-block rounded border border-slate-100">
                   {String(node.metadata.leftOperand)} {node.metadata.operator} {String(node.metadata.rightOperand)}
                 </p>
               )}
             </div>
           </div>
-          <div className="flex items-center gap-1 flex-shrink-0">
+          <div className="flex items-center gap-2 flex-shrink-0 bg-white dark:bg-card px-2 py-1 rounded-full border border-slate-100 shadow-sm dark:shadow-slate-900/20">
             {conf !== null && conf < 100 && (
-              <Badge variant="outline" className="text-[9px] px-1 py-0 border-white/10 text-gray-500">
+              <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400">
                 {conf}%
-              </Badge>
+              </span>
             )}
             {getStatusIcon(node.status)}
           </div>
@@ -176,19 +199,22 @@ function TreeNodeCard({
 
       {/* Children */}
       {hasChildren && (
-        <div className="mt-1 ml-2">
+        <div className="mt-2 ml-4 relative">
+          {/* Vertical stem line going down to children */}
+          <div className="absolute top-0 bottom-0 left-2 w-[2px] bg-slate-300 z-0" />
+          
           {node.children.length > 2 && (
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 setIsChildrenExpanded(!isChildrenExpanded);
               }}
-              className="flex items-center gap-1 text-[10px] text-gray-600 hover:text-gray-400 mb-1 ml-3"
+              className="relative z-10 flex items-center justify-center gap-1.5 text-xs font-bold text-slate-600 dark:text-slate-400 bg-white dark:bg-card border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-indigo-600 shadow-sm dark:shadow-slate-900/20 px-3 py-1 rounded-full mb-3 ml-6 transition-all"
             >
               {isChildrenExpanded ? (
-                <><ChevronUp className="h-3 w-3" /> Hide sub-steps</>
+                <><ChevronUp className="h-4 w-4" /> Collapse chain</>
               ) : (
-                <><ChevronDown className="h-3 w-3" /> Show {node.children.length} sub-steps</>
+                <><ChevronDown className="h-4 w-4" /> Expand {node.children.length} structural proofs</>
               )}
             </button>
           )}
@@ -199,10 +225,10 @@ function TreeNodeCard({
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.15 }}
-                className="overflow-hidden"
+                transition={{ duration: 0.25 }}
+                className="overflow-hidden relative z-10"
               >
-                <div className="pl-4 border-l border-white/5 space-y-1.5">
+                <div className="pl-6 space-y-3 pb-2 pt-1">
                   {node.children.map((child, i) => (
                     <TreeNodeCard
                       key={child.id}
@@ -225,7 +251,6 @@ function TreeNodeCard({
 }
 
 // ---- Node Detail Panel ----
-
 function NodeDetailPanel({
   node,
   onClose,
@@ -242,75 +267,77 @@ function NodeDetailPanel({
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
-      transition={{ duration: 0.15 }}
-      className={`p-4 rounded-xl border ${colors.bg} ${colors.border} space-y-3`}
+      transition={{ duration: 0.2 }}
+      className="p-5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-card shadow-xl space-y-4"
     >
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between border-b border-slate-100 pb-3">
         <div className="flex items-center gap-2">
-          <span className={colors.icon}>{getNodeIcon(node.type)}</span>
-          <span className="text-xs font-semibold text-gray-300 uppercase tracking-wider">
-            {node.type.replace(/_/g, " ")}
+          <span className={`p-1.5 rounded-lg bg-slate-50 dark:bg-slate-800 ${colors.icon}`}>{getNodeIcon(node.type)}</span>
+          <span className="text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">
+            {node.type.replace(/_/g, " ")} Node
           </span>
           {getStatusIcon(node.status)}
         </div>
-        <button onClick={onClose} className="text-gray-500 hover:text-gray-300">
+        <button onClick={onClose} className="p-1 text-slate-400 hover:text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 dark:bg-slate-800 rounded-full transition-colors">
           <X className="h-4 w-4" />
         </button>
       </div>
 
       {/* Description */}
-      <p className="text-sm text-gray-300 leading-relaxed">{node.description}</p>
+      <p className="text-sm font-semibold text-slate-800 dark:text-slate-200 leading-relaxed bg-slate-50 dark:bg-slate-800 p-3 rounded-xl border border-slate-100 shadow-inner">
+        {node.description}
+      </p>
 
       {/* Metadata grid */}
-      <div className="space-y-2">
+      <div className="space-y-3 bg-white dark:bg-card p-3 rounded-xl border border-slate-100 shadow-sm dark:shadow-slate-900/20">
         {node.metadata.extractedValue !== undefined && (
-          <MetaRow label="Value" value={String(node.metadata.extractedValue)} />
+          <MetaRow label="Parsed Value" value={String(node.metadata.extractedValue)} />
         )}
         {node.metadata.confidence !== undefined && (
           <div>
-            <p className="text-[10px] text-gray-500 mb-1">Confidence</p>
-            <div className="flex items-center gap-2">
-              <div className="flex-1 h-1.5 rounded bg-white/5">
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Machine Confidence</p>
+            <div className="flex items-center gap-3">
+              <div className="flex-1 h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden border border-slate-200 dark:border-slate-700">
                 <div
-                  className="h-full rounded bg-cyan-500"
+                  className="h-full rounded-full bg-indigo-500 transition-all duration-500"
                   style={{ width: `${Math.round(node.metadata.confidence * 100)}%` }}
                 />
               </div>
-              <span className="text-xs text-gray-400">
+              <span className="text-xs font-black text-indigo-700">
                 {Math.round(node.metadata.confidence * 100)}%
               </span>
             </div>
           </div>
         )}
-        {node.metadata.statute && <MetaRow label="Statute" value={node.metadata.statute} />}
+        {node.metadata.statute && <MetaRow label="Statute Authority" value={node.metadata.statute} />}
         {node.metadata.statuteText && (
           <div>
-            <p className="text-[10px] text-gray-500 mb-0.5">Statute Text</p>
-            <p className="text-xs text-gray-400 italic leading-relaxed">
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Statute Text</p>
+            <p className="text-xs text-slate-600 dark:text-slate-400 italic font-serif leading-relaxed border-l-2 border-indigo-200 pl-2">
               &quot;{node.metadata.statuteText}&quot;
             </p>
           </div>
         )}
         {node.metadata.leftOperand !== undefined && (
           <div>
-            <p className="text-[10px] text-gray-500 mb-0.5">Comparison</p>
-            <p className="text-xs text-gray-300 font-mono">
-              {String(node.metadata.leftOperand)} {node.metadata.operator} {String(node.metadata.rightOperand)}
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Algorithmic Match</p>
+            <p className="text-xs font-bold text-indigo-900 bg-indigo-50 p-2 rounded-lg border border-indigo-100 flex items-center gap-2">
+              <span className="font-mono">{String(node.metadata.leftOperand)} {node.metadata.operator} {String(node.metadata.rightOperand)}</span>
               {" → "}
-              <span className={node.metadata.comparisonResult ? "text-red-400" : "text-green-400"}>
-                {node.metadata.comparisonResult ? "EXCEEDS" : "WITHIN LIMIT"}
+              <span className={node.metadata.comparisonResult ? "text-rose-600 bg-rose-50 px-2 py-0.5 rounded" : "text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded"}>
+                {node.metadata.comparisonResult ? "VIOLATION" : "PASS"}
               </span>
             </p>
           </div>
         )}
-        {node.metadata.violation && <MetaRow label="Violation" value={node.metadata.violation} />}
-        {node.metadata.remedy && <MetaRow label="Remedy" value={node.metadata.remedy} />}
-        {node.metadata.penalty && <MetaRow label="Penalty" value={node.metadata.penalty} />}
+        {node.metadata.violation && <MetaRow label="Identified Violation" value={node.metadata.violation} />}
+        {node.metadata.remedy && <MetaRow label="Suggested Remedy" value={node.metadata.remedy} />}
+        {node.metadata.penalty && <MetaRow label="Legal Penalty" value={node.metadata.penalty} />}
         {node.metadata.originalText && (
           <div>
-            <p className="text-[10px] text-gray-500 mb-0.5">Source Text</p>
-            <p className="text-xs text-gray-400 italic leading-relaxed">
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Source Contract DNA</p>
+            <p className="text-xs font-medium text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-800 p-2 rounded-lg leading-relaxed">
               &quot;{node.metadata.originalText.substring(0, 200)}
               {node.metadata.originalText.length > 200 ? "..." : ""}&quot;
             </p>
@@ -318,13 +345,18 @@ function NodeDetailPanel({
         )}
       </div>
 
-      {/* Actions */}
-      <div className="flex gap-2 pt-1">
+      {/* Vibrant Shield Custom Actions */}
+      <div className="flex flex-col gap-2 pt-2">
         <button
           onClick={() => onChallenge(node.id)}
-          className="text-[10px] text-amber-400 hover:text-amber-300 font-medium"
+          className="w-full justify-center text-xs font-black text-rose-600 bg-white dark:bg-card border-2 border-rose-200 hover:bg-rose-50 hover:border-rose-300 hover:text-rose-700 p-2.5 rounded-xl transition-all flex items-center gap-2 shadow-sm dark:shadow-slate-900/20"
         >
-          ⚡ Challenge this step
+          <Zap className="h-4 w-4" /> Challenge This Proof
+        </button>
+        <button
+          className="w-full justify-center text-xs font-black text-teal-600 bg-white dark:bg-card border-2 border-teal-200 hover:bg-teal-50 hover:border-teal-300 hover:text-teal-700 p-2.5 rounded-xl transition-all flex items-center gap-2 shadow-sm dark:shadow-slate-900/20"
+        >
+          <HelpCircle className="h-4 w-4" /> Explain Like I'm 5
         </button>
       </div>
     </motion.div>
@@ -334,15 +366,14 @@ function NodeDetailPanel({
 function MetaRow({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-[10px] text-gray-500 mb-0.5">{label}</p>
-      <p className="text-xs text-gray-300">{value}</p>
+      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">{label}</p>
+      <p className="text-sm font-semibold text-slate-700">{value}</p>
     </div>
   );
 }
 
 // ---- Main ProofTree Component ----
-
-export default function ProofTreeView({
+export function ProofTreeView({
   proofTree,
   mode,
   eli5,
@@ -358,14 +389,12 @@ export default function ProofTreeView({
   }, [onNodeClick]);
 
   const handleChallenge = useCallback((nodeId: string) => {
-    // Trigger challenge — handled by parent modal
     const event = new CustomEvent("clausewall:challenge-step", {
       detail: { nodeId, proofTree },
     });
     window.dispatchEvent(event);
   }, [proofTree]);
 
-  // Close detail panel when active node changes externally
   useEffect(() => {
     if (activeNodeId && selectedNode?.id !== activeNodeId) {
       const found = findNodeById(proofTree.conclusion, activeNodeId);
@@ -374,22 +403,17 @@ export default function ProofTreeView({
   }, [activeNodeId, proofTree.conclusion, selectedNode?.id]);
 
   if (mode === "text") {
-    // Text mode — render derivation chain
     const chain = eli5 ? getELI5Chain(proofTree) : proofTree.derivationChain;
 
     return (
-      <div className="space-y-2">
+      <div className="space-y-3 bg-slate-50 dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700">
         {chain.map((step, i) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: i * 0.05 }}
-            className={`p-3 rounded-lg border text-sm leading-relaxed ${
-              activeNodeId && i === getActiveStepIndex(proofTree, activeNodeId)
-                ? "ring-2 ring-cyan-500/50 bg-cyan-500/5 border-cyan-500/30 text-gray-200"
-                : "bg-white/[0.02] border-white/5 text-gray-400"
-            }`}
+            className={`p-4 rounded-xl border text-sm font-medium leading-relaxed shadow-sm dark:shadow-slate-900/20 transition-all ${ activeNodeId && i === getActiveStepIndex(proofTree, activeNodeId) ? "ring-2 ring-indigo-500 bg-indigo-50 border-indigo-200 text-indigo-900 shadow-md" : "bg-white dark:bg-card border-slate-200 dark:border-slate-700 text-slate-700" }`}
           >
             {step}
           </motion.div>
@@ -398,26 +422,27 @@ export default function ProofTreeView({
     );
   }
 
-  // Visual mode
   return (
     <div ref={containerRef} className="space-y-4">
-      <div className="flex flex-col lg:flex-row gap-4">
-        {/* Tree */}
-        <div className="flex-1 space-y-1.5 min-w-0">
-          <TreeNodeCard
-            node={proofTree.conclusion}
-            depth={0}
-            onNodeClick={handleNodeClick}
-            activeNodeId={activeNodeId || selectedNode?.id}
-            staggerIndex={0}
-            isWalkthroughActive={!!activeNodeId}
-          />
+      <div className="flex flex-col lg:flex-row gap-6">
+        {/* Tree Container */}
+        <div className="flex-1 min-w-0 bg-slate-50 dark:bg-slate-800/50 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-inner overflow-x-auto">
+          <div className="min-w-[320px]">
+            <TreeNodeCard
+              node={proofTree.conclusion}
+              depth={0}
+              onNodeClick={handleNodeClick}
+              activeNodeId={activeNodeId || selectedNode?.id}
+              staggerIndex={0}
+              isWalkthroughActive={!!activeNodeId}
+            />
+          </div>
         </div>
 
-        {/* Detail panel */}
+        {/* Detail panel sidecar */}
         <AnimatePresence>
           {selectedNode && (
-            <div className="lg:w-80 flex-shrink-0">
+            <div className="lg:w-[360px] flex-shrink-0">
               <NodeDetailPanel
                 node={selectedNode}
                 onClose={() => setSelectedNode(null)}
@@ -432,7 +457,6 @@ export default function ProofTreeView({
 }
 
 // ---- Helpers ----
-
 function findNodeById(node: ProofNode, id: string): ProofNode | null {
   if (node.id === id) return node;
   for (const child of node.children) {
@@ -443,7 +467,6 @@ function findNodeById(node: ProofNode, id: string): ProofNode | null {
 }
 
 function getELI5Chain(proofTree: ProofTree): string[] {
-  // Import is dynamic to avoid SSR issues, but we have the data already
   return proofTree.derivationChain.map((step) =>
     step
       .replace(/EXTRACTION:/g, "We found:")
@@ -457,7 +480,6 @@ function getELI5Chain(proofTree: ProofTree): string[] {
 }
 
 function getActiveStepIndex(proofTree: ProofTree, nodeId: string): number {
-  // Flatten tree to find step index
   const nodes: ProofNode[] = [];
   const flatten = (node: ProofNode): void => {
     for (const child of node.children) flatten(child);

@@ -43,7 +43,6 @@ export function CalendarExport({
       toast.success("Calendar file downloaded! Import into your calendar app.");
       setTimeout(() => setDownloaded(false), 3000);
     } catch (error) {
-      console.error("[TimeBomb] Calendar download error:", error);
       toast.error("Failed to download calendar file");
     } finally {
       setLoading(false);
@@ -53,17 +52,17 @@ export function CalendarExport({
   if (deadlineCount === 0) return null;
 
   return (
-    <div className="rounded-xl border border-white/10 bg-white/[0.02] p-5">
-      <div className="flex items-start gap-3">
-        <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center flex-shrink-0">
-          <CalendarDays className="w-5 h-5 text-blue-400" />
+    <div className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-card p-6 shadow-sm dark:shadow-slate-900/20">
+      <div className="flex items-start gap-4">
+        <div className="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center flex-shrink-0 shadow-sm dark:shadow-slate-900/20">
+          <CalendarDays className="w-6 h-6 text-indigo-600" />
         </div>
-        <div className="flex-1">
-          <h4 className="text-sm font-semibold text-white">
+        <div className="flex-1 mt-0.5">
+          <h4 className="text-sm font-black text-slate-900 dark:text-slate-100 tracking-tight">
             Add {deadlineCount} deadline{deadlineCount !== 1 ? "s" : ""} to
             your calendar
           </h4>
-          <p className="text-xs text-white/40 mt-1">
+          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-1 leading-relaxed">
             Works with Google Calendar, Apple Calendar, and Outlook.
           </p>
         </div>
@@ -72,7 +71,7 @@ export function CalendarExport({
       <button
         onClick={handleDownload}
         disabled={loading}
-        className="w-full mt-4 px-4 py-2.5 rounded-xl bg-blue-600/20 border border-blue-500/20 text-blue-400 text-sm font-medium hover:bg-blue-600/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+        className="w-full mt-5 px-4 py-3 rounded-xl bg-indigo-600 border border-indigo-700 text-white font-bold uppercase tracking-widest text-[10px] hover:bg-indigo-700 shadow-md transition-all flex items-center justify-center gap-2 disabled:opacity-50"
         aria-label="Download calendar file"
       >
         {loading ? (
@@ -93,7 +92,7 @@ export function CalendarExport({
         )}
       </button>
 
-      <p className="text-[10px] text-white/20 mt-3 text-center">
+      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-4 text-center">
         Reminders auto-set at 30, 14, 7, 3, and 1 day before each deadline
       </p>
     </div>

@@ -1,15 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { Map, Loader2, ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import MarketStatsFooter from "@/components/market/market-stats-footer";
+import { MarketStatsFooter } from "@/components/market/market-stats-footer";
 import type { GeographicRiskData } from "@/types/market";
 
 const IndiaHeatMap = dynamic(
-  () => import("@/components/market/india-heat-map"),
+  () => import("@/components/market/india-heat-map").then((mod) => mod.IndiaHeatMap as React.ComponentType<any>),
   {
     ssr: false,
     loading: () => (
@@ -63,7 +63,7 @@ export default function HeatMapExplorerPage() {
               <Map className="h-6 w-6 text-cyan-400" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold">Geographic Risk Map</h1>
+              <h1 className="text-lg md:text-xl lg:text-2xl font-bold">Geographic Risk Map</h1>
               <p className="text-sm text-white/50">
                 State-wise contract risk visualization across India
               </p>

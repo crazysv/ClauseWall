@@ -41,11 +41,10 @@ export async function checkAndSendReminders(): Promise<ReminderResult> {
       .in("status", ["upcoming", "warning", "urgent"]);
 
     if (error || !deadlines || deadlines.length === 0) {
-      console.log("[TimeBomb Reminder] No active deadlines to process");
+
       return result;
     }
 
-    console.log(`[TimeBomb Reminder] Processing ${deadlines.length} active deadlines`);
 
     // Cache user settings
     const settingsCache = new Map<string, DeadlineReminderSettings | null>();
@@ -416,7 +415,7 @@ async function createNextRecurrence(
       reminder_today_sent: false,
     });
 
-    console.log(`[TimeBomb Reminder] Created next recurrence for "${deadline.title}" on ${nextDate.toISOString().split("T")[0]}`);
+
   } catch (error) {
     console.error("[TimeBomb Reminder] Create recurrence failed:", error);
   }

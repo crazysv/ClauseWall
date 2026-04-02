@@ -54,9 +54,6 @@ export async function transcribeAudioEvidence(
     const normalizedFormat = format.replace('.', '').toLowerCase();
     const audioFormat = FORMAT_TO_MIME[normalizedFormat] ? normalizedFormat : 'mp3';
 
-    console.log(
-      `[ClauseWall] Audio transcription: ${(bufferSize / 1024).toFixed(0)}KB, format=${audioFormat}`
-    );
 
     // Call Groq Whisper — auto-detect language (supports Hindi, English, etc.)
     const result = await callGroqWhisper(buffer, '', audioFormat);
@@ -73,9 +70,6 @@ export async function transcribeAudioEvidence(
     else if (text.length > 20) confidence = 0.6;
     else if (text.length > 0) confidence = 0.3;
 
-    console.log(
-      `[ClauseWall] Audio transcription complete: ${text.length} chars, ${elapsed}ms, confidence=${confidence}`
-    );
 
     return {
       text,

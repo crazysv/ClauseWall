@@ -77,14 +77,14 @@ const SEVERITY_CONFIG: Record<
   }
 > = {
   illegal: {
-    bg: "bg-purple-500/15",
-    border: "border-purple-500/30",
+    bg: "bg-indigo-500/15",
+    border: "border-indigo-500/30",
     borderBottom: "border-b-purple-500/60",
     text: "text-purple-400",
     label: "ILLEGAL",
     icon: <Scale className="h-3.5 w-3.5 text-purple-400" />,
-    cardBg: "bg-purple-500/5",
-    cardBorder: "border-purple-500/20",
+    cardBg: "bg-indigo-500/5",
+    cardBorder: "border-indigo-500/20",
   },
   dangerous: {
     bg: "bg-red-500/15",
@@ -193,7 +193,7 @@ function buildSegments(
 
 // ── Component ──
 
-export default function ClauseAutopsyModal({
+export function ClauseAutopsyModal({
   isOpen,
   onClose,
   clause,
@@ -271,7 +271,6 @@ export default function ClauseAutopsyModal({
       );
       setExpandedViolations(allIndexes);
     } catch (err) {
-      console.error("[ClauseWall] Autopsy fetch failed:", err);
       setError("Failed to dissect clause. Please try again.");
     } finally {
       setLoading(false);
@@ -349,7 +348,7 @@ export default function ClauseAutopsyModal({
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-[60] flex items-center justify-center p-4"
+          className="fixed inset-0 z-[60] flex items-center justify-center p-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -357,7 +356,7 @@ export default function ClauseAutopsyModal({
         >
           {/* Backdrop */}
           <motion.div
-            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            className="absolute inset-0 bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 backdrop-blur-sm"
             onClick={onClose}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -366,21 +365,21 @@ export default function ClauseAutopsyModal({
 
           {/* Modal */}
           <motion.div
-            className="relative w-full max-w-4xl max-h-[90vh] bg-gray-950 border border-white/10 rounded-2xl overflow-hidden shadow-2xl"
+            className="relative w-full max-w-4xl max-h-[90vh] bg-slate-950 border border-white/10 rounded-2xl overflow-hidden shadow-2xl"
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ duration: 0.25 }}
           >
             {/* ── Header ── */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-gray-900/50">
+            <div className="flex items-center justify-between px-4 md:px-6 py-4 border-b border-white/10 bg-slate-900/50">
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-purple-500/10 border border-purple-500/20">
+                <div className="p-2 rounded-xl bg-indigo-500/10 border border-indigo-500/20">
                   <Scan className="h-5 w-5 text-purple-400" />
                 </div>
                 <div>
                   <h2 className="font-bold text-lg">Clause Breakdown</h2>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
                     Clause #{clause.clause_number} •{" "}
                     {clause.clause_type.replace(/_/g, " ")}
                   </p>
@@ -388,7 +387,7 @@ export default function ClauseAutopsyModal({
               </div>
               <button
                 onClick={onClose}
-                className="p-2 rounded-lg hover:bg-white/5 transition-colors text-gray-400 hover:text-white"
+                className="p-2 rounded-xl hover:bg-white dark:bg-card/5 transition-colors text-slate-400 hover:text-slate-900 dark:text-slate-100"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -404,8 +403,8 @@ export default function ClauseAutopsyModal({
               {loading && (
                 <div className="space-y-6">
                   {/* Clause text with scan animation */}
-                  <div className="relative overflow-hidden rounded-xl bg-white/[0.03] border border-white/5 p-5">
-                    <p className="text-sm text-gray-500 leading-relaxed font-mono">
+                  <div className="relative overflow-hidden rounded-xl bg-white dark:bg-card/[0.03] border border-white/5 p-6">
+                    <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-mono">
                       {clause.original_text}
                     </p>
                     {/* Scanning line */}
@@ -423,7 +422,7 @@ export default function ClauseAutopsyModal({
 
                   <div className="flex items-center justify-center gap-3 py-4">
                     <Loader2 className="h-5 w-5 text-purple-400 animate-spin" />
-                    <p className="text-sm text-gray-400">
+                    <p className="text-sm text-slate-400">
                       Dissecting clause word by word...
                     </p>
                   </div>
@@ -433,7 +432,7 @@ export default function ClauseAutopsyModal({
                     {[1, 2, 3].map((i) => (
                       <div
                         key={i}
-                        className="h-20 rounded-xl bg-white/[0.02] border border-white/5 animate-pulse"
+                        className="h-20 rounded-xl bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border-l-4 border-indigo-500 border border-white/5 animate-pulse"
                       />
                     ))}
                   </div>
@@ -447,7 +446,7 @@ export default function ClauseAutopsyModal({
                   <p className="text-red-400">{error}</p>
                   <button
                     onClick={fetchAutopsy}
-                    className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-gray-300 hover:bg-white/10 transition-colors"
+                    className="px-4 py-2 rounded-xl bg-white dark:bg-card/5 border border-white/10 text-sm text-slate-300 hover:bg-white dark:bg-card/10 transition-colors"
                   >
                     Try Again
                   </button>
@@ -459,15 +458,15 @@ export default function ClauseAutopsyModal({
                 <>
                   {/* ── Dissected Text ── */}
                   <div>
-                    <p className="text-xs font-medium text-gray-500 mb-2 uppercase tracking-wider">
+                    <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider">
                       Dissected Clause
                     </p>
-                    <div className="rounded-xl bg-white/[0.03] border border-white/5 p-5">
+                    <div className="rounded-xl bg-white dark:bg-card/[0.03] border border-white/5 p-6">
                       <p className="text-sm leading-[2] font-mono">
                         {segments.map((seg, i) => {
                           if (seg.type === "neutral") {
                             return (
-                              <span key={i} className="text-gray-400">
+                              <span key={i} className="text-slate-400">
                                 {seg.text}
                               </span>
                             );
@@ -517,7 +516,7 @@ export default function ClauseAutopsyModal({
                         >
                           {getSeverityConfig(result.most_severe).label}
                         </Badge>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-slate-500 dark:text-slate-400">
                           ⚖️ {result.total_violations} violation
                           {result.total_violations !== 1 ? "s" : ""} found in
                           this clause
@@ -535,7 +534,7 @@ export default function ClauseAutopsyModal({
                   {/* ── Violation Detail Cards ── */}
                   {result.violations.length > 0 && (
                     <div>
-                      <p className="text-xs font-medium text-gray-500 mb-3 uppercase tracking-wider">
+                      <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-3 uppercase tracking-wider">
                         Violation Details
                       </p>
                       <div className="space-y-3">
@@ -563,7 +562,7 @@ export default function ClauseAutopsyModal({
                               {/* Violation Header */}
                               <button
                                 onClick={() => toggleViolation(i)}
-                                className="w-full flex items-center justify-between p-4 text-left hover:bg-white/[0.02] transition-colors"
+                                className="w-full flex items-center justify-between p-6 text-left hover:bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border-l-4 border-indigo-500 transition-colors"
                               >
                                 <div className="flex items-center gap-3 min-w-0">
                                   <span
@@ -579,7 +578,7 @@ export default function ClauseAutopsyModal({
                                       >
                                         {config.label}
                                       </Badge>
-                                      <span className="text-xs text-gray-400 font-medium">
+                                      <span className="text-xs text-slate-400 font-medium">
                                         {violation.issue}
                                       </span>
                                     </div>
@@ -590,7 +589,7 @@ export default function ClauseAutopsyModal({
                                     </p>
                                   </div>
                                 </div>
-                                <div className="flex-shrink-0 ml-2 text-gray-500">
+                                <div className="flex-shrink-0 ml-2 text-slate-500 dark:text-slate-400">
                                   {isExpanded ? (
                                     <ChevronUp className="h-4 w-4" />
                                   ) : (
@@ -613,10 +612,10 @@ export default function ClauseAutopsyModal({
                                       <div className="pt-3">
                                         {/* Explanation */}
                                         <div className="mb-3">
-                                          <p className="text-xs font-medium text-gray-500 mb-1">
+                                          <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">
                                             Why This Is a Problem
                                           </p>
-                                          <p className="text-sm text-gray-300 leading-relaxed">
+                                          <p className="text-sm text-slate-300 leading-relaxed">
                                             {violation.explanation}
                                           </p>
                                         </div>
@@ -624,7 +623,7 @@ export default function ClauseAutopsyModal({
                                         {/* Statute */}
                                         {violation.statute && (
                                           <div className="mb-3">
-                                            <p className="text-xs font-medium text-gray-500 mb-1">
+                                            <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">
                                               📖 Legal Reference
                                             </p>
                                             <p
@@ -638,10 +637,10 @@ export default function ClauseAutopsyModal({
                                         {/* Penalty */}
                                         {violation.penalty && (
                                           <div>
-                                            <p className="text-xs font-medium text-gray-500 mb-1">
+                                            <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">
                                               💰 Consequence
                                             </p>
-                                            <p className="text-sm text-gray-300">
+                                            <p className="text-sm text-slate-300">
                                               {violation.penalty}
                                             </p>
                                           </div>
@@ -661,11 +660,11 @@ export default function ClauseAutopsyModal({
                   {/* ── Summary ── */}
                   {result.dissection_summary && (
                     <div>
-                      <p className="text-xs font-medium text-gray-500 mb-2 uppercase tracking-wider">
+                      <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider">
                         Breakdown Summary
                       </p>
-                      <div className="p-4 rounded-xl bg-white/[0.03] border border-white/5">
-                        <p className="text-sm text-gray-300 leading-relaxed">
+                      <div className="p-6 rounded-xl bg-white dark:bg-card/[0.03] border border-white/5">
+                        <p className="text-sm text-slate-300 leading-relaxed">
                           ⚖️ {result.dissection_summary}
                         </p>
                       </div>
@@ -676,7 +675,7 @@ export default function ClauseAutopsyModal({
                   <div className="flex items-center gap-3 pt-2">
                     <button
                       onClick={copyAnalysis}
-                      className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-sm text-gray-300 hover:bg-white/10 hover:text-white transition-colors"
+                      className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white dark:bg-card/5 border border-white/10 text-sm text-slate-300 hover:bg-white dark:bg-card/10 hover:text-slate-900 dark:text-slate-100 transition-colors"
                     >
                       {copied ? (
                         <Check className="h-4 w-4 text-green-400" />
@@ -688,7 +687,7 @@ export default function ClauseAutopsyModal({
 
                     <button
                       onClick={fetchAutopsy}
-                      className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-sm text-gray-300 hover:bg-white/10 hover:text-white transition-colors"
+                      className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white dark:bg-card/5 border border-white/10 text-sm text-slate-300 hover:bg-white dark:bg-card/10 hover:text-slate-900 dark:text-slate-100 transition-colors"
                     >
                       <Scan className="h-4 w-4" />
                       Re-Dissect

@@ -6,8 +6,8 @@ import { Building2, Scale, ArrowUpCircle, Heart, FileText, Loader2 } from "lucid
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import type { JurisdictionResult, EscalationPath } from "@/types/authority";
-import JurisdictionResultView from "./jurisdiction-result";
-import EscalationPathVisualizer from "./escalation-path-visualizer";
+import { JurisdictionResultView } from "./jurisdiction-result";
+import { EscalationPathVisualizer } from "./escalation-path-visualizer";
 
 interface Props {
   documentType: string;
@@ -18,7 +18,7 @@ interface Props {
   preloadedRouting?: any;
 }
 
-export default function AuthoritySection({
+export function AuthoritySection({
   documentType,
   jurisdiction,
   entityName,
@@ -69,9 +69,9 @@ export default function AuthoritySection({
 
       if (routeData.success) setRoutingResult(routeData.result);
       if (escData.success) setEscalationPath(escData.path);
-    } catch (err) {
-      console.error("[ClauseWall] Authority section load failed:", err);
-    } finally {
+    } catch {
+        // Silently handled
+      } finally {
       setLoading(false);
     }
   };
@@ -93,7 +93,7 @@ export default function AuthoritySection({
       {/* Section Header */}
       <div className="flex items-center gap-3">
         <div className="p-2 rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-500/20">
-          <Scale className="h-5 w-5 text-blue-400" />
+          <Scale className="h-5 w-5 text-indigo-400" />
         </div>
         <div>
           <h2 className="text-lg font-bold">⚖️ File Your Complaint Here</h2>
@@ -104,18 +104,14 @@ export default function AuthoritySection({
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 bg-white/[0.03] p-1 rounded-xl border border-white/5">
+      <div className="flex gap-1 bg-white dark:bg-card/[0.03] p-1 rounded-xl border border-white/5">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           return (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
-                activeTab === tab.id
-                  ? "bg-white/10 text-white"
-                  : "text-muted-foreground hover:text-white hover:bg-white/5"
-              }`}
+              className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-full text-xs font-medium transition-all ${ activeTab === tab.id ? "bg-indigo-50 border border-indigo-100 text-slate-900 dark:text-slate-100" : "text-muted-foreground hover:text-slate-900 dark:text-slate-100 hover:bg-indigo-50 dark:hover:bg-indigo-950/30/50" }`}
             >
               <Icon className={`h-3.5 w-3.5 ${activeTab === tab.id ? tab.color : ""}`} />
               <span className="hidden sm:inline">{tab.label}</span>
@@ -126,9 +122,9 @@ export default function AuthoritySection({
 
       {/* Content */}
       {loading ? (
-        <Card className="border-white/10 bg-white/[0.02]">
-          <CardContent className="p-8 flex flex-col items-center gap-3">
-            <Loader2 className="h-6 w-6 animate-spin text-blue-400" />
+        <Card className="border-white/10 bg-white dark:bg-slate-900/[0.02]">
+          <CardContent className="p-4 md:p-6 lg:p-8 flex flex-col items-center gap-3">
+            <Loader2 className="h-6 w-6 animate-spin text-indigo-400" />
             <p className="text-sm text-muted-foreground">Finding the right authority...</p>
           </CardContent>
         </Card>
@@ -159,8 +155,8 @@ export default function AuthoritySection({
                 </CardContent>
               </Card>
               <div className="text-xs text-center text-muted-foreground">
-                📞 NALSA Helpline: <a href="tel:15100" className="text-blue-400">15100</a> •
-                Tele-Law: <a href="tel:1800-11-5151" className="text-blue-400">1800-11-5151</a>
+                📞 NALSA Helpline: <a href="tel:15100" className="text-indigo-400">15100</a> •
+                Tele-Law: <a href="tel:1800-11-5151" className="text-indigo-400">1800-11-5151</a>
               </div>
             </div>
           )}

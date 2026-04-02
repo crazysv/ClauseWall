@@ -58,7 +58,6 @@ export async function analyzeShadowAgreement(
   const supabase = await createClient();
 
   // STEP 1: Fetch document + clauses
-  console.log(`[ClauseWall] [Shadow] Starting analysis for document ${request.document_id}`);
 
   const { data: doc, error: docError } = await supabase
     .from('documents')
@@ -85,9 +84,6 @@ export async function analyzeShadowAgreement(
   const documentType = doc.document_type || 'other';
   const jurisdiction = doc.jurisdiction || 'pan_india';
 
-  console.log(
-    `[ClauseWall] [Shadow] Document loaded: ${clauses.length} clauses, type=${documentType}, entity=${entityName}`
-  );
 
   // STEP 2: Parse all evidence sources
   const evidenceSources: EvidenceSource[] = [];
@@ -102,9 +98,7 @@ export async function analyzeShadowAgreement(
       );
       evidenceSources.push(source);
 
-      console.log(
-        `[ClauseWall] [Shadow] Parsed evidence: ${evidence.type} → ${source.metadata.word_count} words`
-      );
+
     } catch (error) {
       console.error(`[ClauseWall] [Shadow] Evidence parsing failed for ${evidence.type}:`, error);
       // Continue with other sources
@@ -122,9 +116,7 @@ export async function analyzeShadowAgreement(
     try {
       const promises = await extractPromises(source, documentType, entityName);
       allPromises.push(...promises);
-      console.log(
-        `[ClauseWall] [Shadow] Extracted ${promises.length} promises from ${source.type}`
-      );
+
     } catch (error) {
       console.error(`[ClauseWall] [Shadow] Promise extraction failed for ${source.type}:`, error);
     }
@@ -132,13 +124,12 @@ export async function analyzeShadowAgreement(
 
   // Deduplicate across sources
   allPromises = deduplicateAcrossSources(allPromises);
-  console.log(`[ClauseWall] [Shadow] Total unique promises: ${allPromises.length}`);
 
   // STEP 4: Detect mismatches
   let mismatches: ContractMismatch[] = [];
   try {
     mismatches = await detectMismatches(allPromises, clauses, documentType, jurisdiction);
-    console.log(`[ClauseWall] [Shadow] Mismatches found: ${mismatches.length}`);
+
   } catch (error) {
     console.error('[ClauseWall] [Shadow] Mismatch detection failed:', error);
   }
@@ -152,7 +143,7 @@ export async function analyzeShadowAgreement(
         documentType,
         jurisdiction
       );
-      console.log('[ClauseWall] [Shadow] Legal analysis complete');
+
     } catch (error) {
       console.error('[ClauseWall] [Shadow] Legal analysis failed:', error);
     }
@@ -259,9 +250,6 @@ export async function analyzeShadowAgreement(
   }
 
   const processingTime = Date.now() - startTime;
-  console.log(
-    `[ClauseWall] [Shadow] ✅ Analysis complete in ${processingTime}ms: trust=${trustScore}, mismatches=${mismatches.length}`
-  );
 
   return {
     analysis,

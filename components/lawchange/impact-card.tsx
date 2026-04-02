@@ -25,62 +25,62 @@ const SEVERITY_CONFIG: Record<
   { color: string; border: string; bg: string; label: string }
 > = {
   rights_gained: {
-    color: "text-green-400",
-    border: "border-l-green-500",
-    bg: "bg-green-500/5",
+    color: "text-emerald-700",
+    border: "border-l-emerald-500",
+    bg: "bg-emerald-50",
     label: "Rights Gained",
   },
   clause_voided: {
-    color: "text-green-400",
-    border: "border-l-green-500",
-    bg: "bg-green-500/5",
+    color: "text-emerald-700",
+    border: "border-l-emerald-500",
+    bg: "bg-emerald-50",
     label: "Clause Voided",
   },
   protection_added: {
-    color: "text-green-400",
-    border: "border-l-green-500",
-    bg: "bg-green-500/5",
+    color: "text-emerald-700",
+    border: "border-l-emerald-500",
+    bg: "bg-emerald-50",
     label: "Protection Added",
   },
   rights_lost: {
-    color: "text-red-400",
+    color: "text-red-700",
     border: "border-l-red-500",
-    bg: "bg-red-500/5",
+    bg: "bg-red-50",
     label: "Rights Lost",
   },
   protection_removed: {
-    color: "text-red-400",
+    color: "text-red-700",
     border: "border-l-red-500",
-    bg: "bg-red-500/5",
+    bg: "bg-red-50",
     label: "Protection Removed",
   },
   obligation_added: {
-    color: "text-orange-400",
-    border: "border-l-orange-500",
-    bg: "bg-orange-500/5",
+    color: "text-amber-700",
+    border: "border-l-amber-500",
+    bg: "bg-amber-50",
     label: "Obligation Added",
   },
   obligation_removed: {
-    color: "text-green-400",
-    border: "border-l-green-500",
-    bg: "bg-green-500/5",
+    color: "text-emerald-700",
+    border: "border-l-emerald-500",
+    bg: "bg-emerald-50",
     label: "Obligation Removed",
   },
   limit_changed: {
-    color: "text-yellow-400",
-    border: "border-l-yellow-500",
-    bg: "bg-yellow-500/5",
+    color: "text-amber-700",
+    border: "border-l-amber-500",
+    bg: "bg-amber-50",
     label: "Limit Changed",
   },
   neutral_clarification: {
-    color: "text-blue-400",
-    border: "border-l-blue-500",
-    bg: "bg-blue-500/5",
+    color: "text-indigo-700",
+    border: "border-l-indigo-500",
+    bg: "bg-indigo-50",
     label: "Clarification",
   },
 };
 
-export default function ImpactCard({ impact, onAcknowledge }: Props) {
+export function ImpactCard({ impact, onAcknowledge }: Props) {
   const [acknowledged, setAcknowledged] = useState(impact.user_acknowledged);
   const config = SEVERITY_CONFIG[impact.impact_severity] || SEVERITY_CONFIG.neutral_clarification;
 
@@ -99,33 +99,33 @@ export default function ImpactCard({ impact, onAcknowledge }: Props) {
 
   return (
     <Card
-      className={`relative overflow-hidden border-l-4 ${config.border} ${config.bg} border-white/5 transition-all ${
-        !acknowledged ? "ring-1 ring-indigo-500/20" : "opacity-80"
-      }`}
+      className={`relative overflow-hidden border-l-[6px] ${config.border} bg-white dark:bg-card border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-900/20 rounded-xl mb-4 transition-all ${ !acknowledged ? "ring-2 ring-indigo-200 ring-offset-1" : "opacity-80 grayscale-[20%]" }`}
     >
       {/* Unacknowledged pulse */}
       {!acknowledged && (
-        <div className="absolute top-3 right-3">
+        <div className="absolute top-4 right-4">
           <span className="relative flex h-2.5 w-2.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-50" />
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-indigo-500" />
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-500 opacity-60" />
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-indigo-600" />
           </span>
         </div>
       )}
 
       <CardContent className="p-4 sm:p-5">
         {/* Header */}
-        <div className="flex items-start gap-3 mb-3">
-          <Scale className={`h-4 w-4 mt-0.5 flex-shrink-0 ${config.color}`} />
-          <div className="min-w-0">
-            <h3 className="text-sm font-semibold text-white/90">
+        <div className="flex items-start gap-4 mb-4">
+          <div className={`p-2 rounded-lg ${config.bg} shrink-0 shadow-inner`}>
+            <Scale className={`h-5 w-5 ${config.color}`} />
+          </div>
+          <div className="min-w-0 pr-6">
+            <h3 className="text-base font-black text-slate-900 dark:text-slate-100 leading-tight mb-2">
               {impact.change?.title || "Law Change"}
             </h3>
-            <div className="flex items-center gap-2 mt-1">
-              <Badge className={`text-[10px] ${config.color} bg-transparent border border-current/20`}>
+            <div className="flex items-center gap-3 flex-wrap mt-2">
+              <Badge className={`text-[10px] font-bold uppercase tracking-widest ${config.color} ${config.bg} border-none shadow-sm dark:shadow-slate-900/20 px-2 py-0.5 rounded-md`}>
                 {config.label}
               </Badge>
-              <span className="text-[10px] text-white/25 flex items-center gap-1">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 flex items-center gap-1.5">
                 <Calendar className="h-3 w-3" />
                 {dateStr}
               </span>
@@ -134,34 +134,35 @@ export default function ImpactCard({ impact, onAcknowledge }: Props) {
         </div>
 
         {/* Clause affected */}
-        <p className="text-xs text-white/30 mb-2">
-          Clause {impact.clause_number || "—"}: {impact.clause_type?.replace(/_/g, " ")}
+        <p className="text-sm font-bold text-slate-500 dark:text-slate-400 mb-2 border-l-2 border-slate-200 dark:border-slate-700 pl-3">
+          Clause {impact.clause_number || "—"}: <span className="text-slate-700">{impact.clause_type?.replace(/_/g, " ")}</span>
         </p>
 
         {/* Impact description */}
-        <p className="text-xs text-white/50 leading-relaxed mb-3">
+        <p className="text-sm font-medium text-slate-700 leading-relaxed mb-4 ml-3">
           {impact.impact_description}
         </p>
 
         {/* Before / After */}
         {(impact.old_legal_position || impact.new_legal_position) && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
             {impact.old_legal_position && (
-              <div className="p-2.5 rounded-lg bg-white/[0.02] border border-white/5">
-                <p className="text-[10px] text-white/25 mb-1 uppercase tracking-wider">
+              <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-900/20">
+                <p className="text-[10px] font-bold text-slate-400 mb-2 uppercase tracking-widest">
                   Before
                 </p>
-                <p className="text-xs text-white/40 line-clamp-3">
+                <p className="text-sm font-medium text-slate-600 dark:text-slate-400 line-clamp-3 leading-relaxed">
                   {impact.old_legal_position}
                 </p>
               </div>
             )}
             {impact.new_legal_position && (
-              <div className="p-2.5 rounded-lg bg-indigo-500/5 border border-indigo-500/10">
-                <p className="text-[10px] text-indigo-300/60 mb-1 uppercase tracking-wider">
+              <div className="p-3.5 rounded-xl bg-indigo-50 border border-indigo-100 shadow-sm dark:shadow-slate-900/20 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-8 h-8 bg-indigo-100/50 rounded-bl-full border-l border-b border-indigo-100/30" />
+                <p className="text-[10px] font-bold text-indigo-500 mb-2 uppercase tracking-widest">
                   After
                 </p>
-                <p className="text-xs text-indigo-200/60 line-clamp-3">
+                <p className="text-sm font-medium text-indigo-800 line-clamp-3 leading-relaxed">
                   {impact.new_legal_position}
                 </p>
               </div>
@@ -171,24 +172,27 @@ export default function ImpactCard({ impact, onAcknowledge }: Props) {
 
         {/* Financial impact */}
         {impact.financial_description && (
-          <div className="flex items-center gap-2 mb-3 p-2 rounded-lg bg-emerald-500/5 border border-emerald-500/10">
-            <DollarSign className="h-3.5 w-3.5 text-emerald-400" />
-            <span className="text-xs text-emerald-300">
+          <div className="flex items-center gap-3 mb-4 p-3 rounded-xl bg-emerald-50 border border-emerald-200 shadow-sm dark:shadow-slate-900/20">
+            <DollarSign className="h-4 w-4 text-emerald-600" />
+            <span className="text-sm font-bold text-emerald-800">
               {impact.financial_impact
                 ? `₹${impact.financial_impact.toLocaleString("en-IN")} — `
                 : ""}
-              {impact.financial_description}
+              <span className="font-medium text-emerald-700">{impact.financial_description}</span>
             </span>
           </div>
         )}
 
         {/* Action required */}
         {impact.action_required && (
-          <div className="p-3 rounded-lg bg-indigo-500/5 border border-indigo-500/10 mb-3">
-            <p className="text-[10px] text-indigo-300/50 uppercase tracking-wider mb-1">
-              ✅ Action Required
-            </p>
-            <p className="text-xs text-indigo-200/70">
+          <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 shadow-sm dark:shadow-slate-900/20 mb-4">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-base drop-shadow-sm dark:shadow-slate-900/20 leading-none">✅</span>
+              <p className="text-[10px] font-bold text-amber-700 uppercase tracking-widest">
+                Action Required
+              </p>
+            </div>
+            <p className="text-sm font-medium text-amber-900 leading-relaxed ml-6">
               {impact.action_required}
             </p>
           </div>
@@ -196,27 +200,27 @@ export default function ImpactCard({ impact, onAcknowledge }: Props) {
 
         {/* Citation */}
         {impact.new_legal_citation && (
-          <p className="text-[10px] text-white/20 mb-3">
-            📖 {impact.new_legal_citation}
+          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-5 flex items-center gap-1.5 ml-1 border-t border-slate-100 pt-3">
+            <FileText className="h-3 w-3" /> {impact.new_legal_citation}
           </p>
         )}
 
         {/* Actions */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3 ml-1">
           {!acknowledged && (
             <Button
               size="sm"
               variant="outline"
               onClick={handleAcknowledge}
-              className="gap-1.5 text-xs border-indigo-500/30 text-indigo-300 hover:bg-indigo-500/10"
+              className="gap-2 text-sm bg-white dark:bg-card border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 hover:border-indigo-300 font-bold shadow-sm dark:shadow-slate-900/20 transition-all rounded-lg"
             >
-              <Check className="h-3 w-3" />
+              <Check className="h-4 w-4" />
               Acknowledge
             </Button>
           )}
           {acknowledged && (
-            <span className="text-[10px] text-white/20 flex items-center gap-1">
-              <Check className="h-3 w-3" />
+            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 flex items-center gap-1.5 bg-slate-50 dark:bg-slate-800 px-3 py-1.5 rounded-md border border-slate-200 dark:border-slate-700 shadow-inner">
+              <Check className="h-3.5 w-3.5 text-emerald-500" />
               Acknowledged
             </span>
           )}

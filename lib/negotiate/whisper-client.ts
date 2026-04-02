@@ -39,7 +39,7 @@ function getApiKey(): string {
 }
 
 function switchToNextKey(): boolean {
-  console.log(`[ClauseWall Whisper] Key ${currentKeyIndex + 1} rate limited, switching...`);
+
   exhaustedKeys.add(currentKeyIndex);
 
   setTimeout(() => {
@@ -88,7 +88,6 @@ export async function transcribeAudio(
       formData.append("language", language);
       formData.append("response_format", "json");
 
-      console.log(`[ClauseWall Whisper] Transcribing ${(audioBlob.size / 1024).toFixed(1)}KB audio (Key ${currentKeyIndex + 1}, attempt ${attempt + 1})`);
 
       const response = await fetch(WHISPER_ENDPOINT, {
         method: "POST",
@@ -103,7 +102,7 @@ export async function transcribeAudio(
         const switched = switchToNextKey();
         if (!switched) {
           // All keys exhausted — wait
-          console.log("[ClauseWall Whisper] All keys exhausted, waiting 30s...");
+
           await new Promise((resolve) => setTimeout(resolve, 30000));
           exhaustedKeys.clear();
         }

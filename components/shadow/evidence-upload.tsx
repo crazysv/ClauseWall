@@ -22,7 +22,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
 import type { EvidenceType, EvidenceFormat, ShadowAnalysisRequest } from "@/types";
-import WhatsAppGuideModal from "./whatsapp-guide-modal";
+import { WhatsAppGuideModal } from "./whatsapp-guide-modal";
 
 interface EvidenceItem {
   id: string;
@@ -44,18 +44,18 @@ interface EvidenceUploadProps {
 }
 
 const EVIDENCE_TYPES = [
-  { type: "whatsapp_chat" as EvidenceType, icon: MessageSquare, label: "WhatsApp Chat", desc: ".txt export", accept: ".txt,.zip", color: "text-green-400", bg: "bg-green-500/10", border: "border-green-500/20" },
-  { type: "email" as EvidenceType, icon: Mail, label: "Email Thread", desc: "Paste or .eml", accept: ".eml,.txt", color: "text-blue-400", bg: "bg-blue-500/10", border: "border-blue-500/20" },
-  { type: "sms_screenshot" as EvidenceType, icon: Camera, label: "SMS Screenshots", desc: "Image files", accept: "image/*", color: "text-purple-400", bg: "bg-purple-500/10", border: "border-purple-500/20" },
-  { type: "audio_recording" as EvidenceType, icon: Mic, label: "Audio Recording", desc: ".mp3, .m4a, .wav", accept: "audio/*", color: "text-red-400", bg: "bg-red-500/10", border: "border-red-500/20" },
-  { type: "handwritten_note" as EvidenceType, icon: PenTool, label: "Handwritten Notes", desc: "Photo of notes", accept: "image/*", color: "text-amber-400", bg: "bg-amber-500/10", border: "border-amber-500/20" },
-  { type: "property_listing" as EvidenceType, icon: Home, label: "Property Listing", desc: "Paste listing text", accept: "", color: "text-cyan-400", bg: "bg-cyan-500/10", border: "border-cyan-500/20" },
-  { type: "job_posting" as EvidenceType, icon: Briefcase, label: "Job Posting", desc: "Paste job post", accept: "", color: "text-indigo-400", bg: "bg-indigo-500/10", border: "border-indigo-500/20" },
-  { type: "broker_message" as EvidenceType, icon: MessageCircle, label: "Broker Messages", desc: "Paste messages", accept: "", color: "text-orange-400", bg: "bg-orange-500/10", border: "border-orange-500/20" },
-  { type: "other_text" as EvidenceType, icon: FileText, label: "Other Text", desc: "Any text evidence", accept: "", color: "text-gray-400", bg: "bg-gray-500/10", border: "border-gray-500/20" },
+  { type: "whatsapp_chat" as EvidenceType, icon: MessageSquare, label: "WhatsApp Chat", desc: ".txt export", accept: ".txt,.zip", color: "text-emerald-600", bg: "bg-emerald-50", border: "border-emerald-200" },
+  { type: "email" as EvidenceType, icon: Mail, label: "Email Thread", desc: "Paste or .eml", accept: ".eml,.txt", color: "text-blue-600", bg: "bg-blue-50", border: "border-blue-200" },
+  { type: "sms_screenshot" as EvidenceType, icon: Camera, label: "SMS Screenshots", desc: "Image files", accept: "image/*", color: "text-purple-600", bg: "bg-purple-50", border: "border-purple-200" },
+  { type: "audio_recording" as EvidenceType, icon: Mic, label: "Audio Recording", desc: ".mp3, .m4a, .wav", accept: "audio/*", color: "text-rose-600", bg: "bg-rose-50", border: "border-rose-200" },
+  { type: "handwritten_note" as EvidenceType, icon: PenTool, label: "Handwritten Notes", desc: "Photo of notes", accept: "image/*", color: "text-amber-600", bg: "bg-amber-50", border: "border-amber-200" },
+  { type: "property_listing" as EvidenceType, icon: Home, label: "Property Listing", desc: "Paste listing text", accept: "", color: "text-cyan-700", bg: "bg-cyan-50", border: "border-cyan-200" },
+  { type: "job_posting" as EvidenceType, icon: Briefcase, label: "Job Posting", desc: "Paste job post", accept: "", color: "text-indigo-600", bg: "bg-indigo-50", border: "border-indigo-200" },
+  { type: "broker_message" as EvidenceType, icon: MessageCircle, label: "Broker Messages", desc: "Paste messages", accept: "", color: "text-orange-600", bg: "bg-orange-50", border: "border-orange-200" },
+  { type: "other_text" as EvidenceType, icon: FileText, label: "Other Text", desc: "Any text evidence", accept: "", color: "text-slate-600", bg: "bg-slate-50", border: "border-slate-200" },
 ];
 
-export default function EvidenceUpload({ documentId, onAnalyze, isAnalyzing }: EvidenceUploadProps) {
+export function EvidenceUpload({ documentId, onAnalyze, isAnalyzing }: EvidenceUploadProps) {
   const [selectedType, setSelectedType] = useState<EvidenceType | null>(null);
   const [evidenceItems, setEvidenceItems] = useState<EvidenceItem[]>([]);
   const [textInput, setTextInput] = useState("");
@@ -172,9 +172,9 @@ export default function EvidenceUpload({ documentId, onAnalyze, isAnalyzing }: E
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="text-center">
-        <h2 className="text-xl font-bold mb-2">Upload Evidence of Promises</h2>
-        <p className="text-sm text-muted-foreground max-w-lg mx-auto">
+      <div className="text-center bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-900/20 p-6 rounded-2xl mb-6">
+        <h2 className="text-lg md:text-xl lg:text-2xl font-black text-slate-900 dark:text-slate-100 mb-2 tracking-tight">Upload Evidence of Promises</h2>
+        <p className="text-sm font-medium text-slate-600 dark:text-slate-400 max-w-lg mx-auto">
           Upload WhatsApp chats, emails, recordings, or screenshots of promises made before/during signing. We&apos;ll check if they match the contract.
         </p>
       </div>
@@ -185,15 +185,17 @@ export default function EvidenceUpload({ documentId, onAnalyze, isAnalyzing }: E
           <button
             key={type}
             onClick={() => setSelectedType(selectedType === type ? null : type)}
-            className={`group relative p-4 rounded-xl border transition-all text-left ${
+            className={`group relative p-4 rounded-xl transition-all text-left shadow-sm ${
               selectedType === type
-                ? `${border} ${bg} ring-1 ring-white/20`
-                : "border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/10"
+                ? `${border} ${bg} ring-2 ring-indigo-500 ring-offset-2 border-transparent scale-[1.02] shadow-md`
+                : "border border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300"
             }`}
           >
-            <Icon className={`w-5 h-5 mb-2 ${color}`} />
-            <p className="text-sm font-medium">{label}</p>
-            <p className="text-xs text-white/40 mt-0.5">{desc}</p>
+            <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-3 shadow-inner ${ selectedType === type ? "bg-white dark:bg-card border text-current border-current/20" : "bg-slate-50 border border-slate-100" }`}>
+              <Icon className={`w-5 h-5 ${selectedType === type ? "text-current" : color}`} />
+            </div>
+            <p className="text-sm font-bold text-slate-900 dark:text-slate-100 leading-tight">{label}</p>
+            <p className={`text-xs font-semibold mt-1 ${selectedType === type ? "text-slate-600 dark:text-slate-400" : "text-slate-500"}`}>{desc}</p>
           </button>
         ))}
       </div>
@@ -207,43 +209,43 @@ export default function EvidenceUpload({ documentId, onAnalyze, isAnalyzing }: E
             exit={{ opacity: 0, height: 0 }}
             className="overflow-hidden"
           >
-            <Card className="border-white/10 bg-white/[0.02]">
-              <CardContent className="p-4 space-y-3">
+            <Card className="border-slate-200 dark:border-slate-700 bg-white dark:bg-card shadow-md">
+              <CardContent className="p-5 space-y-4">
                 <div className="flex items-center justify-between">
-                  <p className="text-sm font-medium flex items-center gap-2">
+                  <p className="text-sm font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
                     {typeConfig && <typeConfig.icon className={`w-4 h-4 ${typeConfig.color}`} />}
                     Add {typeConfig?.label}
                   </p>
                   {selectedType === "whatsapp_chat" && (
                     <button
                       onClick={() => setShowWhatsAppGuide(true)}
-                      className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1"
+                      className="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 bg-indigo-50 px-2 py-1 rounded-md"
                     >
-                      <Info className="w-3 h-3" /> How to export
+                      <Info className="w-3.5 h-3.5" /> How to export
                     </button>
                   )}
                 </div>
 
                 {needsTextInput ? (
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <textarea
                       value={textInput}
                       onChange={e => setTextInput(e.target.value)}
                       placeholder={`Paste ${typeConfig?.label?.toLowerCase() || "text"} here...`}
-                      className="w-full h-32 px-3 py-2 text-sm bg-black/30 border border-white/10 rounded-lg resize-none focus:outline-none focus:ring-1 focus:ring-white/20"
+                      className="w-full h-32 px-4 py-3 text-sm font-medium bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 shadow-inner placeholder:text-slate-400"
                     />
-                    <Button size="sm" onClick={handleTextSubmit} disabled={!textInput.trim()}>
+                    <Button size="sm" onClick={handleTextSubmit} disabled={!textInput.trim()} className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold shadow-sm dark:shadow-slate-900/20">
                       Add Evidence
                     </Button>
                   </div>
                 ) : (
-                  <label className="flex flex-col items-center justify-center h-24 border-2 border-dashed border-white/10 rounded-lg cursor-pointer hover:border-white/20 hover:bg-white/[0.02] transition-colors">
+                  <label className="flex flex-col items-center justify-center h-28 border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-xl cursor-pointer hover:border-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 bg-slate-50 dark:bg-slate-800 transition-colors shadow-inner">
                     {uploading ? (
-                      <Loader2 className="w-6 h-6 text-white/40 animate-spin" />
+                      <Loader2 className="w-6 h-6 text-indigo-500 animate-spin" />
                     ) : (
                       <>
-                        <Upload className="w-6 h-6 text-white/40 mb-1" />
-                        <span className="text-xs text-white/40">
+                        <Upload className="w-6 h-6 text-slate-400 mb-2 drop-shadow-sm dark:shadow-slate-900/20" />
+                        <span className="text-sm font-bold text-slate-500 dark:text-slate-400">
                           Click to upload or drag files here
                         </span>
                       </>
@@ -269,10 +271,12 @@ export default function EvidenceUpload({ documentId, onAnalyze, isAnalyzing }: E
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="space-y-2"
+            className="space-y-3 mt-4"
           >
-            <p className="text-sm font-medium text-white/60">
-              Evidence added ({evidenceItems.length})
+            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 flex items-center gap-2">
+              <span className="w-full h-px bg-slate-200"></span>
+              <span className="shrink-0 whitespace-nowrap">Evidence added ({evidenceItems.length})</span>
+              <span className="w-full h-px bg-slate-200"></span>
             </p>
             {evidenceItems.map(item => {
               const config = EVIDENCE_TYPES.find(t => t.type === item.type);
@@ -283,12 +287,14 @@ export default function EvidenceUpload({ documentId, onAnalyze, isAnalyzing }: E
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
-                  className={`flex items-center gap-3 p-3 rounded-lg border ${config?.border || "border-white/5"} ${config?.bg || "bg-white/[0.02]"}`}
+                  className="flex items-center gap-4 p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20"
                 >
-                  <Icon className={`w-4 h-4 flex-shrink-0 ${config?.color || "text-white/40"}`} />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium truncate">{item.filename}</p>
-                    <p className="text-xs text-white/40">
+                  <div className={`p-2 rounded-lg ${config?.bg || "bg-slate-50 dark:bg-slate-800"} border shadow-inner ${config?.border || "border-slate-100"}`}>
+                    <Icon className={`w-5 h-5 flex-shrink-0 ${config?.color || "text-slate-500 dark:text-slate-400"}`} />
+                  </div>
+                  <div className="flex-1 min-w-0 pr-2">
+                    <p className="text-sm font-bold text-slate-900 dark:text-slate-100 truncate">{item.filename}</p>
+                    <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5">
                       {item.messageCount && `${item.messageCount} messages`}
                       {item.participants && item.participants.length > 0 && ` • ${item.participants.length} participants`}
                       {item.wordCount && !item.messageCount && `${item.wordCount} words`}
@@ -297,7 +303,7 @@ export default function EvidenceUpload({ documentId, onAnalyze, isAnalyzing }: E
                   </div>
                   <button
                     onClick={() => removeEvidence(item.id)}
-                    className="p-1 rounded hover:bg-white/10 text-white/40 hover:text-white/80"
+                    className="p-2 rounded-lg bg-white dark:bg-card border border-slate-100 shadow-sm dark:shadow-slate-900/20 hover:shadow hover:bg-red-50 text-slate-400 hover:text-red-600 transition-all border-solid"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -310,11 +316,11 @@ export default function EvidenceUpload({ documentId, onAnalyze, isAnalyzing }: E
 
       {/* Analyze Button */}
       {evidenceItems.length > 0 && (
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="pt-4">
           <Button
             onClick={handleAnalyze}
             disabled={isAnalyzing}
-            className="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3 gap-2"
+            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-6 gap-2 text-base rounded-xl shadow-lg border-none"
             size="lg"
           >
             {isAnalyzing ? (

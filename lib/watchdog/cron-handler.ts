@@ -24,11 +24,9 @@ export async function runWatchdogCron(maxCompanies = 10): Promise<CronRunResult>
   let changesDetected = 0;
   let alertsSent = 0;
 
-  console.log("[Watchdog Cron] Starting...");
 
   try {
     const companies = await getCompaniesDueForScrape(maxCompanies);
-    console.log(`[Watchdog Cron] ${companies.length} companies due for scraping`);
 
     for (const company of companies) {
       try {
@@ -62,7 +60,7 @@ export async function runWatchdogCron(maxCompanies = 10): Promise<CronRunResult>
     duration_ms: Date.now() - startTime,
   };
 
-  console.log("[Watchdog Cron] Complete:", JSON.stringify(result));
+
   return result;
 }
 
@@ -80,7 +78,6 @@ async function processCompany(company: MonitoredCompany): Promise<{
 
   for (const tosEntry of tosUrls) {
     try {
-      console.log(`[Watchdog] Scraping ${company.name} — ${tosEntry.label}`);
 
       // Scrape
       const scrapeResult = await scrapeWithRetry(
@@ -114,13 +111,12 @@ async function processCompany(company: MonitoredCompany): Promise<{
       );
 
       if (!isNew || !newSnapshot) {
-        console.log(`[Watchdog] No change detected for ${company.name}/${tosEntry.type}`);
+
         continue;
       }
 
       // If we have a previous snapshot, perform diff
       if (latestSnapshot && latestSnapshot.clean_text) {
-        console.log(`[Watchdog] Change detected for ${company.name}/${tosEntry.type}, running diff...`);
 
         const diffResult = await performSemanticDiff(
           latestSnapshot.clean_text,

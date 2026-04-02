@@ -15,7 +15,7 @@ interface Props {
   onJoined: () => void;
 }
 
-export default function JoinCollectiveModal({
+export function JoinCollectiveModal({
   collectiveId,
   entityName,
   memberCount,
@@ -58,13 +58,13 @@ export default function JoinCollectiveModal({
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-6">
         {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+          className="absolute inset-0 bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 backdrop-blur-sm"
           onClick={onClose}
         />
 
@@ -73,25 +73,25 @@ export default function JoinCollectiveModal({
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
-          className="relative w-full max-w-md rounded-2xl bg-gray-900 border border-white/10 shadow-2xl overflow-hidden"
+          className="relative w-full max-w-md rounded-2xl bg-slate-900 border border-white/10 shadow-2xl overflow-hidden"
         >
           {/* Header */}
-          <div className="p-5 border-b border-white/5">
+          <div className="p-6 border-b border-white/5">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-xl bg-amber-500/10 flex items-center justify-center">
                   <Users className="h-5 w-5 text-amber-400" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-white">Join Collective</h3>
-                  <p className="text-xs text-white/40">
+                  <h3 className="font-semibold text-slate-900 dark:text-slate-100">Join Collective</h3>
+                  <p className="text-xs text-slate-900 dark:text-slate-100">
                     Against {entityName} • {memberCount} members
                   </p>
                 </div>
               </div>
               <button
                 onClick={onClose}
-                className="p-1.5 rounded-lg text-white/30 hover:text-white/60 hover:bg-white/5"
+                className="p-1.5 rounded-xl text-slate-900 dark:text-slate-100 hover:text-slate-900 dark:text-slate-100 hover:bg-indigo-50 dark:hover:bg-indigo-950/30/50"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -99,8 +99,8 @@ export default function JoinCollectiveModal({
           </div>
 
           {/* Privacy notice */}
-          <div className="p-5 space-y-4">
-            <div className="rounded-xl bg-green-500/5 border border-green-500/20 p-4">
+          <div className="p-6 space-y-4">
+            <div className="rounded-xl bg-green-500/5 border border-green-500/20 p-6">
               <div className="flex items-start gap-3">
                 <Shield className="h-5 w-5 text-green-400 mt-0.5 flex-shrink-0" />
                 <div>
@@ -119,16 +119,16 @@ export default function JoinCollectiveModal({
 
             {/* Options */}
             <div className="space-y-3">
-              <label className="flex items-center justify-between rounded-lg bg-white/[0.03] p-3 cursor-pointer hover:bg-white/[0.05] transition-colors">
+              <label className="flex items-center justify-between rounded-xl bg-white dark:bg-card/[0.03] p-3 cursor-pointer hover:bg-white dark:bg-card/[0.05] transition-colors">
                 <div className="flex items-center gap-2">
                   {optInToChat ? (
-                    <Eye className="h-4 w-4 text-blue-400" />
+                    <Eye className="h-4 w-4 text-indigo-400" />
                   ) : (
-                    <EyeOff className="h-4 w-4 text-white/30" />
+                    <EyeOff className="h-4 w-4 text-slate-900 dark:text-slate-100" />
                   )}
                   <div>
-                    <p className="text-xs text-white">Enable anonymous chat</p>
-                    <p className="text-[10px] text-white/30">
+                    <p className="text-xs text-slate-900 dark:text-slate-100">Enable anonymous chat</p>
+                    <p className="text-[10px] text-slate-900 dark:text-slate-100">
                       Communicate with other members anonymously
                     </p>
                   </div>
@@ -137,16 +137,16 @@ export default function JoinCollectiveModal({
                   type="checkbox"
                   checked={optInToChat}
                   onChange={(e) => setOptInToChat(e.target.checked)}
-                  className="rounded border-white/20 bg-white/5 text-amber-500 focus:ring-amber-500"
+                  className="rounded border-white/20 bg-indigo-50/50 text-amber-500 focus:ring-amber-500"
                 />
               </label>
 
-              <label className="flex items-center justify-between rounded-lg bg-white/[0.03] p-3 cursor-pointer hover:bg-white/[0.05] transition-colors">
+              <label className="flex items-center justify-between rounded-xl bg-white dark:bg-card/[0.03] p-3 cursor-pointer hover:bg-white dark:bg-card/[0.05] transition-colors">
                 <div className="flex items-center gap-2">
-                  <Shield className="h-4 w-4 text-white/30" />
+                  <Shield className="h-4 w-4 text-slate-900 dark:text-slate-100" />
                   <div>
-                    <p className="text-xs text-white">Opt-in for legal action</p>
-                    <p className="text-[10px] text-white/30">
+                    <p className="text-xs text-slate-900 dark:text-slate-100">Opt-in for legal action</p>
+                    <p className="text-[10px] text-slate-900 dark:text-slate-100">
                       Be included in collective legal notices (can change later)
                     </p>
                   </div>
@@ -155,7 +155,7 @@ export default function JoinCollectiveModal({
                   type="checkbox"
                   checked={optInToAction}
                   onChange={(e) => setOptInToAction(e.target.checked)}
-                  className="rounded border-white/20 bg-white/5 text-amber-500 focus:ring-amber-500"
+                  className="rounded border-white/20 bg-indigo-50/50 text-amber-500 focus:ring-amber-500"
                 />
               </label>
             </div>

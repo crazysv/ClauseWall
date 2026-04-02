@@ -9,7 +9,7 @@ interface Props {
   disabled?: boolean;
 }
 
-export default function CameraCaptureButton({ onCapture, disabled = false }: Props) {
+export function CameraCaptureButton({ onCapture, disabled = false }: Props) {
   const [showPreview, setShowPreview] = useState(false);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [capturing, setCapturing] = useState(false);
@@ -26,9 +26,9 @@ export default function CameraCaptureButton({ onCapture, disabled = false }: Pro
       if (videoRef.current) {
         videoRef.current.srcObject = mediaStream;
       }
-    } catch (error) {
-      console.error("[ClauseWall] Camera access denied:", error);
-    }
+    } catch {
+        // Silently handled
+      }
   }, []);
 
   const capturePhoto = useCallback(() => {
@@ -70,7 +70,7 @@ export default function CameraCaptureButton({ onCapture, disabled = false }: Pro
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="fixed inset-0 z-50 bg-black flex flex-col"
+        className="fixed inset-0 z-50 bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 flex flex-col"
       >
         <video
           ref={videoRef}
@@ -84,23 +84,23 @@ export default function CameraCaptureButton({ onCapture, disabled = false }: Pro
         <div className="absolute bottom-0 left-0 right-0 p-6 flex items-center justify-center gap-8 bg-gradient-to-t from-black/80 to-transparent">
           <button
             onClick={stopCamera}
-            className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center"
+            className="w-12 h-12 rounded-full bg-white dark:bg-slate-900/20 flex items-center justify-center"
             aria-label="Close camera"
           >
-            <X className="h-5 w-5 text-white" />
+            <X className="h-5 w-5 text-slate-900 dark:text-slate-100" />
           </button>
 
           <button
             onClick={capturePhoto}
             disabled={capturing}
-            className="w-16 h-16 rounded-full bg-white border-4 border-white/30 flex items-center justify-center active:scale-95 transition-transform"
+            className="w-16 h-16 rounded-full bg-white dark:bg-slate-900 border-4 border-white/30 flex items-center justify-center active:scale-95 transition-transform"
             aria-label="Take photo"
             id="voice-capture-photo"
           >
             {capturing ? (
               <Loader2 className="h-6 w-6 text-black animate-spin" />
             ) : (
-              <div className="w-12 h-12 rounded-full bg-white" />
+              <div className="w-12 h-12 rounded-full bg-white dark:bg-slate-900" />
             )}
           </button>
 
@@ -108,7 +108,7 @@ export default function CameraCaptureButton({ onCapture, disabled = false }: Pro
         </div>
 
         <div className="absolute top-6 left-0 right-0 text-center">
-          <p className="text-white text-sm font-medium bg-black/40 inline-block px-4 py-1 rounded-full">
+          <p className="text-slate-900 dark:text-slate-100 text-sm font-medium bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 inline-block px-4 py-1 rounded-full">
             📸 Contract photo lelo
           </p>
         </div>
@@ -121,13 +121,11 @@ export default function CameraCaptureButton({ onCapture, disabled = false }: Pro
       whileTap={{ scale: 0.92 }}
       onClick={startCamera}
       disabled={disabled}
-      className={`w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all ${
-        disabled ? "opacity-50 cursor-not-allowed" : ""
-      }`}
+      className={`w-14 h-14 rounded-full bg-indigo-50/50 border border-white/10 flex items-center justify-center hover:bg-indigo-50 dark:hover:bg-indigo-950/30 border border-indigo-100 transition-all ${ disabled ? "opacity-50 cursor-not-allowed" : "" }`}
       aria-label="Take photo of contract"
       id="voice-camera-button"
     >
-      <Camera className="h-6 w-6 text-white/70" />
+      <Camera className="h-6 w-6 text-slate-900 dark:text-slate-100" />
     </motion.button>
   );
 }

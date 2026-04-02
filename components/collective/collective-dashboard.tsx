@@ -24,12 +24,12 @@ import type {
   LegalAidOrganization,
 } from "@/types";
 
-import ThresholdProgress from "./threshold-progress";
-import CollectiveActionCard from "./collective-action-card";
-import CollectiveChat from "./collective-chat";
-import LeverageCard from "./leverage-card";
-import LegalAidCard from "./legal-aid-card";
-import ProposeActionModal from "./propose-action-modal";
+import { ThresholdProgress } from "./threshold-progress";
+import { CollectiveActionCard } from "./collective-action-card";
+import { CollectiveChat } from "./collective-chat";
+import { LeverageCard } from "./leverage-card";
+import { LegalAidCard } from "./legal-aid-card";
+import { ProposeActionModal } from "./propose-action-modal";
 
 interface Props {
   collective: Collective;
@@ -40,7 +40,7 @@ interface Props {
 
 type Tab = "overview" | "actions" | "messages" | "legal_aid";
 
-export default function CollectiveDashboard({
+export function CollectiveDashboard({
   collective: initialCollective,
   membership,
   leverage,
@@ -100,12 +100,12 @@ export default function CollectiveDashboard({
   ];
 
   const statusColors: Record<string, string> = {
-    forming: "bg-blue-500/10 text-blue-400",
+    forming: "bg-indigo-500/10 text-blue-400",
     active: "bg-green-500/10 text-green-400",
     threshold_reached: "bg-amber-500/10 text-amber-400",
-    action_taken: "bg-purple-500/10 text-purple-400",
+    action_taken: "bg-indigo-500/10 text-purple-400",
     resolved: "bg-emerald-500/10 text-emerald-400",
-    dormant: "bg-white/5 text-white/30",
+    dormant: "bg-white/5 text-slate-900",
   };
 
   return (
@@ -113,13 +113,13 @@ export default function CollectiveDashboard({
       {/* Header */}
       <Card className="border-amber-500/10 bg-gradient-to-br from-amber-500/5 via-orange-500/5 to-transparent">
         <div className="h-1 bg-gradient-to-r from-amber-500 via-orange-500 to-red-500" />
-        <CardContent className="p-5">
+        <CardContent className="p-6">
           <div className="flex items-start justify-between mb-4">
             <div>
-              <h2 className="text-xl font-bold text-white">
+              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">
                 {collective.entity_name}
               </h2>
-              <p className="text-xs text-white/40 mt-0.5">
+              <p className="text-xs text-slate-900 dark:text-slate-100 mt-0.5">
                 {collective.entity_type} • {collective.primary_jurisdiction}
               </p>
             </div>
@@ -133,25 +133,25 @@ export default function CollectiveDashboard({
               <p className="text-lg font-bold text-amber-400">
                 {collective.member_count}
               </p>
-              <p className="text-[10px] text-white/30">Members</p>
+              <p className="text-[10px] text-slate-900 dark:text-slate-100">Members</p>
             </div>
             <div className="text-center">
               <p className="text-lg font-bold text-orange-400">
                 {collective.total_documents}
               </p>
-              <p className="text-[10px] text-white/30">Documents</p>
+              <p className="text-[10px] text-slate-900 dark:text-slate-100">Documents</p>
             </div>
             <div className="text-center">
               <p className="text-lg font-bold text-red-400">
                 {(collective.common_violations || []).length}
               </p>
-              <p className="text-[10px] text-white/30">Violations</p>
+              <p className="text-[10px] text-slate-900 dark:text-slate-100">Violations</p>
             </div>
             <div className="text-center">
-              <p className="text-lg font-bold text-white/60">
+              <p className="text-lg font-bold text-slate-900 dark:text-slate-100">
                 {collective.jurisdictions?.length || 0}
               </p>
-              <p className="text-[10px] text-white/30">Jurisdictions</p>
+              <p className="text-[10px] text-slate-900 dark:text-slate-100">Jurisdictions</p>
             </div>
           </div>
 
@@ -162,7 +162,7 @@ export default function CollectiveDashboard({
 
           {membership && (
             <div className="flex items-center justify-between mt-3 pt-3 border-t border-white/5">
-              <div className="flex items-center gap-2 text-xs text-white/40">
+              <div className="flex items-center gap-2 text-xs text-slate-900 dark:text-slate-100">
                 <Shield className="h-3 w-3 text-green-400" />
                 Your identity: <span className="text-amber-400 font-medium">{membership.anonymous_id}</span>
               </div>
@@ -182,16 +182,12 @@ export default function CollectiveDashboard({
       </Card>
 
       {/* Tabs */}
-      <div className="flex gap-1 p-1 rounded-lg bg-white/[0.02] border border-white/5">
+      <div className="flex gap-1 p-1 rounded-xl bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border-l-4 border-indigo-500 border border-white/5">
         {tabs.map((t) => (
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
-            className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-md text-xs transition-colors ${
-              tab === t.key
-                ? "bg-amber-500/10 text-amber-400"
-                : "text-white/30 hover:text-white/50 hover:bg-white/[0.02]"
-            }`}
+            className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-md text-xs transition-colors ${ tab === t.key ? "bg-amber-500/10 text-amber-400" : "text-slate-900 dark:text-slate-100 hover:text-slate-900 dark:text-slate-100 hover:bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border-l-4 border-indigo-500" }`}
           >
             {t.icon}
             {t.label}
@@ -204,22 +200,22 @@ export default function CollectiveDashboard({
         <div className="space-y-4">
           {/* Common violations */}
           {(collective.common_violations || []).length > 0 && (
-            <Card className="border-white/5 bg-white/[0.02]">
-              <CardContent className="p-4">
-                <h3 className="text-sm font-semibold text-white mb-3">
+            <Card className="border-white/5 bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border-l-4 border-indigo-500">
+              <CardContent className="p-6">
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">
                   Common Violations
                 </h3>
                 <div className="space-y-2">
                   {(collective.common_violations || []).slice(0, 5).map((v, i) => (
                     <div
                       key={i}
-                      className="flex items-center justify-between rounded-lg bg-white/[0.02] p-3"
+                      className="flex items-center justify-between rounded-xl bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border-l-4 border-indigo-500 p-3"
                     >
                       <div>
-                        <p className="text-xs font-medium text-white">
+                        <p className="text-xs font-medium text-slate-900 dark:text-slate-100">
                           {v.clause_type}
                         </p>
-                        <p className="text-[10px] text-white/30 line-clamp-1">
+                        <p className="text-[10px] text-slate-900 dark:text-slate-100 line-clamp-1">
                           {v.violation_description}
                         </p>
                       </div>
@@ -237,7 +233,7 @@ export default function CollectiveDashboard({
           {leverage && <LeverageCard leverage={leverage} />}
 
           {collective.description && (
-            <p className="text-xs text-white/30">{collective.description}</p>
+            <p className="text-xs text-slate-900 dark:text-slate-100">{collective.description}</p>
           )}
         </div>
       )}
@@ -256,8 +252,8 @@ export default function CollectiveDashboard({
 
           {actions.length === 0 ? (
             <div className="text-center py-8">
-              <Gavel className="h-8 w-8 text-white/10 mx-auto mb-2" />
-              <p className="text-xs text-white/30">No actions proposed yet</p>
+              <Gavel className="h-8 w-8 text-slate-900 dark:text-slate-100 mx-auto mb-2" />
+              <p className="text-xs text-slate-900 dark:text-slate-100">No actions proposed yet</p>
             </div>
           ) : (
             actions.map((action) => (
@@ -273,7 +269,7 @@ export default function CollectiveDashboard({
       )}
 
       {tab === "messages" && (
-        <Card className="border-white/5 bg-white/[0.02] overflow-hidden">
+        <Card className="border-white/5 bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border-l-4 border-indigo-500 overflow-hidden">
           <CollectiveChat
             collectiveId={collective.id}
             userAnonymousId={membership?.anonymous_id || null}
@@ -285,8 +281,8 @@ export default function CollectiveDashboard({
         <div className="space-y-3">
           {legalAid.length === 0 ? (
             <div className="text-center py-8">
-              <Building2 className="h-8 w-8 text-white/10 mx-auto mb-2" />
-              <p className="text-xs text-white/30">
+              <Building2 className="h-8 w-8 text-slate-900 dark:text-slate-100 mx-auto mb-2" />
+              <p className="text-xs text-slate-900 dark:text-slate-100">
                 No matching legal aid organizations found
               </p>
             </div>

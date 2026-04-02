@@ -12,21 +12,21 @@ interface GapsListProps {
 
 const IMPORTANCE_CONFIG = {
   essential: {
-    color: "text-red-400",
-    bg: "bg-red-500/10",
-    border: "border-red-500/20",
+    color: "text-red-700",
+    bg: "bg-red-50",
+    border: "border-red-200",
     label: "Essential",
   },
   recommended: {
-    color: "text-yellow-400",
-    bg: "bg-yellow-500/10",
-    border: "border-yellow-500/20",
+    color: "text-amber-700",
+    bg: "bg-amber-50",
+    border: "border-amber-200",
     label: "Recommended",
   },
   optional: {
-    color: "text-blue-400",
-    bg: "bg-blue-500/10",
-    border: "border-blue-500/20",
+    color: "text-blue-700",
+    bg: "bg-blue-50",
+    border: "border-blue-200",
     label: "Optional",
   },
 };
@@ -52,15 +52,15 @@ const CATEGORY_EMOJIS: Record<string, string> = {
   other: "📋",
 };
 
-export default function GapsList({ gaps }: GapsListProps) {
+export function GapsList({ gaps }: GapsListProps) {
   if (gaps.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 text-center">
-        <CheckCircle2 className="w-12 h-12 text-green-400/50 mb-4" />
-        <h3 className="text-lg font-semibold text-green-400 mb-2">
+      <div className="flex flex-col items-center justify-center py-8 md:py-6 md:py-8 lg:py-12 lg:py-16 text-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 border-dashed rounded-3xl">
+        <CheckCircle2 className="w-12 h-12 text-emerald-400 mb-4" />
+        <h3 className="text-lg font-black text-slate-800 dark:text-slate-200 mb-2 tracking-tight">
           Full Coverage
         </h3>
-        <p className="text-sm text-white/40 max-w-md">
+        <p className="text-sm font-medium text-slate-500 dark:text-slate-400 max-w-md">
           No significant coverage gaps were identified across your contracts.
           Your protections appear comprehensive.
         </p>
@@ -74,13 +74,13 @@ export default function GapsList({ gaps }: GapsListProps) {
     <div className="space-y-4">
       {/* Essential gaps banner */}
       {essentialCount > 0 && (
-        <div className="rounded-lg bg-red-500/5 border border-red-500/10 p-4 flex items-start gap-3">
-          <ShieldOff className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+        <div className="rounded-xl bg-red-50 border border-red-200 p-4 flex items-start gap-4 shadow-sm dark:shadow-slate-900/20">
+          <ShieldOff className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
           <div>
-            <p className="text-sm font-semibold text-red-400">
+            <p className="text-sm font-black text-red-800 tracking-tight">
               {essentialCount} Essential Protection{essentialCount > 1 ? "s" : ""} Missing
             </p>
-            <p className="text-xs text-white/40 mt-1">
+            <p className="text-xs font-medium text-red-950/70 mt-1 leading-relaxed">
               These gaps expose you to significant financial or legal risk. Address them as a priority.
             </p>
           </div>
@@ -100,38 +100,38 @@ export default function GapsList({ gaps }: GapsListProps) {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.05 }}
             >
-              <Card className={`${config.bg} ${config.border}`}>
-                <CardContent className="p-4">
-                  <div className="flex items-start gap-3">
-                    <span className="text-xl">{emoji}</span>
+              <Card className={`rounded-2xl border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-900/20 transition-all hover:border-indigo-300 ${config.bg}`}>
+                <CardContent className="p-5">
+                  <div className="flex items-start gap-4">
+                    <span className="text-lg md:text-xl lg:text-2xl mt-0.5">{emoji}</span>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <Badge className={`${config.bg} ${config.color} text-[10px] border-0`}>
+                      <div className="flex items-center gap-2 mb-2">
+                        <Badge className={`${config.bg} ${config.color} text-[10px] font-black uppercase tracking-widest border-0 px-2 rounded-full`}>
                           {config.label}
                         </Badge>
-                        <span className="text-[10px] text-white/30">
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                           {gap.category.replace(/_/g, " ")}
                         </span>
                       </div>
-                      <h4 className="text-sm font-semibold text-white mb-1">
+                      <h4 className="text-base font-black text-slate-900 dark:text-slate-100 mb-1 leading-tight">
                         {gap.title}
                       </h4>
-                      <p className="text-xs text-white/50">{gap.description}</p>
+                      <p className="text-sm font-medium text-slate-600 dark:text-slate-400 leading-relaxed">{gap.description}</p>
 
                       {/* Risk estimate */}
                       {gap.estimated_annual_risk != null && gap.estimated_annual_risk > 0 && (
-                        <p className="text-xs text-red-300 mt-2">
+                        <p className="text-sm font-black text-red-700 tracking-tight mt-3">
                           💰 Estimated annual risk: ₹{gap.estimated_annual_risk.toLocaleString("en-IN")}
                         </p>
                       )}
 
                       {/* Suggestion */}
                       {gap.suggestion && (
-                        <div className="mt-3 rounded-lg bg-green-500/5 border border-green-500/10 p-3">
-                          <p className="text-[10px] text-green-400 font-medium mb-1">
+                        <div className="mt-4 rounded-xl bg-emerald-50 border border-emerald-100 p-4">
+                          <p className="text-[10px] text-emerald-800 font-black uppercase tracking-widest mb-1.5">
                             💡 Suggestion
                           </p>
-                          <p className="text-xs text-white/60">{gap.suggestion}</p>
+                          <p className="text-sm font-medium text-emerald-950/80 leading-relaxed">{gap.suggestion}</p>
                         </div>
                       )}
                     </div>

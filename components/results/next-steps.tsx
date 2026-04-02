@@ -30,7 +30,7 @@ function SecondaryAction({
   onClick?: () => void;
 }) {
   const className =
-    "text-[11px] text-white/40 hover:text-white/70 px-2.5 py-1 rounded border border-white/5 hover:border-white/15 hover:bg-white/5 transition-all cursor-pointer";
+    "text-[11px] text-slate-900 hover:text-slate-900 px-2.5 py-1 rounded border border-white/5 hover:border-white/15 hover:bg-white/5 transition-all cursor-pointer";
 
   if (href) {
     return (
@@ -65,15 +65,15 @@ export function NextSteps({
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.1 }}
-        className="rounded-xl border border-red-500/30 bg-red-500/5 p-5"
+        className="rounded-xl border border-red-500/30 bg-red-500/5 p-6"
       >
         <div className="flex items-center gap-2 mb-3">
           <span className="text-lg">🚨</span>
-          <h3 className="text-sm font-semibold text-white">
+          <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
             Recommended Actions
           </h3>
         </div>
-        <p className="text-xs text-white/50 mb-4">
+        <p className="text-xs text-slate-900 dark:text-slate-100 mb-4">
           Your contract has{" "}
           {illegalCount > 0 ? `${illegalCount} illegal` : ""}
           {illegalCount > 0 && dangerousCount > 0 ? " and " : ""}
@@ -85,15 +85,15 @@ export function NextSteps({
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
           <Link
             href={`/negotiate/${documentId}`}
-            className="group flex flex-col p-4 rounded-lg bg-white/5 border border-white/10 hover:bg-white/8 hover:border-white/20 transition-all"
+            className="group flex flex-col p-6 rounded-xl bg-indigo-50/50 border border-white/10 hover:bg-white dark:bg-card/8 hover:border-white/20 transition-all"
           >
             <div className="flex items-center gap-2 mb-2">
-              <MessageSquare className="w-4 h-4 text-blue-400" />
-              <span className="text-xs font-semibold text-white group-hover:text-blue-400 transition-colors">
+              <MessageSquare className="w-4 h-4 text-indigo-400" />
+              <span className="text-xs font-semibold text-slate-900 dark:text-slate-100 group-hover:text-indigo-400 transition-colors">
                 1. Negotiate
               </span>
             </div>
-            <p className="text-[11px] text-white/40 leading-relaxed">
+            <p className="text-[11px] text-slate-900 dark:text-slate-100 leading-relaxed">
               Get scripts to push back on {illegalCount + dangerousCount} risky
               clauses
             </p>
@@ -101,15 +101,15 @@ export function NextSteps({
 
           <Link
             href={`/letter/${documentId}`}
-            className="group flex flex-col p-4 rounded-lg bg-white/5 border border-white/10 hover:bg-white/8 hover:border-white/20 transition-all"
+            className="group flex flex-col p-6 rounded-xl bg-indigo-50/50 border border-white/10 hover:bg-white dark:bg-card/8 hover:border-white/20 transition-all"
           >
             <div className="flex items-center gap-2 mb-2">
               <FileText className="w-4 h-4 text-amber-400" />
-              <span className="text-xs font-semibold text-white group-hover:text-amber-400 transition-colors">
+              <span className="text-xs font-semibold text-slate-900 dark:text-slate-100 group-hover:text-amber-400 transition-colors">
                 2. Legal Notice
               </span>
             </div>
-            <p className="text-[11px] text-white/40 leading-relaxed">
+            <p className="text-[11px] text-slate-900 dark:text-slate-100 leading-relaxed">
               Generate a formal notice citing{" "}
               {illegalCount > 0
                 ? `${illegalCount} violation${illegalCount !== 1 ? "s" : ""}`
@@ -119,22 +119,22 @@ export function NextSteps({
 
           <Link
             href={`/escape/${documentId}`}
-            className="group flex flex-col p-4 rounded-lg bg-white/5 border border-white/10 hover:bg-white/8 hover:border-white/20 transition-all"
+            className="group flex flex-col p-6 rounded-xl bg-indigo-50/50 border border-white/10 hover:bg-white dark:bg-card/8 hover:border-white/20 transition-all"
           >
             <div className="flex items-center gap-2 mb-2">
               <DoorOpen className="w-4 h-4 text-emerald-400" />
-              <span className="text-xs font-semibold text-white group-hover:text-emerald-400 transition-colors">
+              <span className="text-xs font-semibold text-slate-900 dark:text-slate-100 group-hover:text-emerald-400 transition-colors">
                 3. Escape Plan
               </span>
             </div>
-            <p className="text-[11px] text-white/40 leading-relaxed">
+            <p className="text-[11px] text-slate-900 dark:text-slate-100 leading-relaxed">
               Step-by-step plan to exit this contract safely
             </p>
           </Link>
         </div>
 
         <div className="flex flex-wrap gap-2 pt-2 border-t border-white/5">
-          <span className="text-[10px] text-white/25 self-center mr-1">
+          <span className="text-[10px] text-slate-900 dark:text-slate-100 self-center mr-1">
             Or explore deeper:
           </span>
           <SecondaryAction
@@ -171,15 +171,15 @@ export function NextSteps({
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.1 }}
-        className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-5"
+        className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-6"
       >
         <div className="flex items-center gap-2 mb-3">
           <span className="text-lg">⚠️</span>
-          <h3 className="text-sm font-semibold text-white">
+          <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
             Suggested Actions
           </h3>
         </div>
-        <p className="text-xs text-white/50 mb-4">
+        <p className="text-xs text-slate-900 dark:text-slate-100 mb-4">
           Your contract has {dangerousCount + warningCount} clause
           {dangerousCount + warningCount !== 1 ? "s" : ""} that need attention.
         </p>
@@ -191,37 +191,37 @@ export function NextSteps({
                 .getElementById("clause-list")
                 ?.scrollIntoView({ behavior: "smooth" });
             }}
-            className="group flex flex-col p-4 rounded-lg bg-white/5 border border-white/10 hover:bg-white/8 hover:border-white/20 transition-all text-left"
+            className="group flex flex-col p-6 rounded-xl bg-indigo-50/50 border border-white/10 hover:bg-white dark:bg-card/8 hover:border-white/20 transition-all text-left"
           >
             <div className="flex items-center gap-2 mb-2">
               <Search className="w-4 h-4 text-amber-400" />
-              <span className="text-xs font-semibold text-white">
+              <span className="text-xs font-semibold text-slate-900 dark:text-slate-100">
                 1. Review Risky Clauses
               </span>
             </div>
-            <p className="text-[11px] text-white/40">
+            <p className="text-[11px] text-slate-900 dark:text-slate-100">
               {dangerousCount + warningCount} clauses flagged below ↓
             </p>
           </button>
 
           <Link
             href={`/negotiate/${documentId}`}
-            className="group flex flex-col p-4 rounded-lg bg-white/5 border border-white/10 hover:bg-white/8 hover:border-white/20 transition-all"
+            className="group flex flex-col p-6 rounded-xl bg-indigo-50/50 border border-white/10 hover:bg-white dark:bg-card/8 hover:border-white/20 transition-all"
           >
             <div className="flex items-center gap-2 mb-2">
-              <MessageSquare className="w-4 h-4 text-blue-400" />
-              <span className="text-xs font-semibold text-white">
+              <MessageSquare className="w-4 h-4 text-indigo-400" />
+              <span className="text-xs font-semibold text-slate-900 dark:text-slate-100">
                 2. Get Negotiation Scripts
               </span>
             </div>
-            <p className="text-[11px] text-white/40">
+            <p className="text-[11px] text-slate-900 dark:text-slate-100">
               Talking points for your concerns
             </p>
           </Link>
         </div>
 
         <div className="flex flex-wrap gap-2 pt-2 border-t border-white/5">
-          <span className="text-[10px] text-white/25 self-center mr-1">
+          <span className="text-[10px] text-slate-900 dark:text-slate-100 self-center mr-1">
             Want deeper analysis?
           </span>
           <SecondaryAction
@@ -251,15 +251,15 @@ export function NextSteps({
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: 0.1 }}
-      className="rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-4"
+      className="rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-6"
     >
       <div className="flex items-center gap-2 mb-2">
         <span className="text-lg">✅</span>
-        <h3 className="text-sm font-semibold text-white">
+        <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
           Your Contract Looks Good
         </h3>
       </div>
-      <p className="text-xs text-white/50 mb-3">
+      <p className="text-xs text-slate-900 dark:text-slate-100 mb-3">
         No major issues found.
         {warningCount > 0
           ? ` ${warningCount} minor warning${warningCount !== 1 ? "s" : ""} to review.`

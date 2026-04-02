@@ -32,7 +32,7 @@ const STYLES: { value: BadgeStyle; label: string; description: string }[] = [
   { value: "shield", label: "Shield", description: "200×28px — GitHub-style" },
 ];
 
-export default function EmbedCodeModal({ isOpen, onClose, shareId }: EmbedCodeModalProps) {
+export function EmbedCodeModal({ isOpen, onClose, shareId }: EmbedCodeModalProps) {
   const [style, setStyle] = useState<BadgeStyle>("full");
   const [copiedType, setCopiedType] = useState<string | null>(null);
 
@@ -57,7 +57,7 @@ export default function EmbedCodeModal({ isOpen, onClose, shareId }: EmbedCodeMo
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-gray-900 border-gray-800 max-w-lg max-h-[90vh] overflow-y-auto">
+      <DialogContent className="bg-slate-900 border-slate-800 max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Code2 className="h-5 w-5 text-blue-400" />
@@ -70,27 +70,23 @@ export default function EmbedCodeModal({ isOpen, onClose, shareId }: EmbedCodeMo
 
         {/* Style Selector */}
         <div className="space-y-2">
-          <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Badge Style</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider">Badge Style</p>
           <div className="flex gap-2">
             {STYLES.map((s) => (
               <button
                 key={s.value}
                 onClick={() => setStyle(s.value)}
-                className={`flex-1 p-3 rounded-lg border text-left transition-all ${
-                  style === s.value
-                    ? "bg-blue-600/10 border-blue-500/30"
-                    : "bg-white/[0.02] border-white/5 hover:border-white/10"
-                }`}
+                className={`flex-1 p-3 rounded-xl border text-left transition-all ${ style === s.value ? "bg-indigo-600/10 border-blue-500/30" : "bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border-l-4 border-indigo-500 border-white/5 hover:border-white/10" }`}
               >
-                <p className="text-xs font-medium text-white">{s.label}</p>
-                <p className="text-[10px] text-gray-500 mt-0.5">{s.description}</p>
+                <p className="text-xs font-medium text-slate-900 dark:text-slate-100">{s.label}</p>
+                <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">{s.description}</p>
               </button>
             ))}
           </div>
         </div>
 
         {/* Preview */}
-<div className="p-6 rounded-lg bg-white/[0.03] border border-white/5 flex items-center justify-center min-h-[120px]">
+<div className="p-6 rounded-xl bg-white dark:bg-card/[0.03] border border-white/5 flex items-center justify-center min-h-[120px]">
   {/* eslint-disable-next-line @next/next/no-img-element */}
   <img
     src={`${badgeUrl}&t=${Date.now()}`}
@@ -98,7 +94,6 @@ export default function EmbedCodeModal({ isOpen, onClose, shareId }: EmbedCodeMo
     style={{ maxWidth: "100%" }}
     key={`${style}-${Date.now()}`}
     onError={(e) => {
-      console.error("Badge failed to load:", badgeUrl);
       (e.target as HTMLImageElement).style.display = "none";
     }}
     onLoad={(e) => {
@@ -112,14 +107,14 @@ export default function EmbedCodeModal({ isOpen, onClose, shareId }: EmbedCodeMo
           {/* HTML */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <p className="text-xs text-gray-500 font-medium">HTML</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">HTML</p>
               <button onClick={() => handleCopy(htmlCode, "HTML")}
-                className="text-xs text-gray-400 hover:text-white flex items-center gap-1 transition-colors">
+                className="text-xs text-slate-400 hover:text-slate-900 dark:text-slate-100 flex items-center gap-1 transition-colors">
                 {copiedType === "HTML" ? <Check className="h-3 w-3 text-green-400" /> : <Copy className="h-3 w-3" />}
                 {copiedType === "HTML" ? "Copied!" : "Copy"}
               </button>
             </div>
-            <pre className="p-3 rounded-lg bg-black/40 border border-white/5 text-xs text-green-400 overflow-x-auto">
+            <pre className="p-3 rounded-xl bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border border-white/5 text-xs text-green-400 overflow-x-auto">
               <code>{htmlCode}</code>
             </pre>
           </div>
@@ -127,14 +122,14 @@ export default function EmbedCodeModal({ isOpen, onClose, shareId }: EmbedCodeMo
           {/* Markdown */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <p className="text-xs text-gray-500 font-medium">Markdown</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Markdown</p>
               <button onClick={() => handleCopy(markdownCode, "Markdown")}
-                className="text-xs text-gray-400 hover:text-white flex items-center gap-1 transition-colors">
+                className="text-xs text-slate-400 hover:text-slate-900 dark:text-slate-100 flex items-center gap-1 transition-colors">
                 {copiedType === "Markdown" ? <Check className="h-3 w-3 text-green-400" /> : <Copy className="h-3 w-3" />}
                 {copiedType === "Markdown" ? "Copied!" : "Copy"}
               </button>
             </div>
-            <pre className="p-3 rounded-lg bg-black/40 border border-white/5 text-xs text-blue-400 overflow-x-auto">
+            <pre className="p-3 rounded-xl bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border border-white/5 text-xs text-blue-400 overflow-x-auto">
               <code>{markdownCode}</code>
             </pre>
           </div>
@@ -142,23 +137,23 @@ export default function EmbedCodeModal({ isOpen, onClose, shareId }: EmbedCodeMo
           {/* Direct URL */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <p className="text-xs text-gray-500 font-medium">Direct URL</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Direct URL</p>
               <button onClick={() => handleCopy(directUrl, "URL")}
-                className="text-xs text-gray-400 hover:text-white flex items-center gap-1 transition-colors">
+                className="text-xs text-slate-400 hover:text-slate-900 dark:text-slate-100 flex items-center gap-1 transition-colors">
                 {copiedType === "URL" ? <Check className="h-3 w-3 text-green-400" /> : <Copy className="h-3 w-3" />}
                 {copiedType === "URL" ? "Copied!" : "Copy"}
               </button>
             </div>
-            <pre className="p-3 rounded-lg bg-black/40 border border-white/5 text-xs text-gray-400 overflow-x-auto">
+            <pre className="p-3 rounded-xl bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border border-white/5 text-xs text-slate-400 overflow-x-auto">
               <code>{directUrl}</code>
             </pre>
           </div>
         </div>
 
         {/* Use Cases */}
-        <div className="p-3 rounded-lg bg-white/[0.02] border border-white/5">
-          <p className="text-[10px] text-gray-500 font-medium uppercase tracking-wider mb-2">Where to use</p>
-          <div className="grid grid-cols-2 gap-1.5 text-[11px] text-gray-400">
+        <div className="p-3 rounded-xl bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border-l-4 border-indigo-500 border border-white/5">
+          <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider mb-2">Where to use</p>
+          <div className="grid grid-cols-2 gap-1.5 text-[11px] text-slate-400">
             <div>🏠 Property listings</div>
             <div>💼 Company careers page</div>
             <div>📧 Email signatures</div>

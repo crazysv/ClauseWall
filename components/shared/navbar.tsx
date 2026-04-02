@@ -30,8 +30,9 @@ import { useSound } from "@/lib/audio/sound-context";
 import { LanguagePreferencesModal } from "@/components/bhasha/language-preferences-modal";
 import { LANGUAGE_CONFIGS } from "@/lib/bhasha/constants";
 import type { SupportedLanguage } from "@/types/bhasha";
+import { ThemeToggle } from "@/components/shared/theme-toggle";
 
-export default function Navbar() {
+export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { isMuted, toggleMute } = useSound();
   const pathname = usePathname();
@@ -56,191 +57,64 @@ export default function Navbar() {
 
   return (
     <>
-    <nav className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/80 backdrop-blur-xl">
+    <nav role="navigation" aria-label="Main navigation" data-no-print className="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-700/60 bg-white dark:bg-card/90 backdrop-blur-xl shadow-sm dark:shadow-slate-900/20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
             <div className="relative">
-              <Shield className="h-8 w-8 text-blue-500 transition-transform group-hover:scale-110" />
-              <div className="absolute inset-0 h-8 w-8 bg-blue-500/20 blur-xl rounded-full" />
+              <Shield className="h-8 w-8 text-indigo-600 transition-transform group-hover:scale-110" />
+              <div className="absolute inset-0 h-8 w-8 bg-indigo-600/20 blur-xl rounded-full" />
             </div>
-            <span className="text-xl font-bold tracking-tight">
-              Clause<span className="text-blue-500">Wall</span>
+            <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+              Clause<span className="text-indigo-600">Wall</span>
             </span>
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-1">
-            <Link href="/upload">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`gap-2 transition-colors ${isActive('/upload') || isActive('/results') ? 'text-foreground font-medium border-b-2 border-blue-500 rounded-b-none' : 'text-muted-foreground hover:text-foreground'}`}
-              >
-                <Upload className="h-4 w-4" />
-                Analyze
-              </Button>
-            </Link>
-            <Link href="/builder">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`gap-2 transition-colors ${isActive('/builder') ? 'text-foreground font-medium border-b-2 border-blue-500 rounded-b-none' : 'text-muted-foreground hover:text-foreground'}`}
-              >
-                <Hammer className="h-4 w-4" />
-                Builder
-              </Button>
-            </Link>
-            <Link href="/compare">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`gap-2 transition-colors ${isActive('/compare') ? 'text-foreground font-medium border-b-2 border-blue-500 rounded-b-none' : 'text-muted-foreground hover:text-foreground'}`}
-              >
-                <ArrowLeftRight className="h-4 w-4" />
-                Compare
-              </Button>
-            </Link>
-            <Link href="/vault">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`gap-2 transition-colors ${isActive('/vault') ? 'text-foreground font-medium border-b-2 border-indigo-500 rounded-b-none' : 'text-muted-foreground hover:text-foreground'}`}
-              >
-                <FileStack className="h-4 w-4" />
-                Vault
-              </Button>
-            </Link>
-            <Link href="/dashboard">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`gap-2 transition-colors ${isActive('/dashboard') ? 'text-foreground font-medium border-b-2 border-blue-500 rounded-b-none' : 'text-muted-foreground hover:text-foreground'}`}
-              >
-                <BarChart3 className="h-4 w-4" />
-                Dashboard
-              </Button>
-            </Link>
-            <Link href="/wall-of-shame">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`gap-2 transition-colors ${isActive('/wall-of-shame') ? 'text-foreground font-medium border-b-2 border-blue-500 rounded-b-none' : 'text-muted-foreground hover:text-foreground'}`}
-              >
-                <Skull className="h-4 w-4" />
-                Wall of Shame
-              </Button>
-            </Link>
-            <Link href="/collective">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`gap-2 transition-colors ${isActive('/collective') ? 'text-foreground font-medium border-b-2 border-amber-500 rounded-b-none' : 'text-muted-foreground hover:text-foreground'}`}
-              >
-                <Users className="h-4 w-4" />
-                Collectives
-              </Button>
-            </Link>
-            <Link href="/negotiate/live">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`gap-2 transition-colors ${isActive('/negotiate/live') ? 'text-foreground font-medium border-b-2 border-emerald-500 rounded-b-none' : 'text-muted-foreground hover:text-foreground'}`}
-              >
-                <Handshake className="h-4 w-4" />
-                Negotiate
-              </Button>
-            </Link>
-            <Link href="/lawchange">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`gap-2 transition-colors ${isActive('/lawchange') ? 'text-foreground font-medium border-b-2 border-indigo-500 rounded-b-none' : 'text-muted-foreground hover:text-foreground'}`}
-              >
-                <Scale className="h-4 w-4" />
-                Law Monitor
-              </Button>
-            </Link>
-            <Link href="/voice">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`gap-2 transition-colors ${isActive('/voice') ? 'text-foreground font-medium border-b-2 border-emerald-500 rounded-b-none' : 'text-muted-foreground hover:text-foreground'}`}
-              >
-                <Mic className="h-4 w-4" />
-                Voice Aid
-              </Button>
-            </Link>
-            <Link href="/complaint">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`gap-2 transition-colors ${isActive('/complaint') ? 'text-foreground font-medium border-b-2 border-orange-500 rounded-b-none' : 'text-muted-foreground hover:text-foreground'}`}
-              >
-                <Gavel className="h-4 w-4" />
-                Complain
-              </Button>
-            </Link>
-            <Link href="/shadow">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`gap-2 transition-colors ${isActive('/shadow') ? 'text-foreground font-medium border-b-2 border-amber-500 rounded-b-none' : 'text-muted-foreground hover:text-foreground'}`}
-              >
-                <FileSearch className="h-4 w-4" />
-                Shadow
-              </Button>
-            </Link>
-            <Link href="/watchdog">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`gap-2 transition-colors ${isActive('/watchdog') ? 'text-foreground font-medium border-b-2 border-cyan-500 rounded-b-none' : 'text-muted-foreground hover:text-foreground'}`}
-              >
-                <Eye className="h-4 w-4" />
-                Watchdog
-              </Button>
-            </Link>
-            <Link href="/evidence">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`gap-2 transition-colors ${isActive('/evidence') ? 'text-foreground font-medium border-b-2 border-blue-500 rounded-b-none' : 'text-muted-foreground hover:text-foreground'}`}
-              >
-                <Shield className="h-4 w-4" />
-                Evidence
-              </Button>
-            </Link>
-            <Link href="/market">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`gap-2 transition-colors ${isActive('/market') ? 'text-foreground font-medium border-b-2 border-cyan-500 rounded-b-none' : 'text-muted-foreground hover:text-foreground'}`}
-              >
-                <TrendingUp className="h-4 w-4" />
-                Market
-              </Button>
-            </Link>
-            <Link href="/authority">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`gap-2 transition-colors ${isActive('/authority') ? 'text-foreground font-medium border-b-2 border-purple-500 rounded-b-none' : 'text-muted-foreground hover:text-foreground'}`}
-              >
-                <Building2 className="h-4 w-4" />
-                Authority
-              </Button>
-            </Link>
+          {/* Added custom masking for a smooth fade if links overflow */}
+          <div className="hidden md:flex items-center gap-1 overflow-x-auto no-scrollbar max-w-3xl">
+            {[
+              { href: '/upload', icon: Upload, label: 'Analyze' },
+              { href: '/builder', icon: Hammer, label: 'Builder' },
+              { href: '/compare', icon: ArrowLeftRight, label: 'Compare' },
+              { href: '/vault', icon: FileStack, label: 'Vault' },
+              { href: '/dashboard', icon: BarChart3, label: 'Dashboard' },
+              { href: '/wall-of-shame', icon: Skull, label: 'Wall of Shame' },
+              { href: '/collective', icon: Users, label: 'Collectives' },
+              { href: '/negotiate/live', icon: Handshake, label: 'Negotiate' },
+              { href: '/lawchange', icon: Scale, label: 'Law Monitor' },
+              { href: '/voice', icon: Mic, label: 'Voice Aid' },
+              { href: '/complaint', icon: Gavel, label: 'Complain' },
+              { href: '/shadow', icon: FileSearch, label: 'Shadow' },
+              { href: '/watchdog', icon: Eye, label: 'Watchdog' },
+              { href: '/evidence', icon: Shield, label: 'Evidence' },
+              { href: '/market', icon: TrendingUp, label: 'Market' },
+              { href: '/authority', icon: Building2, label: 'Authority' },
+            ].map(({ href, icon: Icon, label }) => {
+              const active = href === '/upload' ? (isActive('/upload') || isActive('/results')) : isActive(href);
+              return (
+                <Link key={href} href={href}>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className={`gap-2 transition-all shrink-0 ${ active ? 'text-indigo-700 font-semibold border-b-2 border-indigo-600 rounded-b-none bg-indigo-50/50 hover:bg-indigo-50 hover:text-indigo-800' : 'text-slate-600 dark:text-slate-400 hover:text-indigo-600 hover:bg-slate-50 dark:hover:bg-slate-800 dark:bg-slate-800' }`}
+                  >
+                    <Icon className={`h-4 w-4 ${active ? 'text-indigo-600' : 'text-slate-400'}`} />
+                    {label}
+                  </Button>
+                </Link>
+              );
+            })}
           </div>
 
           {/* Language Badge + Sound Toggle + CTA + Mobile Toggle */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             {/* Bhasha Language Badge */}
             {langBadgeText && (
               <button
                 onClick={() => setShowLangModal(true)}
-                className="relative px-2 py-1 rounded-lg text-xs font-bold bg-indigo-500/15 text-indigo-400 border border-indigo-500/25 hover:bg-indigo-500/25 transition-all"
+                className="relative px-3 py-1 rounded-full text-xs font-bold bg-teal-50 text-teal-700 border border-teal-200 hover:bg-teal-100 transition-all shadow-sm dark:shadow-slate-900/20"
                 title={`Language: ${langConfig?.name}. Click to change.`}
               >
                 {langBadgeText}
@@ -249,37 +123,38 @@ export default function Navbar() {
             {/* Sound Toggle */}
             <button
               onClick={toggleMute}
-              className="relative p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/5 transition-all"
+              className="relative p-2 rounded-full text-slate-500 dark:text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 transition-all"
               aria-label={isMuted ? "Unmute sound effects" : "Mute sound effects"}
               title={isMuted ? "Sound effects off" : "Sound effects on"}
             >
               {isMuted ? (
-                <VolumeX className="h-4 w-4" />
+                <VolumeX className="h-5 w-5" />
               ) : (
-                <Volume2 className="h-4 w-4" />
+                <Volume2 className="h-5 w-5" />
               )}
               {/* Active indicator dot */}
               {!isMuted && (
-                <span className="absolute top-1.5 right-1.5 h-1.5 w-1.5 rounded-full bg-blue-500" />
+                <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-teal-500 ring-2 ring-white" />
               )}
             </button>
+            <ThemeToggle />
 
             <Link href="/upload" className="hidden md:block">
-              <Button size="sm" className="bg-blue-600 hover:bg-blue-700 gap-2">
+              <Button size="sm" className="rounded-full bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-700 hover:to-indigo-600 text-white shadow-md hover:shadow-lg transition-all gap-2 px-5 font-semibold border-none">
                 <Upload className="h-4 w-4" />
                 Upload Contract
               </Button>
             </Link>
 
             <button
-              className="md:hidden p-2 text-muted-foreground hover:text-foreground"
+              className="md:hidden p-2 text-slate-600 dark:text-slate-400 hover:text-indigo-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 dark:bg-slate-800 transition-colors"
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="Toggle menu"
             >
               {mobileOpen ? (
-                <X className="h-5 w-5" />
+                <X className="h-6 w-6" />
               ) : (
-                <Menu className="h-5 w-5" />
+                <Menu className="h-6 w-6" />
               )}
             </button>
           </div>
@@ -287,153 +162,56 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         {mobileOpen && (
-          <div className="md:hidden border-t border-white/5 py-4 space-y-2">
-            <Link
-              href="/upload"
-              onClick={() => setMobileOpen(false)}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive('/upload') || isActive('/results') ? 'text-foreground bg-white/5' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
-            >
-              <Upload className="h-4 w-4" />
-              Analyze Contract
-            </Link>
-            <Link
-              href="/builder"
-              onClick={() => setMobileOpen(false)}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive('/builder') ? 'text-foreground bg-white/5' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
-            >
-              <Hammer className="h-4 w-4" />
-              Contract Builder
-            </Link>
-            <Link
-              href="/compare"
-              onClick={() => setMobileOpen(false)}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive('/compare') ? 'text-foreground bg-white/5' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
-            >
-              <ArrowLeftRight className="h-4 w-4" />
-              Compare Contracts
-            </Link>
-            <Link
-              href="/vault"
-              onClick={() => setMobileOpen(false)}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive('/vault') ? 'text-foreground bg-white/5' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
-            >
-              <FileStack className="h-4 w-4" />
-              Contract Vault
-            </Link>
-            <Link
-              href="/dashboard"
-              onClick={() => setMobileOpen(false)}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive('/dashboard') ? 'text-foreground bg-white/5' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
-            >
-              <BarChart3 className="h-4 w-4" />
-              Dashboard
-            </Link>
-            <Link
-              href="/wall-of-shame"
-              onClick={() => setMobileOpen(false)}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive('/wall-of-shame') ? 'text-foreground bg-white/5' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
-            >
-              <Skull className="h-4 w-4" />
-              Wall of Shame
-            </Link>
-            <Link
-              href="/collective"
-              onClick={() => setMobileOpen(false)}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive('/collective') ? 'text-foreground bg-white/5' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
-            >
-              <Users className="h-4 w-4" />
-              Collectives
-            </Link>
-            <Link
-              href="/negotiate/live"
-              onClick={() => setMobileOpen(false)}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive('/negotiate/live') ? 'text-foreground bg-white/5' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
-            >
-              <Handshake className="h-4 w-4" />
-              Live Negotiate
-            </Link>
-            <Link
-              href="/lawchange"
-              onClick={() => setMobileOpen(false)}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive('/lawchange') ? 'text-foreground bg-white/5' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
-            >
-              <Scale className="h-4 w-4" />
-              Law Monitor
-            </Link>
-            <Link
-              href="/voice"
-              onClick={() => setMobileOpen(false)}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive('/voice') ? 'text-foreground bg-white/5' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
-            >
-              <Mic className="h-4 w-4" />
-              🎤 Voice Aid
-            </Link>
-            <Link
-              href="/complaint"
-              onClick={() => setMobileOpen(false)}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive('/complaint') ? 'text-foreground bg-white/5' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
-            >
-              <Gavel className="h-4 w-4" />
-              ⚖️ File Complaint
-            </Link>
-            <Link
-              href="/shadow"
-              onClick={() => setMobileOpen(false)}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive('/shadow') ? 'text-foreground bg-white/5' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
-            >
-              <FileSearch className="h-4 w-4" />
-              🔍 Shadow Detector
-            </Link>
-            <Link
-              href="/watchdog"
-              onClick={() => setMobileOpen(false)}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive('/watchdog') ? 'text-foreground bg-white/5' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
-            >
-              <Eye className="h-4 w-4" />
-              👁️ Contract Watchdog
-            </Link>
-            <Link
-              href="/evidence"
-              onClick={() => setMobileOpen(false)}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive('/evidence') ? 'text-foreground bg-white/5' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
-            >
-              <Shield className="h-4 w-4" />
-              🛡️ Evidence Chain
-            </Link>
-            <Link
-              href="/market"
-              onClick={() => setMobileOpen(false)}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive('/market') ? 'text-foreground bg-white/5' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
-            >
-              <TrendingUp className="h-4 w-4" />
-              📊 Market Intel
-            </Link>
-            <Link
-              href="/authority"
-              onClick={() => setMobileOpen(false)}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive('/authority') ? 'text-foreground bg-white/5' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
-            >
-              <Building2 className="h-4 w-4" />
-              ⚖️ Legal Authority
-            </Link>
+          <div className="md:hidden border-t border-slate-100 py-4 space-y-2 bg-white dark:bg-card rounded-b-xl shadow-lg px-2 absolute left-0 right-0 z-50 max-h-[85vh] overflow-y-auto">
+            {[
+              { href: '/upload', icon: Upload, label: 'Analyze Contract' },
+              { href: '/builder', icon: Hammer, label: 'Contract Builder' },
+              { href: '/compare', icon: ArrowLeftRight, label: 'Compare Contracts' },
+              { href: '/vault', icon: FileStack, label: 'Contract Vault' },
+              { href: '/dashboard', icon: BarChart3, label: 'Dashboard' },
+              { href: '/wall-of-shame', icon: Skull, label: 'Wall of Shame' },
+              { href: '/collective', icon: Users, label: 'Collectives' },
+              { href: '/negotiate/live', icon: Handshake, label: 'Live Negotiate' },
+              { href: '/lawchange', icon: Scale, label: 'Law Monitor' },
+              { href: '/voice', icon: Mic, label: 'Voice Aid' },
+              { href: '/complaint', icon: Gavel, label: 'File Complaint' },
+              { href: '/shadow', icon: FileSearch, label: 'Shadow Detector' },
+              { href: '/watchdog', icon: Eye, label: 'Contract Watchdog' },
+              { href: '/evidence', icon: Shield, label: 'Evidence Chain' },
+              { href: '/market', icon: TrendingUp, label: 'Market Intel' },
+              { href: '/authority', icon: Building2, label: 'Legal Authority' },
+            ].map(({ href, icon: Icon, label }) => {
+              const active = href === '/upload' ? (isActive('/upload') || isActive('/results')) : isActive(href);
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  onClick={() => setMobileOpen(false)}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium ${ active ? 'text-indigo-700 bg-indigo-50 shadow-sm dark:shadow-slate-900/20' : 'text-slate-600 dark:text-slate-400 hover:text-indigo-600 hover:bg-slate-50 dark:hover:bg-slate-800 dark:bg-slate-800' }`}
+                >
+                  <Icon className={`h-5 w-5 ${active ? 'text-indigo-600' : 'text-slate-400'}`} />
+                  {label}
+                </Link>
+              );
+            })}
 
             {/* Mobile Sound Toggle */}
             <button
               onClick={toggleMute}
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors w-full"
+              className="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 hover:bg-slate-50 dark:hover:bg-slate-800 dark:bg-slate-800 transition-all w-full"
             >
               {isMuted ? (
-                <VolumeX className="h-4 w-4" />
+                <VolumeX className="h-5 w-5 text-slate-400" />
               ) : (
-                <Volume2 className="h-4 w-4" />
+                <Volume2 className="h-5 w-5 text-slate-400" />
               )}
               {isMuted ? "Unmute Sound Effects" : "Mute Sound Effects"}
             </button>
 
-            <div className="pt-2 px-3">
+            <div className="pt-4 px-2 pb-2">
               <Link href="/upload" onClick={() => setMobileOpen(false)}>
-                <Button className="w-full bg-blue-600 hover:bg-blue-700 gap-2">
-                  <Upload className="h-4 w-4" />
+                <Button className="w-full rounded-full bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-700 hover:to-indigo-600 text-white shadow-md py-6 text-base font-semibold gap-2 border-none">
+                  <Upload className="h-5 w-5" />
                   Upload Contract
                 </Button>
               </Link>

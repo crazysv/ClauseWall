@@ -84,7 +84,6 @@ export async function generateNegotiationPlaybook(
       { role: "user", content: userPrompt },
     ];
 
-    console.log(`[ClauseWall] Generating negotiation playbook for ${limited.length} clauses...`);
 
     const rawResponse = await callGroq(messages, {
       temperature: 0.4,
@@ -127,7 +126,6 @@ export async function generateNegotiationPlaybook(
       closing_statement: parsed.closing_statement || "",
     };
 
-    console.log(`[ClauseWall] Playbook generated: ${playbook.total_issues} scripts`);
 
     // Translate user-facing scripts to output language
     if (outputLanguage && outputLanguage !== "en") {

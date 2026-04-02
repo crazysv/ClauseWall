@@ -13,7 +13,7 @@ interface ProofSummaryProps {
   documentId?: string;
 }
 
-export default function ProofSummary({ proofTree, onViewProof, documentId }: ProofSummaryProps) {
+export function ProofSummary({ proofTree, onViewProof, documentId }: ProofSummaryProps) {
   if (!proofTree) {
     // No formal proof — show AI-only badge
     return (
@@ -21,14 +21,14 @@ export default function ProofSummary({ proofTree, onViewProof, documentId }: Pro
         initial={{ opacity: 0, y: 4 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.2 }}
-        className="flex items-center justify-between p-3 rounded-lg bg-slate-500/5 border border-slate-500/20"
+        className="flex items-center justify-between p-3 rounded-xl bg-slate-500/5 border border-slate-500/20"
       >
         <div className="flex items-center gap-2">
-          <Bot className="h-4 w-4 text-slate-400" />
-          <span className="text-xs text-slate-400 font-medium">
+          <Bot className="h-4 w-4 text-slate-500 dark:text-slate-400" />
+          <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
             AI Assessment Only
           </span>
-          <span className="text-xs text-slate-500">
+          <span className="text-xs text-slate-500 dark:text-slate-400">
             No formal proof available · Based on pattern analysis
           </span>
         </div>
@@ -84,18 +84,18 @@ export default function ProofSummary({ proofTree, onViewProof, documentId }: Pro
         e.stopPropagation();
         onViewProof();
       }}
-      className={`w-full flex items-center justify-between p-3 rounded-lg ${colors.bg} border ${colors.border} hover:brightness-110 transition-all group`}
+      className={`w-full flex items-center justify-between p-3 rounded-xl ${colors.bg} border ${colors.border} hover:brightness-110 transition-all group`}
     >
       <div className="flex items-center gap-2 flex-wrap">
         <Scale className={`h-4 w-4 ${colors.icon}`} />
         <span className={`text-xs font-semibold ${colors.text}`}>
           Formally Proven:
         </span>
-        <Badge className={`${colors.badge} text-[10px] gap-1`}>
+        <Badge className={`${colors.badge} text-[10px] gap-1`} rounded-full>
           <ShieldCheck className="h-3 w-3" />
           {verdictLabel}
         </Badge>
-        <span className="text-xs text-gray-500">
+        <span className="text-xs text-slate-500 dark:text-slate-400">
           {summary.stepsCount} steps · {summary.verifiedPercent}% verified
           {summary.mainStatute ? ` · ${summary.mainStatute}` : ""}
         </span>
@@ -113,7 +113,7 @@ export default function ProofSummary({ proofTree, onViewProof, documentId }: Pro
         proofTree.verdict === 'proven_dangerous'
       ) && (
         <div className="flex flex-wrap items-center gap-2 mt-2 pt-2 border-t border-white/5">
-          <span className="text-[10px] text-white/20">Next:</span>
+          <span className="text-[10px] text-slate-900 dark:text-slate-100">Next:</span>
           <Link
             href={`/negotiate/${documentId}`}
             onClick={(e) => e.stopPropagation()}
@@ -121,7 +121,7 @@ export default function ProofSummary({ proofTree, onViewProof, documentId }: Pro
           >
             Get negotiation script →
           </Link>
-          <span className="text-white/10">·</span>
+          <span className="text-slate-900 dark:text-slate-100">·</span>
           <Link
             href={`/letter/${documentId}`}
             onClick={(e) => e.stopPropagation()}

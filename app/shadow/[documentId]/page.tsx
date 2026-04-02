@@ -17,12 +17,12 @@ import type {
   ShadowAnalysisRequest,
   ShadowAnalysisResponse,
 } from "@/types";
-import EvidenceUpload from "@/components/shadow/evidence-upload";
-import TrustScoreGauge from "@/components/shadow/trust-score-gauge";
-import MismatchList from "@/components/shadow/mismatch-list";
-import PromiseTimeline from "@/components/shadow/promise-timeline";
-import ComparisonTable from "@/components/shadow/comparison-table";
-import ShadowSummaryCard from "@/components/shadow/shadow-summary-card";
+import { EvidenceUpload } from "@/components/shadow/evidence-upload";
+import { TrustScoreGauge } from "@/components/shadow/trust-score-gauge";
+import { MismatchList } from "@/components/shadow/mismatch-list";
+import { PromiseTimeline } from "@/components/shadow/promise-timeline";
+import { ComparisonTable } from "@/components/shadow/comparison-table";
+import { ShadowSummaryCard } from "@/components/shadow/shadow-summary-card";
 
 type ViewMode = "upload" | "results";
 
@@ -102,7 +102,6 @@ export default function ShadowPage() {
       setViewMode("results");
       toast.success(`Found ${data.mismatches.length} mismatches in ${(data.processing_time_ms / 1000).toFixed(1)}s`);
     } catch (error) {
-      console.error("[ClauseWall] Shadow analysis failed:", error);
       toast.error(error instanceof Error ? error.message : "Analysis failed. Please try again.");
     } finally {
       setAnalyzing(false);
@@ -150,7 +149,7 @@ export default function ShadowPage() {
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
             <Link href={`/results/${documentId}`}>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
+              <Button aria-label="Go back to results" variant="ghost" size="icon" className="h-8 w-8">
                 <ArrowLeft className="w-4 h-4" />
               </Button>
             </Link>
@@ -211,7 +210,7 @@ export default function ShadowPage() {
                   animate={{ opacity: 1 }}
                   className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center"
                 >
-                  <div className="bg-gray-950 rounded-2xl border border-white/10 p-8 max-w-sm w-full mx-4 text-center space-y-4">
+                  <div className="bg-slate-950 rounded-2xl border border-white/10 p-4 md:p-6 lg:p-8 max-w-sm w-full mx-4 text-center space-y-4">
                     <div className="relative mx-auto w-16 h-16">
                       <Loader2 className="w-16 h-16 text-amber-400 animate-spin" />
                       <div className="absolute inset-0 w-16 h-16 bg-amber-500/15 blur-xl rounded-full animate-pulse" />
@@ -248,7 +247,7 @@ export default function ShadowPage() {
               </div>
 
               {/* Tab Navigation */}
-              <div className="flex gap-1 bg-white/[0.02] rounded-lg p-1 border border-white/5">
+              <div className="flex gap-1 bg-white dark:bg-slate-900/[0.02] rounded-lg p-1 border border-white/5">
                 {([
                   { key: "mismatches" as const, label: `Mismatches (${analysis.mismatches.length})` },
                   { key: "timeline" as const, label: `Timeline (${analysis.promises.length})` },
@@ -257,11 +256,7 @@ export default function ShadowPage() {
                   <button
                     key={tab.key}
                     onClick={() => setActiveTab(tab.key)}
-                    className={`flex-1 py-2 px-3 rounded text-sm transition-colors ${
-                      activeTab === tab.key
-                        ? "bg-white/10 text-white font-medium"
-                        : "text-white/40 hover:text-white/60"
-                    }`}
+                    className={`flex-1 py-2 px-3 rounded text-sm transition-colors ${ activeTab === tab.key ? "bg-white dark:bg-slate-900/10 text-white font-medium" : "text-white/40 hover:text-white/60" }`}
                   >
                     {tab.label}
                   </button>

@@ -125,3 +125,50 @@ export interface CronRunResult {
   errors: string[];
   duration_ms: number;
 }
+
+/** Company profile for watchdog tracking */
+export interface WatchdogCompany {
+  id: string;
+  name: string;
+  slug: string;
+  sector?: string;
+  industry?: string;
+  description?: string;
+  website?: string;
+  logo_url?: string | null;
+  tos_score?: number;
+  last_change_date?: string | null;
+  total_changes?: number;
+  created_at?: string;
+  updated_at?: string;
+}
+
+/** A detected change in a company's ToS */
+export interface WatchdogChange {
+  id: string;
+  company_id?: string;
+  date: string;
+  type: string;
+  direction: "better" | "worse" | "neutral";
+  summary: string;
+  diff_before?: string;
+  diff_after?: string;
+  severity?: string;
+  section_title?: string;
+  user_impact_summary?: string;
+  legal_implications?: string;
+  confidence?: number;
+}
+
+/** Alert/notification for watchdog changes */
+export interface WatchdogAlert {
+  id: string;
+  title: string;
+  message?: string;
+  company_id?: string;
+  company_name?: string;
+  change_id?: string;
+  severity?: "info" | "warning" | "critical";
+  read: boolean;
+  created_at?: string;
+}

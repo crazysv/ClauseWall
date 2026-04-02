@@ -15,7 +15,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { LawChangeSummary } from "@/types";
 
-export default function LawChangeDashboardWidget() {
+export function LawChangeDashboardWidget() {
   const [summary, setSummary] = useState<LawChangeSummary | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -53,41 +53,37 @@ export default function LawChangeDashboardWidget() {
       transition={{ delay: 0.36 }}
     >
       <Card
-        className={`relative overflow-hidden border-0 ${
-          hasImpacts
-            ? "bg-gradient-to-r from-red-500/10 via-indigo-500/10 to-purple-500/10"
-            : "bg-gradient-to-r from-indigo-500/10 via-blue-500/10 to-purple-500/10"
-        }`}
+        className={`relative overflow-hidden border ${ hasImpacts ? "bg-gradient-to-br from-red-50 via-rose-50 to-indigo-50 border-red-200 shadow-sm dark:shadow-slate-900/20" : "bg-gradient-to-br from-indigo-50 via-blue-50 to-purple-50 border-indigo-200 shadow-sm dark:shadow-slate-900/20" }`}
       >
-        {/* Background glow */}
+        {/* Background glow shadow */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-indigo-500/10 to-transparent rounded-full blur-3xl" />
+          <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-slate-50 dark:bg-slate-800/50 rounded-full blur-3xl" />
         </div>
 
         <CardContent className="relative p-5 sm:p-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <div
-                className={`h-14 w-14 rounded-2xl flex items-center justify-center shadow-lg ${
+                className={`h-16 w-16 rounded-2xl flex items-center justify-center shrink-0 shadow-md ${
                   hasImpacts
-                    ? "bg-gradient-to-br from-red-500 to-indigo-500 shadow-red-500/25"
-                    : "bg-gradient-to-br from-indigo-500 to-blue-500 shadow-indigo-500/25"
+                    ? "bg-gradient-to-br from-red-500 to-indigo-600 shadow-red-500/20"
+                    : "bg-gradient-to-br from-indigo-500 to-blue-600 shadow-indigo-500/20"
                 }`}
               >
-                <Scale className="h-7 w-7 text-white" />
+                <Scale className="h-8 w-8 text-white drop-shadow-sm dark:shadow-slate-900/20" />
               </div>
               <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <h3 className="text-lg font-bold text-white">
+                <div className="flex items-center gap-3 mb-1.5">
+                  <h3 className="text-xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
                     Law Monitor
                   </h3>
                   {summary.unacknowledged_impacts > 0 && (
-                    <Badge className="bg-red-500 text-white text-[10px] border-0 animate-pulse">
+                    <Badge className="bg-red-50 text-red-700 border-red-200 shadow-sm dark:shadow-slate-900/20 font-bold uppercase tracking-widest text-[10px] px-2 py-0.5 rounded-full animate-pulse">
                       {summary.unacknowledged_impacts} NEW
                     </Badge>
                   )}
                 </div>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm font-semibold text-slate-600 dark:text-slate-400">
                   {hasImpacts
                     ? `${summary.affected_contracts} contract${
                         summary.affected_contracts !== 1 ? "s" : ""

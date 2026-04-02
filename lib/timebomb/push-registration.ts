@@ -54,7 +54,7 @@ export async function registerPushNotifications(): Promise<string | null> {
     });
 
     const subscriptionJson = JSON.stringify(subscription);
-    console.log("[TimeBomb Push] Subscribed successfully");
+
     return subscriptionJson;
   } catch (error) {
     console.error("[TimeBomb Push] Registration failed:", error);
@@ -74,7 +74,7 @@ export async function unregisterPush(): Promise<void> {
 
     if (subscription) {
       await subscription.unsubscribe();
-      console.log("[TimeBomb Push] Unsubscribed");
+
     }
   } catch (error) {
     console.error("[TimeBomb Push] Unregister failed:", error);

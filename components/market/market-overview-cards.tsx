@@ -14,53 +14,53 @@ const statCards = [
     key: "total_analyzed",
     label: "Contracts Analyzed",
     icon: FileText,
-    color: "text-cyan-400",
-    bgColor: "from-cyan-500/10 to-blue-500/10",
-    borderColor: "border-cyan-500/15",
+    color: "text-teal-600",
+    bgColor: "bg-teal-50",
+    borderColor: "border-teal-400",
   },
   {
     key: "jurisdictions_covered",
     label: "States Covered",
     icon: MapPin,
-    color: "text-green-400",
-    bgColor: "from-green-500/10 to-emerald-500/10",
-    borderColor: "border-green-500/15",
+    color: "text-emerald-600",
+    bgColor: "bg-emerald-50",
+    borderColor: "border-emerald-400",
   },
   {
     key: "entities_tracked",
     label: "Entities Tracked",
     icon: Building2,
-    color: "text-purple-400",
-    bgColor: "from-purple-500/10 to-pink-500/10",
-    borderColor: "border-purple-500/15",
+    color: "text-purple-600",
+    bgColor: "bg-purple-50",
+    borderColor: "border-purple-400",
   },
   {
     key: "benchmarks_computed",
     label: "Benchmarks",
     icon: BarChart3,
-    color: "text-amber-400",
-    bgColor: "from-amber-500/10 to-orange-500/10",
-    borderColor: "border-amber-500/15",
+    color: "text-amber-600",
+    bgColor: "bg-amber-50",
+    borderColor: "border-amber-400",
   },
   {
     key: "contract_types_covered",
     label: "Contract Types",
     icon: Database,
-    color: "text-blue-400",
-    bgColor: "from-blue-500/10 to-indigo-500/10",
-    borderColor: "border-blue-500/15",
+    color: "text-indigo-600",
+    bgColor: "bg-indigo-50",
+    borderColor: "border-indigo-400",
   },
   {
     key: "trends_detected",
     label: "Trends Detected",
     icon: TrendingUp,
-    color: "text-rose-400",
-    bgColor: "from-rose-500/10 to-red-500/10",
-    borderColor: "border-rose-500/15",
+    color: "text-rose-600",
+    bgColor: "bg-rose-50",
+    borderColor: "border-rose-400",
   },
 ];
 
-export default function MarketOverviewCards({ stats }: MarketOverviewCardsProps) {
+export function MarketOverviewCards({ stats }: MarketOverviewCardsProps) {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
       {statCards.map((card, index) => {
@@ -74,15 +74,15 @@ export default function MarketOverviewCards({ stats }: MarketOverviewCardsProps)
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.05 }}
           >
-            <Card className={`bg-gradient-to-br ${card.bgColor} ${card.borderColor} h-full`}>
-              <CardContent className="p-4 flex flex-col items-center text-center">
-                <div className={`p-2 rounded-lg bg-white/5 mb-2`}>
+            <Card className={`bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border-l-4 ${card.borderColor} border-y-slate-200 border-r-slate-200 h-full rounded-2xl`}>
+              <CardContent className="p-5 flex flex-col items-center text-center">
+                <div className={`p-2.5 rounded-xl ${card.bgColor} mb-3`}>
                   <Icon className={`h-5 w-5 ${card.color}`} />
                 </div>
-                <p className="text-2xl font-bold text-white">
+                <p className="text-xl md:text-lg md:text-xl lg:text-2xl lg:text-3xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
                   {value.toLocaleString()}
                 </p>
-                <p className="text-[10px] text-white/40 mt-0.5">{card.label}</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mt-1">{card.label}</p>
               </CardContent>
             </Card>
           </motion.div>

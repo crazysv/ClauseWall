@@ -42,7 +42,7 @@ const agentInfo: Record<string, { icon: string; name: string }> = {
 // COMPONENT
 // ============================================
 
-export default function DeliberationSummary({
+export function DeliberationSummary({
   deliberation,
   onViewDebate,
   onTriggerDeliberation,
@@ -60,7 +60,7 @@ export default function DeliberationSummary({
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="p-3 rounded-lg bg-amber-500/[0.04] border border-amber-500/15"
+        className="p-3 rounded-xl bg-amber-500/[0.04] border border-amber-500/15"
       >
         <div className="flex items-center gap-2 mb-2">
           <Loader2 className="h-3.5 w-3.5 text-amber-400 animate-spin" />
@@ -69,12 +69,12 @@ export default function DeliberationSummary({
           </span>
         </div>
         {agent && (
-          <p className="text-xs text-white/60 mb-2">
+          <p className="text-xs text-slate-900 dark:text-slate-100 mb-2">
             {agent.icon} {agent.name} is{" "}
             {currentAgent === "arbiter" ? "deliberating" : "arguing"}...
           </p>
         )}
-        <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
+        <div className="h-1.5 rounded-full bg-white dark:bg-slate-900/10 overflow-hidden">
           <motion.div
             className="h-full bg-amber-500 rounded-full"
             initial={{ width: 0 }}
@@ -82,7 +82,7 @@ export default function DeliberationSummary({
             transition={{ duration: 0.4 }}
           />
         </div>
-        <p className="text-[10px] text-white/40 mt-1">
+        <p className="text-[10px] text-slate-900 dark:text-slate-100 mt-1">
           Step {step} of 3
         </p>
       </motion.div>
@@ -100,7 +100,7 @@ export default function DeliberationSummary({
       <motion.div
         initial={{ opacity: 0, y: 4 }}
         animate={{ opacity: 1, y: 0 }}
-        className="p-3 rounded-lg bg-white/[0.03] border border-white/10 hover:border-white/20 transition-colors cursor-pointer group"
+        className="p-3 rounded-xl bg-white dark:bg-card/[0.03] border border-white/10 hover:border-white/20 transition-colors cursor-pointer group"
         onClick={onViewDebate}
       >
         <div className="flex items-center justify-between">
@@ -109,14 +109,14 @@ export default function DeliberationSummary({
               <span className={`text-xs font-bold ${v.color}`}>
                 {v.emoji} {v.label}
               </span>
-              <span className="text-[10px] text-white/40">
+              <span className="text-[10px] text-slate-900 dark:text-slate-100">
                 ({arbConf}%)
               </span>
             </div>
-            <span className="text-white/20">|</span>
-            <div className="flex items-center gap-2 text-[10px] text-white/50">
+            <span className="text-slate-900 dark:text-slate-100">|</span>
+            <div className="flex items-center gap-2 text-[10px] text-slate-900 dark:text-slate-100">
               <span>🔴 {predConf}%</span>
-              <span className="text-white/20">vs</span>
+              <span className="text-slate-900 dark:text-slate-100">vs</span>
               <span>🟢 {guardConf}%</span>
             </div>
           </div>
@@ -132,7 +132,7 @@ export default function DeliberationSummary({
           deliberation.arbiterVerdict.verdict === 'unfair'
         ) && (
           <div className="flex flex-wrap items-center gap-2 mt-2 pt-2 border-t border-white/5">
-            <span className="text-[10px] text-white/20">Next:</span>
+            <span className="text-[10px] text-slate-900 dark:text-slate-100">Next:</span>
             {deliberation.arbiterVerdict.verdict === 'illegal' ? (
               <>
                 <Link
@@ -141,7 +141,7 @@ export default function DeliberationSummary({
                 >
                   Agents agree — Generate legal notice →
                 </Link>
-                <span className="text-white/10">·</span>
+                <span className="text-slate-900 dark:text-slate-100">·</span>
                 <Link
                   href={`/negotiate/${documentId}`}
                   className="text-[10px] text-emerald-400/60 hover:text-emerald-400 transition-colors"
@@ -157,7 +157,7 @@ export default function DeliberationSummary({
                 >
                   Flagged unfair — Get negotiation script →
                 </Link>
-                <span className="text-white/10">·</span>
+                <span className="text-slate-900 dark:text-slate-100">·</span>
                 <Link
                   href={`/letter/${documentId}`}
                   className="text-[10px] text-amber-400/60 hover:text-amber-400 transition-colors"
@@ -177,18 +177,18 @@ export default function DeliberationSummary({
     <motion.div
       initial={{ opacity: 0, y: 4 }}
       animate={{ opacity: 1, y: 0 }}
-      className="p-3 rounded-lg bg-white/[0.02] border border-white/8 hover:border-white/15 transition-colors cursor-pointer group"
+      className="p-3 rounded-xl bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border-l-4 border-indigo-500 border border-white/8 hover:border-white/15 transition-colors cursor-pointer group"
       onClick={onTriggerDeliberation}
     >
       <div className="flex items-center justify-between">
         <div className="min-w-0">
           <div className="flex items-center gap-2 mb-0.5">
             <Swords className="h-3.5 w-3.5 text-amber-400/70" />
-            <span className="text-xs font-medium text-white/70">
+            <span className="text-xs font-medium text-slate-900 dark:text-slate-100">
               Three AI agents can debate this clause
             </span>
           </div>
-          <p className="text-[10px] text-white/40 ml-[22px]">
+          <p className="text-[10px] text-slate-900 dark:text-slate-100 ml-[22px]">
             A corporate lawyer, a rights advocate, and a judge
           </p>
         </div>

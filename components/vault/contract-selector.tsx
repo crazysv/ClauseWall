@@ -23,13 +23,13 @@ interface ContractSelectorProps {
 }
 
 const RISK_COLOR = (score: number) => {
-  if (score >= 75) return "text-red-400 bg-red-500/10";
-  if (score >= 50) return "text-orange-400 bg-orange-500/10";
-  if (score >= 25) return "text-yellow-400 bg-yellow-500/10";
-  return "text-green-400 bg-green-500/10";
+  if (score >= 75) return "text-red-700 bg-red-100";
+  if (score >= 50) return "text-orange-700 bg-orange-100";
+  if (score >= 25) return "text-yellow-700 bg-yellow-100";
+  return "text-emerald-700 bg-emerald-100";
 };
 
-export default function ContractSelector({
+export function ContractSelector({
   selectedIds,
   onSelectionChange,
 }: ContractSelectorProps) {
@@ -45,8 +45,8 @@ export default function ContractSelector({
           const data = await res.json();
           setDocuments(data.documents || []);
         }
-      } catch (error) {
-        console.error("[Vault] Failed to fetch documents:", error);
+      } catch {
+        // Silently handled
       } finally {
         setLoading(false);
       }
@@ -95,10 +95,10 @@ export default function ContractSelector({
 
   if (documents.length === 0) {
     return (
-      <div className="text-center py-8 text-white/40">
-        <FileText className="w-8 h-8 mx-auto mb-3 opacity-50" />
-        <p className="text-sm">No analyzed contracts found.</p>
-        <p className="text-xs mt-1">Upload and analyze contracts first.</p>
+      <div className="text-center py-10 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 border-dashed rounded-3xl">
+        <FileText className="w-10 h-10 mx-auto mb-4 text-slate-300" />
+        <p className="text-sm font-black text-slate-800 dark:text-slate-200 tracking-tight">No analyzed contracts found.</p>
+        <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mt-1">Upload and analyze contracts first.</p>
       </div>
     );
   }
@@ -108,34 +108,34 @@ export default function ContractSelector({
       {/* Search + Select All/None */}
       <div className="flex gap-2">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search contracts..."
-            className="w-full pl-9 pr-3 py-2 rounded-lg bg-white/[0.03] border border-white/10 text-sm text-white/80 placeholder:text-white/20 focus:outline-none focus:border-indigo-500/30"
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white dark:bg-card border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-900/20 text-sm font-medium text-slate-800 dark:text-slate-200 placeholder:text-slate-400 focus:outline-none focus:border-indigo-500 transition-colors"
           />
         </div>
         <button
           onClick={selectAll}
-          className="px-3 py-2 text-xs text-white/40 hover:text-white/60 bg-white/[0.03] border border-white/10 rounded-lg transition-colors"
+          className="px-4 py-2.5 text-xs font-bold text-slate-600 hover:text-slate-900 dark:text-slate-100 bg-white dark:bg-card border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-900/20 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
         >
           All
         </button>
         <button
           onClick={selectNone}
-          className="px-3 py-2 text-xs text-white/40 hover:text-white/60 bg-white/[0.03] border border-white/10 rounded-lg transition-colors"
+          className="px-4 py-2.5 text-xs font-bold text-slate-600 hover:text-slate-900 dark:text-slate-100 bg-white dark:bg-card border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-900/20 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
         >
           None
         </button>
       </div>
 
       {/* Selection count */}
-      <p className="text-xs text-white/30">
+      <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest pl-1">
         {selectedIds.length} of {documents.length} selected
         {selectedIds.length < 2 && (
-          <span className="text-yellow-400 ml-2">
+          <span className="text-orange-600 ml-2">
             (minimum 2 required)
           </span>
         )}
@@ -155,44 +155,36 @@ export default function ContractSelector({
               transition={{ delay: index * 0.03 }}
             >
               <Card
-                className={`cursor-pointer transition-all ${
-                  isSelected
-                    ? "bg-indigo-500/10 border-indigo-500/30"
-                    : "bg-white/[0.02] border-white/5 hover:bg-white/[0.04]"
-                }`}
+                className={`cursor-pointer transition-all shadow-sm dark:shadow-slate-900/20 rounded-2xl ${ isSelected ? "bg-indigo-50 border-indigo-200" : "bg-white dark:bg-card border-slate-200 dark:border-slate-700 hover:border-indigo-300" }`}
                 onClick={() => toggleDoc(doc.id)}
               >
-                <CardContent className="p-3 flex items-center gap-3">
+                <CardContent className="p-4 flex items-center gap-4">
                   {/* Checkbox */}
                   <div
-                    className={`w-5 h-5 rounded flex items-center justify-center flex-shrink-0 border transition-colors ${
-                      isSelected
-                        ? "bg-indigo-500 border-indigo-500"
-                        : "border-white/20 bg-white/5"
-                    }`}
+                    className={`w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 border transition-all ${ isSelected ? "bg-indigo-600 border-indigo-700" : "border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800" }`}
                   >
-                    {isSelected && <Check className="w-3 h-3 text-white" />}
+                    {isSelected && <Check className="w-3.5 h-3.5 text-white" />}
                   </div>
 
                   {/* Content */}
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-white/80 truncate">
+                    <p className="text-sm font-black text-slate-900 dark:text-slate-100 truncate">
                       {doc.original_filename || "Unnamed Document"}
                     </p>
-                    <div className="flex items-center gap-2 mt-0.5">
-                      <span className="text-[10px] text-white/30 capitalize">
+                    <div className="flex items-center gap-2 mt-1 -ml-0.5">
+                      <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest px-1">
                         {(doc.document_type || "unknown").replace(/_/g, " ")}
                       </span>
                       {doc.entity_name && (
-                        <span className="text-[10px] text-white/30">
-                          · {doc.entity_name}
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest before:content-['·'] before:mr-2 before:text-slate-300">
+                          {doc.entity_name}
                         </span>
                       )}
                     </div>
                   </div>
 
                   {/* Risk Badge */}
-                  <Badge className={`${riskColor} text-[10px] border-0`}>
+                  <Badge className={`${riskColor} text-[10px] font-black uppercase tracking-widest border-0 px-2 rounded-full`}>
                     {doc.overall_risk_score}/100
                   </Badge>
                 </CardContent>

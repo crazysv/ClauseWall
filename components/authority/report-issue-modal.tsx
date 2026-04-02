@@ -23,7 +23,7 @@ const ISSUE_TYPES = [
   { value: "other", label: "Other Issue" },
 ];
 
-export default function ReportIssueModal({ authorityId, authorityName, isOpen, onClose }: Props) {
+export function ReportIssueModal({ authorityId, authorityName, isOpen, onClose }: Props) {
   const [issueType, setIssueType] = useState("other");
   const [description, setDescription] = useState("");
   const [suggestion, setSuggestion] = useState("");
@@ -58,14 +58,14 @@ export default function ReportIssueModal({ authorityId, authorityName, isOpen, o
     <AnimatePresence>
       <motion.div
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-        className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4"
+        className="fixed inset-0 bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border border-slate-200 dark:border-slate-700/60 z-50 flex items-center justify-center p-4"
         onClick={onClose}
       >
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
           className="w-full max-w-md" onClick={(e) => e.stopPropagation()}
         >
-          <Card className="border-amber-500/20 bg-gray-900">
+          <Card className="border-amber-500/20 bg-slate-900">
             <CardContent className="p-6">
               {submitted ? (
                 <div className="text-center py-8">
@@ -86,17 +86,17 @@ export default function ReportIssueModal({ authorityId, authorityName, isOpen, o
                   <div className="space-y-4">
                     <div>
                       <label className="text-xs text-muted-foreground mb-1 block">Issue Type</label>
-                      <select value={issueType} onChange={(e) => setIssueType(e.target.value)} className="w-full bg-gray-800 border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-amber-500 focus:outline-none">
+                      <select value={issueType} onChange={(e) => setIssueType(e.target.value)} className="w-full bg-slate-800 border border-white/10 rounded-xl px-3 py-2 text-sm focus:border-amber-500 focus:outline-none">
                         {ISSUE_TYPES.map((t) => (<option key={t.value} value={t.value}>{t.label}</option>))}
                       </select>
                     </div>
                     <div>
                       <label className="text-xs text-muted-foreground mb-1 block">Description *</label>
-                      <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={3} placeholder="What's incorrect?" className="w-full bg-gray-800 border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-amber-500 focus:outline-none resize-none" />
+                      <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={3} placeholder="What's incorrect?" className="w-full bg-slate-800 border border-white/10 rounded-xl px-3 py-2 text-sm focus:border-amber-500 focus:outline-none resize-none" />
                     </div>
                     <div>
                       <label className="text-xs text-muted-foreground mb-1 block">Suggested Correction</label>
-                      <input type="text" value={suggestion} onChange={(e) => setSuggestion(e.target.value)} placeholder="What should it be?" className="w-full bg-gray-800 border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-amber-500 focus:outline-none" />
+                      <input type="text" value={suggestion} onChange={(e) => setSuggestion(e.target.value)} placeholder="What should it be?" className="w-full bg-slate-800 border border-white/10 rounded-xl px-3 py-2 text-sm focus:border-amber-500 focus:outline-none" />
                     </div>
                   </div>
 

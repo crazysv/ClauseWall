@@ -7,10 +7,6 @@ import type {
   DeliberationProgress,
 } from "@/lib/deliberation/types";
 
-// ============================================
-// PROPS
-// ============================================
-
 interface DeliberationCTAProps {
   result: DeliberationResult | null;
   isLoading: boolean;
@@ -19,21 +15,13 @@ interface DeliberationCTAProps {
   onView: () => void;
 }
 
-// ============================================
-// AGENT INFO
-// ============================================
-
 const agentLabels: Record<string, { icon: string; name: string; action: string }> = {
   predator: { icon: "🔴", name: "Defense Counsel", action: "arguing" },
   guardian: { icon: "🟢", name: "Consumer Advocate", action: "arguing" },
   arbiter: { icon: "⚖️", name: "Judicial Arbiter", action: "deliberating" },
 };
 
-// ============================================
-// COMPONENT
-// ============================================
-
-export default function DeliberationCTA({
+export function DeliberationCTA({
   result,
   isLoading,
   progress,
@@ -53,45 +41,34 @@ export default function DeliberationCTA({
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mt-4 p-4 rounded-xl bg-gradient-to-r from-amber-500/10 via-orange-500/8 to-amber-500/10 border border-amber-500/20"
+        className="mt-4 p-4 rounded-xl bg-white dark:bg-card border border-slate-200 dark:border-slate-700 border-l-4 border-l-amber-500 shadow-sm dark:shadow-slate-900/20"
       >
-        <div className="flex items-center gap-3 mb-3">
-          <div className="p-2 rounded-lg bg-amber-500/15">
-            <Loader2 className="h-5 w-5 text-amber-400 animate-spin" />
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-xl bg-amber-50 flex-shrink-0 animate-pulse">
+              <Loader2 className="h-6 w-6 text-amber-500 animate-spin" />
+            </div>
+            <div>
+              <p className="font-extrabold text-sm text-slate-900 dark:text-slate-100">
+                Deliberation in Progress...
+              </p>
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5">
+                {progress?.message || "Agents are debating terms..."}
+                {agent && <span className="font-bold text-amber-600 block sm:inline sm:ml-2">{agent.icon} {agent.name} is {agent.action}</span>}
+              </p>
+            </div>
           </div>
-          <div>
-            <p className="text-sm font-semibold text-amber-300">
-              Deliberation in Progress...
-            </p>
-            <p className="text-xs text-gray-400 mt-0.5">
-              {progress?.message || "Agents are deliberating..."}
-            </p>
-          </div>
-        </div>
-
-        {agent && (
-          <p className="text-xs text-white/50 mb-2 ml-[52px]">
-            {agent.icon} {agent.name} is {agent.action}...
-          </p>
-        )}
-
-        {/* Progress Bar */}
-        <div className="ml-[52px]">
-          <div className="h-1.5 rounded-full bg-white/10 overflow-hidden mb-1">
-            <motion.div
-              className="h-full bg-amber-500 rounded-full"
-              animate={{ width: `${percent}%` }}
-              transition={{ duration: 0.4 }}
-            />
-          </div>
-          <div className="flex justify-between text-[10px] text-white/30">
-            <span>
-              Clause {progress?.currentClause || 0} of{" "}
-              {progress?.totalClauses || "?"}
+          <div className="flex items-center gap-3 mt-1 sm:ml-12">
+            <div className="flex-1 h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden border border-slate-200 dark:border-slate-700">
+              <motion.div
+                className="h-full bg-amber-500 rounded-full"
+                animate={{ width: `${percent}%` }}
+                transition={{ duration: 0.4 }}
+              />
+            </div>
+            <span className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest whitespace-nowrap">
+               {progress?.currentClause || 0} / {progress?.totalClauses || "?"}
             </span>
-            {progress?.estimatedTimeRemaining !== undefined && (
-              <span>~{progress.estimatedTimeRemaining}s remaining</span>
-            )}
           </div>
         </div>
       </motion.div>
@@ -106,20 +83,20 @@ export default function DeliberationCTA({
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.15 }}
-        className="mt-4 p-4 rounded-xl border border-amber-500/20 bg-amber-500/[0.03] hover:bg-amber-500/[0.06] transition-all cursor-pointer group"
+        transition={{ duration: 0.3, delay: 0.1 }}
+        className="mt-4 p-4 rounded-xl bg-white dark:bg-card border border-slate-200 dark:border-slate-700 border-l-4 border-l-amber-500 shadow-sm dark:shadow-slate-900/20 hover:shadow-md transition-all cursor-pointer group"
         onClick={onView}
       >
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-amber-500/10 group-hover:bg-amber-500/20 transition-colors">
-              <Swords className="h-5 w-5 text-amber-400" />
+            <div className="p-2.5 rounded-xl bg-amber-50 flex-shrink-0 group-hover:bg-amber-100 transition-colors">
+              <Swords className="h-6 w-6 text-amber-600" />
             </div>
             <div>
-              <h4 className="text-sm font-semibold text-amber-300">
+              <p className="font-extrabold text-sm text-slate-900 dark:text-slate-100">
                 ⚔️ AI Debate Complete
-              </h4>
-              <p className="text-xs text-gray-400 mt-0.5">
+              </p>
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5 max-w-lg line-clamp-1">
                 3 agents debated {summary.totalClauses} clauses —{" "}
                 {summary.fairCount > 0 && `${summary.fairCount}✅ `}
                 {summary.partiallyFairCount > 0 && `${summary.partiallyFairCount}⚠️ `}
@@ -128,11 +105,10 @@ export default function DeliberationCTA({
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2 flex-shrink-0 ml-4">
-            <span className="text-sm font-medium text-amber-400 hidden sm:inline">
-              View All
-            </span>
-            <ArrowRight className="h-5 w-5 text-amber-400 group-hover:translate-x-1 transition-transform" />
+          <div className="w-full sm:w-auto flex-shrink-0">
+             <button className="w-full sm:w-auto px-4 py-2 sm:py-1.5 rounded-full border-2 border-teal-200 text-teal-700 bg-white dark:bg-card group-hover:bg-teal-50 group-hover:border-teal-300 text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm dark:shadow-slate-900/20">
+                View Transcripts <ArrowRight className="h-3.5 w-3.5 text-teal-600 group-hover:translate-x-1 transition-transform" />
+             </button>
           </div>
         </div>
       </motion.div>
@@ -144,31 +120,28 @@ export default function DeliberationCTA({
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: 0.15 }}
-      className="mt-4 p-4 rounded-xl bg-gradient-to-r from-amber-500/8 via-orange-500/5 to-amber-500/8 border border-amber-500/15 hover:border-amber-500/30 hover:from-amber-500/12 hover:to-amber-500/12 transition-all cursor-pointer group"
+      transition={{ duration: 0.3, delay: 0.1 }}
+      className="mt-4 p-4 rounded-xl bg-white dark:bg-card border border-slate-200 dark:border-slate-700 border-l-4 border-l-amber-500 shadow-sm dark:shadow-slate-900/20 hover:shadow-md transition-all cursor-pointer group"
       onClick={onRun}
     >
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-amber-500/10 group-hover:bg-amber-500/20 transition-colors">
-            <Swords className="h-6 w-6 text-amber-400" />
+          <div className="p-2.5 rounded-xl bg-amber-50 flex-shrink-0 group-hover:bg-amber-100 transition-colors">
+            <Swords className="h-6 w-6 text-amber-600" />
           </div>
           <div>
-            <p className="font-semibold text-amber-300">
-               ⚔️ Run AI Debate
+            <p className="font-extrabold text-sm text-slate-900 dark:text-slate-100">
+              ⚔️ Run AI Debate Simulation
             </p>
-            <p className="text-xs text-white/40">Three AI agents argue whether each clause is fair</p>
-            <p className="text-sm text-gray-400 mt-0.5">
-              Three AI agents — a corporate lawyer, a consumer rights advocate,
-              and a retired judge — will debate every clause in this contract.
+            <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5 max-w-lg line-clamp-1">
+              Three AI agents (Defense Counsel, Advocate, Arbiter) will intensely debate every clause in this contract.
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-2 flex-shrink-0 ml-4">
-          <span className="text-sm font-medium text-amber-400 hidden sm:inline">
-            Start
-          </span>
-          <ArrowRight className="h-5 w-5 text-amber-400 group-hover:translate-x-1 transition-transform" />
+        <div className="w-full sm:w-auto flex-shrink-0">
+           <button className="w-full sm:w-auto px-4 py-2 sm:py-1.5 rounded-full border-2 border-teal-200 text-teal-700 bg-white dark:bg-card group-hover:bg-teal-50 group-hover:border-teal-300 text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm dark:shadow-slate-900/20">
+              Start Debate <ArrowRight className="h-3.5 w-3.5 text-teal-600 group-hover:translate-x-1 transition-transform" />
+           </button>
         </div>
       </div>
     </motion.div>

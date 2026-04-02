@@ -24,14 +24,14 @@ import type {
   LawChangeImpact,
   PendingLawChange,
 } from "@/types";
-import LawChangeSummaryCard from "./law-change-summary-card";
-import LawChangeCard from "./law-change-card";
-import ImpactCard from "./impact-card";
-import PendingChangeCard from "./pending-change-card";
+import { LawChangeSummaryCard } from "./law-change-summary-card";
+import { LawChangeCard } from "./law-change-card";
+import { ImpactCard } from "./impact-card";
+import { PendingChangeCard } from "./pending-change-card";
 
 type TabKey = "affecting" | "all" | "pending";
 
-export default function LawChangeFeed() {
+export function LawChangeFeed() {
   const [activeTab, setActiveTab] = useState<TabKey>("affecting");
   const [summary, setSummary] = useState<LawChangeSummary | null>(null);
   const [impacts, setImpacts] = useState<(LawChangeImpact & { change: LawChange })[]>([]);
@@ -69,9 +69,9 @@ export default function LawChangeFeed() {
         const data = await pendingRes.json();
         setPendingChanges(data.pending || []);
       }
-    } catch (err) {
-      console.error("[LawChangeFeed] Fetch failed:", err);
-    } finally {
+    } catch {
+        // Silently handled
+      } finally {
       setLoading(false);
     }
   }, []);
@@ -129,16 +129,16 @@ export default function LawChangeFeed() {
 
   if (loading) {
     return (
-      <div className="space-y-6">
-        <Skeleton className="h-40 rounded-2xl" />
-        <div className="flex gap-2">
+      <div className="space-y-8 max-w-5xl mx-auto">
+        <Skeleton className="h-44 rounded-2xl bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border border-slate-200 dark:border-slate-700" />
+        <div className="flex gap-3">
           {[1, 2, 3].map((i) => (
-            <Skeleton key={i} className="h-10 w-28 rounded-lg" />
+            <Skeleton key={i} className="h-12 w-32 rounded-xl bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border border-slate-200 dark:border-slate-700" />
           ))}
         </div>
-        <div className="space-y-4">
+        <div className="space-y-5">
           {[1, 2, 3].map((i) => (
-            <Skeleton key={i} className="h-32 rounded-xl" />
+            <Skeleton key={i} className="h-40 rounded-2xl bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border border-slate-200 dark:border-slate-700" />
           ))}
         </div>
       </div>
@@ -152,25 +152,17 @@ export default function LawChangeFeed() {
 
       {/* Tabs + Refresh */}
       <div className="flex items-center justify-between">
-        <div className="flex gap-1 p-1 rounded-xl bg-white/[0.03] border border-white/5">
+        <div className="flex gap-2 p-1.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-inner">
           {tabs.map((tab) => (
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
-              className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-all ${
-                activeTab === tab.key
-                  ? "bg-indigo-500/15 text-indigo-300"
-                  : "text-white/40 hover:text-white/60"
-              }`}
+              className={`relative px-4 py-2.5 text-sm font-bold tracking-tight rounded-xl transition-all ${ activeTab === tab.key ? "bg-white dark:bg-card text-indigo-700 shadow-sm dark:shadow-slate-900/20 ring-1 ring-slate-200/50" : "text-slate-500 dark:text-slate-400 hover:text-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800" }`}
             >
               {tab.label}
               {tab.count > 0 && (
                 <span
-                  className={`ml-1.5 text-[10px] px-1.5 py-0.5 rounded-full ${
-                    activeTab === tab.key
-                      ? "bg-indigo-500/30 text-indigo-200"
-                      : "bg-white/5 text-white/30"
-                  }`}
+                  className={`ml-2 text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full ${ activeTab === tab.key ? "bg-indigo-100 text-indigo-700" : "bg-slate-200 text-slate-600 dark:text-slate-400" }`}
                 >
                   {tab.count}
                 </span>
@@ -180,13 +172,13 @@ export default function LawChangeFeed() {
         </div>
 
         <Button
-          variant="ghost"
+          variant="outline"
           size="sm"
           onClick={handleRefresh}
           disabled={refreshing}
-          className="gap-2 text-white/40 hover:text-white/60"
+          className="gap-2 text-slate-600 dark:text-slate-400 font-bold uppercase tracking-widest text-xs border-slate-200 dark:border-slate-700 bg-white dark:bg-card hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-indigo-600 shadow-sm dark:shadow-slate-900/20 h-11 px-4 rounded-xl"
         >
-          <RefreshCw className={`h-3.5 w-3.5 ${refreshing ? "animate-spin" : ""}`} />
+          <RefreshCw className={`h-4 w-4 ${refreshing ? "animate-spin text-indigo-500" : ""}`} />
           Refresh
         </Button>
       </div>
@@ -234,17 +226,13 @@ export default function LawChangeFeed() {
             className="space-y-4"
           >
             {/* Source filter */}
-            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
+            <div className="flex gap-2.5 overflow-x-auto pb-4 scrollbar-thin">
               {["all", "indian_kanoon", "prs_legislative", "egazette", "rbi", "irdai", "trai"].map(
                 (source) => (
                   <button
                     key={source}
                     onClick={() => setFilterSource(source)}
-                    className={`flex-shrink-0 px-3 py-1.5 text-xs rounded-full border transition-colors ${
-                      filterSource === source
-                        ? "bg-indigo-500/15 border-indigo-500/30 text-indigo-300"
-                        : "border-white/10 text-white/30 hover:text-white/50"
-                    }`}
+                    className={`flex-shrink-0 px-4 py-2 text-xs font-bold uppercase tracking-widest rounded-full border-2 transition-all shadow-sm dark:shadow-slate-900/20 ${ filterSource === source ? "bg-indigo-600 border-indigo-700 text-white" : "bg-white dark:bg-card border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800" }`}
                   >
                     {source === "all"
                       ? "All Sources"
@@ -318,10 +306,12 @@ function EmptyState({
   description: string;
 }) {
   return (
-    <div className="flex flex-col items-center justify-center py-16">
-      {icon}
-      <h3 className="text-sm font-medium text-white/50 mt-4">{title}</h3>
-      <p className="text-xs text-white/25 mt-1 max-w-sm text-center">
+    <div className="flex flex-col items-center justify-center py-20 px-4 md:px-6 sm:px-12 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl shadow-inner max-w-4xl mx-auto mt-4">
+      <div className="h-20 w-20 bg-white dark:bg-card border border-slate-100 shadow-sm dark:shadow-slate-900/20 rounded-3xl flex items-center justify-center mb-6">
+        {icon}
+      </div>
+      <h3 className="text-xl font-black text-slate-900 dark:text-slate-100 mt-2 mb-3 tracking-tight">{title}</h3>
+      <p className="text-sm font-medium text-slate-500 dark:text-slate-400 max-w-md text-center leading-relaxed">
         {description}
       </p>
     </div>

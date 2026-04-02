@@ -13,7 +13,7 @@ interface Props {
   disabled?: boolean;
 }
 
-export default function MicrophoneButton({
+export function MicrophoneButton({
   isListening,
   isProcessing,
   isSpeaking,
@@ -55,7 +55,7 @@ export default function MicrophoneButton({
     : isProcessing
     ? "bg-amber-500 shadow-amber-500/30"
     : isSpeaking
-    ? "bg-blue-500 shadow-blue-500/30"
+    ? "bg-indigo-500 shadow-blue-500/30"
     : "bg-emerald-500 shadow-emerald-500/30 hover:bg-emerald-400";
 
   const pulseRings = isListening ? 3 : isSpeaking ? 2 : 0;
@@ -67,7 +67,7 @@ export default function MicrophoneButton({
         <motion.div
           key={i}
           className={`absolute rounded-full border-2 ${
-            isListening ? "border-red-500/30" : "border-blue-500/20"
+            isListening ? "border-red-500/30" : "border-indigo-500/20"
           }`}
           initial={{ width: 80, height: 80, opacity: 0.6 }}
           animate={{
@@ -104,17 +104,17 @@ export default function MicrophoneButton({
         id="voice-mic-button"
       >
         {isProcessing ? (
-          <Loader2 className="h-8 w-8 text-white animate-spin" />
+          <Loader2 className="h-8 w-8 text-slate-900 dark:text-slate-100 animate-spin" />
         ) : isListening ? (
-          <Square className="h-7 w-7 text-white" fill="white" />
+          <Square className="h-7 w-7 text-slate-900 dark:text-slate-100" fill="white" />
         ) : (
-          <Mic className="h-8 w-8 text-white" />
+          <Mic className="h-8 w-8 text-slate-900 dark:text-slate-100" />
         )}
       </motion.button>
 
       {/* Status label */}
       <div className="absolute -bottom-7 whitespace-nowrap">
-        <span className="text-xs font-medium text-white/60">
+        <span className="text-xs font-medium text-slate-900 dark:text-slate-100">
           {isListening
             ? "🔴 Listening..."
             : isProcessing

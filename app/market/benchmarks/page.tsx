@@ -9,9 +9,9 @@ import {
   Loader2,
   BarChart3,
 } from "lucide-react";
-import BenchmarkTable from "@/components/market/benchmark-table";
-import CategoryFilterBar from "@/components/market/category-filter-bar";
-import MarketStatsFooter from "@/components/market/market-stats-footer";
+import { BenchmarkTable } from "@/components/market/benchmark-table";
+import { CategoryFilterBar } from "@/components/market/category-filter-bar";
+import { MarketStatsFooter } from "@/components/market/market-stats-footer";
 import type { MarketBenchmark } from "@/types/market";
 
 export default function BenchmarkExplorerPage() {
@@ -54,7 +54,7 @@ export default function BenchmarkExplorerPage() {
               <Database className="h-6 w-6 text-amber-400" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold">Benchmark Explorer</h1>
+              <h1 className="text-lg md:text-xl lg:text-2xl font-bold">Benchmark Explorer</h1>
               <p className="text-sm text-white/50">
                 Filter and compare market benchmarks by metric, contract type, and region
               </p>
@@ -75,11 +75,11 @@ export default function BenchmarkExplorerPage() {
         {/* Results */}
         <div className="mt-6">
           {loading ? (
-            <div className="flex items-center justify-center py-16">
+            <div className="flex items-center justify-center py-8 md:py-6 md:py-8 lg:py-12 lg:py-16">
               <Loader2 className="h-6 w-6 text-cyan-400 animate-spin" />
             </div>
           ) : benchmarks.length === 0 ? (
-            <div className="text-center py-16">
+            <div className="text-center py-8 md:py-6 md:py-8 lg:py-12 lg:py-16">
               <BarChart3 className="h-10 w-10 text-white/10 mx-auto mb-3" />
               <p className="text-sm text-white/40">No benchmarks match your filters.</p>
               <p className="text-xs text-white/20 mt-1">

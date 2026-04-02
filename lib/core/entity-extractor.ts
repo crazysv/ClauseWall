@@ -67,14 +67,14 @@ export function isValidEntityName(
 
   // Check 1: Minimum length
   if (name.length < 3) {
-    console.log(`[ClauseWall] Entity rejected (too short): "${name}"`);
+
     return false;
   }
 
   // Check 2: Invalid patterns
   for (const pattern of INVALID_ENTITY_PATTERNS) {
     if (pattern.test(name)) {
-      console.log(`[ClauseWall] Entity rejected (invalid pattern): "${name}"`);
+
       return false;
     }
   }
@@ -82,14 +82,14 @@ export function isValidEntityName(
   // Check 3: Single suspicious word
   const words = name.toLowerCase().split(/\s+/).filter(w => w.length > 0);
   if (words.length === 1 && SUSPICIOUS_STANDALONE_WORDS.has(words[0])) {
-    console.log(`[ClauseWall] Entity rejected (standalone suspicious word): "${name}"`);
+
     return false;
   }
 
   // Check 4: Only generic suffix words
   const nonGenericWords = words.filter(w => !SUSPICIOUS_STANDALONE_WORDS.has(w));
   if (nonGenericWords.length === 0) {
-    console.log(`[ClauseWall] Entity rejected (only generic words): "${name}"`);
+
     return false;
   }
 
@@ -101,7 +101,7 @@ export function isValidEntityName(
   if (!coreAppearsInDoc && nonGenericWords.length > 0) {
     const exactMatch = documentText.toLowerCase().includes(name.toLowerCase());
     if (!exactMatch) {
-      console.log(`[ClauseWall] Entity rejected (not found in document): "${name}"`);
+
       return false;
     }
   }
@@ -112,7 +112,7 @@ export function isValidEntityName(
     docTypeWords.includes(w) || SUSPICIOUS_STANDALONE_WORDS.has(w)
   );
   if (allWordsAreDocType) {
-    console.log(`[ClauseWall] Entity rejected (document type words only): "${name}"`);
+
     return false;
   }
 

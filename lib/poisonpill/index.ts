@@ -59,21 +59,15 @@ export async function analyzePoisonPills(
   try {
     // Guard: too few clauses for meaningful analysis
     if (clauses.length < 3) {
-      console.log("[PoisonPill] Skipping — fewer than 3 clauses");
+
       return emptyResult;
     }
 
     // Step 1: Pre-screen for potential trap patterns
     const potentialMatches = preScreenForTraps(clauses);
-    console.log(
-      `[PoisonPill] Pre-screening: ${potentialMatches.length} potential patterns found`
-    );
 
     // Step 2: Get text-based clause connections
     const textConnections = getClauseConnections(clauses);
-    console.log(
-      `[PoisonPill] Text connections: ${textConnections.length} cross-references found`
-    );
 
     // Step 3: Optimization — skip AI if nothing suspicious
     const hasRiskyClause = clauses.some(
@@ -82,16 +76,14 @@ export async function analyzePoisonPills(
     const allSafe = clauses.every((c) => c.risk_level === "safe");
 
     if (potentialMatches.length === 0 && !hasRiskyClause) {
-      console.log(
-        "[PoisonPill] Skipping AI call — no patterns found and no risky clauses"
-      );
+
       // Build basic graph from text connections only
       const graph = buildInterconnectionGraph(clauses, [], textConnections);
       return { ...emptyResult, graph };
     }
 
     if (allSafe && potentialMatches.length === 0) {
-      console.log("[PoisonPill] Skipping — all clauses are safe");
+
       const graph = buildInterconnectionGraph(clauses, [], textConnections);
       return { ...emptyResult, graph };
     }
@@ -105,7 +97,6 @@ export async function analyzePoisonPills(
       jurisdiction,
       entityName
     );
-    console.log(`[PoisonPill] AI detection: ${traps.length} traps confirmed`);
 
     // Step 5: Build graph
     const graph = buildInterconnectionGraph(clauses, traps, textConnections);

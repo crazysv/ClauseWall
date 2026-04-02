@@ -6,13 +6,13 @@ import { Shield, AlertTriangle, ShieldOff, GitBranch, IndianRupee, ListChecks, Z
 import { Badge } from "@/components/ui/badge";
 import type { VaultAnalysisResult } from "@/types";
 import { getVaultSummaryStats } from "@/lib/vault/vault-scorer";
-import VaultSummaryCard from "./vault-summary-card";
-import ConflictList from "./conflict-list";
-import GapsList from "./gaps-list";
-import CascadesList from "./cascades-list";
-import ExposureDashboard from "./exposure-dashboard";
-import ObligationsList from "./obligations-list";
-import WhatIfPanel from "./whatif-panel";
+import { VaultSummaryCard } from "./vault-summary-card";
+import { ConflictList } from "./conflict-list";
+import { GapsList } from "./gaps-list";
+import { CascadesList } from "./cascades-list";
+import { ExposureDashboard } from "./exposure-dashboard";
+import { ObligationsList } from "./obligations-list";
+import { WhatIfPanel } from "./whatif-panel";
 
 interface VaultOverviewProps {
   analysis: VaultAnalysisResult;
@@ -29,7 +29,7 @@ const TABS = [
 
 type TabId = (typeof TABS)[number]["id"];
 
-export default function VaultOverview({ analysis }: VaultOverviewProps) {
+export function VaultOverview({ analysis }: VaultOverviewProps) {
   const stats = getVaultSummaryStats(analysis);
 
   // Default to conflicts tab if conflicts exist, otherwise first tab with content
@@ -96,21 +96,13 @@ export default function VaultOverview({ analysis }: VaultOverviewProps) {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-all ${
-                isActive
-                  ? "bg-indigo-500/15 text-indigo-400 border border-indigo-500/30"
-                  : "bg-white/[0.03] text-white/50 border border-white/5 hover:bg-white/[0.06] hover:text-white/70"
-              }`}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all ${ isActive ? "bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-sm dark:shadow-slate-900/20" : "bg-white dark:bg-card text-slate-500 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:text-slate-100" }`}
             >
               <Icon className="w-4 h-4" />
               {tab.label}
               {count > 0 && (
                 <Badge
-                  className={`text-[10px] px-1.5 py-0 ${
-                    isActive
-                      ? "bg-indigo-500/25 text-indigo-300"
-                      : "bg-white/10 text-white/40"
-                  }`}
+                  className={`text-[10px] px-1.5 py-0 rounded-full font-black ${ isActive ? "bg-indigo-200 text-indigo-800 border-none" : "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-none" }`}
                 >
                   {count}
                 </Badge>

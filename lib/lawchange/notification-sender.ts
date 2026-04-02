@@ -29,13 +29,10 @@ export async function sendLawChangeNotifications(): Promise<{
       .limit(50);
 
     if (error || !unnotified || unnotified.length === 0) {
-      console.log("[LawChangeNotifier] No pending notifications");
+
       return { sent: 0, failed: 0 };
     }
 
-    console.log(
-      `[LawChangeNotifier] ${unnotified.length} unnotified impacts to process`
-    );
 
     // Group by user_id
     const byUser = new Map<string, typeof unnotified>();
@@ -150,9 +147,7 @@ export async function sendLawChangeNotifications(): Promise<{
     console.error("[LawChangeNotifier] Service error:", error);
   }
 
-  console.log(
-    `[LawChangeNotifier] Complete: ${sent} sent, ${failed} failed`
-  );
+
   return { sent, failed };
 }
 

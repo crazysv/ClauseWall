@@ -89,11 +89,11 @@ export function DeadlineTimeline({
 
   if (deadlines.length === 0) {
     return (
-      <div className="text-center py-16">
-        <p className="text-white/40 text-lg">
+      <div className="text-center py-8 md:py-6 md:py-8 lg:py-12 lg:py-16 bg-white dark:bg-card border border-slate-200 dark:border-slate-700 rounded-3xl shadow-sm dark:shadow-slate-900/20">
+        <p className="text-slate-500 dark:text-slate-400 font-black text-xl mb-3 mt-4 tracking-tight">
           No deadlines found in this contract 🎉
         </p>
-        <p className="text-white/20 text-sm mt-2">
+        <p className="text-slate-400 font-bold uppercase tracking-widest text-xs mb-4">
           This contract has no significant temporal obligations.
         </p>
       </div>
@@ -105,15 +105,18 @@ export function DeadlineTimeline({
       <motion.div
         initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        className="text-center py-16"
+        className="text-center py-8 md:py-6 md:py-8 lg:py-12 lg:py-16 bg-emerald-50 border border-emerald-200 rounded-3xl shadow-sm dark:shadow-slate-900/20 relative overflow-hidden"
       >
-        <PartyPopper className="w-12 h-12 mx-auto text-green-400 mb-4" />
-        <h3 className="text-xl font-bold text-green-400 mb-2">
-          All Deadlines Defused! 🛡️
-        </h3>
-        <p className="text-white/40">
-          You&apos;ve addressed every deadline in this contract. You&apos;re protected.
-        </p>
+        <div className="absolute inset-0 bg-white dark:bg-slate-900/40 pointer-events-none" />
+        <div className="relative z-10">
+          <PartyPopper className="w-12 h-12 mx-auto text-emerald-500 mb-4" />
+          <h3 className="text-lg md:text-xl lg:text-2xl font-black tracking-tight text-emerald-700 mb-2">
+            All Deadlines Defused! 🛡️
+          </h3>
+          <p className="text-slate-500 dark:text-slate-400 font-bold mt-2 leading-relaxed max-w-sm mx-auto">
+            You&apos;ve addressed every deadline in this contract. You&apos;re protected.
+          </p>
+        </div>
       </motion.div>
     );
   }
@@ -121,8 +124,10 @@ export function DeadlineTimeline({
   return (
     <div>
       {/* Filter bar */}
-      <div className="flex items-center gap-2 mb-6 flex-wrap">
-        <Filter className="w-4 h-4 text-white/30" />
+      <div className="flex items-center gap-3 mb-8 flex-wrap">
+        <div className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-2 rounded-xl shadow-sm dark:shadow-slate-900/20">
+          <Filter className="w-5 h-5 text-slate-400" />
+        </div>
         {(
           [
             { key: "all", label: "All" },
@@ -135,15 +140,11 @@ export function DeadlineTimeline({
           <button
             key={f.key}
             onClick={() => setFilter(f.key)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
-              filter === f.key
-                ? "bg-white/10 border-white/20 text-white"
-                : "bg-white/[0.02] border-white/5 text-white/40 hover:text-white/60"
-            }`}
+            className={`px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest border transition-all ${ filter === f.key ? "bg-indigo-600 border-indigo-700 text-white shadow-md shadow-indigo-600/20" : "bg-white dark:bg-card border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 shadow-sm dark:shadow-slate-900/20 hover:shadow" }`}
             aria-label={`Filter ${f.label}`}
           >
             {f.label}
-            <span className="ml-1.5 text-white/30">
+            <span className={`ml-2 px-1.5 py-0.5 rounded-md ${filter === f.key ? 'bg-indigo-700/50 text-indigo-100' : 'bg-slate-100 dark:bg-slate-800 text-slate-400 border border-slate-200 dark:border-slate-700'}`}>
               {counts[f.key]}
             </span>
           </button>
@@ -157,7 +158,7 @@ export function DeadlineTimeline({
           initial={{ scaleY: 0 }}
           animate={{ scaleY: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-white/10 via-white/5 to-transparent origin-top"
+          className="absolute left-4 md:left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-slate-300 via-slate-200 to-transparent origin-top rounded-full ml-[-1px] md:ml-[calc(-2px)]"
         />
 
         <AnimatePresence mode="popLayout">
@@ -179,20 +180,20 @@ export function DeadlineTimeline({
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="relative flex items-center gap-2 mb-4 pl-4 md:pl-0 md:justify-center"
+                    className="relative flex items-center gap-2 mb-6 pl-4 md:pl-0 md:justify-center"
                   >
-                    <div className="h-px flex-1 bg-orange-500/30 max-w-[100px]" />
+                    <div className="h-0.5 flex-1 bg-orange-300 max-w-[100px] rounded-full" />
                     <motion.span
-                      animate={{ opacity: [0.5, 1, 0.5] }}
+                      animate={{ opacity: [0.7, 1, 0.7] }}
                       transition={{
                         repeat: Infinity,
                         duration: 2,
                       }}
-                      className="text-xs font-bold text-orange-400 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20"
+                      className="text-[10px] font-black uppercase tracking-widest text-orange-700 px-3 py-1.5 rounded-lg bg-orange-50 border border-orange-200 shadow-sm dark:shadow-slate-900/20 shadow-orange-500/10"
                     >
                       TODAY
                     </motion.span>
-                    <div className="h-px flex-1 bg-orange-500/30 max-w-[100px]" />
+                    <div className="h-0.5 flex-1 bg-orange-300 max-w-[100px] rounded-full" />
                   </motion.div>
                 )}
 
@@ -214,9 +215,9 @@ export function DeadlineTimeline({
                   </div>
 
                   {/* Dot on the line */}
-                  <div className="relative z-10 flex-shrink-0 -ml-4 md:ml-0">
+                  <div className="relative z-10 flex-shrink-0 -ml-[19px] md:ml-[calc(-7px)] mt-4">
                     <motion.div
-                      className="w-3 h-3 rounded-full border-2 border-gray-900"
+                      className="w-4 h-4 rounded-full border-2 border-white shadow-sm dark:shadow-slate-900/20 ring-1 ring-slate-200"
                       style={{ backgroundColor: event.urgency_color }}
                       animate={
                         event.deadline.urgency === "critical" &&
@@ -236,7 +237,7 @@ export function DeadlineTimeline({
                       }
                     />
                     {/* Date label */}
-                    <span className="absolute left-5 md:hidden top-0 text-[10px] text-white/30 whitespace-nowrap">
+                    <span className="absolute left-6 md:hidden -top-1 text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 whitespace-nowrap bg-white dark:bg-card/80 py-0.5 px-2 rounded border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-900/20 backdrop-blur-sm">
                       {new Date(event.date).toLocaleDateString("en-IN", {
                         day: "numeric",
                         month: "short",
@@ -273,9 +274,9 @@ export function DeadlineTimeline({
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    className="absolute left-2 md:left-1/2 md:-translate-x-1/2 top-0"
+                    className="absolute left-2.5 md:left-1/2 md:-translate-x-1/2 -top-2 bg-emerald-100 rounded-full border border-emerald-200 p-0.5 shadow-sm dark:shadow-slate-900/20"
                   >
-                    <ShieldCheck className="w-4 h-4 text-green-400" />
+                    <ShieldCheck className="w-5 h-5 text-emerald-600 drop-shadow-sm dark:shadow-slate-900/20" />
                   </motion.div>
                 )}
               </motion.div>
@@ -285,13 +286,13 @@ export function DeadlineTimeline({
 
         {/* Empty filter state */}
         {filteredEvents.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-white/30 text-sm">
+          <div className="text-center py-8 md:py-6 md:py-8 lg:py-12 lg:py-16 bg-white dark:bg-card border border-slate-200 dark:border-slate-700 rounded-3xl shadow-sm dark:shadow-slate-900/20">
+            <p className="text-slate-500 dark:text-slate-400 font-black text-xl mb-2 tracking-tight mt-4">
               No {filter} deadlines found.
             </p>
             <button
               onClick={() => setFilter("all")}
-              className="text-blue-400 text-xs mt-2 hover:underline"
+              className="text-indigo-600 font-bold uppercase tracking-widest text-[10px] mt-2 hover:text-indigo-700 hover:underline mb-4"
             >
               Show all deadlines
             </button>

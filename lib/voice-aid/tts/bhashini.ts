@@ -93,7 +93,6 @@ async function getPipelineConfig(bhashiniCode: string): Promise<{
     };
 
     pipelineCache[bhashiniCode] = config;
-    console.log(`[ClauseWall] Bhashini: Pipeline config cached for ${bhashiniCode}`);
 
     return config;
   } catch (error) {
@@ -182,7 +181,6 @@ export async function synthesizeWithBhashini(
     }
 
     const duration = Date.now() - startTime;
-    console.log(`[ClauseWall] Bhashini TTS: ${text.length} chars → ${combined.length} bytes audio (${duration}ms)`);
 
     return {
       audioUrl: null,

@@ -43,7 +43,6 @@ export async function transcribeWithWhisper(
 
     const duration = Date.now() - startTime;
 
-    console.log(`[ClauseWall] Whisper STT: "${result.text.substring(0, 80)}..." (${duration}ms, lang=${language})`);
 
     return {
       text: result.text.trim(),

@@ -209,7 +209,7 @@ function truncate(text: string, max: number): string {
 
 // ── Main Component ────────────────────────
 
-export default function ScoreCardModal({
+export function ScoreCardModal({
   isOpen,
   onClose,
   document: doc,
@@ -280,7 +280,6 @@ export default function ScoreCardModal({
       });
       setPreview(dataUrl);
     } catch (err) {
-      console.error("Failed to generate card:", err);
       toast.error("Failed to generate card image");
     }
     setGenerating(false);
@@ -302,9 +301,9 @@ export default function ScoreCardModal({
         try {
           const dataUrl = await toPng(ref, { quality: 1.0, pixelRatio: 2 });
           previews.push(dataUrl);
-        } catch (err) {
-          console.error(`Failed to generate slide ${i + 1}:`, err);
-        }
+        } catch {
+        // Silently handled
+      }
       }
       // Small delay between slides to avoid blocking
       await new Promise((resolve) => setTimeout(resolve, 100));
@@ -369,7 +368,6 @@ export default function ScoreCardModal({
       URL.revokeObjectURL(url);
       toast.success(`${carouselPreviews.length} slides downloaded as ZIP!`);
     } catch (err) {
-      console.error(err);
       toast.error("Failed to create ZIP");
     }
   };
@@ -470,7 +468,7 @@ export default function ScoreCardModal({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="bg-gray-900 border-gray-800 max-w-lg max-h-[90vh] overflow-y-auto">
+        <DialogContent className="bg-slate-900 border-slate-800 max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Share2 className="h-5 w-5 text-blue-400" />
@@ -484,18 +482,14 @@ export default function ScoreCardModal({
           </DialogHeader>
 
           {/* ── Format Toggle ── */}
-          <div className="flex gap-1 p-1 bg-white/5 rounded-lg">
+          <div className="flex gap-1 p-1 bg-white dark:bg-card/5 rounded-xl">
             {(Object.keys(FORMATS) as CardFormat[]).map((f) => {
               const Icon = FORMATS[f].icon;
               return (
                 <button
                   key={f}
                   onClick={() => setFormat(f)}
-                  className={`flex-1 flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-md text-xs font-medium transition-all ${
-                    format === f
-                      ? "bg-blue-600 text-white"
-                      : "text-gray-400 hover:text-gray-200 hover:bg-white/5"
-                  }`}
+                  className={`flex-1 flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-md text-xs font-medium transition-all ${ format === f ? "bg-indigo-600 text-slate-900 dark:text-slate-100" : "text-slate-400 hover:text-slate-200 hover:bg-white dark:bg-slate-900/5" }`}
                 >
                   <Icon className="h-3.5 w-3.5" />
                   <span className="hidden sm:inline">{FORMATS[f].label}</span>
@@ -509,7 +503,7 @@ export default function ScoreCardModal({
 
           {/* ── Carousel slide count badge ── */}
           {isCarousel && (
-            <div className="flex items-center justify-center gap-2 text-xs text-gray-400">
+            <div className="flex items-center justify-center gap-2 text-xs text-slate-400">
               <Layers className="h-3.5 w-3.5 text-blue-400" />
               <span>
                 {totalSlides} slides • {topRedFlags.length} red flag
@@ -524,11 +518,11 @@ export default function ScoreCardModal({
               // ── Carousel Preview ──
               generating || carouselPreviews.length === 0 ? (
                 <div
-                  className="flex flex-col items-center justify-center gap-3 rounded-xl bg-white/5 border border-white/10"
+                  className="flex flex-col items-center justify-center gap-3 rounded-xl bg-white dark:bg-card/5 border border-white/10"
                   style={{ width: "100%", maxWidth: 280, aspectRatio: "9 / 16" }}
                 >
                   <Loader2 className="h-8 w-8 text-blue-400 animate-spin" />
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs text-slate-400">
                     {carouselProgress || "Generating slides..."}
                   </p>
                 </div>
@@ -546,7 +540,7 @@ export default function ScoreCardModal({
                     {currentSlide > 0 && (
                       <button
                         onClick={() => setCurrentSlide((p) => p - 1)}
-                        className="absolute left-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/80 transition-colors"
+                        className="absolute left-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 backdrop-blur-sm flex items-center justify-center text-slate-900 dark:text-slate-100 hover:bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 transition-colors"
                       >
                         <ChevronLeft className="h-4 w-4" />
                       </button>
@@ -556,14 +550,14 @@ export default function ScoreCardModal({
                     {currentSlide < carouselPreviews.length - 1 && (
                       <button
                         onClick={() => setCurrentSlide((p) => p + 1)}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/80 transition-colors"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 backdrop-blur-sm flex items-center justify-center text-slate-900 dark:text-slate-100 hover:bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 transition-colors"
                       >
                         <ChevronRight className="h-4 w-4" />
                       </button>
                     )}
 
                     {/* Slide label */}
-                    <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-sm text-[10px] text-white font-medium">
+                    <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 backdrop-blur-sm text-[10px] text-slate-900 dark:text-slate-100 font-medium">
                       {currentSlide + 1} / {carouselPreviews.length}
                     </div>
                   </div>
@@ -574,11 +568,7 @@ export default function ScoreCardModal({
                       <button
                         key={i}
                         onClick={() => setCurrentSlide(i)}
-                        className={`rounded-full transition-all ${
-                          i === currentSlide
-                            ? "w-5 h-2 bg-blue-400"
-                            : "w-2 h-2 bg-white/20 hover:bg-white/40"
-                        }`}
+                        className={`rounded-full transition-all ${ i === currentSlide ? "w-5 h-2 bg-blue-400" : "w-2 h-2 bg-white dark:bg-slate-900/20 hover:bg-white dark:bg-slate-900/40" }`}
                       />
                     ))}
                   </div>
@@ -588,7 +578,7 @@ export default function ScoreCardModal({
               // ── Single Image Preview (existing) ──
               generating || !preview ? (
                 <div
-                  className="flex flex-col items-center justify-center gap-3 rounded-xl bg-white/5 border border-white/10"
+                  className="flex flex-col items-center justify-center gap-3 rounded-xl bg-white dark:bg-card/5 border border-white/10"
                   style={{
                     width: "100%",
                     maxWidth: 360,
@@ -596,7 +586,7 @@ export default function ScoreCardModal({
                   }}
                 >
                   <Loader2 className="h-8 w-8 text-blue-400 animate-spin" />
-                  <p className="text-xs text-gray-400">Generating card...</p>
+                  <p className="text-xs text-slate-400">Generating card...</p>
                 </div>
               ) : (
                 <img
@@ -619,7 +609,7 @@ export default function ScoreCardModal({
               <Button
                 onClick={handleDownloadZip}
                 disabled={carouselPreviews.length === 0}
-                className="gap-2 bg-blue-600 hover:bg-blue-700 col-span-2"
+                className="gap-2 bg-indigo-600 hover:bg-blue-700 col-span-2"
               >
                 <Download className="h-4 w-4" />
                 Download All ({totalSlides} Slides) as ZIP
@@ -680,7 +670,7 @@ export default function ScoreCardModal({
               <Button
                 onClick={handleDownload}
                 disabled={!preview}
-                className="gap-2 bg-blue-600 hover:bg-blue-700"
+                className="gap-2 bg-indigo-600 hover:bg-blue-700"
               >
                 <Download className="h-4 w-4" />
                 Download PNG
@@ -728,11 +718,11 @@ export default function ScoreCardModal({
           )}
 
           {/* Smart Share Text Preview */}
-          <div className="mt-2 p-3 rounded-lg bg-white/[0.03] border border-white/5">
-            <p className="text-[10px] text-gray-500 mb-1.5 font-medium uppercase tracking-wider">
+          <div className="mt-2 p-3 rounded-xl bg-white dark:bg-card/[0.03] border border-white/5">
+            <p className="text-[10px] text-slate-500 dark:text-slate-400 mb-1.5 font-medium uppercase tracking-wider">
               Share Message Preview
             </p>
-            <p className="text-xs text-gray-400 whitespace-pre-line leading-relaxed">
+            <p className="text-xs text-slate-400 whitespace-pre-line leading-relaxed">
               {generateSmartShareText(
                 doc as any,
                 topRedFlag?.explanation,
@@ -744,14 +734,14 @@ export default function ScoreCardModal({
 
           {/* QR Hint */}
           {!hasQR && (
-            <p className="text-[10px] text-gray-500 text-center">
+            <p className="text-[10px] text-slate-500 dark:text-slate-400 text-center">
               💡 Generate a QR verification badge below to include it on your
               score card
             </p>
           )}
 
           {/* Disclaimer */}
-          <p className="text-[10px] text-gray-600 text-center">
+          <p className="text-[10px] text-slate-600 dark:text-slate-400 text-center">
             No personal data is included in the shared image.
           </p>
         </DialogContent>

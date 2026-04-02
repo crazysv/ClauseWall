@@ -2,15 +2,9 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import DirectionBadge from "./direction-badge";
+import { DirectionBadge } from "./direction-badge";
 import type { SemanticChange } from "@/types";
-
-const severityConfig: Record<string, { color: string; emoji: string; label: string; bgColor: string }> = {
-  critical: { color: "text-red-400", emoji: "🔴", label: "CRITICAL", bgColor: "border-red-500/20" },
-  major: { color: "text-amber-400", emoji: "🟡", label: "MAJOR", bgColor: "border-amber-500/20" },
-  minor: { color: "text-blue-400", emoji: "🔵", label: "MINOR", bgColor: "border-blue-500/20" },
-  cosmetic: { color: "text-gray-400", emoji: "⚪", label: "COSMETIC", bgColor: "border-gray-500/20" },
-};
+import { SEVERITY_CONFIG } from "./watchdog-constants";
 
 const changeTypeLabels: Record<string, string> = {
   rights_gained: "Rights Gained",
@@ -25,45 +19,45 @@ const changeTypeLabels: Record<string, string> = {
   neutral_clarification: "Clarification",
 };
 
-export default function ChangeDiffView({ changes }: { changes: SemanticChange[] }) {
+export function ChangeDiffView({ changes }: { changes: SemanticChange[] }) {
   return (
     <div className="space-y-4">
       {changes.map((change, index) => {
-        const config = severityConfig[change.severity] || severityConfig.minor;
+        const config = SEVERITY_CONFIG[change.severity] || SEVERITY_CONFIG.minor;
 
         return (
-          <Card key={index} className={`bg-gray-900/50 ${config.bgColor} overflow-hidden`}>
-            {change.severity === "critical" && <div className="h-0.5 bg-red-500" />}
-            {change.severity === "major" && <div className="h-0.5 bg-amber-500" />}
+          <Card key={index} className="bg-white dark:bg-card border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-900/20 rounded-xl overflow-hidden mb-4">
+            {change.severity === "critical" && <div className="h-1 bg-red-600" />}
+            {change.severity === "major" && <div className="h-1 bg-amber-500" />}
 
-            <CardContent className="p-5">
+            <CardContent className="p-5 sm:p-6">
               {/* Header */}
-              <div className="flex items-center gap-2 flex-wrap mb-3">
-                <Badge className={`bg-${change.severity === "critical" ? "red" : change.severity === "major" ? "amber" : change.severity === "minor" ? "blue" : "gray"}-500/15 ${config.color} border-${change.severity === "critical" ? "red" : change.severity === "major" ? "amber" : change.severity === "minor" ? "blue" : "gray"}-500/30 text-[10px]`}>
+              <div className="flex items-center gap-2.5 flex-wrap mb-4">
+                <Badge className={`${config.badgeClass} font-black uppercase tracking-widest px-2 py-0.5 rounded-full text-[10px] shadow-sm dark:shadow-slate-900/20`}>
                   {config.emoji} {config.label}
                 </Badge>
-                <Badge variant="outline" className="text-[10px] border-white/10">
+                <Badge variant="outline" className="text-[10px] font-bold uppercase tracking-widest bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700 rounded-md px-2 py-0.5">
                   {changeTypeLabels[change.change_type] || change.change_type}
                 </Badge>
                 <DirectionBadge direction={change.direction} />
               </div>
 
-              <h4 className="font-semibold mb-3">{change.section_title}</h4>
+              <h4 className="font-black text-slate-900 dark:text-slate-100 text-lg mb-4">{change.section_title}</h4>
 
               {/* Before / After */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
                 {change.old_text && (
-                  <div className="rounded-lg bg-red-500/5 border border-red-500/10 p-3">
-                    <p className="text-[10px] text-red-400 font-semibold mb-1.5 uppercase tracking-wider">Before</p>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
+                  <div className="rounded-xl bg-red-50 border border-red-100 p-4 shadow-sm dark:shadow-slate-900/20">
+                    <p className="text-[10px] text-red-600 font-bold mb-2 uppercase tracking-widest">Before</p>
+                    <p className="text-sm text-slate-700 font-medium leading-relaxed">
                       {change.old_text}
                     </p>
                   </div>
                 )}
                 {change.new_text && (
-                  <div className="rounded-lg bg-green-500/5 border border-green-500/10 p-3">
-                    <p className="text-[10px] text-green-400 font-semibold mb-1.5 uppercase tracking-wider">After</p>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
+                  <div className="rounded-xl bg-emerald-50 border border-emerald-100 p-4 shadow-sm dark:shadow-slate-900/20">
+                    <p className="text-[10px] text-emerald-600 font-bold mb-2 uppercase tracking-widest">After</p>
+                    <p className="text-sm text-slate-700 font-medium leading-relaxed">
                       {change.new_text}
                     </p>
                   </div>
@@ -71,33 +65,33 @@ export default function ChangeDiffView({ changes }: { changes: SemanticChange[] 
               </div>
 
               {/* Impact */}
-              <div className="space-y-2">
-                <div className="flex items-start gap-2">
-                  <span className="text-sm">📌</span>
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <span className="text-base pt-0.5 drop-shadow-sm dark:shadow-slate-900/20 leading-none">📌</span>
                   <div>
-                    <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Impact</span>
-                    <p className="text-sm mt-0.5">{change.user_impact_summary}</p>
+                    <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Impact</span>
+                    <p className="text-sm font-medium text-slate-700 leading-snug mt-1">{change.user_impact_summary}</p>
                   </div>
                 </div>
 
                 {change.legal_implications && change.legal_implications !== "No legal implications." && (
-                  <div className="flex items-start gap-2">
-                    <span className="text-sm">⚖️</span>
+                  <div className="flex items-start gap-3">
+                    <span className="text-base pt-0.5 drop-shadow-sm dark:shadow-slate-900/20 leading-none">⚖️</span>
                     <div>
-                      <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Legal</span>
-                      <p className="text-sm mt-0.5 text-amber-300/80">{change.legal_implications}</p>
+                      <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Legal</span>
+                      <p className="text-sm font-medium text-amber-700 leading-snug mt-1">{change.legal_implications}</p>
                     </div>
                   </div>
                 )}
 
                 {change.affected_user_actions && change.affected_user_actions.length > 0 && (
-                  <div className="flex items-start gap-2">
-                    <span className="text-sm">👤</span>
+                  <div className="flex items-start gap-3">
+                    <span className="text-base pt-0.5 drop-shadow-sm dark:shadow-slate-900/20 leading-none">👤</span>
                     <div>
-                      <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Affected Actions</span>
-                      <div className="flex flex-wrap gap-1 mt-1">
+                      <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Affected Actions</span>
+                      <div className="flex flex-wrap gap-2 mt-2">
                         {change.affected_user_actions.map((action, i) => (
-                          <Badge key={i} variant="outline" className="text-[10px] border-white/10">
+                          <Badge key={i} variant="outline" className="bg-slate-50 dark:bg-slate-800 text-slate-700 border-slate-200 dark:border-slate-700 font-medium px-2 py-0.5 text-[10px] rounded-md shadow-sm dark:shadow-slate-900/20">
                             {action}
                           </Badge>
                         ))}
@@ -108,8 +102,8 @@ export default function ChangeDiffView({ changes }: { changes: SemanticChange[] 
               </div>
 
               {/* Confidence */}
-              <div className="mt-3 flex items-center justify-end">
-                <span className="text-[10px] text-muted-foreground">
+              <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-end">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
                   Confidence: {Math.round(change.confidence * 100)}%
                 </span>
               </div>

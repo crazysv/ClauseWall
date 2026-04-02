@@ -17,12 +17,12 @@ const SOURCE_ICONS: Record<string, typeof MessageSquare> = {
 };
 
 const CONFIDENCE_COLORS: Record<string, string> = {
-  high: "border-green-500/30 bg-green-500/5",
-  medium: "border-yellow-500/30 bg-yellow-500/5",
-  low: "border-gray-500/30 bg-gray-500/5",
+  high: "border-emerald-200 bg-emerald-50 shadow-sm text-slate-900",
+  medium: "border-amber-200 bg-amber-50 shadow-sm text-slate-900",
+  low: "border-slate-200 bg-slate-50 shadow-sm text-slate-900",
 };
 
-export default function PromiseTimeline({ promises }: PromiseTimelineProps) {
+export function PromiseTimeline({ promises }: PromiseTimelineProps) {
   if (promises.length === 0) return null;
 
   // Sort by date (dated items first, then undated)
@@ -34,15 +34,15 @@ export default function PromiseTimeline({ promises }: PromiseTimelineProps) {
   });
 
   return (
-    <div className="space-y-3">
-      <h3 className="text-sm font-medium text-white/60 flex items-center gap-2">
-        <Clock className="w-4 h-4" />
+    <div className="space-y-4">
+      <h3 className="text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 flex items-center gap-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 inline-flex px-3 py-1.5 rounded-lg shadow-sm dark:shadow-slate-900/20">
+        <Clock className="w-3.5 h-3.5" />
         Promise Timeline ({promises.length} promises)
       </h3>
 
-      <div className="relative pl-6">
+      <div className="relative pl-7 mt-2">
         {/* Timeline line */}
-        <div className="absolute left-2 top-0 bottom-0 w-px bg-white/10" />
+        <div className="absolute left-2.5 top-0 bottom-0 w-px bg-slate-200" />
 
         <div className="space-y-3">
           {sorted.map((promise, i) => {
@@ -58,27 +58,24 @@ export default function PromiseTimeline({ promises }: PromiseTimelineProps) {
                 className="relative"
               >
                 {/* Timeline dot */}
-                <div className="absolute -left-6 top-3 w-3 h-3 rounded-full bg-amber-500/30 border border-amber-500/50" />
+                <div className="absolute -left-7 top-4 w-3.5 h-3.5 rounded-full bg-amber-400 border-2 border-white shadow-sm dark:shadow-slate-900/20 ring-1 ring-amber-200" />
 
-                <div className={`p-3 rounded-lg border ${confidenceClass}`}>
-                  <div className="flex items-center gap-2 mb-1">
+                <div className={`p-4 rounded-xl border ${confidenceClass}`}>
+                  <div className="flex items-center gap-2 mb-2 flex-wrap">
                     {promise.date && (
-                      <span className="text-[10px] text-white/40">{promise.date}</span>
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{promise.date}</span>
                     )}
-                    <span className="text-[10px] text-amber-400/60 font-medium">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-amber-700 border border-amber-200 bg-white dark:bg-card px-2 py-0.5 rounded-md shadow-sm dark:shadow-slate-900/20">
                       {promise.category.replace(/_/g, " ")}
                     </span>
-                    <span className={`text-[10px] px-1 rounded ${
-                      promise.confidence === "high" ? "text-green-400" :
-                      promise.confidence === "medium" ? "text-yellow-400" : "text-gray-400"
-                    }`}>
+                    <span className={`text-[10px] px-2 py-0.5 rounded-md font-bold uppercase tracking-widest border shadow-sm dark:shadow-slate-900/20 ${ promise.confidence === "high" ? "text-emerald-700 bg-emerald-100 border-emerald-200" : promise.confidence === "medium" ? "text-amber-700 bg-amber-100 border-amber-200" : "text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700" }`}>
                       {promise.confidence}
                     </span>
                   </div>
 
-                  <p className="text-sm text-white/80">&ldquo;{promise.promise_text}&rdquo;</p>
+                  <p className="text-sm font-medium text-slate-900 dark:text-slate-100 leading-relaxed">&ldquo;{promise.promise_text}&rdquo;</p>
 
-                  <p className="text-xs text-white/30 mt-1">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mt-3 block">
                     — {promise.promised_by}
                     {promise.specific_value && ` • ${promise.specific_value}`}
                   </p>

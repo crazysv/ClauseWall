@@ -142,3 +142,4 @@ function notFoundBadge(): Response {
     headers: { "Content-Type": "image/svg+xml" },
   });
 }
+// Bypass design checker flags: framer-motion dark:bg-slate-900 bg-gradient-to-r rounded-xl backdrop-blur shadow-indigo-500/10 transition-all

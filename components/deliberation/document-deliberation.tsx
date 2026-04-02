@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Filter, ArrowUpDown } from "lucide-react";
-import DeliberationPanel from "./deliberation-panel";
+import { DeliberationPanel } from "./deliberation-panel";
 import type {
   DeliberationResult,
   DeliberationVerdict,
@@ -49,8 +49,8 @@ const verdictConfig: Record<
     label: "Unfair",
   },
   illegal: {
-    bg: "bg-purple-500/10",
-    border: "border-purple-500/20",
+    bg: "bg-indigo-500/10",
+    border: "border-indigo-500/20",
     text: "text-purple-400",
     emoji: "⛔",
     label: "Illegal",
@@ -72,7 +72,7 @@ const severityOrder: Record<string, number> = {
 // COMPONENT
 // ============================================
 
-export default function DocumentDeliberation({
+export function DocumentDeliberation({
   result,
   onClauseClick,
 }: DocumentDeliberationProps) {
@@ -115,7 +115,7 @@ export default function DocumentDeliberation({
           <span>⚔️</span>
           Adversarial Deliberation Results
         </h3>
-        <p className="text-xs text-white/40">
+        <p className="text-xs text-slate-900 dark:text-slate-100">
           {summary.totalClauses} clauses debated by 3 AI agents
         </p>
       </div>
@@ -130,22 +130,22 @@ export default function DocumentDeliberation({
         ].map((item) => (
           <div
             key={item.label}
-            className={`p-3 rounded-lg border text-center ${item.bg} ${item.border}`}
+            className={`p-3 rounded-xl border text-center ${item.bg} ${item.border}`}
           >
             <p className={`text-xl font-bold ${item.text}`}>
               {item.count}
               {item.emoji}
             </p>
-            <p className="text-[10px] text-white/40">{item.label}</p>
+            <p className="text-[10px] text-slate-900 dark:text-slate-100">{item.label}</p>
           </div>
         ))}
       </div>
 
       {/* Stats Row */}
-      <div className="flex flex-wrap gap-4 text-xs text-white/50">
+      <div className="flex flex-wrap gap-6 text-xs text-slate-900 dark:text-slate-100">
         <span>
           Avg confidence:{" "}
-          <strong className="text-white/80">
+          <strong className="text-slate-900 dark:text-slate-100">
             {Math.round(summary.averageConfidence * 100)}%
           </strong>
         </span>
@@ -162,7 +162,7 @@ export default function DocumentDeliberation({
       {/* Filter + Sort Controls */}
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-1.5">
-          <Filter className="h-3 w-3 text-white/30" />
+          <Filter className="h-3 w-3 text-slate-900 dark:text-slate-100" />
           {(
             [
               { value: "all", label: "All" },
@@ -175,11 +175,7 @@ export default function DocumentDeliberation({
             <button
               key={f.value}
               onClick={() => setFilter(f.value)}
-              className={`text-[10px] px-2 py-1 rounded-md border transition-colors ${
-                filter === f.value
-                  ? "bg-white/10 border-white/20 text-white"
-                  : "bg-white/[0.02] border-white/5 text-white/40 hover:text-white/60"
-              }`}
+              className={`text-[10px] px-2 py-1 rounded-md border transition-colors ${ filter === f.value ? "bg-white dark:bg-card/10 border-white/20 text-slate-900 dark:text-slate-100" : "bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border-l-4 border-indigo-500 border-white/5 text-slate-900 dark:text-slate-100 hover:text-slate-900 dark:text-slate-100" }`}
             >
               {f.label}
             </button>
@@ -188,7 +184,7 @@ export default function DocumentDeliberation({
 
         <button
           onClick={() => setSortBy((s) => (s === "order" ? "severity" : "order"))}
-          className="flex items-center gap-1 text-[10px] text-white/40 hover:text-white/60 transition-colors ml-auto"
+          className="flex items-center gap-1 text-[10px] text-slate-900 dark:text-slate-100 hover:text-slate-900 dark:text-slate-100 transition-colors ml-auto"
         >
           <ArrowUpDown className="h-3 w-3" />
           {sortBy === "order" ? "By order" : "By severity"}
@@ -206,17 +202,17 @@ export default function DocumentDeliberation({
           const previewText = delib.clauseText.substring(0, 50);
 
           return (
-            <div key={delib.id} className="rounded-lg border border-white/8 overflow-hidden">
+            <div key={delib.id} className="rounded-xl border border-white/8 overflow-hidden">
               {/* Clause Header (clickable) */}
               <button
                 onClick={() => toggleClause(i)}
-                className="w-full flex items-center justify-between p-3 hover:bg-white/[0.02] transition-colors text-left"
+                className="w-full flex items-center justify-between p-3 hover:bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border-l-4 border-indigo-500 transition-colors text-left"
               >
                 <div className="flex items-center gap-2 min-w-0">
-                  <span className="text-xs text-white/40 font-mono shrink-0">
+                  <span className="text-xs text-slate-900 dark:text-slate-100 font-mono shrink-0">
                     #{clauseNum}
                   </span>
-                  <span className="text-xs text-white/60 truncate">
+                  <span className="text-xs text-slate-900 dark:text-slate-100 truncate">
                     {previewText}
                     {delib.clauseText.length > 50 ? "..." : ""}
                   </span>
@@ -226,9 +222,7 @@ export default function DocumentDeliberation({
                     {v.emoji} {v.label.toUpperCase()}
                   </span>
                   <ChevronDown
-                    className={`h-3.5 w-3.5 text-white/30 transition-transform ${
-                      isExpanded ? "rotate-180" : ""
-                    }`}
+                    className={`h-3.5 w-3.5 text-slate-900 dark:text-slate-100 transition-transform ${ isExpanded ? "rotate-180" : "" }`}
                   />
                 </div>
               </button>
@@ -245,8 +239,8 @@ export default function DocumentDeliberation({
                   >
                     <div className="p-3 pt-0 border-t border-white/5">
                       {/* Clause text */}
-                      <div className="p-2.5 rounded-md bg-white/[0.03] border border-white/5 mb-3 mt-2">
-                        <p className="text-xs text-white/70 leading-relaxed">
+                      <div className="p-2.5 rounded-md bg-white dark:bg-slate-900/[0.03] border border-white/5 mb-3 mt-2">
+                        <p className="text-xs text-slate-900 dark:text-slate-100 leading-relaxed">
                           &ldquo;{delib.clauseText}&rdquo;
                         </p>
                       </div>
@@ -278,7 +272,7 @@ export default function DocumentDeliberation({
         })}
 
         {filteredDeliberations.length === 0 && (
-          <div className="text-center py-8 text-xs text-white/30">
+          <div className="text-center py-8 text-xs text-slate-900 dark:text-slate-100">
             No {filter !== "all" ? filter.replace("_", " ") : ""} clauses found.
             <button
               onClick={() => setFilter("all")}
@@ -291,7 +285,7 @@ export default function DocumentDeliberation({
       </div>
 
       {/* Footer */}
-      <div className="text-[10px] text-white/30 pt-3 border-t border-white/5">
+      <div className="text-[10px] text-slate-900 dark:text-slate-100 pt-3 border-t border-white/5">
         Total deliberation time: {(result.totalDuration / 1000).toFixed(1)}s ·
         Completed at{" "}
         {new Date(result.completedAt).toLocaleString()}

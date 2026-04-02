@@ -24,7 +24,7 @@ const SEVERITY_STYLES: Record<TrapSeverity, { badge: string; border: string }> =
   medium: { badge: "bg-amber-500/20 text-amber-400 border-amber-500/30", border: "border-l-amber-400" },
 };
 
-export default function TrapStateCard({ trap, stateMachine, onHighlightPath, documentId }: TrapStateCardProps) {
+export function TrapStateCard({ trap, stateMachine, onHighlightPath, documentId }: TrapStateCardProps) {
   const [expanded, setExpanded] = useState(false);
   const style = SEVERITY_STYLES[trap.severity];
 
@@ -44,11 +44,7 @@ export default function TrapStateCard({ trap, stateMachine, onHighlightPath, doc
                   <polygon points="12,2 16,5 12,8" fill="#475569" />
                 </svg>
               )}
-              <span className={`flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded-full border ${
-                isTrap
-                  ? "bg-red-500/15 border-red-500/30 text-red-300"
-                  : "bg-white/5 border-white/10 text-gray-300"
-              }`}>
+              <span className={`flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded-full border ${ isTrap ? "bg-red-500/15 border-red-500/30 text-red-300" : "bg-white dark:bg-slate-900/5 border-white/10 text-slate-300" }`}>
                 <span
                   className="w-2 h-2 rounded-full flex-shrink-0"
                   style={{
@@ -74,9 +70,9 @@ export default function TrapStateCard({ trap, stateMachine, onHighlightPath, doc
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`rounded-lg bg-red-500/[0.03] border border-white/5 border-l-4 ${style.border} overflow-hidden`}
+      className={`rounded-xl bg-red-500/[0.03] border border-white/5 border-l-4 ${style.border} overflow-hidden`}
     >
-      <div className="p-4">
+      <div className="p-6">
         {/* Header */}
         <div className="flex items-start justify-between gap-2 mb-2">
           <div className="flex items-center gap-2">
@@ -89,15 +85,15 @@ export default function TrapStateCard({ trap, stateMachine, onHighlightPath, doc
         </div>
 
         {/* Trap type */}
-        <p className="text-xs text-gray-400 mb-2">
-          <span className="font-medium text-gray-300">TYPE:</span>{" "}
+        <p className="text-xs text-slate-400 mb-2">
+          <span className="font-medium text-slate-300">TYPE:</span>{" "}
           {trap.trapType.replace(/_/g, " ")} — {trap.description.substring(0, 120)}{trap.description.length > 120 ? "…" : ""}
         </p>
 
         {/* Path leading here */}
         {trap.pathsLeadingHere.length > 0 && (
           <div className="mb-2">
-            <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">
+            <p className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">
               How you get trapped:
             </p>
             {renderInlinePath(trap.pathsLeadingHere[0])}
@@ -113,7 +109,7 @@ export default function TrapStateCard({ trap, stateMachine, onHighlightPath, doc
         {/* Expand/collapse */}
         <button
           onClick={() => setExpanded(!expanded)}
-          className="flex items-center gap-1 text-[11px] text-gray-500 hover:text-gray-300 transition-colors"
+          className="flex items-center gap-1 text-[11px] text-slate-500 dark:text-slate-400 hover:text-slate-300 transition-colors"
         >
           <ChevronDown className={`h-3 w-3 transition-transform ${expanded ? "rotate-180" : ""}`} />
           {expanded ? "Less details" : "More details"}
@@ -127,7 +123,7 @@ export default function TrapStateCard({ trap, stateMachine, onHighlightPath, doc
             className="mt-3 space-y-3"
           >
             {/* Fair alternative */}
-            <div className="p-2.5 rounded-lg bg-green-500/5 border border-green-500/10">
+            <div className="p-2.5 rounded-xl bg-green-500/5 border border-green-500/10">
               <p className="text-[10px] text-green-400 font-semibold uppercase tracking-wider mb-1">
                 Fair Alternative:
               </p>
@@ -138,14 +134,14 @@ export default function TrapStateCard({ trap, stateMachine, onHighlightPath, doc
             {trap.legalIssue && (
               <div className="flex items-start gap-1.5 text-xs">
                 <span className="flex-shrink-0">⚖️</span>
-                <p className="text-gray-300">{trap.legalIssue}</p>
+                <p className="text-slate-300">{trap.legalIssue}</p>
               </div>
             )}
 
             {/* Related clauses */}
             {trap.relatedClauses.length > 0 && (
-              <p className="text-xs text-gray-400">
-                <span className="text-gray-500">Related clauses:</span> {trap.relatedClauses.join(", ")}
+              <p className="text-xs text-slate-400">
+                <span className="text-slate-500 dark:text-slate-400">Related clauses:</span> {trap.relatedClauses.join(", ")}
               </p>
             )}
 
@@ -162,7 +158,7 @@ export default function TrapStateCard({ trap, stateMachine, onHighlightPath, doc
                 ))}
               </div>
             ) : (
-              <div className="flex items-center gap-1.5 p-2 rounded-lg bg-red-500/10 border border-red-500/15">
+              <div className="flex items-center gap-1.5 p-2 rounded-xl bg-red-500/10 border border-red-500/15">
                 <AlertTriangle className="h-3.5 w-3.5 text-red-400 flex-shrink-0" />
                 <p className="text-xs text-red-300">No escape paths — this is an absolute trap</p>
               </div>
@@ -172,7 +168,7 @@ export default function TrapStateCard({ trap, stateMachine, onHighlightPath, doc
       </div>
 
       {/* Actions */}
-      <div className="flex items-center gap-2 px-4 py-2.5 bg-white/[0.02] border-t border-white/5">
+      <div className="flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border-l-4 border-indigo-500 border-t border-white/5">
         {trap.pathsLeadingHere.length > 0 && onHighlightPath && (
           <button
             onClick={() => onHighlightPath(trap.pathsLeadingHere[0])}

@@ -2,8 +2,8 @@
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import { Mic, MicOff, Settings, Volume2, Loader2 } from "lucide-react";
-import AudioWaveform from "./audio-waveform";
-import TacticAlert from "./tactic-alert";
+import { AudioWaveform } from "./audio-waveform";
+import { TacticAlert } from "./tactic-alert";
 import { speakAdvice, stopSpeaking } from "@/lib/negotiate/tts-engine";
 import {
   startAudioRecording,
@@ -25,7 +25,7 @@ interface AudioCompanionPanelProps {
   onSessionUpdate: (session: NegotiationSession) => void;
 }
 
-export default function AudioCompanionPanel({
+export function AudioCompanionPanel({
   jurisdiction,
   documentType,
   session,
@@ -47,12 +47,10 @@ export default function AudioCompanionPanel({
   const chunkerRef = useRef<ReturnType<typeof createAudioChunker> | null>(null);
   const transcriptEndRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll transcript
   useEffect(() => {
     transcriptEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [transcript]);
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
       stopRecording();
@@ -93,7 +91,6 @@ export default function AudioCompanionPanel({
 
           setTranscript((prev) => [...prev, chunk]);
 
-          // Update session with new chunk
           const updatedSession = {
             ...session,
             transcript_chunks: [...session.transcript_chunks, chunk],
@@ -101,7 +98,6 @@ export default function AudioCompanionPanel({
           };
           onSessionUpdate(updatedSession);
 
-          // Handle detected tactics
           if (data.detected_tactics && data.detected_tactics.length > 0) {
             const tacticsWithBluff = data.detected_tactics.map((t: DetectedTactic, i: number) => ({
               ...t,
@@ -109,19 +105,17 @@ export default function AudioCompanionPanel({
             }));
             setActiveTactics((prev) => [...prev, ...tacticsWithBluff]);
 
-            // Vibrate on tactic detection
             if (navigator.vibrate) {
               navigator.vibrate([200, 100, 200]);
             }
 
-            // Auto-whisper if enabled
             if (autoWhisper && data.detected_tactics[0]?.counter_response) {
               speakAdvice(data.detected_tactics[0].counter_response, { urgent: true });
             }
           }
         }
-      } catch (err) {
-        console.error("Chunk processing error:", err);
+      } catch {
+        // Silently handled
       } finally {
         setIsProcessing(false);
       }
@@ -188,7 +182,7 @@ export default function AudioCompanionPanel({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* Tactic Alerts */}
       {activeTactics.map((tactic, index) => (
         <TacticAlert
@@ -201,35 +195,37 @@ export default function AudioCompanionPanel({
       ))}
 
       {/* Status & Record Button */}
-      <div className="flex flex-col items-center gap-4 py-4">
+      <div className="flex flex-col items-center gap-5 py-6 bg-white dark:bg-card border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-900/20 rounded-2xl">
         {/* Status text */}
         <div className="text-center">
           {!isRecording && !error && (
-            <p className="text-sm text-white/40">Tap to start listening</p>
+            <p className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Tap to start analyzing</p>
           )}
           {isRecording && !isPaused && (
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-              <p className="text-sm text-red-400">Listening...</p>
+              <span className="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse" />
+              <p className="text-sm font-bold text-red-600 uppercase tracking-widest">Listening...</p>
               {isProcessing && (
-                <Loader2 className="w-3 h-3 text-white/40 animate-spin" />
+                <Loader2 className="w-4 h-4 text-red-400 animate-spin ml-1" />
               )}
             </div>
           )}
           {isRecording && isPaused && (
-            <p className="text-sm text-orange-400">Paused</p>
+            <p className="text-sm font-bold text-orange-600 uppercase tracking-widest">Paused</p>
           )}
           {error && (
-            <p className="text-sm text-red-400 max-w-xs text-center">{error}</p>
+            <p className="text-sm font-medium text-red-600 max-w-xs text-center border bg-red-50 border-red-200 p-2 rounded-lg">{error}</p>
           )}
         </div>
 
         {/* Waveform */}
         {isRecording && (
-          <AudioWaveform
-            stream={streamRef.current}
-            isRecording={isRecording && !isPaused}
-          />
+          <div className="w-full max-w-[200px] border border-slate-100 rounded-xl p-1 bg-slate-50 dark:bg-slate-800 shadow-inner">
+             <AudioWaveform
+               stream={streamRef.current}
+               isRecording={isRecording && !isPaused}
+             />
+          </div>
         )}
 
         {/* Record Button */}
@@ -239,24 +235,24 @@ export default function AudioCompanionPanel({
             e.preventDefault();
             if (isRecording) togglePause();
           }}
-          className={`w-20 h-20 rounded-full flex items-center justify-center transition-all shadow-lg ${
+          className={`w-24 h-24 rounded-full flex items-center justify-center transition-all shadow-xl hover:scale-105 active:scale-95 border-4 ${
             isRecording
               ? isPaused
-                ? "bg-orange-500/20 border-2 border-orange-500/40 text-orange-400"
-                : "bg-red-500/20 border-2 border-red-500/40 text-red-400 animate-pulse"
-              : "bg-green-500/10 border-2 border-green-500/30 text-green-400 hover:bg-green-500/20"
+                ? "bg-orange-50 border-orange-200 text-orange-600"
+                : "bg-red-50 border-red-200 text-red-600 animate-[pulse_2s_ease-in-out_infinite]"
+              : "bg-indigo-600 border-indigo-200 text-white"
           }`}
-          style={{ minWidth: "80px", minHeight: "80px" }}
+          style={{ minWidth: "96px", minHeight: "96px" }}
         >
           {isRecording ? (
-            <MicOff className="w-8 h-8" />
+             <MicOff className="w-10 h-10" />
           ) : (
-            <Mic className="w-8 h-8" />
+            <Mic className="w-10 h-10" />
           )}
         </button>
 
         {isRecording && (
-          <p className="text-[10px] text-white/20">Long press to pause</p>
+          <p className="text-xs font-bold text-slate-400">Long press to pause</p>
         )}
       </div>
 
@@ -265,56 +261,55 @@ export default function AudioCompanionPanel({
         <select
           value={language}
           onChange={(e) => setLanguage(e.target.value)}
-          className="text-xs bg-white/[0.03] border border-white/10 rounded-lg px-2 py-1.5 text-white/60 focus:outline-none"
+          className="text-sm font-bold bg-white dark:bg-card border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-900/20 rounded-xl px-4 py-2 text-slate-700 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 min-w-[120px] cursor-pointer"
           style={{ fontSize: "16px" }}
         >
-          <option value="en">English</option>
-          <option value="hi">Hindi</option>
-          <option value="ta">Tamil</option>
-          <option value="te">Telugu</option>
-          <option value="kn">Kannada</option>
-          <option value="ml">Malayalam</option>
-          <option value="mr">Marathi</option>
-          <option value="bn">Bengali</option>
-          <option value="gu">Gujarati</option>
+          <option value="en">English (EN)</option>
+          <option value="hi">Hindi (HI)</option>
+          <option value="ta">Tamil (TA)</option>
+          <option value="te">Telugu (TE)</option>
+          <option value="kn">Kannada (KN)</option>
+          <option value="ml">Malayalam (ML)</option>
+          <option value="mr">Marathi (MR)</option>
+          <option value="bn">Bengali (BN)</option>
+          <option value="gu">Gujarati (GU)</option>
         </select>
 
         <button
           onClick={() => setShowSettings(!showSettings)}
-          className="p-2 rounded-lg text-white/30 hover:text-white/60 hover:bg-white/5 transition-colors"
+          className="p-3 bg-white dark:bg-card border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-900/20 rounded-xl text-slate-500 dark:text-slate-400 hover:text-indigo-600 hover:border-indigo-200 transition-colors"
         >
-          <Settings className="w-4 h-4" />
+          <Settings className="w-5 h-5" />
         </button>
       </div>
 
       {/* Settings Panel */}
       {showSettings && (
-        <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4 space-y-3 animate-in fade-in duration-200">
+        <div className="rounded-xl border border-slate-200 dark:border-slate-700 shadow-md bg-white dark:bg-card p-5 space-y-4 animate-in fade-in duration-200">
+           <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest border-b border-slate-100 pb-2 mb-2">Options</p>
           <div className="flex items-center justify-between">
-            <span className="text-xs text-white/50">Chunk Duration</span>
+            <span className="text-sm font-medium text-slate-700">Audio Chunk Buffer</span>
             <select
               value={chunkDuration}
               onChange={(e) => setChunkDuration(Number(e.target.value))}
-              className="text-xs bg-white/[0.03] border border-white/10 rounded px-2 py-1 text-white/60"
+              className="text-sm font-bold bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-900/20 rounded-lg px-3 py-1.5 text-indigo-700"
               style={{ fontSize: "16px" }}
             >
-              <option value={5000}>5 seconds</option>
-              <option value={7000}>7 seconds</option>
-              <option value={10000}>10 seconds</option>
+              <option value={5000}>5 sec (Fast)</option>
+              <option value={7000}>7 sec (Balanced)</option>
+              <option value={10000}>10 sec (Accurate)</option>
             </select>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-xs text-white/50">Auto-whisper counters</span>
+            <span className="text-sm font-medium text-slate-700">Auto-speak responses via Audio</span>
             <button
               onClick={() => setAutoWhisper(!autoWhisper)}
-              className={`w-10 h-5 rounded-full transition-colors ${
-                autoWhisper ? "bg-green-500" : "bg-white/10"
+              className={`w-12 h-6 rounded-full transition-colors flex items-center shadow-inner ${
+                autoWhisper ? "bg-teal-500" : "bg-slate-300"
               }`}
             >
               <div
-                className={`w-4 h-4 rounded-full bg-white shadow transition-transform ${
-                  autoWhisper ? "translate-x-5" : "translate-x-0.5"
-                }`}
+                className={`w-5 h-5 rounded-full bg-white dark:bg-card shadow-md transition-transform transform ${ autoWhisper ? "translate-x-6" : "translate-x-1" }`}
               />
             </button>
           </div>
@@ -323,12 +318,12 @@ export default function AudioCompanionPanel({
 
       {/* Live Transcript */}
       {transcript.length > 0 && (
-        <div className="space-y-1">
-          <p className="text-xs text-white/20 font-medium px-1">Transcript</p>
-          <div className="max-h-60 overflow-y-auto rounded-xl border border-white/5 bg-white/[0.01] p-3 space-y-2 scroll-smooth">
+        <div className="space-y-2">
+          <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest px-1">Live Transcript</p>
+          <div className="max-h-[300px] overflow-y-auto rounded-xl border border-slate-200 dark:border-slate-700 shadow-inner bg-slate-50 dark:bg-slate-800 p-4 space-y-3 scroll-smooth">
             {transcript.map((chunk) => (
-              <div key={chunk.id} className="text-sm text-white/70">
-                <span className="text-[10px] text-white/20 font-mono mr-2">
+              <div key={chunk.id} className="text-sm font-medium text-slate-800 dark:text-slate-200 bg-white dark:bg-card p-3 rounded-lg border border-slate-100 shadow-sm dark:shadow-slate-900/20 leading-relaxed">
+                <span className="inline-block text-[10px] font-bold text-slate-400 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded mr-2 uppercase">
                   {new Date(chunk.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                 </span>
                 {chunk.text}
@@ -340,9 +335,11 @@ export default function AudioCompanionPanel({
       )}
 
       {/* Privacy Notice */}
-      <p className="text-[10px] text-white/15 text-center px-4">
-        🔒 Audio is transcribed in real-time and never stored on our servers
-      </p>
+      <div className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 shadow-sm dark:shadow-slate-900/20 flex items-center justify-center gap-2">
+          <p className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+            🔒 Audio is processed entirely locally and never stored.
+          </p>
+      </div>
     </div>
   );
 }

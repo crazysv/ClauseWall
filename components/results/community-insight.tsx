@@ -21,10 +21,10 @@ interface CommunityInsightProps {
   clauseType: string;
   jurisdiction: string;
   riskLevel: string;
-  communityMatch?: CommunityMatch | string | null; // NEW: Pre-stored match data
+  communityMatch?: CommunityMatch | string | null;
 }
 
-export default function CommunityInsight({
+export function CommunityInsight({
   clauseId,
   clauseText,
   clauseType,
@@ -43,7 +43,6 @@ export default function CommunityInsight({
       try {
         match = JSON.parse(communityMatch);
       } catch {
-        console.error("Failed to parse community_match JSON");
       }
     } else {
       match = communityMatch;
@@ -59,45 +58,48 @@ export default function CommunityInsight({
   const isFuzzy = match.match_type === "fuzzy";
   const isSerial = match.occurrence_count >= 10;
 
-  // Match type config
+  // Match type config mapped to Bright Vibrant Shield Tokens
   const matchConfig = isExact
     ? {
         icon: <Fingerprint className="w-3.5 h-3.5" />,
-        label: "EXACT MATCH",
-        color: "bg-orange-500/20 text-orange-300 border-orange-500/30",
+        label: "Exact DNA Match",
+        color: "bg-indigo-100 text-indigo-800 border-indigo-200",
       }
     : isSemantic
       ? {
           icon: <Brain className="w-3.5 h-3.5" />,
-          label: "SEMANTIC MATCH",
-          color: "bg-purple-500/20 text-purple-300 border-purple-500/30",
+          label: "Semantic AI Match",
+          color: "bg-purple-100 text-purple-800 border-purple-200",
         }
       : {
           icon: <Search className="w-3.5 h-3.5" />,
-          label: "SIMILAR PATTERN",
-          color: "bg-yellow-500/20 text-yellow-300 border-yellow-500/30",
+          label: "Similar Pattern",
+          color: "bg-amber-100 text-amber-800 border-amber-200",
         };
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 8 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="mt-3 p-4 rounded-lg bg-orange-500/5 border border-orange-500/20"
+      className="mt-4 p-5 rounded-2xl bg-indigo-50 border border-indigo-200 border-l-4 border-l-indigo-600 shadow-sm dark:shadow-slate-900/20 relative overflow-hidden group"
     >
-      <div className="flex items-start gap-3">
-        <div className="p-2 rounded-lg bg-orange-500/10 flex-shrink-0">
-          <Users className="w-4 h-4 text-orange-400" />
+      {/* Decorative gradient flare */}
+      <div className="absolute -right-10 -top-10 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl group-hover:bg-indigo-500/20 transition-all" />
+
+      <div className="flex items-start gap-4 relative z-10">
+        <div className="p-3 rounded-xl bg-indigo-100/80 flex-shrink-0 shadow-sm dark:shadow-slate-900/20 border border-indigo-200">
+          <Users className="w-5 h-5 text-indigo-600" />
         </div>
+        
         <div className="flex-1 min-w-0">
           {/* Title + Match Type Badge */}
-          <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-            <p className="text-sm font-medium text-orange-400 flex items-center gap-1.5">
-              <TrendingUp className="w-3.5 h-3.5" />
-              Community Pattern Detected
-            </p>
+          <div className="flex items-center gap-3 mb-2 flex-wrap">
+            <h4 className="text-sm font-black text-indigo-900 flex items-center gap-1.5 uppercase tracking-wide">
+              Community Intelligence
+            </h4>
             <Badge
               variant="outline"
-              className={`text-[10px] gap-1 ${matchConfig.color}`}
+              className={`text-[10px] font-black uppercase tracking-widest gap-1 shadow-sm dark:shadow-slate-900/20 ${matchConfig.color}`}
             >
               {matchConfig.icon}
               {matchConfig.label}
@@ -105,64 +107,42 @@ export default function CommunityInsight({
           </div>
 
           {/* Main message */}
-          <p className="text-sm text-gray-300 leading-relaxed">
+          <p className="text-sm font-medium text-slate-700 leading-relaxed bg-white dark:bg-card/50 p-3 rounded-xl border border-indigo-100 shadow-sm dark:shadow-slate-900/20 mb-3">
             {isExact && (
               <>
-                This <strong>exact clause pattern</strong> has been found in{" "}
-                <strong className="text-orange-400">
-                  {match.occurrence_count}
-                </strong>{" "}
-                other contracts
+                This <strong>exact predatory clause pattern</strong> has been algorithmically fingerprinted in <strong className="text-indigo-700 font-extrabold bg-indigo-100 px-1 rounded">{match.occurrence_count}</strong> other contracts
                 {jurisdictionName && (
                   <>
                     {" "}
-                    in{" "}
-                    <span className="inline-flex items-center gap-1">
-                      <MapPin className="w-3 h-3 inline" />
+                    registered in{" "}
+                    <span className="inline-flex items-center gap-1 font-bold">
+                      <MapPin className="w-3 h-3 inline text-indigo-500" />
                       {jurisdictionName}
                     </span>
                   </>
                 )}
-                .
+                . High probability of standardized exploitation.
               </>
             )}
             {isSemantic && (
               <>
-                This clause is <strong>semantically similar</strong> to{" "}
-                <strong className="text-purple-400">
-                  {match.semantic_stats?.total_similar_patterns || 1}
-                </strong>{" "}
-                patterns across{" "}
-                <strong className="text-orange-400">
-                  {match.occurrence_count}
-                </strong>{" "}
-                contracts.
-                {match.match_percentage && (
-                  <span className="text-purple-400">
-                    {" "}
-                    ({match.match_percentage}% similarity)
-                  </span>
-                )}
+                This clause is <strong>semantically structurally identical</strong> to <strong className="text-purple-700 font-extrabold bg-purple-100 px-1 rounded">{match.semantic_stats?.total_similar_patterns || 1}</strong> predatory variations found across <strong className="text-indigo-700 font-extrabold bg-indigo-100 px-1 rounded">{match.occurrence_count}</strong> community flagged contracts.
               </>
             )}
             {isFuzzy && (
               <>
-                A <strong>similar clause pattern</strong> has been reported in{" "}
-                <strong className="text-orange-400">
-                  {match.occurrence_count}
-                </strong>{" "}
-                other contracts.
+                A <strong>highly similar exclusionary pattern</strong> has been officially reported in <strong className="text-amber-700 font-extrabold bg-amber-100 px-1 rounded">{match.occurrence_count}</strong> active contracts within our database.
               </>
             )}
           </p>
 
           {/* Semantic stats — illegal/dangerous percentage */}
           {isSemantic && match.semantic_stats && (
-            <div className="mt-2 flex flex-wrap gap-2">
+            <div className="mb-3 flex flex-wrap gap-2">
               {match.semantic_stats.illegal_percentage > 0 && (
                 <Badge
                   variant="outline"
-                  className="text-[10px] border-purple-500/30 text-purple-400"
+                  className="text-[10px] font-black uppercase border-purple-300 bg-purple-50 text-purple-700 tracking-wider"
                 >
                   ⛔ {match.semantic_stats.illegal_percentage}% flagged illegal
                 </Badge>
@@ -170,58 +150,57 @@ export default function CommunityInsight({
               {match.semantic_stats.dangerous_percentage > 0 && (
                 <Badge
                   variant="outline"
-                  className="text-[10px] border-red-500/30 text-red-400"
+                  className="text-[10px] font-black uppercase border-rose-300 bg-rose-50 text-rose-700 tracking-wider"
                 >
-                  🔴 {match.semantic_stats.dangerous_percentage}% flagged
-                  dangerous
+                  🔴 {match.semantic_stats.dangerous_percentage}% flagged dangerous
                 </Badge>
               )}
             </div>
           )}
 
+          {/* Progress bar showing match rate (indigo fill) */}
+          <div className="mb-4">
+            <div className="flex justify-between items-center mb-1.5">
+              <span className="text-[10px] uppercase tracking-widest font-bold text-indigo-500 flex items-center gap-1">
+                 <Brain className="w-3 h-3" /> Pattern Similarity Rate
+              </span>
+              <span className="text-xs font-black text-indigo-700">{match.match_percentage || 100}%</span>
+            </div>
+            <div className="h-2 w-full bg-indigo-200/50 rounded-full overflow-hidden border border-indigo-200">
+               <div className="h-full bg-indigo-500 rounded-full transition-all duration-1000 ease-out" style={{ width: `${match.match_percentage || 100}%` }} />
+            </div>
+          </div>
+
           {/* Serial predator warning */}
           {isSerial && (
-            <div className="mt-2 flex items-center gap-1.5 text-xs text-red-400 font-medium">
-              <AlertTriangle className="w-3.5 h-3.5" />
-              Frequently seen predatory pattern — high alert
+            <div className="mb-3 flex items-start gap-2 text-xs text-rose-700 bg-rose-100 border border-rose-200 p-2.5 rounded-lg shadow-sm dark:shadow-slate-900/20 font-bold">
+              <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5 text-rose-600" />
+              <span>WARNING: Exceptionally high occurrence rate detected. This indicates a standardized boilerplate clause used for mass exploitation.</span>
             </div>
           )}
 
-          {/* Stats row */}
-          <div className="flex flex-wrap gap-4 mt-2.5 text-xs text-gray-500">
-            <span className="flex items-center gap-1">
-              <Users className="w-3 h-3" />
-              {match.occurrence_count}× reported
+          {/* Interactive Stats row */}
+          <div className="flex flex-wrap items-center gap-3 mt-1 pt-3 border-t border-indigo-200/50 text-[10px] font-bold text-indigo-500 uppercase tracking-wider">
+            <span className="flex items-center gap-1.5 bg-white dark:bg-card px-2 py-1 rounded shadow-sm dark:shadow-slate-900/20 border border-indigo-100 text-indigo-700">
+              <Users className="w-3.5 h-3.5" />
+              {match.occurrence_count}× Verified Reports
             </span>
             {match.first_seen_at && (
-              <span className="flex items-center gap-1">
-                <Clock className="w-3 h-3" />
-                Since{" "}
+              <span className="flex items-center gap-1.5 bg-white dark:bg-card px-2 py-1 rounded shadow-sm dark:shadow-slate-900/20 border border-indigo-100 text-indigo-700">
+                <Clock className="w-3.5 h-3.5" />
+                Tracked Since{" "}
                 {new Date(match.first_seen_at).toLocaleDateString("en-IN", {
                   month: "short",
                   year: "numeric",
                 })}
               </span>
             )}
-            {isSemantic && (
-              <span className="flex items-center gap-1 text-purple-400/60">
-                <Brain className="w-3 h-3" />
-                AI semantic match
-              </span>
-            )}
-            {isFuzzy && (
-              <span className="flex items-center gap-1 text-yellow-400/60">
-                ~{match.match_percentage}% match
+            {match.common_legal_issue && (
+              <span className="text-xs text-indigo-800/80 normal-case tracking-normal italic ml-auto mr-1 flex items-center gap-1">
+                 <TrendingUp className="w-3 h-3" /> Core issue: {match.common_legal_issue}
               </span>
             )}
           </div>
-
-          {/* Legal issue */}
-          {match.common_legal_issue && (
-            <p className="text-xs text-orange-300/70 mt-2 italic">
-              Common issue: {match.common_legal_issue}
-            </p>
-          )}
         </div>
       </div>
     </motion.div>

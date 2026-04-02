@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useRef, type ReactNode } from "react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import {
   Shield,
   Upload,
@@ -26,6 +28,27 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+
+function ScrollReveal({ children, delay = 0 }: { children: ReactNode, delay?: number }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const prefersReducedMotion = useReducedMotion();
+
+  if (prefersReducedMotion) {
+    return <div ref={ref}>{children}</div>;
+  }
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 40 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+      transition={{ duration: prefersReducedMotion ? 0 : 0.6, ease: "easeOut", delay }}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 export default function HomePage() {
   return (
@@ -73,7 +96,7 @@ export default function HomePage() {
             <Link href="/upload">
               <Button
                 size="lg"
-                className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-6 gap-2 shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-105"
+                className="bg-blue-600 hover:bg-blue-700 text-lg px-4 md:px-4 md:px-6 lg:px-8 py-6 gap-2 shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-105"
               >
                 <Upload className="h-5 w-5" />
                 Analyze Your Contract
@@ -84,7 +107,7 @@ export default function HomePage() {
               <Button
                 variant="outline"
                 size="lg"
-                className="text-lg px-8 py-6 gap-2 border-white/10 hover:bg-white/5"
+                className="text-lg px-4 md:px-4 md:px-6 lg:px-8 py-6 gap-2 border-white/10 hover:bg-white dark:bg-slate-900/5"
               >
                 <Eye className="h-5 w-5" />
                 See All Features
@@ -115,8 +138,9 @@ export default function HomePage() {
 
       {/* NEW: Extension Highlight Banner */}
       <section className="relative px-4 sm:px-6 lg:px-8 pb-16">
+        <ScrollReveal>
         <div className="mx-auto max-w-5xl">
-          <div className="glass rounded-2xl p-6 sm:p-8 border border-green-500/20 bg-gradient-to-r from-green-500/5 to-blue-500/5">
+          <div className="glass rounded-2xl p-6 sm:p-4 md:p-6 lg:p-8 border border-green-500/20 bg-gradient-to-r from-green-500/5 to-blue-500/5">
             <div className="flex flex-col md:flex-row items-center gap-6">
               <div className="flex-shrink-0">
                 <div className="h-16 w-16 rounded-2xl bg-green-500/10 flex items-center justify-center">
@@ -146,12 +170,14 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+        </ScrollReveal>
       </section>
 
       {/* Demo Preview */}
       <section className="relative px-4 sm:px-6 lg:px-8 pb-24">
+        <ScrollReveal>
         <div className="mx-auto max-w-5xl">
-          <div className="glass rounded-2xl p-6 sm:p-8 glow-blue">
+          <div className="glass rounded-2xl p-6 sm:p-4 md:p-6 lg:p-8 glow-blue">
             <div className="flex items-center gap-3 mb-6">
               <div className="h-3 w-3 rounded-full bg-red-500" />
               <div className="h-3 w-3 rounded-full bg-yellow-500" />
@@ -163,15 +189,15 @@ export default function HomePage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
               <div className="glass rounded-xl p-4 text-center">
-                <div className="text-3xl font-bold text-red-400">73</div>
+                <div className="text-xl md:text-lg md:text-xl lg:text-2xl lg:text-3xl font-bold text-red-400">73</div>
                 <div className="text-xs text-muted-foreground mt-1">Overall Risk Score</div>
               </div>
               <div className="glass rounded-xl p-4 text-center">
-                <div className="text-3xl font-bold text-foreground">12</div>
+                <div className="text-xl md:text-lg md:text-xl lg:text-2xl lg:text-3xl font-bold text-foreground">12</div>
                 <div className="text-xs text-muted-foreground mt-1">Clauses Analyzed</div>
               </div>
               <div className="glass rounded-xl p-4 text-center">
-                <div className="text-3xl font-bold text-purple-400">3</div>
+                <div className="text-xl md:text-lg md:text-xl lg:text-2xl lg:text-3xl font-bold text-purple-400">3</div>
                 <div className="text-xs text-muted-foreground mt-1">Illegal Clauses Found</div>
               </div>
             </div>
@@ -229,10 +255,12 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+        </ScrollReveal>
       </section>
 
       {/* Features */}
       <section id="features" className="relative px-4 sm:px-6 lg:px-8 py-24 border-t border-white/5">
+        <ScrollReveal>
         <div className="mx-auto max-w-7xl">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold">
@@ -390,10 +418,12 @@ export default function HomePage() {
             </Link>
           </div>
         </div>
+        </ScrollReveal>
       </section>
 
       {/* How It Works */}
       <section id="how-it-works" className="relative px-4 sm:px-6 lg:px-8 py-24 border-t border-white/5">
+        <ScrollReveal>
         <div className="mx-auto max-w-5xl">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold">
@@ -440,35 +470,39 @@ export default function HomePage() {
               </p>
             </div>
           </div>
-        </div>
+          </div>
+        </ScrollReveal>
       </section>
 
       {/* Stats Section */}
       <section className="relative px-4 sm:px-6 lg:px-8 py-16 border-t border-white/5">
+        <ScrollReveal>
         <div className="mx-auto max-w-5xl">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className="text-center">
-              <div className="text-4xl font-bold text-blue-400">750+</div>
+              <div className="text-lg md:text-xl lg:text-2xl md:text-xl md:text-lg md:text-xl lg:text-2xl lg:text-3xl lg:text-4xl text-balance font-bold text-blue-400">750+</div>
               <div className="text-sm text-muted-foreground mt-1">Legal Rules</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-green-400">21</div>
+              <div className="text-lg md:text-xl lg:text-2xl md:text-xl md:text-lg md:text-xl lg:text-2xl lg:text-3xl lg:text-4xl text-balance font-bold text-green-400">21</div>
               <div className="text-sm text-muted-foreground mt-1">Indian States</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-purple-400">10</div>
+              <div className="text-lg md:text-xl lg:text-2xl md:text-xl md:text-lg md:text-xl lg:text-2xl lg:text-3xl lg:text-4xl text-balance font-bold text-purple-400">10</div>
               <div className="text-sm text-muted-foreground mt-1">Contract Types</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-yellow-400">5 sec</div>
+              <div className="text-lg md:text-xl lg:text-2xl md:text-xl md:text-lg md:text-xl lg:text-2xl lg:text-3xl lg:text-4xl text-balance font-bold text-yellow-400">5 sec</div>
               <div className="text-sm text-muted-foreground mt-1">Quick Scan</div>
             </div>
           </div>
         </div>
+        </ScrollReveal>
       </section>
 
       {/* Bottom CTA */}
       <section className="relative px-4 sm:px-6 lg:px-8 py-24 border-t border-white/5">
+        <ScrollReveal>
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl sm:text-4xl font-bold mb-6">
             Your Next Contract Could Cost You{" "}
@@ -493,20 +527,21 @@ export default function HomePage() {
 
           {/* Trust Badges */}
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4 text-xs text-muted-foreground">
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-slate-900/5 border border-white/10">
               <BadgeCheck className="h-3.5 w-3.5 text-green-400" />
               Verified Legal Database
             </div>
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-slate-900/5 border border-white/10">
               <Smartphone className="h-3.5 w-3.5 text-blue-400" />
               Works on Mobile
             </div>
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-slate-900/5 border border-white/10">
               <Chrome className="h-3.5 w-3.5 text-purple-400" />
               Browser Extension
             </div>
           </div>
         </div>
+        </ScrollReveal>
       </section>
     </div>
   );

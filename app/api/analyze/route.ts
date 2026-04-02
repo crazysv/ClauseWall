@@ -19,31 +19,35 @@ export async function POST(request: NextRequest) {
     const contentType = request.headers.get("content-type") || "";
 
     if (contentType.includes("multipart/form-data")) {
-      // ---- FILE UPLOAD ----
+      // ---- FILE UPLOAD or PASTED TEXT via FormData ----
       const formData = await request.formData();
-      const file = formData.get("file") as File;
+      const file = formData.get("file") as File | null;
+      const pastedText = formData.get("text") as string | null;
       documentType = formData.get("documentType") as string;
       jurisdiction = formData.get("jurisdiction") as string;
 
-      if (!file) {
-        return NextResponse.json(
-          { error: "No file provided" },
-          { status: 400 }
-        );
-      }
+      if (file && file.size > 0) {
+        filename = file.name;
 
-      filename = file.name;
-
-      // Extract text based on file type
-      if (file.type === "application/pdf") {
-        const arrayBuffer = await file.arrayBuffer();
-        const buffer = Buffer.from(arrayBuffer);
-        text = await parsePDF(buffer);
-      } else if (file.type === "text/plain") {
-        text = await file.text();
+        // Extract text based on file type
+        if (file.type === "application/pdf") {
+          const arrayBuffer = await file.arrayBuffer();
+          const buffer = Buffer.from(arrayBuffer);
+          text = await parsePDF(buffer);
+        } else if (file.type === "text/plain") {
+          text = await file.text();
+        } else {
+          return NextResponse.json(
+            { error: "Unsupported file type. Please upload PDF or TXT." },
+            { status: 400 }
+          );
+        }
+      } else if (pastedText && pastedText.trim().length > 0) {
+        text = pastedText;
+        filename = "pasted-text.txt";
       } else {
         return NextResponse.json(
-          { error: "Unsupported file type. Please upload PDF or TXT." },
+          { error: "No file or text provided" },
           { status: 400 }
         );
       }

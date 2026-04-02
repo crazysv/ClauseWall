@@ -159,7 +159,7 @@ export async function seedCompanies(): Promise<{ inserted: number; skipped: numb
     }
   }
 
-  console.log(`[Watchdog] Seeded ${inserted} companies, ${skipped} already existed`);
+
   return { inserted, skipped };
 }
 

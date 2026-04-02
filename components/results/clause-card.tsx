@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import {
   ChevronDown,
   ChevronUp,
@@ -16,32 +16,27 @@ import {
   MessageSquare,
   Gavel,
   Lightbulb,
-  Users,
+  Target,
   Swords,
   ArrowRight,
   Scan,
   Flame,
   Pencil,
   Network,
-  Eye,
-  Target,
-  BookOpen,
-  FileText,
+  FileText
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import ELI5Section from "@/components/results/eli5-section";
-import CommunityInsight from "@/components/results/community-insight";
-import KnowledgeGraphModal from "@/components/results/knowledge-graph-modal";
-import DeceptionTab from "@/components/results/deception-tab";
-import ProofSummary from "@/components/results/proof-summary";
-import ProofTreeModal from "@/components/results/proof-tree-modal";
+import { ELI5Section } from "@/components/results/eli5-section";
+import { CommunityInsight } from "@/components/results/community-insight";
+import { KnowledgeGraphModal } from "@/components/results/knowledge-graph-modal";
+import { DeceptionTab } from "@/components/results/deception-tab";
+import { ProofSummary } from "@/components/results/proof-summary";
+import { ProofTreeModal } from "@/components/results/proof-tree-modal";
 import type { ProofTree } from "@/lib/reasoning/types";
-import DeliberationSummary from "@/components/deliberation/deliberation-summary";
-import DeliberationModal from "@/components/deliberation/deliberation-modal";
+import { DeliberationSummary } from "@/components/deliberation/deliberation-summary";
+import { DeliberationModal } from "@/components/deliberation/deliberation-modal";
 import type { ClauseDeliberation, AgentRole } from "@/lib/deliberation/types";
 import { AudioPlayerInline } from "@/components/bhasha/audio-player-inline";
-import { TerminologyTooltip } from "@/components/bhasha/terminology-tooltip";
-import { getTermsForLanguage } from "@/lib/bhasha/legal-terminology";
 import type { SupportedLanguage } from "@/types/bhasha";
 
 interface HybridClause {
@@ -86,7 +81,7 @@ interface ClauseCardProps {
 type ActionTab = "legal" | "fair" | "negotiate" | "penalty" | "eli5" | "community" | "deception" | "debate" | null;
 type TabGroup = 'understand' | 'legal' | 'action' | null;
 
-export default function ClauseCard({
+export function ClauseCard({
   clause,
   isExpanded,
   onToggle,
@@ -100,15 +95,14 @@ export default function ClauseCard({
   documentId,
   detectedLanguage,
 }: ClauseCardProps) {
+  const prefersReducedMotion = useReducedMotion();
   const [activeAction, setActiveAction] = useState<ActionTab>(null);
   const [showProofModal, setShowProofModal] = useState(false);
   const [showGraph, setShowGraph] = useState(false);
 
-  // Tab group state
   const [activeGroup, setActiveGroup] = useState<TabGroup>(null);
   const [activeSubTab, setActiveSubTab] = useState<string | null>(null);
 
-  // Deliberation state
   const [showDeliberationModal, setShowDeliberationModal] = useState(false);
   const [isDeliberating, setIsDeliberating] = useState(false);
   const [currentDelibAgent, setCurrentDelibAgent] = useState<AgentRole | null>(null);
@@ -141,15 +135,14 @@ export default function ClauseCard({
       if (data.success && data.deliberation) {
         setLocalDeliberation(data.deliberation as ClauseDeliberation);
       }
-    } catch (error) {
-      console.error("[ClauseWall] Single deliberation failed:", error);
-    } finally {
+    } catch {
+        // Silently handled
+      } finally {
       setIsDeliberating(false);
       setCurrentDelibAgent(null);
     }
   }
 
-  // Parse proof tree data
   let proofTree: ProofTree | null = null;
   try {
     if (clause.proof_data) {
@@ -157,11 +150,8 @@ export default function ClauseCard({
         ? JSON.parse(clause.proof_data)
         : clause.proof_data;
     }
-  } catch {
-    // Invalid proof data — ignore
-  }
+  } catch {}
 
-  // Sync grouped tabs with legacy activeAction for content rendering
   const handleGroupClick = (groupId: TabGroup) => {
     if (activeGroup === groupId) {
       setActiveGroup(null);
@@ -181,7 +171,6 @@ export default function ClauseCard({
     setActiveAction(tabId as ActionTab);
   };
 
-  // Determine which sub-tabs are visible for each group
   function getVisibleSubTabs(groupId: TabGroup): { id: string; label: string }[] {
     switch (groupId) {
       case 'understand':
@@ -207,102 +196,108 @@ export default function ClauseCard({
     }
   }
 
-  // Risk styling
   const riskConfig = {
     safe: {
-      icon: <CheckCircle2 className="h-4 w-4 text-green-500" />,
-      borderClass: "border-l-green-500",
-      badgeClass: "bg-green-500/15 text-green-400 border-green-500/30",
+      icon: <CheckCircle2 className="h-4 w-4" />,
+      borderClass: "border-l-emerald-500",
+      badgeClass: "bg-emerald-500 text-white font-bold border-none",
       label: "Safe",
     },
     warning: {
-      icon: <AlertTriangle className="h-4 w-4 text-yellow-500" />,
-      borderClass: "border-l-yellow-500",
-      badgeClass: "bg-yellow-500/15 text-yellow-400 border-yellow-500/30",
+      icon: <AlertTriangle className="h-4 w-4" />,
+      borderClass: "border-l-amber-500",
+      badgeClass: "bg-amber-500 text-white font-bold border-none",
       label: "Warning",
     },
     dangerous: {
-      icon: <XCircle className="h-4 w-4 text-red-500" />,
-      borderClass: "border-l-red-500",
-      badgeClass: "bg-red-500/15 text-red-400 border-red-500/30",
+      icon: <XCircle className="h-4 w-4" />,
+      borderClass: "border-l-rose-500",
+      badgeClass: "bg-rose-500 text-white font-bold border-none",
       label: "Dangerous",
     },
     illegal: {
-      icon: <Scale className="h-4 w-4 text-purple-500" />,
-      borderClass: "border-l-purple-500",
-      badgeClass: "bg-purple-500/15 text-purple-400 border-purple-500/30",
+      icon: <Scale className="h-4 w-4" />,
+      borderClass: "border-l-purple-600",
+      badgeClass: "bg-purple-600 text-white font-bold border-none",
       label: "Illegal",
     },
   };
 
   const risk = riskConfig[clause.risk_level as keyof typeof riskConfig] || riskConfig.warning;
-
-  // Should show roast for this clause?
   const showRoast = isRoastMode && !!roastText && (clause.risk_level === "dangerous" || clause.risk_level === "illegal");
 
-  // Verification badge
   const verificationBadge = () => {
     if (clause.verification_source === "database" && clause.confidence === "verified") {
       return (
-        <Badge className="bg-green-500/15 text-green-400 border-green-500/30 text-[10px] px-1.5 gap-1" title="Verified against Indian legal database">
-          <ShieldCheck className="h-3 w-3" />
-          Verified
+        <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-500 text-[10px] px-2 py-0.5 rounded-full font-bold gap-1 shadow-sm dark:shadow-slate-900/20" title="Verified against Indian legal database">
+          <ShieldCheck className="h-3.5 w-3.5" />
+          Verified ✓
         </Badge>
       );
     }
     if (clause.verification_source === "database") {
       return (
-        <Badge className="bg-yellow-500/15 text-yellow-400 border-yellow-500/30 text-[10px] px-1.5 gap-1" title="Partially verified against legal database">
-          <ShieldAlert className="h-3 w-3" />
+        <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-500 text-[10px] px-2 py-0.5 rounded-full font-bold gap-1 shadow-sm dark:shadow-slate-900/20" title="Partially verified against legal database">
+          <ShieldAlert className="h-3.5 w-3.5" />
           Partial
         </Badge>
       );
     }
     return (
-      <Badge className="bg-blue-500/15 text-blue-400 border-blue-500/30 text-[10px] px-1.5 gap-1" title="AI-based assessment, not formally verified">
-        <Bot className="h-3 w-3" />
-        AI
+      <Badge variant="outline" className="bg-indigo-50 text-indigo-700 border-indigo-500 text-[10px] px-2 py-0.5 rounded-full font-bold gap-1 shadow-sm dark:shadow-slate-900/20" title="AI-based assessment, not formally verified">
+        <Bot className="h-3.5 w-3.5" />
+        AI Suggested
       </Badge>
     );
   };
 
-  const showAutopsy =
-    (clause.risk_level === "dangerous" || clause.risk_level === "illegal") && !!onAutopsy;
+  const showAutopsy = (clause.risk_level === "dangerous" || clause.risk_level === "illegal") && !!onAutopsy;
 
-  // Tab group config
   const tabGroups: { id: TabGroup; label: string; icon: React.ReactNode }[] = [
     { id: 'understand', label: 'Understand', icon: <Lightbulb className="w-4 h-4" /> },
-    { id: 'legal', label: 'Legal', icon: <Scale className="w-4 h-4" /> },
+    { id: 'legal', label: 'Legal Analysis', icon: <Scale className="w-4 h-4" /> },
     { id: 'action', label: 'Take Action', icon: <Target className="w-4 h-4" /> },
   ];
 
   return (
-    <div
-      className={`rounded-xl border border-white/5 border-l-4 ${risk.borderClass} bg-gray-900/50 overflow-hidden transition-all ${
-        showRoast ? "ring-1 ring-orange-500/20" : ""
-      }`}
+    <motion.div
+      whileHover={prefersReducedMotion ? {} : { y: -2, boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}
+      transition={{ duration: 0.2 }}
+      className={`clause-card rounded-xl bg-white dark:bg-card transition-all duration-300 overflow-hidden border border-slate-200 dark:border-slate-700 border-l-4 shadow-sm dark:shadow-slate-900/20 ${ showRoast ? "ring-2 ring-orange-400" : "" } ${isExpanded ? "border-l-indigo-600 shadow-lg ring-1 ring-slate-100" : risk.borderClass}`}
     >
       {/* ── HEADER ── */}
       <div
-        className="flex items-start justify-between p-4 cursor-pointer hover:bg-white/[0.02] transition-colors"
+        className={`flex items-start justify-between p-4 sm:p-5 cursor-pointer group transition-colors ${isExpanded ? "bg-slate-50 dark:bg-slate-800/80" : "hover:bg-slate-50 dark:hover:bg-slate-800 dark:bg-slate-800"}`}
         onClick={onToggle}
       >
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-            {risk.icon}
-            <Badge className={risk.badgeClass}>{risk.label}</Badge>
-            <span className="text-xs text-gray-500" title="Risk score for this clause (0-100)">Score: {clause.risk_score}/100</span>
-            <Badge variant="outline" className="text-[10px] border-white/10 text-gray-500">
+        <div className="flex-1 min-w-0 pr-4">
+          <div className="flex items-center gap-2 mb-2 flex-wrap">
+            <Badge variant="outline" className="text-slate-500 dark:text-slate-400 bg-white dark:bg-card border-slate-200 dark:border-slate-700 rounded-lg px-2 py-0.5 font-bold text-[10px] shadow-sm dark:shadow-slate-900/20">
+              #{clause.clause_number}
+            </Badge>
+            
+            <Badge className={`px-2.5 py-0.5 rounded-full ${risk.badgeClass} flex items-center gap-1.5 shadow-sm dark:shadow-slate-900/20`}>
+              {risk.icon}
+              {risk.label}
+            </Badge>
+            
+            <span className="text-xs font-black text-slate-500 dark:text-slate-400 whitespace-nowrap bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700">
+              Score: {clause.risk_score}
+            </span>
+            
+            {verificationBadge()}
+            
+            <Badge variant="outline" className="text-[10px] border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 rounded-full font-semibold bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20">
               {clause.clause_type}
             </Badge>
-            {verificationBadge()}
+
             {showRoast && (
-              <Badge className="bg-orange-500/15 text-orange-400 border-orange-500/30 text-[10px] px-1.5 gap-1">
-                <Flame className="h-3 w-3" />
+              <Badge className="bg-orange-100 text-orange-700 border-orange-300 text-[10px] px-2 rounded-full gap-1 font-bold shadow-sm dark:shadow-slate-900/20">
+                <Flame className="h-3 w-3 text-orange-500" />
                 Roasted
               </Badge>
             )}
-            {/* Bhasha: Inline audio for non-English docs */}
+
             {detectedLanguage && detectedLanguage !== "en" && (
               <AudioPlayerInline
                 text={clause.explanation || clause.original_text}
@@ -311,13 +306,11 @@ export default function ClauseCard({
               />
             )}
           </div>
-          {/* Collapsed preview: show AI explanation instead of raw text */}
-          <p className="text-sm text-white/60 line-clamp-2 italic">
-            &quot;{(clause.explanation || clause.original_text || "").substring(0, 120)}
-            {(clause.explanation || clause.original_text || "").length > 120 ? "..." : ""}&quot;
+          <p className={`text-sm font-semibold transition-colors duration-200 line-clamp-1 ${isExpanded ? "text-indigo-900" : "text-slate-600 group-hover:text-slate-900 dark:text-slate-100"}`}>
+            &quot;{(clause.explanation || clause.original_text || "")}&quot;
           </p>
         </div>
-        <button className="p-1 ml-2 text-gray-500 flex-shrink-0" aria-label={isExpanded ? "Collapse clause" : "Expand clause"}>
+        <button className="p-1.5 mt-1 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 rounded-full flex-shrink-0 group-hover:bg-indigo-100 group-hover:text-indigo-600 transition-colors shadow-sm dark:shadow-slate-900/20" aria-label={isExpanded ? "Collapse clause" : "Expand clause"}>
           {isExpanded ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
         </button>
       </div>
@@ -329,18 +322,22 @@ export default function ClauseCard({
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="overflow-hidden"
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="overflow-hidden bg-white dark:bg-slate-900"
           >
-            <div className="px-4 pb-4 space-y-4">
-              <div className="border-t border-white/5" />
+            <div className="px-5 pb-5 space-y-6">
+              <div className="border-t border-slate-100" />
 
               {/* Full Clause Text */}
               <div>
-                <p className="text-xs font-medium text-gray-500 mb-1.5">Full Clause Text</p>
-                <p className="text-sm text-gray-300 bg-white/[0.03] p-3 rounded-lg leading-relaxed">
-                  {clause.original_text}
+                <p className="text-[11px] font-bold text-slate-400 mb-2 uppercase tracking-wider flex items-center gap-1.5">
+                  <FileText className="w-3.5 h-3.5" /> Full Clause Text
                 </p>
+                <div className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-xl shadow-inner">
+                  <p className="text-sm font-medium text-slate-700 leading-relaxed font-serif">
+                    {clause.original_text}
+                  </p>
+                </div>
               </div>
 
               {/* ── ROAST or ANALYSIS ── */}
@@ -353,17 +350,16 @@ export default function ClauseCard({
                     exit={{ opacity: 0, y: -5 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <p className="text-xs font-medium text-orange-400 mb-1.5 flex items-center gap-1.5">
-                      <Flame className="h-3.5 w-3.5" />
-                      Roasted Analysis 🔥
+                    <p className="text-[11px] font-bold text-orange-500 mb-2 uppercase tracking-wider flex items-center gap-1.5">
+                      <Flame className="h-4 w-4" /> Roasted Analysis 🔥
                     </p>
-                    <div className="p-4 rounded-lg bg-gradient-to-br from-orange-500/10 to-red-500/10 border border-orange-500/20">
-                      <p className="text-sm text-orange-200 leading-relaxed">
+                    <div className="p-4 rounded-xl bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200 shadow-sm dark:shadow-slate-900/20">
+                      <p className="text-sm text-orange-900 font-medium leading-relaxed">
                         {roastText}
                       </p>
                     </div>
-                    <p className="text-[10px] text-gray-600 mt-1.5 italic">
-                      ⚠️ Roast mode — entertainment + education. Formal legal analysis is above when roast mode is off.
+                    <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-2 font-medium">
+                      ⚠️ Roast mode provides blunt entertainment. Formal legal analysis continues below.
                     </p>
                   </motion.div>
                 ) : (
@@ -373,21 +369,28 @@ export default function ClauseCard({
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -5 }}
                     transition={{ duration: 0.2 }}
+                    className="p-4 rounded-xl bg-indigo-50/50 border border-indigo-100 shadow-sm dark:shadow-slate-900/20"
                   >
-                    <p className="text-xs font-medium text-gray-500 mb-1.5">Analysis</p>
-                    <p className="text-sm text-gray-300 leading-relaxed">{clause.explanation}</p>
+                    <p className="text-[11px] font-bold text-indigo-500 mb-2 uppercase tracking-wider flex items-center gap-1.5">
+                       Analysis
+                    </p>
+                    <p className="text-sm font-semibold text-indigo-950 leading-relaxed">
+                      {clause.explanation}
+                    </p>
                   </motion.div>
                 )}
               </AnimatePresence>
 
               {/* Red Flags */}
               {clause.red_flags && clause.red_flags.length > 0 && (
-                <div>
-                  <p className="text-xs font-medium text-red-400 mb-1.5">🚩 Red Flags</p>
-                  <ul className="space-y-1">
+                <div className="p-4 rounded-xl border border-rose-100 bg-rose-50/30">
+                  <p className="text-[11px] font-bold text-rose-500 mb-3 uppercase tracking-wider flex items-center gap-1.5">
+                    <AlertTriangle className="h-3.5 w-3.5" /> Red Flags
+                  </p>
+                  <ul className="space-y-2">
                     {clause.red_flags.map((flag, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm text-red-300">
-                        <span className="text-red-500 mt-1 text-xs">•</span>
+                      <li key={i} className="flex items-start gap-2.5 text-sm font-medium text-rose-800">
+                        <span className="text-rose-500 font-bold">•</span>
                         {flag}
                       </li>
                     ))}
@@ -402,11 +405,11 @@ export default function ClauseCard({
                 documentId={documentId}
               />
 
-              {/* ── QUICK ACTIONS — Compact CTA Row ── */}
+              {/* QUICK ACTIONS */}
               {clause.risk_level !== "safe" && (
-                <div className="flex flex-wrap items-center gap-2 py-2">
-                  <span className="text-[10px] text-white/30 font-medium uppercase tracking-wider mr-1">
-                    Quick Actions
+                <div className="flex flex-wrap items-center gap-2 pt-2">
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mr-2">
+                    Actions
                   </span>
 
                   {showAutopsy && (
@@ -415,10 +418,9 @@ export default function ClauseCard({
                         e.stopPropagation();
                         onAutopsy!();
                       }}
-                      className="inline-flex items-center gap-1.5 text-xs py-1.5 px-3 rounded-md border border-white/10 text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+                      className="inline-flex items-center gap-1.5 text-xs font-bold py-1.5 px-3 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 hover:text-slate-900 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800 hover:shadow transition-all"
                     >
-                      <Scan className="w-3.5 h-3.5" />
-                      Breakdown
+                      <Scan className="w-3.5 h-3.5" /> Breakdown
                     </button>
                   )}
 
@@ -428,10 +430,9 @@ export default function ClauseCard({
                         e.stopPropagation();
                         onRewrite();
                       }}
-                      className="inline-flex items-center gap-1.5 text-xs py-1.5 px-3 rounded-md border border-white/10 text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+                       className="inline-flex items-center gap-1.5 text-xs font-bold py-1.5 px-3 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 hover:text-slate-900 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800 hover:shadow transition-all"
                     >
-                      <Pencil className="w-3.5 h-3.5" />
-                      Rewrite
+                      <Pencil className="w-3.5 h-3.5" /> Rewrite
                     </button>
                   )}
 
@@ -440,19 +441,18 @@ export default function ClauseCard({
                       e.stopPropagation();
                       setShowGraph(true);
                     }}
-                    className="inline-flex items-center gap-1.5 text-xs py-1.5 px-3 rounded-md border border-white/10 text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+                     className="inline-flex items-center gap-1.5 text-xs font-bold py-1.5 px-3 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 hover:text-slate-900 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800 hover:shadow transition-all"
                   >
-                    <Network className="w-3.5 h-3.5" />
-                    Legal Web
+                    <Network className="w-3.5 h-3.5" /> Legal Web
                   </button>
                 </div>
               )}
 
               {/* ── TAB GROUP NAVIGATION ── */}
               {clause.risk_level !== "safe" && (
-                <div>
+                <div className="rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden bg-slate-50 dark:bg-slate-800">
                   {/* Level 1: Group Buttons */}
-                  <div className="flex border-b border-white/10">
+                  <div className="flex border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
                     {tabGroups.map((group) => {
                       const visibleTabs = getVisibleSubTabs(group.id);
                       if (visibleTabs.length === 0) return null;
@@ -462,11 +462,7 @@ export default function ClauseCard({
                         <button
                           key={group.id}
                           onClick={() => handleGroupClick(group.id)}
-                          className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 px-3 text-xs sm:text-sm font-medium transition-colors duration-200 border-b-2 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none ${
-                            isActive
-                              ? "text-white border-blue-500 bg-white/5"
-                              : "text-white/50 border-transparent hover:text-white/70 hover:bg-white/[0.02]"
-                          }`}
+                          className={`flex-1 flex items-center justify-center gap-2 py-3 px-3 text-xs sm:text-sm font-bold transition-all duration-200 border-b-2 outline-none ${ isActive ? "text-indigo-600 border-indigo-600 bg-indigo-50/50" : "text-slate-500 border-transparent hover:text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 dark:bg-slate-800" }`}
                         >
                           {group.icon}
                           {group.label}
@@ -482,20 +478,16 @@ export default function ClauseCard({
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.2 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
                         className="overflow-hidden"
                       >
                         {/* Sub-tab buttons */}
-                        <div className="flex gap-1 px-2 py-1.5 bg-white/[0.02] border-b border-white/5 overflow-x-auto scrollbar-hide">
+                        <div className="flex gap-2 px-4 py-3 bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 overflow-x-auto scrollbar-hide">
                           {getVisibleSubTabs(activeGroup).map((subTab) => (
                             <button
                               key={subTab.id}
                               onClick={() => handleSubTabClick(subTab.id)}
-                              className={`text-xs py-1.5 px-3 rounded transition-colors duration-150 ${
-                                activeSubTab === subTab.id
-                                  ? "text-white bg-white/10"
-                                  : "text-white/40 hover:text-white/60 hover:bg-white/5"
-                              }`}
+                              className={`text-[11px] font-bold py-1.5 px-3 rounded-full transition-colors whitespace-nowrap shadow-sm dark:shadow-slate-900/20 ${ activeSubTab === subTab.id ? "text-white bg-indigo-600" : "text-slate-600 bg-white dark:bg-card hover:text-slate-900 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700" }`}
                             >
                               {subTab.label}
                             </button>
@@ -504,46 +496,43 @@ export default function ClauseCard({
 
                         {/* Tab Content */}
                         {activeSubTab && (
-                          <div className="pt-3">
+                          <div className="p-5 bg-white dark:bg-slate-900">
                             <AnimatePresence mode="wait">
                               {activeSubTab === "legal" && clause.legal_citation && (
                                 <motion.div
                                   key="legal"
-                                  initial={{ opacity: 0, y: -5 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  exit={{ opacity: 0, y: -5 }}
+                                  initial={{ opacity: 0, scale: 0.98 }}
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  exit={{ opacity: 0, scale: 0.98 }}
                                   transition={{ duration: 0.15 }}
-                                  className="p-4 rounded-lg bg-blue-500/5 border border-blue-500/20"
+                                  className="p-5 rounded-xl bg-blue-50 border border-blue-100 shadow-sm dark:shadow-slate-900/20"
                                 >
-                                  <p className="text-xs font-medium text-blue-400 mb-1.5 flex items-center gap-1.5">
-                                    <Scale className="h-3.5 w-3.5" />
-                                    Legal Reference
+                                  <p className="text-[11px] font-extrabold text-blue-600 mb-2 flex items-center gap-1.5 uppercase tracking-wider">
+                                    <Scale className="h-4 w-4" /> Legal Reference
                                   </p>
-                                  <p className="text-sm text-blue-300 leading-relaxed">{clause.legal_citation}</p>
+                                  <p className="text-sm font-medium text-blue-900 leading-relaxed">{clause.legal_citation}</p>
                                 </motion.div>
                               )}
 
                               {activeSubTab === "fair" && clause.fair_alternative && (
                                 <motion.div
                                   key="fair"
-                                  initial={{ opacity: 0, y: -5 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  exit={{ opacity: 0, y: -5 }}
+                                  initial={{ opacity: 0, scale: 0.98 }}
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  exit={{ opacity: 0, scale: 0.98 }}
                                   transition={{ duration: 0.15 }}
-                                  className="p-4 rounded-lg bg-green-500/5 border border-green-500/20"
+                                  className="p-5 rounded-xl bg-emerald-50 border border-emerald-100 shadow-sm dark:shadow-slate-900/20"
                                 >
-                                  <p className="text-xs font-medium text-green-400 mb-1.5 flex items-center gap-1.5">
-                                    <CheckCircle2 className="h-3.5 w-3.5" />
-                                    Fair Alternative — What This Clause Should Say
+                                  <p className="text-[11px] font-extrabold text-emerald-600 mb-2 flex items-center gap-1.5 uppercase tracking-wider">
+                                    <CheckCircle2 className="h-4 w-4" /> Fair Alternative Setup
                                   </p>
-                                  <p className="text-sm text-green-300 leading-relaxed">{clause.fair_alternative}</p>
-                                  {/* Negotiate link for risky clauses */}
+                                  <p className="text-sm font-medium text-emerald-900 leading-relaxed">{clause.fair_alternative}</p>
                                   {documentId && clause.risk_level !== 'safe' && (
                                     <Link
                                       href={`/negotiate/${documentId}`}
-                                      className="inline-flex items-center gap-1 text-[10px] text-primary/50 hover:text-primary transition-colors mt-3"
+                                      className="inline-flex items-center font-bold gap-1 text-[11px] text-emerald-700 hover:text-emerald-800 transition-colors mt-4"
                                     >
-                                      Want help negotiating this? Get scripts →
+                                      Want help negotiating this? Request a playbook →
                                     </Link>
                                   )}
                                 </motion.div>
@@ -552,45 +541,45 @@ export default function ClauseCard({
                               {activeSubTab === "negotiate" && (
                                 <motion.div
                                   key="negotiate"
-                                  initial={{ opacity: 0, y: -5 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  exit={{ opacity: 0, y: -5 }}
+                                  initial={{ opacity: 0, scale: 0.98 }}
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  exit={{ opacity: 0, scale: 0.98 }}
                                   transition={{ duration: 0.15 }}
-                                  className="space-y-3"
+                                  className="space-y-4"
                                 >
                                   {clause.negotiation_script ? (
-                                    <div className="p-4 rounded-lg bg-purple-500/5 border border-purple-500/20">
-                                      <p className="text-xs font-medium text-purple-400 mb-2 flex items-center gap-1.5">
-                                        <MessageSquare className="h-3.5 w-3.5" />
-                                        Negotiation Script
+                                    <div className="p-5 rounded-xl bg-indigo-50 border border-indigo-100 shadow-sm dark:shadow-slate-900/20">
+                                      <p className="text-[11px] font-extrabold text-indigo-600 mb-2 flex items-center gap-1.5 uppercase tracking-wider">
+                                        <MessageSquare className="h-4 w-4" /> Recommended Script
                                       </p>
-                                      <p className="text-sm text-purple-300 leading-relaxed italic">
+                                      <p className="text-sm font-medium text-indigo-900 leading-relaxed italic">
                                         &quot;{clause.negotiation_script}&quot;
                                       </p>
                                     </div>
                                   ) : (
-                                    <div className="p-4 rounded-lg bg-purple-500/5 border border-purple-500/20">
-                                      <p className="text-xs font-medium text-purple-400 mb-2 flex items-center gap-1.5">
-                                        <MessageSquare className="h-3.5 w-3.5" />
-                                        Negotiation Script
+                                    <div className="p-5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-900/20">
+                                      <p className="text-[11px] font-extrabold text-slate-500 dark:text-slate-400 mb-2 flex items-center gap-1.5 uppercase tracking-wider">
+                                        <MessageSquare className="h-4 w-4" /> Negotiation Data
                                       </p>
-                                      <p className="text-sm text-gray-400">
-                                        A detailed negotiation script with counter-responses is available in the full playbook.
+                                      <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
+                                        A detailed negotiation script sequence is generated within the playbook module.
                                       </p>
                                     </div>
                                   )}
 
                                   <a
                                     href={`/negotiate/${clause.document_id}`}
-                                    className="flex items-center justify-between p-3 rounded-lg bg-blue-500/5 border border-blue-500/20 hover:bg-blue-500/10 transition-colors group"
+                                    className="flex items-center justify-between p-4 rounded-xl bg-white dark:bg-card border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-900/20 hover:border-indigo-300 hover:shadow-md transition-all group"
                                   >
-                                    <div className="flex items-center gap-2">
-                                      <Swords className="h-4 w-4 text-blue-400" />
-                                      <span className="text-sm text-blue-400 font-medium">
-                                        View Full Negotiation Playbook
+                                    <div className="flex items-center gap-2.5">
+                                      <div className="p-1.5 bg-indigo-50 rounded-lg group-hover:bg-indigo-100 transition-colors">
+                                        <Swords className="h-5 w-5 text-indigo-600" />
+                                      </div>
+                                      <span className="text-sm text-slate-800 dark:text-slate-200 font-bold group-hover:text-indigo-700 transition-colors">
+                                        Launch Full Playbook
                                       </span>
                                     </div>
-                                    <ArrowRight className="h-4 w-4 text-blue-400 group-hover:translate-x-1 transition-transform" />
+                                    <ArrowRight className="h-5 w-5 text-slate-400 group-hover:translate-x-1 group-hover:text-indigo-600 transition-all" />
                                   </a>
                                 </motion.div>
                               )}
@@ -598,26 +587,25 @@ export default function ClauseCard({
                               {activeSubTab === "penalty" && clause.penalty_info && (
                                 <motion.div
                                   key="penalty"
-                                  initial={{ opacity: 0, y: -5 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  exit={{ opacity: 0, y: -5 }}
+                                  initial={{ opacity: 0, scale: 0.98 }}
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  exit={{ opacity: 0, scale: 0.98 }}
                                   transition={{ duration: 0.15 }}
-                                  className="p-4 rounded-lg bg-orange-500/5 border border-orange-500/20"
+                                  className="p-5 rounded-xl bg-amber-50 border border-amber-200 shadow-sm dark:shadow-slate-900/20"
                                 >
-                                  <p className="text-xs font-medium text-orange-400 mb-1.5 flex items-center gap-1.5">
-                                    <Gavel className="h-3.5 w-3.5" />
-                                    Penalty for Violation
+                                  <p className="text-[11px] font-extrabold text-amber-600 mb-2 flex items-center gap-1.5 uppercase tracking-wider">
+                                    <Gavel className="h-4 w-4" /> Threat Matrix
                                   </p>
-                                  <p className="text-sm text-orange-300 leading-relaxed">{clause.penalty_info}</p>
+                                  <p className="text-sm font-medium text-amber-900 leading-relaxed">{clause.penalty_info}</p>
                                 </motion.div>
                               )}
 
                               {activeSubTab === "eli5" && clause.risk_level !== "safe" && (
                                 <motion.div
                                   key="eli5"
-                                  initial={{ opacity: 0, y: -5 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  exit={{ opacity: 0, y: -5 }}
+                                  initial={{ opacity: 0, scale: 0.98 }}
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  exit={{ opacity: 0, scale: 0.98 }}
                                   transition={{ duration: 0.15 }}
                                 >
                                   <ELI5Section
@@ -635,9 +623,9 @@ export default function ClauseCard({
                                 (clause.risk_level === "dangerous" || clause.risk_level === "illegal") && (
                                   <motion.div
                                     key="community"
-                                    initial={{ opacity: 0, y: -5 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -5 }}
+                                    initial={{ opacity: 0, scale: 0.98 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.98 }}
                                     transition={{ duration: 0.15 }}
                                   >
                                     <CommunityInsight
@@ -654,9 +642,9 @@ export default function ClauseCard({
                               {activeSubTab === "deception" && clause.risk_level !== "safe" && (
                                 <motion.div
                                   key="deception"
-                                  initial={{ opacity: 0, y: -5 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  exit={{ opacity: 0, y: -5 }}
+                                  initial={{ opacity: 0, scale: 0.98 }}
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  exit={{ opacity: 0, scale: 0.98 }}
                                   transition={{ duration: 0.15 }}
                                 >
                                   <DeceptionTab
@@ -672,9 +660,9 @@ export default function ClauseCard({
                               {activeSubTab === "debate" && clause.risk_level !== "safe" && (
                                 <motion.div
                                   key="debate"
-                                  initial={{ opacity: 0, y: -5 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  exit={{ opacity: 0, y: -5 }}
+                                  initial={{ opacity: 0, scale: 0.98 }}
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  exit={{ opacity: 0, scale: 0.98 }}
                                   transition={{ duration: 0.15 }}
                                 >
                                   <DeliberationSummary
@@ -691,24 +679,23 @@ export default function ClauseCard({
                               {activeSubTab === "proof" && proofTree && (
                                 <motion.div
                                   key="proof"
-                                  initial={{ opacity: 0, y: -5 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  exit={{ opacity: 0, y: -5 }}
+                                  initial={{ opacity: 0, scale: 0.98 }}
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  exit={{ opacity: 0, scale: 0.98 }}
                                   transition={{ duration: 0.15 }}
-                                  className="p-4 rounded-lg bg-blue-500/5 border border-blue-500/20"
+                                  className="p-5 rounded-xl bg-blue-50 border border-blue-100 shadow-sm dark:shadow-slate-900/20"
                                 >
-                                  <p className="text-xs font-medium text-blue-400 mb-2 flex items-center gap-1.5">
-                                    <ShieldCheck className="h-3.5 w-3.5" />
-                                    Legal Proof
+                                  <p className="text-[11px] font-extrabold text-blue-600 mb-2 flex items-center gap-1.5 uppercase tracking-wider">
+                                    <ShieldCheck className="h-4 w-4" /> Deep Proof Structure
                                   </p>
-                                  <p className="text-xs text-white/40 mb-3">
-                                    Step-by-step logical proof of this clause&apos;s legality
+                                  <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-4">
+                                    Secure logical resolution mapped to target statute thresholds.
                                   </p>
                                   <button
                                     onClick={() => setShowProofModal(true)}
-                                    className="flex items-center gap-2 text-sm text-blue-400 hover:text-blue-300 transition-colors"
+                                    className="flex items-center gap-2 text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors bg-white dark:bg-card px-4 py-2 border border-blue-200 rounded-lg shadow-sm dark:shadow-slate-900/20 w-fit"
                                   >
-                                    View Full Proof Tree <ArrowRight className="h-3.5 w-3.5" />
+                                    Execute Proof Visualizer <ArrowRight className="h-4 w-4" />
                                   </button>
                                 </motion.div>
                               )}
@@ -720,14 +707,12 @@ export default function ClauseCard({
                   </AnimatePresence>
                 </div>
               )}
-
-              {/* Verification badge REMOVED from bottom — only in header now */}
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Legal Web Modal */}
+      {/* MODALS */}
       {showGraph && (
         <KnowledgeGraphModal
           isOpen={showGraph}
@@ -739,7 +724,6 @@ export default function ClauseCard({
         />
       )}
 
-      {/* Proof Tree Modal */}
       {proofTree && (
         <ProofTreeModal
           proofTree={proofTree}
@@ -748,7 +732,6 @@ export default function ClauseCard({
         />
       )}
 
-      {/* AI Debate Modal */}
       {localDeliberation && (
         <DeliberationModal
           deliberation={localDeliberation}
@@ -756,7 +739,6 @@ export default function ClauseCard({
           onClose={() => setShowDeliberationModal(false)}
         />
       )}
-
-    </div>
+    </motion.div>
   );
 }

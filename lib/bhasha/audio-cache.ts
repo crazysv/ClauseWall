@@ -137,7 +137,7 @@ export async function cleanExpiredCache(): Promise<number> {
     const ids = expired.map(e => e.id);
     await supabase.from("tts_cache").delete().in("id", ids);
 
-    console.log(`[ClauseWall] Cleaned ${expired.length} expired audio cache entries`);
+
     return expired.length;
   } catch (error) {
     console.warn("[ClauseWall] Cache cleanup failed:", error);

@@ -41,9 +41,9 @@ export function ReminderSettings({ onSaved }: ReminderSettingsProps) {
         const data = await res.json();
         setSettings(data.settings);
       }
-    } catch (error) {
-      console.error("[TimeBomb] Settings fetch error:", error);
-    } finally {
+    } catch {
+        // Silently handled
+      } finally {
       setLoading(false);
     }
   };
@@ -62,7 +62,6 @@ export function ReminderSettings({ onSaved }: ReminderSettingsProps) {
       toast.success("Reminder settings saved!");
       onSaved?.();
     } catch (error) {
-      console.error("[TimeBomb] Settings save error:", error);
       toast.error("Failed to save settings");
     } finally {
       setSaving(false);
@@ -79,12 +78,12 @@ export function ReminderSettings({ onSaved }: ReminderSettingsProps) {
 
   if (loading) {
     return (
-      <div className="rounded-xl border border-white/10 bg-white/[0.02] p-5">
+      <div className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-card p-6 shadow-sm dark:shadow-slate-900/20">
         <div className="animate-pulse space-y-4">
-          <div className="h-5 w-40 bg-white/5 rounded" />
-          <div className="h-10 bg-white/5 rounded" />
-          <div className="h-10 bg-white/5 rounded" />
-          <div className="h-10 bg-white/5 rounded" />
+          <div className="h-5 w-40 bg-slate-100 dark:bg-slate-800 rounded" />
+          <div className="h-10 bg-slate-100 dark:bg-slate-800 rounded" />
+          <div className="h-10 bg-slate-100 dark:bg-slate-800 rounded" />
+          <div className="h-10 bg-slate-100 dark:bg-slate-800 rounded" />
         </div>
       </div>
     );
@@ -93,13 +92,13 @@ export function ReminderSettings({ onSaved }: ReminderSettingsProps) {
   if (!settings) return null;
 
   return (
-    <div className="rounded-xl border border-white/10 bg-white/[0.02] p-5">
-      <h4 className="text-sm font-semibold text-white flex items-center gap-2 mb-4">
-        <Bell className="w-4 h-4 text-orange-400" />
+    <div className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-card p-6 shadow-sm dark:shadow-slate-900/20">
+      <h4 className="text-sm font-black text-slate-900 dark:text-slate-100 tracking-tight flex items-center gap-2 mb-6">
+        <Bell className="w-5 h-5 text-indigo-500" />
         Reminder Settings
       </h4>
 
-      <div className="space-y-3">
+      <div className="space-y-4">
         {/* Telegram */}
         <ToggleRow
           icon={<MessageCircle className="w-4 h-4 text-blue-400" />}
@@ -126,7 +125,7 @@ export function ReminderSettings({ onSaved }: ReminderSettingsProps) {
 
         {/* Email */}
         <ToggleRow
-          icon={<Mail className="w-4 h-4 text-green-400" />}
+          icon={<Mail className="w-5 h-5 text-emerald-500" />}
           label="Email Reminders"
           description="Receive deadline alerts via email"
           enabled={settings.email_enabled}
@@ -135,7 +134,7 @@ export function ReminderSettings({ onSaved }: ReminderSettingsProps) {
 
         {/* Push */}
         <ToggleRow
-          icon={<Smartphone className="w-4 h-4 text-purple-400" />}
+          icon={<Smartphone className="w-5 h-5 text-purple-500" />}
           label="Browser Push Notifications"
           description="Get desktop/mobile notification alerts"
           enabled={settings.push_enabled}
@@ -166,7 +165,7 @@ export function ReminderSettings({ onSaved }: ReminderSettingsProps) {
 
         {/* In-app */}
         <ToggleRow
-          icon={<Bell className="w-4 h-4 text-yellow-400" />}
+          icon={<Bell className="w-5 h-5 text-amber-500" />}
           label="In-App Notifications"
           description="Show notifications in ClauseWall"
           enabled={settings.in_app_enabled}
@@ -174,16 +173,16 @@ export function ReminderSettings({ onSaved }: ReminderSettingsProps) {
         />
 
         {/* Time picker */}
-        <div className="flex items-center justify-between pt-2 border-t border-white/5">
-          <div className="flex items-center gap-2">
-            <Clock className="w-4 h-4 text-white/30" />
-            <span className="text-xs text-white/50">Preferred time</span>
+        <div className="flex items-center justify-between pt-4 pb-2 border-t border-slate-100 mt-2">
+          <div className="flex items-center gap-2 mt-1">
+            <Clock className="w-4 h-4 text-slate-400" />
+            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Preferred time</span>
           </div>
           <input
             type="time"
             value={settings.reminder_time}
             onChange={(e) => updateSetting("reminder_time", e.target.value)}
-            className="px-2 py-1 rounded-lg bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-orange-500/50"
+            className="px-3 py-1.5 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-xs font-bold focus:outline-none focus:border-indigo-500/50 shadow-inner"
           />
         </div>
       </div>
@@ -192,7 +191,7 @@ export function ReminderSettings({ onSaved }: ReminderSettingsProps) {
       <button
         onClick={handleSave}
         disabled={saving}
-        className="w-full mt-4 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white/70 text-sm font-medium hover:bg-white/10 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+        className="w-full mt-6 px-4 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold uppercase tracking-widest text-[10px] transition-all flex items-center justify-center gap-2 disabled:opacity-50 shadow-md"
         aria-label="Save reminder settings"
       >
         {saving ? (
@@ -222,28 +221,26 @@ function ToggleRow({
   disabled?: boolean;
 }) {
   return (
-    <div className="flex items-center justify-between gap-3 py-2">
-      <div className="flex items-center gap-3">
-        {icon}
+    <div className="flex items-center justify-between gap-4 py-2.5">
+      <div className="flex items-center gap-4">
+        <div className="p-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 shadow-sm dark:shadow-slate-900/20 flex-shrink-0">
+          {icon}
+        </div>
         <div>
-          <span className="text-sm text-white/70">{label}</span>
-          <p className="text-[10px] text-white/30">{description}</p>
+          <span className="text-sm font-bold text-slate-800 dark:text-slate-200 tracking-tight block">{label}</span>
+          <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">{description}</p>
         </div>
       </div>
       <button
         onClick={() => onToggle(!enabled)}
         disabled={disabled}
-        className={`relative w-10 h-5 rounded-full transition-colors ${
-          enabled ? "bg-orange-600" : "bg-white/10"
-        } ${disabled ? "opacity-40 cursor-not-allowed" : "cursor-pointer"}`}
+        className={`relative w-[42px] h-6 rounded-full transition-colors flex-shrink-0 border ${ enabled ? "bg-emerald-500 border-emerald-600" : "bg-slate-200 border-slate-300 dark:border-slate-600" } ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
         role="switch"
         aria-checked={enabled}
         aria-label={`Toggle ${label}`}
       >
         <span
-          className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-transform ${
-            enabled ? "translate-x-5" : "translate-x-0.5"
-          }`}
+          className={`absolute top-0.5 w-4 h-4 rounded-full bg-white dark:bg-slate-900 transition-transform ${ enabled ? "translate-x-5" : "translate-x-0.5" }`}
         />
       </button>
     </div>

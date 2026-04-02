@@ -149,7 +149,6 @@ export async function quickAnalyzeImage(
   imageBase64: string,
   mimeType: string = "image/jpeg"
 ): Promise<QuickAnalysisResult> {
-  console.log("[ClauseWall] Image analyze: Using Gemini 2.5 Flash...");
 
   const response = await callGeminiVision(IMAGE_PROMPT, imageBase64, mimeType, {
     temperature: 0.1,
@@ -157,11 +156,7 @@ export async function quickAnalyzeImage(
   });
 
   const parsed = parseAndValidate(response);
-  console.log(
-    `[ClauseWall] Image analyze: ✅ Gemini succeeded. Extracted ${
-      parsed.extracted_text?.length || 0
-    } chars of text`
-  );
+
   return parsed;
 }
 

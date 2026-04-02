@@ -3,73 +3,67 @@
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import DirectionBadge from "./direction-badge";
+import { DirectionBadge } from "./direction-badge";
 import type { TosChangeWithCompany, SemanticChange, ChangeSeverity } from "@/types";
+import { SEVERITY_CONFIG, getTimeAgo } from "./watchdog-constants";
 
-const severityConfig: Record<string, { color: string; emoji: string; label: string }> = {
-  critical: { color: "bg-red-500/15 text-red-400 border-red-500/30", emoji: "🔴", label: "CRITICAL" },
-  major: { color: "bg-amber-500/15 text-amber-400 border-amber-500/30", emoji: "🟡", label: "MAJOR" },
-  minor: { color: "bg-blue-500/15 text-blue-400 border-blue-500/30", emoji: "🔵", label: "MINOR" },
-  cosmetic: { color: "bg-gray-500/15 text-gray-400 border-gray-500/30", emoji: "⚪", label: "COSMETIC" },
-};
-
-export default function ChangeCard({ change }: { change: TosChangeWithCompany }) {
+export function ChangeCard({ change }: { change: TosChangeWithCompany }) {
   const changes = (change.changes || []) as SemanticChange[];
   const highestSeverity = getHighestSeverity(changes);
-  const config = severityConfig[highestSeverity] || severityConfig.minor;
+  const config = SEVERITY_CONFIG[highestSeverity] || SEVERITY_CONFIG.minor;
   const companyName = change.company?.name || "Unknown Company";
   const timeAgo = getTimeAgo(new Date(change.detected_at));
 
   return (
-    <Card className={`bg-gray-900/50 border-gray-800 hover:border-white/10 transition-all overflow-hidden`}>
-      {highestSeverity === "critical" && <div className="h-0.5 bg-red-500" />}
-      {highestSeverity === "major" && <div className="h-0.5 bg-amber-500" />}
+    <Card className={`bg-white dark:bg-card border-slate-200 dark:border-slate-700 hover:border-slate-300 hover:shadow-md transition-all rounded-xl overflow-hidden`}>
+      {highestSeverity === "critical" && <div className="h-1 bg-red-600" />}
+      {highestSeverity === "major" && <div className="h-1 bg-amber-500" />}
 
-      <CardContent className="p-5">
-        <div className="flex items-start justify-between gap-3 mb-3">
-          <div className="flex items-center gap-2 flex-wrap">
-            <Badge className={`${config.color} text-[10px]`}>
+      <CardContent className="p-5 sm:p-6">
+        <div className="flex items-start justify-between gap-4 mb-3">
+          <div className="flex items-center gap-2.5 flex-wrap">
+            <Badge className={`${config.badgeClass} font-black uppercase tracking-widest px-2 py-0.5 rounded-full text-[10px] shadow-sm dark:shadow-slate-900/20`}>
               {config.emoji} {config.label}
             </Badge>
-            <span className="font-semibold">{companyName}</span>
-            <span className="text-sm text-muted-foreground">· {timeAgo}</span>
+            <span className="font-black text-slate-900 dark:text-slate-100 text-base">{companyName}</span>
+            <span className="text-sm font-medium text-slate-400">· {timeAgo}</span>
           </div>
           {change.overall_direction && (
             <DirectionBadge direction={change.overall_direction as import("@/types").ChangeDirection} />
           )}
         </div>
 
-        <p className="text-sm text-muted-foreground mb-3">
-          {change.summary || `${changes.length} change${changes.length !== 1 ? "s" : ""} detected`}
+        <p className="text-sm font-medium text-slate-600 dark:text-slate-400 mb-4 bg-slate-50 dark:bg-slate-800 p-3 rounded-lg border border-slate-100 italic">
+          "{change.summary || `${changes.length} change${changes.length !== 1 ? "s" : ""} detected`}"
         </p>
 
         {/* Top changes preview */}
-        <div className="space-y-2 mb-4">
+        <div className="space-y-2.5 mb-5 pl-1">
           {changes.slice(0, 3).map((c, i) => {
-            const cConfig = severityConfig[c.severity] || severityConfig.minor;
+            const cConfig = SEVERITY_CONFIG[c.severity] || SEVERITY_CONFIG.minor;
             return (
-              <div key={i} className="flex items-start gap-2 text-sm">
-                <span className="flex-shrink-0">{cConfig.emoji}</span>
-                <span className="text-muted-foreground">{c.user_impact_summary}</span>
+              <div key={i} className="flex items-start gap-3 text-sm">
+                <span className="flex-shrink-0 text-base drop-shadow-sm dark:shadow-slate-900/20 leading-none pt-0.5">{cConfig.emoji}</span>
+                <span className="font-medium text-slate-700 leading-snug">{c.user_impact_summary}</span>
               </div>
             );
           })}
           {changes.length > 3 && (
-            <p className="text-xs text-muted-foreground ml-5">
-              +{changes.length - 3} more changes
+            <p className="text-xs font-bold uppercase tracking-widest text-slate-400 ml-8 pt-1">
+              + {changes.length - 3} more changes
             </p>
           )}
         </div>
 
         {/* Action buttons */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 pt-4 border-t border-slate-100">
           <Link href={`/watchdog/changes/${change.id}`}>
-            <button className="text-sm text-blue-400 hover:text-blue-300 transition-colors font-medium">
-              View Full Analysis →
+            <button className="text-sm text-indigo-600 hover:text-indigo-800 transition-colors font-bold flex items-center gap-1">
+              View Full Analysis <span aria-hidden="true">&rarr;</span>
             </button>
           </Link>
           {change.legality_issues && (change.legality_issues as unknown[]).length > 0 && (
-            <Badge className="bg-red-500/10 text-red-400 border-red-500/20 text-[10px]">
+            <Badge className="bg-red-50 text-red-700 border-red-200 font-bold uppercase tracking-widest px-2 py-0.5 rounded-md text-[10px]">
               ⚖️ Legal Issues Found
             </Badge>
           )}
@@ -85,14 +79,4 @@ function getHighestSeverity(changes: SemanticChange[]): string {
     if (changes.some((c) => c.severity === sev)) return sev;
   }
   return "cosmetic";
-}
-
-function getTimeAgo(date: Date): string {
-  const diffMs = Date.now() - date.getTime();
-  const hours = Math.floor(diffMs / 3600000);
-  if (hours < 1) return "Just now";
-  if (hours < 24) return `${hours}h ago`;
-  const days = Math.floor(hours / 24);
-  if (days < 7) return `${days}d ago`;
-  return date.toLocaleDateString("en-IN", { day: "numeric", month: "short" });
 }

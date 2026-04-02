@@ -223,9 +223,6 @@ export async function loadGraph(): Promise<InMemoryGraph> {
   );
   cacheTimestamp = now;
 
-  console.log(
-    `[ClauseWall] [Graph] Loaded: ${cachedGraph.nodeCount} nodes, ${cachedGraph.edgeCount} edges`
-  );
 
   return cachedGraph;
 }

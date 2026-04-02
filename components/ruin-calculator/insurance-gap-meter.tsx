@@ -11,7 +11,7 @@ interface Props {
   onCoverageChange: (coverage: number) => void;
 }
 
-export default function InsuranceGapMeter({ gap, onCoverageChange }: Props) {
+export function InsuranceGapMeter({ gap, onCoverageChange }: Props) {
   const [inputValue, setInputValue] = useState(
     gap.userCoverage > 0 ? String(gap.userCoverage) : ""
   );
@@ -31,7 +31,7 @@ export default function InsuranceGapMeter({ gap, onCoverageChange }: Props) {
       {/* Total exposure */}
       <div>
         <div className="flex items-center justify-between mb-1.5">
-          <span className="text-xs text-white/40 font-medium">
+          <span className="text-xs text-slate-900 dark:text-slate-100/40 font-medium">
             Total Exposure
           </span>
           <span className="text-sm font-bold text-red-400">
@@ -41,13 +41,13 @@ export default function InsuranceGapMeter({ gap, onCoverageChange }: Props) {
         <div className="w-full h-4 bg-red-500/10 rounded-full overflow-hidden border border-red-500/20">
           <div className="h-full w-full bg-gradient-to-r from-red-500/40 to-red-500/20 rounded-full" />
         </div>
-        <p className="text-[10px] text-white/20 mt-0.5">100%</p>
+        <p className="text-[10px] text-slate-900 dark:text-slate-100/20 mt-0.5">100%</p>
       </div>
 
       {/* Coverage */}
       <div>
         <div className="flex items-center justify-between mb-1.5">
-          <span className="text-xs text-white/40 font-medium">
+          <span className="text-xs text-slate-900 dark:text-slate-100/40 font-medium">
             Your Coverage
           </span>
           <div className="flex items-center gap-2">
@@ -59,11 +59,11 @@ export default function InsuranceGapMeter({ gap, onCoverageChange }: Props) {
               value={inputValue}
               onChange={(e) => handleChange(e.target.value)}
               placeholder="Enter ₹"
-              className="w-24 px-2 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-white text-right focus:outline-none focus:ring-1 focus:ring-white/20"
+              className="w-24 px-2 py-1 rounded-full bg-indigo-50/50 border border-white/10 text-xs text-slate-900 dark:text-slate-100 text-right focus:outline-none focus:ring-1 focus:ring-white/20"
             />
           </div>
         </div>
-        <div className="w-full h-4 bg-white/5 rounded-full overflow-hidden border border-white/10">
+        <div className="w-full h-4 bg-indigo-50/50 rounded-full overflow-hidden border border-white/10">
           <motion.div
             className="h-full bg-gradient-to-r from-green-500/60 to-green-500/30 rounded-full"
             initial={{ width: 0 }}
@@ -71,7 +71,7 @@ export default function InsuranceGapMeter({ gap, onCoverageChange }: Props) {
             transition={{ duration: 0.8 }}
           />
         </div>
-        <p className="text-[10px] text-white/20 mt-0.5">
+        <p className="text-[10px] text-slate-900 dark:text-slate-100/20 mt-0.5">
           {Math.round(gap.coveragePercent)}%
         </p>
       </div>
@@ -92,23 +92,23 @@ export default function InsuranceGapMeter({ gap, onCoverageChange }: Props) {
       {/* Recommendations */}
       {gap.recommendations.length > 0 && (
         <div className="space-y-2">
-          <p className="text-xs text-white/40 font-medium">Recommended:</p>
+          <p className="text-xs text-slate-900 dark:text-slate-100/40 font-medium">Recommended:</p>
           {gap.recommendations.map((rec, i) => (
             <div
               key={i}
-              className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-white/5"
+              className="flex items-center justify-between p-2.5 rounded-xl bg-white dark:bg-card/[0.02] border border-white/5"
             >
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-medium text-white/70">
+                <p className="text-xs font-medium text-slate-900 dark:text-slate-100/70">
                   {rec.product}
                 </p>
-                <p className="text-[10px] text-white/30">{rec.relevance}</p>
+                <p className="text-[10px] text-slate-900 dark:text-slate-100/30">{rec.relevance}</p>
               </div>
               <div className="text-right flex-shrink-0 ml-3">
                 <p className="text-xs text-green-400 font-medium">
                   {rec.annualCost}
                 </p>
-                <p className="text-[10px] text-white/20">
+                <p className="text-[10px] text-slate-900 dark:text-slate-100/20">
                   covers {rec.coverageAmount}
                 </p>
               </div>

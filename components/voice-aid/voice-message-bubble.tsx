@@ -8,7 +8,7 @@ interface Props {
   onPlayAudio?: (audioUrl: string) => void;
 }
 
-export default function VoiceMessageBubble({ message, onPlayAudio }: Props) {
+export function VoiceMessageBubble({ message, onPlayAudio }: Props) {
   const isUser = message.role === "user";
 
   return (
@@ -19,14 +19,10 @@ export default function VoiceMessageBubble({ message, onPlayAudio }: Props) {
       className={`flex ${isUser ? "justify-end" : "justify-start"} mb-3`}
     >
       <div
-        className={`relative max-w-[85%] rounded-2xl px-4 py-3 ${
-          isUser
-            ? "bg-blue-600/80 text-white rounded-br-md"
-            : "bg-white/10 text-white/90 rounded-bl-md border border-white/5"
-        }`}
+        className={`relative max-w-[85%] rounded-2xl px-4 py-3 ${ isUser ? "bg-indigo-600/80 text-slate-900 dark:text-slate-100 rounded-br-md" : "bg-indigo-50 border border-indigo-100 text-slate-900 dark:text-slate-100 rounded-bl-md border border-white/5" }`}
       >
         {/* Role indicator */}
-        <div className={`text-[10px] font-semibold mb-1 ${isUser ? "text-blue-200" : "text-emerald-400"}`}>
+        <div className={`text-[10px] font-semibold mb-1 ${isUser ? "text-indigo-200" : "text-emerald-400"}`}>
           {isUser ? "🗣️ You" : "⚖️ ClauseWall"}
         </div>
 
@@ -37,7 +33,7 @@ export default function VoiceMessageBubble({ message, onPlayAudio }: Props) {
         {message.audio_url && !isUser && (
           <button
             onClick={() => onPlayAudio?.(message.audio_url!)}
-            className="mt-2 flex items-center gap-1.5 text-xs text-blue-400 hover:text-blue-300 transition-colors"
+            className="mt-2 flex items-center gap-1.5 text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
             aria-label="Play audio response"
           >
             <span className="text-base">🔊</span>
@@ -47,11 +43,11 @@ export default function VoiceMessageBubble({ message, onPlayAudio }: Props) {
 
         {/* Photo indicator */}
         {message.metadata?.had_photo && isUser && (
-          <div className="mt-1 text-xs text-blue-200/60">📸 Photo attached</div>
+          <div className="mt-1 text-xs text-indigo-200/60">📸 Photo attached</div>
         )}
 
         {/* Time */}
-        <div className={`text-[10px] mt-1 ${isUser ? "text-blue-200/50" : "text-white/30"}`}>
+        <div className={`text-[10px] mt-1 ${isUser ? "text-indigo-200/50" : "text-slate-900 dark:text-slate-100"}`}>
           {new Date(message.created_at).toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit",

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Bell } from "lucide-react";
 
-export default function AlertBell() {
+export function AlertBell() {
   const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
@@ -26,10 +26,10 @@ export default function AlertBell() {
   }, []);
 
   return (
-    <div className="relative">
-      <Bell className="h-4 w-4" />
+    <div className="relative group cursor-pointer inline-flex">
+      <Bell className="h-5 w-5 text-slate-500 group-hover:text-slate-900 dark:text-slate-100 transition-colors" />
       {unreadCount > 0 && (
-        <span className="absolute -top-1.5 -right-1.5 h-4 min-w-4 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center px-1 animate-pulse">
+        <span className="absolute -top-1.5 -right-1.5 h-4 min-w-4 rounded-full bg-red-600 text-slate-900 dark:text-slate-100 text-[10px] font-bold flex items-center justify-center px-1 shadow-sm dark:shadow-slate-900/20 ring-2 ring-white animate-pulse">
           {unreadCount > 99 ? "99+" : unreadCount}
         </span>
       )}

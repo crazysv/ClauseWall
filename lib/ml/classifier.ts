@@ -221,11 +221,6 @@ export async function classifyDocument(
 
   const totalTime = performance.now() - totalStart;
 
-  console.log(
-    `[ClauseWall ML] ⚡ Classified ${clauseResults.length} clauses in ${totalTime.toFixed(0)}ms | ` +
-      `Score: ${overallScore} | Risk: ${overallRisk} | ` +
-      `High confidence: ${highConfidenceCount}/${clauseResults.length}`
-  );
 
   return {
     overallRisk,

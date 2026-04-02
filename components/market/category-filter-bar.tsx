@@ -13,7 +13,7 @@ interface CategoryFilterBarProps {
   onDocTypeChange: (docType: string) => void;
 }
 
-export default function CategoryFilterBar({
+export function CategoryFilterBar({
   selectedType,
   selectedScope,
   selectedDocType,
@@ -38,20 +38,16 @@ export default function CategoryFilterBar({
   ];
 
   return (
-    <div className="space-y-3 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+    <div className="space-y-4 p-5 rounded-2xl bg-white dark:bg-card border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-900/20">
       {/* Benchmark Type */}
       <div>
-        <p className="text-[10px] text-white/30 font-medium uppercase tracking-wider mb-1.5">Metric</p>
-        <div className="flex flex-wrap gap-1.5">
+        <p className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest mb-2">Metric</p>
+        <div className="flex flex-wrap gap-2">
           {benchmarkTypes.map((type) => (
             <button
               key={type}
               onClick={() => onTypeChange(type)}
-              className={`px-2.5 py-1 rounded-md text-xs transition-colors ${
-                selectedType === type
-                  ? "bg-cyan-500/15 text-cyan-400 border border-cyan-500/30"
-                  : "bg-white/[0.03] text-white/40 border border-white/5 hover:text-white/60"
-              }`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${ selectedType === type ? "bg-teal-50 text-teal-700 border-2 border-teal-200" : "bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-2 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-300" }`}
             >
               {type === "all" ? "All" : BENCHMARK_TYPE_LABELS[type as BenchmarkType] || type}
             </button>
@@ -61,19 +57,15 @@ export default function CategoryFilterBar({
 
       {/* Document Type */}
       <div>
-        <p className="text-[10px] text-white/30 font-medium uppercase tracking-wider mb-1.5">Contract Type</p>
-        <div className="flex flex-wrap gap-1.5">
+        <p className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest mb-2">Contract Type</p>
+        <div className="flex flex-wrap gap-2">
           {docTypes.map((dt) => {
             const info = DOCUMENT_TYPE_INFO[dt];
             return (
               <button
                 key={dt}
                 onClick={() => onDocTypeChange(dt)}
-                className={`px-2.5 py-1 rounded-md text-xs transition-colors ${
-                  selectedDocType === dt
-                    ? "bg-purple-500/15 text-purple-400 border border-purple-500/30"
-                    : "bg-white/[0.03] text-white/40 border border-white/5 hover:text-white/60"
-                }`}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${ selectedDocType === dt ? "bg-purple-50 text-purple-700 border-2 border-purple-200" : "bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-2 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-300" }`}
               >
                 {dt === "all" ? "All" : `${info?.icon || ""} ${info?.label || dt}`}
               </button>
@@ -84,19 +76,15 @@ export default function CategoryFilterBar({
 
       {/* Scope */}
       <div>
-        <p className="text-[10px] text-white/30 font-medium uppercase tracking-wider mb-1.5">Region</p>
-        <div className="flex flex-wrap gap-1.5">
+        <p className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest mb-2">Region</p>
+        <div className="flex flex-wrap gap-2">
           {scopes.map((scope) => {
             const stateInfo = INDIAN_STATES[scope];
             return (
               <button
                 key={scope}
                 onClick={() => onScopeChange(scope)}
-                className={`px-2.5 py-1 rounded-md text-xs transition-colors capitalize ${
-                  selectedScope === scope
-                    ? "bg-green-500/15 text-green-400 border border-green-500/30"
-                    : "bg-white/[0.03] text-white/40 border border-white/5 hover:text-white/60"
-                }`}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all capitalize ${ selectedScope === scope ? "bg-emerald-50 text-emerald-700 border-2 border-emerald-200" : "bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-2 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-300" }`}
               >
                 {scope === "all" ? "All India" : stateInfo?.name || scope.replace(/_/g, " ")}
               </button>

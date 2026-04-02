@@ -43,9 +43,7 @@ class TokenBucket {
     while (this.callTimestamps.length >= this.maxCallsPerWindow) {
       const oldestTimestamp = this.callTimestamps[0];
       const waitTime = this.windowMs - (Date.now() - oldestTimestamp) + 100;
-      console.log(
-        `[ClauseWall] [Deliberation] Rate limit: waiting ${waitTime}ms`
-      );
+
       await new Promise((resolve) => setTimeout(resolve, Math.max(100, waitTime)));
       // Re-clean after waiting
       const nowAfterWait = Date.now();
@@ -383,7 +381,7 @@ export async function deliberateClause(
       : "";
 
   // ── STEP 1: PREDATOR ──
-  console.log("[ClauseWall] [Deliberation] Predator arguing...");
+
   let predatorArgument: AgentArgument;
   try {
     await rateLimiter.waitForSlot();
@@ -413,7 +411,7 @@ export async function deliberateClause(
   }
 
   // ── STEP 2: GUARDIAN ──
-  console.log("[ClauseWall] [Deliberation] Guardian arguing...");
+
   let guardianArgument: AgentArgument;
   try {
     await rateLimiter.waitForSlot();
@@ -449,7 +447,7 @@ export async function deliberateClause(
   }
 
   // ── STEP 3: ARBITER ──
-  console.log("[ClauseWall] [Deliberation] Arbiter deliberating...");
+
   let arbiterArgument: AgentArgument;
   let arbiterVerdict: ArbiterVerdict;
   try {
@@ -513,9 +511,6 @@ export async function deliberateClause(
     createdAt: new Date().toISOString(),
   };
 
-  console.log(
-    `[ClauseWall] [Deliberation] Clause complete: ${arbiterVerdict.verdict} (${deliberation.deliberationDuration}ms)`
-  );
 
   return deliberation;
 }
@@ -542,9 +537,6 @@ export async function deliberateDocument(
   const startTime = Date.now();
   const deliberations: ClauseDeliberation[] = [];
 
-  console.log(
-    `[ClauseWall] [Deliberation] Starting document deliberation: ${clauses.length} clauses`
-  );
 
   for (let i = 0; i < clauses.length; i++) {
     const clause = clauses[i];
@@ -604,9 +596,6 @@ export async function deliberateDocument(
 
   const totalDuration = Date.now() - startTime;
 
-  console.log(
-    `[ClauseWall] [Deliberation] Document complete: ${clauses.length} clauses in ${totalDuration}ms`
-  );
 
   return {
     documentId,

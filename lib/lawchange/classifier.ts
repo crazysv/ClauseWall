@@ -189,13 +189,10 @@ export async function classifyPendingChanges(): Promise<{
       .limit(20);
 
     if (error || !unclassified || unclassified.length === 0) {
-      console.log("[Classifier] No pending changes to classify");
+
       return { classified: 0, failed: 0 };
     }
 
-    console.log(
-      `[Classifier] Classifying ${unclassified.length} changes...`
-    );
 
     for (const change of unclassified) {
       try {
@@ -214,9 +211,6 @@ export async function classifyPendingChanges(): Promise<{
           .eq("id", change.id);
 
         classified++;
-        console.log(
-          `[Classifier]   ✅ "${change.title}" → ${classification.clause_types.join(", ")} (${classification.confidence})`
-        );
 
         // Rate limiting
         await new Promise((r) => setTimeout(r, 500));

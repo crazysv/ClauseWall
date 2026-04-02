@@ -17,12 +17,12 @@ import {
   getDefaultStyle,
 } from "@/lib/dna/utils";
 import { detectPersonality } from "@/lib/dna/personality";
-import FingerprintStyle from "@/components/results/dna/fingerprint-style";
-import WaveformStyle from "@/components/results/dna/waveform-style";
-import HeartbeatStyle from "@/components/results/dna/heartbeat-style";
-import ConstellationStyle from "@/components/results/dna/constellation-style";
-import SkylineStyle from "@/components/results/dna/skyline-style";
-import HelixStyle from "@/components/results/dna/helix-style";
+import { FingerprintStyle } from "@/components/results/dna/fingerprint-style";
+import { WaveformStyle } from "@/components/results/dna/waveform-style";
+import { HeartbeatStyle } from "@/components/results/dna/heartbeat-style";
+import { ConstellationStyle } from "@/components/results/dna/constellation-style";
+import { SkylineStyle } from "@/components/results/dna/skyline-style";
+import { HelixStyle } from "@/components/results/dna/helix-style";
 import type { Document, Clause } from "@/types";
 
 interface Props {
@@ -32,7 +32,7 @@ interface Props {
   clauses: Clause[];
 }
 
-export default function ContractDNAModal({ isOpen, onClose, contractDoc, clauses }: Props) {
+export function ContractDNAModal({ isOpen, onClose, contractDoc, clauses }: Props) {
   const defaultStyle = getDefaultStyle(contractDoc.document_type);
   const [style, setStyle] = useState<DNAStyle>(defaultStyle);
   const [hoveredNode, setHoveredNode] = useState<DNANode | null>(null);
@@ -143,16 +143,16 @@ export default function ContractDNAModal({ isOpen, onClose, contractDoc, clauses
 
   return (
   <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-    <DialogContent className="max-w-3xl bg-[#0A0A0F] border-gray-800 p-0 gap-0 overflow-hidden">
+    <DialogContent className="max-w-3xl bg-[#0A0A0F] border-slate-800 p-0 gap-0 overflow-hidden">
       {/* Accessible title (visually hidden) */}
       <VisuallyHidden>
         <DialogTitle>Contract Personality Visualization</DialogTitle>
       </VisuallyHidden>
 
       {/* Header */}
-    <div className="flex items-center gap-3 p-5 border-b border-gray-800/50">
+    <div className="flex items-center gap-3 p-6 border-b border-slate-800/50">
         <div
-            className="w-8 h-8 rounded-lg"
+            className="w-8 h-8 rounded-xl"
             style={{
                 background: `linear-gradient(135deg, ${personality.gradient[0]}, ${personality.gradient[1]})`,
             }}
@@ -171,11 +171,7 @@ export default function ContractDNAModal({ isOpen, onClose, contractDoc, clauses
             <button
               key={s.id}
               onClick={() => setStyle(s.id)}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium border transition-all whitespace-nowrap ${
-                style === s.id
-                  ? "bg-white/10 border-white/20 text-white"
-                  : "bg-white/[0.02] border-white/5 text-gray-500 hover:text-gray-300 hover:border-white/10"
-              }`}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap ${ style === s.id ? "bg-white dark:bg-card/10 border-white/20 text-slate-900 dark:text-slate-100" : "bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border-l-4 border-indigo-500 border-white/5 text-slate-500 hover:text-slate-300 hover:border-white/10" }`}
             >
               <span>{s.icon}</span>
               <span>{s.name}</span>
@@ -187,7 +183,7 @@ export default function ContractDNAModal({ isOpen, onClose, contractDoc, clauses
         <div className="relative px-5 py-3">
           <div
             ref={svgContainerRef}
-            className="relative w-full aspect-[3/2] bg-black/40 rounded-xl overflow-hidden border border-white/5"
+            className="relative w-full aspect-[3/2] bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 rounded-xl overflow-hidden border border-white/5"
             style={{
               background: `linear-gradient(180deg, ${personality.gradient[0]}30, ${personality.gradient[1]}15)`,
             }}
@@ -199,7 +195,7 @@ export default function ContractDNAModal({ isOpen, onClose, contractDoc, clauses
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.25 }}
-                className="w-full h-full p-4"
+                className="w-full h-full p-6"
               >
                 {renderStyle()}
               </motion.div>
@@ -212,14 +208,14 @@ export default function ContractDNAModal({ isOpen, onClose, contractDoc, clauses
                   initial={{ opacity: 0, y: 5 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 5 }}
-                  className="absolute bottom-3 left-3 right-3 bg-gray-900/95 backdrop-blur-sm rounded-lg p-3 border border-gray-700/50 pointer-events-none"
+                  className="absolute bottom-3 left-3 right-3 bg-slate-900/95 backdrop-blur-sm rounded-xl p-3 border border-slate-700/50 pointer-events-none"
                 >
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-semibold text-sm">
                       Clause {hoveredNode.clauseNumber}
                     </span>
                     <span
-                      className="px-2 py-0.5 rounded text-[10px] font-bold uppercase"
+                      className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase"
                       style={{
                         backgroundColor: `${hoveredNode.riskColor}20`,
                         color: hoveredNode.riskColor,
@@ -227,9 +223,9 @@ export default function ContractDNAModal({ isOpen, onClose, contractDoc, clauses
                     >
                       {hoveredNode.riskLevel}
                     </span>
-                    <span className="text-xs text-gray-500">{hoveredNode.clauseType}</span>
+                    <span className="text-xs text-slate-500 dark:text-slate-400">{hoveredNode.clauseType}</span>
                   </div>
-                  <p className="text-gray-400 text-xs leading-relaxed">
+                  <p className="text-slate-400 text-xs leading-relaxed">
                     {hoveredNode.explanation.slice(0, 140)}
                     {hoveredNode.explanation.length > 140 ? "..." : ""}
                   </p>
@@ -246,7 +242,7 @@ export default function ContractDNAModal({ isOpen, onClose, contractDoc, clauses
             <div className="flex items-center gap-3">
               <button
                 onClick={handleCopyId}
-                className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-xs font-mono text-gray-400 hover:text-white transition-colors"
+                className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white dark:bg-slate-900/5 border border-white/10 text-xs font-mono text-slate-400 hover:text-slate-900 dark:text-slate-100 transition-colors"
               >
                 {contractId}
                 {copied ? <Check className="h-3 w-3 text-green-400" /> : <Copy className="h-3 w-3" />}
@@ -256,10 +252,10 @@ export default function ContractDNAModal({ isOpen, onClose, contractDoc, clauses
                   className="w-4 h-4 rounded-full border border-white/20"
                   style={{ backgroundColor: uniqueColor }}
                 />
-                <span className="text-xs font-mono text-gray-500">{uniqueColor}</span>
+                <span className="text-xs font-mono text-slate-500 dark:text-slate-400">{uniqueColor}</span>
               </div>
             </div>
-            <span className="text-xs text-gray-600">
+            <span className="text-xs text-slate-600 dark:text-slate-400">
               {nodes.length} clauses • Score {contractDoc.overall_risk_score}/100
             </span>
           </div>

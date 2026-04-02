@@ -201,7 +201,7 @@ export async function scrapeWithRetry(
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     if (attempt > 0) {
       const delay = Math.pow(2, attempt) * 1000;
-      console.log(`[Watchdog] Retry ${attempt}/${maxRetries} for ${url} in ${delay}ms`);
+
       await new Promise((r) => setTimeout(r, delay));
     }
 

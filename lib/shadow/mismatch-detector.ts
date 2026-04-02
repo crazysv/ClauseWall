@@ -96,9 +96,6 @@ export async function detectMismatches(
   try {
     if (promises.length === 0) return [];
 
-    console.log(
-      `[ClauseWall] Mismatch Detector: Checking ${promises.length} promises against ${clauses.length} clauses`
-    );
 
     // Pre-compute matching clauses for each promise
     const promiseWithClauses = promises.map(promise => ({
@@ -223,9 +220,7 @@ export async function detectMismatches(
           });
         }
 
-        console.log(
-          `[ClauseWall] Mismatch Detector: Batch ${Math.floor(i / BATCH_SIZE) + 1} → ${results.filter((r: { has_mismatch: boolean }) => r.has_mismatch).length} mismatches`
-        );
+
       } catch (batchError) {
         console.error(`[ClauseWall] Mismatch detection batch failed:`, batchError);
         // Continue with other batches
@@ -243,9 +238,6 @@ export async function detectMismatches(
       (severityOrder[a.severity] ?? 4) - (severityOrder[b.severity] ?? 4)
     );
 
-    console.log(
-      `[ClauseWall] Mismatch Detector: Total ${allMismatches.length} mismatches found`
-    );
 
     return allMismatches;
   } catch (error) {

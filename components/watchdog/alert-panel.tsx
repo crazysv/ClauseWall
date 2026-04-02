@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { WatchdogAlertWithCompany } from "@/types";
 
-export default function AlertPanel() {
+export function AlertPanel() {
   const [alerts, setAlerts] = useState<WatchdogAlertWithCompany[]>([]);
   const [loading, setLoading] = useState(true);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -59,28 +59,28 @@ export default function AlertPanel() {
   };
 
   return (
-    <Card className="bg-gray-900/50 border-gray-800">
-      <CardHeader className="pb-3">
+    <Card className="bg-white dark:bg-card border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-900/20 rounded-xl overflow-hidden">
+      <CardHeader className="pb-3 border-b border-slate-100 bg-slate-50 dark:bg-slate-800/50">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-base flex items-center gap-2">
-            <Bell className="h-4 w-4" />
+          <CardTitle className="text-base font-black text-slate-900 dark:text-slate-100 flex items-center gap-2">
+            <Bell className="h-5 w-5 text-indigo-600" />
             Alerts
             {unreadCount > 0 && (
-              <Badge className="bg-red-500/15 text-red-400 border-red-500/30 text-[10px]">
+              <Badge className="bg-red-50 text-red-700 border-red-200 font-bold px-2 py-0.5 text-[10px] rounded-full uppercase tracking-widest">
                 {unreadCount} new
               </Badge>
             )}
           </CardTitle>
           {unreadCount > 0 && (
-            <Button variant="ghost" size="sm" onClick={markAllRead} className="text-xs gap-1">
-              <CheckCheck className="h-3 w-3" /> Mark all read
+            <Button variant="ghost" size="sm" onClick={markAllRead} className="text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-slate-900 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 dark:bg-slate-800 gap-1 h-8">
+              <CheckCheck className="h-4 w-4" /> Mark all read
             </Button>
           )}
         </div>
       </CardHeader>
-      <CardContent className="space-y-2 max-h-80 overflow-y-auto">
+      <CardContent className="space-y-2 p-3 max-h-80 overflow-y-auto">
         {alerts.length === 0 ? (
-          <p className="text-sm text-muted-foreground text-center py-4">
+          <p className="text-sm text-slate-500 dark:text-slate-400 font-medium text-center py-6">
             No alerts yet. Watch some companies to get notified.
           </p>
         ) : (
@@ -88,22 +88,20 @@ export default function AlertPanel() {
             <Link
               key={alert.id}
               href={`/watchdog/changes/${alert.change_id}`}
-              className={`block p-3 rounded-lg transition-colors ${
-                alert.is_read ? "bg-gray-900/30" : "bg-blue-500/5 border border-blue-500/10"
-              } hover:bg-white/5`}
+              className={`block p-3.5 rounded-xl transition-colors border ${ alert.is_read ? "bg-slate-50 dark:bg-slate-800 border-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800" : "bg-blue-50 border-blue-100 shadow-sm dark:shadow-slate-900/20 hover:bg-blue-100/70" }`}
             >
-              <div className="flex items-start gap-2">
-                <span className="flex-shrink-0 mt-0.5">
+              <div className="flex items-start gap-3">
+                <span className="flex-shrink-0 mt-0.5 text-base bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 p-1.5 rounded-lg">
                   {severityEmoji[alert.severity] || "📋"}
                 </span>
-                <div className="min-w-0">
-                  <p className={`text-sm font-medium truncate ${alert.is_read ? "text-muted-foreground" : ""}`}>
+                <div className="min-w-0 flex-1">
+                  <p className={`text-sm font-bold truncate ${alert.is_read ? "text-slate-500" : "text-slate-900 dark:text-slate-100"}`}>
                     {alert.title}
                   </p>
-                  <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5">
+                  <p className="text-xs font-medium text-slate-600 dark:text-slate-400 line-clamp-2 mt-1">
                     {alert.body}
                   </p>
-                  <p className="text-[10px] text-muted-foreground mt-1">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-2">
                     {new Date(alert.sent_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}
                   </p>
                 </div>

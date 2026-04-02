@@ -28,7 +28,6 @@ export async function recomputeAllBenchmarks(): Promise<{
   let snapshotsTaken = 0;
 
   try {
-    console.log('[Market] Starting full benchmark recomputation...');
 
     // Step 1: Get all distinct clause types with extracted values
     const { data: clauseData, error: clauseError } = await supabase
@@ -55,7 +54,7 @@ export async function recomputeAllBenchmarks(): Promise<{
     }
 
     if (!clauseData || clauseData.length === 0) {
-      console.log('[Market] No clause data available for benchmarks');
+
       return { benchmarks_computed: 0, snapshots_taken: 0, errors: [] };
     }
 
@@ -65,7 +64,6 @@ export async function recomputeAllBenchmarks(): Promise<{
       return doc && doc.contribute_to_benchmarks !== false;
     });
 
-    console.log(`[Market] Processing ${eligibleClauses.length} eligible clauses...`);
 
     // Step 2: Group by benchmark dimensions
     const groups = new Map<string, {
@@ -250,10 +248,9 @@ export async function recomputeAllBenchmarks(): Promise<{
     } catch {
       // Materialized view refresh via RPC may not be available
       // This is expected — views can be refreshed manually
-      console.log('[Market] Note: Materialized view refresh requires a custom RPC function');
+
     }
 
-    console.log(`[Market] ✅ Recomputation complete: ${benchmarksComputed} benchmarks, ${snapshotsTaken} snapshots`);
 
   } catch (err) {
     const msg = `Full recomputation failed: ${(err as Error).message}`;
@@ -319,7 +316,7 @@ export async function incrementalBenchmarkUpdate(documentId: string): Promise<vo
       await updateSingleBenchmark(supabase, benchmarkType, 'document_type', doc.document_type, doc.document_type, null, value);
     }
 
-    console.log(`[Market] ✅ Incremental update for document ${documentId}`);
+
   } catch (err) {
     console.error(`[Market] Incremental update failed for ${documentId}:`, err);
   }

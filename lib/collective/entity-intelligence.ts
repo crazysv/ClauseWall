@@ -169,7 +169,7 @@ export async function getEntityIntelligence(
         .single();
 
       collective = newCollective;
-      console.log(`[ClauseWall] [Collective] Auto-created collective for "${entityName}" (${totalFlags} flags)`);
+
     } else if (collective) {
       // Update collective stats
       await supabase

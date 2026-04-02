@@ -19,38 +19,38 @@ export function EvidenceItemCard({
   const meta = EVIDENCE_TYPE_META[item.evidence_type];
 
   return (
-    <div className="rounded-xl border border-white/5 bg-white/[0.02] p-4 hover:bg-white/[0.04] transition-all duration-200">
+    <div className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 p-4 hover:border-indigo-300 transition-all duration-200">
       {/* Header */}
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex items-center gap-3 min-w-0">
-          <div className={`p-2 rounded-lg bg-${meta?.color || "gray-500"}/10`}>
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex items-center gap-4 min-w-0">
+          <div className={`p-2.5 rounded-xl bg-${meta?.color || "slate"}-50 text-${meta?.color || "slate"}-600`}>
             <EvidenceTypeIcon type={item.evidence_type} className="h-5 w-5" />
           </div>
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <span className="text-xs text-muted-foreground font-mono">#{item.sequence_number}</span>
-              <h4 className="font-medium text-sm text-foreground truncate">{item.title}</h4>
+              <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">#{item.sequence_number}</span>
+              <h4 className="font-black text-slate-900 dark:text-slate-100 truncate">{item.title}</h4>
             </div>
-            <p className="text-xs text-muted-foreground truncate mt-0.5">
+            <p className="text-xs font-medium text-slate-500 dark:text-slate-400 truncate mt-1">
               {meta?.label} • {new Date(item.captured_at).toLocaleDateString("en-IN")}
               {item.original_filename && ` • ${item.original_filename}`}
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5">
           {item.is_certified && (
-            <span className="text-xs text-emerald-400" title="65B Certified">
+            <div className="p-1 rounded-full bg-emerald-50 text-emerald-600" title="65B Certified">
               <Shield className="h-4 w-4" />
-            </span>
+            </div>
           )}
           {onCertify && !item.is_certified && (
-            <Button variant="ghost" size="sm" onClick={() => onCertify(item.id)} className="h-7 px-2 text-xs text-blue-400 hover:text-blue-300">
+            <Button variant="ghost" size="sm" onClick={() => onCertify(item.id)} className="h-7 px-2.5 text-xs font-bold text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 rounded-lg">
               <FileText className="h-3 w-3 mr-1" />65B
             </Button>
           )}
           {onDelete && (
-            <Button variant="ghost" size="sm" onClick={() => onDelete(item.id)} className="h-7 px-2 text-xs text-red-400 hover:text-red-300">
+            <Button variant="ghost" size="sm" onClick={() => onDelete(item.id)} className="h-7 px-2 text-xs text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg">
               <Trash2 className="h-3 w-3" />
             </Button>
           )}
@@ -59,27 +59,27 @@ export function EvidenceItemCard({
 
       {/* Description */}
       {item.description && (
-        <p className="text-xs text-muted-foreground mt-2 line-clamp-2">{item.description}</p>
+        <p className="text-sm text-slate-600 dark:text-slate-400 font-medium mt-3 line-clamp-2">{item.description}</p>
       )}
 
       {/* Footer */}
-      <div className="flex items-center gap-2 mt-3 flex-wrap">
-        <span className="text-[10px] font-mono text-muted-foreground/60 truncate max-w-[120px]" title={item.content_hash}>
+      <div className="flex items-center gap-3 mt-4 pt-4 border-t border-slate-100 flex-wrap">
+        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest truncate max-w-[120px]" title={item.content_hash}>
           Hash: {item.content_hash.substring(0, 12)}...
         </span>
         <ChainStatusBadge verified={true} />
 
         {item.tags && item.tags.length > 0 && (
-          <div className="flex items-center gap-1">
-            <Tag className="h-3 w-3 text-muted-foreground" />
+          <div className="flex items-center gap-1.5">
+            <Tag className="h-3 w-3 text-slate-300" />
             {item.tags.slice(0, 3).map((tag) => (
-              <span key={tag} className="px-1.5 py-0.5 rounded text-[10px] bg-white/5 text-muted-foreground">{tag}</span>
+              <span key={tag} className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400">{tag}</span>
             ))}
           </div>
         )}
 
         {item.issue_category && (
-          <span className="px-1.5 py-0.5 rounded text-[10px] bg-amber-500/10 text-amber-400">{item.issue_category}</span>
+          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-amber-100 text-amber-700">{item.issue_category}</span>
         )}
       </div>
     </div>

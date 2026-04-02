@@ -45,7 +45,7 @@ function getGroqClient(): Groq {
 
   // If all keys exhausted, reset and try anyway
   if (attempts >= API_KEYS.length) {
-    console.log("[ClauseWall] All API keys exhausted, resetting...");
+
     exhaustedKeys.clear();
   }
 
@@ -58,14 +58,13 @@ function getGroqClient(): Groq {
  * Mark current key as exhausted and switch to next
  */
 function switchToNextKey(): boolean {
-  console.log(`[ClauseWall] Key ${currentKeyIndex + 1} rate limited, switching...`);
-  
+
   exhaustedKeys.add(currentKeyIndex);
   
   // Schedule key recovery
   setTimeout(() => {
     exhaustedKeys.delete(currentKeyIndex);
-    console.log(`[ClauseWall] Key ${currentKeyIndex + 1} cooldown complete, available again`);
+
   }, KEY_COOLDOWN_MS);
 
   // Find next available key
@@ -78,7 +77,7 @@ function switchToNextKey(): boolean {
     return false;
   }
 
-  console.log(`[ClauseWall] Switched to Key ${currentKeyIndex + 1}`);
+
   return true;
 }
 
@@ -118,7 +117,6 @@ export async function callGroq(
     try {
       const groq = getGroqClient();
       
-      console.log(`[ClauseWall] API call using Key ${currentKeyIndex + 1} (attempt ${totalAttempts}/${maxTotalAttempts})`);
 
       const response = await groq.chat.completions.create({
         model: "llama-3.3-70b-versatile",
@@ -169,7 +167,7 @@ export async function callGroq(
         if (!switched) {
           // All keys exhausted — wait and retry
           const waitTime = extractWaitTime(errorMessage);
-          console.log(`[ClauseWall] All keys exhausted. Waiting ${waitTime}s...`);
+
           await new Promise((resolve) => setTimeout(resolve, waitTime * 1000));
           exhaustedKeys.clear(); // Reset and try again
         }
@@ -179,7 +177,7 @@ export async function callGroq(
       // Server error (503, 500) — retry with backoff
       if (statusCode === 503 || statusCode === 500) {
         const delay = Math.pow(2, totalAttempts) * 1000;
-        console.log(`[ClauseWall] Server error, retrying in ${delay / 1000}s...`);
+
         await new Promise((resolve) => setTimeout(resolve, delay));
         continue;
       }
@@ -187,7 +185,7 @@ export async function callGroq(
       // Other errors — standard retry with backoff
       if (totalAttempts < maxTotalAttempts) {
         const delay = Math.pow(2, totalAttempts % retries) * 1000;
-        console.log(`[ClauseWall] Retrying in ${delay / 1000}s...`);
+
         await new Promise((resolve) => setTimeout(resolve, delay));
       }
     }
@@ -366,7 +364,6 @@ export async function callGroqWhisper(
 
       const apiKey = API_KEYS[currentKeyIndex] || "";
 
-      console.log(`[ClauseWall] Whisper: Using Key ${currentKeyIndex + 1} (attempt ${totalAttempts}/${maxTotalAttempts})`);
 
       // Build FormData
       const mimeType = audioFormat === 'ogg' ? 'audio/ogg'
@@ -395,7 +392,7 @@ export async function callGroqWhisper(
       });
 
       if (response.status === 429) {
-        console.log('[ClauseWall] Whisper: Rate limited (429)');
+
         switchToNextKey();
         continue;
       }
@@ -432,4 +429,3 @@ export async function callGroqWhisper(
   throw new Error(`Groq Whisper failed after ${totalAttempts} attempts: ${lastError?.message}`);
 }
 
-console.log("[ClauseWall] Total Groq keys loaded:", API_KEYS.length);

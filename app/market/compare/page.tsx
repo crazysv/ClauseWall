@@ -61,7 +61,7 @@ export default function ComparePage() {
               <Zap className="h-6 w-6 text-cyan-400" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold">Compare Your Contract</h1>
+              <h1 className="text-lg md:text-xl lg:text-2xl font-bold">Compare Your Contract</h1>
               <p className="text-sm text-white/50">
                 Enter your analyzed document ID to compare against market benchmarks
               </p>
@@ -70,7 +70,7 @@ export default function ComparePage() {
         </motion.div>
 
         {/* Input */}
-        <Card className="bg-gray-900/50 border-gray-800 mb-6">
+        <Card className="bg-slate-900/50 border-slate-800 mb-6">
           <CardContent className="p-5">
             <label className="text-xs text-white/40 mb-2 block">Document ID</label>
             <div className="flex gap-2">
@@ -79,7 +79,7 @@ export default function ComparePage() {
                 value={documentId}
                 onChange={(e) => setDocumentId(e.target.value)}
                 placeholder="Paste your document ID here..."
-                className="flex-1 bg-white/[0.03] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder-white/20 focus:outline-none focus:border-cyan-500/30"
+                className="flex-1 bg-white dark:bg-slate-900/[0.03] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder-white/20 focus:outline-none focus:border-cyan-500/30"
               />
               <button
                 onClick={runComparison}
@@ -117,7 +117,7 @@ export default function ComparePage() {
               const higherIsWorse = HIGHER_IS_WORSE[benchmarkType] ?? true;
 
               return (
-                <Card key={ctx.clause_id} className="bg-white/[0.02] border-white/5">
+                <Card key={ctx.clause_id} className="bg-white dark:bg-slate-900/[0.02] border-white/5">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-white">{label}</span>
@@ -132,15 +132,15 @@ export default function ComparePage() {
                       </Badge>
                     </div>
                     <div className="grid grid-cols-3 gap-2 mb-2">
-                      <div className="text-center p-1.5 rounded bg-white/[0.03]">
+                      <div className="text-center p-1.5 rounded bg-white dark:bg-slate-900/[0.03]">
                         <p className="text-sm font-bold text-white">{ctx.comparison.chart_data.user_value} {unit}</p>
                         <p className="text-[10px] text-white/30">Your Value</p>
                       </div>
-                      <div className="text-center p-1.5 rounded bg-white/[0.03]">
+                      <div className="text-center p-1.5 rounded bg-white dark:bg-slate-900/[0.03]">
                         <p className="text-sm font-bold text-amber-400">{ctx.comparison.chart_data.median} {unit}</p>
                         <p className="text-[10px] text-white/30">Median</p>
                       </div>
-                      <div className="text-center p-1.5 rounded bg-white/[0.03]">
+                      <div className="text-center p-1.5 rounded bg-white dark:bg-slate-900/[0.03]">
                         <p className="text-sm font-bold text-white/50">{ctx.benchmark.sample_count}</p>
                         <p className="text-[10px] text-white/30">Samples</p>
                       </div>
@@ -154,7 +154,7 @@ export default function ComparePage() {
         )}
 
         {comparisons.length > 0 && comparableItems.length === 0 && (
-          <div className="text-center py-12 text-white/30">
+          <div className="text-center py-6 md:py-8 lg:py-12 text-white/30">
             <BarChart3 className="h-10 w-10 mx-auto mb-3 opacity-20" />
             <p className="text-sm">No comparable market data found for this document&apos;s clauses.</p>
           </div>

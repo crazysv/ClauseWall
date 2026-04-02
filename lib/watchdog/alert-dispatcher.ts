@@ -26,7 +26,7 @@ export async function dispatchAlerts(
     .eq("company_id", company.id);
 
   if (error || !watchers || watchers.length === 0) {
-    console.log(`[Watchdog] No watchers for ${company.name}`);
+
     return { sent: 0, failed: 0 };
   }
 
@@ -181,13 +181,13 @@ async function sendEmailAlert(
   const email = userData?.user?.email;
 
   if (!email) {
-    console.log("[Watchdog] No email found for user", userId);
+
     return;
   }
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
-    console.log("[Watchdog] RESEND_API_KEY not configured, skipping email");
+
     return;
   }
 

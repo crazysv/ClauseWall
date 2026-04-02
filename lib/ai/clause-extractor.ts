@@ -82,14 +82,14 @@ function isValidEntityName(
 
   // ---- Check 1: Minimum length ----
   if (name.length < MIN_ENTITY_LENGTH) {
-    console.log(`[ClauseWall] Entity rejected (too short): "${name}"`);
+
     return false;
   }
 
   // ---- Check 2: Invalid patterns ----
   for (const pattern of INVALID_ENTITY_PATTERNS) {
     if (pattern.test(name)) {
-      console.log(`[ClauseWall] Entity rejected (invalid pattern): "${name}"`);
+
       return false;
     }
   }
@@ -97,7 +97,7 @@ function isValidEntityName(
   // ---- Check 3: Single suspicious word ----
   const words = name.toLowerCase().split(/\s+/).filter(w => w.length > 0);
   if (words.length === 1 && SUSPICIOUS_STANDALONE_WORDS.has(words[0])) {
-    console.log(`[ClauseWall] Entity rejected (standalone suspicious word): "${name}"`);
+
     return false;
   }
 
@@ -105,7 +105,7 @@ function isValidEntityName(
   // e.g., "Properties Pvt Ltd" is invalid, but "Sharma Properties Pvt Ltd" is valid
   const nonGenericWords = words.filter(w => !SUSPICIOUS_STANDALONE_WORDS.has(w));
   if (nonGenericWords.length === 0) {
-    console.log(`[ClauseWall] Entity rejected (only generic words): "${name}"`);
+
     return false;
   }
 
@@ -123,7 +123,7 @@ function isValidEntityName(
     // Extra check: maybe it's a proper name that appears exactly
     const exactMatch = docLower.includes(name.toLowerCase());
     if (!exactMatch) {
-      console.log(`[ClauseWall] Entity rejected (not found in document): "${name}"`);
+
       return false;
     }
   }
@@ -134,7 +134,7 @@ function isValidEntityName(
     docTypeWords.includes(w) || SUSPICIOUS_STANDALONE_WORDS.has(w)
   );
   if (allWordsAreDocType) {
-    console.log(`[ClauseWall] Entity rejected (document type words only): "${name}"`);
+
     return false;
   }
 
@@ -233,14 +233,14 @@ export async function extractClauses(
     let entityName = sanitizeEntityName(parsed.document_info?.entity_name);
     
     if (entityName && !isValidEntityName(entityName, documentText)) {
-      console.log(`[ClauseWall] AI extracted invalid entity "${entityName}" — setting to null`);
+
       entityName = null;
     }
 
     if (entityName) {
-      console.log(`[ClauseWall] Valid entity extracted: "${entityName}"`);
+
     } else {
-      console.log(`[ClauseWall] No valid entity found in document`);
+
     }
 
     // ---- Validate jurisdiction ----
@@ -256,7 +256,7 @@ export async function extractClauses(
       const isValidJurisdiction = validJurisdictionPatterns.some(p => p.test(detectedJurisdiction!));
       
       if (!isValidJurisdiction) {
-        console.log(`[ClauseWall] Invalid jurisdiction detected: "${detectedJurisdiction}" — setting to null`);
+
         detectedJurisdiction = null;
       }
     }
@@ -272,9 +272,6 @@ export async function extractClauses(
       stamp_value: parsed.document_info?.stamp_value || null,
     };
 
-    console.log(
-      `[ClauseWall] Extracted ${parsed.clauses.length} clauses | Entity: ${entityName || "none"} | Jurisdiction: ${detectedJurisdiction || "none"}`
-    );
 
     return parsed;
   } catch (error) {

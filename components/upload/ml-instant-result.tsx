@@ -34,7 +34,7 @@ interface MLInstantResultProps {
   onContinueToQuickScan: () => void;
 }
 
-export default function MLInstantResult({
+export function MLInstantResult({
   result,
   isQuickScanLoading,
   quickScanReady,
@@ -45,6 +45,7 @@ export default function MLInstantResult({
 
   // Animate score counting up
   useEffect(() => {
+    if (!result) return;
     const target = result.overallScore;
     const duration = 600;
     const startTime = Date.now();
@@ -61,39 +62,41 @@ export default function MLInstantResult({
     };
 
     requestAnimationFrame(animate);
-  }, [result.overallScore]);
+  }, [result?.overallScore]);
+
+  if (!result) return null;
 
   const getRiskConfig = (risk: RiskLevel) => {
     switch (risk) {
       case "illegal":
         return {
-          color: "text-purple-400",
-          bg: "bg-purple-500/10",
-          border: "border-purple-500/30",
+          color: "text-purple-700",
+          bg: "bg-purple-50",
+          border: "border-purple-200 border-t-8 border-t-purple-500 rounded-xl",
           icon: <Scale className="h-5 w-5" />,
           label: "CRITICAL",
         };
       case "dangerous":
         return {
-          color: "text-red-400",
-          bg: "bg-red-500/10",
-          border: "border-red-500/30",
+          color: "text-rose-700",
+          bg: "bg-rose-50",
+          border: "border-rose-200 border-t-8 border-t-rose-500 rounded-xl",
           icon: <XCircle className="h-5 w-5" />,
           label: "HIGH RISK",
         };
       case "warning":
         return {
-          color: "text-yellow-400",
-          bg: "bg-yellow-500/10",
-          border: "border-yellow-500/30",
+          color: "text-amber-700",
+          bg: "bg-amber-50",
+          border: "border-amber-200 border-t-8 border-t-amber-500 rounded-xl",
           icon: <AlertTriangle className="h-5 w-5" />,
           label: "CAUTION",
         };
       default:
         return {
-          color: "text-green-400",
-          bg: "bg-green-500/10",
-          border: "border-green-500/30",
+          color: "text-emerald-700",
+          bg: "bg-emerald-50",
+          border: "border-emerald-200 border-t-8 border-t-emerald-500 rounded-xl",
           icon: <CheckCircle2 className="h-5 w-5" />,
           label: "LOW RISK",
         };
@@ -121,7 +124,7 @@ export default function MLInstantResult({
 
       {/* Main Score Card */}
       <Card
-        className={`glass border ${overallConfig.border} overflow-hidden`}
+        className={`bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border border-slate-200 dark:border-slate-700 rounded-xl ${overallConfig.border} overflow-hidden`}
       >
         <CardContent className="p-0">
           <div className={`${overallConfig.bg} p-6 text-center`}>
@@ -150,10 +153,10 @@ export default function MLInstantResult({
 
             {/* Score */}
             <div className="flex items-center justify-center gap-2 mb-1">
-              <span className={`text-4xl font-bold ${overallConfig.color}`}>
+              <span className={`text-lg md:text-xl lg:text-2xl md:text-xl md:text-lg md:text-xl lg:text-2xl lg:text-3xl lg:text-4xl text-balance font-bold ${overallConfig.color}`}>
                 {animatedScore}
               </span>
-              <span className="text-xl text-muted-foreground">/100</span>
+              <span className="text-xl text-slate-500 dark:text-slate-400 font-medium">/100</span>
             </div>
 
             <p
@@ -163,24 +166,24 @@ export default function MLInstantResult({
             </p>
 
             {/* Quick Stats Row */}
-            <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
+            <div className="flex items-center justify-center gap-4 text-xs text-slate-500 dark:text-slate-400 font-medium">
               <span className="flex items-center gap-1">
                 <Brain className="h-3 w-3 text-amber-400" />
                 {result.totalClauses} clauses
               </span>
               <span className="flex items-center gap-1">
-                <Timer className="h-3 w-3 text-blue-400" />
+                <Timer className="h-3 w-3 text-indigo-600" />
                 {result.inferenceTimeMs.toFixed(0)}ms
               </span>
               <span className="flex items-center gap-1">
-                <Cpu className="h-3 w-3 text-green-400" />
+                <Cpu className="h-3 w-3 text-emerald-700" />
                 {confidencePercent}% confidence
               </span>
             </div>
           </div>
 
           {/* Risk Breakdown Bar */}
-          <div className="px-6 py-4">
+          <div className="px-4 md:px-6 py-4">
             <div className="flex gap-1 h-3 rounded-full overflow-hidden mb-2">
               {result.riskBreakdown.safe > 0 && (
                 <motion.div
@@ -189,7 +192,7 @@ export default function MLInstantResult({
                     width: `${(result.riskBreakdown.safe / result.totalClauses) * 100}%`,
                   }}
                   transition={{ delay: 0.3, duration: 0.5 }}
-                  className="bg-green-500 rounded-l-full"
+                  className="bg-emerald-500 rounded-l-full"
                 />
               )}
               {result.riskBreakdown.warning > 0 && (
@@ -199,7 +202,7 @@ export default function MLInstantResult({
                     width: `${(result.riskBreakdown.warning / result.totalClauses) * 100}%`,
                   }}
                   transition={{ delay: 0.4, duration: 0.5 }}
-                  className="bg-yellow-500"
+                  className="bg-amber-500"
                 />
               )}
               {result.riskBreakdown.dangerous > 0 && (
@@ -209,7 +212,7 @@ export default function MLInstantResult({
                     width: `${(result.riskBreakdown.dangerous / result.totalClauses) * 100}%`,
                   }}
                   transition={{ delay: 0.5, duration: 0.5 }}
-                  className="bg-red-500"
+                  className="bg-rose-500"
                 />
               )}
               {result.riskBreakdown.illegal > 0 && (
@@ -224,17 +227,17 @@ export default function MLInstantResult({
               )}
             </div>
 
-            <div className="flex justify-between text-xs text-muted-foreground">
+            <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400 font-medium">
               <span className="flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-green-500" />
+                <span className="w-2 h-2 rounded-full bg-emerald-500" />
                 Safe: {result.riskBreakdown.safe}
               </span>
               <span className="flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-yellow-500" />
+                <span className="w-2 h-2 rounded-full bg-amber-500" />
                 Warning: {result.riskBreakdown.warning}
               </span>
               <span className="flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-red-500" />
+                <span className="w-2 h-2 rounded-full bg-rose-500" />
                 Danger: {result.riskBreakdown.dangerous}
               </span>
               <span className="flex items-center gap-1">
@@ -247,20 +250,20 @@ export default function MLInstantResult({
       </Card>
 
       {/* Expandable Clause List */}
-      <Card className="glass border-white/5">
+      <Card className="bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border border-slate-200 dark:border-slate-700 rounded-xl">
         <CardContent className="p-0">
           <button
             onClick={() => setShowClauses(!showClauses)}
-            className="w-full flex items-center justify-between p-4 text-sm hover:bg-white/[0.02] transition-colors"
+            className="w-full flex items-center justify-between p-4 text-sm hover:bg-slate-50 dark:hover:bg-slate-800 dark:bg-slate-800 transition-colors"
           >
             <span className="flex items-center gap-2 font-medium">
               <Brain className="h-4 w-4 text-amber-400" />
               Clause-by-Clause Preview ({result.totalClauses})
             </span>
             {showClauses ? (
-              <ChevronUp className="h-4 w-4 text-muted-foreground" />
+              <ChevronUp className="h-4 w-4 text-slate-500 dark:text-slate-400 font-medium" />
             ) : (
-              <ChevronDown className="h-4 w-4 text-muted-foreground" />
+              <ChevronDown className="h-4 w-4 text-slate-500 dark:text-slate-400 font-medium" />
             )}
           </button>
 
@@ -297,7 +300,7 @@ export default function MLInstantResult({
                             >
                               {config.label}
                             </Badge>
-                            <span className="text-[10px] text-muted-foreground">
+                            <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">
                               {confPercent}% confident
                             </span>
                             {clause.confidence < 0.65 && (
@@ -306,7 +309,7 @@ export default function MLInstantResult({
                               </span>
                             )}
                           </div>
-                          <p className="text-xs text-muted-foreground leading-relaxed truncate">
+                          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium leading-relaxed truncate">
                             {clause.truncatedText}
                           </p>
                         </div>
@@ -321,17 +324,17 @@ export default function MLInstantResult({
       </Card>
 
       {/* Privacy + Tech Badge */}
-      <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
+      <div className="flex items-center justify-center gap-4 text-xs text-slate-500 dark:text-slate-400 font-medium">
         <span className="flex items-center gap-1">
-          <Lock className="h-3 w-3 text-green-400" />
+          <Lock className="h-3 w-3 text-emerald-700" />
           No data left your device
         </span>
         <span className="flex items-center gap-1">
-          <Cpu className="h-3 w-3 text-blue-400" />
+          <Cpu className="h-3 w-3 text-indigo-600" />
           TF.js v{result.modelVersion}
         </span>
         <span className="flex items-center gap-1">
-          <Shield className="h-3 w-3 text-purple-400" />
+          <Shield className="h-3 w-3 text-purple-700" />
           {result.featureCount} features
         </span>
       </div>
@@ -345,15 +348,15 @@ export default function MLInstantResult({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
           >
-            <Card className="glass border-blue-500/20">
+            <Card className="bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border border-slate-200 dark:border-slate-700 rounded-xl-indigo-200 border-t-4 border-t-indigo-500 rounded-xl">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <Loader2 className="h-5 w-5 text-blue-400 animate-spin" />
+                  <Loader2 className="h-5 w-5 text-indigo-600 animate-spin" />
                   <div className="flex-1">
                     <p className="text-sm font-medium">
                       Running detailed AI scan...
                     </p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
                       Verifying against 750+ Indian legal rules. This takes 3-5
                       seconds.
                     </p>
@@ -371,24 +374,24 @@ export default function MLInstantResult({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
           >
-            <Card className="glass border-green-500/20 shadow-lg shadow-green-500/5">
+            <Card className="bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border border-slate-200 dark:border-slate-700 rounded-xl-emerald-200 shadow-lg shadow-emerald-500/10">
               <CardContent className="p-5">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="relative">
-                    <CheckCircle2 className="h-6 w-6 text-green-400" />
+                    <CheckCircle2 className="h-6 w-6 text-emerald-700" />
                     <motion.div
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       transition={{ delay: 0.2 }}
                     >
-                      <Sparkles className="h-3 w-3 text-green-400 absolute -top-1 -right-1" />
+                      <Sparkles className="h-3 w-3 text-emerald-700 absolute -top-1 -right-1" />
                     </motion.div>
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-green-400">
+                    <p className="text-sm font-semibold text-emerald-700">
                       Detailed AI Scan Complete!
                     </p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
                       Verified red flags, legal citations & negotiation scripts
                       ready
                     </p>
@@ -397,14 +400,14 @@ export default function MLInstantResult({
 
                 <Button
                   onClick={onContinueToQuickScan}
-                  className="w-full bg-green-600 hover:bg-green-700 gap-2 py-5 text-base shadow-lg shadow-green-500/20 group"
+                  className="w-full bg-emerald-600 hover:bg-emerald-700 gap-2 py-5 text-base shadow-lg shadow-md shadow-emerald-500/10 group"
                 >
                   <Shield className="h-5 w-5" />
                   View Detailed Results
                   <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
 
-                <p className="text-xs text-muted-foreground text-center mt-3">
+                <p className="text-xs text-slate-500 dark:text-slate-400 font-medium text-center mt-3">
                   Includes legal citations • Negotiation scripts • Fair
                   alternatives • Penalty info
                 </p>

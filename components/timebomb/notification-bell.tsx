@@ -93,7 +93,7 @@ export function NotificationBell() {
       {/* Bell button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 rounded-lg hover:bg-white/5 transition-colors"
+        className="relative p-2 rounded-lg hover:bg-white dark:bg-slate-900/5 transition-colors"
         aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount} unread)` : ""}`}
       >
         <motion.div
@@ -133,20 +133,20 @@ export function NotificationBell() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -5, scale: 0.95 }}
             transition={{ duration: 0.15 }}
-            className="absolute right-0 mt-2 w-80 max-h-96 overflow-y-auto rounded-xl border border-white/10 bg-gray-950 shadow-2xl z-50"
+            className="absolute right-0 mt-3 w-80 max-h-96 overflow-y-auto rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-card shadow-xl z-50 overflow-hidden"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-3 border-b border-white/5">
-              <span className="text-sm font-semibold text-white">
+            <div className="flex items-center justify-between p-4 border-b border-slate-100 bg-slate-50 dark:bg-slate-800/80 backdrop-blur-sm">
+              <span className="text-sm font-black tracking-tight text-slate-900 dark:text-slate-100">
                 Notifications
               </span>
               {unreadCount > 0 && (
                 <button
                   onClick={markAllRead}
                   disabled={loading}
-                  className="text-xs text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1"
+                  className="text-[10px] font-bold uppercase tracking-widest text-indigo-600 hover:text-indigo-700 transition-colors flex items-center gap-1"
                 >
-                  <Check className="w-3 h-3" />
+                  <Check className="w-3.5 h-3.5" />
                   Mark all read
                 </button>
               )}
@@ -154,10 +154,10 @@ export function NotificationBell() {
 
             {/* List */}
             {notifications.length === 0 ? (
-              <div className="p-6 text-center">
-                <Bell className="w-8 h-8 text-white/10 mx-auto mb-2" />
-                <p className="text-sm text-white/30">No notifications yet</p>
-                <p className="text-xs text-white/15 mt-1">
+              <div className="p-4 md:p-6 lg:p-8 text-center bg-white dark:bg-slate-900">
+                <Bell className="w-8 h-8 text-slate-200 mx-auto mb-3" />
+                <p className="text-xs font-bold uppercase tracking-widest text-slate-400">No notifications yet</p>
+                <p className="text-[10px] font-medium text-slate-400 mt-2">
                   Activate Time Bomb Defuser to get deadline alerts
                 </p>
               </div>
@@ -170,16 +170,14 @@ export function NotificationBell() {
                       router.push(`/timebomb/${n.deadline_id}`);
                       setIsOpen(false);
                     }}
-                    className={`w-full flex items-start gap-3 p-3 text-left hover:bg-white/5 transition-colors border-b border-white/5 last:border-0 ${
-                      !n.read ? "bg-white/[0.02]" : ""
-                    }`}
+                    className={`w-full flex items-start gap-4 p-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors border-b border-slate-100 last:border-0 ${ !n.read ? "bg-indigo-50/30" : "bg-white dark:bg-slate-900" }`}
                   >
-                    <div className="mt-0.5">{getIcon(n.days_before)}</div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs text-white/60 truncate">
+                    <div className="mt-1">{getIcon(n.days_before)}</div>
+                    <div className="flex-1 min-w-0 mt-0.5">
+                      <p className="text-[11px] font-bold text-slate-700 truncate">
                         Deadline reminder ({n.days_before}d before)
                       </p>
-                      <p className="text-[10px] text-white/25 mt-0.5">
+                      <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400 mt-1 uppercase tracking-widest">
                         {getTimeAgo(n.sent_at)} • {n.notification_type}
                       </p>
                     </div>
@@ -198,10 +196,10 @@ export function NotificationBell() {
                   router.push("/dashboard");
                   setIsOpen(false);
                 }}
-                className="w-full p-2.5 text-center text-xs text-white/30 hover:text-white/50 transition-colors border-t border-white/5 flex items-center justify-center gap-1"
+                className="w-full p-4 text-center text-[10px] font-bold uppercase tracking-widest text-indigo-600 hover:text-indigo-700 hover:bg-slate-50 dark:hover:bg-slate-800 dark:bg-slate-800 transition-colors border-t border-slate-100 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center gap-1.5"
               >
                 View all deadlines
-                <ExternalLink className="w-3 h-3" />
+                <ExternalLink className="w-3.5 h-3.5" />
               </button>
             )}
           </motion.div>

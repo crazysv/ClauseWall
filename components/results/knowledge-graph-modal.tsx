@@ -22,7 +22,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { ClauseGraphContext, GraphVisualizationData } from "@/lib/graph/types";
-import GraphCanvas from "@/components/graph/graph-canvas";
+import { GraphCanvas } from "@/components/graph/graph-canvas";
 
 interface KnowledgeGraphModalProps {
   isOpen: boolean;
@@ -44,7 +44,7 @@ interface ExpandedSections {
   remedies: boolean;
 }
 
-export default function KnowledgeGraphModal({
+export function KnowledgeGraphModal({
   isOpen,
   onClose,
   clauseType,
@@ -94,7 +94,6 @@ export default function KnowledgeGraphModal({
         setGraphData(graphResult.graph);
       }
     } catch (err) {
-      console.error("[KnowledgeGraph] Fetch failed:", err);
       setError("Failed to load knowledge graph data");
     } finally {
       setLoading(false);
@@ -128,7 +127,7 @@ export default function KnowledgeGraphModal({
       mixed: { label: "Mixed", color: "text-yellow-400" },
       settled: { label: "Settled", color: "text-blue-400" },
     };
-    return map[outcome || ""] || { label: outcome || "Unknown", color: "text-gray-400" };
+    return map[outcome || ""] || { label: outcome || "Unknown", color: "text-slate-400" };
   };
 
   const formattedClauseType = clauseType
@@ -137,15 +136,15 @@ export default function KnowledgeGraphModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-4xl bg-[#0A0A0F] border-gray-800 p-0 gap-0 overflow-hidden max-h-[90vh] flex flex-col">
+      <DialogContent className="max-w-4xl bg-[#0A0A0F] border-slate-800 p-0 gap-0 overflow-hidden max-h-[90vh] flex flex-col">
         <VisuallyHidden>
           <DialogTitle>Legal Knowledge Map</DialogTitle>
         </VisuallyHidden>
 
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-gray-800/50">
+        <div className="flex items-center justify-between p-6 border-b border-slate-800/50">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-500/30 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-500/30 flex items-center justify-center">
               <Network className="h-4 w-4 text-cyan-400" />
             </div>
             <div>
@@ -157,25 +156,17 @@ export default function KnowledgeGraphModal({
           </div>
 
           {/* View Toggle */}
-          <div className="flex rounded-lg border border-white/10 overflow-hidden">
+          <div className="flex rounded-xl border border-white/10 overflow-hidden">
             <button
               onClick={() => setViewMode("details")}
-              className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium transition-colors ${
-                viewMode === "details"
-                  ? "bg-white/10 text-white"
-                  : "text-gray-500 hover:text-gray-300"
-              }`}
+              className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium transition-colors ${ viewMode === "details" ? "bg-white dark:bg-slate-900/10 text-slate-900 dark:text-slate-100" : "text-slate-500 hover:text-slate-300" }`}
             >
               <FileText className="h-3.5 w-3.5" />
               Details
             </button>
             <button
               onClick={() => setViewMode("graph")}
-              className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium transition-colors ${
-                viewMode === "graph"
-                  ? "bg-white/10 text-white"
-                  : "text-gray-500 hover:text-gray-300"
-              }`}
+              className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium transition-colors ${ viewMode === "graph" ? "bg-white dark:bg-slate-900/10 text-slate-900 dark:text-slate-100" : "text-slate-500 hover:text-slate-300" }`}
             >
               <Network className="h-3.5 w-3.5" />
               Graph
@@ -184,7 +175,7 @@ export default function KnowledgeGraphModal({
         </div>
 
         {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto p-5">
+        <div className="flex-1 overflow-y-auto p-6">
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20">
               <Loader2 className="h-8 w-8 text-cyan-400 animate-spin mb-3" />
@@ -200,20 +191,20 @@ export default function KnowledgeGraphModal({
             </div>
           ) : !hasData ? (
             <div className="flex flex-col items-center justify-center py-20">
-              <Network className="h-8 w-8 text-gray-600 mb-3" />
+              <Network className="h-8 w-8 text-slate-600 dark:text-slate-400 mb-3" />
               <p className="text-sm text-muted-foreground">
                 No knowledge graph data available for this clause type yet.
               </p>
-              <p className="text-xs text-gray-600 mt-1">The graph database is being expanded.</p>
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">The graph database is being expanded.</p>
             </div>
           ) : viewMode === "graph" ? (
             /* ═══ D3 GRAPH VIEW ═══ */
-            <div className="relative w-full aspect-[3/2] bg-black/40 rounded-xl overflow-hidden border border-white/5">
+            <div className="relative w-full aspect-[3/2] bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 rounded-xl overflow-hidden border border-white/5">
               {graphData && graphData.nodes.length > 0 ? (
                 <GraphCanvas data={graphData} highlightType={clauseType} />
               ) : (
                 <div className="flex items-center justify-center h-full">
-                    <p className="text-sm text-gray-500">No graph visualization available</p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">No graph visualization available</p>
                   </div>
                 )}
               </div>
@@ -230,12 +221,12 @@ export default function KnowledgeGraphModal({
                       <p className="text-[10px] text-muted-foreground">Win Rate</p>
                     </div>
                   )}
-                  <div className="p-3 rounded-xl bg-blue-500/5 border border-blue-500/15 text-center">
+                  <div className="p-3 rounded-xl bg-indigo-500/5 border border-blue-500/15 text-center">
                     <Landmark className="h-4 w-4 text-blue-400 mx-auto mb-1" />
                     <p className="text-lg font-bold text-blue-400">{context.total_related_cases}</p>
                     <p className="text-[10px] text-muted-foreground">Court Cases</p>
                   </div>
-                  <div className="p-3 rounded-xl bg-purple-500/5 border border-purple-500/15 text-center">
+                  <div className="p-3 rounded-xl bg-indigo-500/5 border border-indigo-500/15 text-center">
                     <Scale className="h-4 w-4 text-purple-400 mx-auto mb-1" />
                     <p className="text-lg font-bold text-purple-400">
                       {(context.supporting_laws?.length || 0) + (context.primary_law ? 1 : 0)}
@@ -261,7 +252,7 @@ export default function KnowledgeGraphModal({
                   color="blue"
                 >
                   <div className="space-y-3">
-                    <div className="p-3 rounded-lg bg-blue-500/5 border border-blue-500/15">
+                    <div className="p-3 rounded-xl bg-indigo-500/5 border border-blue-500/15">
                       <div className="flex items-center gap-2 mb-1">
                         <ShieldCheck className="h-3.5 w-3.5 text-blue-400" />
                         <span className="text-sm font-medium text-blue-300">
@@ -282,11 +273,11 @@ export default function KnowledgeGraphModal({
                         {context.supporting_laws.map((law, i) => (
                           <div
                             key={i}
-                            className="flex items-start gap-2 mb-2 p-2 rounded-lg bg-white/[0.02]"
+                            className="flex items-start gap-2 mb-2 p-2 rounded-xl bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border-l-4 border-indigo-500"
                           >
-                            <BookOpen className="h-3.5 w-3.5 text-gray-500 mt-0.5 flex-shrink-0" />
+                            <BookOpen className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400 mt-0.5 flex-shrink-0" />
                             <div>
-                              <p className="text-xs text-gray-300">
+                              <p className="text-xs text-slate-300">
                                 {law.name} — {law.section}
                               </p>
                               <p className="text-[10px] text-muted-foreground">{law.relationship}</p>
@@ -315,7 +306,7 @@ export default function KnowledgeGraphModal({
                       return (
                         <div
                           key={i}
-                          className="p-3 rounded-lg bg-green-500/5 border border-green-500/15"
+                          className="p-3 rounded-xl bg-green-500/5 border border-green-500/15"
                         >
                           <div className="flex items-start justify-between mb-1">
                             <div className="flex items-center gap-2 flex-wrap">
@@ -333,10 +324,10 @@ export default function KnowledgeGraphModal({
                             </span>
                           </div>
                           <p className="text-xs text-muted-foreground mb-1.5">{c.court}</p>
-                          <p className="text-xs text-gray-300 leading-relaxed">{c.key_ruling}</p>
+                          <p className="text-xs text-slate-300 leading-relaxed">{c.key_ruling}</p>
                           <div className="mt-2">
                             <Badge
-                              className={`text-[10px] ${outcome.color} bg-white/5 border-white/10`}
+                              className={`text-[10px] ${outcome.color} bg-white dark:bg-slate-900/5 border-white/10`}
                             >
                               {outcome.label}
                             </Badge>
@@ -362,20 +353,20 @@ export default function KnowledgeGraphModal({
                     {context.authorities.map((auth, i) => (
                       <div
                         key={i}
-                        className="p-3 rounded-lg bg-yellow-500/5 border border-yellow-500/15"
+                        className="p-3 rounded-xl bg-yellow-500/5 border border-yellow-500/15"
                       >
                         <p className="text-sm font-medium text-yellow-300 mb-1">{auth.name}</p>
                         <div className="grid grid-cols-2 gap-2 text-xs">
                           {auth.filing_fee && (
                             <div>
                               <span className="text-muted-foreground">Filing Fee:</span>{" "}
-                              <span className="text-gray-300">{auth.filing_fee}</span>
+                              <span className="text-slate-300">{auth.filing_fee}</span>
                             </div>
                           )}
                           {auth.timeline && (
                             <div>
                               <span className="text-muted-foreground">Timeline:</span>{" "}
-                              <span className="text-gray-300">{auth.timeline}</span>
+                              <span className="text-slate-300">{auth.timeline}</span>
                             </div>
                           )}
                         </div>
@@ -404,7 +395,7 @@ export default function KnowledgeGraphModal({
                     {context.penalties.map((p, i) => (
                       <div
                         key={i}
-                        className="p-3 rounded-lg bg-orange-500/5 border border-orange-500/15"
+                        className="p-3 rounded-xl bg-orange-500/5 border border-orange-500/15"
                       >
                         <p className="text-sm text-orange-300">{p.description}</p>
                         {p.law_reference && (
@@ -432,7 +423,7 @@ export default function KnowledgeGraphModal({
                     {context.interpretations.map((interp, i) => (
                       <div
                         key={i}
-                        className="p-3 rounded-lg bg-purple-500/5 border border-purple-500/15"
+                        className="p-3 rounded-xl bg-indigo-500/5 border border-indigo-500/15"
                       >
                         <p className="text-sm text-purple-300">{interp.text}</p>
                         <p className="text-[10px] text-muted-foreground mt-1">
@@ -458,7 +449,7 @@ export default function KnowledgeGraphModal({
                     {context.remedies.map((r, i) => (
                       <div
                         key={i}
-                        className="p-3 rounded-lg bg-emerald-500/5 border border-emerald-500/15"
+                        className="p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/15"
                       >
                         <p className="text-sm text-emerald-300">{r.description}</p>
                         {r.authority && (
@@ -476,8 +467,8 @@ export default function KnowledgeGraphModal({
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t border-gray-800/50">
-          <p className="text-[10px] text-gray-600 text-center">
+        <div className="p-6 border-t border-slate-800/50">
+          <p className="text-[10px] text-slate-600 dark:text-slate-400 text-center">
             🕸️ ClauseWall Legal Knowledge Graph • {context?.total_related_cases || 0} cases •{" "}
             {context?.win_rate !== null ? `${context?.win_rate}% win rate` : "No case data"} •
             Data verified from Indian legal databases
@@ -514,7 +505,7 @@ function CollapsibleSection({
     green: "border-green-500/20 hover:border-green-500/30",
     yellow: "border-yellow-500/20 hover:border-yellow-500/30",
     orange: "border-orange-500/20 hover:border-orange-500/30",
-    purple: "border-purple-500/20 hover:border-purple-500/30",
+    purple: "border-indigo-500/20 hover:border-indigo-500/30",
     emerald: "border-emerald-500/20 hover:border-emerald-500/30",
   };
 
@@ -524,19 +515,19 @@ function CollapsibleSection({
     >
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between p-3 hover:bg-white/[0.02] transition-colors"
+        className="w-full flex items-center justify-between p-3 hover:bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border-l-4 border-indigo-500 transition-colors"
       >
         <div className="flex items-center gap-2">
           {icon}
-          <span className="text-sm font-medium text-gray-200">{title}</span>
-          <Badge variant="outline" className="text-[10px] border-white/10 text-gray-500">
+          <span className="text-sm font-medium text-slate-200">{title}</span>
+          <Badge variant="outline" className="text-[10px] border-white/10 text-slate-500 dark:text-slate-400">
             {count}
           </Badge>
         </div>
         {isOpen ? (
-          <ChevronDown className="h-4 w-4 text-gray-500" />
+          <ChevronDown className="h-4 w-4 text-slate-500 dark:text-slate-400" />
         ) : (
-          <ChevronRight className="h-4 w-4 text-gray-500" />
+          <ChevronRight className="h-4 w-4 text-slate-500 dark:text-slate-400" />
         )}
       </button>
       <AnimatePresence>

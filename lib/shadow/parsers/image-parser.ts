@@ -58,7 +58,6 @@ export async function extractTextFromImage(
     else if (text.length > 10) confidence = 0.5;
     else confidence = 0.2;
 
-    console.log(`[ClauseWall] Image OCR: Extracted ${text.length} chars (type=${type}, confidence=${confidence})`);
 
     return { text, confidence };
   } catch (error) {

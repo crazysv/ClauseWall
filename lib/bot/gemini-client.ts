@@ -45,7 +45,7 @@ function getApiKey(): string {
 
   // If all keys exhausted, reset and try anyway
   if (attempts >= API_KEYS.length) {
-    console.log("[ClauseWall] Gemini: All keys exhausted, resetting...");
+
     exhaustedKeys.clear();
   }
 
@@ -56,14 +56,13 @@ function getApiKey(): string {
  * Mark current key as exhausted and switch to next
  */
 function switchToNextKey(): boolean {
-  console.log(`[ClauseWall] Gemini: Key ${currentKeyIndex + 1} rate limited, switching...`);
 
   exhaustedKeys.add(currentKeyIndex);
 
   // Schedule key recovery
   setTimeout(() => {
     exhaustedKeys.delete(currentKeyIndex);
-    console.log(`[ClauseWall] Gemini: Key ${currentKeyIndex + 1} cooldown complete`);
+
   }, KEY_COOLDOWN_MS);
 
   // Find next available key
@@ -75,7 +74,7 @@ function switchToNextKey(): boolean {
     return false;
   }
 
-  console.log(`[ClauseWall] Gemini: Switched to Key ${currentKeyIndex + 1}`);
+
   return true;
 }
 
@@ -128,7 +127,6 @@ export async function callGeminiVision(
       const apiKey = getApiKey();
       const url = `${BASE_URL}/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
-      console.log(`[ClauseWall] Gemini Vision: Using Key ${currentKeyIndex + 1} (attempt ${totalAttempts}/${maxTotalAttempts})`);
 
       const parts: GeminiPart[] = [
         { text: prompt },
@@ -158,11 +156,11 @@ export async function callGeminiVision(
 
       // Handle rate limit (429)
       if (response.status === 429) {
-        console.log(`[ClauseWall] Gemini: Rate limited (429)`);
+
         const switched = switchToNextKey();
         if (!switched) {
           // All keys exhausted — wait and retry
-          console.log("[ClauseWall] Gemini: All keys exhausted, waiting 30s...");
+
           await new Promise((resolve) => setTimeout(resolve, 30000));
           exhaustedKeys.clear();
         }
@@ -185,7 +183,7 @@ export async function callGeminiVision(
         // Server error — retry with backoff
         if (response.status >= 500) {
           const delay = Math.pow(2, totalAttempts) * 1000;
-          console.log(`[ClauseWall] Gemini: Server error, retrying in ${delay / 1000}s...`);
+
           await new Promise((resolve) => setTimeout(resolve, delay));
           continue;
         }
@@ -234,5 +232,4 @@ export function getGeminiStatus() {
   };
 }
 
-console.log("[ClauseWall] Gemini keys loaded:", API_KEYS.length);
-console.log("[ClauseWall] Image analyze: Using Gemini 2.5 Flash...");
+

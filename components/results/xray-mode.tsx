@@ -197,10 +197,10 @@ function OverlayContent({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.25 }}
-      className="fixed inset-0 z-50 bg-black/95 overflow-hidden flex flex-col"
+      className="fixed inset-0 z-50 bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 overflow-hidden flex flex-col"
     >
       {/* Header Bar */}
-      <div className="flex-shrink-0 h-14 bg-gray-900/95 border-b border-gray-800 flex items-center justify-between px-4 sm:px-6">
+      <div className="flex-shrink-0 h-14 bg-slate-900/95 border-b border-slate-800 flex items-center justify-between px-4 sm:px-4 md:px-6">
         <div className="flex items-center gap-3 overflow-x-auto">
           <div className="flex items-center gap-2 flex-shrink-0">
             <Scan className="h-4 w-4 text-purple-400" />
@@ -209,7 +209,7 @@ function OverlayContent({
           <div className="hidden sm:flex items-center gap-3 ml-3">
             {riskCounts.illegal > 0 && (
               <span className="flex items-center gap-1 text-xs text-purple-400">
-                <span className="w-2 h-2 rounded-full bg-purple-500 animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
                 {riskCounts.illegal} Illegal
               </span>
             )}
@@ -225,36 +225,36 @@ function OverlayContent({
                 {riskCounts.warning} Warning
               </span>
             )}
-            <span className="text-xs text-gray-600">{matchedCount}/{filteredClauses.length} matched</span>
+            <span className="text-xs text-slate-600 dark:text-slate-400">{matchedCount}/{filteredClauses.length} matched</span>
           </div>
         </div>
 
         <div className="flex items-center gap-1.5">
           {dangerSegments.length > 0 && (
-            <div className="hidden sm:flex items-center gap-1 border-r border-gray-700 pr-2 mr-1">
-              <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => navigateDanger("prev")}>
+            <div className="hidden sm:flex items-center gap-1 border-r border-slate-700 pr-2 mr-1">
+              <Button aria-label="Previous danger highlight" variant="ghost" size="icon" className="h-7 w-7" onClick={() => navigateDanger("prev")}>
                 <ChevronUp className="h-3.5 w-3.5" />
               </Button>
-              <span className="text-[11px] text-gray-400 w-8 text-center">
+              <span className="text-[11px] text-slate-400 w-8 text-center">
                 {currentDangerIndex + 1}/{dangerSegments.length}
               </span>
-              <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => navigateDanger("next")}>
+              <Button aria-label="Next danger highlight" variant="ghost" size="icon" className="h-7 w-7" onClick={() => navigateDanger("next")}>
                 <ChevronDown className="h-3.5 w-3.5" />
               </Button>
             </div>
           )}
 
-          <Button variant="ghost" size="sm" className="gap-1.5 text-xs text-gray-400 h-8 px-2" onClick={() => setShowSafe(!showSafe)}>
+          <Button variant="ghost" size="sm" className="gap-1.5 text-xs text-slate-400 h-8 px-2" onClick={() => setShowSafe(!showSafe)}>
             {showSafe ? <Eye className="h-3.5 w-3.5" /> : <EyeOff className="h-3.5 w-3.5" />}
             <span className="hidden sm:inline">{showSafe ? "Hide Safe" : "Show Safe"}</span>
           </Button>
 
-          <div className="flex items-center gap-0.5 border-l border-gray-700 pl-1.5 ml-1">
-            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setZoom((z) => Math.max(0.5, z - 0.1))}>
+          <div className="flex items-center gap-0.5 border-l border-slate-700 pl-1.5 ml-1">
+            <Button aria-label="Zoom out document" variant="ghost" size="icon" className="h-7 w-7" onClick={() => setZoom((z) => Math.max(0.5, z - 0.1))}>
               <ZoomOut className="h-3.5 w-3.5" />
             </Button>
-            <span className="text-[11px] text-gray-400 w-10 text-center">{Math.round(zoom * 100)}%</span>
-            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setZoom((z) => Math.min(2, z + 0.1))}>
+            <span className="text-[11px] text-slate-400 w-10 text-center">{Math.round(zoom * 100)}%</span>
+            <Button aria-label="Zoom in document" variant="ghost" size="icon" className="h-7 w-7" onClick={() => setZoom((z) => Math.min(2, z + 0.1))}>
               <ZoomIn className="h-3.5 w-3.5" />
             </Button>
           </div>
@@ -264,32 +264,32 @@ function OverlayContent({
             <span className="hidden sm:inline">Screenshot</span>
           </Button>
 
-          <Button variant="ghost" size="icon" className="h-8 w-8 ml-1" onClick={onClose}>
+          <Button aria-label="Close X-ray mode" variant="ghost" size="icon" className="h-8 w-8 ml-1" onClick={onClose}>
             <X className="h-4 w-4" />
           </Button>
         </div>
       </div>
 
       {/* Document Content */}
-      <div ref={scrollRef} className="flex-1 overflow-auto p-4 sm:p-8">
+      <div ref={scrollRef} className="flex-1 overflow-auto p-6 sm:p-4 md:p-6 lg:p-8">
         <div
           ref={contentRef}
-          className="max-w-4xl mx-auto bg-[#0C0C14] rounded-xl border border-gray-800/80 shadow-2xl"
+          className="max-w-4xl mx-auto bg-[#0C0C14] rounded-xl border border-slate-800/80 shadow-2xl"
           style={{ transform: `scale(${zoom})`, transformOrigin: "top center" }}
         >
-          <div className="px-8 pt-8 pb-4 border-b border-gray-800/60">
+          <div className="px-4 md:px-4 md:px-6 lg:px-8 pt-8 pb-4 border-b border-slate-800/60">
             <div className="flex items-center gap-3 mb-1">
               <Scan className="h-5 w-5 text-purple-400" />
-              <h2 className="text-base font-semibold text-gray-200">
+              <h2 className="text-base font-semibold text-slate-200">
                 {doc.original_filename || "Contract Document"}
               </h2>
             </div>
-            <p className="text-xs text-gray-500 ml-8">
+            <p className="text-xs text-slate-500 dark:text-slate-400 ml-8">
               {clauses.length} clauses analyzed • Risk Score: {doc.overall_risk_score}/100 • X-Ray Scan by ClauseWall
             </p>
           </div>
 
-          <div className="px-8 py-6 font-mono text-[13px] leading-7 text-gray-300 whitespace-pre-wrap break-words">
+          <div className="px-4 md:px-4 md:px-6 lg:px-8 py-6 font-mono text-[13px] leading-7 text-slate-300 whitespace-pre-wrap break-words">
             {segments.map((segment, index) => {
               if (segment.type === "normal") {
                 return <span key={index}>{segment.text}</span>;
@@ -318,7 +318,7 @@ function OverlayContent({
                 >
                   {segment.text}
                   <span
-                    className="ml-1.5 inline-flex items-center gap-0.5 text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-sm select-none"
+                    className="ml-1.5 inline-flex items-center gap-0.5 text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-full select-none"
                     style={{ backgroundColor: `${style.color}18`, color: style.color, border: `1px solid ${style.border}` }}
                   >
                     {style.emoji} {style.label}
@@ -328,7 +328,7 @@ function OverlayContent({
             })}
           </div>
 
-          <div className="px-8 py-4 border-t border-gray-800/60 flex items-center justify-between text-[11px] text-gray-600">
+          <div className="px-4 md:px-4 md:px-6 lg:px-8 py-4 border-t border-slate-800/60 flex items-center justify-between text-[11px] text-slate-600 dark:text-slate-400">
             <span>🛡️ Analyzed by ClauseWall • {matchedCount} clauses highlighted</span>
             <span>clausewall.com</span>
           </div>
@@ -343,7 +343,7 @@ function OverlayContent({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 8 }}
             transition={{ duration: 0.15 }}
-            className="fixed z-[60] w-80 bg-gray-900/98 backdrop-blur-md border border-gray-700/60 rounded-lg shadow-2xl p-4 pointer-events-none"
+            className="fixed z-[60] w-80 bg-slate-900/98 backdrop-blur-md border border-slate-700/60 rounded-xl shadow-2xl p-6 pointer-events-none"
             style={{
               left: Math.max(16, Math.min(tooltipPos.x - 160, (typeof window !== "undefined" ? window.innerWidth : 1200) - 340)),
               top: Math.max(70, Math.min(tooltipPos.y - 170, (typeof window !== "undefined" ? window.innerHeight : 800) - 200)),
@@ -351,7 +351,7 @@ function OverlayContent({
           >
             <div className="flex items-center gap-2 mb-2">
               <span
-                className="px-2 py-0.5 rounded text-[10px] font-bold uppercase"
+                className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase"
                 style={{
                   backgroundColor: `${RISK_STYLES[hoveredClause.risk_level].color}20`,
                   color: RISK_STYLES[hoveredClause.risk_level].color,
@@ -360,25 +360,25 @@ function OverlayContent({
               >
                 {RISK_STYLES[hoveredClause.risk_level].emoji} {RISK_STYLES[hoveredClause.risk_level].label}
               </span>
-              <span className="text-[11px] text-gray-500">Clause #{hoveredClause.clause_number}</span>
+              <span className="text-[11px] text-slate-500 dark:text-slate-400">Clause #{hoveredClause.clause_number}</span>
               {hoveredClause.risk_score != null && (
-                <span className="text-[11px] text-gray-500 ml-auto">Score: {hoveredClause.risk_score}</span>
+                <span className="text-[11px] text-slate-500 dark:text-slate-400 ml-auto">Score: {hoveredClause.risk_score}</span>
               )}
             </div>
-            <p className="text-sm text-gray-300 leading-relaxed">
+            <p className="text-sm text-slate-300 leading-relaxed">
               {hoveredClause.explanation.length > 200
                 ? hoveredClause.explanation.slice(0, 200) + "..."
                 : hoveredClause.explanation}
             </p>
             {hoveredClause.legal_citation && (
-              <p className="text-[11px] text-gray-500 mt-2.5 pt-2 border-t border-gray-800">
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-2.5 pt-2 border-t border-slate-800">
                 📚 {hoveredClause.legal_citation}
               </p>
             )}
             {hoveredClause.red_flags && hoveredClause.red_flags.length > 0 && (
               <div className="mt-2 flex flex-wrap gap-1">
                 {hoveredClause.red_flags.slice(0, 3).map((flag, i) => (
-                  <span key={i} className="text-[9px] px-1.5 py-0.5 bg-red-500/10 text-red-400 rounded border border-red-500/20">
+                  <span key={i} className="text-[9px] px-1.5 py-0.5 bg-red-500/10 text-red-400 rounded-full border border-red-500/20">
                     🚩 {flag}
                   </span>
                 ))}
@@ -400,7 +400,7 @@ interface XRayModeProps {
   clauses: Clause[];
 }
 
-export default function XRayMode({ document: doc, clauses }: XRayModeProps) {
+export function XRayMode({ document: doc, clauses }: XRayModeProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   if (!doc.raw_text) return null;
@@ -409,18 +409,18 @@ export default function XRayMode({ document: doc, clauses }: XRayModeProps) {
     <>
       {/* Trigger Card */}
       <Card
-        className="bg-gray-900/50 border-gray-800 mb-8 cursor-pointer hover:border-purple-500/40 transition-all group"
+        className="bg-slate-900/50 border-slate-800 mb-8 cursor-pointer hover:border-indigo-500/40 transition-all group"
         onClick={() => setIsOpen(true)}
       >
         <CardContent className="p-6">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-purple-500/15 flex items-center justify-center group-hover:bg-purple-500/25 transition-colors">
+          <div className="flex items-center gap-6">
+            <div className="w-12 h-12 rounded-xl bg-indigo-500/15 flex items-center justify-center group-hover:bg-indigo-500/25 transition-colors">
               <Scan className="h-6 w-6 text-purple-400" />
             </div>
             <div className="flex-1 min-w-0">
               <h3 className="font-semibold flex items-center gap-2">
                 X-Ray Mode
-                <Badge variant="outline" className="text-[10px] border-purple-500/40 text-purple-400">
+                <Badge variant="outline" className="text-[10px] border-indigo-500/40 text-purple-400">
                   NEW
                 </Badge>
               </h3>

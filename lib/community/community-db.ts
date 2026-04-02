@@ -87,10 +87,7 @@ export async function addToCommunityDB(
         return false;
       }
 
-      console.log(
-        `[Community] Pattern ${patternHash} count: ${existing.occurrence_count + 1}` +
-          (embeddingValue && !existing.embedding ? " (embedding backfilled)" : "")
-      );
+
       return true;
     }
 
@@ -122,10 +119,7 @@ export async function addToCommunityDB(
       return false;
     }
 
-    console.log(
-      `[Community] New pattern: ${patternHash}` +
-        (embeddingValue ? " (with embedding)" : " (no embedding)")
-    );
+
     return true;
   } catch (error) {
     console.error("[Community] Error:", error);

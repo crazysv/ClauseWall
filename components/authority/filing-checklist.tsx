@@ -10,7 +10,7 @@ interface Props {
   documents: string[];
 }
 
-export default function FilingChecklist({ steps, documents }: Props) {
+export function FilingChecklist({ steps, documents }: Props) {
   const [checked, setChecked] = useState<Set<number>>(new Set());
 
   const toggle = (step: number) => {
@@ -23,19 +23,19 @@ export default function FilingChecklist({ steps, documents }: Props) {
   const progress = steps.length > 0 ? Math.round((checked.size / steps.length) * 100) : 0;
 
   return (
-    <Card className="border-white/10 bg-white/[0.02]">
+    <Card className="border-white/10 bg-white dark:bg-slate-900/[0.02]">
       <CardContent className="p-4">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <ClipboardList className="h-4 w-4 text-blue-400" />
+            <ClipboardList className="h-4 w-4 text-indigo-400" />
             <h3 className="text-sm font-semibold">Filing Checklist</h3>
           </div>
           <span className="text-xs text-muted-foreground">{progress}% complete</span>
         </div>
 
         {/* Progress bar */}
-        <div className="h-1.5 bg-white/5 rounded-full mb-4 overflow-hidden">
-          <div className="h-full bg-blue-500 rounded-full transition-all" style={{ width: `${progress}%` }} />
+        <div className="h-1.5 bg-indigo-50/50 rounded-full mb-4 overflow-hidden">
+          <div className="h-full bg-indigo-500 rounded-full transition-all" style={{ width: `${progress}%` }} />
         </div>
 
         {/* Steps */}
@@ -46,7 +46,7 @@ export default function FilingChecklist({ steps, documents }: Props) {
               <button
                 key={step.step}
                 onClick={() => toggle(step.step)}
-                className="flex items-start gap-2 w-full text-left p-2 rounded-lg hover:bg-white/[0.03] transition-colors"
+                className="flex items-start gap-2 w-full text-left p-2 rounded-xl hover:bg-white dark:bg-card/[0.03] transition-colors"
               >
                 {checked.has(step.step) ? (
                   <CheckCircle2 className="h-4 w-4 text-green-400 mt-0.5 flex-shrink-0" />
@@ -69,7 +69,7 @@ export default function FilingChecklist({ steps, documents }: Props) {
             <ul className="space-y-1">
               {documents.map((doc, i) => (
                 <li key={i} className="text-xs text-muted-foreground flex items-start gap-1.5">
-                  <span className="text-blue-400 mt-0.5">•</span>
+                  <span className="text-indigo-400 mt-0.5">•</span>
                   <span>{doc}</span>
                 </li>
               ))}

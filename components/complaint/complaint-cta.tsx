@@ -1,10 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
-import { Gavel, ArrowRight, Loader2, Shield, AlertTriangle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Gavel, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 interface ComplaintCTAProps {
@@ -14,7 +11,7 @@ interface ComplaintCTAProps {
   entityName?: string | null;
 }
 
-export default function ComplaintCTA({
+export function ComplaintCTA({
   documentId,
   dangerousCount,
   illegalCount,
@@ -29,40 +26,43 @@ export default function ComplaintCTA({
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 }}
+      className="mt-4"
     >
-      <Link href={`/complaint/${documentId}`}>
-        <Card className="group cursor-pointer border-orange-500/20 bg-gradient-to-br from-orange-500/5 via-red-500/5 to-transparent hover:border-orange-500/40 transition-all duration-300">
-          <CardContent className="p-5">
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex items-start gap-3">
-                <div className="rounded-xl bg-orange-500/10 p-2.5 mt-0.5">
-                  <Gavel className="h-5 w-5 text-orange-400" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-sm mb-1 group-hover:text-orange-300 transition-colors">
-                    File Regulatory Complaint
-                  </h3>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    {illegalCount > 0
-                      ? `${illegalCount} illegal clause${illegalCount > 1 ? "s" : ""} found`
-                      : `${dangerousCount} dangerous clause${dangerousCount > 1 ? "s" : ""} found`}
-                    {entityName ? ` in ${entityName}'s contract` : ""}.
-                    File a formal complaint with the correct regulatory authority.
-                  </p>
-                  <div className="flex items-center gap-2 mt-2">
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 border border-green-500/20">
-                      Free for claims ≤ ₹5 lakh
-                    </span>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                      Step-by-step guide
-                    </span>
-                  </div>
+      <Link href={`/complaint/${documentId}`} className="block w-full">
+        <div className="p-4 rounded-xl bg-white dark:bg-card border border-slate-200 dark:border-slate-700 border-l-4 border-l-orange-500 shadow-sm dark:shadow-slate-900/20 hover:shadow-md transition-all cursor-pointer group">
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+            <div className="flex items-start gap-3">
+              <div className="p-2.5 rounded-xl bg-orange-50 group-hover:bg-orange-100 flex-shrink-0 transition-colors">
+                <Gavel className="h-6 w-6 text-orange-500" />
+              </div>
+              <div>
+                <p className="font-extrabold text-sm text-slate-900 dark:text-slate-100">
+                  File Regulatory Complaint
+                </p>
+                <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5 max-w-2xl leading-relaxed">
+                  {illegalCount > 0
+                    ? `${illegalCount} illegal clause${illegalCount > 1 ? "s" : ""} found`
+                    : `${dangerousCount} dangerous clause${dangerousCount > 1 ? "s" : ""} found`}
+                  {entityName ? ` in ${entityName}'s contract` : ""}.
+                  Initiate formal regulatory action instantly.
+                </p>
+                <div className="flex items-center gap-2 mt-2">
+                  <span className="text-[9px] uppercase font-black px-1.5 py-0.5 rounded shadow-sm dark:shadow-slate-900/20 tracking-widest bg-emerald-50 text-emerald-600 border border-emerald-200">
+                    Claims ≤ ₹5 lakh Free
+                  </span>
+                  <span className="text-[9px] uppercase font-black px-1.5 py-0.5 rounded shadow-sm dark:shadow-slate-900/20 tracking-widest bg-indigo-50 text-indigo-600 border border-indigo-200">
+                    Guided Process
+                  </span>
                 </div>
               </div>
-              <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:translate-x-1 transition-transform flex-shrink-0 mt-2" />
             </div>
-          </CardContent>
-        </Card>
+            <div className="w-full sm:w-auto flex-shrink-0 mt-2 sm:mt-0">
+               <button className="w-full sm:w-auto h-full px-4 py-2 sm:py-1.5 rounded-full border-2 border-teal-200 text-teal-700 bg-white dark:bg-card group-hover:bg-teal-50 group-hover:border-teal-300 text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm dark:shadow-slate-900/20">
+                  Format Complaint <ArrowRight className="h-3.5 w-3.5 text-teal-600 group-hover:translate-x-1 transition-transform" />
+               </button>
+            </div>
+          </div>
+        </div>
       </Link>
     </motion.div>
   );

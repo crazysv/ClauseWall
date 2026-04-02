@@ -77,7 +77,6 @@ export function SigningDateModal({
       onActivated(data);
       onClose();
     } catch (error) {
-      console.error("[TimeBomb] Activation error:", error);
       toast.error(
         (error as Error).message || "Failed to activate Time Bomb Defuser"
       );
@@ -103,34 +102,34 @@ export function SigningDateModal({
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 10 }}
             transition={{ type: "spring", duration: 0.3 }}
-            className="relative w-full max-w-md rounded-2xl border border-white/10 bg-gray-950 p-6 shadow-2xl"
+            className="relative w-full max-w-md rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-card p-4 md:p-6 lg:p-8 shadow-2xl"
           >
             {/* Close button */}
             <button
               onClick={onClose}
-              className="absolute right-4 top-4 text-white/40 hover:text-white/70 transition-colors"
+              className="absolute right-5 top-5 text-slate-400 hover:text-slate-600 dark:text-slate-400 transition-colors p-1"
               aria-label="Close modal"
             >
               <X className="w-5 h-5" />
             </button>
 
             {/* Header */}
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-red-500/20 flex items-center justify-center">
-                <Shield className="w-5 h-5 text-orange-400" />
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-12 h-12 rounded-xl bg-orange-100 border border-orange-200 flex items-center justify-center shadow-sm dark:shadow-slate-900/20">
+                <Shield className="w-6 h-6 text-orange-600" />
               </div>
-              <div>
-                <h2 className="text-lg font-bold text-white">
-                  🕐 Activate Time Bomb Defuser
+              <div className="flex-1 mt-0.5">
+                <h2 className="text-lg font-black tracking-tight text-slate-900 dark:text-slate-100">
+                  Activate Time Bomb Defuser
                 </h2>
-                <p className="text-sm text-white/50">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mt-1">
                   When did you sign this contract?
                 </p>
               </div>
             </div>
 
             {/* Description */}
-            <p className="text-sm text-white/40 mb-6">
+            <p className="text-sm font-medium text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
               We&apos;ll calculate all your critical deadlines from the signing
               date and set up reminders so you never miss one.
             </p>
@@ -140,12 +139,12 @@ export function SigningDateModal({
               <div>
                 <label
                   htmlFor="signing-date"
-                  className="block text-sm font-medium text-white/60 mb-2"
+                  className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2"
                 >
                   Contract Signing Date
                 </label>
                 <div className="relative">
-                  <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+                  <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
                     id="signing-date"
                     type="date"
@@ -155,20 +154,20 @@ export function SigningDateModal({
                       setUseToday(false);
                     }}
                     disabled={useToday}
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/25 focus:outline-none transition-all disabled:opacity-50"
+                    className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-sm font-bold focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/25 focus:outline-none transition-all disabled:opacity-50 shadow-inner"
                   />
                 </div>
               </div>
 
               {/* Use today checkbox */}
-              <label className="flex items-center gap-3 cursor-pointer group">
+              <label className="flex items-center gap-3 cursor-pointer group mt-4">
                 <input
                   type="checkbox"
                   checked={useToday}
                   onChange={(e) => setUseToday(e.target.checked)}
-                  className="w-4 h-4 rounded border-white/20 bg-white/5 text-orange-500 focus:ring-orange-500/25"
+                  className="w-4 h-4 rounded border-slate-300 dark:border-slate-600 text-indigo-600 focus:ring-indigo-500/25 transition-colors"
                 />
-                <span className="text-sm text-white/50 group-hover:text-white/70 transition-colors">
+                <span className="text-xs font-bold text-slate-600 group-hover:text-slate-900 dark:text-slate-100 transition-colors uppercase tracking-widest">
                   I haven&apos;t signed yet — use today&apos;s date
                 </span>
               </label>
@@ -178,7 +177,7 @@ export function SigningDateModal({
             <button
               onClick={handleActivate}
               disabled={loading}
-              className="w-full mt-6 px-4 py-3 rounded-xl bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white font-medium text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full mt-8 px-4 py-3.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold uppercase tracking-widest text-[10px] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-md"
               aria-label="Activate Time Bomb Defuser"
             >
               {loading ? (

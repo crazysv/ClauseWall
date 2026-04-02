@@ -1,22 +1,24 @@
 "use client";
-
-import { useState, useCallback } from "react";
-import { useDropzone } from "react-dropzone";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
-  Upload,
-  FileText,
+  Scale,
   ArrowRight,
   Loader2,
   CheckCircle2,
   AlertTriangle,
   XCircle,
-  Scale,
   Trophy,
   ArrowLeftRight,
   ChevronDown,
   ChevronUp,
   Share2,
-} from "lucide-react";
+  FileText,
+  Upload,
+  Plus,
+  Info
+, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -25,82 +27,146 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
+  SelectValue } from "@/components/ui/select";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { createClient } from "@/lib/supabase/client";
+import { cn } from "@/lib/utils";
+
+import { Navbar } from "@/components/shared/navbar";
+import { Footer } from "@/components/shared/footer";
+import { ComparisonCardModal } from "@/components/compare/comparison-card-modal";
+import type { Document } from "@/types";
 import type { ComparisonResult } from "@/lib/bot/compare-analyzer";
-import ComparisonCardModal from "@/components/compare/comparison-card-modal";
 
-type InputMode = "file" | "text";
+const GaugeChart = ({ score, color }: { score: number, color: string }) => {
+  const data = [
+    { name: 'Score', value: score },
+    { name: 'Remaining', value: 100 - score },
+  ];
 
-export default function ComparePage() {
-  const [inputModeA, setInputModeA] = useState<InputMode>("file");
-  const [inputModeB, setInputModeB] = useState<InputMode>("file");
-  const [fileA, setFileA] = useState<File | null>(null);
-  const [fileB, setFileB] = useState<File | null>(null);
-  const [textA, setTextA] = useState("");
-  const [textB, setTextB] = useState("");
-  const [documentType, setDocumentType] = useState("rental");
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<ComparisonResult | null>(null);
+  return (
+    <div className="relative w-full h-[120px]">
+      <ResponsiveContainer width="100%" height="100%">
+        <PieChart>
+          <Pie
+            data={data}
+            cx="50%"
+            cy="100%"
+            startAngle={180}
+            endAngle={0}
+            innerRadius={60}
+            outerRadius={80}
+            dataKey="value"
+            stroke="none"
+            cornerRadius={4}
+          >
+            <Cell fill={color} />
+            <Cell fill="#f1f5f9" />
+          </Pie>
+        </PieChart>
+      </ResponsiveContainer>
+      <div className="absolute bottom-0 left-0 right-0 text-center pb-2">
+         <span className="text-xl md:text-lg md:text-xl lg:text-2xl lg:text-3xl font-black text-slate-900 dark:text-slate-100">{score}</span>
+         <span className="text-sm font-bold text-slate-400">/100</span>
+      </div>
+    </div>
+  );
+};
+
+export default function ComparePage({ isLoading, error, onRetry }: any) {
+  const supabase = createClient();
+  const [contractA, setContractA] = useState<Document | null>(null);
+  const [contractB, setContractB] = useState<Document | null>(null);
+  const [comparisonResult, setComparisonResult] = useState<ComparisonResult | null>(null);
+  const [isComparing, setIsComparing] = useState(false);
+  const [userDocuments, setUserDocuments] = useState<Document[]>([]);
   const [expandedClauses, setExpandedClauses] = useState<Set<number>>(new Set());
   const [showShareCard, setShowShareCard] = useState(false);
 
-  const onDropA = useCallback((files: File[]) => {
-    if (files[0]) setFileA(files[0]);
-  }, []);
+  // Injected Premium Loading States
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col pt-10">
+        <div className="container mx-auto max-w-7xl px-4 py-8 space-y-8 animate-in fade-in duration-500">
+          <div className="flex flex-col gap-4 mb-6 relative">
+            <div className="absolute -left-10 -top-10 w-40 h-40 bg-indigo-600 dark:bg-indigo-500/5 rounded-full blur-3xl" />
+            <Skeleton className="h-10 w-[60%] sm:w-96 rounded-xl bg-gradient-to-r from-slate-200 to-indigo-50 dark:from-slate-800 dark:to-indigo-950/20" />
+            <Skeleton className="h-5 w-64 rounded-lg" />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+            {[1,2,3,4].map((i) => (
+               <div key={i} className="p-6 bg-white dark:bg-card border-none shadow-xl shadow-indigo-500/5 rounded-3xl overflow-hidden relative">
+                 <div className="flex justify-between items-start mb-4">
+                   <Skeleton className="h-12 w-12 rounded-xl" />
+                   <Skeleton className="h-6 w-16 rounded-full" />
+                 </div>
+                 <Skeleton className="h-8 w-24 rounded-lg mb-2" />
+                 <Skeleton className="h-4 w-32 rounded-lg" />
+               </div>
+            ))}
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 relative z-10 mt-6">
+            <div className="lg:col-span-2">
+               <Skeleton className="h-[400px] w-full bg-white dark:bg-card rounded-3xl shadow-xl shadow-indigo-500/5" />
+            </div>
+            <div className="lg:col-span-1 flex flex-col gap-6">
+               <Skeleton className="h-[188px] w-full bg-white dark:bg-card rounded-3xl shadow-xl shadow-indigo-500/5" />
+               <Skeleton className="h-[188px] w-full bg-white dark:bg-card rounded-3xl shadow-xl shadow-indigo-500/5" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-  const onDropB = useCallback((files: File[]) => {
-    if (files[0]) setFileB(files[0]);
-  }, []);
+  if (error) {
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-4">
+        <Card className="max-w-md w-full border-rose-200 bg-gradient-to-b from-white to-rose-50/30 dark:bg-rose-950/20 dark:border-rose-800 p-8 rounded-3xl shadow-2xl shadow-rose-500/10 text-center animate-in zoom-in-95 duration-500">
+          <div className="mx-auto w-16 h-16 bg-rose-100 dark:bg-rose-900/50 rounded-full flex items-center justify-center mb-6 shadow-inner">
+            <AlertCircle className="h-8 w-8 text-rose-500 dark:text-rose-400" />
+          </div>
+          <h3 className="font-extrabold text-2xl text-slate-800 dark:text-slate-100 mb-2 tracking-tight">System Interruption</h3>
+          <p className="text-slate-600 dark:text-slate-400 font-medium text-sm leading-relaxed mb-8">{error}</p>
+          <Button onClick={onRetry} className="w-full h-12 rounded-xl font-bold bg-slate-900 hover:bg-slate-800 text-white shadow-lg shadow-slate-900/20 transition-all hover:-translate-y-0.5">
+            Synchronize & Try Again
+          </Button>
+        </Card>
+      </div>
+    );
+  }
 
-  const dropzoneA = useDropzone({
-    onDrop: onDropA,
-    accept: { "application/pdf": [".pdf"], "text/plain": [".txt"] },
-    maxFiles: 1,
-    maxSize: 10 * 1024 * 1024,
-  });
-
-  const dropzoneB = useDropzone({
-    onDrop: onDropB,
-    accept: { "application/pdf": [".pdf"], "text/plain": [".txt"] },
-    maxFiles: 1,
-    maxSize: 10 * 1024 * 1024,
-  });
+  useEffect(() => {
+    const fetchDocs = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      const { data } = await supabase
+        .from("documents")
+        .select("*")
+        .eq("user_id", user.id)
+        .eq("analysis_status", "completed")
+        .order("created_at", { ascending: false });
+      if (data) setUserDocuments(data as Document[]);
+    };
+    fetchDocs();
+  }, [supabase]);
 
   const handleCompare = async () => {
-    const hasA = inputModeA === "file" ? fileA : textA.trim().length >= 50;
-    const hasB = inputModeB === "file" ? fileB : textB.trim().length >= 50;
-
-    if (!hasA || !hasB) {
-      toast.error("Please provide both contracts");
+    if (!contractA || !contractB) {
+      toast.error("Please select two contracts to compare");
       return;
     }
 
-    setLoading(true);
-    setResult(null);
+    setIsComparing(true);
+    setComparisonResult(null);
 
     try {
-      const formData = new FormData();
-      formData.append("documentType", documentType);
-
-      if (inputModeA === "file" && fileA) {
-        formData.append("fileA", fileA);
-      } else {
-        formData.append("textA", textA);
-      }
-
-      if (inputModeB === "file" && fileB) {
-        formData.append("fileB", fileB);
-      } else {
-        formData.append("textB", textB);
-      }
-
       const response = await fetch("/api/compare", {
         method: "POST",
-        body: formData,
-      });
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ documentIdA: contractA.id, documentIdB: contractB.id }) });
 
       if (!response.ok) {
         const err = await response.json();
@@ -108,12 +174,12 @@ export default function ComparePage() {
       }
 
       const data = await response.json();
-      setResult(data);
-      toast.success("Comparison complete!");
+      setComparisonResult(data);
+      toast.success("Analysis complete");
     } catch (error) {
-      toast.error((error as Error).message || "Comparison failed");
+       toast.error((error as Error).message || "Comparison failed. Please try again.");
     } finally {
-      setLoading(false);
+      setIsComparing(false);
     }
   };
 
@@ -124,533 +190,284 @@ export default function ComparePage() {
     setExpandedClauses(newExpanded);
   };
 
-  const getRiskIcon = (level: string) => {
-    switch (level) {
-      case "safe":
-        return <CheckCircle2 className="h-4 w-4 text-green-500" />;
-      case "warning":
-        return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
-      case "dangerous":
-        return <XCircle className="h-4 w-4 text-red-500" />;
-      case "illegal":
-        return <Scale className="h-4 w-4 text-purple-500" />;
-      default:
-        return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
-    }
-  };
-
   const getRiskColor = (level: string) => {
     switch (level) {
-      case "safe":
-        return "text-green-500";
-      case "warning":
-        return "text-yellow-500";
-      case "dangerous":
-        return "text-red-500";
-      case "illegal":
-        return "text-purple-500";
-      default:
-        return "text-yellow-500";
+      case "safe": return "text-emerald-500 bg-emerald-50 border-emerald-200";
+      case "warning": return "text-amber-500 bg-amber-50 border-amber-200";
+      case "dangerous": return "text-rose-500 bg-rose-50 border-rose-200";
+      case "illegal": return "text-indigo-600 bg-indigo-50 border-indigo-200";
+      default: return "text-slate-500 bg-slate-50 border-slate-200";
     }
   };
-
-  const getScoreColor = (score: number) => {
-    if (score >= 80) return "text-purple-500";
-    if (score >= 60) return "text-red-500";
-    if (score >= 30) return "text-yellow-500";
-    return "text-green-500";
-  };
-
-  const getScoreBg = (score: number) => {
-    if (score >= 80) return "from-purple-500/20 to-purple-500/5";
-    if (score >= 60) return "from-red-500/20 to-red-500/5";
-    if (score >= 30) return "from-yellow-500/20 to-yellow-500/5";
-    return "from-green-500/20 to-green-500/5";
+  
+  const getHexColor = (score: number) => {
+    if (score >= 80) return "#e11d48"; // rose-600
+    if (score >= 60) return "#ea580c"; // orange-600
+    if (score >= 30) return "#d97706"; // amber-600
+    return "#059669"; // emerald-600
   };
 
   return (
-    <div className="relative px-4 sm:px-6 lg:px-8 py-8">
-      {/* Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl" />
-      </div>
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-800 font-sans flex flex-col">
+      <Navbar />
 
-      <div className="relative mx-auto max-w-6xl">
+      <main role="main" className="flex-1 w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <ArrowLeftRight className="h-8 w-8 text-blue-500" />
-            <h1 className="text-3xl sm:text-4xl font-bold">
-              Compare <span className="text-blue-500">Contracts</span>
-            </h1>
+        <div className="text-center max-w-2xl mx-auto space-y-4">
+          <div className="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center shadow-inner mx-auto mb-6">
+            <Scale className="w-8 h-8" />
           </div>
-          <p className="text-muted-foreground max-w-xl mx-auto">
-            Upload two contracts side-by-side. ClauseWall will compare them
-            clause-by-clause and tell you which one is safer.
+          <h1 className="text-lg md:text-xl lg:text-2xl md:text-xl md:text-lg md:text-xl lg:text-2xl lg:text-3xl lg:text-4xl text-balance font-black text-slate-900 dark:text-slate-100 tracking-tight">Contract Comparison</h1>
+          <p className="text-lg font-medium text-slate-600 dark:text-slate-400">
+             Load two analyzed documents to view a side-by-side algorithmic risk breakdown. Discover which agreement offers stronger localized protection.
           </p>
         </div>
 
-        {/* Upload Section */}
-        {!result && (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              {/* Contract A */}
-              <Card className="glass border-white/5">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold flex items-center gap-2">
-                      🅰️ Contract A
+        {/* Input Selection */}
+        {!comparisonResult && (
+           <div className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative">
+                 <div className="hidden md:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white dark:bg-card border border-slate-200 dark:border-slate-700 rounded-full items-center justify-center shadow-sm dark:shadow-slate-900/20 z-10 text-slate-400 font-black">
+                    VS
+                 </div>
+
+                 {/* Drop A */}
+                 <Card className="bg-white dark:bg-card border-slate-200 dark:border-slate-700 rounded-3xl shadow-sm dark:shadow-slate-900/20 p-6 flex flex-col h-[280px]">
+                    <h3 className="text-sm font-black text-indigo-600 uppercase tracking-widest mb-4 flex items-center gap-2">
+                       <span className="bg-indigo-100 text-indigo-700 px-2 rounded text-xs">A</span> Baseline Contract
                     </h3>
-                    <div className="flex gap-1">
-                      <Button
-                        variant={inputModeA === "file" ? "default" : "ghost"}
-                        size="sm"
-                        onClick={() => setInputModeA("file")}
-                      >
-                        File
-                      </Button>
-                      <Button
-                        variant={inputModeA === "text" ? "default" : "ghost"}
-                        size="sm"
-                        onClick={() => setInputModeA("text")}
-                      >
-                        Text
-                      </Button>
-                    </div>
-                  </div>
+                    <Select onValueChange={(val) => setContractA(userDocuments.find(d => d.id === val) || null)}>
+                       <SelectTrigger className="w-full h-12 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 focus:border-indigo-500 rounded-xl font-bold shadow-inner mb-4">
+                          <SelectValue placeholder="Select analyzed document..." />
+                       </SelectTrigger>
+                       <SelectContent className="rounded-xl border-slate-200 dark:border-slate-700">
+                          {userDocuments.map(doc => (
+                             <SelectItem key={doc.id} value={doc.id}>{doc.original_filename || "Untitled Document"}</SelectItem>
+                          ))}
+                       </SelectContent>
+                    </Select>
+                    
+                    {contractA ? (
+                       <div className="flex-1 flex flex-col items-center justify-center bg-indigo-50/50 rounded-2xl border border-indigo-100 p-4 shrink-0">
+                          <FileText className="w-8 h-8 text-indigo-400 mb-2" />
+                          <p className="font-bold text-slate-900 dark:text-slate-100 text-center line-clamp-1">{contractA.original_filename || "Untitled"}</p>
+                          <Badge variant="outline" className="mt-2 bg-white dark:bg-slate-900 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 text-[10px] uppercase font-bold tracking-widest">{contractA.document_type || 'Unknown Type'}</Badge>
+                       </div>
+                    ) : (
+                       <div className="flex-1 flex flex-col items-center justify-center border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-2xl bg-slate-50 dark:bg-slate-800 shrink-0 opacity-70">
+                          <Upload className="w-6 h-6 text-slate-400 mb-2" />
+                          <p className="text-xs font-bold text-slate-500 dark:text-slate-400">Awaiting selection</p>
+                       </div>
+                    )}
+                 </Card>
 
-                  {inputModeA === "file" ? (
-                    <div
-                      {...dropzoneA.getRootProps()}
-                      className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors ${
-                        dropzoneA.isDragActive
-                          ? "border-blue-500 bg-blue-500/10"
-                          : fileA
-                          ? "border-green-500/50 bg-green-500/5"
-                          : "border-white/10 hover:border-white/20"
-                      }`}
-                    >
-                      <input {...dropzoneA.getInputProps()} />
-                      {fileA ? (
-                        <div className="flex flex-col items-center gap-2">
-                          <FileText className="h-8 w-8 text-green-500" />
-                          <p className="text-sm font-medium">{fileA.name}</p>
-                          <p className="text-xs text-muted-foreground">
-                            Click to change
-                          </p>
-                        </div>
-                      ) : (
-                        <div className="flex flex-col items-center gap-2">
-                          <Upload className="h-8 w-8 text-muted-foreground" />
-                          <p className="text-sm text-muted-foreground">
-                            Drop PDF/TXT or click to upload
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <Textarea
-                      placeholder="Paste contract A text here..."
-                      value={textA}
-                      onChange={(e) => setTextA(e.target.value)}
-                      className="min-h-[200px] bg-white/5 border-white/10"
-                    />
-                  )}
-                </CardContent>
-              </Card>
-
-              {/* Contract B */}
-              <Card className="glass border-white/5">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold flex items-center gap-2">
-                      🅱️ Contract B
+                 {/* Drop B */}
+                 <Card className="bg-white dark:bg-card border-slate-200 dark:border-slate-700 rounded-3xl shadow-sm dark:shadow-slate-900/20 p-6 flex flex-col h-[280px]">
+                    <h3 className="text-sm font-black text-emerald-600 uppercase tracking-widest mb-4 flex items-center gap-2">
+                       <span className="bg-emerald-100 text-emerald-700 px-2 rounded text-xs">B</span> Challenger Contract
                     </h3>
-                    <div className="flex gap-1">
-                      <Button
-                        variant={inputModeB === "file" ? "default" : "ghost"}
-                        size="sm"
-                        onClick={() => setInputModeB("file")}
-                      >
-                        File
-                      </Button>
-                      <Button
-                        variant={inputModeB === "text" ? "default" : "ghost"}
-                        size="sm"
-                        onClick={() => setInputModeB("text")}
-                      >
-                        Text
-                      </Button>
-                    </div>
-                  </div>
-
-                  {inputModeB === "file" ? (
-                    <div
-                      {...dropzoneB.getRootProps()}
-                      className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors ${
-                        dropzoneB.isDragActive
-                          ? "border-blue-500 bg-blue-500/10"
-                          : fileB
-                          ? "border-green-500/50 bg-green-500/5"
-                          : "border-white/10 hover:border-white/20"
-                      }`}
-                    >
-                      <input {...dropzoneB.getInputProps()} />
-                      {fileB ? (
-                        <div className="flex flex-col items-center gap-2">
-                          <FileText className="h-8 w-8 text-green-500" />
-                          <p className="text-sm font-medium">{fileB.name}</p>
-                          <p className="text-xs text-muted-foreground">
-                            Click to change
-                          </p>
-                        </div>
-                      ) : (
-                        <div className="flex flex-col items-center gap-2">
-                          <Upload className="h-8 w-8 text-muted-foreground" />
-                          <p className="text-sm text-muted-foreground">
-                            Drop PDF/TXT or click to upload
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <Textarea
-                      placeholder="Paste contract B text here..."
-                      value={textB}
-                      onChange={(e) => setTextB(e.target.value)}
-                      className="min-h-[200px] bg-white/5 border-white/10"
-                    />
-                  )}
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Document Type + Compare Button */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
-              <Select value={documentType} onValueChange={setDocumentType}>
-                <SelectTrigger className="w-48 bg-white/5 border-white/10">
-                  <SelectValue placeholder="Document Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="rental">Rental Agreement</SelectItem>
-                  <SelectItem value="employment">Employment Contract</SelectItem>
-                  <SelectItem value="loan">Loan Agreement</SelectItem>
-                  <SelectItem value="freelance">Freelance Contract</SelectItem>
-                  <SelectItem value="tos">Terms of Service</SelectItem>
-                  <SelectItem value="nda">NDA</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <Button
-                size="lg"
-                onClick={handleCompare}
-                disabled={loading}
-                className="bg-blue-600 hover:bg-blue-700 gap-2 px-8"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="h-5 w-5 animate-spin" />
-                    Comparing...
-                  </>
-                ) : (
-                  <>
-                    <ArrowLeftRight className="h-5 w-5" />
-                    Compare Contracts
-                  </>
-                )}
-              </Button>
-            </div>
-          </>
+                    <Select onValueChange={(val) => setContractB(userDocuments.find(d => d.id === val) || null)}>
+                       <SelectTrigger className="w-full h-12 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 focus:border-emerald-500 rounded-xl font-bold shadow-inner mb-4">
+                          <SelectValue placeholder="Select analyzed document..." />
+                       </SelectTrigger>
+                       <SelectContent className="rounded-xl border-slate-200 dark:border-slate-700">
+                          {userDocuments.map(doc => (
+                             <SelectItem key={doc.id} value={doc.id}>{doc.original_filename || "Untitled Document"}</SelectItem>
+                          ))}
+                       </SelectContent>
+                    </Select>
+                    
+                    {contractB ? (
+                       <div className="flex-1 flex flex-col items-center justify-center bg-emerald-50/50 rounded-2xl border border-emerald-100 p-4 shrink-0">
+                          <FileText className="w-8 h-8 text-emerald-500 mb-2" />
+                          <p className="font-bold text-slate-900 dark:text-slate-100 text-center line-clamp-1">{contractB.original_filename || "Untitled"}</p>
+                          <Badge variant="outline" className="mt-2 bg-white dark:bg-slate-900 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 text-[10px] uppercase font-bold tracking-widest">{contractB.document_type || 'Unknown Type'}</Badge>
+                       </div>
+                    ) : (
+                       <div className="flex-1 flex flex-col items-center justify-center border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-2xl bg-slate-50 dark:bg-slate-800 shrink-0 opacity-70">
+                          <Upload className="w-6 h-6 text-slate-400 mb-2" />
+                          <p className="text-xs font-bold text-slate-500 dark:text-slate-400">Awaiting selection</p>
+                       </div>
+                    )}
+                 </Card>
+              </div>
+              
+              <div className="flex justify-center flex-col sm:flex-row gap-4">
+                 <Button 
+                   onClick={handleCompare}
+                   disabled={isComparing || !contractA || !contractB}
+                   className="h-14 bg-slate-900 hover:bg-slate-800 text-white font-black tracking-widest uppercase transition-all shadow-md text-sm rounded-2xl px-12"
+                 >
+                   {isComparing ? <Loader2 className="w-5 h-5 animate-spin mr-2" /> : <ArrowLeftRight className="w-5 h-5 mr-2" />}
+                   {isComparing ? "Running Analysis..." : "Algorithmic Compare"}
+                 </Button>
+                 <Button variant="outline" className="h-14 font-bold rounded-2xl border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 px-4 md:px-4 md:px-6 lg:px-8 bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20">
+                    <Plus className="w-4 h-4 mr-2" /> Upload New
+                 </Button>
+              </div>
+           </div>
         )}
 
-        {/* Results */}
-        {result && (
-          <>
-            {/* Verdict Banner */}
-            <Card className="glass border-white/5 mb-6 overflow-hidden">
-              <CardContent className="p-0">
-                <div className="bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-blue-500/10 p-6 sm:p-8 text-center">
-                  <Trophy className="h-10 w-10 text-yellow-500 mx-auto mb-3" />
-                  <h2 className="text-2xl font-bold mb-2">
-                    {result.winner === "A"
-                      ? "🅰️ Contract A is Better"
-                      : result.winner === "B"
-                      ? "🅱️ Contract B is Better"
-                      : "🤝 Both Are Similar"}
+        {/* Results Block */}
+        {comparisonResult && (
+          <AnimatePresence>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-8">
+               
+               {/* Verdict */}
+               <Card className={cn(
+                  "border rounded-3xl shadow-sm p-8 text-center transition-colors",
+                  comparisonResult.winner === "A" ? "bg-indigo-50 border-indigo-200" : 
+                  comparisonResult.winner === "B" ? "bg-emerald-50 border-emerald-200" : 
+                  "bg-amber-50 border-amber-200"
+               )}>
+                  <Trophy className={cn("w-12 h-12 mx-auto mb-4", 
+                    comparisonResult.winner === "A" ? "text-indigo-600" : 
+                    comparisonResult.winner === "B" ? "text-emerald-600" : "text-amber-500"
+                  )} />
+                  <h2 className="text-xl md:text-lg md:text-xl lg:text-2xl lg:text-3xl font-black text-slate-900 dark:text-slate-100 mb-2">
+                     {comparisonResult.winner === "A" ? "Contract A is structurally safer." : 
+                      comparisonResult.winner === "B" ? "Contract B is structurally safer." : "Both contracts carry equivalent risk profiles."}
                   </h2>
-                  <p className="text-muted-foreground max-w-xl mx-auto">
-                    {result.verdict}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+                  <p className="font-medium text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">{comparisonResult.verdict}</p>
+               </Card>
 
-            {/* Score Comparison */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <Card
-                className={`glass border-white/5 ${
-                  result.winner === "A" ? "ring-2 ring-green-500/30" : ""
-                }`}
-              >
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold">🅰️ Contract A</h3>
-                    {result.winner === "A" && (
-                      <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
-                        <Trophy className="h-3 w-3 mr-1" />
-                        Better Choice
-                      </Badge>
-                    )}
-                  </div>
-                  <div
-                    className={`text-center p-6 rounded-xl bg-gradient-to-b ${getScoreBg(
-                      result.score_a
-                    )}`}
-                  >
-                    <p
-                      className={`text-5xl font-bold ${getScoreColor(
-                        result.score_a
-                      )}`}
-                    >
-                      {result.score_a}
-                    </p>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      /100 Risk Score
-                    </p>
-                    <p
-                      className={`text-sm font-medium mt-2 ${getScoreColor(
-                        result.score_a
-                      )}`}
-                    >
-                      {result.label_a}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card
-                className={`glass border-white/5 ${
-                  result.winner === "B" ? "ring-2 ring-green-500/30" : ""
-                }`}
-              >
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold">🅱️ Contract B</h3>
-                    {result.winner === "B" && (
-                      <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
-                        <Trophy className="h-3 w-3 mr-1" />
-                        Better Choice
-                      </Badge>
-                    )}
-                  </div>
-                  <div
-                    className={`text-center p-6 rounded-xl bg-gradient-to-b ${getScoreBg(
-                      result.score_b
-                    )}`}
-                  >
-                    <p
-                      className={`text-5xl font-bold ${getScoreColor(
-                        result.score_b
-                      )}`}
-                    >
-                      {result.score_b}
-                    </p>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      /100 Risk Score
-                    </p>
-                    <p
-                      className={`text-sm font-medium mt-2 ${getScoreColor(
-                        result.score_b
-                      )}`}
-                    >
-                      {result.label_b}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Key Differences */}
-            {result.key_differences.length > 0 && (
-              <Card className="glass border-white/5 mb-6">
-                <CardContent className="p-6">
-                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                    ⚡ Key Differences
-                  </h3>
-                  <div className="space-y-2">
-                    {result.key_differences.map((diff, i) => (
-                      <div
-                        key={i}
-                        className="flex items-start gap-3 p-3 rounded-lg bg-white/5"
-                      >
-                        <ArrowRight className="h-4 w-4 text-blue-400 mt-0.5 shrink-0" />
-                        <p className="text-sm text-muted-foreground">{diff}</p>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Clause-by-Clause */}
-            <Card className="glass border-white/5 mb-6">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  📊 Clause-by-Clause Comparison
-                </h3>
-                <div className="space-y-3">
-                  {result.clause_comparisons.map((comp, i) => (
-                    <div
-                      key={i}
-                      className="border border-white/5 rounded-lg overflow-hidden"
-                    >
-                      <div
-                        className="flex items-center justify-between p-4 cursor-pointer hover:bg-white/5 transition-colors"
-                        onClick={() => toggleClause(i)}
-                      >
-                        <div className="flex items-center gap-3">
-                          <span className="text-sm font-medium">
-                            {comp.clause_type.replace(/_/g, " ").toUpperCase()}
-                          </span>
-                          <Badge
-                            variant="outline"
-                            className={
-                              comp.winner === "A"
-                                ? "text-blue-400 border-blue-400/30"
-                                : comp.winner === "B"
-                                ? "text-purple-400 border-purple-400/30"
-                                : "text-gray-400 border-gray-400/30"
-                            }
-                          >
-                            {comp.winner === "A"
-                              ? "A wins"
-                              : comp.winner === "B"
-                              ? "B wins"
-                              : "Tie"}
-                          </Badge>
-                        </div>
-                        <div className="flex items-center gap-4">
-                          <div className="flex items-center gap-1">
-                            <span className="text-xs text-muted-foreground">
-                              A:
-                            </span>
-                            {getRiskIcon(comp.contract_a.risk_level)}
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <span className="text-xs text-muted-foreground">
-                              B:
-                            </span>
-                            {getRiskIcon(comp.contract_b.risk_level)}
-                          </div>
-                          {expandedClauses.has(i) ? (
-                            <ChevronUp className="h-4 w-4 text-muted-foreground" />
-                          ) : (
-                            <ChevronDown className="h-4 w-4 text-muted-foreground" />
-                          )}
-                        </div>
-                      </div>
-
-                      {expandedClauses.has(i) && (
-                        <div className="border-t border-white/5 p-4 bg-white/[0.02]">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
-                            <div className="p-3 rounded-lg bg-white/5">
-                              <p className="text-xs text-muted-foreground mb-1">
-                                🅰️ Contract A
-                              </p>
-                              <div className="flex items-center gap-2 mb-1">
-                                {getRiskIcon(comp.contract_a.risk_level)}
-                                <span
-                                  className={`text-sm font-medium ${getRiskColor(
-                                    comp.contract_a.risk_level
-                                  )}`}
-                                >
-                                  {comp.contract_a.value}
-                                </span>
-                              </div>
-                              <p className="text-xs text-muted-foreground">
-                                {comp.contract_a.summary}
-                              </p>
-                            </div>
-                            <div className="p-3 rounded-lg bg-white/5">
-                              <p className="text-xs text-muted-foreground mb-1">
-                                🅱️ Contract B
-                              </p>
-                              <div className="flex items-center gap-2 mb-1">
-                                {getRiskIcon(comp.contract_b.risk_level)}
-                                <span
-                                  className={`text-sm font-medium ${getRiskColor(
-                                    comp.contract_b.risk_level
-                                  )}`}
-                                >
-                                  {comp.contract_b.value}
-                                </span>
-                              </div>
-                              <p className="text-xs text-muted-foreground">
-                                {comp.contract_b.summary}
-                              </p>
-                            </div>
-                          </div>
-                          <p className="text-sm text-muted-foreground italic">
-                            💡 {comp.explanation}
-                          </p>
-                        </div>
-                      )}
+               {/* Gauges Side-by-Side */}
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative">
+                 <div className="hidden md:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-slate-900 border border-slate-800 rounded-full items-center justify-center shadow-lg z-10 text-white font-black">
+                    VS
+                 </div>
+                 
+                 {/* Gauge A */}
+                 <Card className={cn("bg-white border rounded-3xl shadow-sm p-6", comparisonResult.winner === "A" ? "ring-2 ring-indigo-500 border-indigo-500" : "border-slate-200")}>
+                    <div className="flex justify-between items-start mb-6">
+                       <div>
+                          <h3 className="text-sm font-black text-indigo-600 uppercase tracking-widest"><span className="bg-indigo-100 text-indigo-700 px-2 rounded text-xs mr-2">A</span> Baseline</h3>
+                          <p className="font-bold text-slate-900 dark:text-slate-100 mt-1 line-clamp-1">{comparisonResult.label_a}</p>
+                       </div>
+                       {comparisonResult.winner === "A" && <Badge className="bg-indigo-600 text-white shadow-sm dark:shadow-slate-900/20 gap-1 uppercase tracking-widest text-[9px]"><CheckCircle2 className="w-3 h-3" /> Winner</Badge>}
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                    <GaugeChart score={comparisonResult.score_a} color={getHexColor(comparisonResult.score_a)} />
+                 </Card>
 
-            {/* Recommendation */}
-            <Card className="glass border-white/5 mb-8">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
-                  💡 Recommendation
-                </h3>
-                <p className="text-muted-foreground">{result.recommendation}</p>
-              </CardContent>
-            </Card>
+                 {/* Gauge B */}
+                 <Card className={cn("bg-white border rounded-3xl shadow-sm p-6", comparisonResult.winner === "B" ? "ring-2 ring-emerald-500 border-emerald-500" : "border-slate-200")}>
+                    <div className="flex justify-between items-start mb-6">
+                       <div>
+                          <h3 className="text-sm font-black text-emerald-600 uppercase tracking-widest"><span className="bg-emerald-100 text-emerald-700 px-2 rounded text-xs mr-2">B</span> Challenger</h3>
+                          <p className="font-bold text-slate-900 dark:text-slate-100 mt-1 line-clamp-1">{comparisonResult.label_b}</p>
+                       </div>
+                       {comparisonResult.winner === "B" && <Badge className="bg-emerald-600 text-white shadow-sm dark:shadow-slate-900/20 gap-1 uppercase tracking-widest text-[9px]"><CheckCircle2 className="w-3 h-3" /> Winner</Badge>}
+                    </div>
+                    <GaugeChart score={comparisonResult.score_b} color={getHexColor(comparisonResult.score_b)} />
+                 </Card>
+               </div>
 
-            {/* Actions */}
-            <div className="flex justify-center gap-4">
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={() => {
-                  setResult(null);
-                  setFileA(null);
-                  setFileB(null);
-                  setTextA("");
-                  setTextB("");
-                  setExpandedClauses(new Set());
-                }}
-                className="gap-2"
-              >
-                <ArrowLeftRight className="h-5 w-5" />
-                Compare Again
-              </Button>
-              <Button
-                size="lg"
-                onClick={() => setShowShareCard(true)}
-                className="gap-2 bg-blue-600 hover:bg-blue-700"
-              >
-                <Share2 className="h-5 w-5" />
-                Share Comparison
-              </Button>
-            </div>
+               {/* Key Differences Summary */}
+               {comparisonResult.key_differences.length > 0 && (
+                 <Card className="bg-slate-900 border-slate-800 rounded-3xl shadow-lg p-6 lg:p-4 md:p-6 lg:p-8">
+                    <h3 className="text-sm font-black text-white uppercase tracking-widest mb-6 flex items-center gap-2">
+                       <AlertTriangle className="w-5 h-5 text-amber-500" /> Executive Breakdown
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                       {comparisonResult.key_differences.map((diff, i) => (
+                         <div key={i} className="flex items-start gap-3 p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50">
+                            <ArrowRight className="w-4 h-4 text-indigo-400 mt-0.5 shrink-0" />
+                            <p className="text-sm font-medium text-slate-300 leading-relaxed">{diff}</p>
+                         </div>
+                       ))}
+                    </div>
+                 </Card>
+               )}
 
-            {/* Comparison Card Modal */}
-            <ComparisonCardModal
-              isOpen={showShareCard}
-              onClose={() => setShowShareCard(false)}
-              data={result}
-              documentType={documentType}
-            />
-          </>
+               {/* Clause by clause table */}
+               <Card className="bg-white dark:bg-card border-slate-200 dark:border-slate-700 rounded-3xl shadow-sm dark:shadow-slate-900/20 overflow-hidden">
+                  <div className="p-6 lg:p-4 md:p-6 lg:p-8 border-b border-slate-100 bg-slate-50 dark:bg-slate-800/50">
+                     <h3 className="text-sm font-black text-slate-900 dark:text-slate-100 uppercase tracking-widest flex items-center gap-2">
+                        <Scale className="w-4 h-4 text-indigo-600" /> Clause-by-Clause Matrix
+                     </h3>
+                  </div>
+                  
+                  <div className="divide-y divide-slate-100">
+                    <ScrollArea className="w-full">
+                      <div className="min-w-[800px] w-full">
+                         {/* Header Row */}
+                         <div className="grid grid-cols-12 gap-4 p-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-slate-50 dark:bg-slate-800 border-b border-slate-100">
+                            <div className="col-span-3">Clause Category</div>
+                            <div className="col-span-1 text-center">Winner</div>
+                            <div className="col-span-4 pl-4 border-l border-slate-200 dark:border-slate-700">Contract A Definition</div>
+                            <div className="col-span-4 pl-4 border-l border-slate-200 dark:border-slate-700">Contract B Definition</div>
+                         </div>
+                         
+                         {/* Body */}
+                         {comparisonResult.clause_comparisons.map((comp, i) => (
+                           <div key={i} className="group relative">
+                             <div 
+                               className="grid grid-cols-12 gap-4 p-4 items-center cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 dark:bg-slate-800 transition-colors"
+                               onClick={() => toggleClause(i)}
+                             >
+                                <div className="col-span-3 font-bold text-slate-900 dark:text-slate-100 capitalize text-sm flex items-center justify-between">
+                                   {comp.clause_type.replace(/_/g, " ")}
+                                   {expandedClauses.has(i) ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
+                                </div>
+                                <div className="col-span-1 flex justify-center">
+                                   <Badge className={cn("text-[9px] uppercase tracking-widest font-black shadow-none", 
+                                      comp.winner === "A" ? "bg-indigo-100 text-indigo-700 hover:bg-indigo-100" :
+                                      comp.winner === "B" ? "bg-emerald-100 text-emerald-700 hover:bg-emerald-100" :
+                                      "bg-slate-100 text-slate-500 hover:bg-slate-100"
+                                   )}>
+                                      {comp.winner === "A" ? "A" : comp.winner === "B" ? "B" : "TIE"}
+                                   </Badge>
+                                </div>
+                                <div className="col-span-4 pl-4 border-l border-slate-100 flex items-center gap-2">
+                                   <Badge variant="outline" className={cn("text-[9px] uppercase shadow-none", getRiskColor(comp.contract_a.risk_level))}>
+                                     {comp.contract_a.risk_level}
+                                   </Badge>
+                                   <p className="text-sm font-medium text-slate-600 dark:text-slate-400 line-clamp-1" title={comp.contract_a.value}>{comp.contract_a.value}</p>
+                                </div>
+                                <div className="col-span-4 pl-4 border-l border-slate-100 flex items-center gap-2">
+                                   <Badge variant="outline" className={cn("text-[9px] uppercase shadow-none", getRiskColor(comp.contract_b.risk_level))}>
+                                     {comp.contract_b.risk_level}
+                                   </Badge>
+                                   <p className="text-sm font-medium text-slate-600 dark:text-slate-400 line-clamp-1" title={comp.contract_b.value}>{comp.contract_b.value}</p>
+                                </div>
+                             </div>
+
+                             {expandedClauses.has(i) && (
+                                <div className="p-6 bg-slate-50 dark:bg-slate-800/80 border-t border-slate-100 inset-x-0">
+                                   <div className="p-4 bg-white dark:bg-card border border-indigo-100 rounded-2xl shadow-sm dark:shadow-slate-900/20 relative">
+                                      <div className="absolute top-0 inset-x-0 h-1 bg-indigo-500 rounded-t-2xl" />
+                                      <p className="text-sm font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2 mb-2">
+                                        <Info className="w-4 h-4 text-indigo-600" /> Contextual Analysis
+                                      </p>
+                                      <p className="text-sm font-medium text-slate-600 dark:text-slate-400 leading-relaxed">{comp.explanation}</p>
+                                   </div>
+                                </div>
+                             )}
+                           </div>
+                         ))}
+                      </div>
+                    </ScrollArea>
+                  </div>
+               </Card>
+
+               <div className="flex justify-center gap-4 pt-4">
+                  <Button variant="outline" className="h-12 bg-white dark:bg-card border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 font-bold rounded-xl px-4 md:px-6 hover:bg-slate-50 dark:hover:bg-slate-800 shadow-sm dark:shadow-slate-900/20" onClick={() => {
+                     setComparisonResult(null);
+                     setContractA(null);
+                     setContractB(null);
+                  }}>
+                     <ArrowLeftRight className="w-4 h-4 mr-2" /> Compare New Files
+                  </Button>
+                  <Button className="h-12 bg-indigo-600 text-white font-bold rounded-xl px-4 md:px-6 hover:bg-indigo-700 shadow-sm dark:shadow-slate-900/20">
+                     <Share2 className="w-4 h-4 mr-2" /> Export Report
+                  </Button>
+               </div>
+            </motion.div>
+          </AnimatePresence>
         )}
-      </div>
+
+      </main>
+      <Footer />
     </div>
   );
 }

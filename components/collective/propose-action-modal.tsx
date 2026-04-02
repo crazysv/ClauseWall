@@ -57,7 +57,7 @@ const ACTION_TYPES: {
   },
 ];
 
-export default function ProposeActionModal({
+export function ProposeActionModal({
   collectiveId,
   onClose,
   onProposed,
@@ -101,12 +101,12 @@ export default function ProposeActionModal({
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-6">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+          className="absolute inset-0 bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 backdrop-blur-sm"
           onClick={onClose}
         />
 
@@ -114,22 +114,22 @@ export default function ProposeActionModal({
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
-          className="relative w-full max-w-lg rounded-2xl bg-gray-900 border border-white/10 shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto"
+          className="relative w-full max-w-lg rounded-2xl bg-slate-900 border border-white/10 shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto"
         >
-          <div className="p-5 border-b border-white/5 flex items-center justify-between">
-            <h3 className="font-semibold text-white">Propose Collective Action</h3>
+          <div className="p-6 border-b border-white/5 flex items-center justify-between">
+            <h3 className="font-semibold text-slate-900 dark:text-slate-100">Propose Collective Action</h3>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-white/30 hover:text-white/60 hover:bg-white/5"
+              className="p-1.5 rounded-xl text-slate-900 dark:text-slate-100 hover:text-slate-900 dark:text-slate-100 hover:bg-white dark:bg-card/5"
             >
               <X className="h-4 w-4" />
             </button>
           </div>
 
-          <div className="p-5 space-y-4">
+          <div className="p-6 space-y-4">
             {/* Action type selection */}
             <div>
-              <label className="text-xs text-white/40 mb-2 block">
+              <label className="text-xs text-slate-900 dark:text-slate-100 mb-2 block">
                 Action Type
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -137,26 +137,22 @@ export default function ProposeActionModal({
                   <button
                     key={at.type}
                     onClick={() => setSelectedType(at.type)}
-                    className={`flex items-start gap-2 p-3 rounded-lg border text-left transition-colors ${
-                      selectedType === at.type
-                        ? "border-amber-500/30 bg-amber-500/10"
-                        : "border-white/5 bg-white/[0.02] hover:bg-white/[0.04]"
-                    }`}
+                    className={`flex items-start gap-2 p-3 rounded-xl border text-left transition-colors ${ selectedType === at.type ? "border-amber-500/30 bg-amber-500/10" : "border-white/5 bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border-l-4 border-indigo-500 hover:bg-white dark:bg-card/[0.04]" }`}
                   >
                     <span
                       className={
                         selectedType === at.type
                           ? "text-amber-400"
-                          : "text-white/30"
+                          : "text-slate-900"
                       }
                     >
                       {at.icon}
                     </span>
                     <div>
-                      <p className="text-[11px] font-medium text-white">
+                      <p className="text-[11px] font-medium text-slate-900 dark:text-slate-100">
                         {at.label}
                       </p>
-                      <p className="text-[9px] text-white/30">{at.description}</p>
+                      <p className="text-[9px] text-slate-900 dark:text-slate-100">{at.description}</p>
                     </div>
                   </button>
                 ))}
@@ -165,7 +161,7 @@ export default function ProposeActionModal({
 
             {/* Title */}
             <div>
-              <label className="text-xs text-white/40 mb-1.5 block">
+              <label className="text-xs text-slate-900 dark:text-slate-100 mb-1.5 block">
                 Title
               </label>
               <input
@@ -173,14 +169,14 @@ export default function ProposeActionModal({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g., Demand refund for delayed possession"
-                className="w-full px-3 py-2 text-xs bg-white/[0.03] border border-white/10 rounded-lg text-white placeholder:text-white/20 focus:outline-none focus:border-amber-500/30"
+                className="w-full px-3 py-2 text-xs bg-white dark:bg-card/[0.03] border border-white/10 rounded-xl text-slate-900 dark:text-slate-100 placeholder:text-slate-900 dark:text-slate-100 focus:outline-none focus:border-amber-500/30"
                 maxLength={200}
               />
             </div>
 
             {/* Description */}
             <div>
-              <label className="text-xs text-white/40 mb-1.5 block">
+              <label className="text-xs text-slate-900 dark:text-slate-100 mb-1.5 block">
                 Description (optional)
               </label>
               <textarea
@@ -188,7 +184,7 @@ export default function ProposeActionModal({
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Explain why this action is needed and what you hope to achieve..."
                 rows={3}
-                className="w-full px-3 py-2 text-xs bg-white/[0.03] border border-white/10 rounded-lg text-white placeholder:text-white/20 focus:outline-none focus:border-amber-500/30 resize-none"
+                className="w-full px-3 py-2 text-xs bg-white dark:bg-card/[0.03] border border-white/10 rounded-xl text-slate-900 dark:text-slate-100 placeholder:text-slate-900 dark:text-slate-100 focus:outline-none focus:border-amber-500/30 resize-none"
                 maxLength={1000}
               />
             </div>

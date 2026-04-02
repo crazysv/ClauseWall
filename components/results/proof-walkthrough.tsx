@@ -50,11 +50,11 @@ function getStepType(stepText: string): string {
 function getStepColor(type: string): { bg: string; border: string; text: string; icon: string; badge: string } {
   switch (type) {
     case "extraction":
-      return { bg: "bg-purple-500/5", border: "border-purple-500/20", text: "text-purple-300", icon: "text-purple-400", badge: "bg-purple-500/15 text-purple-400 border-purple-500/30" };
+      return { bg: "bg-indigo-500/5", border: "border-indigo-500/20", text: "text-purple-300", icon: "text-purple-400", badge: "bg-indigo-500/15 text-purple-400 border-indigo-500/30" };
     case "fact":
-      return { bg: "bg-slate-500/5", border: "border-slate-500/20", text: "text-slate-300", icon: "text-slate-400", badge: "bg-slate-500/15 text-slate-400 border-slate-500/30" };
+      return { bg: "bg-slate-500/5", border: "border-slate-500/20", text: "text-slate-700", icon: "text-slate-500", badge: "bg-slate-500/15 text-slate-500 border-slate-500/30" };
     case "rule":
-      return { bg: "bg-blue-500/5", border: "border-blue-500/20", text: "text-blue-300", icon: "text-blue-400", badge: "bg-blue-500/15 text-blue-400 border-blue-500/30" };
+      return { bg: "bg-indigo-500/5", border: "border-blue-500/20", text: "text-blue-300", icon: "text-blue-400", badge: "bg-indigo-500/15 text-blue-400 border-blue-500/30" };
     case "check":
       return { bg: "bg-cyan-500/5", border: "border-cyan-500/20", text: "text-cyan-300", icon: "text-cyan-400", badge: "bg-cyan-500/15 text-cyan-400 border-cyan-500/30" };
     case "comparison":
@@ -64,7 +64,7 @@ function getStepColor(type: string): { bg: string; border: string; text: string;
     case "conclusion":
       return { bg: "bg-red-500/5", border: "border-red-500/20", text: "text-red-300", icon: "text-red-400", badge: "bg-red-500/15 text-red-400 border-red-500/30" };
     default:
-      return { bg: "bg-white/[0.02]", border: "border-white/10", text: "text-gray-300", icon: "text-gray-400", badge: "bg-white/5 text-gray-400 border-white/10" };
+      return { bg: "bg-white shadow-sm border-l-4 border-indigo-500", border: "border-white/10", text: "text-slate-300", icon: "text-slate-400", badge: "bg-white/5 text-slate-400 border-white/10" };
   }
 }
 
@@ -84,7 +84,7 @@ function parseStepContent(step: string): { stepNumber: string; type: string; con
   return { stepNumber: "", type: "", content: step };
 }
 
-export default function ProofWalkthrough({
+export function ProofWalkthrough({
   proofTree,
   eli5,
   currentStep,
@@ -147,7 +147,7 @@ export default function ProofWalkthrough({
               }}
               role="button"
               tabIndex={0}
-              className={`w-full text-left p-4 rounded-xl border transition-all ${colors.bg} ${colors.border} ${
+              className={`w-full text-left p-6 rounded-xl border transition-all ${colors.bg} ${colors.border} ${
                 isActive
                   ? "ring-2 ring-cyan-500/50 shadow-lg shadow-cyan-500/5"
                   : isCompleted
@@ -160,7 +160,7 @@ export default function ProofWalkthrough({
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-start gap-3 min-w-0">
                   {/* Step number + icon */}
-                  <div className={`flex-shrink-0 flex items-center justify-center h-8 w-8 rounded-lg ${isActive ? "bg-cyan-500/20" : "bg-white/5"}`}>
+                  <div className={`flex-shrink-0 flex items-center justify-center h-8 w-8 rounded-xl ${isActive ? "bg-cyan-500/20" : "bg-white dark:bg-card/5"}`}>
                     <span className={isActive ? "text-cyan-400" : colors.icon}>
                       {getStepIcon(step)}
                     </span>
@@ -170,7 +170,7 @@ export default function ProofWalkthrough({
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
                       {parsed.stepNumber && (
-                        <span className="text-[10px] text-gray-600 font-mono">
+                        <span className="text-[10px] text-slate-600 dark:text-slate-400 font-mono">
                           {parsed.stepNumber}
                         </span>
                       )}
@@ -180,7 +180,7 @@ export default function ProofWalkthrough({
                         </Badge>
                       )}
                     </div>
-                    <p className={`text-sm leading-relaxed ${isActive ? "text-gray-200" : colors.text}`}>
+                    <p className={`text-sm leading-relaxed ${isActive ? "text-slate-200" : colors.text}`}>
                       {parsed.content}
                     </p>
                   </div>
@@ -193,7 +193,7 @@ export default function ProofWalkthrough({
                       e.stopPropagation();
                       toggleExpand(index);
                     }}
-                    className="text-gray-600 hover:text-gray-400 flex-shrink-0 p-1 rounded hover:bg-white/5 transition-colors"
+                    className="text-slate-600 dark:text-slate-400 hover:text-slate-400 flex-shrink-0 p-1 rounded hover:bg-white dark:bg-slate-900/5 transition-colors"
                   >
                     {isExpanded ? (
                       <ChevronUp className="h-4 w-4" />
@@ -210,7 +210,7 @@ export default function ProofWalkthrough({
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
-                  className="mt-3 pt-3 border-t border-white/5 text-xs text-gray-500 space-y-1"
+                  className="mt-3 pt-3 border-t border-white/5 text-xs text-slate-500 dark:text-slate-400 space-y-1"
                 >
                   {matchingNode.metadata.statute && (
                     <p>📜 Statute: {matchingNode.metadata.statute}</p>

@@ -88,9 +88,6 @@ export async function extractPromises(
     const chunks = chunkText(text, CHUNK_SIZE);
     const allPromises: ExtractedPromise[] = [];
 
-    console.log(
-      `[ClauseWall] Promise Extractor: Processing ${chunks.length} chunk(s) from ${evidenceSource.type}`
-    );
 
     for (let i = 0; i < chunks.length; i++) {
       const chunk = chunks[i];
@@ -124,9 +121,7 @@ export async function extractPromises(
           });
         }
 
-        console.log(
-          `[ClauseWall] Promise Extractor: Chunk ${i + 1}/${chunks.length} → ${promises.length} promises`
-        );
+
       } catch (chunkError) {
         console.error(`[ClauseWall] Promise extraction chunk ${i + 1} failed:`, chunkError);
         // Continue with other chunks
@@ -151,9 +146,6 @@ export async function extractPromises(
       deduplicated = deduplicated.slice(0, MAX_PROMISES_HARD_LIMIT);
     }
 
-    console.log(
-      `[ClauseWall] Promise Extractor: Final ${deduplicated.length} promises (from ${allPromises.length} raw)`
-    );
 
     return deduplicated;
   } catch (error) {

@@ -51,7 +51,6 @@ export async function startAudioRecording(): Promise<{
     audioBitsPerSecond: 32000,
   });
 
-  console.log(`[ClauseWall Audio] Recording with: ${recorder.mimeType}`);
 
   return { stream, recorder };
 }

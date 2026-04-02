@@ -19,18 +19,18 @@ interface ProgressTrackerPanelProps {
 }
 
 const STATUS_CONFIG: Record<NegotiationClauseStatus, {
-  label: string; icon: string; color: string; bg: string;
+  label: string; icon: string; color: string; bg: string; border: string;
 }> = {
-  pending: { label: "Pending", icon: "⏳", color: "text-white/40", bg: "bg-white/5" },
-  negotiating: { label: "Active", icon: "🔄", color: "text-blue-400", bg: "bg-blue-500/10" },
-  won: { label: "Won", icon: "✅", color: "text-green-400", bg: "bg-green-500/10" },
-  conceded: { label: "Conceded", icon: "❌", color: "text-red-400", bg: "bg-red-500/10" },
-  compromised: { label: "Compromise", icon: "🤝", color: "text-yellow-400", bg: "bg-yellow-500/10" },
-  deadlocked: { label: "Deadlock", icon: "🔒", color: "text-orange-400", bg: "bg-orange-500/10" },
-  skipped: { label: "Skipped", icon: "⏭️", color: "text-gray-400", bg: "bg-gray-500/10" },
+  pending: { label: "Pending", icon: "⏳", color: "text-slate-600", bg: "bg-slate-100", border: "border-slate-200" },
+  negotiating: { label: "Active", icon: "🔄", color: "text-indigo-700", bg: "bg-indigo-50", border: "border-indigo-200" },
+  won: { label: "Won", icon: "✅", color: "text-green-700", bg: "bg-green-50", border: "border-green-200" },
+  conceded: { label: "Conceded", icon: "❌", color: "text-red-700", bg: "bg-red-50", border: "border-red-200" },
+  compromised: { label: "Compromise", icon: "🤝", color: "text-yellow-700", bg: "bg-yellow-50", border: "border-yellow-200" },
+  deadlocked: { label: "Deadlock", icon: "🔒", color: "text-orange-700", bg: "bg-orange-50", border: "border-orange-200" },
+  skipped: { label: "Skipped", icon: "⏭️", color: "text-slate-600", bg: "bg-slate-100", border: "border-slate-200" },
 };
 
-export default function ProgressTrackerPanel({ session, onSessionUpdate }: ProgressTrackerPanelProps) {
+export function ProgressTrackerPanel({ session, onSessionUpdate }: ProgressTrackerPanelProps) {
   const [showAddForm, setShowAddForm] = useState(false);
   const [newClauseSummary, setNewClauseSummary] = useState("");
   const [newOriginalTerms, setNewOriginalTerms] = useState("");
@@ -84,64 +84,64 @@ export default function ProgressTrackerPanel({ session, onSessionUpdate }: Progr
   };
 
   const statusActions: { status: NegotiationClauseStatus; icon: React.ReactNode; label: string }[] = [
-    { status: "won", icon: <Check className="w-3.5 h-3.5" />, label: "Won" },
-    { status: "conceded", icon: <X className="w-3.5 h-3.5" />, label: "Lost" },
-    { status: "compromised", icon: <HandshakeIcon className="w-3.5 h-3.5" />, label: "Split" },
-    { status: "deadlocked", icon: <Lock className="w-3.5 h-3.5" />, label: "Stuck" },
-    { status: "skipped", icon: <SkipForward className="w-3.5 h-3.5" />, label: "Skip" },
+    { status: "won", icon: <Check className="w-4 h-4" />, label: "Won" },
+    { status: "conceded", icon: <X className="w-4 h-4" />, label: "Lost" },
+    { status: "compromised", icon: <HandshakeIcon className="w-4 h-4" />, label: "Split" },
+    { status: "deadlocked", icon: <Lock className="w-4 h-4" />, label: "Stuck" },
+    { status: "skipped", icon: <SkipForward className="w-4 h-4" />, label: "Skip" },
   ];
 
   return (
     <div className="space-y-4">
       {/* Score Card */}
-      <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
-        <div className="text-center mb-4">
-          <p className="text-4xl font-bold text-white">
+      <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 p-6">
+        <div className="text-center mb-6">
+          <p className="text-xl md:text-lg md:text-xl lg:text-2xl lg:text-3xl sm:text-lg md:text-xl lg:text-2xl md:text-xl md:text-lg md:text-xl lg:text-2xl lg:text-3xl lg:text-4xl text-balance md:text-5xl text-balance font-black text-slate-900 dark:text-slate-100 tracking-tight">
             {score.win_percentage}
-            <span className="text-lg text-white/30">%</span>
+            <span className="text-lg md:text-xl lg:text-2xl text-slate-400 font-bold ml-1">%</span>
           </p>
-          <p className="text-xs text-white/30 mt-1">Win Rate</p>
+          <p className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-2">Win Rate</p>
         </div>
 
-        <div className="grid grid-cols-5 gap-1 text-center">
+        <div className="grid grid-cols-5 gap-2 text-center divide-x divide-slate-100">
           {[
-            { label: "Won", value: score.won, color: "text-green-400" },
-            { label: "Lost", value: score.conceded, color: "text-red-400" },
-            { label: "Split", value: score.compromised, color: "text-yellow-400" },
-            { label: "Stuck", value: score.deadlocked, color: "text-orange-400" },
-            { label: "Left", value: score.pending, color: "text-white/40" },
+            { label: "Won", value: score.won, color: "text-green-600" },
+            { label: "Lost", value: score.conceded, color: "text-red-600" },
+            { label: "Split", value: score.compromised, color: "text-yellow-600" },
+            { label: "Stuck", value: score.deadlocked, color: "text-orange-600" },
+            { label: "Left", value: score.pending, color: "text-slate-400" },
           ].map((stat) => (
-            <div key={stat.label}>
-              <p className={`text-lg font-bold ${stat.color}`}>{stat.value}</p>
-              <p className="text-[10px] text-white/30">{stat.label}</p>
+            <div key={stat.label} className="flex flex-col items-center justify-center">
+              <p className={`text-lg md:text-xl lg:text-2xl font-black ${stat.color}`}>{stat.value}</p>
+              <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-1">{stat.label}</p>
             </div>
           ))}
         </div>
 
         {/* Win/Loss bar */}
         {score.total_clauses > 0 && (
-          <div className="mt-4 h-2 rounded-full bg-white/5 overflow-hidden flex">
+          <div className="mt-6 h-3 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden flex shadow-inner">
             {score.won > 0 && (
               <div
-                className="h-full bg-green-500 transition-all"
+                className="h-full bg-green-500 transition-all border-r border-green-600/50"
                 style={{ width: `${(score.won / score.total_clauses) * 100}%` }}
               />
             )}
             {score.compromised > 0 && (
               <div
-                className="h-full bg-yellow-500 transition-all"
+                className="h-full bg-yellow-400 transition-all border-r border-yellow-500/50"
                 style={{ width: `${(score.compromised / score.total_clauses) * 100}%` }}
               />
             )}
             {score.conceded > 0 && (
               <div
-                className="h-full bg-red-500 transition-all"
+                className="h-full bg-red-500 transition-all border-r border-red-600/50"
                 style={{ width: `${(score.conceded / score.total_clauses) * 100}%` }}
               />
             )}
             {score.deadlocked > 0 && (
               <div
-                className="h-full bg-orange-500 transition-all"
+                className="h-full bg-orange-500 transition-all border-r border-orange-600/50"
                 style={{ width: `${(score.deadlocked / score.total_clauses) * 100}%` }}
               />
             )}
@@ -153,51 +153,49 @@ export default function ProgressTrackerPanel({ session, onSessionUpdate }: Progr
       {!showAddForm && (
         <button
           onClick={() => setShowAddForm(true)}
-          className="w-full py-3 rounded-xl border border-dashed border-white/10 text-white/30 hover:text-white/60 hover:border-white/20 hover:bg-white/[0.02] transition-all flex items-center justify-center gap-2"
-          style={{ minHeight: "48px" }}
+          className="w-full py-4 rounded-xl border-2 border-dashed border-indigo-200 text-indigo-500 hover:text-indigo-700 hover:border-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 transition-all flex items-center justify-center gap-2 font-bold shadow-sm dark:shadow-slate-900/20"
+          style={{ minHeight: "56px" }}
         >
-          <Plus className="w-5 h-5" />
-          Add Clause to Track
+          <Plus className="w-6 h-6" />
+          Add Tracked Clause
         </button>
       )}
 
       {/* Add Clause Form */}
       {showAddForm && (
-        <div className="rounded-xl border border-indigo-500/20 bg-indigo-500/5 p-4 space-y-3 animate-in fade-in duration-200">
+        <div className="rounded-xl border border-indigo-200 bg-white dark:bg-card shadow-md p-5 space-y-4 animate-in fade-in duration-200 flex flex-col items-center">
           <input
-            placeholder="Clause name (e.g., Security Deposit)"
+            placeholder="Clause Summary (e.g., Notice Period)"
             value={newClauseSummary}
             onChange={(e) => setNewClauseSummary(e.target.value)}
-            className="w-full px-3 py-2.5 text-sm bg-white/[0.03] border border-white/10 rounded-lg text-white placeholder:text-white/20 focus:outline-none focus:border-indigo-500/30"
+            className="w-full px-4 py-3 text-base font-medium bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20"
             style={{ fontSize: "16px" }}
           />
           <input
-            placeholder="Their terms (e.g., 6 months deposit)"
+            placeholder="Their Original Terms (e.g., 6 months notice)"
             value={newOriginalTerms}
             onChange={(e) => setNewOriginalTerms(e.target.value)}
-            className="w-full px-3 py-2.5 text-sm bg-white/[0.03] border border-white/10 rounded-lg text-white placeholder:text-white/20 focus:outline-none focus:border-indigo-500/30"
+            className="w-full px-4 py-3 text-sm font-medium bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20"
             style={{ fontSize: "16px" }}
           />
           <input
-            placeholder="Your ask (e.g., 2 months deposit)"
+            placeholder="Your Goal/Ask (e.g., 2 months notice)"
             value={newYourAsk}
             onChange={(e) => setNewYourAsk(e.target.value)}
-            className="w-full px-3 py-2.5 text-sm bg-white/[0.03] border border-white/10 rounded-lg text-white placeholder:text-white/20 focus:outline-none focus:border-indigo-500/30"
+            className="w-full px-4 py-3 text-sm font-medium bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20"
             style={{ fontSize: "16px" }}
           />
-          <div className="flex gap-2">
+          <div className="flex gap-3 w-full pt-2">
             <button
               onClick={handleAddClause}
               disabled={!newClauseSummary.trim()}
-              className="flex-1 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium disabled:opacity-30 transition-colors"
-              style={{ minHeight: "44px" }}
+              className="flex-1 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold shadow-md disabled:opacity-50 transition-colors"
             >
-              Add Clause
+              Start Tracking
             </button>
             <button
               onClick={() => setShowAddForm(false)}
-              className="px-4 py-2.5 rounded-lg bg-white/5 text-white/40 hover:text-white/60 text-sm transition-colors"
-              style={{ minHeight: "44px" }}
+              className="px-4 md:px-6 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 hover:text-slate-800 dark:text-slate-200 hover:bg-slate-200 font-bold transition-colors"
             >
               Cancel
             </button>
@@ -207,9 +205,9 @@ export default function ProgressTrackerPanel({ session, onSessionUpdate }: Progr
 
       {/* Clause List */}
       {session.clauses.length > 0 && (
-        <div className="space-y-2">
-          <p className="text-xs text-white/20 font-medium px-1">
-            {session.clauses.length} clause{session.clauses.length !== 1 ? "s" : ""} tracked
+        <div className="space-y-3">
+          <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest px-1">
+             Active Tracker ({session.clauses.length})
           </p>
           {session.clauses.map((clause) => {
             const config = STATUS_CONFIG[clause.status] || STATUS_CONFIG.pending;
@@ -217,29 +215,29 @@ export default function ProgressTrackerPanel({ session, onSessionUpdate }: Progr
             return (
               <div
                 key={clause.id}
-                className={`rounded-xl border border-white/5 bg-white/[0.01] p-4 space-y-2`}
+                className={`rounded-xl border bg-white dark:bg-card p-5 space-y-4 shadow-sm dark:shadow-slate-900/20 hover:shadow-md transition-shadow ${config.border} border-l-4`}
               >
-                <div className="flex items-start justify-between gap-2">
+                <div className="flex items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className={`text-xs px-1.5 py-0.5 rounded ${config.bg} ${config.color} font-medium`}>
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className={`inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border ${config.bg} ${config.color} ${config.border}`}>
                         {config.icon} {config.label}
                       </span>
                     </div>
-                    <p className="text-sm font-medium text-white">{clause.clause_summary}</p>
+                    <p className="text-base font-bold text-slate-900 dark:text-slate-100 mb-2">{clause.clause_summary}</p>
                     {clause.original_terms && (
-                      <p className="text-xs text-white/30 mt-1">
-                        Their terms: {clause.original_terms}
+                      <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1">
+                        Their Position: <span className="text-slate-800 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded">{clause.original_terms}</span>
                       </p>
                     )}
                     {clause.your_ask && (
-                      <p className="text-xs text-blue-400/60 mt-0.5">
-                        Your ask: {clause.your_ask}
+                      <p className="text-xs font-semibold text-indigo-500 mt-1.5">
+                        Your Goal: <span className="bg-indigo-50 px-1 py-0.5 rounded text-indigo-700">{clause.your_ask}</span>
                       </p>
                     )}
                     {clause.final_terms && (
-                      <p className="text-xs text-emerald-400/60 mt-0.5">
-                        Final: {clause.final_terms}
+                      <p className="text-xs font-bold text-teal-600 mt-2 p-2 bg-teal-50 border border-teal-100 rounded-lg">
+                        Final Agreement: {clause.final_terms}
                       </p>
                     )}
                   </div>
@@ -247,20 +245,21 @@ export default function ProgressTrackerPanel({ session, onSessionUpdate }: Progr
 
                 {/* Status action buttons */}
                 {clause.status === "pending" || clause.status === "negotiating" ? (
-                  <div className="flex gap-1 flex-wrap">
-                    {statusActions.map((action) => (
+                  <div className="flex gap-2 flex-wrap pt-2 border-t border-slate-100">
+                    {statusActions.map((action) => {
+                       const actionConfig = STATUS_CONFIG[action.status];
+                       return (
                       <button
                         key={action.status}
                         onClick={() => handleStatusChange(clause.id, action.status)}
-                        className={`flex items-center gap-1 px-2 py-1.5 rounded-lg text-[10px] font-medium border border-white/5 hover:bg-white/5 transition-colors ${
-                          STATUS_CONFIG[action.status].color
-                        }`}
-                        style={{ minHeight: "32px" }}
+                        className={`flex flex-1 justify-center items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold border transition-colors bg-white dark:bg-slate-900 hover:${actionConfig.bg} hover:${actionConfig.color} hover:${actionConfig.border} border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400`}
+                        style={{ minHeight: "36px" }}
                       >
                         {action.icon}
                         {action.label}
                       </button>
-                    ))}
+                       )
+                    })}
                   </div>
                 ) : null}
               </div>
@@ -270,31 +269,33 @@ export default function ProgressTrackerPanel({ session, onSessionUpdate }: Progr
       )}
 
       {/* Quick Note */}
-      <div className="relative">
+      <div className="relative mt-8">
         <input
-          placeholder="Quick note..."
+          placeholder="Jot down a quick thought..."
           value={noteText}
           onChange={(e) => setNoteText(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleAddNote()}
-          className="w-full px-4 py-3 pr-12 text-sm bg-white/[0.02] border border-white/5 rounded-xl text-white placeholder:text-white/15 focus:outline-none focus:border-white/10 transition-all"
+          className="w-full px-5 py-4 pr-16 text-sm font-medium bg-white dark:bg-card border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-900/20 rounded-xl text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500/20 transition-all"
           style={{ fontSize: "16px" }}
         />
         <button
           onClick={handleAddNote}
           disabled={!noteText.trim()}
-          className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-lg text-white/20 hover:text-white/40 disabled:opacity-20 transition-colors"
+          className="absolute right-2 top-1/2 -translate-y-1/2 p-2.5 rounded-lg bg-teal-50 hover:bg-teal-100 text-teal-600 disabled:opacity-50 transition-colors font-bold flex items-center justify-center"
         >
-          <ArrowRight className="w-4 h-4" />
+          <ArrowRight className="w-5 h-5" />
         </button>
       </div>
 
       {/* Notes */}
       {session.notes.length > 0 && (
-        <div className="space-y-1">
-          <p className="text-xs text-white/20 font-medium px-1">Notes</p>
-          <div className="max-h-40 overflow-y-auto rounded-xl border border-white/5 bg-white/[0.01] p-3 space-y-1">
+        <div className="space-y-2">
+          <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest px-1">Session Scratchpad</p>
+          <div className="max-h-48 overflow-y-auto rounded-xl border border-slate-200 dark:border-slate-700 shadow-inner bg-slate-50 dark:bg-slate-800 p-4 space-y-2">
             {session.notes.map((note, idx) => (
-              <p key={idx} className="text-xs text-white/40">{note}</p>
+              <div key={idx} className="bg-white dark:bg-card border border-slate-200 dark:border-slate-700 p-3 rounded-lg shadow-sm dark:shadow-slate-900/20">
+                 <p className="text-sm font-medium text-slate-700">{note}</p>
+              </div>
             ))}
           </div>
         </div>
@@ -303,11 +304,11 @@ export default function ProgressTrackerPanel({ session, onSessionUpdate }: Progr
       {/* Export */}
       <button
         onClick={handleExport}
-        className="w-full py-3 rounded-xl border border-white/5 text-white/30 hover:text-white/60 hover:bg-white/[0.02] transition-all flex items-center justify-center gap-2 text-sm"
-        style={{ minHeight: "48px" }}
+        className="w-full py-4 mt-6 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-card text-slate-700 hover:text-indigo-700 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 hover:border-indigo-200 transition-all shadow-sm dark:shadow-slate-900/20 flex items-center justify-center gap-2 text-sm font-bold"
+        style={{ minHeight: "56px" }}
       >
-        <Download className="w-4 h-4" />
-        Export Session Summary
+        <Download className="w-5 h-5" />
+        Download Session Summary
       </button>
     </div>
   );

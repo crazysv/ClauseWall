@@ -25,7 +25,7 @@ interface VideoCardModalProps {
   verificationRate: number;
 }
 
-export default function VideoCardModal({ isOpen, onClose, document: doc, clauses, verificationRate }: VideoCardModalProps) {
+export function VideoCardModal({ isOpen, onClose, document: doc, clauses, verificationRate }: VideoCardModalProps) {
   const [generating, setGenerating] = useState(false);
   const [progress, setProgress] = useState(0);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
@@ -60,7 +60,6 @@ export default function VideoCardModal({ isOpen, onClose, document: doc, clauses
       setVideoUrl(url);
       toast.success("Video generated!");
     } catch (err) {
-      console.error(err);
       toast.error("Failed to generate video");
     }
     setGenerating(false);
@@ -77,10 +76,10 @@ export default function VideoCardModal({ isOpen, onClose, document: doc, clauses
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-gray-900 border-gray-800 max-w-lg">
+      <DialogContent className="bg-slate-900 border-slate-800 max-w-lg">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Video className="h-5 w-5 text-blue-400" />
+            <Video className="h-5 w-5 text-indigo-400" />
             Animated Score Card
           </DialogTitle>
           <DialogDescription>
@@ -89,7 +88,7 @@ export default function VideoCardModal({ isOpen, onClose, document: doc, clauses
         </DialogHeader>
 
         {/* Preview / Generate */}
-        <div className="flex flex-col items-center gap-4 py-4">
+        <div className="flex flex-col items-center gap-6 py-4">
           {videoUrl ? (
             <video
               src={videoUrl}
@@ -102,22 +101,22 @@ export default function VideoCardModal({ isOpen, onClose, document: doc, clauses
             />
           ) : generating ? (
             <div className="w-full max-w-xs space-y-4 text-center py-8">
-              <Loader2 className="h-10 w-10 text-blue-400 animate-spin mx-auto" />
-              <p className="text-sm text-gray-400">Rendering video...</p>
+              <Loader2 className="h-10 w-10 text-indigo-400 animate-spin mx-auto" />
+              <p className="text-sm text-slate-400">Rendering video...</p>
               <Progress value={progress} className="h-2" />
-              <p className="text-xs text-gray-500">{progress}%</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">{progress}%</p>
             </div>
           ) : (
             <div
-              className="flex flex-col items-center justify-center gap-4 rounded-xl bg-white/5 border border-white/10 py-12 px-8 cursor-pointer hover:bg-white/[0.07] transition-colors"
+              className="flex flex-col items-center justify-center gap-6 rounded-xl bg-indigo-50/50 border border-white/10 py-6 md:py-8 lg:py-12 px-4 md:px-4 md:px-6 lg:px-8 cursor-pointer hover:bg-white dark:bg-card/[0.07] transition-colors"
               onClick={handleGenerate}
               style={{ width: "100%", maxWidth: 360 }}
             >
-              <div className="h-16 w-16 rounded-full bg-blue-500/10 flex items-center justify-center">
-                <Play className="h-8 w-8 text-blue-400 ml-1" />
+              <div className="h-16 w-16 rounded-full bg-indigo-500/10 flex items-center justify-center">
+                <Play className="h-8 w-8 text-indigo-400 ml-1" />
               </div>
-              <p className="text-sm text-gray-300 font-medium">Click to generate animated video</p>
-              <p className="text-xs text-gray-500">~4 second animation • WebM format</p>
+              <p className="text-sm text-slate-300 font-medium">Click to generate animated video</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">~4 second animation • WebM format</p>
             </div>
           )}
         </div>
@@ -126,7 +125,7 @@ export default function VideoCardModal({ isOpen, onClose, document: doc, clauses
         <div className="flex gap-2">
           {videoUrl ? (
             <>
-              <Button onClick={handleDownload} className="flex-1 gap-2 bg-blue-600 hover:bg-blue-700">
+              <Button onClick={handleDownload} className="flex-1 gap-2 bg-indigo-600 hover:bg-indigo-700">
                 <Download className="h-4 w-4" />
                 Download Video
               </Button>
@@ -136,14 +135,14 @@ export default function VideoCardModal({ isOpen, onClose, document: doc, clauses
               </Button>
             </>
           ) : !generating ? (
-            <Button onClick={handleGenerate} className="w-full gap-2 bg-blue-600 hover:bg-blue-700">
+            <Button onClick={handleGenerate} className="w-full gap-2 bg-indigo-600 hover:bg-indigo-700">
               <Video className="h-4 w-4" />
               Generate Video
             </Button>
           ) : null}
         </div>
 
-        <p className="text-[10px] text-gray-600 text-center">
+        <p className="text-[10px] text-slate-600 dark:text-slate-400 text-center">
           Video renders at 1080×1350 resolution. Works best in Chrome/Edge.
         </p>
       </DialogContent>

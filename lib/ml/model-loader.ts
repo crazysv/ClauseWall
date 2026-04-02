@@ -116,7 +116,6 @@ export async function loadModel(): Promise<boolean> {
   loadPromise = (async () => {
     try {
       modelStatus = "loading";
-      console.log("[ClauseWall ML] Loading model...");
 
       const startTime = performance.now();
 
@@ -127,7 +126,6 @@ export async function loadModel(): Promise<boolean> {
       // Set backend to CPU (most compatible, fast enough for our model)
       await tf.setBackend("cpu");
       await tf.ready();
-      console.log("[ClauseWall ML] TF.js ready, backend:", tf.getBackend());
 
       // Load all files in parallel
       const [model, vocab, idf, labels, config] = await Promise.all([
@@ -147,12 +145,6 @@ export async function loadModel(): Promise<boolean> {
 
       const loadTime = performance.now() - startTime;
       modelStatus = "ready";
-      console.log(
-        `[ClauseWall ML] ✅ Model loaded in ${loadTime.toFixed(0)}ms | ` +
-          `Features: ${config.max_features} | ` +
-          `Vocab: ${Object.keys(vocab).length} terms | ` +
-          `Accuracy: ${(config.test_accuracy * 100).toFixed(1)}%`
-      );
 
       return true;
     } catch (error) {
@@ -180,7 +172,7 @@ export async function warmUpModel(): Promise<void> {
     const result = modelInstance.predict(dummyInput);
     result.dispose();
     dummyInput.dispose();
-    console.log("[ClauseWall ML] Model warmed up");
+
   } catch (error) {
     console.warn("[ClauseWall ML] Warm-up failed:", error);
   }

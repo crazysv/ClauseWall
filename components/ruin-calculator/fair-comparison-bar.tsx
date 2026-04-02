@@ -8,7 +8,7 @@ interface Props {
   comparison: FairComparisonResult;
 }
 
-export default function FairComparisonBar({ comparison }: Props) {
+export function FairComparisonBar({ comparison }: Props) {
   const maxVal = Math.max(comparison.currentP90, comparison.fairP90, 1);
   const currentWidth = (comparison.currentP90 / maxVal) * 100;
   const fairWidth = (comparison.fairP90 / maxVal) * 100;
@@ -25,7 +25,7 @@ export default function FairComparisonBar({ comparison }: Props) {
             {formatINRCompact(comparison.currentP90)}
           </span>
         </div>
-        <div className="w-full h-6 bg-white/5 rounded-full overflow-hidden">
+        <div className="w-full h-6 bg-indigo-50/50 rounded-full overflow-hidden">
           <motion.div
             className="h-full rounded-full bg-gradient-to-r from-red-500/60 to-red-500/40"
             initial={{ width: 0 }}
@@ -45,7 +45,7 @@ export default function FairComparisonBar({ comparison }: Props) {
             {formatINRCompact(comparison.fairP90)}
           </span>
         </div>
-        <div className="w-full h-6 bg-white/5 rounded-full overflow-hidden">
+        <div className="w-full h-6 bg-indigo-50/50 rounded-full overflow-hidden">
           <motion.div
             className="h-full rounded-full bg-gradient-to-r from-green-500/60 to-green-500/40"
             initial={{ width: 0 }}
@@ -61,12 +61,12 @@ export default function FairComparisonBar({ comparison }: Props) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
-          className="p-3 rounded-lg bg-orange-500/5 border border-orange-500/15 text-center"
+          className="p-3 rounded-xl bg-orange-500/5 border border-orange-500/15 text-center"
         >
           <p className="text-sm text-orange-400 font-semibold">
             PREDATORY PREMIUM:{" "}
             {formatINRCompact(comparison.totalPredatoryPremium)}{" "}
-            <span className="text-white/40">
+            <span className="text-slate-900 dark:text-slate-100/40">
               ({Math.round(comparison.excessPercent)}% excess risk)
             </span>
           </p>

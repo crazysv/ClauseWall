@@ -45,7 +45,7 @@ export async function initOCR(
     isInitializing = false;
     onProgress?.(100, "OCR ready");
 
-    console.log("[ClauseWall OCR] ✅ Tesseract worker ready (eng+hin)");
+
     return true;
   } catch (error) {
     console.error("[ClauseWall OCR] Failed to initialize:", error);
@@ -78,7 +78,7 @@ export async function ocrImage(
       return null;
     }
 
-    console.log(`[ClauseWall OCR] Extracted ${text.length} chars`);
+
     onProgress?.(100, "OCR complete");
 
     return text;
@@ -162,9 +162,6 @@ export async function ocrPDF(
     }
 
     onProgress?.(95, "OCR complete!");
-    console.log(
-      `[ClauseWall OCR] ✅ PDF OCR: ${fullText.length} chars from ${pdf.numPages} pages`
-    );
 
     return fullText;
   } catch (error) {
@@ -181,7 +178,7 @@ export async function terminateOCR(): Promise<void> {
     await worker.terminate();
     worker = null;
     isReady = false;
-    console.log("[ClauseWall OCR] Worker terminated");
+
   }
 }
 

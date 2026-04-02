@@ -9,7 +9,7 @@ interface Props {
   percentiles: PercentileData;
 }
 
-export default function ProbabilityCallouts({ statistics, percentiles }: Props) {
+export function ProbabilityCallouts({ statistics, percentiles }: Props) {
   const callouts: {
     icon: string;
     text: string;
@@ -69,11 +69,11 @@ export default function ProbabilityCallouts({ statistics, percentiles }: Props) 
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: i * 0.1 }}
-          className={`p-3 rounded-lg border ${typeStyles[callout.type]}`}
+          className={`p-3 rounded-xl border ${typeStyles[callout.type]}`}
         >
           <p className="text-sm">
             {callout.icon}{" "}
-            <span className="text-white/70">{callout.text}</span>
+            <span className="text-slate-900 dark:text-slate-100/70">{callout.text}</span>
           </p>
         </motion.div>
       ))}

@@ -64,13 +64,9 @@ export function EvidenceUploadZone({
             <button
               key={ct.type}
               onClick={() => setSelectedType(ct.type)}
-              className={`flex flex-col items-center gap-1 p-3 rounded-lg border transition-all text-xs ${
-                isActive
-                  ? "border-blue-500/50 bg-blue-500/10 text-blue-400"
-                  : "border-white/5 bg-white/[0.02] text-muted-foreground hover:bg-white/[0.04] hover:border-white/10"
-              }`}
+              className={`flex flex-col items-center gap-1.5 p-3 rounded-xl border transition-all text-xs font-bold uppercase tracking-widest ${ isActive ? "border-indigo-400 bg-indigo-50 text-indigo-700 shadow-sm dark:shadow-slate-900/20" : "border-slate-200 dark:border-slate-700 bg-white dark:bg-card text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-indigo-300" }`}
             >
-              <Icon className="h-5 w-5" />
+              <Icon className="h-5 w-5 mb-1" />
               <span>{ct.label}</span>
             </button>
           );
@@ -85,12 +81,12 @@ export function EvidenceUploadZone({
             placeholder="https://example.com/terms-of-service"
             value={urlInput}
             onChange={(e) => setUrlInput(e.target.value)}
-            className="w-full rounded-lg bg-white/5 border border-white/10 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-blue-500/50"
+            className="w-full rounded-xl bg-white dark:bg-card border border-slate-200 dark:border-slate-700 px-4 py-3 text-sm font-medium text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition-all shadow-sm dark:shadow-slate-900/20"
           />
           <Button
             onClick={() => { if (urlInput) onUpload(selectedType, [], urlInput); }}
             disabled={!urlInput}
-            className="bg-blue-600 hover:bg-blue-700"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-sm dark:shadow-slate-900/20"
           >
             <Globe className="h-4 w-4 mr-2" />
             Archive Page
@@ -103,12 +99,12 @@ export function EvidenceUploadZone({
             placeholder="Enter CIN (e.g., U72900MH2020PTC345678)"
             value={cinInput}
             onChange={(e) => setCinInput(e.target.value.toUpperCase())}
-            className="w-full rounded-lg bg-white/5 border border-white/10 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-blue-500/50 font-mono"
+            className="w-full rounded-xl bg-white dark:bg-card border border-slate-200 dark:border-slate-700 px-4 py-3 text-sm font-medium text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition-all shadow-sm dark:shadow-slate-900/20 font-mono uppercase"
           />
           <Button
             onClick={() => { if (cinInput) onUpload(selectedType, [], cinInput); }}
             disabled={!cinInput}
-            className="bg-orange-600 hover:bg-orange-700"
+            className="bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl shadow-sm dark:shadow-slate-900/20"
           >
             <Building2 className="h-4 w-4 mr-2" />
             Lookup Company
@@ -117,18 +113,14 @@ export function EvidenceUploadZone({
       ) : (
         <div
           {...getRootProps()}
-          className={`relative rounded-xl border-2 border-dashed p-8 text-center transition-all cursor-pointer ${
-            isDragActive
-              ? "border-blue-500 bg-blue-500/5"
-              : "border-white/10 bg-white/[0.01] hover:border-white/20 hover:bg-white/[0.03]"
-          }`}
+          className={`relative rounded-2xl border-2 border-dashed p-10 text-center transition-all cursor-pointer ${ isDragActive ? "border-indigo-400 bg-indigo-50" : "border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 hover:border-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/30/30" }`}
         >
           <input {...getInputProps()} />
-          <Upload className={`h-8 w-8 mx-auto mb-3 ${isDragActive ? "text-blue-400" : "text-muted-foreground"}`} />
-          <p className="text-sm text-foreground font-medium">
+          <Upload className={`h-8 w-8 mx-auto mb-4 ${isDragActive ? "text-indigo-500" : "text-slate-400"}`} />
+          <p className="text-sm font-black text-slate-800 dark:text-slate-200 tracking-tight">
             {isDragActive ? "Drop files here..." : "Drag & drop files here"}
           </p>
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-xs font-bold text-slate-500 dark:text-slate-400 mt-2 uppercase tracking-widest">
             or click to browse • {selectedMeta?.description}
           </p>
         </div>

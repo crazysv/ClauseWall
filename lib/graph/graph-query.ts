@@ -543,8 +543,6 @@ export async function enrichDocumentClauses(
     enriched++;
   }
 
-  console.log(
-    `[ClauseWall] [Graph] Enriched ${enriched}/${clauses.length} clauses for doc ${documentId}`
-  );
+
   return enriched;
 }

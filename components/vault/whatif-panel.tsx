@@ -51,11 +51,11 @@ const SCENARIO_ICONS: Record<string, typeof Zap> = {
 };
 
 const SEVERITY_CONFIG = {
-  devastating: { color: "text-red-400", bg: "bg-red-500/10", border: "border-red-500/20" },
-  severe: { color: "text-orange-400", bg: "bg-orange-500/10", border: "border-orange-500/20" },
-  moderate: { color: "text-yellow-400", bg: "bg-yellow-500/10", border: "border-yellow-500/20" },
-  manageable: { color: "text-blue-400", bg: "bg-blue-500/10", border: "border-blue-500/20" },
-  minimal: { color: "text-green-400", bg: "bg-green-500/10", border: "border-green-500/20" },
+  devastating: { color: "text-red-700", bg: "bg-red-50", border: "border-red-200" },
+  severe: { color: "text-orange-700", bg: "bg-orange-50", border: "border-orange-200" },
+  moderate: { color: "text-amber-700", bg: "bg-amber-50", border: "border-amber-200" },
+  manageable: { color: "text-blue-700", bg: "bg-blue-50", border: "border-blue-200" },
+  minimal: { color: "text-emerald-700", bg: "bg-emerald-50", border: "border-emerald-200" },
 };
 
 const AVAILABLE_SCENARIOS: { value: WhatIfScenario; label: string }[] = [
@@ -76,7 +76,7 @@ const AVAILABLE_SCENARIOS: { value: WhatIfScenario; label: string }[] = [
   { value: "natural_disaster", label: "Natural Disaster" },
 ];
 
-export default function WhatIfPanel({
+export function WhatIfPanel({
   existingResults,
   documentIds,
 }: WhatIfPanelProps) {
@@ -117,7 +117,6 @@ export default function WhatIfPanel({
       setExpandedScenario(scenario);
       toast.success(`"${data.scenario_title}" simulated!`);
     } catch (err) {
-      console.error("[Vault] What-if failed:", err);
       toast.error("Scenario simulation failed. Please try again.");
     } finally {
       setIsRunning(false);
@@ -134,11 +133,11 @@ export default function WhatIfPanel({
     <div className="space-y-6">
       {/* Run New Scenario */}
       <div>
-        <h4 className="text-sm font-semibold text-white/50 mb-3 flex items-center gap-2">
-          <Zap className="w-4 h-4" />
+        <h4 className="text-base font-black text-slate-900 dark:text-slate-100 mb-4 tracking-tight flex items-center gap-2">
+          <Zap className="w-5 h-5 text-indigo-500" />
           Simulate a Scenario
         </h4>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
           {unrunScenarios.map((s) => {
             const Icon = SCENARIO_ICONS[s.value] || Zap;
             const isThisRunning = runningScenario === s.value;
@@ -150,12 +149,12 @@ export default function WhatIfPanel({
                 size="sm"
                 disabled={isRunning}
                 onClick={() => runScenario(s.value)}
-                className="justify-start gap-2 text-xs h-auto py-2 bg-white/[0.02] border-white/10 hover:bg-white/[0.06] text-white/60 hover:text-white"
+                className="justify-start gap-2 text-xs font-bold h-auto py-2.5 bg-white dark:bg-card border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-900/20 text-slate-600 hover:text-slate-900 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all rounded-xl"
               >
                 {isThisRunning ? (
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  <Loader2 className="w-4 h-4 animate-spin text-indigo-500" />
                 ) : (
-                  <Icon className="w-3.5 h-3.5" />
+                  <Icon className="w-4 h-4" />
                 )}
                 <span className="truncate">{s.label}</span>
               </Button>
@@ -166,8 +165,8 @@ export default function WhatIfPanel({
 
       {/* Existing Results */}
       {results.length > 0 && (
-        <div className="space-y-3">
-          <h4 className="text-sm font-semibold text-white/50">
+        <div className="space-y-4 pt-4 border-t border-slate-100">
+          <h4 className="text-base font-black text-slate-900 dark:text-slate-100 tracking-tight">
             Simulation Results
           </h4>
 
@@ -184,39 +183,39 @@ export default function WhatIfPanel({
                 transition={{ delay: index * 0.05 }}
               >
                 <Card
-                  className={`${config.bg} ${config.border} cursor-pointer hover:brightness-110 transition-all`}
+                  className={`bg-white dark:bg-card border-slate-200 dark:border-slate-700 hover:border-indigo-300 shadow-sm dark:shadow-slate-900/20 rounded-2xl cursor-pointer transition-all`}
                   onClick={() =>
                     setExpandedScenario(isExpanded ? null : result.scenario)
                   }
                 >
                   <CardContent className="p-4">
                     {/* Header */}
-                    <div className="flex items-center gap-3">
-                      <div className={`p-2 rounded-lg ${config.bg}`}>
-                        <Icon className={`w-4 h-4 ${config.color}`} />
+                    <div className="flex items-start md:items-center gap-4">
+                      <div className={`p-2.5 rounded-xl ${config.bg}`}>
+                        <Icon className={`w-5 h-5 ${config.color}`} />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h5 className="text-sm font-semibold text-white">
+                        <h5 className="text-base font-black text-slate-900 dark:text-slate-100 leading-tight">
                           {result.scenario_title}
                         </h5>
-                        <div className="flex items-center gap-2 mt-0.5">
-                          <Badge className={`${config.bg} ${config.color} text-[10px] border-0`}>
+                        <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                          <Badge className={`${config.bg} ${config.color} text-[10px] uppercase font-black tracking-widest border-0 px-2 rounded-full`}>
                             {result.overall_severity}
                           </Badge>
-                          <span className="text-[10px] text-white/30">
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest hidden sm:inline-block">
                             Protection: {result.protection_score}/100
                           </span>
                         </div>
                       </div>
-                      <div className="text-right flex-shrink-0">
+                      <div className="text-right flex-shrink-0 flex flex-col items-end">
                         {result.total_financial_impact > 0 && (
-                          <p className="text-sm font-bold text-red-400">
+                          <p className="text-base font-black text-red-700 tracking-tight">
                             ₹{result.total_financial_impact.toLocaleString("en-IN")}
                           </p>
                         )}
                         <ChevronDown
-                          className={`w-4 h-4 text-white/30 transition-transform mt-1 ml-auto ${
-                            isExpanded ? "rotate-180" : ""
+                          className={`w-5 h-5 text-slate-400 transition-transform mt-1 ${
+                            isExpanded ? "rotate-180 text-indigo-500" : ""
                           }`}
                         />
                       </div>
@@ -232,19 +231,19 @@ export default function WhatIfPanel({
                           transition={{ duration: 0.2 }}
                           className="overflow-hidden"
                         >
-                          <div className="mt-4 space-y-4">
+                          <div className="mt-6 space-y-6">
                             {/* Affected Contracts */}
                             <div>
-                              <p className="text-[10px] text-white/40 mb-2 uppercase tracking-wider">
+                              <p className="text-[10px] text-slate-400 font-bold mb-3 uppercase tracking-widest pl-1">
                                 Contract Impact
                               </p>
-                              <div className="space-y-2">
+                              <div className="space-y-3">
                                 {result.affected_contracts.map((c, i) => {
                                   const impactColors: Record<string, string> = {
-                                    terminated: "text-red-400 bg-red-500/10",
-                                    breached: "text-orange-400 bg-orange-500/10",
-                                    modified: "text-yellow-400 bg-yellow-500/10",
-                                    unaffected: "text-green-400 bg-green-500/10",
+                                    terminated: "text-red-700 bg-red-50",
+                                    breached: "text-orange-700 bg-orange-50",
+                                    modified: "text-yellow-700 bg-yellow-50",
+                                    unaffected: "text-emerald-700 bg-emerald-50",
                                   };
                                   const impactColor =
                                     impactColors[c.impact_level] || impactColors.modified;
@@ -252,17 +251,17 @@ export default function WhatIfPanel({
                                   return (
                                     <div
                                       key={i}
-                                      className="rounded-lg bg-white/[0.03] border border-white/5 p-3"
+                                      className="rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4"
                                     >
-                                      <div className="flex items-center gap-2 mb-1">
-                                        <span className="text-xs text-white/60">
+                                      <div className="flex items-center gap-2 mb-2">
+                                        <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
                                           {c.document_title}
                                         </span>
-                                        <Badge className={`${impactColor} text-[9px] border-0`}>
+                                        <Badge className={`${impactColor} text-[9px] uppercase font-black border-0 px-2 rounded-full`}>
                                           {c.impact_level}
                                         </Badge>
                                       </div>
-                                      <p className="text-xs text-white/50">
+                                      <p className="text-sm font-medium text-slate-800 dark:text-slate-200 leading-relaxed">
                                         {c.impact_description}
                                       </p>
                                     </div>
@@ -273,17 +272,17 @@ export default function WhatIfPanel({
 
                             {/* Immediate Actions */}
                             {result.immediate_actions.length > 0 && (
-                              <div className="rounded-lg bg-indigo-500/5 border border-indigo-500/10 p-3">
-                                <p className="text-[10px] text-indigo-400 font-medium mb-2">
+                              <div className="rounded-xl bg-indigo-50 border border-indigo-200 p-4">
+                                <p className="text-[10px] text-indigo-700 font-black uppercase tracking-widest mb-3">
                                   ⚡ Immediate Actions
                                 </p>
-                                <ul className="space-y-1">
+                                <ul className="space-y-2">
                                   {result.immediate_actions.map((a, i) => (
                                     <li
                                       key={i}
-                                      className="text-xs text-white/60 flex items-start gap-2"
+                                      className="text-sm font-medium text-indigo-950/80 flex items-start gap-2"
                                     >
-                                      <span className="text-indigo-400 mt-0.5">•</span>
+                                      <span className="text-indigo-600 font-black mt-0.5">•</span>
                                       {a}
                                     </li>
                                   ))}
@@ -294,17 +293,17 @@ export default function WhatIfPanel({
                             {/* Timeline */}
                             {result.timeline.length > 0 && (
                               <div>
-                                <p className="text-[10px] text-white/40 mb-2 uppercase tracking-wider">
-                                  Timeline
+                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 pl-1">
+                                  Timeline Roadmap
                                 </p>
-                                <div className="space-y-1 pl-3 border-l-2 border-white/10">
+                                <div className="space-y-3 pl-4 border-l-2 border-slate-200 dark:border-slate-700 ml-1">
                                   {result.timeline.map((step, i) => (
-                                    <div key={i} className="relative pl-4 py-1.5">
-                                      <div className="absolute -left-[5px] top-3 w-2 h-2 rounded-full bg-white/20" />
-                                      <p className="text-[10px] text-white/30">
+                                    <div key={i} className="relative pl-6 py-1">
+                                      <div className="absolute -left-[7px] top-2 w-3 h-3 rounded-full bg-slate-100 dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600" />
+                                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">
                                         Day {step.day}
                                       </p>
-                                      <p className="text-xs text-white/70">
+                                      <p className="text-sm font-medium text-slate-800 dark:text-slate-200 leading-relaxed">
                                         {step.title}
                                       </p>
                                     </div>

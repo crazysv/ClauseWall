@@ -9,47 +9,41 @@ interface StateMachineCTAProps {
   onExplore: () => void;
 }
 
-export default function StateMachineCTA({ report, onExplore }: StateMachineCTAProps) {
+export function StateMachineCTA({ report, onExplore }: StateMachineCTAProps) {
   if (!report) return null;
 
   const sm = report.stateMachine;
   const trapCount = report.trapAnalysis.length;
+  
+  const isDanger = trapCount > 0;
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: 0.15 }}
-      className={`rounded-xl border p-4 cursor-pointer transition-all hover:scale-[1.01] ${
-        trapCount > 0
-          ? "border-red-500/20 bg-red-500/[0.03] hover:bg-red-500/[0.06]"
-          : "border-emerald-500/20 bg-emerald-500/[0.03] hover:bg-emerald-500/[0.06]"
-      }`}
+      transition={{ duration: 0.3, delay: 0.1 }}
+      className={`mt-4 p-6 rounded-xl bg-white dark:bg-card border border-slate-200 dark:border-slate-700 border-l-4 shadow-sm dark:shadow-slate-900/20 hover:shadow-md transition-all cursor-pointer group ${isDanger ? 'border-l-rose-500' : 'border-l-emerald-500'}`}
       onClick={onExplore}
     >
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
         <div className="flex items-center gap-3">
-          <div className={`p-2 rounded-lg ${
-            trapCount > 0 ? "bg-red-500/10" : "bg-emerald-500/10"
-          }`}>
-            <GitBranch className={`h-4 w-4 ${
-              trapCount > 0 ? "text-red-400" : "text-emerald-400"
-            }`} />
+          <div className={`p-2.5 rounded-xl flex-shrink-0 group-hover:bg-opacity-80 transition-colors ${isDanger ? 'bg-rose-50' : 'bg-emerald-50'}`}>
+            <GitBranch className={`h-6 w-6 ${isDanger ? 'text-rose-500' : 'text-emerald-500'}`} />
           </div>
           <div>
-            <h4 className="text-sm font-semibold">
-              🔄 Your Contract Has {sm.metadata.totalStates} States{" "}
-              {trapCount > 0 && (
-                <span className="text-red-400">and {trapCount} Trap{trapCount > 1 ? "s" : ""}</span>
-              )}
-            </h4>
-            <p className="text-xs text-gray-400 mt-0.5">
-              See how your contract executes over time and where you could get trapped.
+            <p className="font-extrabold text-sm text-slate-900 dark:text-slate-100">
+               State Machine Analyzer
             </p>
-            <p className="text-[10px] text-white/30 mt-0.5">Find hidden trap paths in your contract&apos;s timeline</p>
+            <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5 max-w-lg line-clamp-1">
+               {sm.metadata.totalStates} execution paths mapped. {trapCount > 0 ? <span className="text-rose-600 font-bold">{trapCount} dead-end traps isolated.</span> : <span className="text-emerald-600 font-bold">No structural traps found.</span>}
+            </p>
           </div>
         </div>
-        <ArrowRight className="h-4 w-4 text-gray-500 flex-shrink-0" />
+        <div className="w-full sm:w-auto flex-shrink-0">
+           <button className="w-full sm:w-auto px-4 py-2 sm:py-1.5 rounded-full border-2 border-teal-200 text-teal-700 bg-white dark:bg-card group-hover:bg-teal-50 group-hover:border-teal-300 text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm dark:shadow-slate-900/20">
+              Explore Branches <ArrowRight className="h-3.5 w-3.5 text-teal-600 group-hover:translate-x-1 transition-transform" />
+           </button>
+        </div>
       </div>
     </motion.div>
   );

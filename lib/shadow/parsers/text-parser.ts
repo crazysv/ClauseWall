@@ -111,7 +111,7 @@ export function parseGenericText(
     // Common property listing fields
     const priceMatch = cleaned.match(/(?:price|rent|₹|rs\.?|inr)\s*[:\-]?\s*([\d,]+(?:\.\d+)?(?:\s*(?:lakhs?|lacs?|cr|crore|k|per\s*month|\/\s*month|pm))?)/i);
     if (priceMatch) {
-      console.log(`[ClauseWall] Property listing: price detected = ${priceMatch[1]}`);
+
     }
   }
 
@@ -119,7 +119,7 @@ export function parseGenericText(
   if (type === 'job_posting') {
     const salaryMatch = cleaned.match(/(?:salary|ctc|compensation|package)\s*[:\-]?\s*([\d,]+(?:\.\d+)?(?:\s*(?:lakhs?|lacs?|lpa|per\s*annum|pa|\/\s*year))?)/i);
     if (salaryMatch) {
-      console.log(`[ClauseWall] Job posting: salary detected = ${salaryMatch[1]}`);
+
     }
   }
 
@@ -133,9 +133,6 @@ export function parseGenericText(
     processing_time_ms: Date.now() - startTime,
   };
 
-  console.log(
-    `[ClauseWall] Text parser: ${words.length} words, lang=${language}, dates=${dates.length}, type=${type}`
-  );
 
   return { cleanedText: cleaned, metadata };
 }

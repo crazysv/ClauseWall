@@ -36,25 +36,19 @@ export async function extractTextFromPDFClient(
     const text = await extractTextLayer(file);
 
     if (text && text.length >= 50) {
-      console.log(
-        `[ClauseWall] PDF text layer: ${text.length} chars`
-      );
+
       return text;
     }
 
     // Step 2: Text layer empty/short — likely scanned PDF, try OCR
-    console.log(
-      "[ClauseWall] PDF text layer empty — attempting OCR..."
-    );
+
     onProgress?.(5, "Scanned PDF detected. Starting OCR...");
 
     const { ocrPDF } = await import("@/lib/ocr");
     const ocrText = await ocrPDF(file, onProgress);
 
     if (ocrText) {
-      console.log(
-        `[ClauseWall] PDF OCR: ${ocrText.length} chars`
-      );
+
       return ocrText;
     }
 

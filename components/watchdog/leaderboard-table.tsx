@@ -4,19 +4,14 @@ import { useState } from "react";
 import Link from "next/link";
 import { ArrowUpDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import TosScoreBadge from "./tos-score-badge";
-import TrendIndicator from "./trend-indicator";
+import { TosScoreBadge } from "./tos-score-badge";
+import { TrendIndicator } from "./trend-indicator";
 import type { MonitoredCompany } from "@/types";
-
-const SECTOR_LABELS: Record<string, string> = {
-  ride_hailing: "Ride-hailing", food_delivery: "Food Delivery", ecommerce: "E-commerce",
-  payments: "Payments", social: "Social", streaming: "Streaming", travel: "Travel",
-  banking: "Banking", telecom: "Telecom", edtech: "EdTech", government: "Government", other: "Other",
-};
+import { SECTOR_LABELS } from "./watchdog-constants";
 
 type SortKey = "score" | "name" | "changes";
 
-export default function LeaderboardTable({
+export function LeaderboardTable({
   companies,
 }: {
   companies: MonitoredCompany[];
@@ -52,10 +47,11 @@ export default function LeaderboardTable({
   const SortHeader = ({ label, sortKey }: { label: string; sortKey: SortKey }) => (
     <button
       onClick={() => toggleSort(sortKey)}
-      className="flex items-center gap-1 text-xs font-semibold text-muted-foreground uppercase tracking-wider hover:text-foreground transition-colors"
+      aria-label={`Sort by ${label}`}
+      className="flex items-center gap-1.5 text-[10px] font-bold text-slate-500 uppercase tracking-widest hover:text-slate-900 dark:text-slate-100 transition-colors"
     >
       {label}
-      <ArrowUpDown className="h-3 w-3" />
+      <ArrowUpDown className="h-3 w-3 text-slate-400" />
     </button>
   );
 
@@ -63,23 +59,23 @@ export default function LeaderboardTable({
     <div className="overflow-x-auto">
       <table className="w-full">
         <thead>
-          <tr className="border-b border-gray-800">
-            <th className="text-left py-3 px-4 w-12">
-              <span className="text-xs font-semibold text-muted-foreground">#</span>
+          <tr className="border-b border-slate-200 dark:border-slate-700">
+            <th className="text-left py-4 px-4 w-12 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
+              #
             </th>
-            <th className="text-left py-3 px-4">
+            <th className="text-left py-4 px-4">
               <SortHeader label="Company" sortKey="name" />
             </th>
-            <th className="text-left py-3 px-4 hidden sm:table-cell">
-              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Sector</span>
+            <th className="text-left py-4 px-4 hidden sm:table-cell text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
+              Sector
             </th>
-            <th className="text-center py-3 px-4">
+            <th className="text-center py-4 px-4">
               <SortHeader label="Score" sortKey="score" />
             </th>
-            <th className="text-center py-3 px-4 hidden sm:table-cell">
-              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Trend</span>
+            <th className="text-center py-4 px-4 hidden sm:table-cell text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
+              Trend
             </th>
-            <th className="text-center py-3 px-4 hidden md:table-cell">
+            <th className="text-center py-4 px-4 hidden md:table-cell">
               <SortHeader label="Changes" sortKey="changes" />
             </th>
           </tr>
@@ -92,38 +88,38 @@ export default function LeaderboardTable({
             return (
               <tr
                 key={company.id}
-                className="border-b border-gray-800/50 hover:bg-white/[0.02] transition-colors"
+                className="border-b border-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800 dark:bg-slate-800 transition-colors"
               >
-                <td className="py-3 px-4 text-center">
+                <td className="py-4 px-4 text-center">
                   {medal ? (
-                    <span className="text-lg">{medal}</span>
+                    <span className="text-lg md:text-xl lg:text-2xl drop-shadow-sm dark:shadow-slate-900/20 leading-none">{medal}</span>
                   ) : (
-                    <span className="text-sm text-muted-foreground">{rank}</span>
+                    <span className="text-sm font-bold text-slate-400">{rank}</span>
                   )}
                 </td>
-                <td className="py-3 px-4">
+                <td className="py-4 px-4">
                   <Link
                     href={`/watchdog/companies/${company.slug}`}
-                    className="font-medium hover:text-blue-400 transition-colors"
+                    className="font-black text-slate-900 dark:text-slate-100 tracking-tight hover:text-indigo-600 transition-colors"
                   >
                     {company.name}
                   </Link>
                 </td>
-                <td className="py-3 px-4 hidden sm:table-cell">
-                  <Badge variant="outline" className="text-[10px] border-white/10">
+                <td className="py-4 px-4 hidden sm:table-cell">
+                  <Badge variant="outline" className="text-[10px] bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700 font-bold uppercase tracking-widest">
                     {SECTOR_LABELS[company.sector] || company.sector}
                   </Badge>
                 </td>
-                <td className="py-3 px-4 text-center">
+                <td className="py-4 px-4 text-center">
                   <TosScoreBadge score={company.current_tos_score} />
                 </td>
-                <td className="py-3 px-4 hidden sm:table-cell">
+                <td className="py-4 px-4 hidden sm:table-cell">
                   <div className="flex justify-center">
                     <TrendIndicator trend={company.score_trend} />
                   </div>
                 </td>
-                <td className="py-3 px-4 text-center hidden md:table-cell">
-                  <span className="text-sm text-muted-foreground">{company.total_changes}</span>
+                <td className="py-4 px-4 text-center hidden md:table-cell">
+                  <span className="text-sm font-bold text-slate-500 dark:text-slate-400">{company.total_changes}</span>
                 </td>
               </tr>
             );

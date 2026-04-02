@@ -256,15 +256,10 @@ export async function analyzeImpact(
   const affectedDocs = await findAffectedDocuments(change);
 
   if (affectedDocs.length === 0) {
-    console.log(
-      `[ImpactAnalyzer] No affected contracts for "${change.title}"`
-    );
+
     return [];
   }
 
-  console.log(
-    `[ImpactAnalyzer] ${affectedDocs.length} documents affected by "${change.title}"`
-  );
 
   // Step 2: Analyze impact per document (max 5 per run)
   const docsToAnalyze = affectedDocs.slice(0, 5);
@@ -286,9 +281,7 @@ export async function analyzeImpact(
           if (error) {
             // Unique constraint = already analyzed
             if (error.code === "23505") {
-              console.log(
-                `[ImpactAnalyzer]   ⏭️ Impact already exists for doc ${doc.document_id}, ${impact.clause_type}`
-              );
+
             } else {
               console.warn(
                 `[ImpactAnalyzer]   ⚠️ Insert failed:`,
@@ -339,13 +332,10 @@ export async function analyzeAllPendingChanges(): Promise<{
       .limit(10);
 
     if (error || !pending || pending.length === 0) {
-      console.log("[ImpactAnalyzer] No pending changes to analyze");
+
       return { analyzed: 0, impacts_created: 0 };
     }
 
-    console.log(
-      `[ImpactAnalyzer] Analyzing ${pending.length} classified changes...`
-    );
 
     for (const change of pending) {
       try {
@@ -359,9 +349,7 @@ export async function analyzeAllPendingChanges(): Promise<{
           .eq("id", change.id);
 
         analyzed++;
-        console.log(
-          `[ImpactAnalyzer]   ✅ "${change.title}" → ${impacts.length} impacts`
-        );
+
       } catch (changeError) {
         console.error(
           `[ImpactAnalyzer]   ❌ "${change.title}":`,

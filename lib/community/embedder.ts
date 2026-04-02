@@ -129,7 +129,7 @@ async function callHFEndpoint(
   if (!response.ok) {
     if (response.status === 503) {
       // Model loading — wait and retry once
-      console.log("[Embedder] Model loading, waiting 10s...");
+
       await new Promise((r) => setTimeout(r, 10000));
       return callHFEndpoint(url, text, token);
     }

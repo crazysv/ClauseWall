@@ -226,7 +226,6 @@ async function requestFreeTSATimestamp(
   serial: string | null;
 } | null> {
   try {
-    console.log("[Proof] Requesting FreeTSA timestamp...");
 
     const tsq = buildTSQ(proofHash);
     
@@ -274,9 +273,6 @@ async function requestFreeTSATimestamp(
 
     const token = tsrBytes.toString("base64");
 
-    console.log(
-      `[Proof] ✅ FreeTSA timestamp: ${tsaTimestamp || "parsed"} serial: ${tsaSerial || "parsed"} (${tsrBytes.length} bytes)`
-    );
 
     return {
       token,
@@ -302,7 +298,7 @@ async function pinToIPFS(proof: AnalysisProof): Promise<string | null> {
   const pinataJwt = process.env.PINATA_JWT;
 
   if (!pinataJwt) {
-    console.log("[Proof] No PINATA_JWT — skipping IPFS pinning");
+
     return null;
   }
 
@@ -333,7 +329,7 @@ async function pinToIPFS(proof: AnalysisProof): Promise<string | null> {
     const data = await response.json();
     const cid = data.IpfsHash;
 
-    console.log(`[Proof] ✅ Pinned to IPFS: ${cid}`);
+
     return cid;
   } catch (error) {
     console.error("[Proof] IPFS pinning error:", error);
@@ -384,7 +380,6 @@ export async function generateAndPinProof(
     const proofHash = await hashProof(proof);
     proof.proof_hash = proofHash;
 
-    console.log(`[Proof] Hash generated: ${proofHash.substring(0, 16)}...`);
 
     // Step 3: FreeTSA timestamp (independent witness)
     let tsaToken: string | null = null;
@@ -410,9 +405,6 @@ export async function generateAndPinProof(
     const cid = await pinToIPFS(proof);
     const verifyUrl = cid ? getIPFSUrl(cid) : null;
 
-    console.log(
-      `[Proof] Complete: hash=${proofHash.substring(0, 16)}... tsa=${tsaSerial || "none"} cid=${cid || "none"}`
-    );
 
     return {
       success: true,

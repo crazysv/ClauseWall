@@ -71,7 +71,7 @@ function getScoreTheme(score: number) {
 
 // ── Component ─────────────────────────────
 
-export default function ComparisonCardModal({
+export function ComparisonCardModal({
   isOpen,
   onClose,
   data,
@@ -158,22 +158,22 @@ export default function ComparisonCardModal({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="bg-gray-900 border-gray-800 max-w-lg max-h-[90vh] overflow-y-auto">
+        <DialogContent className="bg-slate-900 border-slate-800 max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Share2 className="h-5 w-5 text-blue-400" />
+              <Share2 className="h-5 w-5 text-indigo-400" />
               Share Comparison
             </DialogTitle>
             <DialogDescription>Download or share your contract comparison card</DialogDescription>
           </DialogHeader>
 
           {/* Format Toggle */}
-          <div className="flex gap-1.5 p-1 bg-white/5 rounded-lg">
+          <div className="flex gap-1.5 p-1 bg-indigo-50/50 rounded-xl">
             {(Object.keys(FORMATS) as CardFormat[]).map((f) => {
               const Icon = FORMATS[f].icon;
               return (
                 <button key={f} onClick={() => setFormat(f)}
-                  className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-md text-xs font-medium transition-all ${format === f ? "bg-blue-600 text-white" : "text-gray-400 hover:text-gray-200 hover:bg-white/5"}`}>
+                  className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-full text-xs font-medium transition-all ${format === f ? "bg-indigo-600 text-slate-900 dark:text-slate-100" : "text-slate-400 hover:text-slate-200 hover:bg-indigo-50 dark:hover:bg-indigo-950/30/50"}`}>
                   <Icon className="h-3.5 w-3.5" />{FORMATS[f].label}
                 </button>
               );
@@ -183,10 +183,10 @@ export default function ComparisonCardModal({
           {/* Preview */}
           <div className="flex justify-center py-4">
             {generating || !preview ? (
-              <div className="flex flex-col items-center justify-center gap-3 rounded-xl bg-white/5 border border-white/10"
+              <div className="flex flex-col items-center justify-center gap-3 rounded-xl bg-indigo-50/50 border border-white/10"
                 style={{ width: "100%", maxWidth: 360, aspectRatio: `${fmt.width}/${fmt.height}` }}>
-                <Loader2 className="h-8 w-8 text-blue-400 animate-spin" />
-                <p className="text-xs text-gray-400">Generating...</p>
+                <Loader2 className="h-8 w-8 text-indigo-400 animate-spin" />
+                <p className="text-xs text-slate-400">Generating...</p>
               </div>
             ) : (
               <img src={preview} alt="Comparison Card" className="rounded-xl shadow-2xl border border-white/10"
@@ -196,7 +196,7 @@ export default function ComparisonCardModal({
 
           {/* Buttons */}
           <div className="grid grid-cols-2 gap-2">
-            <Button onClick={handleDownload} disabled={!preview} className="gap-2 bg-blue-600 hover:bg-blue-700">
+            <Button onClick={handleDownload} disabled={!preview} className="gap-2 bg-indigo-600 hover:bg-indigo-700">
               <Download className="h-4 w-4" />Download
             </Button>
             <Button onClick={handleWhatsApp} className="gap-2 bg-green-600 hover:bg-green-700">

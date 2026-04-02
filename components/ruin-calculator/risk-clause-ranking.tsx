@@ -18,10 +18,10 @@ const RISK_COLORS: Record<string, { text: string; bg: string; border: string }> 
   safe: { text: "text-green-400", bg: "bg-green-500/10", border: "border-green-500/20" },
 };
 
-export default function RiskClauseRanking({ rankings, documentId }: Props) {
+export function RiskClauseRanking({ rankings, documentId }: Props) {
   if (rankings.length === 0) {
     return (
-      <p className="text-sm text-white/30 text-center py-4">
+      <p className="text-sm text-slate-900 dark:text-slate-100/30 text-center py-4">
         No clauses with measurable financial risk found.
       </p>
     );
@@ -43,10 +43,10 @@ export default function RiskClauseRanking({ rankings, documentId }: Props) {
             <div className="flex items-start justify-between gap-3">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-lg font-bold text-white/30">
+                  <span className="text-lg font-bold text-slate-900 dark:text-slate-100/30">
                     #{i + 1}
                   </span>
-                  <span className="text-sm font-semibold text-white/80">
+                  <span className="text-sm font-semibold text-slate-900 dark:text-slate-100/80">
                     {clause.clauseType.replace(/_/g, " ")}
                   </span>
                   <Badge
@@ -56,21 +56,21 @@ export default function RiskClauseRanking({ rankings, documentId }: Props) {
                     {clause.riskLevel}
                   </Badge>
                 </div>
-                <p className="text-xs text-white/30 line-clamp-1">
+                <p className="text-xs text-slate-900 dark:text-slate-100/30 line-clamp-1">
                   {clause.originalText}
                 </p>
                 <div className="flex items-center gap-4 mt-2 text-xs">
-                  <span className="text-white/50">
+                  <span className="text-slate-900 dark:text-slate-100/50">
                     Expected:{" "}
                     <strong className={colors.text}>
                       {formatINRCompact(clause.expectedCost)}
                     </strong>
                   </span>
-                  <span className="text-white/30">
+                  <span className="text-slate-900 dark:text-slate-100/30">
                     Worst:{" "}
                     <strong>{formatINRCompact(clause.worstCaseCost)}</strong>
                   </span>
-                  <span className="text-white/20">
+                  <span className="text-slate-900 dark:text-slate-100/20">
                     P(trigger): {Math.round(clause.triggerProbability)}%
                   </span>
                 </div>
@@ -78,7 +78,7 @@ export default function RiskClauseRanking({ rankings, documentId }: Props) {
               <div className="flex gap-2 flex-shrink-0">
                 <Link
                   href={`/negotiate/${documentId}`}
-                  className="text-[10px] px-2 py-1 rounded-md bg-white/5 text-blue-400 hover:bg-white/10 transition-colors"
+                  className="text-[10px] px-2 py-1 rounded-md bg-indigo-50/50 text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 border border-indigo-100 transition-colors"
                 >
                   Negotiate
                 </Link>

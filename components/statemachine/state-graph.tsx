@@ -196,7 +196,7 @@ function MobileListView({
   }, [stateMachine.states, positions]);
 
   return (
-    <div className="space-y-2 p-4">
+    <div className="space-y-2 p-6">
       {sortedStates.map((state, idx) => {
         const colors = STATE_COLORS[state.type];
         const icon = STATE_ICONS[state.type];
@@ -207,9 +207,7 @@ function MobileListView({
           <div key={state.id}>
             <button
               onClick={() => onStateClick?.(state)}
-              className={`w-full text-left p-3 rounded-lg border transition-all hover:scale-[1.01] ${
-                isTrap ? "border-red-500/50 bg-red-500/5" : "border-white/10 bg-white/[0.02]"
-              }`}
+              className={`w-full text-left p-3 rounded-xl border transition-all hover:scale-[1.01] ${ isTrap ? "border-red-500/50 bg-red-500/5" : "border-white/10 bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border-l-4 border-indigo-500" }`}
               style={{ borderLeftWidth: 4, borderLeftColor: colors.stroke }}
             >
               <div className="flex items-center gap-2">
@@ -222,7 +220,7 @@ function MobileListView({
                   {state.type.replace(/_/g, " ")}
                 </span>
               </div>
-              <p className="text-xs text-gray-400 mt-1 line-clamp-2">{state.description}</p>
+              <p className="text-xs text-slate-400 mt-1 line-clamp-2">{state.description}</p>
               {state.financialImpact.amount && (
                 <p className="text-xs text-amber-400 mt-1">💰 {state.financialImpact.amount}</p>
               )}
@@ -232,13 +230,13 @@ function MobileListView({
             {outgoing.length > 0 && idx < sortedStates.length - 1 && (
               <div className="pl-6 py-1">
                 {outgoing.slice(0, 2).map((t) => (
-                  <div key={t.id} className="flex items-center gap-2 text-[11px] text-gray-500">
-                    <span className="text-gray-600">↓</span>
+                  <div key={t.id} className="flex items-center gap-2 text-[11px] text-slate-500 dark:text-slate-400">
+                    <span className="text-slate-600 dark:text-slate-400">↓</span>
                     <span className="truncate">{t.trigger}</span>
                   </div>
                 ))}
                 {outgoing.length > 2 && (
-                  <span className="text-[10px] text-gray-600">+{outgoing.length - 2} more</span>
+                  <span className="text-[10px] text-slate-600 dark:text-slate-400">+{outgoing.length - 2} more</span>
                 )}
               </div>
             )}
@@ -279,15 +277,15 @@ function DetailPanel({
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: 20 }}
-        className="absolute right-0 top-0 bottom-0 w-[300px] bg-gray-900/95 backdrop-blur-xl border-l border-white/10 overflow-y-auto z-20"
+        className="absolute right-0 top-0 bottom-0 w-[300px] bg-slate-900/95 backdrop-blur-xl border-l border-white/10 overflow-y-auto z-20"
       >
-        <div className="p-4">
+        <div className="p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <span className="text-lg">{STATE_ICONS[state.type]}</span>
               <h3 className="font-semibold text-sm">{state.name}</h3>
             </div>
-            <button onClick={onClose} className="p-1 hover:bg-white/10 rounded">
+            <button onClick={onClose} className="p-1 hover:bg-white dark:bg-slate-900/10 rounded">
               <X className="h-4 w-4" />
             </button>
           </div>
@@ -299,25 +297,25 @@ function DetailPanel({
             {state.type.replace(/_/g, " ")}
           </span>
 
-          <p className="text-sm text-gray-300 mt-3">{state.description}</p>
+          <p className="text-sm text-slate-300 mt-3">{state.description}</p>
 
           {state.duration && (
-            <div className="mt-3 p-2 rounded-lg bg-white/[0.03] border border-white/5">
-              <p className="text-xs text-gray-400">Duration</p>
+            <div className="mt-3 p-2 rounded-xl bg-white dark:bg-card/[0.03] border border-white/5">
+              <p className="text-xs text-slate-400">Duration</p>
               <p className="text-sm font-medium">{state.duration.value} {state.duration.unit}{state.duration.isFixed ? " (fixed)" : ""}</p>
             </div>
           )}
 
           {state.financialImpact.type !== "none" && (
-            <div className="mt-2 p-2 rounded-lg bg-white/[0.03] border border-white/5">
-              <p className="text-xs text-gray-400">Financial Impact</p>
+            <div className="mt-2 p-2 rounded-xl bg-white dark:bg-card/[0.03] border border-white/5">
+              <p className="text-xs text-slate-400">Financial Impact</p>
               <p className="text-sm font-medium text-amber-400">{state.financialImpact.amount || state.financialImpact.type}</p>
             </div>
           )}
 
           {state.legalIssues && state.legalIssues.length > 0 && (
             <div className="mt-3">
-              <p className="text-xs text-gray-400 mb-1">Legal Issues</p>
+              <p className="text-xs text-slate-400 mb-1">Legal Issues</p>
               {state.legalIssues.map((issue, i) => (
                 <p key={i} className="text-xs text-red-400 mt-0.5">⚖️ {issue}</p>
               ))}
@@ -325,7 +323,7 @@ function DetailPanel({
           )}
 
           {trap && (
-            <div className="mt-3 p-2 rounded-lg bg-red-500/10 border border-red-500/20">
+            <div className="mt-3 p-2 rounded-xl bg-red-500/10 border border-red-500/20">
               <p className="text-xs font-medium text-red-400 mb-1">🪤 Trap State — {trap.severity.toUpperCase()}</p>
               <p className="text-xs text-red-300">{trap.description.substring(0, 150)}</p>
             </div>
@@ -333,11 +331,11 @@ function DetailPanel({
 
           {incoming.length > 0 && (
             <div className="mt-3">
-              <p className="text-xs text-gray-400 mb-1">Incoming ({incoming.length})</p>
+              <p className="text-xs text-slate-400 mb-1">Incoming ({incoming.length})</p>
               {incoming.slice(0, 5).map((t) => {
                 const from = stateMachine.states.find((s) => s.id === t.fromStateId);
                 return (
-                  <p key={t.id} className="text-xs text-gray-300 mt-0.5">
+                  <p key={t.id} className="text-xs text-slate-300 mt-0.5">
                     ← {from?.name || "Unknown"}: {truncate(t.trigger, 40)}
                   </p>
                 );
@@ -347,11 +345,11 @@ function DetailPanel({
 
           {outgoing.length > 0 && (
             <div className="mt-3">
-              <p className="text-xs text-gray-400 mb-1">Outgoing ({outgoing.length})</p>
+              <p className="text-xs text-slate-400 mb-1">Outgoing ({outgoing.length})</p>
               {outgoing.slice(0, 5).map((t) => {
                 const to = stateMachine.states.find((s) => s.id === t.toStateId);
                 return (
-                  <p key={t.id} className="text-xs text-gray-300 mt-0.5">
+                  <p key={t.id} className="text-xs text-slate-300 mt-0.5">
                     → {to?.name || "Unknown"}: {truncate(t.trigger, 40)}
                   </p>
                 );
@@ -361,7 +359,7 @@ function DetailPanel({
 
           {state.clauseReferences && state.clauseReferences.length > 0 && (
             <div className="mt-3">
-              <p className="text-xs text-gray-400">Referenced Clauses</p>
+              <p className="text-xs text-slate-400">Referenced Clauses</p>
               <p className="text-xs text-blue-400">{state.clauseReferences.join(", ")}</p>
             </div>
           )}
@@ -376,64 +374,64 @@ function DetailPanel({
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: 20 }}
-        className="absolute right-0 top-0 bottom-0 w-[300px] bg-gray-900/95 backdrop-blur-xl border-l border-white/10 overflow-y-auto z-20"
+        className="absolute right-0 top-0 bottom-0 w-[300px] bg-slate-900/95 backdrop-blur-xl border-l border-white/10 overflow-y-auto z-20"
       >
-        <div className="p-4">
+        <div className="p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold text-sm">Transition Details</h3>
-            <button onClick={onClose} className="p-1 hover:bg-white/10 rounded">
+            <button onClick={onClose} className="p-1 hover:bg-white dark:bg-slate-900/10 rounded">
               <X className="h-4 w-4" />
             </button>
           </div>
 
-          <p className="text-sm text-gray-300">{transition.trigger}</p>
+          <p className="text-sm text-slate-300">{transition.trigger}</p>
 
           <div className="grid grid-cols-2 gap-2 mt-3">
-            <div className="p-2 rounded-lg bg-white/[0.03] border border-white/5">
-              <p className="text-[10px] text-gray-500">Type</p>
+            <div className="p-2 rounded-xl bg-white dark:bg-card/[0.03] border border-white/5">
+              <p className="text-[10px] text-slate-500 dark:text-slate-400">Type</p>
               <p className="text-xs">{transition.triggerType.replace(/_/g, " ")}</p>
             </div>
-            <div className="p-2 rounded-lg bg-white/[0.03] border border-white/5">
-              <p className="text-[10px] text-gray-500">Party</p>
+            <div className="p-2 rounded-xl bg-white dark:bg-card/[0.03] border border-white/5">
+              <p className="text-[10px] text-slate-500 dark:text-slate-400">Party</p>
               <p className="text-xs">{transition.party}</p>
             </div>
-            <div className="p-2 rounded-lg bg-white/[0.03] border border-white/5">
-              <p className="text-[10px] text-gray-500">Voluntary</p>
+            <div className="p-2 rounded-xl bg-white dark:bg-card/[0.03] border border-white/5">
+              <p className="text-[10px] text-slate-500 dark:text-slate-400">Voluntary</p>
               <p className="text-xs">{transition.isVoluntary ? "Yes" : "No"}</p>
             </div>
-            <div className="p-2 rounded-lg bg-white/[0.03] border border-white/5">
-              <p className="text-[10px] text-gray-500">Reversible</p>
+            <div className="p-2 rounded-xl bg-white dark:bg-card/[0.03] border border-white/5">
+              <p className="text-[10px] text-slate-500 dark:text-slate-400">Reversible</p>
               <p className="text-xs">{transition.isReversible ? "Yes" : "No"}</p>
             </div>
           </div>
 
           {transition.condition && (
             <div className="mt-3">
-              <p className="text-xs text-gray-400">Condition</p>
+              <p className="text-xs text-slate-400">Condition</p>
               <p className="text-xs text-amber-300 mt-0.5">{transition.condition}</p>
             </div>
           )}
 
           {transition.financialConsequence && (
-            <div className="mt-3 p-2 rounded-lg bg-amber-500/10 border border-amber-500/20">
+            <div className="mt-3 p-2 rounded-xl bg-amber-500/10 border border-amber-500/20">
               <p className="text-xs text-amber-400">💰 {transition.financialConsequence}</p>
             </div>
           )}
 
           {transition.clauseReference && (
             <div className="mt-3">
-              <p className="text-xs text-gray-400">Clause Reference</p>
+              <p className="text-xs text-slate-400">Clause Reference</p>
               <p className="text-xs text-blue-400">{transition.clauseReference}</p>
             </div>
           )}
 
           <div className="mt-3">
-            <p className="text-xs text-gray-400">Probability</p>
+            <p className="text-xs text-slate-400">Probability</p>
             <span className={`text-xs px-2 py-0.5 rounded-full ${
               transition.probability === "certain" ? "bg-green-500/20 text-green-400" :
-              transition.probability === "likely" ? "bg-blue-500/20 text-blue-400" :
+              transition.probability === "likely" ? "bg-indigo-500/20 text-blue-400" :
               transition.probability === "possible" ? "bg-amber-500/20 text-amber-400" :
-              "bg-gray-500/20 text-gray-400"
+              "bg-slate-500/20 text-slate-400"
             }`}>
               {transition.probability}
             </span>
@@ -450,7 +448,7 @@ function DetailPanel({
 // MAIN COMPONENT
 // ============================================
 
-export default function StateGraph({
+export function StateGraph({
   stateMachine,
   report,
   mode,
@@ -606,8 +604,8 @@ export default function StateGraph({
   if (viewMode === "list") {
     return (
       <div className={`relative ${className}`}>
-        <div className="flex items-center justify-between px-4 py-2 bg-gray-900/50 border-b border-white/5">
-          <span className="text-xs text-gray-400">{stateMachine.metadata.totalStates} states</span>
+        <div className="flex items-center justify-between px-4 py-2 bg-slate-900/50 border-b border-white/5">
+          <span className="text-xs text-slate-400">{stateMachine.metadata.totalStates} states</span>
           <button
             onClick={() => setViewMode("graph")}
             className="text-xs text-blue-400 hover:text-blue-300"
@@ -625,21 +623,21 @@ export default function StateGraph({
   }
 
   return (
-    <div className={`relative overflow-hidden bg-gray-950/50 rounded-xl border border-white/5 ${className}`}>
+    <div className={`relative overflow-hidden bg-slate-950/50 rounded-xl border border-white/5 ${className}`}>
       {/* TOOLBAR */}
       <div className="absolute top-3 left-3 z-10 flex gap-1.5">
-        <button onClick={() => handleZoom(0.15)} className="p-1.5 bg-gray-800/90 hover:bg-gray-700 rounded-lg border border-white/10 transition-colors">
+        <button onClick={() => handleZoom(0.15)} className="p-1.5 bg-slate-800/90 hover:bg-slate-700 rounded-xl border border-white/10 transition-colors">
           <ZoomIn className="h-3.5 w-3.5" />
         </button>
-        <button onClick={() => handleZoom(-0.15)} className="p-1.5 bg-gray-800/90 hover:bg-gray-700 rounded-lg border border-white/10 transition-colors">
+        <button onClick={() => handleZoom(-0.15)} className="p-1.5 bg-slate-800/90 hover:bg-slate-700 rounded-xl border border-white/10 transition-colors">
           <ZoomOut className="h-3.5 w-3.5" />
         </button>
-        <button onClick={handleFit} className="p-1.5 bg-gray-800/90 hover:bg-gray-700 rounded-lg border border-white/10 transition-colors">
+        <button onClick={handleFit} className="p-1.5 bg-slate-800/90 hover:bg-slate-700 rounded-xl border border-white/10 transition-colors">
           <Maximize2 className="h-3.5 w-3.5" />
         </button>
         <button
           onClick={() => setViewMode("list")}
-          className="px-2 py-1.5 text-[10px] bg-gray-800/90 hover:bg-gray-700 rounded-lg border border-white/10 transition-colors"
+          className="px-2 py-1.5 text-[10px] bg-slate-800/90 hover:bg-slate-700 rounded-xl border border-white/10 transition-colors"
         >
           List
         </button>
@@ -648,10 +646,10 @@ export default function StateGraph({
       {/* SIMULATE CONTROLS */}
       {mode === "simulate" && (
         <div className="absolute top-3 right-3 z-10 flex gap-1.5">
-          <button onClick={handleSimUndo} disabled={simulateHistory.length === 0} className="p-1.5 bg-gray-800/90 hover:bg-gray-700 rounded-lg border border-white/10 disabled:opacity-30 transition-colors">
+          <button onClick={handleSimUndo} disabled={simulateHistory.length === 0} className="p-1.5 bg-slate-800/90 hover:bg-slate-700 rounded-xl border border-white/10 disabled:opacity-30 transition-colors">
             <Undo2 className="h-3.5 w-3.5" />
           </button>
-          <button onClick={handleSimReset} className="p-1.5 bg-gray-800/90 hover:bg-gray-700 rounded-lg border border-white/10 transition-colors">
+          <button onClick={handleSimReset} className="p-1.5 bg-slate-800/90 hover:bg-slate-700 rounded-xl border border-white/10 transition-colors">
             <RotateCcw className="h-3.5 w-3.5" />
           </button>
         </div>
@@ -958,15 +956,15 @@ export default function StateGraph({
       {/* Simulate breadcrumbs */}
       {mode === "simulate" && simulateHistory.length > 0 && (
         <div className="absolute bottom-3 left-3 right-3 z-10">
-          <div className="flex items-center gap-1 px-3 py-2 bg-gray-800/90 rounded-lg border border-white/10 overflow-x-auto">
-            <span className="text-[10px] text-gray-400 flex-shrink-0">Path:</span>
+          <div className="flex items-center gap-1 px-3 py-2 bg-slate-800/90 rounded-xl border border-white/10 overflow-x-auto">
+            <span className="text-[10px] text-slate-400 flex-shrink-0">Path:</span>
             {[...simulateHistory, simulateCurrentId].map((sid, i) => {
               const st = stateMachine.states.find((s) => s.id === sid);
               return (
                 <span key={`${sid}-${i}`} className="flex items-center gap-1 flex-shrink-0">
-                  {i > 0 && <span className="text-gray-600 text-[10px]">→</span>}
+                  {i > 0 && <span className="text-slate-600 dark:text-slate-400 text-[10px]">→</span>}
                   <span className={`text-[10px] px-1.5 py-0.5 rounded ${
-                    sid === simulateCurrentId ? "bg-blue-500/20 text-blue-300" : "text-gray-400"
+                    sid === simulateCurrentId ? "bg-indigo-500/20 text-blue-300" : "text-slate-400"
                   }`}>
                     {st?.name || sid}
                   </span>

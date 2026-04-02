@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import ComplaintDashboardWidget from "@/components/complaint/complaint-dashboard-widget";
+import { ComplaintDashboardWidget } from "@/components/complaint/complaint-dashboard-widget";
 import type { ComplaintFiling } from "@/types";
 
-export default function ComplaintDashboardWidgetWrapper() {
+export function ComplaintDashboardWidgetWrapper() {
   const [filings, setFilings] = useState<ComplaintFiling[]>([]);
 
   useEffect(() => {

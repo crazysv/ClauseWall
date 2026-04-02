@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import {
   ArrowLeft,
   Copy,
@@ -33,6 +33,7 @@ interface ContractData {
 }
 
 export default function ContractPreviewPage() {
+  const prefersReducedMotion = useReducedMotion();
   const params = useParams();
   const router = useRouter();
   const id = params.id as string;
@@ -79,9 +80,9 @@ export default function ContractPreviewPage() {
               jurisdiction: data.jurisdiction,
             });
           }
-        } catch (err) {
-          console.error("Failed to fetch contract:", err);
-        }
+        } catch {
+        // Silently handled
+      }
       }
       setLoading(false);
     }
@@ -146,10 +147,10 @@ export default function ContractPreviewPage() {
   // Loading State
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="w-8 h-8 animate-spin text-emerald-400 mx-auto mb-4" />
-          <p className="text-gray-400">Loading your contract...</p>
+          <p className="text-slate-400">Loading your contract...</p>
         </div>
       </div>
     );
@@ -158,16 +159,16 @@ export default function ContractPreviewPage() {
   // Not Found
   if (!contract) {
     return (
-      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
         <div className="text-center max-w-md">
           <AlertCircle className="w-12 h-12 text-red-400 mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-white mb-2">Contract Not Found</h2>
-          <p className="text-gray-400 mb-6">
+          <p className="text-slate-400 mb-6">
             This contract may have expired or the link is invalid.
           </p>
           <button
             onClick={() => router.push("/builder")}
-            className="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-medium transition-colors"
+            className="px-4 md:px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-medium transition-colors"
           >
             Create New Contract
           </button>
@@ -180,12 +181,12 @@ export default function ContractPreviewPage() {
     contract.jurisdiction.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 text-white">
-      <div className="max-w-4xl mx-auto px-4 py-12">
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white">
+      <div className="max-w-4xl mx-auto px-4 py-6 md:py-8 lg:py-12">
         {/* Back */}
         <button
           onClick={() => router.push("/builder")}
-          className="flex items-center gap-2 text-gray-400 hover:text-white mb-8 transition-colors print:hidden"
+          className="flex items-center gap-2 text-slate-400 hover:text-white mb-8 transition-colors print:hidden"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to builder
@@ -205,8 +206,8 @@ export default function ContractPreviewPage() {
               ✅ Fair Contract Generated
             </span>
           </div>
-          <h1 className="text-3xl font-bold mb-2">{contract.title}</h1>
-          <div className="flex flex-wrap gap-3 text-sm text-gray-400">
+          <h1 className="text-xl md:text-lg md:text-xl lg:text-2xl lg:text-3xl font-bold mb-2">{contract.title}</h1>
+          <div className="flex flex-wrap gap-3 text-sm text-slate-400">
             <span className="flex items-center gap-1">
               <Scale className="w-4 h-4" />
               {jurisdictionLabel}
@@ -222,12 +223,12 @@ export default function ContractPreviewPage() {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
+          transition={{ delay: prefersReducedMotion ? 0 : 0.1 }}
           className="flex flex-wrap gap-3 mb-8 print:hidden"
         >
           <button
             onClick={handleCopy}
-            className="flex items-center gap-2 px-4 py-2.5 bg-gray-800 hover:bg-gray-700 rounded-lg text-sm font-medium transition-colors"
+            className="flex items-center gap-2 px-4 py-2.5 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm font-medium transition-colors"
           >
             {copied ? (
               <>
@@ -243,14 +244,14 @@ export default function ContractPreviewPage() {
           </button>
           <button
             onClick={handleDownload}
-            className="flex items-center gap-2 px-4 py-2.5 bg-gray-800 hover:bg-gray-700 rounded-lg text-sm font-medium transition-colors"
+            className="flex items-center gap-2 px-4 py-2.5 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm font-medium transition-colors"
           >
             <Download className="w-4 h-4" />
             Download .txt
           </button>
           <button
             onClick={handlePrint}
-            className="flex items-center gap-2 px-4 py-2.5 bg-gray-800 hover:bg-gray-700 rounded-lg text-sm font-medium transition-colors"
+            className="flex items-center gap-2 px-4 py-2.5 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm font-medium transition-colors"
           >
             <Printer className="w-4 h-4" />
             Print / Save PDF
@@ -275,7 +276,7 @@ export default function ContractPreviewPage() {
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               viewMode === "clauses"
                 ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                : "bg-gray-800/50 text-gray-400 border border-gray-700"
+                : "bg-slate-800/50 text-slate-400 border border-slate-700"
             }`}
           >
             Clause-by-Clause View
@@ -285,7 +286,7 @@ export default function ContractPreviewPage() {
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               viewMode === "full"
                 ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                : "bg-gray-800/50 text-gray-400 border border-gray-700"
+                : "bg-slate-800/50 text-slate-400 border border-slate-700"
             }`}
           >
             Full Document View
@@ -299,13 +300,13 @@ export default function ContractPreviewPage() {
             <div className="flex justify-end gap-3 mb-4 print:hidden">
               <button
                 onClick={expandAll}
-                className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
+                className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-300 transition-colors"
               >
                 Expand All
               </button>
               <button
                 onClick={collapseAll}
-                className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
+                className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-300 transition-colors"
               >
                 Collapse All
               </button>
@@ -320,13 +321,13 @@ export default function ContractPreviewPage() {
                     key={clause.number}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.05 * index }}
-                    className="bg-gray-900/50 border border-gray-800 rounded-xl overflow-hidden"
+                    transition={{ delay: prefersReducedMotion ? 0 : 0.05 * index }}
+                    className="bg-slate-900/50 border border-slate-800 rounded-xl overflow-hidden"
                   >
                     {/* Clause Header */}
                     <button
                       onClick={() => toggleClause(clause.number)}
-                      className="w-full flex items-center justify-between p-5 text-left hover:bg-gray-800/30 transition-colors"
+                      className="w-full flex items-center justify-between p-5 text-left hover:bg-slate-800/30 transition-colors"
                     >
                       <div className="flex items-center gap-3">
                         <span className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 text-sm font-bold flex-shrink-0">
@@ -344,9 +345,9 @@ export default function ContractPreviewPage() {
                           </span>
                         )}
                         {isExpanded ? (
-                          <ChevronUp className="w-5 h-5 text-gray-400" />
+                          <ChevronUp className="w-5 h-5 text-slate-400" />
                         ) : (
-                          <ChevronDown className="w-5 h-5 text-gray-400" />
+                          <ChevronDown className="w-5 h-5 text-slate-400" />
                         )}
                       </div>
                     </button>
@@ -358,12 +359,12 @@ export default function ContractPreviewPage() {
                           initial={{ height: 0, opacity: 0 }}
                           animate={{ height: "auto", opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.2 }}
+                          transition={{ duration: prefersReducedMotion ? 0 : 0.2 }}
                           className="overflow-hidden"
                         >
                           <div className="px-5 pb-5 space-y-4">
                             {/* Clause Text */}
-                            <div className="bg-gray-800/50 rounded-lg p-4 text-gray-300 text-sm leading-relaxed whitespace-pre-wrap">
+                            <div className="bg-slate-800/50 rounded-lg p-4 text-slate-300 text-sm leading-relaxed whitespace-pre-wrap">
                               {clause.text}
                             </div>
 
@@ -375,7 +376,7 @@ export default function ContractPreviewPage() {
                                   <p className="text-xs text-blue-400 font-medium mb-0.5">
                                     Legal Basis
                                   </p>
-                                  <p className="text-sm text-gray-300">
+                                  <p className="text-sm text-slate-300">
                                     {clause.law_reference}
                                   </p>
                                 </div>
@@ -390,7 +391,7 @@ export default function ContractPreviewPage() {
                                   <p className="text-xs text-emerald-400 font-medium mb-0.5">
                                     Why This Is Fair
                                   </p>
-                                  <p className="text-sm text-gray-300">
+                                  <p className="text-sm text-slate-300">
                                     {clause.fairness_note}
                                   </p>
                                 </div>
@@ -412,7 +413,7 @@ export default function ContractPreviewPage() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="bg-white text-gray-900 rounded-xl p-8 md:p-12 shadow-2xl"
+            className="bg-white dark:bg-card text-slate-900 dark:text-slate-100 rounded-xl p-8 md:p-12 shadow-2xl"
           >
             <pre className="whitespace-pre-wrap font-serif text-sm leading-relaxed">
               {contract.generated_text}
@@ -425,22 +426,22 @@ export default function ContractPreviewPage() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
+            transition={{ delay: prefersReducedMotion ? 0 : 0.3 }}
             className="mt-8 p-5 bg-amber-500/5 border border-amber-500/20 rounded-xl"
           >
             <h3 className="text-sm font-medium text-amber-400 mb-2 flex items-center gap-2">
               <FileText className="w-4 h-4" />
               Stamp Paper & Registration Note
             </h3>
-            <p className="text-sm text-gray-300 leading-relaxed">
+            <p className="text-sm text-slate-300 leading-relaxed">
               {contract.stamp_paper_note}
             </p>
           </motion.div>
         )}
 
         {/* Disclaimer */}
-        <div className="mt-8 p-4 bg-gray-900/30 border border-gray-800/50 rounded-xl text-center print:hidden">
-          <p className="text-xs text-gray-500">
+        <div className="mt-8 p-4 bg-slate-900/30 border border-slate-800/50 rounded-xl text-center print:hidden">
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             This contract was generated by ClauseWall AI to be fair and legally compliant.
             However, it is a template and should be reviewed by a legal professional
             before signing. ClauseWall is not a substitute for legal advice.

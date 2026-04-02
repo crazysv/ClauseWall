@@ -155,7 +155,6 @@ export async function generateContract(
       { role: "user", content: userPrompt },
     ];
 
-    console.log(`[ClauseWall Builder] Generating ${templateType} contract for ${jurisdiction}...`);
 
     // Call Groq with higher token limit for contracts
     const rawResponse = await callGroq(messages, {
@@ -195,9 +194,6 @@ export async function generateContract(
     // Format to text
     const formattedText = formatContractToText(parsed);
 
-    console.log(
-      `[ClauseWall Builder] Generated ${parsed.clauses.length} clauses for ${templateType} contract`
-    );
 
     return {
       success: true,

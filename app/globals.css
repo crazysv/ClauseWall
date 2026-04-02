@@ -1,32 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-safe: oklch(0.6 0.2 145);
-  --color-warning: oklch(0.75 0.18 85);
-  --color-dangerous: oklch(0.55 0.25 25);
-  --color-illegal: oklch(0.55 0.25 295);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  
+  --radius: var(--radius);
 
-  --color-background: oklch(0.13 0.03 260);
-  --color-foreground: oklch(0.95 0.01 260);
-  --color-card: oklch(0.15 0.03 260);
-  --color-card-foreground: oklch(0.95 0.01 260);
-  --color-muted: oklch(0.25 0.03 260);
-  --color-muted-foreground: oklch(0.65 0.03 260);
-  --color-border: oklch(0.25 0.03 260);
-  --color-input: oklch(0.25 0.03 260);
-  --color-ring: oklch(0.55 0.2 260);
-  --color-primary: oklch(0.6 0.2 260);
-  --color-primary-foreground: oklch(0.15 0.03 260);
-  --color-secondary: oklch(0.25 0.03 260);
-  --color-secondary-foreground: oklch(0.95 0.01 260);
-  --color-accent: oklch(0.25 0.03 260);
-  --color-accent-foreground: oklch(0.95 0.01 260);
-  --color-destructive: oklch(0.45 0.2 25);
-  --color-destructive-foreground: oklch(0.95 0.01 260);
-  --color-popover: oklch(0.15 0.03 260);
-  --color-popover-foreground: oklch(0.95 0.01 260);
+  --color-risk-safe: var(--risk-safe);
+  --color-risk-warning: var(--risk-warning);
+  --color-risk-dangerous: var(--risk-dangerous);
+  --color-risk-illegal: var(--risk-illegal);
+}
 
-  --radius: 0.75rem;
+@layer base {
+  :root {
+    --background: #fafbfc;
+    --foreground: #0f172a;
+    --card: #ffffff;
+    --card-foreground: #0f172a;
+    --popover: #ffffff;
+    --popover-foreground: #0f172a;
+    --primary: #4f46e5;
+    --primary-foreground: #ffffff;
+    --secondary: #0d9488;
+    --secondary-foreground: #ffffff;
+    --muted: #f1f5f9;
+    --muted-foreground: #64748b;
+    --accent: #f1f5f9;
+    --accent-foreground: #0f172a;
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+    --border: #e5e7eb;
+    --input: #e5e7eb;
+    --ring: #4f46e5;
+    --radius: 0.75rem;
+
+    --risk-safe: #22c55e;
+    --risk-warning: #eab308;
+    --risk-dangerous: #ef4444;
+    --risk-illegal: #a855f7;
+  }
+
+  .dark {
+    --background: #0a0a0f;
+    --foreground: #fafafa;
+    --card: #141420;
+    --card-foreground: #fafafa;
+    --popover: #141420;
+    --popover-foreground: #fafafa;
+    --primary: #6366f1;
+    --primary-foreground: #ffffff;
+    --secondary: #14b8a6;
+    --secondary-foreground: #ffffff;
+    --muted: #1e293b;
+    --muted-foreground: #94a3b8;
+    --accent: #1e293b;
+    --accent-foreground: #fafafa;
+    --destructive: #f87171;
+    --destructive-foreground: #ffffff;
+    --border: #1e293b;
+    --input: #1e293b;
+    --ring: #6366f1;
+
+    --risk-safe: #4ade80;
+    --risk-warning: #facc15;
+    --risk-dangerous: #f87171;
+    --risk-illegal: #c084fc;
+  }
 }
 
 /* ============================================
@@ -40,6 +98,7 @@
 body {
   background-color: var(--color-background);
   color: var(--color-foreground);
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   font-feature-settings: "rlig" 1, "calt" 1;
 }
 
@@ -47,37 +106,45 @@ body {
    RISK LEVEL UTILITY CLASSES
    ============================================ */
 
-.text-safe { color: #22c55e; }
-.text-warning { color: #eab308; }
-.text-dangerous { color: #ef4444; }
-.text-illegal { color: #a855f7; }
+.risk-border-safe { @apply border-l-4 border-l-green-500; }
+.risk-border-warning { @apply border-l-4 border-l-yellow-500; }
+.risk-border-dangerous { @apply border-l-4 border-l-red-500; }
+.risk-border-illegal { @apply border-l-4 border-l-purple-500; }
 
-.bg-safe { background-color: rgba(34, 197, 94, 0.1); }
-.bg-warning { background-color: rgba(234, 179, 8, 0.1); }
-.bg-dangerous { background-color: rgba(239, 68, 68, 0.1); }
-.bg-illegal { background-color: rgba(168, 85, 247, 0.1); }
+.risk-bg-safe { @apply bg-green-50 dark:bg-green-950/30; }
+.risk-bg-warning { @apply bg-yellow-50 dark:bg-yellow-950/30; }
+.risk-bg-dangerous { @apply bg-red-50 dark:bg-red-950/30; }
+.risk-bg-illegal { @apply bg-purple-50 dark:bg-purple-950/30; }
 
-.border-safe { border-color: rgba(34, 197, 94, 0.3); }
-.border-warning { border-color: rgba(234, 179, 8, 0.3); }
-.border-dangerous { border-color: rgba(239, 68, 68, 0.3); }
-.border-illegal { border-color: rgba(168, 85, 247, 0.3); }
+.risk-badge-safe { @apply bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300 rounded-full px-2.5 py-0.5 text-xs font-medium; }
+.risk-badge-warning { @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300 rounded-full px-2.5 py-0.5 text-xs font-medium; }
+.risk-badge-dangerous { @apply bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300 rounded-full px-2.5 py-0.5 text-xs font-medium; }
+.risk-badge-illegal { @apply bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300 rounded-full px-2.5 py-0.5 text-xs font-medium; }
 
 /* ============================================
    CUSTOM UTILITY CLASSES
    ============================================ */
 
-.gradient-text {
-  background: linear-gradient(to right, #60a5fa, #3b82f6, #a855f7);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+@layer utilities {
+  .gradient-text {
+    @apply bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent;
+  }
 
-.glass {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  .dark .gradient-text {
+    @apply from-indigo-400 to-purple-400;
+  }
+
+  .glass {
+    @apply bg-white/80 backdrop-blur-xl border border-white/20 shadow-sm;
+  }
+
+  .dark .glass {
+    @apply bg-gray-900/80 border-gray-700/30;
+  }
+
+  .card-hover {
+    @apply transition-all duration-200 hover:shadow-md hover:-translate-y-0.5;
+  }
 }
 
 .glow-blue {
@@ -117,6 +184,14 @@ body {
   background: var(--color-muted-foreground);
 }
 
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 /* ============================================
    ANIMATIONS
    ============================================ */
@@ -134,10 +209,10 @@ body {
 
 @keyframes pulseGlow {
   0%, 100% {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 20px rgba(79, 70, 229, 0.1); /* Indigo */
   }
   50% {
-    box-shadow: 0 0 40px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 0 40px rgba(79, 70, 229, 0.3); /* Indigo */
   }
 }
 
@@ -179,7 +254,6 @@ body {
 
 /* ============================================
    🔊 SOUND EFFECT — SCREEN SHAKE
-   Triggered on dangerous/illegal results load
    ============================================ */
 
 @keyframes screenShakeSubtle {
@@ -229,7 +303,6 @@ body.red-vignette::after {
   z-index: 9999;
 }
 
-/* Respect accessibility — disable motion effects */
 @media (prefers-reduced-motion: reduce) {
   .screen-shake-subtle,
   .screen-shake-intense {
@@ -244,7 +317,6 @@ body.red-vignette::after {
 
 /* ============================================
    🌈 CONTRACT MOOD RING
-   Ambient background + heartbeat for dangerous zones
    ============================================ */
 
 @keyframes moodHeartbeat {
@@ -277,8 +349,8 @@ body.red-vignette::after {
 /* ── State Machine Animations ── */
 
 @keyframes trapPulse {
-  0%, 100% { transform: scale(1); opacity: 0.6; }
-  50% { transform: scale(1.08); opacity: 0.9; }
+  0%, 100% { transform: scale(1); opacity: 0.6; color: #ef4444; }
+  50% { transform: scale(1.08); opacity: 0.9; color: #ef4444; text-shadow: 0 0 8px rgba(239,68,68,0.5); }
 }
 
 @keyframes flowingDot {
@@ -312,41 +384,90 @@ body.red-vignette::after {
 }
 
 /* ============================================
-   SCROLLBAR HIDE UTILITY
-   ============================================ */
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-/* ============================================
    PRINT STYLES
    ============================================ */
 
 @media print {
-  nav,
+  /* Hide non-essential UI elements */
+  nav, 
+  footer,
   .floating-actions,
+  button:not(.print-visible),
+  .no-print,
+  [data-no-print],
   .fixed,
-  button,
-  .no-print {
+  .sticky {
     display: none !important;
   }
 
+  /* Reset backgrounds for printing */
   body {
     background: white !important;
     color: black !important;
   }
 
-  .clause-card {
+  /* Cards should have borders instead of shadows */
+  .card, [class*="Card"] {
+    box-shadow: none !important;
+    border: 1px solid #e5e7eb !important;
     break-inside: avoid;
   }
 
+  /* Risk colors should still be visible */
+  .risk-badge-safe { background: #dcfce7 !important; color: #166534 !important; }
+  .risk-badge-warning { background: #fef9c3 !important; color: #854d0e !important; }
+  .risk-badge-dangerous { background: #fee2e2 !important; color: #991b1b !important; }
+  .risk-badge-illegal { background: #f3e8ff !important; color: #6b21a8 !important; }
+
+  /* Risk border colors visible in print */
+  .risk-border-safe { border-left-color: #22c55e !important; }
+  .risk-border-warning { border-left-color: #eab308 !important; }
+  .risk-border-dangerous { border-left-color: #ef4444 !important; }
+  .risk-border-illegal { border-left-color: #a855f7 !important; }
+
+  /* Ensure text is readable */
   * {
+    color: black !important;
+  }
+
+  /* Page breaks */
+  .clause-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  h1, h2, h3 {
+    page-break-after: avoid;
+  }
+
+  /* Full width for print */
+  .container, .max-w-screen-xl, .max-w-7xl {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  /* Links show URL */
+  a[href]:after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: #6b7280;
+  }
+
+  /* Hide animations */
+  *, *::before, *::after {
     animation: none !important;
     transition: none !important;
+  }
+
+  /* Legal notice page special print styles */
+  .letter-preview {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+
+  /* QR code should be visible */
+  .qr-code {
+    display: block !important;
   }
 }

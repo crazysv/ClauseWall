@@ -5,7 +5,7 @@ interface LoadingStateProps {
   size?: "sm" | "md" | "lg";
 }
 
-export default function LoadingState({
+export function LoadingState({
   message = "Loading...",
   size = "md",
 }: LoadingStateProps) {
@@ -16,13 +16,13 @@ export default function LoadingState({
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4 py-12">
+    <div className="flex flex-col items-center justify-center gap-6 py-6 md:py-8 lg:py-12">
       <div className="relative">
         <Loader2
-          className={`${sizeClasses[size]} text-blue-500 animate-spin`}
+          className={`${sizeClasses[size]} text-indigo-600 animate-spin`}
         />
         <div
-          className={`absolute inset-0 ${sizeClasses[size]} bg-blue-500/20 blur-xl rounded-full animate-pulse`}
+          className={`absolute inset-0 ${sizeClasses[size]} bg-indigo-500/20 blur-xl rounded-full animate-pulse`}
         />
       </div>
       <p className="text-muted-foreground text-sm">{message}</p>

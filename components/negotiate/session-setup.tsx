@@ -47,7 +47,7 @@ interface SessionSetupProps {
   existingSessions: NegotiationSession[];
 }
 
-export default function SessionSetup({ onSessionStart, existingSessions }: SessionSetupProps) {
+export function SessionSetup({ onSessionStart, existingSessions }: SessionSetupProps) {
   const [documentType, setDocumentType] = useState("");
   const [jurisdiction, setJurisdiction] = useState("");
   const [entityName, setEntityName] = useState("");
@@ -70,49 +70,45 @@ export default function SessionSetup({ onSessionStart, existingSessions }: Sessi
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-8">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-800 flex flex-col items-center justify-center px-4 py-8">
       {/* Hero */}
       <div className="text-center mb-8">
-        <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-emerald-500/20 to-blue-500/20 flex items-center justify-center mx-auto mb-4 border border-white/5">
-          <Handshake className="w-10 h-10 text-emerald-400" />
+        <div className="w-20 h-20 rounded-3xl bg-teal-100 flex items-center justify-center mx-auto mb-6 shadow-sm dark:shadow-slate-900/20 border border-teal-200">
+          <Handshake className="w-10 h-10 text-teal-600" />
         </div>
-        <h1 className="text-2xl font-bold text-white mb-2">Live Negotiation Companion</h1>
-        <p className="text-sm text-white/40 max-w-xs mx-auto">
+        <h1 className="text-xl md:text-lg md:text-xl lg:text-2xl lg:text-3xl font-black text-slate-900 dark:text-slate-100 mb-2">Live Negotiation Companion</h1>
+        <p className="text-sm font-medium text-slate-500 dark:text-slate-400 max-w-sm mx-auto leading-relaxed">
           Your AI co-pilot for in-person contract negotiations. Instant legal intelligence at your fingertips.
         </p>
       </div>
 
       {/* Form */}
-      <div className="w-full max-w-md space-y-4">
+      <div className="w-full max-w-md space-y-5 bg-white dark:bg-card p-6 rounded-2xl shadow-sm dark:shadow-slate-900/20 border border-slate-200 dark:border-slate-700">
         {/* Document Type */}
-        <div className="space-y-2">
-          <label className="text-xs text-white/40 font-medium block px-1">Contract Type</label>
-          <div className="grid grid-cols-2 gap-2">
+        <div className="space-y-3">
+          <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest block px-1">Contract Type</label>
+          <div className="grid grid-cols-2 gap-3">
             {DOCUMENT_TYPES.map((type) => (
               <button
                 key={type.value}
                 onClick={() => setDocumentType(type.value)}
-                className={`flex items-center gap-2 px-3 py-3 rounded-xl border transition-all text-left ${
-                  documentType === type.value
-                    ? "border-emerald-500/40 bg-emerald-500/10 text-white"
-                    : "border-white/5 bg-white/[0.02] text-white/50 hover:bg-white/[0.04]"
-                }`}
-                style={{ minHeight: "48px" }}
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl border transition-all text-left shadow-sm dark:shadow-slate-900/20 ${ documentType === type.value ? "border-teal-500 bg-teal-50 text-teal-900" : "border-slate-200 dark:border-slate-700 bg-white dark:bg-card text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-300" }`}
+                style={{ minHeight: "56px" }}
               >
-                <span className="text-lg">{type.icon}</span>
-                <span className="text-sm">{type.label}</span>
+                <span className="text-xl">{type.icon}</span>
+                <span className="text-sm font-bold">{type.label}</span>
               </button>
             ))}
           </div>
         </div>
 
         {/* Jurisdiction */}
-        <div className="space-y-2">
-          <label className="text-xs text-white/40 font-medium block px-1">State / Jurisdiction</label>
+        <div className="space-y-3">
+          <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest block px-1">State / Jurisdiction</label>
           <select
             value={jurisdiction}
             onChange={(e) => setJurisdiction(e.target.value)}
-            className="w-full px-4 py-3 text-sm bg-white/[0.03] border border-white/10 rounded-xl text-white focus:outline-none focus:border-emerald-500/40 appearance-none cursor-pointer"
+            className="w-full px-4 py-4 text-sm font-medium bg-white dark:bg-card border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20 appearance-none cursor-pointer shadow-sm dark:shadow-slate-900/20"
             style={{ fontSize: "16px" }}
           >
             <option value="">Select state...</option>
@@ -125,15 +121,15 @@ export default function SessionSetup({ onSessionStart, existingSessions }: Sessi
         </div>
 
         {/* Entity Name */}
-        <div className="space-y-2">
-          <label className="text-xs text-white/40 font-medium block px-1">
-            Who are you negotiating with? <span className="text-white/20">(optional)</span>
+        <div className="space-y-3">
+          <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest block px-1">
+            Opposing Party <span className="text-slate-400 font-medium normal-case tracking-normal">(optional)</span>
           </label>
           <input
             placeholder="e.g., Landlord Name, Company Name"
             value={entityName}
             onChange={(e) => setEntityName(e.target.value)}
-            className="w-full px-4 py-3 text-sm bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder:text-white/20 focus:outline-none focus:border-emerald-500/40"
+            className="w-full px-4 py-4 text-sm font-medium bg-white dark:bg-card border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20 shadow-sm dark:shadow-slate-900/20"
             style={{ fontSize: "16px" }}
           />
         </div>
@@ -142,7 +138,7 @@ export default function SessionSetup({ onSessionStart, existingSessions }: Sessi
         <button
           onClick={handleStart}
           disabled={!documentType || !jurisdiction}
-          className="w-full py-4 rounded-xl bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 text-white font-medium text-base flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-lg shadow-emerald-500/20"
+          className="w-full py-4 mt-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-base flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md"
           style={{ minHeight: "56px" }}
         >
           Start Session
@@ -152,29 +148,29 @@ export default function SessionSetup({ onSessionStart, existingSessions }: Sessi
 
       {/* Resume Previous Sessions */}
       {existingSessions.length > 0 && (
-        <div className="w-full max-w-md mt-8">
-          <p className="text-xs text-white/20 font-medium px-1 mb-2">Recent Sessions</p>
-          <div className="space-y-2">
+        <div className="w-full max-w-md mt-10">
+          <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest px-1 mb-3">Recent Sessions</p>
+          <div className="space-y-3">
             {existingSessions.slice(0, 3).map((s) => {
               const hoursSince = (Date.now() - new Date(s.started_at).getTime()) / (1000 * 60 * 60);
               return (
                 <button
                   key={s.id}
                   onClick={() => handleResume(s.id)}
-                  className="w-full flex items-center justify-between px-4 py-3 rounded-xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] text-left transition-colors"
+                  className="w-full flex items-center justify-between px-5 py-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-card hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-300 hover:shadow-sm dark:shadow-slate-900/20 text-left transition-all group"
                 >
                   <div>
-                    <p className="text-sm text-white/60">{s.entity_name}</p>
-                    <div className="flex items-center gap-2 text-[10px] text-white/20">
-                      <Clock className="w-3 h-3" />
+                    <p className="text-sm font-bold text-slate-800 dark:text-slate-200 group-hover:text-indigo-600 transition-colors">{s.entity_name || "Contract Negotiation"}</p>
+                    <div className="flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400 mt-1">
+                      <Clock className="w-3.5 h-3.5" />
                       <span>{Math.round(hoursSince)}h ago</span>
-                      <span>·</span>
-                      <span>{s.document_type}</span>
-                      <span>·</span>
-                      <span>{s.overall_score.win_percentage}% win rate</span>
+                      <span>&middot;</span>
+                      <span className="uppercase">{s.document_type}</span>
+                      <span>&middot;</span>
+                      <span className="text-indigo-600 font-bold">{s.overall_score.win_percentage}% won</span>
                     </div>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-white/20" />
+                  <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-indigo-500 transition-colors" />
                 </button>
               );
             })}

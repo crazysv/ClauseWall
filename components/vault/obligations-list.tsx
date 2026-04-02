@@ -12,10 +12,10 @@ interface ObligationsListProps {
 }
 
 const RISK_COLORS: Record<RiskLevel, { color: string; bg: string }> = {
-  illegal: { color: "text-purple-400", bg: "bg-purple-500/10" },
-  dangerous: { color: "text-red-400", bg: "bg-red-500/10" },
-  warning: { color: "text-yellow-400", bg: "bg-yellow-500/10" },
-  safe: { color: "text-green-400", bg: "bg-green-500/10" },
+  illegal: { color: "text-purple-700", bg: "bg-purple-100" },
+  dangerous: { color: "text-red-700", bg: "bg-red-100" },
+  warning: { color: "text-amber-700", bg: "bg-amber-100" },
+  safe: { color: "text-emerald-700", bg: "bg-emerald-100" },
 };
 
 const TYPE_LABELS: Record<string, { emoji: string; label: string }> = {
@@ -38,7 +38,7 @@ const FREQUENCY_LABELS: Record<string, string> = {
 
 type TypeFilter = "all" | "payment" | "action" | "restriction" | "deadline";
 
-export default function ObligationsList({ obligations }: ObligationsListProps) {
+export function ObligationsList({ obligations }: ObligationsListProps) {
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
 
   const filtered =
@@ -56,13 +56,13 @@ export default function ObligationsList({ obligations }: ObligationsListProps) {
 
   if (obligations.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 text-center">
-        <ListChecks className="w-12 h-12 text-white/20 mb-4" />
-        <h3 className="text-lg font-semibold text-white/60 mb-2">
+      <div className="flex flex-col items-center justify-center py-8 md:py-6 md:py-8 lg:py-12 lg:py-16 text-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 border-dashed rounded-3xl">
+        <ListChecks className="w-12 h-12 text-slate-300 mb-4" />
+        <h3 className="text-lg font-black text-slate-800 dark:text-slate-200 mb-2 tracking-tight">
           No Obligations Found
         </h3>
-        <p className="text-sm text-white/40 max-w-md">
-          No obligations could be extracted from your contracts.
+        <p className="text-sm text-slate-500 dark:text-slate-400 font-medium max-w-md">
+          No actionable obligations could be extracted from your contracts.
         </p>
       </div>
     );
@@ -83,14 +83,10 @@ export default function ObligationsList({ obligations }: ObligationsListProps) {
             <button
               key={f}
               onClick={() => setTypeFilter(f)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
-                isActive
-                  ? "bg-white/10 border-white/20 text-white"
-                  : "bg-white/[0.02] border-white/5 text-white/40 hover:text-white/60"
-              }`}
+              className={`px-4 py-2 rounded-full text-xs font-bold border transition-all shadow-sm dark:shadow-slate-900/20 ${ isActive ? "bg-indigo-600 border-indigo-700 text-white" : "bg-white dark:bg-card border-slate-200 dark:border-slate-700 text-slate-500 hover:text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800" }`}
             >
               {f === "all" ? "All" : `${typeInfo?.emoji || ""} ${typeInfo?.label || f}`}{" "}
-              <span className="opacity-60">({count})</span>
+              <span className={isActive ? "text-indigo-200" : "text-slate-400"}>({count})</span>
             </button>
           );
         })}
@@ -110,31 +106,31 @@ export default function ObligationsList({ obligations }: ObligationsListProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: Math.min(index * 0.02, 0.5) }}
             >
-              <Card className="bg-white/[0.02] border-white/5 hover:bg-white/[0.04] transition-colors">
-                <CardContent className="p-3">
-                  <div className="flex items-start gap-3">
-                    <span className="text-base mt-0.5">{typeInfo.emoji}</span>
+              <Card className="bg-white dark:bg-card border-slate-200 dark:border-slate-700 hover:border-indigo-300 shadow-sm dark:shadow-slate-900/20 rounded-2xl transition-all">
+                <CardContent className="p-4">
+                  <div className="flex items-start gap-4">
+                    <span className="text-xl mt-0.5 bg-slate-50 dark:bg-slate-800 p-2 rounded-xl border border-slate-100">{typeInfo.emoji}</span>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-0.5">
-                        <Badge className={`${risk.bg} ${risk.color} text-[9px] border-0 px-1.5`}>
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <Badge className={`${risk.bg} ${risk.color} text-[10px] font-black uppercase tracking-widest border-0 px-2 rounded-full`}>
                           {obligation.risk_level}
                         </Badge>
-                        <span className="text-[10px] text-white/30 truncate">
+                        <span className="text-[10px] font-bold text-slate-400 truncate uppercase tracking-widest">
                           {obligation.document_title}
                         </span>
                       </div>
-                      <p className="text-sm text-white/80">{obligation.title}</p>
-                      <p className="text-xs text-white/40 mt-0.5 line-clamp-2">
+                      <p className="text-base font-black text-slate-900 dark:text-slate-100">{obligation.title}</p>
+                      <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mt-1 line-clamp-2 leading-relaxed">
                         {obligation.description}
                       </p>
                     </div>
-                    <div className="text-right flex-shrink-0">
+                    <div className="text-right flex-shrink-0 flex flex-col items-end">
                       {obligation.amount != null && obligation.amount > 0 && (
-                        <p className="text-sm font-semibold text-white/70">
+                        <p className="text-lg font-black text-indigo-700 mb-1">
                           ₹{obligation.amount.toLocaleString("en-IN")}
                         </p>
                       )}
-                      <p className="text-[10px] text-white/30">{freq}</p>
+                      <Badge variant="outline" className="text-[10px] font-bold text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">{freq}</Badge>
                     </div>
                   </div>
                 </CardContent>
@@ -143,7 +139,7 @@ export default function ObligationsList({ obligations }: ObligationsListProps) {
           );
         })}
         {filtered.length > 50 && (
-          <p className="text-xs text-white/30 text-center py-2">
+          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest text-center py-4">
             Showing 50 of {filtered.length} obligations
           </p>
         )}

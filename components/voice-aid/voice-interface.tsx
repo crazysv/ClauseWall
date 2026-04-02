@@ -3,17 +3,17 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { RotateCcw } from "lucide-react";
-import LanguageSelector from "./language-selector";
-import MicrophoneButton from "./microphone-button";
-import VoiceMessageBubble from "./voice-message-bubble";
-import AudioWaveform from "./audio-waveform";
-import CameraCaptureButton from "./camera-capture-button";
+import { LanguageSelector } from "./language-selector";
+import { MicrophoneButton } from "./microphone-button";
+import { VoiceMessageBubble } from "./voice-message-bubble";
+import { AudioWaveform } from "./audio-waveform";
+import { CameraCaptureButton } from "./camera-capture-button";
 import { isWebSpeechSupported, createWebSpeechRecognizer } from "@/lib/voice-aid/stt/web-speech";
 import { speakWithWebSpeech } from "@/lib/voice-aid/tts/web-speech-tts";
 import { getLanguageConfig } from "@/lib/voice-aid/languages";
 import type { SupportedLanguage, VoiceMessage, VoicePageState } from "@/types";
 
-export default function VoiceInterface() {
+export function VoiceInterface() {
   const [state, setState] = useState<VoicePageState>({
     isListening: false,
     isProcessing: false,
@@ -171,7 +171,6 @@ export default function VoiceInterface() {
 
       handleResponse(data, userMsg.id);
     } catch (error) {
-      console.error("[ClauseWall] Voice process error:", error);
       setPartialState({
         isProcessing: false,
         error: "Processing failed. Try again.",
@@ -216,7 +215,6 @@ export default function VoiceInterface() {
 
       handleResponse(data, userMsg.id);
     } catch (error) {
-      console.error("[ClauseWall] Text process error:", error);
       setPartialState({ isProcessing: false, error: "Processing failed." });
     }
   }, [state.session, state.currentLanguage]);
@@ -338,7 +336,6 @@ export default function VoiceInterface() {
 
       handleResponse(data, userMsg.id);
     } catch (error) {
-      console.error("[ClauseWall] Photo process error:", error);
       setPartialState({ isProcessing: false, error: "Photo processing failed." });
     }
   }, [state.session, state.currentLanguage]);
@@ -380,7 +377,7 @@ export default function VoiceInterface() {
         />
         <button
           onClick={handleReset}
-          className="p-2 rounded-lg text-white/50 hover:text-white hover:bg-white/5 transition-all"
+          className="p-2 rounded-xl text-slate-900 dark:text-slate-100 hover:text-slate-900 dark:text-slate-100 hover:bg-indigo-50 dark:hover:bg-indigo-950/30/50 transition-all"
           aria-label="Reset conversation"
           title="New conversation"
         >
@@ -414,7 +411,7 @@ export default function VoiceInterface() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="mx-4 mb-2 px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-xs text-center"
+            className="mx-4 mb-2 px-3 py-2 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-xs text-center"
           >
             {state.error}
           </motion.div>

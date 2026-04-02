@@ -23,7 +23,7 @@ const EVENT_OPTIONS: { type: LifeEventType; icon: string }[] = [
   { type: "propertyDefect", icon: "🏗️" },
 ];
 
-export default function StressTestBuilder({
+export function StressTestBuilder({
   onRun,
   isLoading,
   contractMonths,
@@ -41,7 +41,7 @@ export default function StressTestBuilder({
   };
 
   return (
-    <Card className="bg-gray-900/50 border-gray-800">
+    <Card className="bg-slate-900/50 border-slate-800">
       <CardContent className="p-4">
         <h4 className="text-sm font-semibold mb-3 flex items-center gap-2">
           🎯 Custom Scenario Builder
@@ -52,7 +52,7 @@ export default function StressTestBuilder({
           <select
             value={selectedType}
             onChange={(e) => setSelectedType(e.target.value as LifeEventType)}
-            className="flex-1 min-w-[140px] px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-white focus:outline-none focus:ring-1 focus:ring-white/20"
+            className="flex-1 min-w-[140px] px-3 py-2 rounded-xl bg-indigo-50/50 border border-white/10 text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-white/20"
           >
             {EVENT_OPTIONS.map((opt) => (
               <option key={opt.type} value={opt.type}>
@@ -62,7 +62,7 @@ export default function StressTestBuilder({
           </select>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs text-white/40">Month</span>
+            <span className="text-xs text-slate-900 dark:text-slate-100/40">Month</span>
             <input
               type="number"
               value={selectedMonth}
@@ -73,7 +73,7 @@ export default function StressTestBuilder({
                   Math.min(contractMonths, Math.max(1, parseInt(e.target.value) || 1))
                 )
               }
-              className="w-16 px-2 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-white text-center focus:outline-none focus:ring-1 focus:ring-white/20"
+              className="w-16 px-2 py-2 rounded-xl bg-indigo-50/50 border border-white/10 text-sm text-slate-900 dark:text-slate-100 text-center focus:outline-none focus:ring-1 focus:ring-white/20"
             />
           </div>
 
@@ -96,15 +96,15 @@ export default function StressTestBuilder({
               return (
                 <div
                   key={i}
-                  className="flex items-center justify-between px-3 py-2 rounded-lg bg-white/[0.03] border border-white/5"
+                  className="flex items-center justify-between px-3 py-2 rounded-xl bg-white dark:bg-card/[0.03] border border-white/5"
                 >
-                  <span className="text-sm text-white/70">
+                  <span className="text-sm text-slate-900 dark:text-slate-100/70">
                     {opt?.icon} {LIFE_EVENT_LABELS[event.type]} in month{" "}
                     {event.month}
                   </span>
                   <button
                     onClick={() => removeEvent(i)}
-                    className="text-white/30 hover:text-red-400 transition-colors"
+                    className="text-slate-900 dark:text-slate-100/30 hover:text-red-400 transition-colors"
                   >
                     <X className="h-3.5 w-3.5" />
                   </button>

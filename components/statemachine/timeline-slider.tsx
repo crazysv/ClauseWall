@@ -33,7 +33,7 @@ const EVENT_ICONS: Record<TimelineEventType, string> = {
   action_required: "📋",
 };
 
-export default function TimelineSlider({
+export function TimelineSlider({
   events,
   totalMonths,
   stateMachine,
@@ -134,7 +134,7 @@ export default function TimelineSlider({
       {currentState && (
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs text-gray-400">Month {currentMonth}</p>
+            <p className="text-xs text-slate-400">Month {currentMonth}</p>
             <p className="text-sm font-medium">{currentState.name}</p>
           </div>
           <span
@@ -154,7 +154,7 @@ export default function TimelineSlider({
       <div className="relative pt-6 pb-8">
         <div
           ref={trackRef}
-          className="relative h-3 rounded-full bg-gray-800 cursor-pointer overflow-hidden"
+          className="relative h-3 rounded-full bg-slate-800 cursor-pointer overflow-hidden"
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
@@ -187,7 +187,7 @@ export default function TimelineSlider({
 
         {/* Draggable thumb */}
         <motion.div
-          className="absolute top-[18px] w-5 h-5 -mt-1 -ml-2.5 rounded-full bg-blue-500 border-2 border-white shadow-lg shadow-blue-500/30 cursor-grab active:cursor-grabbing z-10"
+          className="absolute top-[18px] w-5 h-5 -mt-1 -ml-2.5 rounded-full bg-indigo-500 border-2 border-white shadow-lg shadow-blue-500/30 cursor-grab active:cursor-grabbing z-10"
           style={{ left: `${(currentMonth / totalMonths) * 100}%` }}
           animate={{ scale: isDragging ? 1.2 : 1 }}
           onPointerDown={handlePointerDown}
@@ -209,16 +209,16 @@ export default function TimelineSlider({
               onMouseLeave={() => setHoveredEvent(null)}
             >
               <div
-                className="w-2 h-2 -ml-1 rounded-full border border-gray-700"
+                className="w-2 h-2 -ml-1 rounded-full border border-slate-700"
                 style={{ backgroundColor: color }}
               />
 
               {/* Tooltip */}
               {hoveredEvent === ev && (
                 <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-48 z-20">
-                  <div className="bg-gray-900 border border-white/10 rounded-lg p-2 text-[10px] shadow-xl">
-                    <p className="font-medium text-gray-200">{ev.event}</p>
-                    <p className="text-gray-500 mt-0.5">Month {ev.month}</p>
+                  <div className="bg-slate-900 border border-white/10 rounded-xl p-2 text-[10px] shadow-xl">
+                    <p className="font-medium text-slate-200">{ev.event}</p>
+                    <p className="text-slate-500 dark:text-slate-400 mt-0.5">Month {ev.month}</p>
                     {ev.userAction && (
                       <p className="text-amber-400 mt-0.5">📋 {ev.userAction}</p>
                     )}
@@ -234,7 +234,7 @@ export default function TimelineSlider({
           {ticks.map((month) => (
             <span
               key={month}
-              className="text-[9px] text-gray-600"
+              className="text-[9px] text-slate-600 dark:text-slate-400"
               style={{
                 position: "absolute",
                 left: `${(month / totalMonths) * 100}%`,
@@ -250,22 +250,22 @@ export default function TimelineSlider({
       {/* Events at current month */}
       {nearbyEvents.length > 0 && (
         <div className="space-y-1.5">
-          <p className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">
+          <p className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-semibold">
             Events near month {currentMonth}
           </p>
           {nearbyEvents.map((ev, i) => (
             <div
               key={i}
-              className="flex items-center gap-2 p-2 rounded-lg bg-white/[0.02] border border-white/5"
+              className="flex items-center gap-2 p-2 rounded-xl bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border-l-4 border-indigo-500 border border-white/5"
             >
               <span className="text-sm flex-shrink-0">{EVENT_ICONS[ev.type]}</span>
               <div className="min-w-0">
-                <p className="text-xs text-gray-300 truncate">{ev.event}</p>
+                <p className="text-xs text-slate-300 truncate">{ev.event}</p>
                 {ev.userAction && (
                   <p className="text-[10px] text-amber-400 mt-0.5">{ev.userAction}</p>
                 )}
               </div>
-              <span className="text-[10px] text-gray-600 flex-shrink-0 ml-auto">m{ev.month}</span>
+              <span className="text-[10px] text-slate-600 dark:text-slate-400 flex-shrink-0 ml-auto">m{ev.month}</span>
             </div>
           ))}
         </div>

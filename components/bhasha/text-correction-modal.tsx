@@ -47,9 +47,9 @@ export function TextCorrectionModal({
         onSave(correctedText);
         onClose();
       }
-    } catch (err) {
-      console.error("[ClauseWall] Text correction save failed:", err);
-    } finally {
+    } catch {
+        // Silently handled
+      } finally {
       setIsSaving(false);
     }
   };
@@ -69,20 +69,20 @@ export function TextCorrectionModal({
           </p>
         </DialogHeader>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1 overflow-hidden">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1 overflow-hidden">
           {/* Original (read-only) */}
           <div className="flex flex-col overflow-hidden">
-            <p className="text-xs font-medium text-gray-500 mb-2">
+            <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-2">
               Original OCR Text
             </p>
-            <div className="flex-1 overflow-y-auto p-3 rounded-lg bg-white/[0.03] border border-white/10 text-sm text-gray-400 font-mono leading-relaxed">
+            <div className="flex-1 overflow-y-auto p-3 rounded-xl bg-white dark:bg-card/[0.03] border border-white/10 text-sm text-slate-400 font-mono leading-relaxed">
               {originalText}
             </div>
           </div>
 
           {/* Editable */}
           <div className="flex flex-col overflow-hidden">
-            <p className="text-xs font-medium text-gray-500 mb-2">
+            <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-2">
               Corrected Text {hasChanges && (
                 <span className="text-indigo-400 ml-1">
                   ({changeCount} change{changeCount !== 1 ? "s" : ""})
@@ -92,7 +92,7 @@ export function TextCorrectionModal({
             <Textarea
               value={correctedText}
               onChange={(e) => setCorrectedText(e.target.value)}
-              className="flex-1 min-h-[300px] bg-white/[0.03] border-white/10 font-mono text-sm leading-relaxed resize-none"
+              className="flex-1 min-h-[300px] bg-white dark:bg-slate-900/[0.03] border-white/10 font-mono text-sm leading-relaxed resize-none"
             />
           </div>
         </div>
@@ -104,7 +104,7 @@ export function TextCorrectionModal({
           <Button
             onClick={handleSave}
             disabled={!hasChanges || isSaving}
-            className="bg-indigo-600 hover:bg-indigo-700"
+            className="bg-indigo-600 hover:bg-indigo-700 hover:shadow-md transition-all"
           >
             {isSaving ? "Re-analyzing..." : "Save & Re-analyze"}
           </Button>

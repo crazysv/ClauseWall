@@ -206,7 +206,6 @@ export async function extractStateMachine(
   clauses?: Array<{ text: string; type: string; index: number }>
 ): Promise<ContractStateMachine | null> {
   try {
-    console.log(`[ClauseWall] [StateMachine] Starting extraction for ${documentType} (${jurisdiction})`);
 
     if (!fullContractText || fullContractText.trim().length < 100) {
       console.warn("[ClauseWall] [StateMachine] Contract text too short for extraction");
@@ -275,15 +274,11 @@ export async function extractStateMachine(
     // Enhance with template
     const template = getTemplate(documentType);
     const validation = validateAgainstTemplate(stateMachine, template);
-    console.log(`[ClauseWall] [StateMachine] Template completeness: ${validation.completeness}%`);
 
     const enhanced = validation.completeness < 50
       ? enhanceWithTemplate(stateMachine, template)
       : stateMachine;
 
-    console.log(
-      `[ClauseWall] [StateMachine] ✅ Extraction complete: ${enhanced.metadata.totalStates} states, ${enhanced.metadata.totalTransitions} transitions`
-    );
 
     return enhanced;
   } catch (error) {

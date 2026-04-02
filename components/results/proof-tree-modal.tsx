@@ -16,8 +16,8 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import ProofTreeView from "./proof-tree";
-import ProofWalkthrough from "./proof-walkthrough";
+import { ProofTreeView } from "./proof-tree";
+import { ProofWalkthrough } from "./proof-walkthrough";
 import type { ProofNode, ProofTree } from "@/lib/reasoning/types";
 import { getProofSummary } from "@/lib/reasoning/proof-formatter";
 
@@ -27,7 +27,7 @@ interface ProofTreeModalProps {
   onClose: () => void;
 }
 
-export default function ProofTreeModal({
+export function ProofTreeModal({
   proofTree,
   isOpen,
   onClose,
@@ -118,7 +118,6 @@ export default function ProofTreeModal({
       link.href = dataUrl;
       link.click();
     } catch {
-      console.error("[ClauseWall] Failed to export proof tree as PNG");
     }
   }, [proofTree.id]);
 
@@ -150,7 +149,7 @@ export default function ProofTreeModal({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 backdrop-blur-sm p-6"
           onClick={onClose}
         >
           <motion.div
@@ -159,33 +158,33 @@ export default function ProofTreeModal({
             exit={{ scale: 0.95, opacity: 0 }}
             transition={{ duration: 0.2 }}
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-5xl max-h-[90vh] bg-gray-900 rounded-2xl border border-white/10 overflow-hidden flex flex-col"
+            className="relative w-full max-w-5xl max-h-[90vh] bg-slate-900 rounded-2xl border border-white/10 overflow-hidden flex flex-col"
           >
             {/* Header */}
-            <div className="px-6 py-4 border-b border-white/5 flex items-center justify-between flex-shrink-0">
+            <div className="px-4 md:px-6 py-4 border-b border-white/5 flex items-center justify-between flex-shrink-0">
               <div className="flex items-center gap-3">
-                <TreePine className="h-5 w-5 text-cyan-400" />
+                <TreePine className="h-5 w-5 text-teal-400" />
                 <div>
                   <h2 className="text-lg font-bold">Proof Tree</h2>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
                     {proofTree.clauseText.substring(0, 80)}
                     {proofTree.clauseText.length > 80 ? "..." : ""}
                   </p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <Badge className={`${verdictColor} bg-white/5 border-white/10 text-xs`}>
+                <Badge className={`${verdictColor} bg-indigo-50/50 border-white/10 text-xs`} rounded-full>
                   {verdictLabel}
                 </Badge>
-                <Badge variant="outline" className="text-xs border-white/10 text-gray-500">
+                <Badge variant="outline" className="text-xs border-white/10 text-slate-500 dark:text-slate-400 rounded-full">
                   {summary.stepsCount} steps
                 </Badge>
-                <Badge variant="outline" className="text-xs border-white/10 text-gray-500">
+                <Badge variant="outline" className="text-xs border-white/10 text-slate-500 dark:text-slate-400 rounded-full">
                   {Math.round(summary.confidence * 100)}% conf
                 </Badge>
                 <button
                   onClick={onClose}
-                  className="p-1.5 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors"
+                  className="p-1.5 rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-950/30/50 text-slate-400 hover:text-slate-900 dark:text-slate-100 transition-colors"
                 >
                   <X className="h-5 w-5" />
                 </button>
@@ -213,7 +212,7 @@ export default function ProofTreeModal({
             </div>
 
             {/* Footer controls */}
-            <div className="px-6 py-3 border-t border-white/5 flex items-center justify-between flex-shrink-0 flex-wrap gap-2">
+            <div className="px-4 md:px-6 py-3 border-t border-white/5 flex items-center justify-between flex-shrink-0 flex-wrap gap-2">
               <div className="flex items-center gap-2">
                 <Button
                   variant="outline"
@@ -225,7 +224,7 @@ export default function ProofTreeModal({
                   <ChevronLeft className="h-3.5 w-3.5" />
                   Prev
                 </Button>
-                <span className="text-xs text-gray-500 min-w-[4rem] text-center">
+                <span className="text-xs text-slate-500 dark:text-slate-400 min-w-[4rem] text-center">
                   {currentStep + 1} / {totalSteps}
                 </span>
                 <Button
@@ -271,7 +270,7 @@ export default function ProofTreeModal({
                   <FileText className="h-3.5 w-3.5" />
                   Text
                 </Button>
-                <span className="text-gray-700">|</span>
+                <span className="text-slate-700">|</span>
                 <Button
                   variant={eli5 ? "default" : "outline"}
                   size="sm"

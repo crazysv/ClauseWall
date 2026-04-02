@@ -74,23 +74,19 @@ export async function hybridAnalyzeClause(
 ): Promise<HybridAnalysisResult> {
   try {
     // ---- STEP 1: Extract structured values (lightweight AI call) ----
-    console.log(`[ClauseWall] [Hybrid] Extracting values for: ${clauseType}`);
+
     const values = await extractValues(clauseText, clauseType, documentType);
 
-    console.log("[ClauseWall] Extracted values:", values);
 
     // Use the AI-refined clause type (might be more accurate)
     const refinedClauseType = values.clause_type || clauseType;
 
     // ---- STEP 2: Check against structured rules DB ----
-    console.log(`[ClauseWall] [Hybrid] Checking DB rules for: ${refinedClauseType}`);
+
     const ruleResult = await matchAgainstRules(values, jurisdiction, documentType);
 
     // ---- STEP 3A: DB match found with violation → VERIFIED result ----
     if (ruleResult.matched && ruleResult.violation && ruleResult.rule) {
-      console.log(
-        `[ClauseWall] [Hybrid] ⚖️ DB MATCH: ${refinedClauseType} → ${ruleResult.severity} (${ruleResult.risk_score}/100)`
-      );
 
       // Generate a readable explanation using AI (but citations come from DB)
       const explanation = await generateExplanation(
@@ -146,9 +142,6 @@ export async function hybridAnalyzeClause(
 
     // ---- STEP 3B: DB match found, no violation → SAFE (VERIFIED) ----
     if (ruleResult.matched && !ruleResult.violation) {
-      console.log(
-        `[ClauseWall] [Hybrid] ✅ DB MATCH (compliant): ${refinedClauseType}`
-      );
 
       return {
         risk_level: "safe",
@@ -171,9 +164,6 @@ export async function hybridAnalyzeClause(
     }
 
     // ---- STEP 3C: No DB match → Fall back to AI analysis ----
-    console.log(
-      `[ClauseWall] [Hybrid] 🤖 No DB match for: ${refinedClauseType} → using AI`
-    );
 
     const aiResult = await analyzeClause(
       clauseText,

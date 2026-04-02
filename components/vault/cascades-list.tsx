@@ -13,26 +13,26 @@ interface CascadesListProps {
 
 const PROBABILITY_CONFIG = {
   likely: {
-    color: "text-red-400",
-    bg: "bg-red-500/10",
-    border: "border-red-500/20",
+    color: "text-red-700",
+    bg: "bg-red-50",
+    border: "border-red-200",
     label: "Likely",
   },
   possible: {
-    color: "text-yellow-400",
-    bg: "bg-yellow-500/10",
-    border: "border-yellow-500/20",
+    color: "text-amber-700",
+    bg: "bg-amber-50",
+    border: "border-amber-200",
     label: "Possible",
   },
   unlikely: {
-    color: "text-blue-400",
-    bg: "bg-blue-500/10",
-    border: "border-blue-500/20",
+    color: "text-blue-700",
+    bg: "bg-blue-50",
+    border: "border-blue-200",
     label: "Unlikely",
   },
 };
 
-export default function CascadesList({ cascades }: CascadesListProps) {
+export function CascadesList({ cascades }: CascadesListProps) {
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
 
   const toggleExpand = (id: string) => {
@@ -44,12 +44,12 @@ export default function CascadesList({ cascades }: CascadesListProps) {
 
   if (cascades.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 text-center">
-        <CheckCircle2 className="w-12 h-12 text-green-400/50 mb-4" />
-        <h3 className="text-lg font-semibold text-green-400 mb-2">
+      <div className="flex flex-col items-center justify-center py-8 md:py-6 md:py-8 lg:py-12 lg:py-16 text-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 border-dashed rounded-3xl">
+        <CheckCircle2 className="w-12 h-12 text-emerald-400 mb-4" />
+        <h3 className="text-lg font-black text-slate-800 dark:text-slate-200 mb-2 tracking-tight">
           No Cascade Risks
         </h3>
-        <p className="text-sm text-white/40 max-w-md">
+        <p className="text-sm font-medium text-slate-500 dark:text-slate-400 max-w-md">
           No domino-effect failure chains were detected. Your contracts are
           relatively independent of each other.
         </p>
@@ -71,40 +71,40 @@ export default function CascadesList({ cascades }: CascadesListProps) {
             transition={{ delay: index * 0.08 }}
           >
             <Card
-              className={`${config.bg} ${config.border} cursor-pointer hover:brightness-110 transition-all`}
+              className={`bg-white dark:bg-card border-slate-200 dark:border-slate-700 hover:border-indigo-300 shadow-sm dark:shadow-slate-900/20 rounded-2xl cursor-pointer transition-all`}
               onClick={() => toggleExpand(cascade.id)}
             >
               <CardContent className="p-4">
                 {/* Header */}
-                <div className="flex items-start gap-3">
-                  <div className={`p-2 rounded-lg ${config.bg}`}>
-                    <GitBranch className={`w-4 h-4 ${config.color}`} />
+                <div className="flex items-start gap-4">
+                  <div className={`p-2 rounded-xl ${config.bg}`}>
+                    <GitBranch className={`w-5 h-5 ${config.color}`} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <Badge className={`${config.bg} ${config.color} text-[10px] border-0`}>
+                      <Badge className={`${config.bg} ${config.color} text-[10px] font-black uppercase tracking-widest border-0 px-2 rounded-full`}>
                         {config.label}
                       </Badge>
-                      <span className="text-[10px] text-white/30">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                         {cascade.chain.length} steps
                       </span>
                     </div>
-                    <h4 className="text-sm font-semibold text-white">
+                    <h4 className="text-base font-black text-slate-900 dark:text-slate-100 leading-tight">
                       ⚡ {cascade.trigger_event}
                     </h4>
-                    <p className="text-xs text-white/40 mt-1">
+                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mt-1">
                       Starting from: {cascade.trigger_document_title}
                     </p>
                   </div>
-                  <div className="text-right flex-shrink-0">
+                  <div className="text-right flex-shrink-0 flex flex-col items-end">
                     {cascade.total_financial_impact > 0 && (
-                      <p className="text-sm font-bold text-red-400">
+                      <p className="text-base font-black text-red-700 tracking-tight">
                         ₹{cascade.total_financial_impact.toLocaleString("en-IN")}
                       </p>
                     )}
                     <ChevronDown
-                      className={`w-4 h-4 text-white/30 transition-transform mt-1 ml-auto ${
-                        isExpanded ? "rotate-180" : ""
+                      className={`w-5 h-5 text-slate-400 transition-transform mt-2 ${
+                        isExpanded ? "rotate-180 text-indigo-500" : ""
                       }`}
                     />
                   </div>
@@ -120,39 +120,39 @@ export default function CascadesList({ cascades }: CascadesListProps) {
                       transition={{ duration: 0.2 }}
                       className="overflow-hidden"
                     >
-                      <div className="mt-4 space-y-2 pl-4 border-l-2 border-white/10">
+                      <div className="mt-6 pl-4 border-l-2 border-slate-200 dark:border-slate-700 space-y-4">
                         {cascade.chain.map((step, i) => (
                           <div
                             key={i}
-                            className="relative pl-6 pb-3"
+                            className="relative pl-6 pb-2"
                           >
                             {/* Dot on the line */}
-                            <div className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-gray-900 border-2 border-white/20 flex items-center justify-center">
-                              <span className="text-[8px] text-white/50">{step.step_number}</span>
+                            <div className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-slate-100 dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 flex items-center justify-center font-black">
+                              <span className="text-[8px] text-slate-500 dark:text-slate-400">{step.step_number}</span>
                             </div>
 
-                            <div className="rounded-lg bg-white/[0.03] border border-white/5 p-3">
-                              <div className="flex items-start justify-between gap-2">
+                            <div className="rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4">
+                              <div className="flex items-start justify-between gap-4">
                                 <div>
-                                  <p className="text-xs text-white/40">{step.document_title}</p>
-                                  <p className="text-sm text-white/80">{step.what_happens}</p>
-                                  <p className="text-[10px] text-white/30 mt-1">
+                                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{step.document_title}</p>
+                                  <p className="text-sm font-black text-slate-900 dark:text-slate-100 leading-relaxed mt-1">{step.what_happens}</p>
+                                  <p className="text-xs font-bold text-slate-500 dark:text-slate-400 mt-2 bg-slate-200/50 inline-block px-2 py-0.5 rounded uppercase tracking-widest">
                                     ⏱ {step.time_delay}
                                   </p>
                                 </div>
-                                <div className="text-right flex-shrink-0">
+                                <div className="text-right flex-shrink-0 flex flex-col items-end">
                                   {step.financial_impact != null && step.financial_impact > 0 && (
-                                    <p className="text-xs font-semibold text-red-300">
+                                    <p className="text-sm font-black text-red-700 tracking-tight">
                                       ₹{step.financial_impact.toLocaleString("en-IN")}
                                     </p>
                                   )}
                                   {step.can_be_prevented && (
-                                    <p className="text-[10px] text-green-400 mt-1">🛡️ Preventable</p>
+                                    <Badge className="text-[10px] bg-emerald-100 border-none text-emerald-800 font-bold uppercase tracking-widest mt-2 hover:bg-emerald-200">🛡️ Preventable</Badge>
                                   )}
                                 </div>
                               </div>
                               {step.prevention_action && (
-                                <p className="text-[10px] text-green-300 mt-2">
+                                <p className="text-sm font-bold text-emerald-700 mt-4 bg-emerald-50 px-3 py-2 border border-emerald-100 rounded-lg">
                                   ✅ {step.prevention_action}
                                 </p>
                               )}
@@ -163,14 +163,14 @@ export default function CascadesList({ cascades }: CascadesListProps) {
 
                       {/* Prevention Steps */}
                       {cascade.prevention_steps.length > 0 && (
-                        <div className="mt-4 rounded-lg bg-green-500/5 border border-green-500/10 p-3">
-                          <p className="text-[10px] text-green-400 font-medium mb-2 flex items-center gap-1">
-                            <ShieldCheck className="w-3 h-3" /> How to Break This Chain
+                        <div className="mt-6 rounded-xl bg-emerald-50 border border-emerald-200 p-5">
+                          <p className="text-xs text-emerald-800 font-black uppercase tracking-widest mb-3 flex items-center gap-1.5">
+                            <ShieldCheck className="w-4 h-4" /> How to Break This Chain
                           </p>
-                          <ul className="space-y-1">
+                          <ul className="space-y-2">
                             {cascade.prevention_steps.map((step, i) => (
-                              <li key={i} className="text-xs text-white/60 flex items-start gap-2">
-                                <span className="text-green-400 mt-0.5">•</span>
+                              <li key={i} className="text-sm font-medium text-emerald-950/80 flex items-start gap-2">
+                                <span className="text-emerald-500 font-black mt-0.5">•</span>
                                 {step}
                               </li>
                             ))}

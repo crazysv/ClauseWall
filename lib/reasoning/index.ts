@@ -55,7 +55,7 @@ export async function runNeurosymbolicAnalysis(
   try {
     // 1. Check if we have anything to reason about
     if (!extractedValues) {
-      console.log("[Reasoning] No extracted values — skipping formal reasoning");
+
       return null;
     }
 
@@ -69,7 +69,7 @@ export async function runNeurosymbolicAnalysis(
     );
 
     if (facts.length === 0) {
-      console.log("[Reasoning] No facts created — skipping formal reasoning");
+
       return null;
     }
 
@@ -77,9 +77,7 @@ export async function runNeurosymbolicAnalysis(
     const rules = await compileRulesFromDB(jurisdiction, documentType);
 
     if (rules.length === 0) {
-      console.log(
-        `[Reasoning] No compiled rules for ${jurisdiction}/${documentType} — skipping formal reasoning`
-      );
+
       return null;
     }
 
@@ -94,9 +92,7 @@ export async function runNeurosymbolicAnalysis(
       : rules;
 
     if (relevantRules.length === 0) {
-      console.log(
-        `[Reasoning] No rules match clause type '${clauseType}' — skipping formal reasoning`
-      );
+
       return null;
     }
 
@@ -116,22 +112,11 @@ export async function runNeurosymbolicAnalysis(
       result.proofTree.clauseText = clauseText;
       result.proofTree.derivationChain = formatDerivationChain(result.proofTree);
 
-      console.log(
-        `[Reasoning] ⚖️ Formal proof constructed: ${result.proofTree.verdict} ` +
-          `(${result.proofTree.totalSteps} steps, ` +
-          `${result.violations.length} violations, ` +
-          `confidence: ${Math.round(result.proofTree.confidence * 100)}%)`
-      );
 
       return result.proofTree;
     }
 
     // No violations found — clause is clean by formal reasoning
-    console.log(
-      `[Reasoning] No violations found by formal reasoning ` +
-        `(checked ${result.totalRulesChecked} rules, ` +
-        `${result.unmatchedRules.length} unmatched due to missing facts)`
-    );
 
     return null;
   } catch (error) {

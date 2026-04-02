@@ -29,9 +29,6 @@ export async function parsePDF(buffer: Buffer): Promise<string> {
       .replace(/\s{3,}/g, " ")      // Remove excessive spaces
       .trim();
 
-    console.log(
-      `[ClauseWall] Extracted ${cleanText.length} characters from PDF (${totalPages} pages)`
-    );
 
     return cleanText;
   } catch (error) {

@@ -33,15 +33,15 @@ const ACTION_LABELS: Record<string, { label: string; emoji: string }> = {
 };
 
 const STATUS_STYLES: Record<string, string> = {
-  proposed: "bg-blue-500/10 text-blue-400",
+  proposed: "bg-indigo-500/10 text-blue-400",
   voting: "bg-amber-500/10 text-amber-400",
   approved: "bg-green-500/10 text-green-400",
-  in_progress: "bg-purple-500/10 text-purple-400",
+  in_progress: "bg-indigo-500/10 text-purple-400",
   completed: "bg-emerald-500/10 text-emerald-400",
   rejected: "bg-red-500/10 text-red-400",
 };
 
-export default function CollectiveActionCard({
+export function CollectiveActionCard({
   action,
   collectiveId,
   isMember,
@@ -81,14 +81,14 @@ export default function CollectiveActionCard({
   const currentVotes = voteResult || action.vote_result;
 
   return (
-    <Card className="border-white/5 bg-white/[0.02] hover:bg-white/[0.03] transition-colors">
-      <CardContent className="p-4">
+    <Card className="border-white/5 bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border-l-4 border-indigo-500 hover:bg-white dark:bg-card/[0.03] transition-colors">
+      <CardContent className="p-6">
         <div className="flex items-start justify-between gap-3 mb-3">
           <div className="flex items-start gap-3">
             <span className="text-xl">{actionInfo.emoji}</span>
             <div>
-              <h4 className="text-sm font-medium text-white">{action.title}</h4>
-              <p className="text-[10px] text-white/30 mt-0.5">
+              <h4 className="text-sm font-medium text-slate-900 dark:text-slate-100">{action.title}</h4>
+              <p className="text-[10px] text-slate-900 dark:text-slate-100 mt-0.5">
                 {actionInfo.label} • Proposed by {action.proposed_by}
               </p>
             </div>
@@ -99,7 +99,7 @@ export default function CollectiveActionCard({
         </div>
 
         {action.description && (
-          <p className="text-xs text-white/50 mb-3 line-clamp-2">
+          <p className="text-xs text-slate-900 dark:text-slate-100 mb-3 line-clamp-2">
             {action.description}
           </p>
         )}
@@ -107,23 +107,23 @@ export default function CollectiveActionCard({
         {/* Vote results */}
         {currentVotes && (
           <div className="grid grid-cols-3 gap-2 mb-3">
-            <div className="rounded-lg bg-green-500/5 p-2 text-center">
+            <div className="rounded-xl bg-green-500/5 p-2 text-center">
               <p className="text-sm font-bold text-green-400">
                 {currentVotes.yes_votes}
               </p>
-              <p className="text-[9px] text-white/30">Yes</p>
+              <p className="text-[9px] text-slate-900 dark:text-slate-100">Yes</p>
             </div>
-            <div className="rounded-lg bg-red-500/5 p-2 text-center">
+            <div className="rounded-xl bg-red-500/5 p-2 text-center">
               <p className="text-sm font-bold text-red-400">
                 {currentVotes.no_votes}
               </p>
-              <p className="text-[9px] text-white/30">No</p>
+              <p className="text-[9px] text-slate-900 dark:text-slate-100">No</p>
             </div>
-            <div className="rounded-lg bg-white/[0.03] p-2 text-center">
-              <p className="text-sm font-bold text-white/40">
+            <div className="rounded-xl bg-white dark:bg-card/[0.03] p-2 text-center">
+              <p className="text-sm font-bold text-slate-900 dark:text-slate-100">
                 {currentVotes.abstain_votes}
               </p>
-              <p className="text-[9px] text-white/30">Abstain</p>
+              <p className="text-[9px] text-slate-900 dark:text-slate-100">Abstain</p>
             </div>
           </div>
         )}
@@ -156,7 +156,7 @@ export default function CollectiveActionCard({
               variant="outline"
               onClick={() => handleVote("abstain")}
               disabled={voting}
-              className="flex-1 text-xs gap-1 border-white/10 hover:bg-white/5 text-white/40"
+              className="flex-1 text-xs gap-1 border-white/10 hover:bg-white dark:bg-slate-900/5 text-slate-900 dark:text-slate-100"
             >
               <Minus className="h-3 w-3" />
               Abstain

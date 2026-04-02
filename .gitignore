@@ -36,3 +36,14 @@ next-env.d.ts
 # IDE
 .cursor/
 .windsurf/
+.cursorrules
+.windsurfrules
+
+# build output / debug logs
+*.log
+*-output.txt
+*_output.txt
+eslint-report.json
+
+# design exploration
+.stitch/

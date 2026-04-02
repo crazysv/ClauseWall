@@ -35,7 +35,7 @@ function ToneBadge({ tone }: { tone: AgentTone }) {
       label: "Aggressive",
     },
     measured: {
-      className: "bg-blue-500/15 text-blue-300 border-blue-500/30",
+      className: "bg-indigo-500/15 text-blue-300 border-blue-500/30",
       label: "Measured",
     },
     conciliatory: {
@@ -66,10 +66,10 @@ function ConfidenceBar({
   const percent = Math.round(confidence * 100);
   return (
     <div className="flex items-center gap-2 mt-2">
-      <span className="text-[10px] text-white/40 w-16 shrink-0">
+      <span className="text-[10px] text-slate-900 dark:text-slate-100 w-16 shrink-0">
         Confidence
       </span>
-      <div className="flex-1 h-1.5 rounded-full bg-white/10 overflow-hidden">
+      <div className="flex-1 h-1.5 rounded-full bg-indigo-50 border border-indigo-100 overflow-hidden">
         <motion.div
           className={`h-full rounded-full ${color}`}
           initial={{ width: 0 }}
@@ -81,7 +81,7 @@ function ConfidenceBar({
           aria-valuemax={100}
         />
       </div>
-      <span className="text-[10px] text-white/50 w-8 text-right">
+      <span className="text-[10px] text-slate-900 dark:text-slate-100 w-8 text-right">
         {percent}%
       </span>
     </div>
@@ -123,7 +123,7 @@ function AgentSection({
   }, []);
 
   const shouldAnimate = animated && !prefersReducedMotion;
-  const spacing = compact ? "p-3" : "p-4";
+  const spacing = compact ? "p-3" : "p-6";
 
   // Loading skeleton
   if (isLoading) {
@@ -141,16 +141,16 @@ function AgentSection({
           <motion.span
             animate={{ opacity: [1, 0.4, 1] }}
             transition={{ repeat: Infinity, duration: 1.5 }}
-            className="text-xs text-white/40"
+            className="text-xs text-slate-900 dark:text-slate-100"
           >
             preparing argument...
           </motion.span>
         </div>
         <div className="space-y-2">
-          <Skeleton className="h-3 w-full bg-white/5" />
-          <Skeleton className="h-3 w-4/5 bg-white/5" />
-          <Skeleton className="h-3 w-3/5 bg-white/5" />
-          <Skeleton className="h-3 w-2/3 bg-white/5" />
+          <Skeleton className="h-3 w-full bg-indigo-50/50" />
+          <Skeleton className="h-3 w-4/5 bg-indigo-50/50" />
+          <Skeleton className="h-3 w-3/5 bg-indigo-50/50" />
+          <Skeleton className="h-3 w-2/3 bg-indigo-50/50" />
         </div>
       </div>
     );
@@ -170,7 +170,7 @@ function AgentSection({
             {agent.agentName}
           </span>
           {agent.wasRecovered && (
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-400 border border-amber-500/30">
+            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/30">
               ⚠ Recovered
             </span>
           )}
@@ -179,21 +179,21 @@ function AgentSection({
       </div>
 
       {/* Argument Text */}
-      <p className={`text-white/90 leading-relaxed mb-3 ${compact ? "text-xs" : "text-sm"}`}>
+      <p className={`text-slate-900 dark:text-slate-100 leading-relaxed mb-3 ${compact ? "text-xs" : "text-sm"}`}>
         {agent.argument}
       </p>
 
       {/* Key Points */}
       {agent.keyPoints.length > 0 && (
         <div className="mb-3">
-          <p className="text-[10px] uppercase tracking-wider text-white/40 mb-1.5">
+          <p className="text-[10px] uppercase tracking-wider text-slate-900 dark:text-slate-100 mb-1.5">
             Key Points
           </p>
           <ul className="space-y-1">
             {agent.keyPoints.map((point, i) => (
               <li
                 key={i}
-                className={`flex items-start gap-2 text-white/80 ${compact ? "text-xs" : "text-sm"}`}
+                className={`flex items-start gap-2 text-slate-900 dark:text-slate-100 ${compact ? "text-xs" : "text-sm"}`}
               >
                 <span className={`mt-1 shrink-0 ${colorText}`}>•</span>
                 <span>{point}</span>
@@ -205,7 +205,7 @@ function AgentSection({
 
       {/* Citations */}
       {agent.citations.length > 0 && (
-        <p className="text-[10px] text-white/40 italic mb-2">
+        <p className="text-[10px] text-slate-900 dark:text-slate-100 italic mb-2">
           Citations: {agent.citations.join(" · ")}
         </p>
       )}
@@ -242,7 +242,7 @@ function VsDivider({ animated }: { animated: boolean }) {
   const divider = (
     <div className="flex items-center gap-3 py-1">
       <div className="flex-1 border-t border-white/10" />
-      <span className="text-sm font-bold text-white/30 select-none">⚡ VS ⚡</span>
+      <span className="text-sm font-bold text-slate-900 dark:text-slate-100 select-none">⚡ VS ⚡</span>
       <div className="flex-1 border-t border-white/10" />
     </div>
   );
@@ -281,7 +281,7 @@ function VerdictBadge({
     fair: { bg: "bg-emerald-500", label: "FAIR", emoji: "✅" },
     partially_fair: { bg: "bg-amber-500", label: "PARTIALLY FAIR", emoji: "⚠️" },
     unfair: { bg: "bg-red-500", label: "UNFAIR", emoji: "❌" },
-    illegal: { bg: "bg-purple-600 ring-2 ring-purple-400/50", label: "ILLEGAL", emoji: "⛔" },
+    illegal: { bg: "bg-indigo-600 ring-2 ring-purple-400/50", label: "ILLEGAL", emoji: "⛔" },
   };
 
   const c = config[verdict] || config.partially_fair;
@@ -289,7 +289,7 @@ function VerdictBadge({
 
   const badge = (
     <span
-      className={`inline-flex items-center gap-1.5 ${size} rounded-full font-bold text-white ${c.bg}`}
+      className={`inline-flex items-center gap-1.5 ${size} rounded-full font-bold text-slate-900 dark:text-slate-100 ${c.bg}`}
       aria-label={`Verdict: ${c.label}`}
     >
       {c.emoji} {c.label}
@@ -345,7 +345,7 @@ function ArbiterSection({
   }, []);
 
   const shouldAnimate = animated && !prefersReducedMotion;
-  const spacing = compact ? "p-3" : "p-4 sm:p-5";
+  const spacing = compact ? "p-3" : "p-6 sm:p-6";
 
   // Loading skeleton
   if (isLoading) {
@@ -363,18 +363,18 @@ function ArbiterSection({
           <motion.span
             animate={{ opacity: [1, 0.4, 1] }}
             transition={{ repeat: Infinity, duration: 1.5 }}
-            className="text-xs text-white/40"
+            className="text-xs text-slate-900 dark:text-slate-100"
           >
             deliberating...
           </motion.span>
         </div>
         <div className="flex justify-center mb-4">
-          <Skeleton className="h-10 w-40 rounded-full bg-white/5" />
+          <Skeleton className="h-10 w-40 rounded-full bg-indigo-50/50" />
         </div>
         <div className="space-y-2">
-          <Skeleton className="h-3 w-full bg-white/5" />
-          <Skeleton className="h-3 w-5/6 bg-white/5" />
-          <Skeleton className="h-3 w-4/5 bg-white/5" />
+          <Skeleton className="h-3 w-full bg-indigo-50/50" />
+          <Skeleton className="h-3 w-5/6 bg-indigo-50/50" />
+          <Skeleton className="h-3 w-4/5 bg-indigo-50/50" />
         </div>
       </div>
     );
@@ -399,7 +399,7 @@ function ArbiterSection({
             Judicial Arbiter
           </span>
           {agent.wasRecovered && (
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-400 border border-amber-500/30">
+            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/30">
               ⚠ Recovered
             </span>
           )}
@@ -419,14 +419,14 @@ function ArbiterSection({
       {/* Core Reasoning */}
       {verdict.reasoning && (
         <div className="mb-3 text-center">
-          <p className={`text-white/70 italic ${compact ? "text-xs" : "text-sm"}`}>
+          <p className={`text-slate-900 dark:text-slate-100 italic ${compact ? "text-xs" : "text-sm"}`}>
             &ldquo;{verdict.reasoning}&rdquo;
           </p>
         </div>
       )}
 
       {/* Full Argument */}
-      <p className={`text-white/90 leading-relaxed mb-4 ${compact ? "text-xs" : "text-sm"}`}>
+      <p className={`text-slate-900 dark:text-slate-100 leading-relaxed mb-4 ${compact ? "text-xs" : "text-sm"}`}>
         {agent.argument}
       </p>
 
@@ -439,7 +439,7 @@ function ArbiterSection({
               ✓ Defense Valid
             </p>
             {verdict.predatorValidPoints.map((p, i) => (
-              <p key={i} className={`text-white/70 ${compact ? "text-[11px]" : "text-xs"}`}>
+              <p key={i} className={`text-slate-900 dark:text-slate-100 ${compact ? "text-[11px]" : "text-xs"}`}>
                 {p}
               </p>
             ))}
@@ -453,7 +453,7 @@ function ArbiterSection({
               ✗ Defense Weak
             </p>
             {verdict.predatorWeaknesses.map((p, i) => (
-              <p key={i} className={`text-white/70 ${compact ? "text-[11px]" : "text-xs"}`}>
+              <p key={i} className={`text-slate-900 dark:text-slate-100 ${compact ? "text-[11px]" : "text-xs"}`}>
                 {p}
               </p>
             ))}
@@ -467,7 +467,7 @@ function ArbiterSection({
               ✓ Advocate Valid
             </p>
             {verdict.guardianValidPoints.map((p, i) => (
-              <p key={i} className={`text-white/70 ${compact ? "text-[11px]" : "text-xs"}`}>
+              <p key={i} className={`text-slate-900 dark:text-slate-100 ${compact ? "text-[11px]" : "text-xs"}`}>
                 {p}
               </p>
             ))}
@@ -481,7 +481,7 @@ function ArbiterSection({
               ✗ Advocate Weak
             </p>
             {verdict.guardianWeaknesses.map((p, i) => (
-              <p key={i} className={`text-white/70 ${compact ? "text-[11px]" : "text-xs"}`}>
+              <p key={i} className={`text-slate-900 dark:text-slate-100 ${compact ? "text-[11px]" : "text-xs"}`}>
                 {p}
               </p>
             ))}
@@ -495,8 +495,8 @@ function ArbiterSection({
           <p className="text-[10px] text-amber-400/80 uppercase tracking-wider mb-1.5">
             Suggested Modification
           </p>
-          <div className="bg-white/5 border border-white/10 rounded-lg p-3">
-            <p className={`text-white/80 italic ${compact ? "text-xs" : "text-sm"} leading-relaxed`}>
+          <div className="bg-indigo-50/50 border border-white/10 rounded-xl p-3">
+            <p className={`text-slate-900 dark:text-slate-100 italic ${compact ? "text-xs" : "text-sm"} leading-relaxed`}>
               &ldquo;{verdict.suggestedModification}&rdquo;
             </p>
           </div>
@@ -505,7 +505,7 @@ function ArbiterSection({
 
       {/* Legal References */}
       {verdict.legalReferences.length > 0 && (
-        <p className="text-[10px] text-white/40 italic mb-3">
+        <p className="text-[10px] text-slate-900 dark:text-slate-100 italic mb-3">
           Legal References: {verdict.legalReferences.join(" · ")}
         </p>
       )}
@@ -518,7 +518,7 @@ function ArbiterSection({
             color="bg-amber-500"
           />
         </div>
-        <span className="text-[10px] text-white/30 ml-4 shrink-0">
+        <span className="text-[10px] text-slate-900 dark:text-slate-100 ml-4 shrink-0">
           ⏱️ {durationStr}
         </span>
       </div>
@@ -548,7 +548,7 @@ function ArbiterSection({
 // MAIN COMPONENT: DELIBERATION PANEL
 // ============================================
 
-export default function DeliberationPanel({
+export function DeliberationPanel({
   deliberation,
   isLoading = false,
   currentAgent = null,
@@ -582,7 +582,7 @@ export default function DeliberationPanel({
     <div className={gap}>
       {/* Mobile agent selector */}
       {isMobile && !isLoading && (
-        <div className="flex gap-1.5 p-1 bg-white/5 rounded-lg">
+        <div className="flex gap-1.5 p-1 bg-indigo-50/50 rounded-xl">
           {(["predator", "guardian", "arbiter", "all"] as const).map((role) => {
             const labels: Record<string, string> = {
               predator: "🔴 Defense",
@@ -594,11 +594,7 @@ export default function DeliberationPanel({
               <button
                 key={role}
                 onClick={() => setExpandedAgent(role)}
-                className={`flex-1 text-[10px] py-1.5 rounded-md font-medium transition-colors ${
-                  expandedAgent === role
-                    ? "bg-white/10 text-white"
-                    : "text-white/40 hover:text-white/60"
-                }`}
+                className={`flex-1 text-[10px] py-1.5 rounded-md font-medium transition-colors ${ expandedAgent === role ? "bg-indigo-50 border border-indigo-100 text-slate-900 dark:text-slate-100" : "text-slate-900 dark:text-slate-100 hover:text-slate-900 dark:text-slate-100" }`}
               >
                 {labels[role]}
               </button>

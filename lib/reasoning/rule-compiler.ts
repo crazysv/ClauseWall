@@ -247,9 +247,6 @@ export async function compileRulesFromDB(
     compiledRulesCache.set(cacheKey, compiled);
     setTimeout(() => compiledRulesCache.delete(cacheKey), 5 * 60 * 1000);
 
-    console.log(
-      `[Reasoning] Compiled ${compiled.length} rules for ${jurisdiction}/${documentType} (from ${rules.length} DB rows)`
-    );
 
     return compiled;
   } catch (err) {

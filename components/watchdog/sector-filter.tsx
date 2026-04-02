@@ -2,24 +2,9 @@
 
 import { Badge } from "@/components/ui/badge";
 import type { CompanySector } from "@/types";
+import { SECTOR_LABELS, SECTOR_ICONS, ALL_SECTORS } from "./watchdog-constants";
 
-const SECTOR_LABELS: Record<string, string> = {
-  ride_hailing: "Ride-hailing", food_delivery: "Food Delivery", ecommerce: "E-commerce",
-  payments: "Payments", social: "Social", streaming: "Streaming", travel: "Travel",
-  banking: "Banking", telecom: "Telecom", edtech: "EdTech", government: "Government", other: "Other",
-};
-
-const SECTOR_ICONS: Record<string, string> = {
-  ride_hailing: "🚗", food_delivery: "🍔", ecommerce: "🛒", payments: "💳", social: "💬",
-  streaming: "🎬", travel: "✈️", banking: "🏦", telecom: "📱", edtech: "📚", government: "🏛️", other: "📋",
-};
-
-const ALL_SECTORS: CompanySector[] = [
-  "ride_hailing", "food_delivery", "ecommerce", "payments", "social",
-  "streaming", "travel", "banking", "telecom", "edtech", "government",
-];
-
-export default function SectorFilter({
+export function SectorFilter({
   selected,
   onChange,
 }: {
@@ -27,14 +12,12 @@ export default function SectorFilter({
   onChange: (sector: string) => void;
 }) {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-2" role="group" aria-label="Filter by sector">
       <button
         onClick={() => onChange("all")}
-        className={`px-3 py-1.5 rounded-full text-sm border transition-all ${
-          selected === "all"
-            ? "bg-blue-500/15 border-blue-500/30 text-blue-400"
-            : "bg-gray-900/50 border-gray-800 text-muted-foreground hover:border-white/20"
-        }`}
+        aria-label="Show all sectors"
+        aria-pressed={selected === "all"}
+        className={`px-4 py-2 rounded-xl text-sm border-2 transition-all font-bold ${ selected === "all" ? "bg-indigo-600 border-indigo-700 text-white shadow-sm dark:shadow-slate-900/20" : "bg-white dark:bg-card border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-300 shadow-sm dark:shadow-slate-900/20" }`}
       >
         All
       </button>
@@ -42,11 +25,9 @@ export default function SectorFilter({
         <button
           key={sector}
           onClick={() => onChange(sector)}
-          className={`px-3 py-1.5 rounded-full text-sm border transition-all ${
-            selected === sector
-              ? "bg-blue-500/15 border-blue-500/30 text-blue-400"
-              : "bg-gray-900/50 border-gray-800 text-muted-foreground hover:border-white/20"
-          }`}
+          aria-label={`Filter by ${SECTOR_LABELS[sector]}`}
+          aria-pressed={selected === sector}
+          className={`px-4 py-2 rounded-xl text-sm border-2 transition-all font-bold ${ selected === sector ? "bg-indigo-600 border-indigo-700 text-white shadow-sm dark:shadow-slate-900/20" : "bg-white dark:bg-card border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-300 shadow-sm dark:shadow-slate-900/20" }`}
         >
           {SECTOR_ICONS[sector]} {SECTOR_LABELS[sector]}
         </button>
@@ -56,3 +37,4 @@ export default function SectorFilter({
 }
 
 export { SECTOR_LABELS, SECTOR_ICONS };
+

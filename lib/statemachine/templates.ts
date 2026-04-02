@@ -397,9 +397,6 @@ export function enhanceWithTemplate(
     confidence: Math.max(0.3, enhanced.metadata.confidence - addedCount * 0.05),
   };
 
-  console.log(
-    `[ClauseWall] [StateMachine] Template enhanced: added ${addedCount} missing states`
-  );
 
   return enhanced;
 }

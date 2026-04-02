@@ -14,7 +14,7 @@ interface Props {
   defaultAddress?: string;
 }
 
-export default function RTIForm({ defaultContext, defaultAuthority, defaultAddress }: Props) {
+export function RTIForm({ defaultContext, defaultAuthority, defaultAddress }: Props) {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [authority, setAuthority] = useState(defaultAuthority || "");
@@ -59,7 +59,7 @@ export default function RTIForm({ defaultContext, defaultAuthority, defaultAddre
 
   return (
     <div className="space-y-6">
-      <Card className="border-white/10 bg-white/[0.02]">
+      <Card className="border-white/10 bg-white dark:bg-slate-900/[0.02]">
         <CardContent className="p-6">
           <div className="flex items-center gap-2 mb-4">
             <FileText className="h-5 w-5 text-emerald-400" />
@@ -72,25 +72,25 @@ export default function RTIForm({ defaultContext, defaultAuthority, defaultAddre
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="text-xs text-muted-foreground mb-1 block">Your Name *</label>
-              <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Full name" className="w-full bg-gray-900 border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none" />
+              <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Full name" className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none" />
             </div>
             <div>
               <label className="text-xs text-muted-foreground mb-1 block">Your Address</label>
-              <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Full address" className="w-full bg-gray-900 border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none" />
+              <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Full address" className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none" />
             </div>
             <div>
               <label className="text-xs text-muted-foreground mb-1 block">Target Authority</label>
-              <input type="text" value={authority} onChange={(e) => setAuthority(e.target.value)} placeholder="e.g. Department of Consumer Affairs" className="w-full bg-gray-900 border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none" />
+              <input type="text" value={authority} onChange={(e) => setAuthority(e.target.value)} placeholder="e.g. Department of Consumer Affairs" className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none" />
             </div>
             <div>
               <label className="text-xs text-muted-foreground mb-1 block">Authority Address</label>
-              <input type="text" value={authorityAddress} onChange={(e) => setAuthorityAddress(e.target.value)} placeholder="Authority address" className="w-full bg-gray-900 border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none" />
+              <input type="text" value={authorityAddress} onChange={(e) => setAuthorityAddress(e.target.value)} placeholder="Authority address" className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none" />
             </div>
           </div>
 
           <div className="mt-4">
             <label className="text-xs text-muted-foreground mb-1 block">Dispute Context *</label>
-            <textarea value={context} onChange={(e) => setContext(e.target.value)} rows={4} placeholder="Describe what information you need and why..." className="w-full bg-gray-900 border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none resize-none" />
+            <textarea value={context} onChange={(e) => setContext(e.target.value)} rows={4} placeholder="Describe what information you need and why..." className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none resize-none" />
           </div>
 
           <Button onClick={handleGenerate} disabled={loading} className="w-full mt-4 bg-emerald-600 hover:bg-emerald-700 gap-2" id="rti-generate">
@@ -117,7 +117,7 @@ export default function RTIForm({ defaultContext, defaultAuthority, defaultAddre
                 </div>
               </div>
 
-              <div className="bg-gray-900/80 rounded-lg p-4 font-mono text-xs leading-relaxed whitespace-pre-wrap max-h-96 overflow-y-auto border border-white/5">
+              <div className="bg-slate-900/80 rounded-xl p-4 font-mono text-xs leading-relaxed whitespace-pre-wrap max-h-96 overflow-y-auto border border-white/5">
                 {rti.full_text}
               </div>
 

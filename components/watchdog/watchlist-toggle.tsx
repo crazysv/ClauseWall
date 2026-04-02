@@ -5,7 +5,7 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
-export default function WatchlistToggle({
+export function WatchlistToggle({
   companyId,
   isWatching,
   onToggle,
@@ -50,7 +50,8 @@ export default function WatchlistToggle({
       size="sm"
       onClick={toggle}
       disabled={loading}
-      className={`gap-2 ${watching ? "border-blue-500/30 text-blue-400" : "bg-blue-600 hover:bg-blue-700"}`}
+      aria-label={watching ? "Remove from watchlist" : "Add to watchlist"}
+      className={`gap-2 transition-all shadow-sm dark:shadow-slate-900/20 font-bold ${ watching ? "bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-indigo-700 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-300" : "bg-indigo-600 hover:bg-indigo-700 text-slate-900 dark:text-slate-100" }`}
     >
       {loading ? (
         <Loader2 className="h-4 w-4 animate-spin" />

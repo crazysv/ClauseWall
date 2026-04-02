@@ -25,7 +25,6 @@ export async function extractAndAnalyzeStateMachine(
   clauses?: Array<{ text: string; type: string; index: number }>
 ): Promise<StateMachineReport | null> {
   try {
-    console.log(`[ClauseWall] [StateMachine] Starting extraction + analysis for document ${documentId}`);
 
     // Step 1: Extract state machine from contract text via AI
     const stateMachine = await extractStateMachine(
@@ -47,11 +46,6 @@ export async function extractAndAnalyzeStateMachine(
     const analyzer = new StateMachineAnalyzer(stateMachine);
     const report = analyzer.getFullReport();
 
-    console.log(
-      `[ClauseWall] [StateMachine] ✅ Complete: ${report.stateMachine.metadata.totalStates} states, ` +
-      `${report.stateMachine.metadata.totalTransitions} transitions, ` +
-      `${report.trapAnalysis.length} traps, safety: ${report.overallSafety}`
-    );
 
     return report;
   } catch (error) {

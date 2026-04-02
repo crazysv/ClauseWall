@@ -34,7 +34,7 @@ interface PreSendReviewModalProps {
   originalClauseCount: number;
 }
 
-export default function PreSendReviewModal({
+export function PreSendReviewModal({
   isOpen,
   onClose,
   onApprove,
@@ -52,7 +52,7 @@ export default function PreSendReviewModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="bg-gray-900 border-gray-800 max-w-lg max-h-[85vh] overflow-y-auto">
+      <DialogContent className="bg-slate-900 border-slate-800 max-w-lg max-h-[85vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Eye className="h-5 w-5 text-blue-400" />
@@ -65,7 +65,7 @@ export default function PreSendReviewModal({
         </DialogHeader>
 
         {/* Redaction Stats */}
-        <div className="p-3 rounded-lg bg-green-500/5 border border-green-500/20">
+        <div className="p-3 rounded-xl bg-green-500/5 border border-green-500/20">
           <div className="flex items-center gap-2 mb-2">
             <ShieldCheck className="h-4 w-4 text-green-400" />
             <span className="text-sm font-medium text-green-400">
@@ -124,7 +124,7 @@ export default function PreSendReviewModal({
                 initial={{ opacity: 0, y: 5 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className="p-3 rounded-lg bg-white/[0.03] border border-white/5 text-xs text-muted-foreground font-mono leading-relaxed"
+                className="p-3 rounded-xl bg-white dark:bg-card/[0.03] border border-white/5 text-xs text-muted-foreground font-mono leading-relaxed"
               >
                 <span className="text-blue-400 font-sans font-medium">
                   Clause {i + 1}:
@@ -157,7 +157,7 @@ export default function PreSendReviewModal({
         </div>
 
         {/* Highlighted redactions */}
-        <div className="p-2 rounded-lg bg-white/[0.02] border border-white/5">
+        <div className="p-2 rounded-xl bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border-l-4 border-indigo-500 border border-white/5">
           <p className="text-[10px] text-muted-foreground flex items-center gap-1">
             <Fingerprint className="h-3 w-3 text-green-400" />
             Redacted items appear as{" "}
@@ -180,7 +180,7 @@ export default function PreSendReviewModal({
           </Button>
           <Button
             onClick={onApprove}
-            className="gap-2 bg-blue-600 hover:bg-blue-700"
+            className="gap-2 bg-indigo-600 hover:bg-blue-700"
           >
             <Send className="h-4 w-4" />
             Send for AI Analysis

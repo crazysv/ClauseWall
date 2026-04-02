@@ -53,8 +53,7 @@ export async function analyzeDocument(
   const supabase = externalSupabase || (await createClient());
 
   try {
-    console.log(`[ClauseWall] analyzeDocument started for ${documentId}`);
-    console.log(`[ClauseWall] Text length: ${rawText?.length || 0}`);
+
 
     // ---- Language Detection ----
     let detectedLang: SupportedLanguage = "en";
@@ -69,7 +68,6 @@ export async function analyzeDocument(
       const quickDetect = detectLanguageQuick(rawText.substring(0, 2000));
       detectedLang = quickDetect.language;
       langConfidence = quickDetect.confidence;
-      console.log(`[ClauseWall] Quick language detection: ${detectedLang} (${langConfidence})`);
 
       // Full async detection if not English and not very confident
       if (detectedLang !== "en" || langConfidence < 0.9) {
@@ -77,7 +75,7 @@ export async function analyzeDocument(
           const fullDetect = await detectLanguage(rawText.substring(0, 3000));
           detectedLang = fullDetect.primary_language;
           langConfidence = fullDetect.confidence;
-          console.log(`[ClauseWall] Full language detection: ${detectedLang} (${langConfidence})`);
+
         } catch {
           console.warn("[ClauseWall] Full language detection failed, using quick result");
         }
@@ -91,7 +89,6 @@ export async function analyzeDocument(
     const finalSourceLang: SupportedLanguage = isAutoDetect ? detectedLang : effectiveSourceLang;
     const finalOutputLang: SupportedLanguage = outputLanguage || (isMultilingual ? detectedLang : "en");
 
-    console.log(`[ClauseWall] Language: source=${finalSourceLang}, output=${finalOutputLang}, multilingual=${isMultilingual}`);
 
     // Pre-process numerals for non-English text
     const processedText = isMultilingual ? preprocessDocumentNumerals(rawText) : rawText;
@@ -117,9 +114,8 @@ export async function analyzeDocument(
     // ---- Step 1: Extract clauses ----
     await updateProgress(supabase, documentId, 10, "Extracting clauses from document...");
     
-    console.log(`[ClauseWall] Extracting clauses...`);
+
     const extraction = await extractClauses(processedText, isMultilingual ? finalSourceLang : undefined);
-    console.log(`[ClauseWall] Found ${extraction.clauses?.length || 0} clauses`);
 
     const totalClauses = extraction.clauses.length;
 
@@ -127,54 +123,42 @@ export async function analyzeDocument(
     let entityName = extraction.document_info.entity_name || null;
 
         if (!entityName) {
-      console.log(
-        `[ClauseWall] AI entity extraction missed. Running regex fallback...`
-      );
+
       const fallbackEntity = extractEntityFallback(rawText, documentType);
       
       if (fallbackEntity) {
         // Validate the regex-extracted entity too
         if (isValidEntityName(fallbackEntity, rawText)) {
           entityName = fallbackEntity;
-          console.log(
-            `[ClauseWall] ✅ Regex fallback found valid entity: ${entityName}`
-          );
+
         } else {
-          console.log(
-            `[ClauseWall] ⚠️ Regex fallback found "${fallbackEntity}" but rejected as invalid`
-          );
+
         }
       } else {
-        console.log(
-          `[ClauseWall] ⚠️ No entity found by AI or regex fallback`
-        );
+
       }
     }
 
     // Normalize entity name for consistent matching
     if (entityName) {
       entityName = normalizeEntityName(entityName);
-      console.log(`[ClauseWall] Final entity (normalized): ${entityName}`);
+
     } else {
-      console.log(`[ClauseWall] Final entity: none`);
+
     } 
 
             // Get AI-detected jurisdiction (may differ from user selection)
     const detectedJurisdiction = extraction.document_info.detected_jurisdiction || null;
     
     if (detectedJurisdiction && detectedJurisdiction !== jurisdiction) {
-      console.log(
-        `[ClauseWall] ⚠️ Jurisdiction mismatch: User selected "${jurisdiction}", AI detected "${detectedJurisdiction}"`
-      );
+
     }
 
     // Get AI-detected document type (may differ from user selection)
     const detectedDocType = extraction.document_info.detected_type || null;
     
     if (detectedDocType && detectedDocType !== documentType && detectedDocType !== "other") {
-      console.log(
-        `[ClauseWall] ⚠️ Document type mismatch: User selected "${documentType}", AI detected "${detectedDocType}"`
-      );
+
     }
 
     // Update document with detected entity name, jurisdiction, document type, and total clauses
@@ -191,7 +175,6 @@ export async function analyzeDocument(
       .eq("id", documentId);
 
     // ---- Step 2: Hybrid analysis for each clause ----
-    console.log(`[ClauseWall] [Hybrid] Analyzing ${totalClauses} clauses...`);
 
     const analyzedClauses: any[] = [];
     let dbMatchCount = 0;
@@ -213,7 +196,6 @@ export async function analyzeDocument(
         clauseNum
       );
 
-      console.log(`[ClauseWall] Clause ${clauseNum}/${totalClauses}: ${extractedClause.clause_type}`);
 
       // Use HYBRID analysis
       const analysis = await hybridAnalyzeClause(
@@ -240,9 +222,7 @@ export async function analyzeDocument(
         );
     
         if (communityMatch) {
-          console.log(
-            `[ClauseWall] [Community] Match found for clause ${clauseNum}: ${communityMatch.match_type} (${communityMatch.match_percentage}%)`
-          );
+
         }
       }
 
@@ -279,9 +259,6 @@ export async function analyzeDocument(
       );
     }
 
-    console.log(
-      `[ClauseWall] [Hybrid] Results: ${dbMatchCount} DB-verified, ${aiFallbackCount} AI-analyzed`
-    );
 
     // ---- Step 3: Save clauses to database ----
     await updateProgress(supabase, documentId, 88, "Saving analysis results...", totalClauses);
@@ -297,7 +274,7 @@ export async function analyzeDocument(
     // ---- Step 3.5: Add dangerous/illegal clauses to community DB ----
     await updateProgress(supabase, documentId, 90, "Updating community database...", totalClauses);
     
-    console.log(`[ClauseWall] [Community] Sharing predatory patterns...`);
+
     let communityAdded = 0;
     for (const clause of analyzedClauses) {
       if (clause.risk_level === "dangerous" || clause.risk_level === "illegal") {
@@ -313,7 +290,6 @@ export async function analyzeDocument(
         if (added) communityAdded++;
       }
     }
-    console.log(`[ClauseWall] [Community] ${communityAdded} patterns shared`);
 
     // ---- Step 3.55: Enrich clauses with Knowledge Graph ----
     await updateProgress(supabase, documentId, 91, "Enriching with legal knowledge graph...", totalClauses);
@@ -321,7 +297,7 @@ export async function analyzeDocument(
     try {
       const { enrichDocumentClauses } = await import("@/lib/graph");
       const enrichedCount = await enrichDocumentClauses(documentId, jurisdiction);
-      console.log(`[ClauseWall] [Graph] ✅ Enriched ${enrichedCount} clauses with knowledge graph`);
+
     } catch (graphError) {
       console.error("[ClauseWall] [Graph] Non-fatal enrichment error:", graphError);
       // Non-fatal — analysis continues without graph enrichment
@@ -332,7 +308,7 @@ export async function analyzeDocument(
 
     let powerBalance = null;
     try {
-      console.log(`[ClauseWall] [Power] Extracting power balance...`);
+
       powerBalance = await extractPowerBalance(
         analyzedClauses.map((c) => ({
           clause_number: c.clause_number,
@@ -345,9 +321,7 @@ export async function analyzeDocument(
         jurisdiction,
         entityName
       );
-      console.log(
-        `[ClauseWall] [Power] ⚖️ Balance: ${powerBalance.overall_party_a}/${powerBalance.overall_party_b} — ${powerBalance.verdict}`
-      );
+
     } catch (powerError) {
       console.error("[ClauseWall] [Power] Power balance analysis failed (non-fatal):", powerError);
       // Non-fatal — analysis continues without power balance
@@ -418,9 +392,7 @@ export async function analyzeDocument(
         tsaToken = proofResult.tsa_token;
         tsaSerial = proofResult.tsa_serial;
 
-        console.log(
-          `[ClauseWall] [Proof] ✅ Hash: ${proofHash?.substring(0, 16)}... TSA: ${tsaSerial || "none"} IPFS: ${proofCid || "none"}`
-        );
+
       }
     } catch (proofError) {
       console.error("[ClauseWall] [Proof] Non-fatal error:", proofError);
@@ -447,9 +419,7 @@ export async function analyzeDocument(
           .from("documents")
           .update({ state_machine_data: stateMachineReport })
           .eq("id", documentId);
-        console.log(
-          `[ClauseWall] [StateMachine] ✅ Stored: ${stateMachineReport.stateMachine.metadata.totalStates} states, ${stateMachineReport.trapAnalysis.length} traps`
-        );
+
       }
     } catch (smError) {
       console.error("[ClauseWall] [StateMachine] Non-fatal extraction error:", smError);
@@ -471,9 +441,7 @@ export async function analyzeDocument(
           clause_type: c.clause_type,
         }))
       );
-      console.log(
-        `[ClauseWall] [TimeBomb] ✅ Extracted ${temporalData.deadlines.length} temporal deadlines, risk: ${temporalData.overall_temporal_risk}`
-      );
+
     } catch (temporalError) {
       console.error("[ClauseWall] [TimeBomb] Non-fatal temporal extraction error:", temporalError);
       // Non-blocking — analysis continues without temporal data
@@ -500,9 +468,7 @@ export async function analyzeDocument(
         jurisdiction,
         entityName || null
       );
-      console.log(
-        `[ClauseWall] [PoisonPill] ✅ ${poisonPillData.traps.length} traps found, score: ${poisonPillData.combined_trap_score}/100`
-      );
+
     } catch (poisonPillError) {
       console.error("[ClauseWall] [PoisonPill] Non-fatal detection error:", poisonPillError);
       // Non-blocking — analysis continues without poison pill data
@@ -520,13 +486,9 @@ export async function analyzeDocument(
           documentType
         );
         if (intelligence?.collective) {
-          console.log(
-            `[ClauseWall] [Collective] ✅ Entity "${entityName}" — ${intelligence.entity.total_flags} flags, collective: ${intelligence.collective.status} (${intelligence.collective.member_count} members)`
-          );
+
         } else if (intelligence?.entity) {
-          console.log(
-            `[ClauseWall] [Collective] ℹ️ Entity "${entityName}" — ${intelligence.entity.total_flags} flags, no collective yet`
-          );
+
         }
       }
     } catch (collectiveError) {
@@ -551,9 +513,7 @@ export async function analyzeDocument(
         }))
       );
       if (lawChangesData && lawChangesData.total_changes > 0) {
-        console.log(
-          `[ClauseWall] [LawChange] ✅ Retroactive: ${lawChangesData.total_changes} changes since signing`
-        );
+
       }
     } catch (lawChangeError) {
       console.error("[ClauseWall] [LawChange] Retroactive check failed (non-fatal):", lawChangeError);
@@ -618,14 +578,12 @@ export async function analyzeDocument(
         .from("documents")
         .update({ authority_routing: routingResult })
         .eq("id", documentId);
-      console.log(`[ClauseWall] ⚖️ Authority routing computed: ${routingResult.dispute_category}`);
+
     } catch (routingError) {
       console.warn("[ClauseWall] Authority routing failed (non-fatal):", routingError);
     }
 
-    console.log(
-      `[ClauseWall] ✅ Hybrid analysis complete for document ${documentId}. Score: ${overallScore}/100 | DB: ${dbMatchCount} | AI: ${aiFallbackCount}`
-    );
+
   } catch (error) {
     console.error(
       `[ClauseWall] ❌ Analysis failed for document ${documentId}:`,

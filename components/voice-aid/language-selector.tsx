@@ -11,7 +11,7 @@ interface Props {
   onChange: (lang: SupportedLanguage) => void;
 }
 
-export default function LanguageSelector({ current, onChange }: Props) {
+export function LanguageSelector({ current, onChange }: Props) {
   const [open, setOpen] = useState(false);
   const languages = getAllLanguages();
   const currentConfig = languages.find((l) => l.code === current) || languages[0];
@@ -20,15 +20,15 @@ export default function LanguageSelector({ current, onChange }: Props) {
     <div className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all text-sm"
+        className="flex items-center gap-2 px-3 py-2 rounded-xl bg-indigo-50/50 border border-white/10 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 border border-indigo-100 transition-all text-sm"
         aria-label="Select language"
         id="voice-language-selector"
       >
-        <Globe className="h-4 w-4 text-blue-400" />
+        <Globe className="h-4 w-4 text-indigo-400" />
         <span className="text-lg">{currentConfig.flag}</span>
         <span className="font-medium">{currentConfig.nativeName}</span>
         <ChevronDown
-          className={`h-3 w-3 text-white/50 transition-transform ${open ? "rotate-180" : ""}`}
+          className={`h-3 w-3 text-slate-900 dark:text-slate-100 transition-transform ${open ? "rotate-180" : ""}`}
         />
       </button>
 
@@ -39,13 +39,13 @@ export default function LanguageSelector({ current, onChange }: Props) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -8, scale: 0.95 }}
             transition={{ duration: 0.15 }}
-            className="absolute top-full mt-2 left-0 z-50 w-64 max-h-80 overflow-y-auto rounded-xl bg-gray-900 border border-white/10 shadow-2xl"
+            className="absolute top-full mt-2 left-0 z-50 w-64 max-h-80 overflow-y-auto rounded-xl bg-slate-900 border border-white/10 shadow-2xl"
           >
             {[1, 2, 3].map((tier) => {
               const tierLangs = languages.filter((l) => l.tier === tier);
               return (
                 <div key={tier}>
-                  <div className="px-3 py-1.5 text-[10px] font-semibold text-white/30 uppercase tracking-wider sticky top-0 bg-gray-900">
+                  <div className="px-3 py-1.5 text-[10px] font-semibold text-slate-900 dark:text-slate-100 uppercase tracking-wider sticky top-0 bg-slate-900">
                     {tier === 1 ? "Primary" : tier === 2 ? "Supported" : "Additional"}
                   </div>
                   {tierLangs.map((lang) => (
@@ -55,17 +55,15 @@ export default function LanguageSelector({ current, onChange }: Props) {
                         onChange(lang.code);
                         setOpen(false);
                       }}
-                      className={`w-full flex items-center gap-3 px-3 py-2.5 hover:bg-white/5 transition-colors ${
-                        lang.code === current ? "bg-blue-500/10 text-blue-400" : ""
-                      }`}
+                      className={`w-full flex items-center gap-3 px-3 py-2.5 hover:bg-indigo-50 dark:hover:bg-indigo-950/30/50 transition-colors ${ lang.code === current ? "bg-indigo-500/10 text-indigo-400" : "" }`}
                     >
                       <span className="text-lg">{lang.flag}</span>
                       <div className="flex-1 text-left">
                         <div className="text-sm font-medium">{lang.nativeName}</div>
-                        <div className="text-xs text-white/40">{lang.name}</div>
+                        <div className="text-xs text-slate-900 dark:text-slate-100">{lang.name}</div>
                       </div>
                       {lang.code === current && (
-                        <span className="text-xs text-blue-400">✓</span>
+                        <span className="text-xs text-indigo-400">✓</span>
                       )}
                     </button>
                   ))}

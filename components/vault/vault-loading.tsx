@@ -56,7 +56,7 @@ const STEPS = [
   },
 ];
 
-export default function VaultLoading({ isComplete = false }: VaultLoadingProps) {
+export function VaultLoading({ isComplete = false }: VaultLoadingProps) {
   const [activeStep, setActiveStep] = useState(0);
 
   useEffect(() => {
@@ -77,7 +77,7 @@ export default function VaultLoading({ isComplete = false }: VaultLoadingProps) 
   }, [isComplete]);
 
   return (
-    <div className="flex flex-col items-center justify-center py-16 px-4">
+    <div className="flex flex-col items-center justify-center py-8 md:py-6 md:py-8 lg:py-12 lg:py-16 px-4">
       {/* Animated Shield */}
       <motion.div
         className="relative mb-8"
@@ -96,10 +96,10 @@ export default function VaultLoading({ isComplete = false }: VaultLoadingProps) 
         </div>
       </motion.div>
 
-      <h2 className="text-xl font-bold text-white mb-2">
+      <h2 className="text-lg md:text-xl lg:text-2xl font-black text-slate-900 dark:text-slate-100 mb-2 tracking-tight">
         {isComplete ? "Analysis Complete!" : "Analyzing Your Contract Vault"}
       </h2>
-      <p className="text-sm text-white/40 mb-8 text-center max-w-md">
+      <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-8 text-center max-w-md">
         {isComplete
           ? "Your cross-contract analysis is ready."
           : "Running AI-powered analysis across all your contracts. This may take 30-90 seconds."}
@@ -118,30 +118,24 @@ export default function VaultLoading({ isComplete = false }: VaultLoadingProps) 
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1 }}
-              className={`flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors ${
-                isDone
-                  ? "bg-green-500/5"
-                  : isCurrent
-                  ? "bg-indigo-500/5 border border-indigo-500/20"
-                  : "bg-white/[0.02]"
-              }`}
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${ isDone ? "bg-emerald-50 border border-emerald-100" : isCurrent ? "bg-white dark:bg-card border border-indigo-200 shadow-sm dark:shadow-slate-900/20" : "bg-slate-50 border border-transparent opacity-80" }`}
             >
               <div className="flex-shrink-0">
                 {isDone ? (
-                  <CheckCircle2 className="w-5 h-5 text-green-400" />
+                  <CheckCircle2 className="w-5 h-5 text-emerald-500" />
                 ) : isCurrent ? (
                   <Loader2 className={`w-5 h-5 ${step.color} animate-spin`} />
                 ) : (
-                  <Icon className="w-5 h-5 text-white/20" />
+                  <Icon className="w-5 h-5 text-slate-300" />
                 )}
               </div>
               <span
                 className={`text-sm ${
                   isDone
-                    ? "text-green-400"
+                    ? "text-emerald-700 font-bold"
                     : isCurrent
-                    ? `${step.color} font-medium`
-                    : "text-white/30"
+                    ? `${step.color} font-black`
+                    : "text-slate-500 font-medium"
                 }`}
               >
                 {step.label}

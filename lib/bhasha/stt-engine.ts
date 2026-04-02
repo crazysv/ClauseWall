@@ -23,7 +23,7 @@ export async function transcribeAudio(
     const client = getBhashiniClient();
     const result = await client.speechToText(audioBuffer, language);
     if (result && result.text) {
-      console.log(`[ClauseWall] Bhashini STT: ${result.text.length} chars`);
+
       return result;
     }
   } catch (error) {

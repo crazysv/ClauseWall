@@ -14,7 +14,7 @@ interface Props {
   contractMonths: number;
 }
 
-export default function RiskAdjustedHero({
+export function RiskAdjustedHero({
   riskAdjusted,
   documentName,
   documentType,
@@ -28,21 +28,21 @@ export default function RiskAdjustedHero({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-gray-900/80 via-gray-900/60 to-gray-900/80 backdrop-blur-xl p-6 sm:p-8"
+      className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-900/80 via-slate-900/60 to-slate-900/80 backdrop-blur-xl p-6 sm:p-4 md:p-6 lg:p-8"
     >
       {/* Background glow */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 right-0 w-64 h-64 bg-red-500/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-500/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-indigo-500/5 rounded-full blur-3xl" />
       </div>
 
       <div className="relative">
         {/* Header */}
         <div className="mb-6">
-          <h2 className="text-xl sm:text-2xl font-bold mb-1">
+          <h2 className="text-xl sm:text-2xl font-black tracking-tight mb-1">
             📊 Financial Risk Analysis
           </h2>
-          <p className="text-sm text-white/40">
+          <p className="text-sm text-slate-900 dark:text-slate-100/40">
             {documentName} • {documentType} • {jurisdiction}
           </p>
         </div>
@@ -50,20 +50,20 @@ export default function RiskAdjustedHero({
         {/* Cost comparison */}
         <div className="grid grid-cols-1 sm:grid-cols-[1fr,auto,1fr] gap-4 sm:gap-6 items-center">
           {/* Advertised cost */}
-          <div className="p-5 rounded-xl bg-white/[0.03] border border-white/10">
-            <p className="text-xs text-white/40 uppercase tracking-wider mb-2 font-medium">
+          <div className="p-5 rounded-xl bg-white dark:bg-card/[0.03] border border-white/10">
+            <p className="text-xs text-slate-900 dark:text-slate-100/40 uppercase tracking-wider mb-2 font-medium">
               Advertised Cost
             </p>
             <motion.p
-              className="text-3xl sm:text-4xl font-bold text-white"
+              className="text-3xl sm:text-4xl font-black tracking-tight text-slate-900 dark:text-slate-100"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
             >
               {formatINR(riskAdjusted.baseMonthlyCost)}
             </motion.p>
-            <p className="text-sm text-white/30 mt-1">/month</p>
-            <p className="text-xs text-white/20 mt-2">
+            <p className="text-sm text-slate-900 dark:text-slate-100/30 mt-1">/month</p>
+            <p className="text-xs text-slate-900 dark:text-slate-100/20 mt-2">
               (what they tell you)
             </p>
           </div>
@@ -85,7 +85,7 @@ export default function RiskAdjustedHero({
               Real Cost (Risk-Adjusted)
             </p>
             <motion.p
-              className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent"
+              className="text-3xl sm:text-4xl font-black tracking-tight bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6 }}
@@ -106,7 +106,7 @@ export default function RiskAdjustedHero({
 
         {/* Footer */}
         <motion.p
-          className="text-xs text-white/25 mt-6 text-center"
+          className="text-xs text-slate-900 dark:text-slate-100/25 mt-6 text-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}

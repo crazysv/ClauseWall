@@ -20,9 +20,6 @@ export async function analyzeLegalSignificance(
   try {
     if (mismatches.length === 0) return mismatches;
 
-    console.log(
-      `[ClauseWall] Legal Analyzer: Analyzing ${mismatches.length} mismatches`
-    );
 
     // Collect evidence types
     const evidenceTypes = [...new Set(evidenceSources.map(e => e.type))];
@@ -90,9 +87,6 @@ export async function analyzeLegalSignificance(
       };
     });
 
-    console.log(
-      `[ClauseWall] Legal Analyzer: ${analyses.length} analyses applied`
-    );
 
     return updatedMismatches;
   } catch (error) {

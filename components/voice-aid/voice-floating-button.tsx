@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Mic, X } from "lucide-react";
 import Link from "next/link";
 
-export default function VoiceFloatingButton() {
+export function VoiceFloatingButton() {
   const [showTooltip, setShowTooltip] = useState(false);
 
   return (
@@ -16,13 +16,13 @@ export default function VoiceFloatingButton() {
             initial={{ opacity: 0, x: 10, scale: 0.9 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             exit={{ opacity: 0, x: 10, scale: 0.9 }}
-            className="absolute right-16 top-1/2 -translate-y-1/2 bg-gray-900 border border-white/10 rounded-xl px-3 py-2 shadow-xl whitespace-nowrap"
+            className="absolute right-16 top-1/2 -translate-y-1/2 bg-slate-900 border border-white/10 rounded-xl px-3 py-2 shadow-xl whitespace-nowrap"
           >
-            <div className="text-sm font-medium text-white">🎤 Voice Aid</div>
-            <div className="text-xs text-white/50">Speak to understand your contract</div>
+            <div className="text-sm font-medium text-slate-900 dark:text-slate-100">🎤 Voice Aid</div>
+            <div className="text-xs text-slate-900 dark:text-slate-100">Speak to understand your contract</div>
             <button
               onClick={() => setShowTooltip(false)}
-              className="absolute -top-1 -right-1 w-4 h-4 bg-white/10 rounded-full flex items-center justify-center"
+              className="absolute -top-1 -right-1 w-4 h-4 bg-indigo-50 border border-indigo-100 rounded-full flex items-center justify-center"
             >
               <X className="h-2.5 w-2.5" />
             </button>
@@ -40,7 +40,7 @@ export default function VoiceFloatingButton() {
           aria-label="Open Voice Aid"
           id="voice-floating-button"
         >
-          <Mic className="h-6 w-6 text-white" />
+          <Mic className="h-6 w-6 text-slate-900 dark:text-slate-100" />
         </motion.button>
       </Link>
     </div>

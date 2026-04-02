@@ -178,7 +178,7 @@ export function parseWhatsAppExport(text: string): WhatsAppChat {
   }
 
   if (unparsedCount > 0) {
-    console.log(`[ClauseWall] WhatsApp Parser: ${unparsedCount} unparseable lines skipped`);
+
   }
 
   // Filter out system and media messages for the core content
@@ -195,9 +195,6 @@ export function parseWhatsAppExport(text: string): WhatsAppChat {
     end: dates[dates.length - 1] || '',
   };
 
-  console.log(
-    `[ClauseWall] WhatsApp Parser: ${realMessages.length} messages, ${participants.length} participants, range: ${dateRange.start}–${dateRange.end}`
-  );
 
   return {
     messages,

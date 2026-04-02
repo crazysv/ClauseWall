@@ -18,27 +18,31 @@ interface PortfolioStatsProps {
   stats: PortfolioStats;
 }
 
-export default function PortfolioStatsSection({ stats }: PortfolioStatsProps) {
+export function PortfolioStatsSection({ stats }: PortfolioStatsProps) {
   const cards = [
     {
       label: "Contracts Scanned",
       value: stats.totalContracts.toString(),
       subtext: `${stats.totalClauses} clauses analyzed`,
-      icon: <FileSearch className="w-5 h-5" />,
+      icon: <FileSearch className="w-6 h-6" />,
       color: "blue",
-      bg: "bg-blue-500/10",
-      border: "border-blue-500/20",
-      iconColor: "text-blue-400",
+      bg: "bg-indigo-50",
+      border: "border-indigo-100",
+      iconColor: "text-indigo-600",
+      textColor: "text-slate-900",
+      indicatorId: "bg-indigo-500"
     },
     {
       label: "Risky Clauses Found",
       value: (stats.dangerousClausesCount + stats.illegalClausesCount).toString(),
       subtext: `${stats.illegalClausesCount} illegal · ${stats.dangerousClausesCount} dangerous`,
-      icon: <ShieldAlert className="w-5 h-5" />,
+      icon: <ShieldAlert className="w-6 h-6" />,
       color: "red",
-      bg: "bg-red-500/10",
-      border: "border-red-500/20",
-      iconColor: "text-red-400",
+      bg: "bg-rose-50",
+      border: "border-rose-100",
+      iconColor: "text-rose-600",
+      textColor: "text-rose-700",
+      indicatorId: "bg-rose-500"
     },
     {
       label: "Risk Trend",
@@ -56,11 +60,11 @@ export default function PortfolioStatsSection({ stats }: PortfolioStatsProps) {
           : `Average risk: ${stats.averageRiskScore}/100`,
       icon:
         stats.riskTrend === "improving" ? (
-          <TrendingDown className="w-5 h-5" />
+          <TrendingDown className="w-6 h-6" />
         ) : stats.riskTrend === "worsening" ? (
-          <TrendingUp className="w-5 h-5" />
+          <TrendingUp className="w-6 h-6" />
         ) : (
-          <Minus className="w-5 h-5" />
+          <Minus className="w-6 h-6" />
         ),
       color:
         stats.riskTrend === "improving"
@@ -70,22 +74,24 @@ export default function PortfolioStatsSection({ stats }: PortfolioStatsProps) {
           : "gray",
       bg:
         stats.riskTrend === "improving"
-          ? "bg-emerald-500/10"
+          ? "bg-emerald-50"
           : stats.riskTrend === "worsening"
-          ? "bg-amber-500/10"
-          : "bg-gray-500/10",
+          ? "bg-amber-50"
+          : "bg-slate-50",
       border:
         stats.riskTrend === "improving"
-          ? "border-emerald-500/20"
+          ? "border-emerald-100"
           : stats.riskTrend === "worsening"
-          ? "border-amber-500/20"
-          : "border-gray-500/20",
+          ? "border-amber-100"
+          : "border-slate-100",
       iconColor:
         stats.riskTrend === "improving"
-          ? "text-emerald-400"
+          ? "text-emerald-600"
           : stats.riskTrend === "worsening"
-          ? "text-amber-400"
-          : "text-gray-400",
+          ? "text-amber-600"
+          : "text-slate-500",
+      textColor: "text-slate-900",
+      indicatorId: stats.riskTrend === "improving" ? "bg-emerald-500" : stats.riskTrend === "worsening" ? "bg-amber-500" : "bg-slate-400"
     },
     {
       label: "Potential Savings",
@@ -94,52 +100,44 @@ export default function PortfolioStatsSection({ stats }: PortfolioStatsProps) {
         stats.contractsBuilt > 0
           ? `${stats.contractsBuilt} fair contract${stats.contractsBuilt > 1 ? "s" : ""} built`
           : "By spotting risky clauses",
-      icon: <IndianRupee className="w-5 h-5" />,
+      icon: <IndianRupee className="w-6 h-6" />,
       color: "emerald",
-      bg: "bg-emerald-500/10",
-      border: "border-emerald-500/20",
-      iconColor: "text-emerald-400",
+      bg: "bg-emerald-50",
+      border: "border-emerald-100",
+      iconColor: "text-emerald-600",
+      textColor: "text-emerald-700",
+      indicatorId: "bg-emerald-500"
     },
   ];
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {cards.map((card, index) => (
         <motion.div
           key={card.label}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: index * 0.1 }}
-          className={`relative overflow-hidden rounded-xl border ${card.border} ${card.bg} p-5`}
+          className="relative overflow-hidden bg-white dark:bg-card rounded-xl shadow-sm dark:shadow-slate-900/20 hover:shadow-md hover:-translate-y-0.5 border border-slate-200 dark:border-slate-700 p-5 transition-all group"
         >
-          {/* Icon */}
-          <div className={`${card.iconColor} mb-3`}>{card.icon}</div>
+          <div className="flex items-center gap-4 mb-4">
+             {/* Icon */}
+            <div className={`p-4 rounded-full ${card.bg} ${card.iconColor} shadow-inner`}>{card.icon}</div>
+             {/* Value */}
+            <div className="flex-1">
+               <p className={`text-2xl lg:text-3xl font-black tracking-tight ${card.textColor} leading-tight truncate`}>{card.value}</p>
+            </div>
+          </div>
 
-          {/* Value */}
-          <p className="text-2xl font-bold text-white mb-1">{card.value}</p>
-
-          {/* Label */}
-          <p className="text-sm text-gray-400 mb-1">{card.label}</p>
-
-          {/* Subtext */}
-          <p className="text-xs text-gray-500">{card.subtext}</p>
-
-          {/* Decorative blur */}
-          <div
-            className={`absolute -top-4 -right-4 w-20 h-20 rounded-full blur-2xl opacity-20`}
-            style={{
-              backgroundColor:
-                card.color === "blue"
-                  ? "#3b82f6"
-                  : card.color === "red"
-                  ? "#ef4444"
-                  : card.color === "emerald"
-                  ? "#10b981"
-                  : card.color === "amber"
-                  ? "#f59e0b"
-                  : "#6b7280",
-            }}
-          />
+          <div className="space-y-1">
+            {/* Label */}
+            <p className="text-sm font-bold text-slate-700 tracking-wide">{card.label}</p>
+            {/* Subtext */}
+            <p className="text-xs font-medium text-slate-500 dark:text-slate-400">{card.subtext}</p>
+          </div>
+          
+          {/* Subtle colored bottom border indicator tracking on Hover */}
+          <div className={`absolute bottom-0 left-0 right-0 h-1.5 ${card.indicatorId} opacity-0 group-hover:opacity-100 transition-opacity`} />
         </motion.div>
       ))}
     </div>

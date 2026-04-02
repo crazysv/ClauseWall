@@ -531,6 +531,7 @@ export interface InsightItem {
   title: string;
   description: string;
   type: "positive" | "warning" | "neutral" | "tip";
+  action?: { label: string; link: string };
 }
 
 // ============================================

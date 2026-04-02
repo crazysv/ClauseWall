@@ -15,8 +15,8 @@ import {
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import BenchmarkChart from "@/components/market/benchmark-chart";
-import PercentileBadge from "@/components/market/percentile-badge";
+import { BenchmarkChart } from "@/components/market/benchmark-chart";
+import { PercentileBadge } from "@/components/market/percentile-badge";
 import type { ClauseMarketContext, BenchmarkType } from "@/types/market";
 import { BENCHMARK_TYPE_LABELS, UNIT_LABELS, HIGHER_IS_WORSE, CLAUSE_TO_BENCHMARK } from "@/lib/market/constants";
 import Link from "next/link";
@@ -27,7 +27,7 @@ interface MarketComparisonSectionProps {
   jurisdiction?: string;
 }
 
-export default function MarketComparisonSection({
+export function MarketComparisonSection({
   documentId,
   documentType,
   jurisdiction,
@@ -68,15 +68,15 @@ export default function MarketComparisonSection({
 
   if (loading) {
     return (
-      <Card className="bg-gray-900/50 border-gray-800 animate-pulse">
+      <Card className="bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-900/20 animate-pulse">
         <CardContent className="p-6">
           <div className="flex items-center gap-2 mb-4">
-            <BarChart3 className="h-5 w-5 text-cyan-400" />
-            <div className="h-5 w-48 bg-white/5 rounded" />
+            <BarChart3 className="h-5 w-5 text-teal-600" />
+            <div className="h-5 w-48 bg-slate-200 rounded" />
           </div>
           <div className="space-y-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-16 bg-white/[0.02] rounded-lg" />
+              <div key={i} className="h-16 bg-white dark:bg-card border border-slate-100 shadow-sm dark:shadow-slate-900/20 rounded-lg" />
             ))}
           </div>
         </CardContent>
@@ -91,29 +91,29 @@ export default function MarketComparisonSection({
   const unfavorableCount = comparableItems.filter((c) => !c.comparison!.is_favorable).length;
 
   return (
-    <Card className="bg-gradient-to-br from-cyan-500/5 to-blue-500/5 border-cyan-500/15">
+    <Card className="bg-gradient-to-br from-teal-50 to-indigo-50 border border-teal-100 shadow-sm dark:shadow-slate-900/20">
       <CardContent className="p-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <div className="p-1.5 rounded-lg bg-cyan-500/10">
-              <BarChart3 className="h-5 w-5 text-cyan-400" />
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-xl bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20">
+              <BarChart3 className="h-5 w-5 text-teal-600" />
             </div>
             <div>
-              <h3 className="font-semibold text-white">Market Comparison</h3>
-              <p className="text-xs text-white/40">
+              <h3 className="font-black text-slate-900 dark:text-slate-100 tracking-tight">Market Comparison</h3>
+              <p className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mt-0.5">
                 How your contract compares to {comparableItems[0]?.comparison?.scope_used || "the market"}
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             {unfavorableCount > 0 && (
-              <Badge className="bg-red-500/15 text-red-400 border-red-500/30 text-[10px]">
+              <Badge className="bg-red-50 text-red-700 border-red-200 font-bold px-2.5 py-0.5 text-[10px] rounded-full">
                 {unfavorableCount} above market
               </Badge>
             )}
-            <Badge className="bg-cyan-500/15 text-cyan-400 border-cyan-500/30 text-[10px]">
-              <Users className="h-3 w-3 mr-0.5" />
+            <Badge className="bg-teal-50 text-teal-700 border-teal-200 font-bold px-2.5 py-0.5 text-[10px] rounded-full flex gap-1">
+              <Users className="h-3 w-3" />
               {comparableItems[0]?.sample_count || 0}+ contracts
             </Badge>
           </div>
@@ -134,10 +134,10 @@ export default function MarketComparisonSection({
             // Percentile bar
             const barWidth = percentile;
             const barColor = ctx.comparison.is_favorable
-              ? "bg-green-500"
+              ? "bg-emerald-500"
               : percentile > 75
                 ? "bg-red-500"
-                : "bg-yellow-500";
+                : "bg-amber-500";
 
             return (
               <div key={ctx.clause_id}>
@@ -145,18 +145,18 @@ export default function MarketComparisonSection({
                   onClick={() =>
                     setExpandedChart(isExpanded ? null : ctx.clause_id)
                   }
-                  className="w-full text-left p-3 rounded-lg bg-white/[0.03] hover:bg-white/[0.05] transition-colors border border-white/5"
+                  className="w-full text-left p-4 rounded-xl bg-white dark:bg-card hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-slate-900/20 mb-2"
                 >
-                  <div className="flex items-center justify-between mb-1.5">
+                  <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
                       {ctx.comparison.is_favorable ? (
-                        <TrendingDown className="h-3.5 w-3.5 text-green-400" />
+                        <TrendingDown className="h-4 w-4 text-emerald-600" />
                       ) : percentile > 75 ? (
-                        <TrendingUp className="h-3.5 w-3.5 text-red-400" />
+                        <TrendingUp className="h-4 w-4 text-red-600" />
                       ) : (
-                        <Minus className="h-3.5 w-3.5 text-yellow-400" />
+                        <Minus className="h-4 w-4 text-amber-600" />
                       )}
-                      <span className="text-sm font-medium text-white">
+                      <span className="text-sm font-bold text-slate-900 dark:text-slate-100">
                         {label}
                       </span>
                       <PercentileBadge
@@ -166,20 +166,20 @@ export default function MarketComparisonSection({
                       />
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-[10px] text-white/30">
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
                         {ctx.comparison.chart_data.user_value}{" "}
                         {UNIT_LABELS[ctx.benchmark.value_unit || ""] || ""}
                       </span>
                       {isExpanded ? (
-                        <ChevronUp className="h-3.5 w-3.5 text-white/30" />
+                        <ChevronUp className="h-4 w-4 text-slate-400" />
                       ) : (
-                        <ChevronDown className="h-3.5 w-3.5 text-white/30" />
+                        <ChevronDown className="h-4 w-4 text-slate-400" />
                       )}
                     </div>
                   </div>
 
                   {/* Percentile Bar */}
-                  <div className="relative h-1.5 bg-white/5 rounded-full overflow-hidden">
+                  <div className="relative h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden mt-2">
                     <motion.div
                       className={`absolute left-0 top-0 h-full rounded-full ${barColor}`}
                       initial={{ width: 0 }}
@@ -188,12 +188,12 @@ export default function MarketComparisonSection({
                     />
                     {/* Median marker */}
                     <div
-                      className="absolute top-0 h-full w-0.5 bg-white/30"
+                      className="absolute top-0 h-full w-0.5 bg-slate-400"
                       style={{ left: "50%" }}
                     />
                   </div>
 
-                  <p className="text-[10px] text-white/40 mt-1">
+                  <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mt-2">
                     {ctx.comparison.narrative}
                   </p>
                 </button>
@@ -219,7 +219,7 @@ export default function MarketComparisonSection({
                           height={180}
                         />
                         {ctx.data_quality === "seed" && (
-                          <p className="text-[10px] text-white/20 text-center mt-1">
+                          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 text-center mt-2 pb-2">
                             ⚠ Based on statutory/public reference data, not live analysis
                           </p>
                         )}
@@ -233,15 +233,15 @@ export default function MarketComparisonSection({
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between mt-4 pt-3 border-t border-white/5">
-          <p className="text-[10px] text-white/25">
+        <div className="flex items-center justify-between mt-5 pt-4 border-t border-slate-200 dark:border-slate-700">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
             Based on anonymized data from {comparableItems[0]?.sample_count || 0}+ contracts
           </p>
           <Link
             href="/market"
-            className="text-[10px] text-cyan-400/60 hover:text-cyan-400 transition-colors flex items-center gap-1"
+            className="text-[10px] font-bold uppercase tracking-widest text-teal-600 hover:text-teal-700 transition-colors flex items-center gap-1.5"
           >
-            Full Market Dashboard <ExternalLink className="h-2.5 w-2.5" />
+            Full Market Dashboard <ExternalLink className="h-3 w-3" />
           </Link>
         </div>
       </CardContent>

@@ -4,11 +4,12 @@
 // ============================================
 
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { createClient as createSupabaseAdmin } from "@supabase/supabase-js";
+import { createClient } from "@/lib/supabase/server";
 import { generateContract } from "@/lib/builder/contract-generator";
 import { ContractTemplateType } from "@/types";
 
-const supabase = createClient(
+const supabaseAdmin = createSupabaseAdmin(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
@@ -28,6 +29,9 @@ const VALID_TYPES: ContractTemplateType[] = [
 
 export async function POST(request: NextRequest) {
   try {
+    const supabaseUser = await createClient();
+    const { data: { user } } = await supabaseUser.auth.getUser();
+
     const body = await request.json();
     const { template_type, jurisdiction, values } = body;
 
@@ -57,7 +61,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Save to database
-    const { data: saved, error: dbError } = await supabase
+    const { data: saved, error: dbError } = await supabaseAdmin
       .from("generated_contracts")
       .insert({
         template_type,
@@ -67,7 +71,7 @@ export async function POST(request: NextRequest) {
         generated_clauses: result.clauses,
         title: result.title,
         stamp_paper_note: result.stamp_paper_note,
-        user_id: null, // TODO: Extract from auth if logged in
+        user_id: user ? user.id : null, 
       })
       .select("id")
       .single();

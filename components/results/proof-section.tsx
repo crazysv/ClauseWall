@@ -33,7 +33,7 @@ interface ProofSectionProps {
   totalClauses: number;
 }
 
-export default function ProofSection({
+export function ProofSection({
   proofHash,
   proofCid,
   proofTimestamp,
@@ -135,29 +135,29 @@ export default function ProofSection({
 
   return (
     <>
-      <Card className="bg-gray-900/50 border-gray-800 mt-8 overflow-hidden">
+      <Card className="bg-slate-900/50 border-slate-800 mt-8 overflow-hidden">
         <div className="h-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500" />
 
         <CardContent className="p-6">
           {/* Header */}
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-bold flex items-center gap-2">
-              <Link2 className="h-5 w-5 text-cyan-400" />
+              <Link2 className="h-5 w-5 text-teal-400" />
               Analysis Proof
-              <Badge className="bg-cyan-500/15 text-cyan-400 border-cyan-500/30 text-[10px] gap-1">
+              <Badge className="bg-teal-500/15 text-teal-400 border-cyan-500/30 text-[10px] gap-1 rounded-full">
                 <Lock className="h-3 w-3" />
                 IMMUTABLE
               </Badge>
             </h3>
             <div className="flex gap-1.5">
               {hasTSA && (
-                <Badge className="bg-green-500/15 text-green-400 border-green-500/30 text-[10px] gap-1">
+                <Badge className="bg-green-500/15 text-green-400 border-green-500/30 text-[10px] gap-1 rounded-full">
                   <ShieldCheck className="h-3 w-3" />
                   TSA VERIFIED
                 </Badge>
               )}
               {hasIPFS && (
-                <Badge className="bg-blue-500/15 text-blue-400 border-blue-500/30 text-[10px] gap-1">
+                <Badge className="bg-indigo-500/15 text-indigo-400 border-indigo-500/30 text-[10px] gap-1 rounded-full">
                   <Globe className="h-3 w-3" />
                   IPFS PINNED
                 </Badge>
@@ -168,7 +168,7 @@ export default function ProofSection({
           <p className="text-sm text-muted-foreground mb-6">
             This analysis is permanently recorded and independently verified.
             Use this proof in disputes as digital evidence under the{" "}
-            <span className="text-cyan-400 font-medium">
+            <span className="text-teal-400 font-medium">
               IT Act, 2000 — Section 65B
             </span>
             .
@@ -176,7 +176,7 @@ export default function ProofSection({
 
           {/* ---- LAYER 1: LEGAL PROOF (FreeTSA) ---- */}
           {hasTSA && (
-            <div className="mb-4 p-4 rounded-xl bg-green-500/5 border border-green-500/20">
+            <div className="mb-4 p-6 rounded-xl bg-green-500/5 border border-green-500/20">
               <h4 className="text-sm font-semibold text-green-400 mb-3 flex items-center gap-2">
                 <ShieldCheck className="h-4 w-4" />
                 Legal Proof — RFC 3161 Timestamp
@@ -194,7 +194,7 @@ export default function ProofSection({
                     </code>
                     <button
                       onClick={() => copyToClipboard(proofHash, "Hash")}
-                      className="text-muted-foreground hover:text-white"
+                      className="text-muted-foreground hover:text-slate-900 dark:text-slate-100"
                     >
                       {copied === "Hash" ? (
                         <Check className="h-3.5 w-3.5 text-green-400" />
@@ -249,14 +249,14 @@ export default function ProofSection({
 
           {/* ---- LAYER 2: PUBLIC PROOF (IPFS) ---- */}
           {hasIPFS && verifyUrl && (
-            <div className="mb-4 p-4 rounded-xl bg-blue-500/5 border border-blue-500/20">
-              <h4 className="text-sm font-semibold text-blue-400 mb-3 flex items-center gap-2">
+            <div className="mb-4 p-6 rounded-xl bg-indigo-500/5 border border-indigo-500/20">
+              <h4 className="text-sm font-semibold text-indigo-400 mb-3 flex items-center gap-2">
                 <Globe className="h-4 w-4" />
                 Public Proof — IPFS
               </h4>
 
-              <div className="flex flex-col sm:flex-row items-center gap-4">
-                <div className="bg-white p-2.5 rounded-lg flex-shrink-0">
+              <div className="flex flex-col sm:flex-row items-center gap-6">
+                <div className="bg-white dark:bg-card p-2.5 rounded-xl flex-shrink-0">
                   <QRCodeSVG
                     value={verifyUrl}
                     size={90}
@@ -267,7 +267,7 @@ export default function ProofSection({
                 </div>
                 <div className="flex-1 text-center sm:text-left">
                   <p className="text-xs text-muted-foreground mb-1">IPFS CID</p>
-                  <code className="text-xs text-blue-300 font-mono break-all">
+                  <code className="text-xs text-indigo-300 font-mono break-all">
                     {proofCid!.length > 40
                       ? `${proofCid!.substring(0, 20)}...${proofCid!.substring(proofCid!.length - 15)}`
                       : proofCid}
@@ -277,7 +277,7 @@ export default function ProofSection({
                       href={verifyUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-xs text-blue-400 hover:text-blue-300"
+                      className="inline-flex items-center gap-1 text-xs text-indigo-400 hover:text-indigo-300"
                     >
                       <ExternalLink className="h-3 w-3" />
                       Pinata Gateway
@@ -286,7 +286,7 @@ export default function ProofSection({
                       href={publicIpfsUrl!}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-xs text-blue-400 hover:text-blue-300"
+                      className="inline-flex items-center gap-1 text-xs text-indigo-400 hover:text-indigo-300"
                     >
                       <ExternalLink className="h-3 w-3" />
                       Public Gateway
@@ -299,15 +299,15 @@ export default function ProofSection({
 
           {/* Hash-only fallback (no TSA, no IPFS) */}
           {!hasTSA && !hasIPFS && (
-            <div className="mb-4 p-4 rounded-xl bg-white/[0.03] border border-white/10">
+            <div className="mb-4 p-6 rounded-xl bg-white dark:bg-card/[0.03] border border-white/10">
               <div className="flex items-center justify-between text-sm mb-2">
                 <span className="text-muted-foreground flex items-center gap-2">
-                  <Fingerprint className="h-3.5 w-3.5 text-cyan-400" />
+                  <Fingerprint className="h-3.5 w-3.5 text-teal-400" />
                   Proof Hash (SHA-256)
                 </span>
                 <button
                   onClick={() => copyToClipboard(proofHash, "Hash")}
-                  className="text-muted-foreground hover:text-white"
+                  className="text-muted-foreground hover:text-slate-900 dark:text-slate-100"
                 >
                   {copied === "Hash" ? (
                     <Check className="h-3.5 w-3.5 text-green-400" />
@@ -316,7 +316,7 @@ export default function ProofSection({
                   )}
                 </button>
               </div>
-              <code className="text-xs text-cyan-300 font-mono break-all">
+              <code className="text-xs text-teal-300 font-mono break-all">
                 {proofHash}
               </code>
             </div>

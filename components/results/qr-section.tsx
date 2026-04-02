@@ -37,13 +37,13 @@ import {
 import type { ShareSettings } from "@/lib/qr";
 import { getStateName, getDocumentTypeLabel } from "@/lib/utils/constants";
 import type { Document } from "@/types";
-import EmbedCodeModal from "@/components/embed/embed-code-modal";
+import { EmbedCodeModal } from "@/components/embed/embed-code-modal";
 
 interface QRSectionProps {
   document: Document;
 }
 
-export default function QRSection({ document: doc }: QRSectionProps) {
+export function QRSection({ document: doc }: QRSectionProps) {
   const [shareId, setShareId] = useState<string | null>(
     doc.public_share_id || null
   );
@@ -201,18 +201,12 @@ export default function QRSection({ document: doc }: QRSectionProps) {
     <button
       type="button"
       onClick={() => onChange(!checked)}
-      className={`flex items-center gap-3 w-full p-3 rounded-lg border transition-all text-left ${
-        checked
-          ? "bg-blue-500/10 border-blue-500/30"
-          : "bg-white/[0.02] border-white/5 hover:border-white/10"
-      }`}
+      className={`flex items-center gap-3 w-full p-3 rounded-xl border transition-all text-left ${ checked ? "bg-indigo-500/10 border-blue-500/30" : "bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border-l-4 border-indigo-500 border-white/5 hover:border-white/10" }`}
     >
       <div
-        className={`w-5 h-5 rounded flex items-center justify-center flex-shrink-0 transition-colors ${
-          checked ? "bg-blue-500" : "bg-white/10"
-        }`}
+        className={`w-5 h-5 rounded flex items-center justify-center flex-shrink-0 transition-colors ${ checked ? "bg-indigo-500" : "bg-white dark:bg-slate-900/10" }`}
       >
-        {checked && <Check className="h-3 w-3 text-white" />}
+        {checked && <Check className="h-3 w-3 text-slate-900 dark:text-slate-100" />}
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium flex items-center gap-2">
@@ -229,10 +223,10 @@ export default function QRSection({ document: doc }: QRSectionProps) {
   if (!shareId) {
     return (
       <>
-        <Card className="bg-gray-900/50 border-gray-800 mt-8">
+        <Card className="bg-slate-900/50 border-slate-800 mt-8">
           <CardContent className="p-6 text-center">
             <div className="flex justify-center mb-4">
-              <div className="h-14 w-14 rounded-full bg-blue-500/10 flex items-center justify-center">
+              <div className="h-14 w-14 rounded-full bg-indigo-500/10 flex items-center justify-center">
                 <QrCode className="h-7 w-7 text-blue-400" />
               </div>
             </div>
@@ -243,7 +237,7 @@ export default function QRSection({ document: doc }: QRSectionProps) {
             </p>
             <Button
               onClick={() => setShowSettings(true)}
-              className="gap-2 bg-blue-600 hover:bg-blue-700"
+              className="gap-2 bg-indigo-600 hover:bg-blue-700"
             >
               <ShieldCheck className="h-4 w-4" />
               Generate QR Badge
@@ -253,7 +247,7 @@ export default function QRSection({ document: doc }: QRSectionProps) {
 
         {/* Settings Dialog */}
         <Dialog open={showSettings} onOpenChange={setShowSettings}>
-          <DialogContent className="bg-gray-900 border-gray-800 max-w-md">
+          <DialogContent className="bg-slate-900 border-slate-800 max-w-md">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
                 <Settings2 className="h-5 w-5 text-blue-400" />
@@ -298,7 +292,7 @@ export default function QRSection({ document: doc }: QRSectionProps) {
               />
             </div>
 
-            <div className="rounded-lg bg-blue-500/5 border border-blue-500/10 p-3">
+            <div className="rounded-xl bg-indigo-500/5 border border-blue-500/10 p-3">
               <p className="text-xs text-blue-300">
                 <strong>Always visible:</strong> Verification badge, risk score,
                 clause breakdown counts, document type, jurisdiction, and analysis
@@ -317,7 +311,7 @@ export default function QRSection({ document: doc }: QRSectionProps) {
               <Button
                 onClick={handleGenerate}
                 disabled={generating}
-                className="gap-2 bg-blue-600 hover:bg-blue-700"
+                className="gap-2 bg-indigo-600 hover:bg-blue-700"
               >
                 {generating ? (
                   <>
@@ -342,7 +336,7 @@ export default function QRSection({ document: doc }: QRSectionProps) {
 
   return (
     <>
-      <Card className="bg-gray-900/50 border-gray-800 mt-8 overflow-hidden">
+      <Card className="bg-slate-900/50 border-slate-800 mt-8 overflow-hidden">
         {/* Header stripe */}
         <div
           className="h-1"
@@ -368,8 +362,8 @@ export default function QRSection({ document: doc }: QRSectionProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Left — QR Code */}
-            <div className="flex flex-col items-center gap-4">
-              <div className="p-4 bg-white rounded-xl">
+            <div className="flex flex-col items-center gap-6">
+              <div className="p-6 bg-white dark:bg-card rounded-xl">
                 <QRCodeSVG
                   value={verifyUrl}
                   size={160}
@@ -387,7 +381,7 @@ export default function QRSection({ document: doc }: QRSectionProps) {
             {/* Right — Badge Info */}
             <div className="flex flex-col justify-center">
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-2xl">{tierConfig.icon}</span>
+                <span className="text-lg md:text-xl lg:text-2xl">{tierConfig.icon}</span>
                 <span
                   className="text-lg font-bold"
                   style={{ color: tierConfig.color }}
@@ -422,13 +416,13 @@ export default function QRSection({ document: doc }: QRSectionProps) {
               </div>
 
               {/* Verify URL */}
-              <div className="mt-4 flex items-center gap-2 bg-white/[0.03] rounded-lg px-3 py-2 border border-white/5">
+              <div className="mt-4 flex items-center gap-2 bg-white dark:bg-card/[0.03] rounded-xl px-3 py-2 border border-white/5">
                 <code className="text-xs text-blue-400 truncate flex-1">
                   {verifyUrl}
                 </code>
                 <button
                   onClick={copyLink}
-                  className="flex-shrink-0 text-muted-foreground hover:text-white transition-colors"
+                  className="flex-shrink-0 text-muted-foreground hover:text-slate-900 dark:text-slate-100 transition-colors"
                 >
                   {copied ? (
                     <Check className="h-4 w-4 text-green-400" />
@@ -496,24 +490,24 @@ export default function QRSection({ document: doc }: QRSectionProps) {
           {/* Privacy indicator */}
           <div className="mt-4 flex flex-wrap gap-2">
             {settings.show_entity && (
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-indigo-500/10 text-blue-400 border border-blue-500/20">
                 Entity visible
               </span>
             )}
             {settings.show_summary && (
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-indigo-500/10 text-blue-400 border border-blue-500/20">
                 Summary visible
               </span>
             )}
             {settings.allow_full_analysis && (
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-indigo-500/10 text-blue-400 border border-blue-500/20">
                 Full analysis accessible
               </span>
             )}
             {!settings.show_entity &&
               !settings.show_summary &&
               !settings.allow_full_analysis && (
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-muted-foreground border border-white/5">
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-white dark:bg-slate-900/5 text-muted-foreground border border-white/5">
                   Summary only — maximum privacy
                 </span>
               )}
@@ -674,7 +668,7 @@ export default function QRSection({ document: doc }: QRSectionProps) {
 
       {/* Settings Update Dialog */}
       <Dialog open={showSettings} onOpenChange={setShowSettings}>
-        <DialogContent className="bg-gray-900 border-gray-800 max-w-md">
+        <DialogContent className="bg-slate-900 border-slate-800 max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Settings2 className="h-5 w-5 text-blue-400" />
@@ -729,7 +723,7 @@ export default function QRSection({ document: doc }: QRSectionProps) {
             <Button
               onClick={handleGenerate}
               disabled={generating}
-              className="gap-2 bg-blue-600 hover:bg-blue-700"
+              className="gap-2 bg-indigo-600 hover:bg-blue-700"
             >
               {generating ? (
                 <>
@@ -775,18 +769,12 @@ function SettingsToggle({
     <button
       type="button"
       onClick={() => onChange(!checked)}
-      className={`flex items-center gap-3 w-full p-3 rounded-lg border transition-all text-left ${
-        checked
-          ? "bg-blue-500/10 border-blue-500/30"
-          : "bg-white/[0.02] border-white/5 hover:border-white/10"
-      }`}
+      className={`flex items-center gap-3 w-full p-3 rounded-xl border transition-all text-left ${ checked ? "bg-indigo-500/10 border-blue-500/30" : "bg-white dark:bg-card shadow-sm dark:shadow-slate-900/20 border-l-4 border-indigo-500 border-white/5 hover:border-white/10" }`}
     >
       <div
-        className={`w-5 h-5 rounded flex items-center justify-center flex-shrink-0 transition-colors ${
-          checked ? "bg-blue-500" : "bg-white/10"
-        }`}
+        className={`w-5 h-5 rounded flex items-center justify-center flex-shrink-0 transition-colors ${ checked ? "bg-indigo-500" : "bg-white dark:bg-slate-900/10" }`}
       >
-        {checked && <Check className="h-3 w-3 text-white" />}
+        {checked && <Check className="h-3 w-3 text-slate-900 dark:text-slate-100" />}
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium flex items-center gap-2">

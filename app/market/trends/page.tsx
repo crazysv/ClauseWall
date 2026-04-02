@@ -20,8 +20,8 @@ import {
   CartesianGrid,
 } from "recharts";
 import { Card, CardContent } from "@/components/ui/card";
-import TrendInsightCard from "@/components/market/trend-insight-card";
-import MarketStatsFooter from "@/components/market/market-stats-footer";
+import { TrendInsightCard } from "@/components/market/trend-insight-card";
+import { MarketStatsFooter } from "@/components/market/market-stats-footer";
 import type { TrendInsight } from "@/types/market";
 
 export default function TrendsPage() {
@@ -55,14 +55,14 @@ export default function TrendsPage() {
               <TrendingUp className="h-6 w-6 text-rose-400" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold">Market Trends</h1>
+              <h1 className="text-lg md:text-xl lg:text-2xl font-bold">Market Trends</h1>
               <p className="text-sm text-white/50">Time-series trend detection from benchmark snapshots</p>
             </div>
           </div>
         </motion.div>
 
         {loading ? (
-          <div className="flex items-center justify-center py-24">
+          <div className="flex items-center justify-center py-6 md:py-8 lg:py-12 md:py-8 md:py-6 md:py-8 lg:py-12 lg:py-16 lg:py-24">
             <Loader2 className="h-8 w-8 text-cyan-400 animate-spin" />
           </div>
         ) : trends.length === 0 ? (
@@ -110,7 +110,7 @@ export default function TrendsPage() {
             {stable.length > 0 && (
               <div className="mb-8">
                 <div className="flex items-center gap-2 mb-3">
-                  <BarChart3 className="h-4 w-4 text-gray-400" />
+                  <BarChart3 className="h-4 w-4 text-slate-400" />
                   <h2 className="font-semibold text-white/60 text-sm">Stable Metrics</h2>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
