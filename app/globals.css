@@ -1,352 +1,581 @@
-@import "tailwindcss";
-
-@theme {
-  --color-safe: oklch(0.6 0.2 145);
-  --color-warning: oklch(0.75 0.18 85);
-  --color-dangerous: oklch(0.55 0.25 25);
-  --color-illegal: oklch(0.55 0.25 295);
-
-  --color-background: oklch(0.13 0.03 260);
-  --color-foreground: oklch(0.95 0.01 260);
-  --color-card: oklch(0.15 0.03 260);
-  --color-card-foreground: oklch(0.95 0.01 260);
-  --color-muted: oklch(0.25 0.03 260);
-  --color-muted-foreground: oklch(0.65 0.03 260);
-  --color-border: oklch(0.25 0.03 260);
-  --color-input: oklch(0.25 0.03 260);
-  --color-ring: oklch(0.55 0.2 260);
-  --color-primary: oklch(0.6 0.2 260);
-  --color-primary-foreground: oklch(0.15 0.03 260);
-  --color-secondary: oklch(0.25 0.03 260);
-  --color-secondary-foreground: oklch(0.95 0.01 260);
-  --color-accent: oklch(0.25 0.03 260);
-  --color-accent-foreground: oklch(0.95 0.01 260);
-  --color-destructive: oklch(0.45 0.2 25);
-  --color-destructive-foreground: oklch(0.95 0.01 260);
-  --color-popover: oklch(0.15 0.03 260);
-  --color-popover-foreground: oklch(0.95 0.01 260);
-
-  --radius: 0.75rem;
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Bold Impact — Light Mode */
+    --background: 0 0% 100%;           /* #ffffff */
+    --foreground: 0 0% 4%;             /* #0a0a0a */
+    
+    --card: 0 0% 100%;                 /* #ffffff */
+    --card-foreground: 0 0% 4%;        /* #0a0a0a */
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 4%;
+    
+    --primary: 0 84% 50%;              /* #dc2626 — RED accent */
+    --primary-foreground: 0 0% 100%;   /* white text on red */
+    
+    --secondary: 0 0% 4%;              /* #0a0a0a — black secondary */
+    --secondary-foreground: 0 0% 100%; /* white text on black */
+    
+    --muted: 210 40% 98%;              /* #f8fafc */
+    --muted-foreground: 0 0% 32%;      /* #525252 */
+    
+    --accent: 0 84% 50%;               /* #dc2626 */
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 84% 50%;          /* #dc2626 */
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 0 0% 90%;                /* #e5e5e5 */
+    --input: 0 0% 90%;                 /* #e5e5e5 */
+    --ring: 0 84% 50%;                 /* #dc2626 focus ring */
+    
+    --radius: 0.5rem;                  /* rounded-lg — sharp, not soft */
+
+    /* Semantic risk colors */
+    --risk-safe: 142 76% 36%;          /* #16a34a */
+    --risk-warning: 45 93% 40%;        /* #ca8a04 */
+    --risk-dangerous: 0 84% 50%;       /* #dc2626 */
+    --risk-illegal: 271 81% 56%;       /* #9333ea */
+    
+    --risk-safe-bg: 138 76% 97%;       /* #f0fdf4 */
+    --risk-warning-bg: 55 92% 95%;     /* #fefce8 */
+    --risk-dangerous-bg: 0 86% 97%;    /* #fef2f2 */
+    --risk-illegal-bg: 270 100% 98%;   /* #faf5ff */
+  }
+
+  .dark {
+    /* Bold Impact — Dark Mode */
+    --background: 0 0% 4%;             /* #0a0a0a */
+    --foreground: 0 0% 98%;            /* #fafafa */
+    
+    --card: 0 0% 9%;                   /* #171717 */
+    --card-foreground: 0 0% 98%;       /* #fafafa */
+    
+    --popover: 0 0% 9%;
+    --popover-foreground: 0 0% 98%;
+    
+    --primary: 0 84% 50%;              /* #dc2626 stays same */
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 0 0% 98%;             /* #fafafa inverted */
+    --secondary-foreground: 0 0% 4%;
+    
+    --muted: 0 0% 15%;                 /* #262626 */
+    --muted-foreground: 0 0% 64%;      /* #a3a3a3 */
+    
+    --accent: 0 84% 50%;
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 84% 50%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 0 0% 15%;                /* #262626 */
+    --input: 0 0% 15%;
+    --ring: 0 84% 50%;
+    
+    /* Semantic colors stay same in dark mode */
+    --risk-safe: 142 76% 36%;
+    --risk-warning: 45 93% 40%;
+    --risk-dangerous: 0 84% 50%;
+    --risk-illegal: 271 81% 56%;
+    
+    --risk-safe-bg: 142 76% 10%;
+    --risk-warning-bg: 45 93% 10%;
+    --risk-dangerous-bg: 0 84% 10%;
+    --risk-illegal-bg: 271 81% 10%;
+  }
+}
+
+@theme {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+  
+  --color-safe: hsl(var(--risk-safe));
+  --color-warning: hsl(var(--risk-warning));
+  --color-dangerous: hsl(var(--risk-dangerous));
+  --color-illegal: hsl(var(--risk-illegal));
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+
+* {
+  border-color: var(--color-border);
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+/* ============================================
+   RISK LEVEL UTILITY CLASSES
+   ============================================ */
+
+.text-safe { color: #22c55e; }
+.text-warning { color: #eab308; }
+.text-dangerous { color: #ef4444; }
+.text-illegal { color: #a855f7; }
+
+.bg-safe { background-color: rgba(34, 197, 94, 0.1); }
+.bg-warning { background-color: rgba(234, 179, 8, 0.1); }
+.bg-dangerous { background-color: rgba(239, 68, 68, 0.1); }
+.bg-illegal { background-color: rgba(168, 85, 247, 0.1); }
+
+.border-safe { border-color: rgba(34, 197, 94, 0.3); }
+.border-warning { border-color: rgba(234, 179, 8, 0.3); }
+.border-dangerous { border-color: rgba(239, 68, 68, 0.3); }
+.border-illegal { border-color: rgba(168, 85, 247, 0.3); }
+
+/* ============================================
+   CUSTOM UTILITY CLASSES
+   ============================================ */
+
+.gradient-text {
+  background: linear-gradient(to right, #60a5fa, #3b82f6, #a855f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glow-blue {
+  box-shadow: 0 0 40px rgba(59, 130, 246, 0.15);
+}
+
+.glow-red {
+  box-shadow: 0 0 40px rgba(239, 68, 68, 0.15);
+}
+
+.glow-green {
+  box-shadow: 0 0 40px rgba(34, 197, 94, 0.15);
+}
+
+.glow-purple {
+  box-shadow: 0 0 40px rgba(168, 85, 247, 0.15);
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-muted);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted-foreground);
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(59, 130, 246, 0.3);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 25%,
+    rgba(255, 255, 255, 0.05) 50%,
+    transparent 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
+.stagger-6 { animation-delay: 0.6s; }
+
+/* ============================================
+   🔊 SOUND EFFECT — SCREEN SHAKE
+   Triggered on dangerous/illegal results load
+   ============================================ */
+
+@keyframes screenShakeSubtle {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-2px, 1px); }
+  40% { transform: translate(2px, -1px); }
+  60% { transform: translate(-1px, 1px); }
+  80% { transform: translate(1px, 0); }
+}
+
+@keyframes screenShakeIntense {
+  0%, 100% { transform: translate(0, 0); }
+  8% { transform: translate(-5px, 3px); }
+  16% { transform: translate(5px, -3px); }
+  24% { transform: translate(-4px, 2px); }
+  32% { transform: translate(4px, -2px); }
+  40% { transform: translate(-3px, 1px); }
+  48% { transform: translate(3px, -1px); }
+  56% { transform: translate(-2px, 1px); }
+  64% { transform: translate(2px, -1px); }
+  72% { transform: translate(-1px, 0); }
+  80% { transform: translate(1px, 0); }
+}
+
+@keyframes vignetteFlash {
+  0% { opacity: 0; }
+  30% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.screen-shake-subtle {
+  animation: screenShakeSubtle 0.35s ease-in-out;
+}
+
+.screen-shake-intense {
+  animation: screenShakeIntense 0.5s ease-in-out;
+}
+
+/* Red vignette overlay for illegal contracts */
+body.red-vignette::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  box-shadow: inset 0 0 150px rgba(239, 68, 68, 0.3);
+  animation: vignetteFlash 0.8s ease-in-out forwards;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Respect accessibility — disable motion effects */
+@media (prefers-reduced-motion: reduce) {
+  .screen-shake-subtle,
+  .screen-shake-intense {
+    animation: none !important;
+  }
+
+  body.red-vignette::after {
+    animation: none !important;
+    display: none;
+  }
+}
+
+/* ============================================
+   🌈 CONTRACT MOOD RING
+   Ambient background + heartbeat for dangerous zones
+   ============================================ */
+
+@keyframes moodHeartbeat {
+  0%, 100% { opacity: 0.15; }
+  30% { opacity: 0.5; }
+  50% { opacity: 0.7; }
+  70% { opacity: 0.5; }
+}
+
+@keyframes moodDotPulse {
+  0%, 100% { box-shadow: 0 0 0 0 currentColor; }
+  50% { box-shadow: 0 0 0 4px currentColor; }
+}
+
+.mood-heartbeat {
+  animation: moodHeartbeat 1.8s ease-in-out infinite;
+}
+
+.mood-dot-pulse {
+  animation: moodDotPulse 2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mood-heartbeat,
+  .mood-dot-pulse {
+    animation: none !important;
+  }
+}
+
+/* ── State Machine Animations ── */
+
+@keyframes trapPulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.08); opacity: 0.9; }
+}
+
+@keyframes flowingDot {
+  0% { offset-distance: 0%; }
+  100% { offset-distance: 100%; }
+}
+
+@keyframes edgeDraw {
+  from { stroke-dashoffset: var(--edge-length); }
+  to { stroke-dashoffset: 0; }
+}
+
+.animate-trap-pulse {
+  animation: trapPulse 2s ease-in-out infinite;
+}
+
+.animate-flowing-dot {
+  animation: flowingDot 2s linear infinite;
+}
+
+.animate-edge-draw {
+  animation: edgeDraw 0.3s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-trap-pulse,
+  .animate-flowing-dot,
+  .animate-edge-draw {
+    animation: none;
+  }
+}
+
+/* ============================================
+   SCROLLBAR HIDE UTILITY
+   ============================================ */
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  nav,
+  .floating-actions,
+  .fixed,
+  button,
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  .clause-card {
+    break-inside: avoid;
+  }
+
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
 }
-
-/* ============================================
-   BASE STYLES
-   ============================================ */
-
-* {
-  border-color: var(--color-border);
-}
-
-body {
-  background-color: var(--color-background);
-  color: var(--color-foreground);
-  font-feature-settings: "rlig" 1, "calt" 1;
-}
-
-/* ============================================
-   RISK LEVEL UTILITY CLASSES
-   ============================================ */
-
-.text-safe { color: #22c55e; }
-.text-warning { color: #eab308; }
-.text-dangerous { color: #ef4444; }
-.text-illegal { color: #a855f7; }
-
-.bg-safe { background-color: rgba(34, 197, 94, 0.1); }
-.bg-warning { background-color: rgba(234, 179, 8, 0.1); }
-.bg-dangerous { background-color: rgba(239, 68, 68, 0.1); }
-.bg-illegal { background-color: rgba(168, 85, 247, 0.1); }
-
-.border-safe { border-color: rgba(34, 197, 94, 0.3); }
-.border-warning { border-color: rgba(234, 179, 8, 0.3); }
-.border-dangerous { border-color: rgba(239, 68, 68, 0.3); }
-.border-illegal { border-color: rgba(168, 85, 247, 0.3); }
-
-/* ============================================
-   CUSTOM UTILITY CLASSES
-   ============================================ */
-
-.gradient-text {
-  background: linear-gradient(to right, #60a5fa, #3b82f6, #a855f7);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.glass {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.glow-blue {
-  box-shadow: 0 0 40px rgba(59, 130, 246, 0.15);
-}
-
-.glow-red {
-  box-shadow: 0 0 40px rgba(239, 68, 68, 0.15);
-}
-
-.glow-green {
-  box-shadow: 0 0 40px rgba(34, 197, 94, 0.15);
-}
-
-.glow-purple {
-  box-shadow: 0 0 40px rgba(168, 85, 247, 0.15);
-}
-
-/* ============================================
-   SCROLLBAR
-   ============================================ */
-
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--color-background);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--color-muted);
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-muted-foreground);
-}
-
-/* ============================================
-   ANIMATIONS
-   ============================================ */
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+/* Bold Impact  Typography utilities */
+@layer utilities {
+  .text-impact-hero {
+    @apply text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-none;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  
+  .text-impact-heading {
+    @apply text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight;
+  }
+  
+  .text-impact-subheading {
+    @apply text-2xl md:text-3xl font-bold tracking-tight;
+  }
+  
+  .text-impact-stat {
+    @apply text-5xl md:text-6xl lg:text-7xl font-black tabular-nums tracking-tighter;
+  }
+  
+  .text-impact-body {
+    @apply text-base md:text-lg leading-relaxed;
+  }
+
+  /* Bold Impact  Card styles */
+  .card-impact {
+    @apply bg-card rounded-lg shadow-sm border border-border;
+  }
+  
+  .card-impact-emphasis {
+    @apply bg-card rounded-lg border-2 border-foreground shadow-sm;
+  }
+  
+  /* Bold Impact  Risk level borders */
+  .border-risk-safe {
+    @apply border-l-4;
+    border-left-color: hsl(var(--risk-safe));
+  }
+  
+  .border-risk-warning {
+    @apply border-l-4;
+    border-left-color: hsl(var(--risk-warning));
+  }
+  
+  .border-risk-dangerous {
+    @apply border-l-4;
+    border-left-color: hsl(var(--risk-dangerous));
+  }
+  
+  .border-risk-illegal {
+    @apply border-l-4;
+    border-left-color: hsl(var(--risk-illegal));
+  }
+
+  /* Bold Impact  Section alternating */
+  .section-white {
+    @apply bg-background;
+  }
+  
+  .section-muted {
+    @apply bg-muted;
+  }
+  
+  .section-dark {
+    @apply bg-foreground text-background;
   }
 }
 
-@keyframes pulseGlow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
+/* Bold Impact — Typography utilities */
+@layer utilities {
+  .text-impact-hero {
+    @apply text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-none;
   }
-  50% {
-    box-shadow: 0 0 40px rgba(59, 130, 246, 0.3);
+  
+  .text-impact-heading {
+    @apply text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight;
   }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
+  
+  .text-impact-subheading {
+    @apply text-2xl md:text-3xl font-bold tracking-tight;
   }
-  100% {
-    background-position: 200% 0;
+  
+  .text-impact-stat {
+    @apply text-5xl md:text-6xl lg:text-7xl font-black tabular-nums tracking-tighter;
   }
-}
-
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out forwards;
-  opacity: 0;
-}
-
-.animate-pulse-glow {
-  animation: pulseGlow 3s ease-in-out infinite;
-}
-
-.animate-shimmer {
-  background: linear-gradient(
-    90deg,
-    transparent 25%,
-    rgba(255, 255, 255, 0.05) 50%,
-    transparent 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 2s infinite;
-}
-
-.stagger-1 { animation-delay: 0.1s; }
-.stagger-2 { animation-delay: 0.2s; }
-.stagger-3 { animation-delay: 0.3s; }
-.stagger-4 { animation-delay: 0.4s; }
-.stagger-5 { animation-delay: 0.5s; }
-.stagger-6 { animation-delay: 0.6s; }
-
-/* ============================================
-   🔊 SOUND EFFECT — SCREEN SHAKE
-   Triggered on dangerous/illegal results load
-   ============================================ */
-
-@keyframes screenShakeSubtle {
-  0%, 100% { transform: translate(0, 0); }
-  20% { transform: translate(-2px, 1px); }
-  40% { transform: translate(2px, -1px); }
-  60% { transform: translate(-1px, 1px); }
-  80% { transform: translate(1px, 0); }
-}
-
-@keyframes screenShakeIntense {
-  0%, 100% { transform: translate(0, 0); }
-  8% { transform: translate(-5px, 3px); }
-  16% { transform: translate(5px, -3px); }
-  24% { transform: translate(-4px, 2px); }
-  32% { transform: translate(4px, -2px); }
-  40% { transform: translate(-3px, 1px); }
-  48% { transform: translate(3px, -1px); }
-  56% { transform: translate(-2px, 1px); }
-  64% { transform: translate(2px, -1px); }
-  72% { transform: translate(-1px, 0); }
-  80% { transform: translate(1px, 0); }
-}
-
-@keyframes vignetteFlash {
-  0% { opacity: 0; }
-  30% { opacity: 1; }
-  100% { opacity: 0; }
-}
-
-.screen-shake-subtle {
-  animation: screenShakeSubtle 0.35s ease-in-out;
-}
-
-.screen-shake-intense {
-  animation: screenShakeIntense 0.5s ease-in-out;
-}
-
-/* Red vignette overlay for illegal contracts */
-body.red-vignette::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  box-shadow: inset 0 0 150px rgba(239, 68, 68, 0.3);
-  animation: vignetteFlash 0.8s ease-in-out forwards;
-  pointer-events: none;
-  z-index: 9999;
-}
-
-/* Respect accessibility — disable motion effects */
-@media (prefers-reduced-motion: reduce) {
-  .screen-shake-subtle,
-  .screen-shake-intense {
-    animation: none !important;
+  
+  .text-impact-body {
+    @apply text-base md:text-lg leading-relaxed;
   }
 
-  body.red-vignette::after {
-    animation: none !important;
-    display: none;
+  /* Bold Impact — Card styles */
+  .card-impact {
+    @apply bg-card rounded-lg shadow-sm border border-border;
   }
-}
-
-/* ============================================
-   🌈 CONTRACT MOOD RING
-   Ambient background + heartbeat for dangerous zones
-   ============================================ */
-
-@keyframes moodHeartbeat {
-  0%, 100% { opacity: 0.15; }
-  30% { opacity: 0.5; }
-  50% { opacity: 0.7; }
-  70% { opacity: 0.5; }
-}
-
-@keyframes moodDotPulse {
-  0%, 100% { box-shadow: 0 0 0 0 currentColor; }
-  50% { box-shadow: 0 0 0 4px currentColor; }
-}
-
-.mood-heartbeat {
-  animation: moodHeartbeat 1.8s ease-in-out infinite;
-}
-
-.mood-dot-pulse {
-  animation: moodDotPulse 2s ease-in-out infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .mood-heartbeat,
-  .mood-dot-pulse {
-    animation: none !important;
+  
+  .card-impact-emphasis {
+    @apply bg-card rounded-lg border-2 border-foreground shadow-sm;
   }
-}
-
-/* ── State Machine Animations ── */
-
-@keyframes trapPulse {
-  0%, 100% { transform: scale(1); opacity: 0.6; }
-  50% { transform: scale(1.08); opacity: 0.9; }
-}
-
-@keyframes flowingDot {
-  0% { offset-distance: 0%; }
-  100% { offset-distance: 100%; }
-}
-
-@keyframes edgeDraw {
-  from { stroke-dashoffset: var(--edge-length); }
-  to { stroke-dashoffset: 0; }
-}
-
-.animate-trap-pulse {
-  animation: trapPulse 2s ease-in-out infinite;
-}
-
-.animate-flowing-dot {
-  animation: flowingDot 2s linear infinite;
-}
-
-.animate-edge-draw {
-  animation: edgeDraw 0.3s ease-out forwards;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .animate-trap-pulse,
-  .animate-flowing-dot,
-  .animate-edge-draw {
-    animation: none;
+  
+  /* Bold Impact — Risk level borders */
+  .border-risk-safe {
+    @apply border-l-4;
+    border-left-color: hsl(var(--risk-safe));
   }
-}
-
-/* ============================================
-   SCROLLBAR HIDE UTILITY
-   ============================================ */
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-/* ============================================
-   PRINT STYLES
-   ============================================ */
-
-@media print {
-  nav,
-  .floating-actions,
-  .fixed,
-  button,
-  .no-print {
-    display: none !important;
+  
+  .border-risk-warning {
+    @apply border-l-4;
+    border-left-color: hsl(var(--risk-warning));
+  }
+  
+  .border-risk-dangerous {
+    @apply border-l-4;
+    border-left-color: hsl(var(--risk-dangerous));
+  }
+  
+  .border-risk-illegal {
+    @apply border-l-4;
+    border-left-color: hsl(var(--risk-illegal));
   }
 
-  body {
-    background: white !important;
-    color: black !important;
+  /* Bold Impact — Section alternating */
+  .section-white {
+    @apply bg-background;
   }
-
-  .clause-card {
-    break-inside: avoid;
+  
+  .section-muted {
+    @apply bg-muted;
   }
-
-  * {
-    animation: none !important;
-    transition: none !important;
+  
+  .section-dark {
+    @apply bg-foreground text-background;
   }
 }
