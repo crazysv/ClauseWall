@@ -159,24 +159,24 @@ const ICON_MAP: Record<string, React.ReactNode> = {
 
 const TYPE_STYLES: Record<string, { bg: string; border: string; iconColor: string }> = {
   positive: {
-    bg: "bg-emerald-500/5",
-    border: "border-emerald-500/20",
-    iconColor: "text-emerald-400",
+    bg: "bg-green-100",
+    border: "border-green-600 shadow-[4px_4px_0px_0px_rgba(22,163,74,1)]",
+    iconColor: "text-green-800 bg-green-200 border-2 border-green-600",
   },
   warning: {
-    bg: "bg-amber-500/5",
-    border: "border-amber-500/20",
-    iconColor: "text-amber-400",
+    bg: "bg-amber-100",
+    border: "border-yellow-500 shadow-[4px_4px_0px_0px_rgba(234,179,8,1)]",
+    iconColor: "text-amber-800 bg-amber-200 border-2 border-yellow-500",
   },
   neutral: {
-    bg: "bg-blue-500/5",
-    border: "border-blue-500/20",
-    iconColor: "text-blue-400",
+    bg: "bg-blue-100",
+    border: "border-blue-600 shadow-[4px_4px_0px_0px_rgba(37,99,235,1)]",
+    iconColor: "text-blue-800 bg-blue-200 border-2 border-blue-600",
   },
   tip: {
-    bg: "bg-purple-500/5",
-    border: "border-purple-500/20",
-    iconColor: "text-purple-400",
+    bg: "bg-purple-100",
+    border: "border-purple-600 shadow-[4px_4px_0px_0px_rgba(147,51,234,1)]",
+    iconColor: "text-purple-800 bg-purple-200 border-2 border-purple-600",
   },
 };
 
@@ -190,14 +190,14 @@ export default function InsightsSection({ stats, documents }: InsightsSectionPro
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.25 }}
-      className="rounded-xl border border-gray-800 bg-gray-900/50 p-6"
+      className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] bg-background p-6 h-full flex flex-col"
     >
-      <div className="flex items-center gap-2 mb-5">
-        <Lightbulb className="w-5 h-5 text-purple-400" />
-        <h3 className="font-semibold text-white">Smart Insights</h3>
+      <div className="flex items-center gap-2 mb-5 pb-4 border-b-2 border-foreground">
+        <Lightbulb className="w-6 h-6 text-purple-600 fill-purple-100" />
+        <h3 className="text-xl font-black uppercase tracking-wider text-foreground">Smart Insights</h3>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-4 flex-1">
         {insights.map((insight, index) => {
           const style = TYPE_STYLES[insight.type] || TYPE_STYLES.neutral;
 
@@ -207,16 +207,16 @@ export default function InsightsSection({ stats, documents }: InsightsSectionPro
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3 + index * 0.1 }}
-              className={`flex items-start gap-3 p-3.5 rounded-lg border ${style.bg} ${style.border}`}
+              className={`flex items-start gap-4 p-4 border-2 transition-transform hover:-translate-y-1 ${style.bg} ${style.border}`}
             >
-              <div className={`mt-0.5 ${style.iconColor}`}>
-                {ICON_MAP[insight.icon] || <Info className="w-4 h-4" />}
+              <div className={`mt-0.5 p-2 ${style.iconColor}`}>
+                {ICON_MAP[insight.icon] || <Info className="w-5 h-5" />}
               </div>
               <div>
-                <p className="text-sm font-medium text-white mb-0.5">
+                <p className="text-sm font-black uppercase tracking-wider text-foreground mb-1">
                   {insight.title}
                 </p>
-                <p className="text-xs text-gray-400 leading-relaxed">
+                <p className="text-xs font-bold text-foreground/80 leading-relaxed">
                   {insight.description}
                 </p>
               </div>

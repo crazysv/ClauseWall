@@ -104,44 +104,54 @@ export default function PortfolioStatsSection({ stats }: PortfolioStatsProps) {
 
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-      {cards.map((card, index) => (
-        <motion.div
-          key={card.label}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: index * 0.1 }}
-          className={`relative overflow-hidden rounded-xl border ${card.border} ${card.bg} p-5`}
-        >
-          {/* Icon */}
-          <div className={`${card.iconColor} mb-3`}>{card.icon}</div>
+      {cards.map((card, index) => {
+        // Derive bold impact classes based on card.color
+        const shadowColor = 
+          card.color === "blue" ? "rgba(37,99,235,1)" :
+          card.color === "red" ? "rgba(220,38,38,1)" :
+          card.color === "emerald" ? "rgba(22,163,74,1)" :
+          card.color === "amber" ? "rgba(234,179,8,1)" :
+          "rgba(10,10,10,1)";
+          
+        const borderColor = 
+          card.color === "blue" ? "border-blue-600" :
+          card.color === "red" ? "border-red-600" :
+          card.color === "emerald" ? "border-green-600" :
+          card.color === "amber" ? "border-yellow-500" :
+          "border-foreground";
 
-          {/* Value */}
-          <p className="text-2xl font-bold text-white mb-1">{card.value}</p>
+        const iconBg = 
+          card.color === "blue" ? "bg-blue-100 text-blue-800" :
+          card.color === "red" ? "bg-red-100 text-red-800" :
+          card.color === "emerald" ? "bg-green-100 text-green-800" :
+          card.color === "amber" ? "bg-yellow-100 text-yellow-800" :
+          "bg-muted text-foreground";
 
-          {/* Label */}
-          <p className="text-sm text-gray-400 mb-1">{card.label}</p>
+        return (
+          <motion.div
+            key={card.label}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+            className={`card-impact border-2 ${borderColor} bg-background p-5 hover:-translate-y-1 transition-transform`}
+            style={{ boxShadow: `4px 4px 0px 0px ${shadowColor}` }}
+          >
+            {/* Icon */}
+            <div className={`inline-flex items-center justify-center p-2 border-2 border-current shadow-[2px_2px_0px_0px_currentColor] mb-4 ${iconBg}`}>
+              {card.icon}
+            </div>
 
-          {/* Subtext */}
-          <p className="text-xs text-gray-500">{card.subtext}</p>
+            {/* Value */}
+            <p className="text-2xl font-black text-foreground mb-1 tracking-tighter">{card.value}</p>
 
-          {/* Decorative blur */}
-          <div
-            className={`absolute -top-4 -right-4 w-20 h-20 rounded-full blur-2xl opacity-20`}
-            style={{
-              backgroundColor:
-                card.color === "blue"
-                  ? "#3b82f6"
-                  : card.color === "red"
-                  ? "#ef4444"
-                  : card.color === "emerald"
-                  ? "#10b981"
-                  : card.color === "amber"
-                  ? "#f59e0b"
-                  : "#6b7280",
-            }}
-          />
-        </motion.div>
-      ))}
+            {/* Label */}
+            <p className="text-xs font-black uppercase tracking-wider text-muted-foreground mb-1">{card.label}</p>
+
+            {/* Subtext */}
+            <p className="text-[10px] font-bold text-foreground/70 uppercase">{card.subtext}</p>
+          </motion.div>
+        );
+      })}
     </div>
   );
 }

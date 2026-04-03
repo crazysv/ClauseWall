@@ -43,24 +43,21 @@ function CustomTooltip({ active, payload }: any) {
       : "#10b981";
 
   return (
-    <div className="bg-gray-900 border border-gray-700 rounded-lg p-3 shadow-xl">
-      <p className="text-xs text-gray-400 mb-1">{point.date}</p>
-      <p className="text-sm font-medium text-white truncate max-w-[200px]">
+    <div className="bg-background border-2 border-foreground rounded-none shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] p-3">
+      <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-1">{point.date}</p>
+      <p className="text-sm font-bold text-foreground truncate max-w-[200px]">
         {point.label}
       </p>
-      <div className="flex items-center gap-2 mt-1">
+      <div className="flex items-center gap-2 mt-2">
         <span
-          className="text-lg font-bold"
-          style={{ color: riskColor }}
+          className="text-lg font-black tracking-tighter"
+          style={{ color: riskColor === '#a855f7' ? '#9333ea' : riskColor }}
         >
           {score}
         </span>
         <span
-          className="text-xs px-1.5 py-0.5 rounded"
-          style={{
-            backgroundColor: `${riskColor}20`,
-            color: riskColor,
-          }}
+          className="text-[10px] font-black uppercase tracking-wider px-1.5 py-0.5 border-2 border-current bg-background"
+          style={{ color: riskColor === '#a855f7' ? '#9333ea' : riskColor }}
         >
           {riskLabel}
         </span>
@@ -75,18 +72,18 @@ export default function RiskTrendChart({ data }: RiskTrendChartProps) {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="rounded-xl border border-gray-800 bg-gray-900/50 p-6"
+        className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] bg-background p-6 h-full flex flex-col"
       >
-        <div className="flex items-center gap-2 mb-4">
-          <TrendingUp className="w-5 h-5 text-blue-400" />
-          <h3 className="font-semibold text-white">Risk Trend</h3>
+        <div className="flex items-center gap-2 mb-4 pb-4 border-b-2 border-foreground">
+          <TrendingUp className="w-6 h-6 text-blue-600 bg-blue-100 p-1 border-2 border-blue-600" />
+          <h3 className="text-xl font-black uppercase tracking-wider text-foreground">Risk Trend</h3>
         </div>
-        <div className="flex flex-col items-center justify-center h-48 text-center">
-          <Info className="w-8 h-8 text-gray-600 mb-3" />
-          <p className="text-gray-400 text-sm">
+        <div className="flex flex-1 flex-col items-center justify-center p-6 text-center border-2 border-dashed border-muted-foreground/30 bg-muted/10 mt-2">
+          <Info className="w-8 h-8 text-muted-foreground mb-3" />
+          <p className="font-bold text-foreground text-sm uppercase tracking-wider">
             Analyze 2+ contracts to see your risk trend
           </p>
-          <p className="text-gray-500 text-xs mt-1">
+          <p className="text-muted-foreground text-xs mt-2 font-bold">
             Each contract will appear as a data point
           </p>
         </div>
@@ -99,25 +96,25 @@ export default function RiskTrendChart({ data }: RiskTrendChartProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 }}
-      className="rounded-xl border border-gray-800 bg-gray-900/50 p-6"
+      className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] bg-background p-6 h-full flex flex-col"
     >
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-5 gap-3 pb-4 border-b-2 border-foreground">
         <div className="flex items-center gap-2">
-          <TrendingUp className="w-5 h-5 text-blue-400" />
-          <h3 className="font-semibold text-white">Risk Trend</h3>
+          <TrendingUp className="w-6 h-6 text-blue-600 bg-blue-100 p-1 border-2 border-blue-600" />
+          <h3 className="text-xl font-black uppercase tracking-wider text-foreground">Risk Trend</h3>
         </div>
-        <div className="flex items-center gap-4 text-xs text-gray-500">
-          <div className="flex items-center gap-1">
-            <div className="w-2 h-2 rounded-full bg-emerald-500" />
-            Safe &lt;30
+        <div className="flex flex-wrap items-center gap-3 text-[10px] font-black uppercase tracking-wider text-muted-foreground">
+          <div className="flex items-center gap-1.5 border-2 border-foreground bg-muted px-2 py-1 shadow-[2px_2px_0px_0px_rgba(10,10,10,1)]">
+            <div className="w-2.5 h-2.5 bg-green-500 border border-current" />
+            <span className="text-green-700">Safe &lt;30</span>
           </div>
-          <div className="flex items-center gap-1">
-            <div className="w-2 h-2 rounded-full bg-amber-500" />
-            Warning
+          <div className="flex items-center gap-1.5 border-2 border-foreground bg-muted px-2 py-1 shadow-[2px_2px_0px_0px_rgba(10,10,10,1)]">
+            <div className="w-2.5 h-2.5 bg-yellow-500 border border-current" />
+            <span className="text-yellow-700">Warning</span>
           </div>
-          <div className="flex items-center gap-1">
-            <div className="w-2 h-2 rounded-full bg-red-500" />
-            Dangerous &gt;60
+          <div className="flex items-center gap-1.5 border-2 border-foreground bg-muted px-2 py-1 shadow-[2px_2px_0px_0px_rgba(10,10,10,1)]">
+            <div className="w-2.5 h-2.5 bg-red-600 border border-current" />
+            <span className="text-red-700">Danger &gt;60</span>
           </div>
         </div>
       </div>
