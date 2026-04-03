@@ -29,34 +29,34 @@ import { toast } from "sonner";
 
 const RISK_STYLES = {
   safe: {
-    bg: "rgba(34, 197, 94, 0.12)",
-    border: "rgba(34, 197, 94, 0.35)",
-    glow: "0 0 6px rgba(34, 197, 94, 0.25)",
-    color: "#22C55E",
+    bg: "#f0fdf4",
+    border: "#16a34a",
+    glow: "none",
+    color: "#16a34a",
     label: "Safe",
     emoji: "✅",
   },
   warning: {
-    bg: "rgba(234, 179, 8, 0.18)",
-    border: "rgba(234, 179, 8, 0.45)",
-    glow: "0 0 10px rgba(234, 179, 8, 0.35)",
-    color: "#EAB308",
+    bg: "#fefce8",
+    border: "#ca8a04",
+    glow: "none",
+    color: "#ca8a04",
     label: "Warning",
     emoji: "⚠️",
   },
   dangerous: {
-    bg: "rgba(239, 68, 68, 0.22)",
-    border: "rgba(239, 68, 68, 0.55)",
-    glow: "0 0 14px rgba(239, 68, 68, 0.45)",
-    color: "#EF4444",
+    bg: "#fef2f2",
+    border: "#dc2626",
+    glow: "none",
+    color: "#dc2626",
     label: "Dangerous",
     emoji: "🔴",
   },
   illegal: {
-    bg: "rgba(168, 85, 247, 0.28)",
-    border: "rgba(168, 85, 247, 0.65)",
-    glow: "0 0 18px rgba(168, 85, 247, 0.5), 0 0 36px rgba(168, 85, 247, 0.25)",
-    color: "#A855F7",
+    bg: "#faf5ff",
+    border: "#9333ea",
+    glow: "none",
+    color: "#9333ea",
     label: "Illegal",
     emoji: "⛔",
   },
@@ -200,11 +200,11 @@ function OverlayContent({
       className="fixed inset-0 z-50 bg-black/95 overflow-hidden flex flex-col"
     >
       {/* Header Bar */}
-      <div className="flex-shrink-0 h-14 bg-gray-900/95 border-b border-gray-800 flex items-center justify-between px-4 sm:px-6">
+      <div className="flex-shrink-0 h-14 bg-muted border-b-2 border-foreground flex items-center justify-between px-4 sm:px-6">
         <div className="flex items-center gap-3 overflow-x-auto">
           <div className="flex items-center gap-2 flex-shrink-0">
-            <Scan className="h-4 w-4 text-purple-400" />
-            <span className="font-semibold text-sm">Deep Scan</span>
+            <Scan className="h-4 w-4 text-foreground" />
+            <span className="font-black text-foreground uppercase tracking-wider text-sm">Deep Scan</span>
           </div>
           <div className="hidden sm:flex items-center gap-3 ml-3">
             {riskCounts.illegal > 0 && (
@@ -274,22 +274,22 @@ function OverlayContent({
       <div ref={scrollRef} className="flex-1 overflow-auto p-4 sm:p-8">
         <div
           ref={contentRef}
-          className="max-w-4xl mx-auto bg-[#0C0C14] rounded-xl border border-gray-800/80 shadow-2xl"
+          className="max-w-4xl mx-auto card-impact bg-background border-2 border-foreground rounded-none shadow-none"
           style={{ transform: `scale(${zoom})`, transformOrigin: "top center" }}
         >
-          <div className="px-8 pt-8 pb-4 border-b border-gray-800/60">
+          <div className="px-8 pt-8 pb-4 border-b-2 border-foreground">
             <div className="flex items-center gap-3 mb-1">
-              <Scan className="h-5 w-5 text-purple-400" />
-              <h2 className="text-base font-semibold text-gray-200">
+              <Scan className="h-5 w-5 text-foreground" />
+              <h2 className="text-base font-black uppercase tracking-wider text-foreground">
                 {doc.original_filename || "Contract Document"}
               </h2>
             </div>
-            <p className="text-xs text-gray-500 ml-8">
+            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-8">
               {clauses.length} clauses analyzed • Risk Score: {doc.overall_risk_score}/100 • X-Ray Scan by ClauseWall
             </p>
           </div>
 
-          <div className="px-8 py-6 font-mono text-[13px] leading-7 text-gray-300 whitespace-pre-wrap break-words">
+          <div className="px-8 py-6 font-mono text-[13px] leading-7 font-bold text-foreground whitespace-pre-wrap break-words">
             {segments.map((segment, index) => {
               if (segment.type === "normal") {
                 return <span key={index}>{segment.text}</span>;
@@ -318,8 +318,8 @@ function OverlayContent({
                 >
                   {segment.text}
                   <span
-                    className="ml-1.5 inline-flex items-center gap-0.5 text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-sm select-none"
-                    style={{ backgroundColor: `${style.color}18`, color: style.color, border: `1px solid ${style.border}` }}
+                    className="ml-1.5 inline-flex items-center gap-0.5 text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-none select-none"
+                    style={{ backgroundColor: style.bg, color: style.border, border: `2px solid ${style.border}` }}
                   >
                     {style.emoji} {style.label}
                   </span>
@@ -343,7 +343,7 @@ function OverlayContent({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 8 }}
             transition={{ duration: 0.15 }}
-            className="fixed z-[60] w-80 bg-gray-900/98 backdrop-blur-md border border-gray-700/60 rounded-lg shadow-2xl p-4 pointer-events-none"
+            className="fixed z-[60] w-80 card-impact bg-background shadow-none p-4 pointer-events-none"
             style={{
               left: Math.max(16, Math.min(tooltipPos.x - 160, (typeof window !== "undefined" ? window.innerWidth : 1200) - 340)),
               top: Math.max(70, Math.min(tooltipPos.y - 170, (typeof window !== "undefined" ? window.innerHeight : 800) - 200)),
@@ -351,27 +351,27 @@ function OverlayContent({
           >
             <div className="flex items-center gap-2 mb-2">
               <span
-                className="px-2 py-0.5 rounded text-[10px] font-bold uppercase"
+                className="px-2 py-0.5 rounded-none text-[10px] font-black uppercase tracking-wider"
                 style={{
-                  backgroundColor: `${RISK_STYLES[hoveredClause.risk_level].color}20`,
-                  color: RISK_STYLES[hoveredClause.risk_level].color,
-                  border: `1px solid ${RISK_STYLES[hoveredClause.risk_level].border}`,
+                  backgroundColor: RISK_STYLES[hoveredClause.risk_level].bg,
+                  color: RISK_STYLES[hoveredClause.risk_level].border,
+                  border: `2px solid ${RISK_STYLES[hoveredClause.risk_level].border}`,
                 }}
               >
                 {RISK_STYLES[hoveredClause.risk_level].emoji} {RISK_STYLES[hoveredClause.risk_level].label}
               </span>
-              <span className="text-[11px] text-gray-500">Clause #{hoveredClause.clause_number}</span>
+              <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Clause #{hoveredClause.clause_number}</span>
               {hoveredClause.risk_score != null && (
-                <span className="text-[11px] text-gray-500 ml-auto">Score: {hoveredClause.risk_score}</span>
+                <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider ml-auto">Score: {hoveredClause.risk_score}</span>
               )}
             </div>
-            <p className="text-sm text-gray-300 leading-relaxed">
+            <p className="text-sm font-bold text-foreground leading-relaxed uppercase tracking-wider">
               {hoveredClause.explanation.length > 200
                 ? hoveredClause.explanation.slice(0, 200) + "..."
                 : hoveredClause.explanation}
             </p>
             {hoveredClause.legal_citation && (
-              <p className="text-[11px] text-gray-500 mt-2.5 pt-2 border-t border-gray-800">
+              <p className="text-[11px] font-bold text-foreground uppercase tracking-wider mt-2.5 pt-2 border-t-2 border-foreground">
                 📚 {hoveredClause.legal_citation}
               </p>
             )}
@@ -409,22 +409,22 @@ export default function XRayMode({ document: doc, clauses }: XRayModeProps) {
     <>
       {/* Trigger Card */}
       <Card
-        className="bg-gray-900/50 border-gray-800 mb-8 cursor-pointer hover:border-purple-500/40 transition-all group"
+        className="card-impact bg-muted border-foreground mb-8 cursor-pointer hover:bg-background transition-all group"
         onClick={() => setIsOpen(true)}
       >
         <CardContent className="p-6">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-purple-500/15 flex items-center justify-center group-hover:bg-purple-500/25 transition-colors">
-              <Scan className="h-6 w-6 text-purple-400" />
+            <div className="w-12 h-12 p-2 border-2 border-foreground bg-background flex items-center justify-center transition-colors">
+              <Scan className="h-6 w-6 text-foreground" />
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold flex items-center gap-2">
+              <h3 className="font-black text-foreground uppercase tracking-wider flex items-center gap-2">
                 X-Ray Mode
-                <Badge variant="outline" className="text-[10px] border-purple-500/40 text-purple-400">
+                <Badge variant="outline" className="text-[10px] font-black border-2 border-foreground rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] uppercase bg-background text-foreground tracking-wider">
                   NEW
                 </Badge>
               </h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs uppercase tracking-wider font-bold text-muted-foreground mt-1">
                 See dangerous clauses highlighted directly on your document
               </p>
             </div>

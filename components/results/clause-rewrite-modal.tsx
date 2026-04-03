@@ -200,21 +200,21 @@ export default function ClauseRewriteModal({
 
           {/* Modal */}
           <motion.div
-            className="relative w-full max-w-3xl max-h-[90vh] bg-gray-950 border border-white/10 rounded-2xl overflow-hidden shadow-2xl"
+            className="relative w-full max-w-3xl max-h-[90vh] bg-background card-impact rounded-none overflow-hidden shadow-none"
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ duration: 0.25 }}
           >
             {/* ── Header ── */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-gray-900/50">
+            <div className="flex items-center justify-between px-6 py-4 border-b-2 border-foreground bg-muted">
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                  <Pencil className="h-5 w-5 text-emerald-400" />
+                <div className="p-2 border-2 border-foreground bg-background">
+                  <Pencil className="h-5 w-5 text-foreground" />
                 </div>
                 <div>
-                  <h2 className="font-bold text-lg">Clause Rewriter</h2>
-                  <p className="text-xs text-gray-500">
+                  <h2 className="font-black text-xl uppercase tracking-wider text-foreground">Clause Rewriter</h2>
+                  <p className="text-[10px] text-muted-foreground font-black uppercase tracking-wider">
                     Clause #{clause.clause_number} •{" "}
                     {clause.clause_type.replace(/_/g, " ")}
                   </p>
@@ -222,7 +222,7 @@ export default function ClauseRewriteModal({
               </div>
               <button
                 onClick={onClose}
-                className="p-2 rounded-lg hover:bg-white/5 transition-colors text-gray-400 hover:text-white"
+                className="p-2 border-2 border-transparent hover:border-foreground transition-all text-muted-foreground hover:text-foreground hover:bg-background"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -238,11 +238,11 @@ export default function ClauseRewriteModal({
                 <div className="space-y-6">
                   {/* Original clause */}
                   <div>
-                    <p className="text-xs font-medium text-red-400/70 mb-2 uppercase tracking-wider">
+                    <p className="text-xs font-black text-red-600 mb-2 uppercase tracking-wider">
                       Original (Predatory)
                     </p>
-                    <div className="p-4 rounded-xl bg-red-500/5 border border-red-500/20">
-                      <p className="text-sm text-red-300/80 leading-relaxed">
+                    <div className="p-4 card-impact bg-red-50 border-2 border-red-600">
+                      <p className="text-sm font-bold text-red-900 leading-relaxed uppercase tracking-wider">
                         &quot;{clause.original_text}&quot;
                       </p>
                     </div>
@@ -254,26 +254,26 @@ export default function ClauseRewriteModal({
                       animate={{ y: [0, 6, 0] }}
                       transition={{ duration: 1.5, repeat: Infinity }}
                     >
-                      <ArrowDown className="h-6 w-6 text-emerald-400" />
+                      <ArrowDown className="h-6 w-6 text-foreground" />
                     </motion.div>
                   </div>
 
                   {/* Skeleton rewrite */}
                   <div>
-                    <p className="text-xs font-medium text-emerald-400/70 mb-2 uppercase tracking-wider">
+                    <p className="text-xs font-black text-green-600 mb-2 uppercase tracking-wider">
                       Rewriting...
                     </p>
-                    <div className="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/20 space-y-2">
-                      <div className="h-4 bg-white/5 rounded animate-pulse w-full" />
-                      <div className="h-4 bg-white/5 rounded animate-pulse w-5/6" />
-                      <div className="h-4 bg-white/5 rounded animate-pulse w-4/6" />
-                      <div className="h-4 bg-white/5 rounded animate-pulse w-5/6" />
+                    <div className="p-4 card-impact bg-muted border-2 border-foreground space-y-2">
+                      <div className="h-4 bg-foreground/10 animate-pulse w-full" />
+                      <div className="h-4 bg-foreground/10 animate-pulse w-5/6" />
+                      <div className="h-4 bg-foreground/10 animate-pulse w-4/6" />
+                      <div className="h-4 bg-foreground/10 animate-pulse w-5/6" />
                     </div>
                   </div>
 
                   <div className="flex items-center justify-center gap-3 py-2">
-                    <Loader2 className="h-5 w-5 text-emerald-400 animate-spin" />
-                    <p className="text-sm text-gray-400">
+                    <Loader2 className="h-5 w-5 text-foreground animate-spin" />
+                    <p className="text-sm font-black text-foreground uppercase tracking-wider">
                       Rewriting clause to be fair and legal...
                     </p>
                   </div>
@@ -300,16 +300,16 @@ export default function ClauseRewriteModal({
                   {/* ═══ ORIGINAL CLAUSE ═══ */}
                   <div>
                     <div className="flex items-center gap-2 mb-2">
-                      <XCircle className="h-3.5 w-3.5 text-red-400" />
-                      <p className="text-xs font-medium text-red-400 uppercase tracking-wider">
+                      <XCircle className="h-3.5 w-3.5 text-red-600" />
+                      <p className="text-xs font-black text-red-800 uppercase tracking-wider">
                         Original (From Your Contract)
                       </p>
-                      <Badge className="bg-red-500/15 text-red-400 border-red-500/30 text-[10px]">
+                      <Badge className="bg-red-100 text-red-800 border-red-600 border-2 rounded-none text-[10px] font-black tracking-wider uppercase">
                         {clause.risk_level.toUpperCase()}
                       </Badge>
                     </div>
-                    <div className="p-4 rounded-xl bg-red-500/5 border border-red-500/20">
-                      <p className="text-sm text-red-300 leading-relaxed font-mono">
+                    <div className="p-4 card-impact border-2 border-red-600 bg-red-50">
+                      <p className="text-sm text-red-900 leading-relaxed font-bold font-mono">
                         &quot;{clause.original_text}&quot;
                       </p>
                     </div>
@@ -317,14 +317,14 @@ export default function ClauseRewriteModal({
 
                   {/* ═══ ARROW ═══ */}
                   <motion.div
-                    className="flex justify-center"
+                    className="flex justify-center my-4"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
                   >
                     <div className="flex flex-col items-center gap-1">
-                      <ArrowDown className="h-6 w-6 text-emerald-400" />
-                      <span className="text-[10px] text-emerald-400/60 font-medium uppercase tracking-widest">
+                      <ArrowDown className="h-6 w-6 text-foreground" />
+                      <span className="text-[10px] text-foreground font-black uppercase tracking-widest">
                         Rewritten
                       </span>
                     </div>
@@ -337,29 +337,29 @@ export default function ClauseRewriteModal({
                     transition={{ delay: 0.3 }}
                   >
                     <div className="flex items-center gap-2 mb-2">
-                      <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
-                      <p className="text-xs font-medium text-emerald-400 uppercase tracking-wider">
+                      <CheckCircle2 className="h-3.5 w-3.5 text-green-600" />
+                      <p className="text-xs font-black text-green-800 uppercase tracking-wider">
                         Rewritten (Fair + Legal)
                       </p>
-                      <Badge className="bg-emerald-500/15 text-emerald-400 border-emerald-500/30 text-[10px]">
+                      <Badge className="bg-green-100 text-green-800 border-green-600 border-2 rounded-none text-[10px] font-black tracking-wider uppercase">
                         FAIR
                       </Badge>
                     </div>
-                    <div className="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/20 relative group">
-                      <p className="text-sm text-emerald-300 leading-relaxed font-mono">
+                    <div className="p-4 card-impact border-2 border-green-600 bg-green-50 relative group">
+                      <p className="text-sm font-bold text-green-900 leading-relaxed font-mono">
                         &quot;{result.rewritten_clause}&quot;
                       </p>
 
                       {/* Quick copy overlay */}
                       <button
                         onClick={copyRewrittenClause}
-                        className="absolute top-3 right-3 p-2 rounded-lg bg-gray-900/80 border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-800"
+                        className="absolute top-3 right-3 p-2 bg-background border-2 border-foreground opacity-0 group-hover:opacity-100 transition-opacity hover:bg-muted text-foreground font-black"
                         title="Copy rewritten clause"
                       >
                         {copiedClause ? (
-                          <Check className="h-3.5 w-3.5 text-emerald-400" />
+                          <Check className="h-4 w-4" />
                         ) : (
-                          <Copy className="h-3.5 w-3.5 text-gray-400" />
+                          <Copy className="h-4 w-4" />
                         )}
                       </button>
                     </div>
@@ -371,22 +371,22 @@ export default function ClauseRewriteModal({
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 }}
                   >
-                    <p className="text-xs font-medium text-gray-500 mb-3 uppercase tracking-wider">
+                    <p className="text-xs font-black text-muted-foreground mt-6 mb-3 uppercase tracking-wider">
                       Changes Made ({result.total_changes})
                     </p>
-                    <div className="space-y-2.5">
+                    <div className="space-y-4">
                       {result.changes.map((change, i) => (
                         <motion.div
                           key={i}
                           initial={{ opacity: 0, x: -10 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: 0.6 + i * 0.1 }}
-                          className="p-3.5 rounded-xl bg-white/[0.03] border border-white/5 space-y-2"
+                          className="p-3.5 card-impact border-2 border-foreground bg-muted space-y-2 rounded-none"
                         >
                           {/* Change label */}
                           <div className="flex items-center gap-2">
-                            <CheckCircle2 className="h-4 w-4 text-emerald-400 flex-shrink-0" />
-                            <span className="text-sm font-medium text-white">
+                            <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0" />
+                            <span className="text-sm font-black uppercase tracking-wider text-foreground">
                               {change.label}
                             </span>
                           </div>
@@ -395,21 +395,21 @@ export default function ClauseRewriteModal({
                           {(change.original || change.rewritten) && (
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pl-6">
                               {change.original && (
-                                <div className="px-3 py-2 rounded-lg bg-red-500/5 border border-red-500/15">
-                                  <p className="text-[10px] text-red-400/60 font-medium mb-0.5">
+                                <div className="px-3 py-2 border-2 border-red-600 bg-red-50">
+                                  <p className="text-[10px] text-red-800 font-black tracking-wider uppercase mb-0.5">
                                     BEFORE
                                   </p>
-                                  <p className="text-xs text-red-300 line-through decoration-red-500/40">
+                                  <p className="text-xs font-bold text-red-900 line-through decoration-red-600/40">
                                     {change.original}
                                   </p>
                                 </div>
                               )}
                               {change.rewritten && (
-                                <div className="px-3 py-2 rounded-lg bg-emerald-500/5 border border-emerald-500/15">
-                                  <p className="text-[10px] text-emerald-400/60 font-medium mb-0.5">
+                                <div className="px-3 py-2 border-2 border-green-600 bg-green-50">
+                                  <p className="text-[10px] text-green-800 font-black tracking-wider uppercase mb-0.5">
                                     AFTER
                                   </p>
-                                  <p className="text-xs text-emerald-300">
+                                  <p className="text-xs font-bold text-green-900">
                                     {change.rewritten}
                                   </p>
                                 </div>
@@ -419,9 +419,9 @@ export default function ClauseRewriteModal({
 
                           {/* Legal basis */}
                           {change.legal_basis && (
-                            <div className="flex items-start gap-1.5 pl-6">
-                              <Scale className="h-3 w-3 text-blue-400 mt-0.5 flex-shrink-0" />
-                              <p className="text-[11px] text-blue-400/80">
+                            <div className="flex items-start gap-1.5 pl-6 mt-2">
+                              <Scale className="h-3 w-3 text-blue-600 mt-0.5 flex-shrink-0" />
+                              <p className="text-[11px] font-bold text-blue-800 uppercase tracking-wider">
                                 {change.legal_basis}
                               </p>
                             </div>
@@ -436,15 +436,15 @@ export default function ClauseRewriteModal({
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.8 }}
-                    className="p-4 rounded-xl bg-blue-500/5 border border-blue-500/15"
+                    className="p-4 card-impact mt-6 bg-blue-50 border-2 border-blue-600"
                   >
                     <div className="flex items-start gap-2">
-                      <Scale className="h-4 w-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                      <Scale className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
                       <div>
-                        <p className="text-xs font-medium text-blue-400 mb-1">
+                        <p className="text-xs font-black uppercase tracking-wider text-blue-800 mb-1">
                           Legal Compliance
                         </p>
-                        <p className="text-sm text-blue-300/80 leading-relaxed">
+                        <p className="text-sm font-bold text-blue-900 leading-relaxed">
                           {result.legal_compliance_note}
                         </p>
                       </div>
@@ -456,12 +456,12 @@ export default function ClauseRewriteModal({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1 }}
-                    className="flex flex-wrap items-center gap-3 pt-2"
+                    className="flex flex-wrap items-center gap-3 pt-6"
                   >
                     {/* Copy Rewritten Clause */}
                     <button
                       onClick={copyRewrittenClause}
-                      className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-sm text-emerald-400 font-medium hover:bg-emerald-500/20 transition-colors"
+                      className="flex items-center gap-2 px-4 py-2.5 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors"
                     >
                       {copiedClause ? (
                         <Check className="h-4 w-4" />
@@ -474,10 +474,10 @@ export default function ClauseRewriteModal({
                     {/* Copy Full Comparison */}
                     <button
                       onClick={copyFullComparison}
-                      className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-sm text-gray-300 hover:bg-white/10 transition-colors"
+                      className="flex items-center gap-2 px-4 py-2.5 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors"
                     >
                       {copiedFull ? (
-                        <Check className="h-4 w-4 text-emerald-400" />
+                        <Check className="h-4 w-4" />
                       ) : (
                         <Copy className="h-4 w-4" />
                       )}
@@ -487,7 +487,7 @@ export default function ClauseRewriteModal({
                     {/* WhatsApp Share */}
                     <button
                       onClick={shareWhatsApp}
-                      className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-sm text-gray-300 hover:bg-white/10 transition-colors"
+                      className="flex items-center gap-2 px-4 py-2.5 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors"
                     >
                       <Share2 className="h-4 w-4" />
                       WhatsApp
@@ -499,7 +499,7 @@ export default function ClauseRewriteModal({
                         cache.current.delete(clause.id);
                         fetchRewrite();
                       }}
-                      className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-sm text-gray-300 hover:bg-white/10 transition-colors"
+                      className="flex items-center gap-2 px-4 py-2.5 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors"
                     >
                       <RefreshCw className="h-4 w-4" />
                       Re-generate

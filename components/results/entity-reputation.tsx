@@ -160,17 +160,17 @@ export default function EntityReputation({
   // ============================================
   if (!entityName) {
     return (
-      <Card className="bg-gray-900/50 border-gray-800">
+      <Card className="card-impact bg-muted">
         <CardContent className="p-6">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-lg bg-gray-500/10 flex items-center justify-center flex-shrink-0">
-              <Search className="h-5 w-5 text-gray-500" />
+          <div className="flex items-center gap-4">
+            <div className="h-10 w-10 border-2 border-foreground bg-background flex items-center justify-center flex-shrink-0">
+              <Search className="h-5 w-5 text-foreground" />
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-400">
+              <p className="text-sm font-black uppercase tracking-wider text-foreground">
                 Entity Not Identified
               </p>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs font-medium text-muted-foreground mt-1">
                 Could not extract landlord/company name from this contract.
                 The contract may not contain identifiable party names.
               </p>
@@ -186,13 +186,13 @@ export default function EntityReputation({
   // ============================================
   if (loading) {
     return (
-      <Card className="bg-gray-900/50 border-gray-800">
+      <Card className="card-impact bg-muted">
         <CardContent className="p-6">
           <div className="flex items-center gap-3">
-            <Loader2 className="h-5 w-5 text-blue-400 animate-spin" />
-            <p className="text-sm text-muted-foreground">
+            <Loader2 className="h-5 w-5 text-foreground animate-spin" />
+            <p className="text-sm font-bold tracking-wider text-muted-foreground uppercase">
               Checking community reputation for{" "}
-              <span className="text-white font-medium">{entityName}</span>...
+              <span className="text-foreground font-black">{entityName}</span>...
             </p>
           </div>
         </CardContent>
@@ -215,30 +215,30 @@ export default function EntityReputation({
   return (
     <>
       <Card
-        className={`bg-gray-900/50 overflow-hidden transition-all ${
+        className={`card-impact overflow-hidden transition-all ${
           isSevere
-            ? "border-red-500/50 shadow-lg shadow-red-500/10"
+            ? "border-red-600 bg-red-50 dark:bg-red-950"
             : isModerate
-              ? "border-red-500/30"
+              ? "border-red-600"
               : isKnownBadActor
-                ? "border-orange-500/30"
-                : "border-gray-800"
+                ? "border-orange-600"
+                : "border-foreground"
         }`}
       >
         {/* ============================================ */}
         {/* DRAMATIC HEADER — For entities with 3+ flags */}
         {/* ============================================ */}
         {isKnownBadActor && (isModerate || isSevere) && (
-          <div className="relative px-4 py-3 bg-gradient-to-r from-red-500/10 via-red-500/5 to-red-500/10 border-b border-red-500/20">
+          <div className="relative px-4 py-3 bg-red-600 border-b-2 border-foreground">
             {isSevere && (
-              <div className="absolute inset-0 bg-red-500/5 animate-pulse" />
+              <div className="absolute inset-0 bg-red-800 animate-pulse mix-blend-overlay" />
             )}
             <div className="relative flex items-center justify-center gap-2">
-              <Skull className="h-4 w-4 text-red-400" />
-              <span className="text-xs font-bold tracking-widest text-red-400 uppercase">
+              <Skull className="h-4 w-4 text-white" />
+              <span className="text-sm font-black tracking-widest text-white uppercase">
                 Entity Reputation Alert
               </span>
-              <Skull className="h-4 w-4 text-red-400" />
+              <Skull className="h-4 w-4 text-white" />
             </div>
           </div>
         )}

@@ -623,20 +623,18 @@ export default function ResultsPage() {
         activeRiskLevel={activeMoodRisk}
         isInClauseZone={isInClauseZone}
       />
-      <div className="relative px-4 sm:px-6 lg:px-8 py-8 pb-24 sm:pb-8">
+      <div className="relative px-4 sm:px-6 md:px-8 py-8 pb-24 sm:pb-12 bg-background min-h-screen">
       {/* Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl" />
+        <div className="absolute top-0 left-0 w-full h-1 bg-red-600" />
       </div>
 
       <div className="relative mx-auto max-w-5xl">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
-            <div className="flex items-center gap-2 text-muted-foreground text-sm mb-2">
-              <FileText className="h-4 w-4" />
-              <span>{document.original_filename || "Analyzed Document"}</span>
+            <div className="flex flex-wrap items-center gap-2 text-muted-foreground text-sm font-bold uppercase tracking-wider mb-3">
+              <span className="text-foreground">{document.original_filename || "Analyzed Document"}</span>
               <span>•</span>
               <span>{getDocumentTypeLabel(document.document_type)}</span>
               <span>•</span>
@@ -652,7 +650,7 @@ export default function ResultsPage() {
                 </>
               )}
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-foreground tracking-tight">
               Analysis Results
             </h1>
           </div>
@@ -708,61 +706,62 @@ export default function ResultsPage() {
         )}
 
         {/* Score Overview */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
-          <Card className="bg-gray-900/50 border-gray-800 md:col-span-2">
-            <CardContent className="p-6 flex items-center gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <Card className="card-impact md:col-span-2">
+            <CardContent className="p-6 md:p-8 flex items-center gap-6 md:gap-8">
               <div
-                className="relative h-24 w-24 rounded-full flex items-center justify-center flex-shrink-0"
+                className="relative h-28 w-28 md:h-32 md:w-32 rounded-full border-4 flex items-center justify-center flex-shrink-0"
                 title="Overall contract risk score. 0 = safe, 100 = extremely dangerous"
                 style={{
-                  background: `conic-gradient(${riskColor} ${document.overall_risk_score}%, transparent 0)`,
+                  borderColor: riskColor,
+                  borderStyle: 'solid'
                 }}
               >
-                <div className="absolute inset-2 bg-background rounded-full flex items-center justify-center">
-                  <span className="text-3xl font-bold" style={{ color: riskColor }}>
+                <div className="absolute inset-2 bg-background rounded-full flex items-center justify-center border-2 border-foreground">
+                  <span className="text-4xl md:text-5xl font-black tabular-nums" style={{ color: riskColor }}>
                     {document.overall_risk_score}
                   </span>
                 </div>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground mb-1">Overall Risk Score</p>
-                <p className="text-xl font-bold" style={{ color: riskColor }}>
+                <p className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-1">Overall Risk Score</p>
+                <p className="text-2xl md:text-3xl font-black uppercase" style={{ color: riskColor }}>
                   {getRiskLabel(riskLevel)}
                 </p>
-                <p className="text-sm text-muted-foreground mt-2">
+                <p className="text-sm font-bold text-foreground mt-2 px-3 py-1 bg-muted inline-block rounded-none border border-foreground">
                   {document.total_clauses} clauses analyzed
                 </p>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-gray-900/50 border-gray-800">
+          <Card className="card-impact">
             <CardContent className="p-6 flex flex-col justify-center h-full">
               <div className="grid grid-cols-2 gap-4">
-                <div className="text-center">
-                  <p className="text-2xl font-bold text-green-500">{document.safe_count}</p>
-                  <p className="text-xs text-muted-foreground">Safe</p>
+                <div className="text-center p-2 rounded border-2 border-green-600 bg-green-50 dark:bg-green-950">
+                  <p className="text-2xl md:text-3xl font-black text-green-700 dark:text-green-400 tabular-nums">{document.safe_count}</p>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-green-800 dark:text-green-300">Safe</p>
                 </div>
-                <div className="text-center">
-                  <p className="text-2xl font-bold text-yellow-500">{document.warning_count}</p>
-                  <p className="text-xs text-muted-foreground">Warning</p>
+                <div className="text-center p-2 rounded border-2 border-yellow-600 bg-yellow-50 dark:bg-yellow-950">
+                  <p className="text-2xl md:text-3xl font-black text-yellow-700 dark:text-yellow-400 tabular-nums">{document.warning_count}</p>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-yellow-800 dark:text-yellow-300">Warning</p>
                 </div>
-                <div className="text-center">
-                  <p className="text-2xl font-bold text-red-500">{document.dangerous_count}</p>
-                  <p className="text-xs text-muted-foreground">Dangerous</p>
+                <div className="text-center p-2 rounded border-2 border-red-600 bg-red-50 dark:bg-red-950">
+                  <p className="text-2xl md:text-3xl font-black text-red-700 dark:text-red-400 tabular-nums">{document.dangerous_count}</p>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-red-800 dark:text-red-300">Dangerous</p>
                 </div>
-                <div className="text-center">
-                  <p className="text-2xl font-bold text-purple-500">{document.illegal_count}</p>
-                  <p className="text-xs text-muted-foreground">Illegal</p>
+                <div className="text-center p-2 rounded border-2 border-purple-600 bg-purple-50 dark:bg-purple-950">
+                  <p className="text-2xl md:text-3xl font-black text-purple-700 dark:text-purple-400 tabular-nums">{document.illegal_count}</p>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-purple-800 dark:text-purple-300">Illegal</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-gray-900/50 border-gray-800">
+          <Card className="card-impact">
             <CardContent className="p-6 flex flex-col justify-center h-full">
-              <p className="text-sm text-muted-foreground mb-2">Identified Entity</p>
-              <p className="font-semibold truncate">
+              <p className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-2">Identified Entity</p>
+              <p className="text-xl font-bold truncate text-foreground">
                 {document.entity_name || "Not identified"}
               </p>
             </CardContent>
@@ -771,13 +770,13 @@ export default function ResultsPage() {
 
         {/* Summary */}
         {document.summary && (
-          <Card className="bg-gray-900/50 border-gray-800 mb-8">
+          <Card className="card-impact mb-8 bg-muted">
             <CardContent className="p-6">
-              <h3 className="font-semibold mb-2 flex items-center gap-2">
-                <Shield className="h-4 w-4 text-blue-400" />
-                Summary
+              <h3 className="text-lg font-black uppercase tracking-wider mb-3 flex items-center gap-2 text-foreground">
+                <FileText className="h-5 w-5 text-red-600" />
+                Executive Summary
               </h3>
-              <p className="text-muted-foreground leading-relaxed text-sm">
+              <p className="text-foreground leading-relaxed text-sm md:text-base font-medium">
                 {document.summary}
               </p>
             </CardContent>
@@ -852,28 +851,28 @@ export default function ResultsPage() {
                   />
 
                   {/* Verification Stats */}
-                  <Card className="bg-gray-900/50 border-gray-800">
+                  <Card className="card-impact-emphasis">
                     <CardContent className="p-6">
-                      <h3 className="font-semibold mb-3 flex items-center gap-2">
-                        <ShieldCheck className="h-4 w-4 text-green-400" />
+                      <h3 className="text-sm font-bold uppercase tracking-wider mb-4 flex items-center gap-2 text-foreground">
+                        <ShieldCheck className="h-5 w-5 text-green-600" />
                         Legal Database Verification
                       </h3>
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                        <div className="text-center p-3 rounded-lg bg-green-500/10">
-                          <p className="text-2xl font-bold text-green-400">{verificationStats.verified}</p>
-                          <p className="text-xs text-muted-foreground">Verified ✓</p>
+                        <div className="text-center p-3 rounded-none border-2 border-green-600 bg-green-50 dark:bg-green-950">
+                          <p className="text-2xl font-black text-green-700 dark:text-green-400 tabular-nums">{verificationStats.verified}</p>
+                          <p className="text-xs font-bold uppercase text-green-800 dark:text-green-300">Verified ✓</p>
                         </div>
-                        <div className="text-center p-3 rounded-lg bg-yellow-500/10">
-                          <p className="text-2xl font-bold text-yellow-400">{verificationStats.partial}</p>
-                          <p className="text-xs text-muted-foreground">Partial</p>
+                        <div className="text-center p-3 rounded-none border-2 border-yellow-600 bg-yellow-50 dark:bg-yellow-950">
+                          <p className="text-2xl font-black text-yellow-700 dark:text-yellow-400 tabular-nums">{verificationStats.partial}</p>
+                          <p className="text-xs font-bold uppercase text-yellow-800 dark:text-yellow-300">Partial</p>
                         </div>
-                        <div className="text-center p-3 rounded-lg bg-blue-500/10">
-                          <p className="text-2xl font-bold text-blue-400">{verificationStats.ai_suggested}</p>
-                          <p className="text-xs text-muted-foreground">AI-Only</p>
+                        <div className="text-center p-3 rounded-none border-2 border-blue-600 bg-blue-50 dark:bg-blue-950">
+                          <p className="text-2xl font-black text-blue-700 dark:text-blue-400 tabular-nums">{verificationStats.ai_suggested}</p>
+                          <p className="text-xs font-bold uppercase text-blue-800 dark:text-blue-300">AI-Only</p>
                         </div>
-                        <div className="text-center p-3 rounded-lg bg-white/5">
-                          <p className="text-2xl font-bold">{verificationStats.verification_rate}%</p>
-                          <p className="text-xs text-muted-foreground">Verified Rate</p>
+                        <div className="text-center p-3 rounded-none border-2 border-foreground bg-muted">
+                          <p className="text-2xl font-black tabular-nums text-foreground">{verificationStats.verification_rate}%</p>
+                          <p className="text-xs font-bold uppercase text-muted-foreground">Verified Rate</p>
                         </div>
                       </div>
                     </CardContent>
@@ -901,8 +900,8 @@ export default function ResultsPage() {
                 {/* ═══ CLAUSE SECTION — MOOD RING ZONE ═══ */}
         <div id="clause-list">
           {/* Clause Header + Filters */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-            <h2 className="text-xl font-bold">Clause Analysis</h2>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+            <h2 className="text-3xl font-black text-foreground tracking-tight uppercase">Clause Analysis</h2>
             <div className="flex items-center gap-2 flex-wrap">
               {[
                 { value: "all", label: "All", count: clauses.length },
@@ -934,13 +933,15 @@ export default function ResultsPage() {
                 <button
                   key={filter.value}
                   onClick={() => setFilterRisk(filter.value)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
+                  className={`px-4 py-2 rounded-none text-xs font-bold uppercase tracking-wider border-2 transition-all ${
                     filterRisk === filter.value
-                      ? "bg-white/10 border-white/20 text-white"
-                      : "bg-white/[0.02] border-white/5 text-gray-500 hover:text-gray-300"
+                      ? "bg-foreground border-foreground text-background"
+                      : "bg-background border-border text-muted-foreground hover:border-foreground hover:text-foreground"
                   }`}
                 >
-                  <span className={filter.color}>{filter.count}</span>{" "}
+                  <span className={filterRisk === filter.value ? "text-background" : filter.color}>
+                    {filter.count}
+                  </span>{" "}
                   {filter.label}
                 </button>
               ))}
@@ -1035,12 +1036,12 @@ export default function ResultsPage() {
         </div>
 
         {/* ── Explore Deeper ── */}
-        <div className="mt-8 space-y-4">
-          <div className="flex items-center gap-3">
-            <h3 className="text-sm font-semibold text-white/60">
+        <div className="mt-12 space-y-6">
+          <div className="flex items-center gap-4">
+            <h3 className="text-xl font-black uppercase tracking-wider text-foreground">
               Explore Deeper
             </h3>
-            <div className="flex-1 border-t border-white/5" />
+            <div className="flex-1 border-t-2 border-foreground" />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -1061,15 +1062,15 @@ export default function ResultsPage() {
 
             <div id="ruin-calculator-cta">
               <Link href={`/ruin-calculator/${documentId}`}>
-                <Card className="cursor-pointer hover:brightness-110 transition-all bg-gradient-to-br from-red-500/5 to-orange-500/5 border-red-500/15 h-full">
+                <Card className="card-impact cursor-pointer hover:shadow-lg transition-all border-red-600 bg-red-50 dark:bg-red-950 h-full">
                   <CardContent className="p-5">
                     <div className="flex items-center gap-4">
-                      <div className="p-3 rounded-xl bg-red-500/10">
-                        <BarChart3 className="w-6 h-6 text-red-400" />
+                      <div className="p-3 bg-red-600 border-2 border-black dark:border-white">
+                        <BarChart3 className="w-6 h-6 text-white" />
                       </div>
                       <div className="flex-1">
-                        <h4 className="text-sm font-semibold text-white">Financial Risk Calculator</h4>
-                        <p className="text-xs text-white/40 mt-0.5">
+                        <h4 className="text-sm font-black uppercase text-red-900 dark:text-red-100">Financial Risk Calculator</h4>
+                        <p className="text-xs font-medium text-red-800/80 dark:text-red-200/80 mt-1">
                           Monte Carlo simulation: see the real cost of this contract over 36 months
                         </p>
                       </div>
@@ -1108,15 +1109,15 @@ export default function ResultsPage() {
 
             <div id="vault-cta">
               <Link href="/vault">
-                <Card className="cursor-pointer hover:brightness-110 transition-all bg-gradient-to-br from-indigo-500/5 to-violet-500/5 border-indigo-500/15 h-full">
+                <Card className="card-impact cursor-pointer hover:shadow-lg transition-all border-indigo-600 bg-indigo-50 dark:bg-indigo-950 h-full">
                   <CardContent className="p-5">
                     <div className="flex items-center gap-4">
-                      <div className="p-3 rounded-xl bg-indigo-500/10">
-                        <FileStack className="w-6 h-6 text-indigo-400" />
+                      <div className="p-3 bg-indigo-600 border-2 border-black dark:border-white">
+                        <FileStack className="w-6 h-6 text-white" />
                       </div>
                       <div className="flex-1">
-                        <h4 className="text-sm font-semibold text-white">Contract Vault</h4>
-                        <p className="text-xs text-white/40 mt-0.5">
+                        <h4 className="text-sm font-black uppercase text-indigo-900 dark:text-indigo-100">Contract Vault</h4>
+                        <p className="text-xs font-medium text-indigo-800/80 dark:text-indigo-200/80 mt-1">
                           Cross-analyze all your contracts for conflicts, gaps & hidden risks
                         </p>
                       </div>

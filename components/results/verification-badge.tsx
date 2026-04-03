@@ -37,11 +37,11 @@ export default function VerificationBadge({ verification }: VerificationBadgePro
   const getBadgeClass = () => {
     switch (verification.confidence) {
       case "verified":
-        return "bg-green-500/20 text-green-400 border-green-500/30";
+        return "bg-green-50 text-green-800 border-2 border-green-600 font-bold uppercase dark:bg-green-950 dark:text-green-300";
       case "partial":
-        return "bg-yellow-500/20 text-yellow-400 border-yellow-500/30";
+        return "bg-yellow-50 text-yellow-800 border-2 border-yellow-600 font-bold uppercase dark:bg-yellow-950 dark:text-yellow-300";
       case "ai_suggested":
-        return "bg-blue-500/20 text-blue-400 border-blue-500/30";
+        return "bg-blue-50 text-blue-800 border-2 border-blue-600 font-bold uppercase dark:bg-blue-950 dark:text-blue-300";
     }
   };
 
@@ -83,34 +83,34 @@ export default function VerificationBadge({ verification }: VerificationBadgePro
 
       {/* Expanded — Matched Rules */}
       {expanded && verification.matched_rules.length > 0 && (
-        <div className="mt-3 space-y-2">
-          <p className="text-xs font-medium text-muted-foreground">
-            📚 Matched Legal Rules from ClauseWall Database:
+        <div className="mt-3 space-y-3">
+          <p className="text-xs font-black uppercase tracking-wider text-muted-foreground border-b-2 border-foreground pb-1">
+            Matched Legal Rules
           </p>
           {verification.matched_rules.map((rule, i) => (
             <div
               key={i}
-              className="p-3 rounded-lg bg-white/5 border border-white/10 text-sm"
+              className="p-3 bg-muted border-2 border-foreground"
             >
-              <div className="flex items-start justify-between gap-2 mb-1">
-                <p className="font-medium text-foreground">
+              <div className="flex items-start justify-between gap-2 mb-2">
+                <p className="font-bold text-foreground uppercase">
                   {rule.rule_title}
                 </p>
-                <Badge variant="outline" className="text-xs flex-shrink-0 border-blue-500/30 text-blue-400">
+                <Badge variant="outline" className="text-[10px] font-black uppercase text-foreground border-2 border-foreground">
                   {rule.statute_code}
                 </Badge>
               </div>
-              <p className="text-muted-foreground text-xs mb-2">
+              <p className="font-medium text-foreground text-sm mb-3">
                 {rule.rule_description}
               </p>
               {rule.what_makes_it_illegal && (
-                <p className="text-xs text-red-400">
-                  ⚠️ {rule.what_makes_it_illegal}
+                <p className="text-sm font-bold text-red-600">
+                  <span className="bg-red-100 dark:bg-red-900 px-1">ILLEGALITY:</span> {rule.what_makes_it_illegal}
                 </p>
               )}
               {rule.max_penalty && (
-                <p className="text-xs text-yellow-400 mt-1">
-                  💰 Penalty: {rule.max_penalty}
+                <p className="text-sm font-bold text-yellow-600 mt-2">
+                  <span className="bg-yellow-100 dark:bg-yellow-900 px-1">PENALTY:</span> {rule.max_penalty}
                 </p>
               )}
             </div>

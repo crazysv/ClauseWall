@@ -210,27 +210,27 @@ export default function ClauseCard({
   // Risk styling
   const riskConfig = {
     safe: {
-      icon: <CheckCircle2 className="h-4 w-4 text-green-500" />,
-      borderClass: "border-l-green-500",
-      badgeClass: "bg-green-500/15 text-green-400 border-green-500/30",
+      icon: <CheckCircle2 className="h-5 w-5 text-green-600" />,
+      borderClass: "border-l-[6px] border-green-600",
+      badgeClass: "bg-green-50 text-green-800 border-2 border-green-600 font-bold uppercase dark:bg-green-950 dark:text-green-300",
       label: "Safe",
     },
     warning: {
-      icon: <AlertTriangle className="h-4 w-4 text-yellow-500" />,
-      borderClass: "border-l-yellow-500",
-      badgeClass: "bg-yellow-500/15 text-yellow-400 border-yellow-500/30",
+      icon: <AlertTriangle className="h-5 w-5 text-yellow-600" />,
+      borderClass: "border-l-[6px] border-yellow-600",
+      badgeClass: "bg-yellow-50 text-yellow-800 border-2 border-yellow-600 font-bold uppercase dark:bg-yellow-950 dark:text-yellow-300",
       label: "Warning",
     },
     dangerous: {
-      icon: <XCircle className="h-4 w-4 text-red-500" />,
-      borderClass: "border-l-red-500",
-      badgeClass: "bg-red-500/15 text-red-400 border-red-500/30",
+      icon: <XCircle className="h-5 w-5 text-red-600" />,
+      borderClass: "border-l-[6px] border-red-600",
+      badgeClass: "bg-red-50 text-red-800 border-2 border-red-600 font-bold uppercase dark:bg-red-950 dark:text-red-300",
       label: "Dangerous",
     },
     illegal: {
-      icon: <Scale className="h-4 w-4 text-purple-500" />,
-      borderClass: "border-l-purple-500",
-      badgeClass: "bg-purple-500/15 text-purple-400 border-purple-500/30",
+      icon: <Scale className="h-5 w-5 text-purple-600" />,
+      borderClass: "border-l-[6px] border-purple-600",
+      badgeClass: "bg-purple-50 text-purple-800 border-2 border-purple-600 font-bold uppercase dark:bg-purple-950 dark:text-purple-300",
       label: "Illegal",
     },
   };
@@ -278,27 +278,27 @@ export default function ClauseCard({
 
   return (
     <div
-      className={`rounded-xl border border-white/5 border-l-4 ${risk.borderClass} bg-gray-900/50 overflow-hidden transition-all ${
-        showRoast ? "ring-1 ring-orange-500/20" : ""
+      className={`card-impact overflow-hidden transition-all ${risk.borderClass} ${
+        showRoast ? "ring-2 ring-orange-500" : ""
       }`}
     >
       {/* ── HEADER ── */}
       <div
-        className="flex items-start justify-between p-4 cursor-pointer hover:bg-white/[0.02] transition-colors"
+        className="flex items-start justify-between p-4 cursor-pointer hover:bg-muted/50 transition-colors"
         onClick={onToggle}
       >
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+          <div className="flex items-center gap-2 mb-2 flex-wrap">
             {risk.icon}
             <Badge className={risk.badgeClass}>{risk.label}</Badge>
-            <span className="text-xs text-gray-500" title="Risk score for this clause (0-100)">Score: {clause.risk_score}/100</span>
-            <Badge variant="outline" className="text-[10px] border-white/10 text-gray-500">
+            <span className="text-xs font-black tracking-wider text-muted-foreground uppercase" title="Risk score for this clause (0-100)">Score: {clause.risk_score}/100</span>
+            <Badge variant="outline" className="text-[10px] uppercase font-bold text-muted-foreground border-2 border-muted border-foreground">
               {clause.clause_type}
             </Badge>
             {verificationBadge()}
             {showRoast && (
-              <Badge className="bg-orange-500/15 text-orange-400 border-orange-500/30 text-[10px] px-1.5 gap-1">
-                <Flame className="h-3 w-3" />
+              <Badge className="bg-orange-50 text-orange-800 border-2 border-orange-600 font-bold uppercase text-[10px] px-1.5 gap-1">
+                <Flame className="h-3.5 w-3.5" />
                 Roasted
               </Badge>
             )}
@@ -312,13 +312,13 @@ export default function ClauseCard({
             )}
           </div>
           {/* Collapsed preview: show AI explanation instead of raw text */}
-          <p className="text-sm text-white/60 line-clamp-2 italic">
+          <p className="text-sm font-medium text-foreground/80 line-clamp-2">
             &quot;{(clause.explanation || clause.original_text || "").substring(0, 120)}
             {(clause.explanation || clause.original_text || "").length > 120 ? "..." : ""}&quot;
           </p>
         </div>
-        <button className="p-1 ml-2 text-gray-500 flex-shrink-0" aria-label={isExpanded ? "Collapse clause" : "Expand clause"}>
-          {isExpanded ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
+        <button className="p-1 ml-2 text-foreground flex-shrink-0" aria-label={isExpanded ? "Collapse clause" : "Expand clause"}>
+          {isExpanded ? <ChevronUp className="h-6 w-6" /> : <ChevronDown className="h-6 w-6" />}
         </button>
       </div>
 
@@ -332,13 +332,13 @@ export default function ClauseCard({
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <div className="px-4 pb-4 space-y-4">
-              <div className="border-t border-white/5" />
+            <div className="px-4 pb-4 space-y-5">
+              <div className="border-t-2 border-foreground" />
 
               {/* Full Clause Text */}
               <div>
-                <p className="text-xs font-medium text-gray-500 mb-1.5">Full Clause Text</p>
-                <p className="text-sm text-gray-300 bg-white/[0.03] p-3 rounded-lg leading-relaxed">
+                <p className="text-xs font-black uppercase tracking-wider text-muted-foreground mb-1.5">Full Clause Text</p>
+                <p className="text-sm text-foreground bg-muted p-4 border border-foreground leading-relaxed font-medium">
                   {clause.original_text}
                 </p>
               </div>
@@ -353,16 +353,16 @@ export default function ClauseCard({
                     exit={{ opacity: 0, y: -5 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <p className="text-xs font-medium text-orange-400 mb-1.5 flex items-center gap-1.5">
-                      <Flame className="h-3.5 w-3.5" />
+                    <p className="text-xs font-black uppercase tracking-wider text-orange-600 mb-2 flex items-center gap-1.5">
+                      <Flame className="h-4 w-4" />
                       Roasted Analysis 🔥
                     </p>
-                    <div className="p-4 rounded-lg bg-gradient-to-br from-orange-500/10 to-red-500/10 border border-orange-500/20">
-                      <p className="text-sm text-orange-200 leading-relaxed">
+                    <div className="p-4 bg-orange-50 dark:bg-orange-950 border-2 border-orange-600 text-orange-900 dark:text-orange-100">
+                      <p className="text-sm leading-relaxed font-bold">
                         {roastText}
                       </p>
                     </div>
-                    <p className="text-[10px] text-gray-600 mt-1.5 italic">
+                    <p className="text-[10px] text-muted-foreground mt-2 font-bold uppercase tracking-wider">
                       ⚠️ Roast mode — entertainment + education. Formal legal analysis is above when roast mode is off.
                     </p>
                   </motion.div>
@@ -374,8 +374,8 @@ export default function ClauseCard({
                     exit={{ opacity: 0, y: -5 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <p className="text-xs font-medium text-gray-500 mb-1.5">Analysis</p>
-                    <p className="text-sm text-gray-300 leading-relaxed">{clause.explanation}</p>
+                    <p className="text-xs font-black uppercase tracking-wider text-muted-foreground mb-1.5">Analysis</p>
+                    <p className="text-sm text-foreground font-medium leading-relaxed">{clause.explanation}</p>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -405,7 +405,7 @@ export default function ClauseCard({
               {/* ── QUICK ACTIONS — Compact CTA Row ── */}
               {clause.risk_level !== "safe" && (
                 <div className="flex flex-wrap items-center gap-2 py-2">
-                  <span className="text-[10px] text-white/30 font-medium uppercase tracking-wider mr-1">
+                  <span className="text-[10px] text-muted-foreground font-black uppercase tracking-wider mr-1">
                     Quick Actions
                   </span>
 
@@ -415,7 +415,7 @@ export default function ClauseCard({
                         e.stopPropagation();
                         onAutopsy!();
                       }}
-                      className="inline-flex items-center gap-1.5 text-xs py-1.5 px-3 rounded-md border border-white/10 text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+                      className="inline-flex items-center gap-1.5 text-xs py-1.5 px-3 rounded-none border-2 border-foreground bg-muted text-foreground hover:bg-foreground hover:text-background transition-colors font-bold uppercase tracking-wider"
                     >
                       <Scan className="w-3.5 h-3.5" />
                       Breakdown
@@ -428,7 +428,7 @@ export default function ClauseCard({
                         e.stopPropagation();
                         onRewrite();
                       }}
-                      className="inline-flex items-center gap-1.5 text-xs py-1.5 px-3 rounded-md border border-white/10 text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+                      className="inline-flex items-center gap-1.5 text-xs py-1.5 px-3 rounded-none border-2 border-foreground bg-muted text-foreground hover:bg-foreground hover:text-background transition-colors font-bold uppercase tracking-wider"
                     >
                       <Pencil className="w-3.5 h-3.5" />
                       Rewrite
@@ -440,7 +440,7 @@ export default function ClauseCard({
                       e.stopPropagation();
                       setShowGraph(true);
                     }}
-                    className="inline-flex items-center gap-1.5 text-xs py-1.5 px-3 rounded-md border border-white/10 text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+                    className="inline-flex items-center gap-1.5 text-xs py-1.5 px-3 rounded-none border-2 border-foreground bg-muted text-foreground hover:bg-foreground hover:text-background transition-colors font-bold uppercase tracking-wider"
                   >
                     <Network className="w-3.5 h-3.5" />
                     Legal Web
@@ -452,7 +452,7 @@ export default function ClauseCard({
               {clause.risk_level !== "safe" && (
                 <div>
                   {/* Level 1: Group Buttons */}
-                  <div className="flex border-b border-white/10">
+                  <div className="flex border-t-2 border-b-2 border-foreground mt-4">
                     {tabGroups.map((group) => {
                       const visibleTabs = getVisibleSubTabs(group.id);
                       if (visibleTabs.length === 0) return null;
@@ -462,10 +462,10 @@ export default function ClauseCard({
                         <button
                           key={group.id}
                           onClick={() => handleGroupClick(group.id)}
-                          className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 px-3 text-xs sm:text-sm font-medium transition-colors duration-200 border-b-2 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none ${
+                          className={`flex-1 flex items-center justify-center gap-1.5 py-3 px-3 text-xs sm:text-sm font-bold transition-colors duration-200 border-r-2 border-foreground last:border-r-0 focus-visible:outline-none uppercase tracking-wider ${
                             isActive
-                              ? "text-white border-blue-500 bg-white/5"
-                              : "text-white/50 border-transparent hover:text-white/70 hover:bg-white/[0.02]"
+                              ? "text-background bg-foreground"
+                              : "text-foreground hover:bg-muted"
                           }`}
                         >
                           {group.icon}
@@ -486,15 +486,15 @@ export default function ClauseCard({
                         className="overflow-hidden"
                       >
                         {/* Sub-tab buttons */}
-                        <div className="flex gap-1 px-2 py-1.5 bg-white/[0.02] border-b border-white/5 overflow-x-auto scrollbar-hide">
+                        <div className="flex gap-2 px-4 py-3 bg-muted border-b-2 border-foreground overflow-x-auto scrollbar-hide">
                           {getVisibleSubTabs(activeGroup).map((subTab) => (
                             <button
                               key={subTab.id}
                               onClick={() => handleSubTabClick(subTab.id)}
-                              className={`text-xs py-1.5 px-3 rounded transition-colors duration-150 ${
+                              className={`text-xs py-1.5 px-3 rounded-none border-2 transition-colors duration-150 font-bold uppercase ${
                                 activeSubTab === subTab.id
-                                  ? "text-white bg-white/10"
-                                  : "text-white/40 hover:text-white/60 hover:bg-white/5"
+                                  ? "text-background bg-foreground border-foreground"
+                                  : "text-muted-foreground border-transparent hover:text-foreground hover:border-foreground"
                               }`}
                             >
                               {subTab.label}

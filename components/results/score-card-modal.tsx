@@ -105,50 +105,50 @@ const FORMATS: Record<
 
 const CARD_THEMES = {
   safe: {
-    gradient: "linear-gradient(145deg, #030a06 0%, #051209 50%, #07190c 100%)",
-    accent: "#4ade80",
-    accentBg: "rgba(74, 222, 128, 0.15)",
-    textPrimary: "#ffffff",
-    textSecondary: "#e2e8f0",
-    textMuted: "#94a3b8",
-    cardBg: "rgba(255, 255, 255, 0.04)",
-    cardBorder: "rgba(255, 255, 255, 0.08)",
+    gradient: "#ffffff",
+    accent: "#16a34a",
+    accentBg: "#f0fdf4",
+    textPrimary: "#0a0a0a",
+    textSecondary: "#0a0a0a",
+    textMuted: "#404040",
+    cardBg: "#ffffff",
+    cardBorder: "#0a0a0a",
     label: "LOW RISK",
     emoji: "✅",
   },
   warning: {
-    gradient: "linear-gradient(145deg, #0a0803 0%, #120f05 50%, #1a1507 100%)",
-    accent: "#facc15",
-    accentBg: "rgba(250, 204, 21, 0.15)",
-    textPrimary: "#ffffff",
-    textSecondary: "#e2e8f0",
-    textMuted: "#94a3b8",
-    cardBg: "rgba(255, 255, 255, 0.04)",
-    cardBorder: "rgba(255, 255, 255, 0.08)",
+    gradient: "#ffffff",
+    accent: "#ca8a04",
+    accentBg: "#fefce8",
+    textPrimary: "#0a0a0a",
+    textSecondary: "#0a0a0a",
+    textMuted: "#404040",
+    cardBg: "#ffffff",
+    cardBorder: "#0a0a0a",
     label: "MEDIUM RISK",
     emoji: "⚠️",
   },
   dangerous: {
-    gradient: "linear-gradient(145deg, #0a0303 0%, #120505 50%, #1a0808 100%)",
-    accent: "#f87171",
-    accentBg: "rgba(248, 113, 113, 0.15)",
-    textPrimary: "#ffffff",
-    textSecondary: "#e2e8f0",
-    textMuted: "#94a3b8",
-    cardBg: "rgba(255, 255, 255, 0.04)",
-    cardBorder: "rgba(255, 255, 255, 0.08)",
+    gradient: "#ffffff",
+    accent: "#dc2626",
+    accentBg: "#fef2f2",
+    textPrimary: "#0a0a0a",
+    textSecondary: "#0a0a0a",
+    textMuted: "#404040",
+    cardBg: "#ffffff",
+    cardBorder: "#0a0a0a",
     label: "HIGH RISK",
     emoji: "🔴",
   },
   illegal: {
-    gradient: "linear-gradient(145deg, #06030a 0%, #0a0512 50%, #0f071a 100%)",
-    accent: "#c084fc",
-    accentBg: "rgba(192, 132, 252, 0.15)",
-    textPrimary: "#ffffff",
-    textSecondary: "#e2e8f0",
-    textMuted: "#94a3b8",
-    cardBg: "rgba(255, 255, 255, 0.04)",
-    cardBorder: "rgba(255, 255, 255, 0.08)",
+    gradient: "#ffffff",
+    accent: "#9333ea",
+    accentBg: "#faf5ff",
+    textPrimary: "#0a0a0a",
+    textSecondary: "#0a0a0a",
+    textMuted: "#404040",
+    cardBg: "#ffffff",
+    cardBorder: "#0a0a0a",
     label: "CRITICAL RISK",
     emoji: "⛔",
   },
@@ -470,13 +470,13 @@ export default function ScoreCardModal({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="bg-gray-900 border-gray-800 max-w-lg max-h-[90vh] overflow-y-auto">
+        <DialogContent className="bg-background card-impact border-2 border-foreground rounded-none shadow-none max-w-lg max-h-[90vh] overflow-y-auto p-6">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Share2 className="h-5 w-5 text-blue-400" />
+            <DialogTitle className="flex items-center gap-2 font-black uppercase tracking-wider text-xl text-foreground">
+              <Share2 className="h-5 w-5 text-foreground" />
               Share Score Card
             </DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="font-bold text-muted-foreground uppercase tracking-wider text-xs mt-2">
               {isCarousel
                 ? "Generate a swipeable carousel for Instagram & stories"
                 : "Download or share your contract analysis score card"}
@@ -484,17 +484,17 @@ export default function ScoreCardModal({
           </DialogHeader>
 
           {/* ── Format Toggle ── */}
-          <div className="flex gap-1 p-1 bg-white/5 rounded-lg">
+          <div className="flex gap-1 p-1 bg-muted border-2 border-foreground card-impact">
             {(Object.keys(FORMATS) as CardFormat[]).map((f) => {
               const Icon = FORMATS[f].icon;
               return (
                 <button
                   key={f}
                   onClick={() => setFormat(f)}
-                  className={`flex-1 flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-md text-xs font-medium transition-all ${
+                  className={`flex-1 flex items-center justify-center gap-1.5 px-2.5 py-2 text-xs font-black uppercase tracking-wider transition-all ${
                     format === f
-                      ? "bg-blue-600 text-white"
-                      : "text-gray-400 hover:text-gray-200 hover:bg-white/5"
+                      ? "bg-foreground text-background border-2 border-transparent"
+                      : "text-muted-foreground hover:text-foreground hover:bg-background border-2 border-transparent hover:border-foreground"
                   }`}
                 >
                   <Icon className="h-3.5 w-3.5" />
@@ -509,8 +509,8 @@ export default function ScoreCardModal({
 
           {/* ── Carousel slide count badge ── */}
           {isCarousel && (
-            <div className="flex items-center justify-center gap-2 text-xs text-gray-400">
-              <Layers className="h-3.5 w-3.5 text-blue-400" />
+            <div className="flex items-center justify-center gap-2 text-xs font-black text-muted-foreground uppercase tracking-wider">
+              <Layers className="h-3.5 w-3.5 text-foreground" />
               <span>
                 {totalSlides} slides • {topRedFlags.length} red flag
                 {topRedFlags.length !== 1 ? "s" : ""} detected
@@ -524,11 +524,11 @@ export default function ScoreCardModal({
               // ── Carousel Preview ──
               generating || carouselPreviews.length === 0 ? (
                 <div
-                  className="flex flex-col items-center justify-center gap-3 rounded-xl bg-white/5 border border-white/10"
+                  className="flex flex-col items-center justify-center gap-3 bg-muted border-2 border-foreground card-impact"
                   style={{ width: "100%", maxWidth: 280, aspectRatio: "9 / 16" }}
                 >
-                  <Loader2 className="h-8 w-8 text-blue-400 animate-spin" />
-                  <p className="text-xs text-gray-400">
+                  <Loader2 className="h-8 w-8 text-foreground animate-spin" />
+                  <p className="text-xs font-black uppercase tracking-wider text-muted-foreground">
                     {carouselProgress || "Generating slides..."}
                   </p>
                 </div>
@@ -539,7 +539,7 @@ export default function ScoreCardModal({
                     <img
                       src={carouselPreviews[currentSlide]}
                       alt={`Slide ${currentSlide + 1}`}
-                      className="rounded-xl shadow-2xl border border-white/10 w-full"
+                      className="border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] w-full block"
                     />
 
                     {/* Left arrow */}
@@ -569,15 +569,15 @@ export default function ScoreCardModal({
                   </div>
 
                   {/* Dots */}
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-1.5 mt-2">
                     {carouselPreviews.map((_, i) => (
                       <button
                         key={i}
                         onClick={() => setCurrentSlide(i)}
-                        className={`rounded-full transition-all ${
+                        className={`transition-all border-2 border-foreground ${
                           i === currentSlide
-                            ? "w-5 h-2 bg-blue-400"
-                            : "w-2 h-2 bg-white/20 hover:bg-white/40"
+                            ? "w-6 h-3 bg-foreground"
+                            : "w-3 h-3 bg-muted hover:bg-foreground"
                         }`}
                       />
                     ))}
@@ -588,21 +588,21 @@ export default function ScoreCardModal({
               // ── Single Image Preview (existing) ──
               generating || !preview ? (
                 <div
-                  className="flex flex-col items-center justify-center gap-3 rounded-xl bg-white/5 border border-white/10"
+                  className="flex flex-col items-center justify-center gap-3 border-2 border-foreground bg-muted card-impact"
                   style={{
                     width: "100%",
                     maxWidth: 360,
                     aspectRatio: `${fmt.width} / ${fmt.height}`,
                   }}
                 >
-                  <Loader2 className="h-8 w-8 text-blue-400 animate-spin" />
-                  <p className="text-xs text-gray-400">Generating card...</p>
+                  <Loader2 className="h-8 w-8 text-foreground animate-spin" />
+                  <p className="text-xs font-black text-muted-foreground uppercase tracking-wider">Generating card...</p>
                 </div>
               ) : (
                 <img
                   src={preview}
                   alt="Score Card Preview"
-                  className="rounded-xl shadow-2xl border border-white/10"
+                  className="border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] w-full block"
                   style={{
                     width: "100%",
                     maxWidth: format === "story" ? 280 : 360,
@@ -615,124 +615,121 @@ export default function ScoreCardModal({
           {/* ── Share Buttons ── */}
           {isCarousel ? (
             // ── Carousel Buttons ──
-            <div className="grid grid-cols-2 gap-2">
-              <Button
+            <div className="grid grid-cols-2 gap-2 mt-4">
+              <button
                 onClick={handleDownloadZip}
                 disabled={carouselPreviews.length === 0}
-                className="gap-2 bg-blue-600 hover:bg-blue-700 col-span-2"
+                className="flex items-center justify-center gap-2 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors col-span-2 disabled:opacity-50"
               >
                 <Download className="h-4 w-4" />
-                Download All ({totalSlides} Slides) as ZIP
-              </Button>
+                Download All ({totalSlides} Slides)
+              </button>
 
-              <Button
+              <button
                 onClick={handleDownloadSlide}
                 disabled={carouselPreviews.length === 0}
-                variant="outline"
-                className="gap-2"
+                className="flex items-center justify-center gap-2 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors disabled:opacity-50"
               >
                 <Download className="h-4 w-4" />
                 This Slide
-              </Button>
+              </button>
 
-              <Button
+              <button
                 onClick={handleWhatsApp}
-                className="gap-2 bg-green-600 hover:bg-green-700"
+                className="flex items-center justify-center gap-2 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors"
               >
-                <WhatsAppIcon size={16} />
+                <Share2 className="h-4 w-4" />
                 WhatsApp
-              </Button>
+              </button>
 
-              <Button onClick={handleTwitter} variant="outline" className="gap-2">
-                <XIcon size={16} />
+              <button onClick={handleTwitter} className="flex items-center justify-center gap-2 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors">
+                <Share2 className="h-4 w-4" />
                 Twitter / X
-              </Button>
+              </button>
 
-              <Button onClick={handleLinkedIn} variant="outline" className="gap-2">
-                <LinkedInIcon size={16} />
+              <button onClick={handleLinkedIn} className="flex items-center justify-center gap-2 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors">
+                <Share2 className="h-4 w-4" />
                 LinkedIn
-              </Button>
+              </button>
 
-              <Button onClick={handleCopyLink} variant="outline" className="gap-2">
+              <button onClick={handleCopyLink} className="flex items-center justify-center gap-2 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors">
                 {copied ? (
-                  <Check className="h-4 w-4 text-green-400" />
+                  <Check className="h-4 w-4 text-background" />
                 ) : (
                   <Copy className="h-4 w-4" />
                 )}
                 {copied ? "Copied!" : "Copy Link"}
-              </Button>
+              </button>
 
               {canNativeShare() && (
-                <Button
+                <button
                   onClick={handleNativeShare}
                   disabled={carouselPreviews.length === 0}
-                  variant="outline"
-                  className="gap-2"
+                  className="flex items-center justify-center gap-2 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors disabled:opacity-50"
                 >
                   <Share2 className="h-4 w-4" />
                   More...
-                </Button>
+                </button>
               )}
             </div>
           ) : (
             // ── Single Image Buttons (existing) ──
-            <div className="grid grid-cols-2 gap-2">
-              <Button
+            <div className="grid grid-cols-2 gap-2 mt-4">
+              <button
                 onClick={handleDownload}
                 disabled={!preview}
-                className="gap-2 bg-blue-600 hover:bg-blue-700"
+                className="flex items-center justify-center gap-2 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors disabled:opacity-50"
               >
                 <Download className="h-4 w-4" />
                 Download PNG
-              </Button>
+              </button>
 
-              <Button
+              <button
                 onClick={handleWhatsApp}
-                className="gap-2 bg-green-600 hover:bg-green-700"
+                className="flex items-center justify-center gap-2 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors"
               >
-                <WhatsAppIcon size={16} />
+                <Share2 className="h-4 w-4" />
                 WhatsApp
-              </Button>
+              </button>
 
-              <Button onClick={handleTwitter} variant="outline" className="gap-2">
-                <XIcon size={16} />
+              <button onClick={handleTwitter} className="flex items-center justify-center gap-2 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors">
+                <Share2 className="h-4 w-4" />
                 Twitter / X
-              </Button>
+              </button>
 
-              <Button onClick={handleLinkedIn} variant="outline" className="gap-2">
-                <LinkedInIcon size={16} />
+              <button onClick={handleLinkedIn} className="flex items-center justify-center gap-2 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors">
+                <Share2 className="h-4 w-4" />
                 LinkedIn
-              </Button>
+              </button>
 
-              <Button onClick={handleCopyLink} variant="outline" className="gap-2">
+              <button onClick={handleCopyLink} className="flex items-center justify-center gap-2 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors">
                 {copied ? (
-                  <Check className="h-4 w-4 text-green-400" />
+                  <Check className="h-4 w-4 text-background" />
                 ) : (
                   <Copy className="h-4 w-4" />
                 )}
                 {copied ? "Copied!" : "Copy Link"}
-              </Button>
+              </button>
 
               {canNativeShare() && (
-                <Button
+                <button
                   onClick={handleNativeShare}
                   disabled={!preview}
-                  variant="outline"
-                  className="gap-2"
+                  className="flex items-center justify-center gap-2 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors disabled:opacity-50"
                 >
                   <Share2 className="h-4 w-4" />
                   More...
-                </Button>
+                </button>
               )}
             </div>
           )}
 
           {/* Smart Share Text Preview */}
-          <div className="mt-2 p-3 rounded-lg bg-white/[0.03] border border-white/5">
-            <p className="text-[10px] text-gray-500 mb-1.5 font-medium uppercase tracking-wider">
+          <div className="mt-4 p-4 border-2 border-foreground bg-muted card-impact">
+            <p className="text-[10px] text-muted-foreground mb-2 font-black uppercase tracking-wider">
               Share Message Preview
             </p>
-            <p className="text-xs text-gray-400 whitespace-pre-line leading-relaxed">
+            <p className="text-xs font-bold text-foreground whitespace-pre-line leading-relaxed pb-1">
               {generateSmartShareText(
                 doc as any,
                 topRedFlag?.explanation,
@@ -744,14 +741,14 @@ export default function ScoreCardModal({
 
           {/* QR Hint */}
           {!hasQR && (
-            <p className="text-[10px] text-gray-500 text-center">
+            <p className="text-[10px] text-muted-foreground text-center font-bold">
               💡 Generate a QR verification badge below to include it on your
               score card
             </p>
           )}
 
           {/* Disclaimer */}
-          <p className="text-[10px] text-gray-600 text-center">
+          <p className="text-[10px] text-muted-foreground text-center font-black uppercase tracking-wider">
             No personal data is included in the shared image.
           </p>
         </DialogContent>

@@ -19,10 +19,10 @@ export default function PrivacyBadge({
 
   const config = {
     maximum: {
-      icon: <ShieldCheck className="h-4 w-4 text-green-400" />,
+      icon: <ShieldCheck className="h-4 w-4 text-green-600" />,
       label: "MAXIMUM PRIVACY",
-      color: "border-green-500/20",
-      badgeColor: "bg-green-500/15 text-green-400 border-green-500/30",
+      color: "border-green-600",
+      badgeColor: "bg-green-50 text-green-800 border-2 border-green-600 font-bold uppercase",
       items: [
         { icon: <Cpu className="h-3 w-3" />, text: "Processed 100% on-device" },
         { icon: <Lock className="h-3 w-3" />, text: "Original document never uploaded" },
@@ -30,10 +30,10 @@ export default function PrivacyBadge({
       ],
     },
     balanced: {
-      icon: <Shield className="h-4 w-4 text-blue-400" />,
+      icon: <Shield className="h-4 w-4 text-blue-600" />,
       label: "PRIVACY PROTECTED",
-      color: "border-blue-500/20",
-      badgeColor: "bg-blue-500/15 text-blue-400 border-blue-500/30",
+      color: "border-blue-600",
+      badgeColor: "bg-blue-50 text-blue-800 border-2 border-blue-600 font-bold uppercase",
       items: [
         { icon: <Lock className="h-3 w-3" />, text: "Original document never uploaded" },
         { icon: <Fingerprint className="h-3 w-3" />, text: `${piiRedacted} PII items redacted` },
@@ -41,10 +41,10 @@ export default function PrivacyBadge({
       ],
     },
     standard: {
-      icon: <Shield className="h-4 w-4 text-yellow-400" />,
+      icon: <Shield className="h-4 w-4 text-yellow-600" />,
       label: "STANDARD MODE",
-      color: "border-yellow-500/20",
-      badgeColor: "bg-yellow-500/15 text-yellow-400 border-yellow-500/30",
+      color: "border-yellow-600",
+      badgeColor: "bg-yellow-50 text-yellow-800 border-2 border-yellow-600 font-bold uppercase",
       items: [
         { icon: <Globe className="h-3 w-3" />, text: "Full text sent for best accuracy" },
         { icon: <Lock className="h-3 w-3" />, text: "Data encrypted in transit" },
@@ -55,14 +55,14 @@ export default function PrivacyBadge({
   const c = config[level];
 
   return (
-    <Card className={`bg-gray-900/50 border-gray-800 ${c.color} mt-4`}>
+    <Card className={`card-impact ${c.color} mt-4`}>
       <CardContent className="p-4">
         <div className="flex items-center gap-2 mb-2">
           {c.icon}
-          <span className="text-xs font-semibold tracking-wider">
+          <span className="text-xs font-black uppercase tracking-wider text-foreground">
             {c.label}
           </span>
-          <Badge variant="outline" className={`text-[9px] ml-auto ${c.badgeColor}`}>
+          <Badge variant="outline" className={`text-[10px] ml-auto ${c.badgeColor}`}>
             DPDP Act ✓
           </Badge>
         </div>
@@ -70,9 +70,9 @@ export default function PrivacyBadge({
           {c.items.map((item, i) => (
             <div
               key={i}
-              className="flex items-center gap-2 text-xs text-muted-foreground"
+              className="flex items-center gap-2 text-xs font-bold text-muted-foreground uppercase tracking-wider"
             >
-              <span className="text-green-400">{item.icon}</span>
+              <span className="text-foreground border-2 border-foreground bg-muted p-0.5">{item.icon}</span>
               {item.text}
             </div>
           ))}

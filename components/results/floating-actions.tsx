@@ -358,7 +358,7 @@ export default function FloatingActions({
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: -20, opacity: 0 }}
                 transition={{ type: "spring", damping: 25, stiffness: 350 }}
-                className="ml-3 bg-gray-900/95 backdrop-blur-xl border border-gray-700/50 rounded-2xl shadow-2xl p-2 flex flex-col gap-1 min-w-[200px]"
+                className="ml-3 card-impact bg-background p-2 flex flex-col gap-1 min-w-[200px]"
               >
                 {/* Close button */}
                 <button
@@ -366,13 +366,13 @@ export default function FloatingActions({
                     setIsOpen(false);
                     setExpandedGroup(null);
                   }}
-                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all"
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-none text-muted-foreground hover:text-foreground hover:bg-muted transition-all uppercase tracking-wider font-bold"
                 >
                   <X className="h-5 w-5" />
-                  <span className="text-sm font-medium">Close</span>
+                  <span className="text-sm font-black">Close</span>
                 </button>
 
-                <div className="h-px bg-gray-700/50 mx-2 my-1" />
+                <div className="border-t-2 border-foreground mx-2 my-1" />
 
                 {/* Grouped Actions */}
                 {ACTION_GROUPS.map((group, groupIndex) => {
@@ -382,32 +382,32 @@ export default function FloatingActions({
                   return (
                     <div key={group.id}>
                       {/* Group Header */}
-                      <motion.button
-                        initial={{ x: -10, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: groupIndex * 0.05 }}
-                        onClick={() => toggleGroup(group.id)}
-                        className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 transition-all"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div
-                            className="p-1.5 rounded-lg"
-                            style={{ backgroundColor: group.bg }}
-                          >
-                            <GroupIcon
-                              className="h-4 w-4"
-                              style={{ color: group.color }}
-                            />
+                        <button
+                          key={group.id}
+                          onClick={() => toggleGroup(group.id)}
+                          className={`w-full flex items-center justify-between px-3 py-2.5 rounded-none text-muted-foreground hover:text-foreground hover:bg-muted transition-all ${
+                            isExpanded ? "bg-muted" : ""
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <div
+                              className="p-1.5 border-2 border-foreground bg-background"
+                            >
+                              <GroupIcon
+                                className="h-4 w-4 text-foreground"
+                              />
+                            </div>
+                            <div className="flex flex-col items-start gap-0">
+                              <span className="text-sm font-black uppercase tracking-wider text-foreground">{group.label}</span>
+                              <p className="text-[10px] text-muted-foreground font-black uppercase tracking-wide">{group.subtitle}</p>
+                            </div>
                           </div>
-                          <span className="text-sm font-medium">{group.label}</span>
-                          <p className="text-[10px] text-white/25 font-normal">{group.subtitle}</p>
-                        </div>
-                        {isExpanded ? (
-                          <ChevronDown className="h-4 w-4 text-gray-500" />
-                        ) : (
-                          <ChevronRight className="h-4 w-4 text-gray-500" />
-                        )}
-                      </motion.button>
+                          {isExpanded ? (
+                            <ChevronDown className="h-4 w-4 text-foreground" />
+                          ) : (
+                            <ChevronRight className="h-4 w-4 text-foreground" />
+                          )}
+                        </button>
 
                       {/* Expanded Actions */}
                       <AnimatePresence>
@@ -430,34 +430,19 @@ export default function FloatingActions({
                                 );
 
                                 return (
-                                  <motion.button
+                                  <button
                                     key={action.id}
-                                    initial={{ x: -10, opacity: 0 }}
-                                    animate={{ x: 0, opacity: 1 }}
-                                    transition={{
-                                      delay: actionIndex * 0.03,
-                                    }}
                                     onClick={() => handleAction(action.id)}
                                     disabled={isDisabled}
-                                    className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:text-white transition-all disabled:opacity-50"
-                                    style={{ backgroundColor: "transparent" }}
-                                    onMouseEnter={(e) => {
-                                      e.currentTarget.style.backgroundColor =
-                                        action.bg;
-                                    }}
-                                    onMouseLeave={(e) => {
-                                      e.currentTarget.style.backgroundColor =
-                                        "transparent";
-                                    }}
+                                    className="w-full flex items-center gap-3 px-3 py-2 rounded-none hover:bg-muted hover:text-foreground transition-all disabled:opacity-50 text-muted-foreground font-bold tracking-wider uppercase border-l-2 border-transparent hover:border-foreground"
                                   >
                                     <ActionIcon
                                       className="h-4 w-4 flex-shrink-0"
-                                      style={{ color: action.color }}
                                     />
-                                    <span className="text-sm whitespace-nowrap">
+                                    <span className="text-xs whitespace-nowrap">
                                       {label}
                                     </span>
-                                  </motion.button>
+                                  </button>
                                 );
                               })}
                             </div>
@@ -472,37 +457,34 @@ export default function FloatingActions({
                 <div className="h-px bg-gray-700/50 mx-2 my-1" />
 
                 {/* Roast Mode Toggle — Always visible */}
-                <motion.button
-                  initial={{ x: -10, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: 0.15 }}
+                <button
                   onClick={() => handleAction("roast")}
                   disabled={roastLoading}
-                  className={`flex items-center justify-between px-3 py-2.5 rounded-xl transition-all ${
+                  className={`flex items-center justify-between px-3 py-3 rounded-none transition-all border-2 ${
                     roastLoading ? "animate-pulse" : ""
                   } ${
                     isRoastMode
-                      ? "bg-orange-500/20 border border-orange-500/30"
-                      : "hover:bg-white/5"
+                      ? "bg-orange-100 border-orange-600 dark:bg-orange-950"
+                      : "bg-muted border-foreground"
                   }`}
                 >
                   <div className="flex items-center gap-3">
                     <div
-                      className={`p-1.5 rounded-lg ${
+                      className={`p-1.5 border-2 ${
                         isRoastMode
-                          ? "bg-orange-500/30"
-                          : "bg-orange-500/15"
+                          ? "bg-orange-200 border-orange-600 dark:bg-orange-900"
+                          : "bg-background border-foreground"
                       }`}
                     >
                       <Flame
-                        className={`h-4 w-4 text-orange-400 ${
-                          isRoastMode ? "animate-bounce" : ""
+                        className={`h-4 w-4 ${
+                          isRoastMode ? "text-orange-600 animate-bounce" : "text-foreground"
                         }`}
                       />
                     </div>
                     <span
-                      className={`text-sm font-medium ${
-                        isRoastMode ? "text-orange-300" : "text-gray-300"
+                      className={`text-sm font-black uppercase tracking-wider ${
+                        isRoastMode ? "text-orange-800 dark:text-orange-200" : "text-foreground"
                       }`}
                     >
                       {roastLoading
@@ -515,17 +497,17 @@ export default function FloatingActions({
 
                   {/* Toggle Indicator */}
                   <div
-                    className={`w-10 h-5 rounded-full relative transition-colors ${
-                      isRoastMode ? "bg-orange-500" : "bg-gray-600"
+                    className={`w-10 h-5 border-2 transition-colors relative ${
+                      isRoastMode ? "bg-orange-500 border-orange-800" : "bg-muted border-foreground"
                     }`}
                   >
                     <div
-                      className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-all ${
-                        isRoastMode ? "left-5" : "left-0.5"
+                      className={`absolute top-0 w-4 h-[16px] bg-foreground transition-all ${
+                        isRoastMode ? "left-5" : "left-0"
                       }`}
                     />
                   </div>
-                </motion.button>
+                </button>
 
                 {/* Roast Mode subtitle */}
                 <p className="text-[10px] text-white/20 px-3 pb-1">Fun mode — roasts your contract</p>

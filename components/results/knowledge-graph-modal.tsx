@@ -137,33 +137,33 @@ export default function KnowledgeGraphModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-4xl bg-[#0A0A0F] border-gray-800 p-0 gap-0 overflow-hidden max-h-[90vh] flex flex-col">
+      <DialogContent className="max-w-4xl bg-background card-impact border-2 border-foreground p-0 gap-0 overflow-hidden max-h-[90vh] flex flex-col rounded-none shadow-none">
         <VisuallyHidden>
           <DialogTitle>Legal Knowledge Map</DialogTitle>
         </VisuallyHidden>
 
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-gray-800/50">
+        <div className="flex items-center justify-between p-5 border-b-2 border-foreground bg-muted">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-500/30 flex items-center justify-center">
-              <Network className="h-4 w-4 text-cyan-400" />
+            <div className="w-8 h-8 flex items-center justify-center p-2 bg-background border-2 border-foreground">
+              <Network className="h-4 w-4 text-foreground" />
             </div>
             <div>
-              <h2 className="font-bold text-lg">Legal Web</h2>
-              <p className="text-xs text-muted-foreground">
+              <h2 className="font-black text-xl uppercase tracking-wider text-foreground">Legal Web</h2>
+              <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground">
                 {formattedClauseType} • {jurisdiction}
               </p>
             </div>
           </div>
 
           {/* View Toggle */}
-          <div className="flex rounded-lg border border-white/10 overflow-hidden">
+          <div className="flex border-2 border-foreground bg-background">
             <button
               onClick={() => setViewMode("details")}
-              className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium transition-colors ${
+              className={`flex items-center gap-1.5 px-3 py-2 text-xs font-black uppercase tracking-wider transition-colors ${
                 viewMode === "details"
-                  ? "bg-white/10 text-white"
-                  : "text-gray-500 hover:text-gray-300"
+                  ? "bg-foreground text-background"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               <FileText className="h-3.5 w-3.5" />
@@ -171,10 +171,10 @@ export default function KnowledgeGraphModal({
             </button>
             <button
               onClick={() => setViewMode("graph")}
-              className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium transition-colors ${
+              className={`flex items-center gap-1.5 px-3 py-2 text-xs font-black uppercase tracking-wider transition-colors ${
                 viewMode === "graph"
-                  ? "bg-white/10 text-white"
-                  : "text-gray-500 hover:text-gray-300"
+                  ? "bg-foreground text-background"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               <Network className="h-3.5 w-3.5" />
@@ -224,28 +224,28 @@ export default function KnowledgeGraphModal({
               {context && (
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {context.win_rate !== null && (
-                    <div className="p-3 rounded-xl bg-green-500/5 border border-green-500/15 text-center">
-                      <Trophy className="h-4 w-4 text-green-400 mx-auto mb-1" />
-                      <p className="text-lg font-bold text-green-400">{context.win_rate}%</p>
-                      <p className="text-[10px] text-muted-foreground">Win Rate</p>
+                    <div className="p-3 card-impact bg-green-50 border-2 border-green-600 text-center">
+                      <Trophy className="h-4 w-4 text-green-600 mx-auto mb-1" />
+                      <p className="text-lg font-black text-green-800">{context.win_rate}%</p>
+                      <p className="text-[10px] font-black tracking-wider uppercase text-green-900/60">Win Rate</p>
                     </div>
                   )}
-                  <div className="p-3 rounded-xl bg-blue-500/5 border border-blue-500/15 text-center">
-                    <Landmark className="h-4 w-4 text-blue-400 mx-auto mb-1" />
-                    <p className="text-lg font-bold text-blue-400">{context.total_related_cases}</p>
-                    <p className="text-[10px] text-muted-foreground">Court Cases</p>
+                  <div className="p-3 card-impact bg-blue-50 border-2 border-blue-600 text-center">
+                    <Landmark className="h-4 w-4 text-blue-600 mx-auto mb-1" />
+                    <p className="text-lg font-black text-blue-800">{context.total_related_cases}</p>
+                    <p className="text-[10px] font-black tracking-wider uppercase text-blue-900/60">Court Cases</p>
                   </div>
-                  <div className="p-3 rounded-xl bg-purple-500/5 border border-purple-500/15 text-center">
-                    <Scale className="h-4 w-4 text-purple-400 mx-auto mb-1" />
-                    <p className="text-lg font-bold text-purple-400">
+                  <div className="p-3 card-impact bg-purple-50 border-2 border-purple-600 text-center">
+                    <Scale className="h-4 w-4 text-purple-600 mx-auto mb-1" />
+                    <p className="text-lg font-black text-purple-800">
                       {(context.supporting_laws?.length || 0) + (context.primary_law ? 1 : 0)}
                     </p>
-                    <p className="text-[10px] text-muted-foreground">Laws</p>
+                    <p className="text-[10px] font-black tracking-wider uppercase text-purple-900/60">Laws</p>
                   </div>
-                  <div className="p-3 rounded-xl bg-yellow-500/5 border border-yellow-500/15 text-center">
-                    <Building2 className="h-4 w-4 text-yellow-400 mx-auto mb-1" />
-                    <p className="text-lg font-bold text-yellow-400">{context.authorities.length}</p>
-                    <p className="text-[10px] text-muted-foreground">Authorities</p>
+                  <div className="p-3 card-impact bg-yellow-50 border-2 border-yellow-600 text-center">
+                    <Building2 className="h-4 w-4 text-yellow-600 mx-auto mb-1" />
+                    <p className="text-lg font-black text-yellow-800">{context.authorities.length}</p>
+                    <p className="text-[10px] font-black tracking-wider uppercase text-yellow-900/60">Authorities</p>
                   </div>
                 </div>
               )}
@@ -254,23 +254,23 @@ export default function KnowledgeGraphModal({
               {context?.primary_law && (
                 <CollapsibleSection
                   title="Primary Applicable Law"
-                  icon={<Scale className="h-4 w-4 text-blue-400" />}
+                  icon={<Scale className="h-4 w-4 text-blue-600" />}
                   isOpen={expanded.laws}
                   onToggle={() => toggleSection("laws")}
                   count={(context.supporting_laws?.length || 0) + 1}
                   color="blue"
                 >
                   <div className="space-y-3">
-                    <div className="p-3 rounded-lg bg-blue-500/5 border border-blue-500/15">
+                    <div className="p-3 border-2 border-blue-600 bg-blue-50 card-impact">
                       <div className="flex items-center gap-2 mb-1">
-                        <ShieldCheck className="h-3.5 w-3.5 text-blue-400" />
-                        <span className="text-sm font-medium text-blue-300">
+                        <ShieldCheck className="h-3.5 w-3.5 text-blue-600" />
+                        <span className="text-sm font-black uppercase tracking-wider text-blue-900">
                           {context.primary_law.name}
                         </span>
                       </div>
-                      <p className="text-xs text-blue-200/70">{context.primary_law.section}</p>
+                      <p className="text-xs font-bold text-blue-800/80">{context.primary_law.section}</p>
                       {context.primary_law.description && (
-                        <p className="text-xs text-muted-foreground mt-1.5">
+                        <p className="text-xs font-bold text-blue-800 leading-relaxed mt-1.5">
                           {context.primary_law.description}
                         </p>
                       )}
@@ -278,18 +278,18 @@ export default function KnowledgeGraphModal({
 
                     {context.supporting_laws.length > 0 && (
                       <div>
-                        <p className="text-xs text-muted-foreground mb-2">Supporting Laws</p>
+                        <p className="text-xs font-black uppercase tracking-wider text-muted-foreground mb-2">Supporting Laws</p>
                         {context.supporting_laws.map((law, i) => (
                           <div
                             key={i}
-                            className="flex items-start gap-2 mb-2 p-2 rounded-lg bg-white/[0.02]"
+                            className="flex items-start gap-2 mb-2 p-2 border-2 border-foreground bg-muted card-impact"
                           >
-                            <BookOpen className="h-3.5 w-3.5 text-gray-500 mt-0.5 flex-shrink-0" />
+                            <BookOpen className="h-3.5 w-3.5 text-foreground mt-0.5 flex-shrink-0" />
                             <div>
-                              <p className="text-xs text-gray-300">
+                              <p className="text-xs font-black text-foreground">
                                 {law.name} — {law.section}
                               </p>
-                              <p className="text-[10px] text-muted-foreground">{law.relationship}</p>
+                              <p className="text-[10px] font-bold text-muted-foreground">{law.relationship}</p>
                             </div>
                           </div>
                         ))}
@@ -303,7 +303,7 @@ export default function KnowledgeGraphModal({
               {context && context.court_cases.length > 0 && (
                 <CollapsibleSection
                   title="Court Cases & Precedents"
-                  icon={<Gavel className="h-4 w-4 text-green-400" />}
+                  icon={<Gavel className="h-4 w-4 text-green-600" />}
                   isOpen={expanded.cases}
                   onToggle={() => toggleSection("cases")}
                   count={context.court_cases.length}
@@ -315,28 +315,28 @@ export default function KnowledgeGraphModal({
                       return (
                         <div
                           key={i}
-                          className="p-3 rounded-lg bg-green-500/5 border border-green-500/15"
+                          className="p-3 border-2 border-green-600 bg-green-50 card-impact"
                         >
                           <div className="flex items-start justify-between mb-1">
                             <div className="flex items-center gap-2 flex-wrap">
-                              <span className="text-sm font-medium text-green-300">
+                              <span className="text-sm font-black uppercase tracking-wider text-green-900">
                                 {c.case_name}
                               </span>
                               {c.is_landmark && (
-                                <Badge className="bg-amber-500/15 text-amber-400 border-amber-500/30 text-[9px]">
+                                <Badge className="bg-amber-100 text-amber-800 border-2 border-amber-600 text-[9px] font-black tracking-wider uppercase rounded-none">
                                   ⭐ Landmark
                                 </Badge>
                               )}
                             </div>
-                            <span className="text-xs text-muted-foreground flex-shrink-0">
+                            <span className="text-xs font-bold text-green-800 flex-shrink-0">
                               {c.year}
                             </span>
                           </div>
-                          <p className="text-xs text-muted-foreground mb-1.5">{c.court}</p>
-                          <p className="text-xs text-gray-300 leading-relaxed">{c.key_ruling}</p>
+                          <p className="text-xs font-bold text-green-800/80 mb-1.5">{c.court}</p>
+                          <p className="text-xs font-bold text-green-900 leading-relaxed">{c.key_ruling}</p>
                           <div className="mt-2">
                             <Badge
-                              className={`text-[10px] ${outcome.color} bg-white/5 border-white/10`}
+                              className={`text-[10px] font-black uppercase tracking-wider ${outcome.color.replace('400','800')} border-2 ${outcome.color.replace('text-','border-').replace('400','600')} bg-transparent rounded-none`}
                             >
                               {outcome.label}
                             </Badge>
@@ -352,7 +352,7 @@ export default function KnowledgeGraphModal({
               {context && context.authorities.length > 0 && (
                 <CollapsibleSection
                   title="Where to Complain"
-                  icon={<Building2 className="h-4 w-4 text-yellow-400" />}
+                  icon={<Building2 className="h-4 w-4 text-yellow-600" />}
                   isOpen={expanded.authorities}
                   onToggle={() => toggleSection("authorities")}
                   count={context.authorities.length}
@@ -362,25 +362,25 @@ export default function KnowledgeGraphModal({
                     {context.authorities.map((auth, i) => (
                       <div
                         key={i}
-                        className="p-3 rounded-lg bg-yellow-500/5 border border-yellow-500/15"
+                        className="p-3 border-2 border-yellow-600 bg-yellow-50 card-impact"
                       >
-                        <p className="text-sm font-medium text-yellow-300 mb-1">{auth.name}</p>
+                        <p className="text-sm font-black uppercase tracking-wider text-yellow-900 mb-1">{auth.name}</p>
                         <div className="grid grid-cols-2 gap-2 text-xs">
                           {auth.filing_fee && (
                             <div>
-                              <span className="text-muted-foreground">Filing Fee:</span>{" "}
-                              <span className="text-gray-300">{auth.filing_fee}</span>
+                              <span className="font-bold text-yellow-800/80">Filing Fee:</span>{" "}
+                              <span className="font-bold text-yellow-900">{auth.filing_fee}</span>
                             </div>
                           )}
                           {auth.timeline && (
                             <div>
-                              <span className="text-muted-foreground">Timeline:</span>{" "}
-                              <span className="text-gray-300">{auth.timeline}</span>
+                              <span className="font-bold text-yellow-800/80">Timeline:</span>{" "}
+                              <span className="font-bold text-yellow-900">{auth.timeline}</span>
                             </div>
                           )}
                         </div>
                         {auth.how_to_file && (
-                          <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
+                          <p className="text-xs font-bold text-yellow-900 mt-2 leading-relaxed">
                             {auth.how_to_file}
                           </p>
                         )}
@@ -394,7 +394,7 @@ export default function KnowledgeGraphModal({
               {context && context.penalties.length > 0 && (
                 <CollapsibleSection
                   title="Penalties & Consequences"
-                  icon={<AlertTriangle className="h-4 w-4 text-orange-400" />}
+                  icon={<AlertTriangle className="h-4 w-4 text-orange-600" />}
                   isOpen={expanded.penalties}
                   onToggle={() => toggleSection("penalties")}
                   count={context.penalties.length}
@@ -404,11 +404,11 @@ export default function KnowledgeGraphModal({
                     {context.penalties.map((p, i) => (
                       <div
                         key={i}
-                        className="p-3 rounded-lg bg-orange-500/5 border border-orange-500/15"
+                        className="p-3 border-2 border-orange-600 bg-orange-50 card-impact"
                       >
-                        <p className="text-sm text-orange-300">{p.description}</p>
+                        <p className="text-sm font-bold text-orange-900 leading-relaxed">{p.description}</p>
                         {p.law_reference && (
-                          <p className="text-[10px] text-muted-foreground mt-1">
+                          <p className="text-[10px] font-black uppercase tracking-wider text-orange-800/70 mt-1">
                             Ref: {p.law_reference}
                           </p>
                         )}
@@ -422,7 +422,7 @@ export default function KnowledgeGraphModal({
               {context && context.interpretations.length > 0 && (
                 <CollapsibleSection
                   title="Legal Interpretations"
-                  icon={<BookOpen className="h-4 w-4 text-purple-400" />}
+                  icon={<BookOpen className="h-4 w-4 text-purple-600" />}
                   isOpen={expanded.interpretations}
                   onToggle={() => toggleSection("interpretations")}
                   count={context.interpretations.length}
@@ -432,10 +432,10 @@ export default function KnowledgeGraphModal({
                     {context.interpretations.map((interp, i) => (
                       <div
                         key={i}
-                        className="p-3 rounded-lg bg-purple-500/5 border border-purple-500/15"
+                        className="p-3 border-2 border-purple-600 bg-purple-50 card-impact"
                       >
-                        <p className="text-sm text-purple-300">{interp.text}</p>
-                        <p className="text-[10px] text-muted-foreground mt-1">
+                        <p className="text-sm font-bold text-purple-900 leading-relaxed">{interp.text}</p>
+                        <p className="text-[10px] font-black uppercase tracking-wider text-purple-800/70 mt-1">
                           Source: {interp.source}
                         </p>
                       </div>
@@ -448,7 +448,7 @@ export default function KnowledgeGraphModal({
               {context && context.remedies.length > 0 && (
                 <CollapsibleSection
                   title="Available Remedies"
-                  icon={<ShieldCheck className="h-4 w-4 text-emerald-400" />}
+                  icon={<ShieldCheck className="h-4 w-4 text-emerald-600" />}
                   isOpen={expanded.remedies}
                   onToggle={() => toggleSection("remedies")}
                   count={context.remedies.length}
@@ -458,11 +458,11 @@ export default function KnowledgeGraphModal({
                     {context.remedies.map((r, i) => (
                       <div
                         key={i}
-                        className="p-3 rounded-lg bg-emerald-500/5 border border-emerald-500/15"
+                        className="p-3 border-2 border-emerald-600 bg-emerald-50 card-impact"
                       >
-                        <p className="text-sm text-emerald-300">{r.description}</p>
+                        <p className="text-sm font-bold text-emerald-900 leading-relaxed">{r.description}</p>
                         {r.authority && (
-                          <p className="text-[10px] text-muted-foreground mt-1">
+                          <p className="text-[10px] font-black uppercase tracking-wider text-emerald-800/70 mt-1">
                             Via: {r.authority}
                           </p>
                         )}
@@ -476,8 +476,8 @@ export default function KnowledgeGraphModal({
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t border-gray-800/50">
-          <p className="text-[10px] text-gray-600 text-center">
+        <div className="p-4 border-t-2 border-foreground bg-muted">
+          <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground text-center">
             🕸️ ClauseWall Legal Knowledge Graph • {context?.total_related_cases || 0} cases •{" "}
             {context?.win_rate !== null ? `${context?.win_rate}% win rate` : "No case data"} •
             Data verified from Indian legal databases
@@ -510,33 +510,33 @@ function CollapsibleSection({
   children: React.ReactNode;
 }) {
   const colorMap: Record<string, string> = {
-    blue: "border-blue-500/20 hover:border-blue-500/30",
-    green: "border-green-500/20 hover:border-green-500/30",
-    yellow: "border-yellow-500/20 hover:border-yellow-500/30",
-    orange: "border-orange-500/20 hover:border-orange-500/30",
-    purple: "border-purple-500/20 hover:border-purple-500/30",
-    emerald: "border-emerald-500/20 hover:border-emerald-500/30",
+    blue: "border-blue-600 bg-blue-50",
+    green: "border-green-600 bg-green-50",
+    yellow: "border-yellow-600 bg-yellow-50",
+    orange: "border-orange-600 bg-orange-50",
+    purple: "border-purple-600 bg-purple-50",
+    emerald: "border-emerald-600 bg-emerald-50",
   };
 
   return (
     <div
-      className={`rounded-xl border ${colorMap[color] || colorMap.blue} overflow-hidden transition-colors`}
+      className={`card-impact border-2 ${colorMap[color] || colorMap.blue} overflow-hidden transition-colors`}
     >
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between p-3 hover:bg-white/[0.02] transition-colors"
+        className="w-full flex items-center justify-between p-3 hover:brightness-95 transition-colors"
       >
         <div className="flex items-center gap-2">
           {icon}
-          <span className="text-sm font-medium text-gray-200">{title}</span>
-          <Badge variant="outline" className="text-[10px] border-white/10 text-gray-500">
+          <span className="text-sm font-black uppercase tracking-wider text-foreground">{title}</span>
+          <Badge variant="outline" className="text-[10px] uppercase font-black tracking-wider border-2 border-foreground bg-background text-foreground rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
             {count}
           </Badge>
         </div>
         {isOpen ? (
-          <ChevronDown className="h-4 w-4 text-gray-500" />
+          <ChevronDown className="h-4 w-4 text-foreground" />
         ) : (
-          <ChevronRight className="h-4 w-4 text-gray-500" />
+          <ChevronRight className="h-4 w-4 text-foreground" />
         )}
       </button>
       <AnimatePresence>

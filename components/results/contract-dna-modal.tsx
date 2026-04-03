@@ -143,38 +143,38 @@ export default function ContractDNAModal({ isOpen, onClose, contractDoc, clauses
 
   return (
   <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-    <DialogContent className="max-w-3xl bg-[#0A0A0F] border-gray-800 p-0 gap-0 overflow-hidden">
+    <DialogContent className="max-w-3xl bg-background card-impact border-2 border-foreground p-0 gap-0 overflow-hidden shadow-none rounded-none">
       {/* Accessible title (visually hidden) */}
       <VisuallyHidden>
         <DialogTitle>Contract Personality Visualization</DialogTitle>
       </VisuallyHidden>
 
       {/* Header */}
-    <div className="flex items-center gap-3 p-5 border-b border-gray-800/50">
+    <div className="flex items-center gap-3 p-5 border-b-2 border-foreground bg-muted">
         <div
-            className="w-8 h-8 rounded-lg"
+            className="w-8 h-8 rounded-none border-2 border-foreground"
             style={{
                 background: `linear-gradient(135deg, ${personality.gradient[0]}, ${personality.gradient[1]})`,
             }}
         />
         <div>
-            <h2 className="font-bold text-lg">Contract Personality</h2>
-            <p className="text-xs text-muted-foreground">
+            <h2 className="font-black text-xl text-foreground uppercase tracking-wider">Contract Personality</h2>
+            <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mt-1">
                 {personality.emoji} {personality.name} — {personality.description}
             </p>
         </div>
     </div>
 
         {/* Style Selector */}
-        <div className="flex items-center gap-2 px-5 pt-4 pb-2 overflow-x-auto">
+        <div className="flex items-center gap-2 px-5 pt-4 pb-2 bg-background overflow-x-auto border-b-2 border-foreground">
           {DNA_STYLES.map((s) => (
             <button
               key={s.id}
               onClick={() => setStyle(s.id)}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium border transition-all whitespace-nowrap ${
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-none text-sm font-black uppercase tracking-wider border-2 transition-all whitespace-nowrap ${
                 style === s.id
-                  ? "bg-white/10 border-white/20 text-white"
-                  : "bg-white/[0.02] border-white/5 text-gray-500 hover:text-gray-300 hover:border-white/10"
+                  ? "bg-foreground border-foreground text-background"
+                  : "bg-muted border-transparent text-muted-foreground hover:text-foreground hover:border-foreground"
               }`}
             >
               <span>{s.icon}</span>
@@ -212,24 +212,25 @@ export default function ContractDNAModal({ isOpen, onClose, contractDoc, clauses
                   initial={{ opacity: 0, y: 5 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 5 }}
-                  className="absolute bottom-3 left-3 right-3 bg-gray-900/95 backdrop-blur-sm rounded-lg p-3 border border-gray-700/50 pointer-events-none"
+                  className="absolute bottom-3 left-3 right-3 card-impact bg-background p-3 border-2 border-foreground pointer-events-none"
                 >
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-semibold text-sm">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="font-black uppercase tracking-wider text-sm text-foreground">
                       Clause {hoveredNode.clauseNumber}
                     </span>
                     <span
-                      className="px-2 py-0.5 rounded text-[10px] font-bold uppercase"
+                      className="px-2 py-0.5 rounded-none text-[10px] font-black uppercase tracking-wider border-2"
                       style={{
-                        backgroundColor: `${hoveredNode.riskColor}20`,
-                        color: hoveredNode.riskColor,
+                        backgroundColor: hoveredNode.riskColor,
+                        color: "#fff",
+                        borderColor: hoveredNode.riskColor,
                       }}
                     >
                       {hoveredNode.riskLevel}
                     </span>
-                    <span className="text-xs text-gray-500">{hoveredNode.clauseType}</span>
+                    <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{hoveredNode.clauseType}</span>
                   </div>
-                  <p className="text-gray-400 text-xs leading-relaxed">
+                  <p className="text-foreground font-bold text-xs uppercase tracking-wider leading-relaxed">
                     {hoveredNode.explanation.slice(0, 140)}
                     {hoveredNode.explanation.length > 140 ? "..." : ""}
                   </p>
@@ -240,54 +241,48 @@ export default function ContractDNAModal({ isOpen, onClose, contractDoc, clauses
         </div>
 
         {/* Footer */}
-        <div className="px-5 pb-5">
+        <div className="px-5 pb-5 pt-3 bg-background border-t-2 border-foreground">
           {/* Contract Info */}
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
               <button
                 onClick={handleCopyId}
-                className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-xs font-mono text-gray-400 hover:text-white transition-colors"
+                className="flex items-center gap-1.5 px-2.5 py-1 bg-muted border-2 border-foreground text-xs font-black uppercase tracking-wider text-foreground hover:bg-foreground hover:text-background transition-colors"
               >
                 {contractId}
-                {copied ? <Check className="h-3 w-3 text-green-400" /> : <Copy className="h-3 w-3" />}
+                {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
               </button>
               <div className="flex items-center gap-1.5">
                 <div
-                  className="w-4 h-4 rounded-full border border-white/20"
+                  className="w-4 h-4 border-2 border-foreground"
                   style={{ backgroundColor: uniqueColor }}
                 />
-                <span className="text-xs font-mono text-gray-500">{uniqueColor}</span>
+                <span className="text-xs font-bold font-mono text-muted-foreground uppercase">{uniqueColor}</span>
               </div>
             </div>
-            <span className="text-xs text-gray-600">
+            <span className="text-xs font-black uppercase tracking-wider text-muted-foreground">
               {nodes.length} clauses • Score {contractDoc.overall_risk_score}/100
             </span>
           </div>
 
           {/* Action Buttons */}
           <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              className="gap-2"
+            <button
+              className="flex items-center gap-2 px-4 py-2 border-2 border-foreground font-black uppercase tracking-wider text-xs hover:bg-muted transition-colors text-foreground"
               onClick={handleDownloadPNG}
             >
               <Download className="h-4 w-4" />
               PNG
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="gap-2"
+            </button>
+            <button
+              className="flex items-center gap-2 px-4 py-2 border-2 border-foreground font-black uppercase tracking-wider text-xs hover:bg-muted transition-colors text-foreground"
               onClick={handleDownloadSVG}
             >
               <Download className="h-4 w-4" />
               SVG
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="gap-2"
+            </button>
+            <button
+              className="flex items-center gap-2 px-4 py-2 border-2 border-foreground font-black uppercase tracking-wider text-xs bg-foreground text-background hover:bg-background hover:text-foreground transition-colors"
               onClick={() => {
                 const url = `${window.location.origin}/results/${contractDoc.id}`;
                 navigator.clipboard.writeText(url);
@@ -296,7 +291,7 @@ export default function ContractDNAModal({ isOpen, onClose, contractDoc, clauses
             >
               <Share2 className="h-4 w-4" />
               Share
-            </Button>
+            </button>
           </div>
         </div>
       </DialogContent>
