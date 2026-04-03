@@ -16,16 +16,16 @@ export default function LoadingState({
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4 py-12">
+    <div className="flex flex-col items-center justify-center gap-4 py-20">
       <div className="relative">
         <Loader2
-          className={`${sizeClasses[size]} text-blue-500 animate-spin`}
+          className={`${sizeClasses[size]} text-primary animate-spin`}
         />
         <div
-          className={`absolute inset-0 ${sizeClasses[size]} bg-blue-500/20 blur-xl rounded-full animate-pulse`}
+          className={`absolute inset-0 ${sizeClasses[size]} bg-primary/20 blur-xl rounded-full animate-pulse`}
         />
       </div>
-      <p className="text-muted-foreground text-sm">{message}</p>
+      <p className="text-lg font-bold text-foreground">{message}</p>
     </div>
   );
 }
