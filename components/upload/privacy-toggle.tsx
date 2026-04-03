@@ -55,10 +55,10 @@ export default function PrivacyToggle() {
   const isPrivacyMode = level === 'maximum';
 
   return (
-    <Card className={`card-impact transition-all duration-300 ${isPrivacyMode ? 'bg-green-50' : 'bg-background'}`}>
+    <Card className={`card-impact border-2 border-foreground transition-all duration-300 ${isPrivacyMode ? 'bg-green-50 shadow-[8px_8px_0px_0px_rgba(22,163,74,1)]' : 'bg-card shadow-[4px_4px_0px_0px_rgba(10,10,10,1)]'}`}>
       <CardContent className="p-4">
         <div className="flex items-center justify-between mb-4">
-          <h3 className={`font-bold ${isPrivacyMode ? 'text-green-700' : 'text-foreground'}`}>
+          <h3 className={`font-black uppercase tracking-wider ${isPrivacyMode ? 'text-green-800' : 'text-foreground'}`}>
             Quantum Privacy Mode
           </h3>
           {isPrivacyMode && (
@@ -67,11 +67,11 @@ export default function PrivacyToggle() {
             </Badge>
           )}
         </div>
-        <p className="text-sm font-medium text-muted-foreground mb-4">
+        <p className="text-sm font-bold text-muted-foreground mb-4">
           Pre-process sensitive data locally in your browser before sending array references to the server for analysis.
         </p>
 
-        <div className="flex gap-1 p-1 rounded-lg bg-white/5 border border-white/5">
+        <div className="flex gap-1 p-1 bg-muted border-2 border-foreground shadow-[inset_0px_0px_0px_2px_rgba(10,10,10,0.05)]">
           {LEVELS.map((l) => {
             const c = PRIVACY_CONFIG[l] as any;
             const isActive = level === l;
@@ -80,10 +80,10 @@ export default function PrivacyToggle() {
               <button
                 key={l}
                 onClick={() => setLevel(l)}
-                className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-md text-xs font-medium transition-all ${
+                className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 text-[10px] sm:text-xs font-black uppercase tracking-wider transition-all ${
                   isActive
-                    ? `${c.bgColor} ${c.color} ${c.borderColor} border`
-                    : "text-muted-foreground hover:text-white hover:bg-white/5"
+                    ? "bg-foreground text-background border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(10,10,10,1)] -translate-y-[1px]"
+                    : "text-muted-foreground hover:text-foreground hover:bg-background border-2 border-transparent hover:border-foreground"
                 }`}
               >
                 {c.icon}

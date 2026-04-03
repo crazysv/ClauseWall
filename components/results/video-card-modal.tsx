@@ -77,13 +77,13 @@ export default function VideoCardModal({ isOpen, onClose, document: doc, clauses
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-gray-900 border-gray-800 max-w-lg">
+      <DialogContent className="bg-background card-impact border-2 border-foreground rounded-none shadow-none max-w-lg p-6">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Video className="h-5 w-5 text-blue-400" />
+          <DialogTitle className="flex items-center gap-2 font-black uppercase tracking-wider text-xl text-foreground">
+            <Video className="h-5 w-5 text-foreground" />
             Animated Score Card
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="font-bold text-muted-foreground uppercase tracking-wider text-xs mt-2">
             Generate an animated video of your contract score reveal
           </DialogDescription>
         </DialogHeader>
@@ -97,27 +97,27 @@ export default function VideoCardModal({ isOpen, onClose, document: doc, clauses
               autoPlay
               loop
               muted
-              className="rounded-xl border border-white/10 shadow-2xl"
+              className="border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
               style={{ width: "100%", maxWidth: 360 }}
             />
           ) : generating ? (
             <div className="w-full max-w-xs space-y-4 text-center py-8">
-              <Loader2 className="h-10 w-10 text-blue-400 animate-spin mx-auto" />
-              <p className="text-sm text-gray-400">Rendering video...</p>
-              <Progress value={progress} className="h-2" />
-              <p className="text-xs text-gray-500">{progress}%</p>
+              <Loader2 className="h-10 w-10 text-foreground animate-spin mx-auto" />
+              <p className="text-sm font-black uppercase tracking-wider text-muted-foreground">Rendering video...</p>
+              <Progress value={progress} className="h-2 border-2 border-foreground bg-muted [&>div]:bg-foreground" />
+              <p className="text-xs font-bold text-muted-foreground">{progress}%</p>
             </div>
           ) : (
             <div
-              className="flex flex-col items-center justify-center gap-4 rounded-xl bg-white/5 border border-white/10 py-12 px-8 cursor-pointer hover:bg-white/[0.07] transition-colors"
+              className="flex flex-col items-center justify-center gap-4 card-impact bg-muted border-2 border-foreground py-12 px-8 cursor-pointer hover:bg-background transition-colors"
               onClick={handleGenerate}
               style={{ width: "100%", maxWidth: 360 }}
             >
-              <div className="h-16 w-16 rounded-full bg-blue-500/10 flex items-center justify-center">
-                <Play className="h-8 w-8 text-blue-400 ml-1" />
+              <div className="h-16 w-16 border-2 border-foreground bg-background card-impact flex items-center justify-center">
+                <Play className="h-8 w-8 text-foreground ml-1" />
               </div>
-              <p className="text-sm text-gray-300 font-medium">Click to generate animated video</p>
-              <p className="text-xs text-gray-500">~4 second animation • WebM format</p>
+              <p className="text-sm text-foreground font-black uppercase tracking-wider">Click to generate animated video</p>
+              <p className="text-xs text-muted-foreground font-bold">~4 second animation • WebM format</p>
             </div>
           )}
         </div>
@@ -126,24 +126,24 @@ export default function VideoCardModal({ isOpen, onClose, document: doc, clauses
         <div className="flex gap-2">
           {videoUrl ? (
             <>
-              <Button onClick={handleDownload} className="flex-1 gap-2 bg-blue-600 hover:bg-blue-700">
+              <button onClick={handleDownload} className="flex items-center justify-center gap-2 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors flex-1">
                 <Download className="h-4 w-4" />
                 Download Video
-              </Button>
-              <Button onClick={handleGenerate} variant="outline" className="gap-2" disabled={generating}>
+              </button>
+              <button onClick={handleGenerate} disabled={generating} className="flex items-center justify-center gap-2 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors">
                 <Play className="h-4 w-4" />
                 Regenerate
-              </Button>
+              </button>
             </>
           ) : !generating ? (
-            <Button onClick={handleGenerate} className="w-full gap-2 bg-blue-600 hover:bg-blue-700">
+            <button onClick={handleGenerate} className="flex items-center justify-center gap-2 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors w-full">
               <Video className="h-4 w-4" />
               Generate Video
-            </Button>
+            </button>
           ) : null}
         </div>
 
-        <p className="text-[10px] text-gray-600 text-center">
+        <p className="text-[10px] text-muted-foreground text-center font-bold">
           Video renders at 1080×1350 resolution. Works best in Chrome/Edge.
         </p>
       </DialogContent>

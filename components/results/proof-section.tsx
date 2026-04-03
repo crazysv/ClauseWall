@@ -135,29 +135,29 @@ export default function ProofSection({
 
   return (
     <>
-      <Card className="bg-gray-900/50 border-gray-800 mt-8 overflow-hidden">
-        <div className="h-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500" />
+      <Card className="bg-muted card-impact border-2 border-foreground mt-8 overflow-hidden">
+        <div className="h-1 bg-foreground" />
 
         <CardContent className="p-6">
           {/* Header */}
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-bold flex items-center gap-2">
-              <Link2 className="h-5 w-5 text-cyan-400" />
+            <h3 className="text-lg font-black uppercase tracking-wider text-foreground flex items-center gap-2">
+              <Link2 className="h-5 w-5 text-foreground" />
               Analysis Proof
-              <Badge className="bg-cyan-500/15 text-cyan-400 border-cyan-500/30 text-[10px] gap-1">
+              <Badge variant="outline" className="bg-background text-foreground border-2 border-foreground text-[10px] gap-1 font-black uppercase tracking-wider">
                 <Lock className="h-3 w-3" />
                 IMMUTABLE
               </Badge>
             </h3>
             <div className="flex gap-1.5">
               {hasTSA && (
-                <Badge className="bg-green-500/15 text-green-400 border-green-500/30 text-[10px] gap-1">
+                <Badge variant="outline" className="bg-background text-green-600 border-2 border-green-600 text-[10px] gap-1 font-black uppercase tracking-wider">
                   <ShieldCheck className="h-3 w-3" />
                   TSA VERIFIED
                 </Badge>
               )}
               {hasIPFS && (
-                <Badge className="bg-blue-500/15 text-blue-400 border-blue-500/30 text-[10px] gap-1">
+                <Badge variant="outline" className="bg-background text-blue-600 border-2 border-blue-600 text-[10px] gap-1 font-black uppercase tracking-wider">
                   <Globe className="h-3 w-3" />
                   IPFS PINNED
                 </Badge>
@@ -165,10 +165,10 @@ export default function ProofSection({
             </div>
           </div>
 
-          <p className="text-sm text-muted-foreground mb-6">
+          <p className="text-sm font-bold text-muted-foreground mb-6">
             This analysis is permanently recorded and independently verified.
             Use this proof in disputes as digital evidence under the{" "}
-            <span className="text-cyan-400 font-medium">
+            <span className="text-foreground font-black">
               IT Act, 2000 — Section 65B
             </span>
             .
@@ -176,28 +176,28 @@ export default function ProofSection({
 
           {/* ---- LAYER 1: LEGAL PROOF (FreeTSA) ---- */}
           {hasTSA && (
-            <div className="mb-4 p-4 rounded-xl bg-green-500/5 border border-green-500/20">
-              <h4 className="text-sm font-semibold text-green-400 mb-3 flex items-center gap-2">
+            <div className="mb-4 p-4 card-impact border-2 border-green-600 bg-background">
+              <h4 className="text-sm font-black uppercase tracking-wider text-green-600 mb-3 flex items-center gap-2">
                 <ShieldCheck className="h-4 w-4" />
                 Legal Proof — RFC 3161 Timestamp
               </h4>
 
               <div className="space-y-2.5">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground flex items-center gap-2">
-                    <Fingerprint className="h-3.5 w-3.5 text-green-400" />
+                  <span className="text-muted-foreground font-black uppercase tracking-wider flex items-center gap-2">
+                    <Fingerprint className="h-3.5 w-3.5 text-green-600" />
                     Proof Hash
                   </span>
                   <div className="flex items-center gap-2">
-                    <code className="text-green-300 font-mono text-xs">
+                    <code className="text-green-600 font-bold font-mono text-xs">
                       {shortHash}
                     </code>
                     <button
                       onClick={() => copyToClipboard(proofHash, "Hash")}
-                      className="text-muted-foreground hover:text-white"
+                      className="text-muted-foreground hover:text-foreground"
                     >
                       {copied === "Hash" ? (
-                        <Check className="h-3.5 w-3.5 text-green-400" />
+                        <Check className="h-3.5 w-3.5 text-green-600" />
                       ) : (
                         <Copy className="h-3.5 w-3.5" />
                       )}
@@ -207,37 +207,37 @@ export default function ProofSection({
 
                 {formattedDate && (
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground flex items-center gap-2">
-                      <Clock className="h-3.5 w-3.5 text-green-400" />
+                    <span className="text-muted-foreground font-black uppercase tracking-wider flex items-center gap-2">
+                      <Clock className="h-3.5 w-3.5 text-green-600" />
                       TSA Timestamp
                     </span>
-                    <span>{formattedDate}</span>
+                    <span className="font-bold text-foreground">{formattedDate}</span>
                   </div>
                 )}
 
                 {tsaSerial && (
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground flex items-center gap-2">
-                      <Hash className="h-3.5 w-3.5 text-green-400" />
+                    <span className="text-muted-foreground font-black uppercase tracking-wider flex items-center gap-2">
+                      <Hash className="h-3.5 w-3.5 text-green-600" />
                       Serial Number
                     </span>
-                    <code className="font-mono text-xs">#{tsaSerial}</code>
+                    <code className="text-foreground font-bold font-mono text-xs">#{tsaSerial}</code>
                   </div>
                 )}
 
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground flex items-center gap-2">
-                    <FileCheck className="h-3.5 w-3.5 text-green-400" />
+                  <span className="text-muted-foreground font-black uppercase tracking-wider flex items-center gap-2">
+                    <FileCheck className="h-3.5 w-3.5 text-green-600" />
                     Authority
                   </span>
-                  <span>FreeTSA.org (RFC 3161)</span>
+                  <span className="font-bold text-foreground">FreeTSA.org (RFC 3161)</span>
                 </div>
               </div>
 
-              <div className="mt-3 pt-3 border-t border-green-500/10">
+              <div className="mt-3 pt-3 border-t-2 border-green-600">
                 <div className="flex items-start gap-2">
-                  <ShieldCheck className="h-3.5 w-3.5 text-green-400 mt-0.5 flex-shrink-0" />
-                  <p className="text-xs text-green-300/70">
+                  <ShieldCheck className="h-3.5 w-3.5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <p className="text-xs font-bold text-green-600">
                     Independently timestamped by FreeTSA.org. This authority is
                     not affiliated with ClauseWall. The timestamp cannot be
                     modified or backdated.
@@ -249,8 +249,8 @@ export default function ProofSection({
 
           {/* ---- LAYER 2: PUBLIC PROOF (IPFS) ---- */}
           {hasIPFS && verifyUrl && (
-            <div className="mb-4 p-4 rounded-xl bg-blue-500/5 border border-blue-500/20">
-              <h4 className="text-sm font-semibold text-blue-400 mb-3 flex items-center gap-2">
+            <div className="mb-4 p-4 card-impact border-2 border-blue-600 bg-background">
+              <h4 className="text-sm font-black uppercase tracking-wider text-blue-600 mb-3 flex items-center gap-2">
                 <Globe className="h-4 w-4" />
                 Public Proof — IPFS
               </h4>
@@ -266,8 +266,8 @@ export default function ProofSection({
                   />
                 </div>
                 <div className="flex-1 text-center sm:text-left">
-                  <p className="text-xs text-muted-foreground mb-1">IPFS CID</p>
-                  <code className="text-xs text-blue-300 font-mono break-all">
+                  <p className="text-xs font-black uppercase tracking-wider text-muted-foreground mb-1">IPFS CID</p>
+                  <code className="text-xs font-bold text-blue-600 font-mono break-all">
                     {proofCid!.length > 40
                       ? `${proofCid!.substring(0, 20)}...${proofCid!.substring(proofCid!.length - 15)}`
                       : proofCid}
@@ -277,7 +277,7 @@ export default function ProofSection({
                       href={verifyUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-xs text-blue-400 hover:text-blue-300"
+                      className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-wider text-blue-600 hover:text-blue-700"
                     >
                       <ExternalLink className="h-3 w-3" />
                       Pinata Gateway
@@ -286,7 +286,7 @@ export default function ProofSection({
                       href={publicIpfsUrl!}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-xs text-blue-400 hover:text-blue-300"
+                      className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-wider text-blue-600 hover:text-blue-700"
                     >
                       <ExternalLink className="h-3 w-3" />
                       Public Gateway
@@ -299,24 +299,24 @@ export default function ProofSection({
 
           {/* Hash-only fallback (no TSA, no IPFS) */}
           {!hasTSA && !hasIPFS && (
-            <div className="mb-4 p-4 rounded-xl bg-white/[0.03] border border-white/10">
+            <div className="mb-4 p-4 card-impact border-2 border-foreground bg-background">
               <div className="flex items-center justify-between text-sm mb-2">
-                <span className="text-muted-foreground flex items-center gap-2">
-                  <Fingerprint className="h-3.5 w-3.5 text-cyan-400" />
+                <span className="text-muted-foreground font-black uppercase tracking-wider flex items-center gap-2">
+                  <Fingerprint className="h-3.5 w-3.5 text-foreground" />
                   Proof Hash (SHA-256)
                 </span>
                 <button
                   onClick={() => copyToClipboard(proofHash, "Hash")}
-                  className="text-muted-foreground hover:text-white"
+                  className="text-muted-foreground hover:text-foreground"
                 >
                   {copied === "Hash" ? (
-                    <Check className="h-3.5 w-3.5 text-green-400" />
+                    <Check className="h-3.5 w-3.5 text-green-600" />
                   ) : (
                     <Copy className="h-3.5 w-3.5" />
                   )}
                 </button>
               </div>
-              <code className="text-xs text-cyan-300 font-mono break-all">
+              <code className="text-xs font-bold text-foreground font-mono break-all">
                 {proofHash}
               </code>
             </div>
@@ -324,21 +324,21 @@ export default function ProofSection({
 
           {/* Actions */}
           <div className="flex flex-wrap gap-2">
-            <Button variant="outline" size="sm" onClick={downloadCertificate} className="gap-2">
+            <Button variant="outline" size="sm" onClick={downloadCertificate} className="gap-2 button text-impact-heading bg-background border-foreground text-foreground hover:bg-foreground hover:text-background">
               <Download className="h-3.5 w-3.5" />
               Certificate
             </Button>
             {hasTSA && (
               <>
-                <Button variant="outline" size="sm" onClick={downloadTSAToken} className="gap-2">
+                <Button variant="outline" size="sm" onClick={downloadTSAToken} className="gap-2 button text-impact-heading bg-background border-foreground text-foreground hover:bg-foreground hover:text-background">
                   <FileCheck className="h-3.5 w-3.5" />
                   TSA Token (.tsr)
                 </Button>
-                <Button variant="outline" size="sm" onClick={downloadHashFile} className="gap-2">
+                <Button variant="outline" size="sm" onClick={downloadHashFile} className="gap-2 button text-impact-heading bg-background border-foreground text-foreground hover:bg-foreground hover:text-background">
                   <Hash className="h-3.5 w-3.5" />
                   Hash File (.bin)
                 </Button>
-                <Button variant="outline" size="sm" onClick={openFreeTSAVerify} className="gap-2">
+                <Button variant="outline" size="sm" onClick={openFreeTSAVerify} className="gap-2 button text-impact-heading bg-background border-foreground text-foreground hover:bg-foreground hover:text-background">
                   <ExternalLink className="h-3.5 w-3.5" />
                   Verify on FreeTSA
                 </Button>
@@ -348,17 +348,17 @@ export default function ProofSection({
               variant="outline"
               size="sm"
               onClick={() => copyToClipboard(proofHash, "Hash")}
-              className="gap-2"
+              className="gap-2 button text-impact-heading bg-background border-foreground text-foreground hover:bg-foreground hover:text-background"
             >
               {copied === "Hash" ? (
-                <Check className="h-3.5 w-3.5 text-green-400" />
+                <Check className="h-3.5 w-3.5 text-green-600" />
               ) : (
                 <Copy className="h-3.5 w-3.5" />
               )}
               Copy Hash
             </Button>
             {verifyUrl && (
-              <Button variant="outline" size="sm" className="gap-2" asChild>
+              <Button variant="outline" size="sm" className="gap-2 button text-impact-heading bg-background border-foreground text-foreground hover:bg-foreground hover:text-background" asChild>
                 <a href={verifyUrl} target="_blank" rel="noopener noreferrer">
                   <ExternalLink className="h-3.5 w-3.5" />
                   Verify IPFS
@@ -368,7 +368,7 @@ export default function ProofSection({
           </div>
 
           {/* Legal note */}
-          <p className="text-[10px] text-muted-foreground mt-4 leading-relaxed">
+          <p className="text-[10px] font-bold text-muted-foreground mt-4 leading-relaxed uppercase tracking-wider">
             🔒 This proof contains NO personal data or contract text. The SHA-256 hash
             is deterministic — identical analysis always produces the same hash.
             {hasTSA && " FreeTSA.org is an independent timestamp authority operating since 2005."}

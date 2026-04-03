@@ -17,27 +17,27 @@ export default function EscapeCTA({ documentId, dangerousCount, illegalCount }: 
 
   return (
     <Link href={`/escape/${documentId}`}>
-      <div className="p-4 rounded-xl bg-gradient-to-r from-orange-500/10 via-red-500/10 to-orange-500/10 border border-orange-500/20 hover:border-orange-500/40 hover:from-orange-500/15 hover:to-orange-500/15 transition-all cursor-pointer group">
+      <div className="p-4 card-impact border-2 border-orange-600 bg-background hover:-translate-y-[2px] hover:shadow-[4px_4px_0px_0px_rgba(234,88,12,1)] transition-all cursor-pointer group">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-orange-500/15 group-hover:bg-orange-500/25 transition-colors">
-              <DoorOpen className="h-6 w-6 text-orange-400" />
+            <div className="p-2.5 border-2 border-orange-600 bg-muted transition-colors">
+              <DoorOpen className="h-6 w-6 text-orange-600" />
             </div>
             <div>
-              <p className="font-semibold text-orange-300 flex items-center gap-2">
+              <p className="font-black uppercase tracking-wider text-orange-600 flex items-center gap-2">
                 Already Signed This Contract?
               </p>
-              <p className="text-sm text-gray-400 mt-0.5">
+              <p className="text-sm font-bold text-muted-foreground mt-0.5">
                 {totalRisky} clause{totalRisky !== 1 ? "s" : ""} may be void under Indian law.
                 Get your personalized escape plan with recovery amounts.
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0 ml-4">
-            <span className="text-sm font-medium text-orange-400 hidden sm:inline">
+            <span className="text-sm font-black uppercase tracking-wider text-orange-600 hidden sm:inline">
               Get Escape Plan
             </span>
-            <ArrowRight className="h-5 w-5 text-orange-400 group-hover:translate-x-1 transition-transform" />
+            <ArrowRight className="h-5 w-5 text-orange-600 group-hover:translate-x-1 transition-transform" />
           </div>
         </div>
       </div>

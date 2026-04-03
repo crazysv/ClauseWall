@@ -24,7 +24,7 @@ export default function ContractDNAPreview({ document: doc, clauses, onViewDNA }
 
   return (
     <Card
-      className="bg-gray-900/50 border-gray-800 mb-8 cursor-pointer hover:border-gray-700 transition-colors group"
+      className="bg-background card-impact border-2 border-foreground mb-8 cursor-pointer hover:bg-muted transition-colors group"
       onClick={onViewDNA}
     >
       <CardContent className="p-6">
@@ -42,21 +42,21 @@ export default function ContractDNAPreview({ document: doc, clauses, onViewDNA }
           {/* Info */}
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <Dna className="h-4 w-4 text-purple-400" />
-              <h3 className="font-semibold text-sm">Contract Personality</h3>
-              <span className="text-xs text-gray-500 font-mono">{contractId}</span>
+              <Dna className="h-4 w-4 text-purple-600" />
+              <h3 className="font-black uppercase tracking-wider text-sm text-foreground">Contract Personality</h3>
+              <span className="text-xs text-muted-foreground font-mono">{contractId}</span>
             </div>
-            <p className="text-lg font-bold">
+            <p className="text-lg font-black uppercase tracking-wider text-foreground">
               {personality.emoji} {personality.name}
             </p>
-            <p className="text-xs text-muted-foreground mt-0.5">{personality.description}</p>
+            <p className="text-xs text-muted-foreground font-bold mt-0.5">{personality.description}</p>
           </div>
 
           {/* CTA */}
           <Button
             variant="outline"
             size="sm"
-            className="gap-2 flex-shrink-0 opacity-70 group-hover:opacity-100 transition-opacity"
+            className="flex items-center justify-center gap-2 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors flex-shrink-0 opacity-70 group-hover:opacity-100"
             onClick={(e) => {
               e.stopPropagation();
               onViewDNA();

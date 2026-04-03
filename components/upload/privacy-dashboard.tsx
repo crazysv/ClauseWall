@@ -64,14 +64,14 @@ export default function PrivacyDashboard({
       animate={{ opacity: 1, y: 0 }}
       className="h-full"
     >
-      <Card className="card-impact h-full flex flex-col">
-        <CardHeader className="pb-3 border-b-2 border-border">
+      <Card className="card-impact border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] bg-card h-full flex flex-col">
+        <CardHeader className="pb-3 border-b-2 border-foreground">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-lg font-bold flex items-center gap-2 text-foreground">
+            <CardTitle className="text-lg font-black uppercase tracking-wider flex items-center gap-2 text-foreground">
               <Shield className={`h-5 w-5 ${c.color}`} />
               Live Processing
             </CardTitle>
-            <Badge variant="outline" className={`text-[10px] font-bold border-2 ${c.badgeColor}`}>
+            <Badge variant="outline" className={`text-[10px] font-black uppercase tracking-wider border-2 ${c.badgeColor}`}>
               {c.icon} {c.label} Mode
             </Badge>
           </div>
@@ -98,10 +98,10 @@ export default function PrivacyDashboard({
               <span
                 className={
                   step.status === "done"
-                    ? "font-bold text-foreground"
+                    ? "font-black uppercase tracking-wider text-foreground"
                     : step.status === "pending"
-                      ? "font-bold text-primary"
-                      : "font-medium text-muted-foreground"
+                      ? "font-black uppercase tracking-wider text-primary"
+                      : "font-bold text-muted-foreground"
                 }
               >
                 {step.label}
@@ -109,7 +109,7 @@ export default function PrivacyDashboard({
               {step.location === "device" && (
                 <Badge
                   variant="outline"
-                  className="text-[10px] px-1.5 py-0 border-2 font-bold text-muted-foreground"
+                  className="text-[10px] px-1.5 py-0 border-2 font-black uppercase tracking-wider text-muted-foreground border-foreground bg-muted"
                 >
                   LOCAL
                 </Badge>
@@ -117,7 +117,7 @@ export default function PrivacyDashboard({
               {step.location === "server" && (
                 <Badge
                   variant="outline"
-                  className="text-[10px] px-1.5 py-0 border-2 font-bold border-blue-200 text-blue-700 bg-blue-50"
+                  className="text-[10px] px-1.5 py-0 border-2 font-black uppercase tracking-wider border-blue-600 text-blue-700 bg-blue-100"
                 >
                   SERVER
                 </Badge>
@@ -129,36 +129,36 @@ export default function PrivacyDashboard({
 
       {/* Redaction Stats */}
       {redactionStats && redactionStats.total > 0 && (
-        <div className="pt-4 border-t-2 border-border border-dashed">
-          <p className="text-xs text-muted-foreground font-bold mb-2 uppercase tracking-wider">
+        <div className="pt-4 border-t-2 border-foreground border-dashed">
+          <p className="text-xs text-muted-foreground font-black mb-2 uppercase tracking-wider">
             PII REDACTED LOCALLY
           </p>
-          <div className="flex flex-wrap gap-x-2 gap-y-2 text-xs font-bold text-foreground">
+          <div className="flex flex-wrap gap-x-2 gap-y-2 text-xs font-black uppercase tracking-wider text-foreground">
             {(redactionStats.names ?? 0) > 0 && (
-              <span className="bg-muted px-2 py-1 rounded">👤 {redactionStats.names} names</span>
+              <span className="border-2 border-foreground bg-muted shadow-[2px_2px_0px_0px_rgba(10,10,10,1)] px-2 py-1">👤 {redactionStats.names} names</span>
             )}
             {(redactionStats.ids ?? 0) > 0 && (
-              <span className="bg-muted px-2 py-1 rounded">🪪 {redactionStats.ids} IDs</span>
+              <span className="border-2 border-foreground bg-muted shadow-[2px_2px_0px_0px_rgba(10,10,10,1)] px-2 py-1">🪪 {redactionStats.ids} IDs</span>
             )}
             {(redactionStats.contacts ?? 0) > 0 && (
-              <span className="bg-muted px-2 py-1 rounded">📱 {redactionStats.contacts} contacts</span>
+              <span className="border-2 border-foreground bg-muted shadow-[2px_2px_0px_0px_rgba(10,10,10,1)] px-2 py-1">📱 {redactionStats.contacts} contacts</span>
             )}
             {(redactionStats.addresses ?? 0) > 0 && (
-              <span className="bg-muted px-2 py-1 rounded">📍 {redactionStats.addresses} addresses</span>
+              <span className="border-2 border-foreground bg-muted shadow-[2px_2px_0px_0px_rgba(10,10,10,1)] px-2 py-1">📍 {redactionStats.addresses} addresses</span>
             )}
             {(redactionStats.financial ?? 0) > 0 && (
-              <span className="bg-muted px-2 py-1 rounded">💰 {redactionStats.financial} amounts</span>
+              <span className="border-2 border-foreground bg-muted shadow-[2px_2px_0px_0px_rgba(10,10,10,1)] px-2 py-1">💰 {redactionStats.financial} amounts</span>
             )}
           </div>
         </div>
       )}
 
       {/* Bytes Sent */}
-      <div className="mt-4 pt-4 border-t-2 border-border border-dashed">
+      <div className="mt-4 pt-4 border-t-2 border-foreground border-dashed">
         <p className="text-xs text-muted-foreground flex items-center gap-1.5 font-bold">
           <Lock className="h-3.5 w-3.5" />
           Data sent to server:{" "}
-          <span className="font-mono text-primary bg-primary/10 px-1.5 rounded">
+          <span className="font-black uppercase tracking-wider text-background bg-foreground px-2 py-0.5 border-2 border-foreground">
             {bytesSent === 0
               ? "0 bytes"
               : bytesSent < 1024

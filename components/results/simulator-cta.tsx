@@ -13,25 +13,25 @@ export default function SimulatorCTA({ documentId, overallRiskScore }: Simulator
 
   return (
     <Link href={`/simulate/${documentId}`}>
-      <div className="p-4 rounded-xl bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-cyan-500/10 border border-cyan-500/20 hover:border-cyan-500/40 hover:from-cyan-500/15 hover:to-cyan-500/15 transition-all cursor-pointer group">
+      <div className="p-4 card-impact border-2 border-blue-600 bg-background hover:-translate-y-[2px] hover:shadow-[4px_4px_0px_0px_rgba(37,99,235,1)] transition-all cursor-pointer group">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-cyan-500/15 group-hover:bg-cyan-500/25 transition-colors">
-              <Gamepad2 className="h-6 w-6 text-cyan-400" />
+            <div className="p-2.5 border-2 border-blue-600 bg-muted transition-colors">
+              <Gamepad2 className="h-6 w-6 text-blue-600" />
             </div>
             <div>
-              <p className="font-semibold text-cyan-300">
+              <p className="font-black uppercase tracking-wider text-blue-600">
                 See What This Contract Really Costs You
               </p>
-              <p className="text-sm text-gray-400 mt-0.5">
+              <p className="text-sm font-bold text-muted-foreground mt-0.5">
                 Interactive month-by-month cost simulator with penalty calculator and fair contract comparison.
               </p>
-              <p className="text-[10px] text-white/30 mt-0.5">Project the financial impact over time</p>
+              <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mt-0.5">Project the financial impact over time</p>
             </div>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0 ml-4">
-            <span className="text-sm font-medium text-cyan-400 hidden sm:inline">Simulate</span>
-            <ArrowRight className="h-5 w-5 text-cyan-400 group-hover:translate-x-1 transition-transform" />
+            <span className="text-sm font-black uppercase tracking-wider text-blue-600 hidden sm:inline">Simulate</span>
+            <ArrowRight className="h-5 w-5 text-blue-600 group-hover:translate-x-1 transition-transform" />
           </div>
         </div>
       </div>

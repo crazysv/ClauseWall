@@ -50,21 +50,21 @@ function getStepType(stepText: string): string {
 function getStepColor(type: string): { bg: string; border: string; text: string; icon: string; badge: string } {
   switch (type) {
     case "extraction":
-      return { bg: "bg-purple-500/5", border: "border-purple-500/20", text: "text-purple-300", icon: "text-purple-400", badge: "bg-purple-500/15 text-purple-400 border-purple-500/30" };
+      return { bg: "bg-background", border: "border-purple-600", text: "text-purple-600", icon: "text-purple-600", badge: "bg-background text-purple-600 border-purple-600" };
     case "fact":
-      return { bg: "bg-slate-500/5", border: "border-slate-500/20", text: "text-slate-300", icon: "text-slate-400", badge: "bg-slate-500/15 text-slate-400 border-slate-500/30" };
+      return { bg: "bg-muted", border: "border-foreground", text: "text-foreground", icon: "text-foreground", badge: "bg-background text-foreground border-foreground" };
     case "rule":
-      return { bg: "bg-blue-500/5", border: "border-blue-500/20", text: "text-blue-300", icon: "text-blue-400", badge: "bg-blue-500/15 text-blue-400 border-blue-500/30" };
+      return { bg: "bg-muted", border: "border-foreground", text: "text-foreground", icon: "text-foreground", badge: "bg-background text-foreground border-foreground" };
     case "check":
-      return { bg: "bg-cyan-500/5", border: "border-cyan-500/20", text: "text-cyan-300", icon: "text-cyan-400", badge: "bg-cyan-500/15 text-cyan-400 border-cyan-500/30" };
+      return { bg: "bg-background", border: "border-cyan-600", text: "text-cyan-600", icon: "text-cyan-600", badge: "bg-background text-cyan-600 border-cyan-600" };
     case "comparison":
-      return { bg: "bg-amber-500/5", border: "border-amber-500/20", text: "text-amber-300", icon: "text-amber-400", badge: "bg-amber-500/15 text-amber-400 border-amber-500/30" };
+      return { bg: "bg-background", border: "border-amber-600", text: "text-amber-600", icon: "text-amber-600", badge: "bg-background text-amber-600 border-amber-600" };
     case "derivation":
-      return { bg: "bg-emerald-500/5", border: "border-emerald-500/20", text: "text-emerald-300", icon: "text-emerald-400", badge: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30" };
+      return { bg: "bg-background", border: "border-emerald-600", text: "text-emerald-600", icon: "text-emerald-600", badge: "bg-background text-emerald-600 border-emerald-600" };
     case "conclusion":
-      return { bg: "bg-red-500/5", border: "border-red-500/20", text: "text-red-300", icon: "text-red-400", badge: "bg-red-500/15 text-red-400 border-red-500/30" };
+      return { bg: "bg-background", border: "border-red-600", text: "text-red-600", icon: "text-red-600", badge: "bg-background text-red-600 border-red-600" };
     default:
-      return { bg: "bg-white/[0.02]", border: "border-white/10", text: "text-gray-300", icon: "text-gray-400", badge: "bg-white/5 text-gray-400 border-white/10" };
+      return { bg: "bg-muted", border: "border-foreground", text: "text-foreground", icon: "text-muted-foreground", badge: "bg-background text-foreground border-foreground" };
   }
 }
 
@@ -147,21 +147,21 @@ export default function ProofWalkthrough({
               }}
               role="button"
               tabIndex={0}
-              className={`w-full text-left p-4 rounded-xl border transition-all ${colors.bg} ${colors.border} ${
+              className={`w-full text-left p-4 card-impact border-2 transition-all ${colors.bg} ${colors.border} ${
                 isActive
-                  ? "ring-2 ring-cyan-500/50 shadow-lg shadow-cyan-500/5"
+                  ? "border-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] -translate-y-[1px]"
                   : isCompleted
                     ? "opacity-80"
                     : isUpcoming
                       ? "opacity-40"
                       : ""
-              } hover:brightness-110 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-cyan-500`}
+              } hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-[1px] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-foreground`}
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-start gap-3 min-w-0">
                   {/* Step number + icon */}
-                  <div className={`flex-shrink-0 flex items-center justify-center h-8 w-8 rounded-lg ${isActive ? "bg-cyan-500/20" : "bg-white/5"}`}>
-                    <span className={isActive ? "text-cyan-400" : colors.icon}>
+                  <div className={`flex-shrink-0 flex items-center justify-center h-8 w-8 border-2 border-foreground bg-background`}>
+                    <span className={isActive ? "text-foreground" : colors.icon}>
                       {getStepIcon(step)}
                     </span>
                   </div>
@@ -170,17 +170,17 @@ export default function ProofWalkthrough({
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
                       {parsed.stepNumber && (
-                        <span className="text-[10px] text-gray-600 font-mono">
+                        <span className="text-[10px] text-muted-foreground font-black uppercase tracking-wider">
                           {parsed.stepNumber}
                         </span>
                       )}
                       {parsed.type && (
-                        <Badge className={`${colors.badge} text-[9px] px-1.5 py-0`}>
+                        <Badge variant="outline" className={`${colors.badge} text-[9px] px-1.5 py-0 border-2 font-black uppercase tracking-wider`}>
                           {parsed.type}
                         </Badge>
                       )}
                     </div>
-                    <p className={`text-sm leading-relaxed ${isActive ? "text-gray-200" : colors.text}`}>
+                    <p className={`text-sm leading-relaxed font-bold ${isActive ? "text-foreground" : colors.text}`}>
                       {parsed.content}
                     </p>
                   </div>
@@ -210,7 +210,7 @@ export default function ProofWalkthrough({
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
-                  className="mt-3 pt-3 border-t border-white/5 text-xs text-gray-500 space-y-1"
+                  className="mt-3 pt-3 border-t-2 border-foreground text-xs text-muted-foreground font-bold space-y-1"
                 >
                   {matchingNode.metadata.statute && (
                     <p>📜 Statute: {matchingNode.metadata.statute}</p>

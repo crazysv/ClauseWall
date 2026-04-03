@@ -47,25 +47,25 @@ function getStatusIcon(status: ProofNode["status"]) {
 function getNodeColors(node: ProofNode): { bg: string; border: string; text: string; icon: string } {
   if (node.type === "conclusion") {
     const risk = node.metadata.riskLevel;
-    if (risk === "illegal") return { bg: "bg-red-500/10", border: "border-red-500/40", text: "text-red-300", icon: "text-red-400" };
-    if (risk === "dangerous") return { bg: "bg-orange-500/10", border: "border-orange-500/40", text: "text-orange-300", icon: "text-orange-400" };
-    if (risk === "safe") return { bg: "bg-emerald-500/10", border: "border-emerald-500/40", text: "text-emerald-300", icon: "text-emerald-400" };
-    return { bg: "bg-amber-500/10", border: "border-amber-500/40", text: "text-amber-300", icon: "text-amber-400" };
+    if (risk === "illegal") return { bg: "bg-background", border: "border-red-600", text: "text-red-600", icon: "text-red-600" };
+    if (risk === "dangerous") return { bg: "bg-background", border: "border-orange-600", text: "text-orange-600", icon: "text-orange-600" };
+    if (risk === "safe") return { bg: "bg-background", border: "border-green-600", text: "text-green-600", icon: "text-green-600" };
+    return { bg: "bg-background", border: "border-yellow-600", text: "text-yellow-600", icon: "text-yellow-600" };
   }
 
-  if (node.status === "failed") return { bg: "bg-red-500/5", border: "border-red-500/30", text: "text-red-300", icon: "text-red-400" };
-  if (node.status === "uncertain") return { bg: "bg-amber-500/5", border: "border-amber-500/30 border-dashed", text: "text-amber-300", icon: "text-amber-400" };
+  if (node.status === "failed") return { bg: "bg-background", border: "border-red-600", text: "text-red-600", icon: "text-red-600" };
+  if (node.status === "uncertain") return { bg: "bg-background", border: "border-yellow-600 border-dashed", text: "text-yellow-600", icon: "text-yellow-600" };
 
   switch (node.type) {
-    case "rule": return { bg: "bg-blue-500/8", border: "border-blue-500/30", text: "text-blue-300", icon: "text-blue-400" };
+    case "rule": return { bg: "bg-muted", border: "border-foreground", text: "text-foreground", icon: "text-foreground" };
     case "comparison": {
       const passed = node.metadata.comparisonResult;
       return passed
-        ? { bg: "bg-red-500/8", border: "border-red-500/30", text: "text-red-300", icon: "text-red-400" }
-        : { bg: "bg-green-500/8", border: "border-green-500/30", text: "text-green-300", icon: "text-green-400" };
+        ? { bg: "bg-background", border: "border-red-600", text: "text-red-600", icon: "text-red-600" }
+        : { bg: "bg-background", border: "border-green-600", text: "text-green-600", icon: "text-green-600" };
     }
-    case "extraction": return { bg: "bg-purple-500/8", border: "border-purple-500/30", text: "text-purple-300", icon: "text-purple-400" };
-    default: return { bg: "bg-white/[0.03]", border: "border-white/10", text: "text-gray-300", icon: "text-gray-400" };
+    case "extraction": return { bg: "bg-background", border: "border-purple-600", text: "text-purple-600", icon: "text-purple-600" };
+    default: return { bg: "bg-muted", border: "border-foreground", text: "text-foreground", icon: "text-muted-foreground" };
   }
 }
 
@@ -139,12 +139,11 @@ function TreeNodeCard({
             onNodeClick(node);
           }
         }}
-        tabIndex={0}
         aria-label={`${node.type} node: ${node.label}. Status: ${node.status}`}
-        className={`w-full text-left p-3 rounded-lg border transition-all ${colors.bg} ${colors.border} ${
+        className={`w-full text-left p-3 border-2 card-impact transition-all ${colors.bg} ${colors.border} ${
           isActive
-            ? "ring-2 ring-cyan-500/50 shadow-lg shadow-cyan-500/10"
-            : "hover:brightness-125"
+            ? "border-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] -translate-y-[1px]"
+            : "hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-[1px]"
         }`}
       >
         <div className="flex items-start justify-between gap-2">
@@ -153,11 +152,11 @@ function TreeNodeCard({
               {getNodeIcon(node.type)}
             </span>
             <div className="min-w-0">
-              <p className={`text-xs font-medium leading-snug ${colors.text}`}>
+              <p className={`text-xs font-black leading-snug uppercase tracking-wider ${colors.text}`}>
                 {label}
               </p>
               {node.type === "comparison" && node.metadata.leftOperand !== undefined && (
-                <p className="text-[10px] text-gray-500 mt-0.5 font-mono">
+                <p className="text-[10px] text-muted-foreground font-bold mt-0.5 font-mono">
                   {String(node.metadata.leftOperand)} {node.metadata.operator} {String(node.metadata.rightOperand)}
                 </p>
               )}
@@ -165,7 +164,7 @@ function TreeNodeCard({
           </div>
           <div className="flex items-center gap-1 flex-shrink-0">
             {conf !== null && conf < 100 && (
-              <Badge variant="outline" className="text-[9px] px-1 py-0 border-white/10 text-gray-500">
+              <Badge variant="outline" className="text-[9px] px-1 py-0 border-foreground text-foreground font-black uppercase tracking-wider">
                 {conf}%
               </Badge>
             )}
@@ -183,7 +182,7 @@ function TreeNodeCard({
                 e.stopPropagation();
                 setIsChildrenExpanded(!isChildrenExpanded);
               }}
-              className="flex items-center gap-1 text-[10px] text-gray-600 hover:text-gray-400 mb-1 ml-3"
+              className="flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-muted-foreground hover:text-foreground mb-1 ml-3"
             >
               {isChildrenExpanded ? (
                 <><ChevronUp className="h-3 w-3" /> Hide sub-steps</>
@@ -202,7 +201,7 @@ function TreeNodeCard({
                 transition={{ duration: 0.15 }}
                 className="overflow-hidden"
               >
-                <div className="pl-4 border-l border-white/5 space-y-1.5">
+                <div className="pl-4 border-l-2 border-foreground space-y-1.5 pt-1">
                   {node.children.map((child, i) => (
                     <TreeNodeCard
                       key={child.id}
@@ -243,24 +242,24 @@ function NodeDetailPanel({
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
       transition={{ duration: 0.15 }}
-      className={`p-4 rounded-xl border ${colors.bg} ${colors.border} space-y-3`}
+      className={`p-4 card-impact border-2 ${colors.bg} ${colors.border} space-y-3`}
     >
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className={colors.icon}>{getNodeIcon(node.type)}</span>
-          <span className="text-xs font-semibold text-gray-300 uppercase tracking-wider">
+          <span className="text-xs font-black text-foreground uppercase tracking-wider">
             {node.type.replace(/_/g, " ")}
           </span>
           {getStatusIcon(node.status)}
         </div>
-        <button onClick={onClose} className="text-gray-500 hover:text-gray-300">
+        <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
           <X className="h-4 w-4" />
         </button>
       </div>
 
       {/* Description */}
-      <p className="text-sm text-gray-300 leading-relaxed">{node.description}</p>
+      <p className="text-sm font-bold text-foreground leading-relaxed">{node.description}</p>
 
       {/* Metadata grid */}
       <div className="space-y-2">
@@ -269,15 +268,15 @@ function NodeDetailPanel({
         )}
         {node.metadata.confidence !== undefined && (
           <div>
-            <p className="text-[10px] text-gray-500 mb-1">Confidence</p>
+            <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-1">Confidence</p>
             <div className="flex items-center gap-2">
-              <div className="flex-1 h-1.5 rounded bg-white/5">
+              <div className="flex-1 h-3 border-2 border-foreground bg-muted overflow-hidden">
                 <div
-                  className="h-full rounded bg-cyan-500"
+                  className="h-full bg-foreground"
                   style={{ width: `${Math.round(node.metadata.confidence * 100)}%` }}
                 />
               </div>
-              <span className="text-xs text-gray-400">
+              <span className="text-xs font-black text-foreground">
                 {Math.round(node.metadata.confidence * 100)}%
               </span>
             </div>
@@ -286,19 +285,19 @@ function NodeDetailPanel({
         {node.metadata.statute && <MetaRow label="Statute" value={node.metadata.statute} />}
         {node.metadata.statuteText && (
           <div>
-            <p className="text-[10px] text-gray-500 mb-0.5">Statute Text</p>
-            <p className="text-xs text-gray-400 italic leading-relaxed">
+            <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-0.5">Statute Text</p>
+            <p className="text-xs font-bold text-foreground italic leading-relaxed">
               &quot;{node.metadata.statuteText}&quot;
             </p>
           </div>
         )}
         {node.metadata.leftOperand !== undefined && (
           <div>
-            <p className="text-[10px] text-gray-500 mb-0.5">Comparison</p>
-            <p className="text-xs text-gray-300 font-mono">
+            <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-0.5">Comparison</p>
+            <p className="text-xs font-bold text-foreground font-mono">
               {String(node.metadata.leftOperand)} {node.metadata.operator} {String(node.metadata.rightOperand)}
               {" → "}
-              <span className={node.metadata.comparisonResult ? "text-red-400" : "text-green-400"}>
+              <span className={node.metadata.comparisonResult ? "text-red-600" : "text-green-600"}>
                 {node.metadata.comparisonResult ? "EXCEEDS" : "WITHIN LIMIT"}
               </span>
             </p>
@@ -309,8 +308,8 @@ function NodeDetailPanel({
         {node.metadata.penalty && <MetaRow label="Penalty" value={node.metadata.penalty} />}
         {node.metadata.originalText && (
           <div>
-            <p className="text-[10px] text-gray-500 mb-0.5">Source Text</p>
-            <p className="text-xs text-gray-400 italic leading-relaxed">
+            <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-0.5">Source Text</p>
+            <p className="text-xs font-bold text-foreground italic leading-relaxed">
               &quot;{node.metadata.originalText.substring(0, 200)}
               {node.metadata.originalText.length > 200 ? "..." : ""}&quot;
             </p>
@@ -322,7 +321,7 @@ function NodeDetailPanel({
       <div className="flex gap-2 pt-1">
         <button
           onClick={() => onChallenge(node.id)}
-          className="text-[10px] text-amber-400 hover:text-amber-300 font-medium"
+          className="text-[10px] text-red-600 hover:text-red-700 font-black uppercase tracking-wider mt-2 bg-red-100 p-2 border-2 border-red-600"
         >
           ⚡ Challenge this step
         </button>
@@ -334,8 +333,8 @@ function NodeDetailPanel({
 function MetaRow({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-[10px] text-gray-500 mb-0.5">{label}</p>
-      <p className="text-xs text-gray-300">{value}</p>
+      <p className="text-[10px] text-muted-foreground font-black uppercase tracking-wider mb-0.5">{label}</p>
+      <p className="text-xs font-bold text-foreground">{value}</p>
     </div>
   );
 }
@@ -385,10 +384,10 @@ export default function ProofTreeView({
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: i * 0.05 }}
-            className={`p-3 rounded-lg border text-sm leading-relaxed ${
+            className={`p-3 card-impact border-2 text-sm font-bold leading-relaxed ${
               activeNodeId && i === getActiveStepIndex(proofTree, activeNodeId)
-                ? "ring-2 ring-cyan-500/50 bg-cyan-500/5 border-cyan-500/30 text-gray-200"
-                : "bg-white/[0.02] border-white/5 text-gray-400"
+                ? "border-foreground bg-foreground text-background"
+                : "bg-muted border-foreground text-muted-foreground"
             }`}
           >
             {step}

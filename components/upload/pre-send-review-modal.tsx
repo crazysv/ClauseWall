@@ -59,11 +59,11 @@ export default function PreSendReviewModal({
         {/* Header styling */}
         <div className="bg-muted border-b-2 border-border p-6">
           <DialogHeader>
-            <DialogTitle className="text-xl font-bold flex items-center gap-2 text-foreground">
+            <DialogTitle className="text-xl font-black uppercase tracking-wider flex items-center gap-2 text-foreground">
               <ShieldAlert className="h-5 w-5 text-primary" />
               Pre-Send Review
             </DialogTitle>
-            <DialogDescription className="text-muted-foreground font-medium pt-2">
+            <DialogDescription className="text-muted-foreground font-bold pt-2">
               Review your document before sending to ClauseWall cloud for Deep Analysis.
             </DialogDescription>
           </DialogHeader>
@@ -73,38 +73,38 @@ export default function PreSendReviewModal({
         <div className="p-6">
           <div className="flex items-center gap-2 mb-4">
             <ShieldCheck className="h-5 w-5 text-primary" />
-            <span className="text-sm font-bold text-foreground uppercase tracking-wider">
+            <span className="text-sm font-black text-foreground uppercase tracking-wider">
               Privacy Protection Applied
             </span>
           </div>
           
-          <div className="grid grid-cols-2 gap-3 text-sm text-foreground font-medium">
+          <div className="grid grid-cols-2 gap-3 text-sm text-foreground font-bold">
             {redactionStats.names > 0 && (
-              <span className="flex items-center gap-2 bg-muted p-2 rounded border">
+              <span className="flex items-center gap-2 bg-muted p-2 border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(10,10,10,1)]">
                 <Check className="h-4 w-4 text-primary" />
                 {redactionStats.names} names
               </span>
             )}
             {redactionStats.ids > 0 && (
-              <span className="flex items-center gap-2 bg-muted p-2 rounded border">
+              <span className="flex items-center gap-2 bg-muted p-2 border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(10,10,10,1)]">
                 <Check className="h-4 w-4 text-primary" />
                 {redactionStats.ids} IDs
               </span>
             )}
             {redactionStats.contacts > 0 && (
-              <span className="flex items-center gap-2 bg-muted p-2 rounded border">
+              <span className="flex items-center gap-2 bg-muted p-2 border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(10,10,10,1)]">
                 <Check className="h-4 w-4 text-primary" />
                 {redactionStats.contacts} contacts
               </span>
             )}
             {redactionStats.addresses > 0 && (
-              <span className="flex items-center gap-2 bg-muted p-2 rounded border">
+              <span className="flex items-center gap-2 bg-muted p-2 border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(10,10,10,1)]">
                 <Check className="h-4 w-4 text-primary" />
                 {redactionStats.addresses} addresses
               </span>
             )}
             {redactionStats.financial > 0 && (
-              <span className="flex items-center gap-2 bg-muted p-2 rounded border">
+              <span className="flex items-center gap-2 bg-muted p-2 border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(10,10,10,1)]">
                 <Check className="h-4 w-4 text-primary" />
                 {redactionStats.financial} amounts
               </span>
@@ -127,7 +127,7 @@ export default function PreSendReviewModal({
                 initial={{ opacity: 0, y: 5 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className="p-3 rounded border-2 border-border bg-background text-xs text-foreground font-mono leading-relaxed"
+                className="p-3 border-2 border-foreground bg-background text-xs text-foreground font-mono leading-relaxed shadow-[2px_2px_0px_0px_rgba(10,10,10,1)]"
               >
                 <span className="text-primary font-bold font-sans">
                   Clause {i + 1}:
@@ -161,10 +161,10 @@ export default function PreSendReviewModal({
 
         <div className="px-6 pb-6">
           <div className="flex gap-3 justify-end">
-            <Button variant="outline" onClick={onClose} className="font-bold border-2">
+            <Button variant="outline" onClick={onClose} className="font-black uppercase tracking-wider border-2 border-foreground hover:-translate-y-[2px] shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] hover:bg-background">
               Cancel
             </Button>
-            <Button onClick={onApprove} className="gap-2 font-bold px-8" variant="default">
+            <Button onClick={onApprove} className="gap-2 button text-impact-heading border-2 border-foreground hover:-translate-y-[2px] shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] px-8" variant="default">
               <UploadCloud className="h-4 w-4" />
               Send for Deep Analysis
             </Button>

@@ -68,32 +68,32 @@ export default function MLInstantResult({
       case "illegal":
         return {
           color: "text-purple-600",
-          bg: "bg-purple-500/10",
-          border: "border-2 border-purple-600",
+          bg: "bg-background",
+          border: "border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(147,51,234,1)]",
           icon: <Scale className="h-5 w-5 text-purple-600" />,
           label: "CRITICAL",
         };
       case "dangerous":
         return {
           color: "text-primary",
-          bg: "bg-red-500/10",
-          border: "border-2 border-primary",
+          bg: "bg-background",
+          border: "border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(220,38,38,1)]",
           icon: <XCircle className="h-5 w-5 text-primary" />,
           label: "HIGH RISK",
         };
       case "warning":
         return {
           color: "text-yellow-600",
-          bg: "bg-yellow-500/10",
-          border: "border-2 border-yellow-600",
+          bg: "bg-background",
+          border: "border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(202,138,4,1)]",
           icon: <AlertTriangle className="h-5 w-5 text-yellow-600" />,
           label: "CAUTION",
         };
       default:
         return {
           color: "text-green-600",
-          bg: "bg-green-500/10",
-          border: "border-2 border-green-600",
+          bg: "bg-background",
+          border: "border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(22,163,74,1)]",
           icon: <CheckCircle2 className="h-5 w-5 text-green-600" />,
           label: "LOW RISK",
         };
@@ -113,7 +113,7 @@ export default function MLInstantResult({
     >
       {/* Header Badge */}
       <div className="flex items-center justify-center gap-2 mb-4">
-        <Badge className="bg-foreground text-background font-bold border-2 border-foreground gap-1.5 px-3 py-1">
+        <Badge className="bg-foreground text-background font-black uppercase tracking-wider border-2 border-foreground gap-1.5 px-3 py-1 shadow-[2px_2px_0px_0px_rgba(10,10,10,1)]">
           <Zap className="h-3.5 w-3.5" />
           ON-DEVICE AI — No data sent to server
         </Badge>
@@ -121,7 +121,7 @@ export default function MLInstantResult({
 
       {/* Main Score Card */}
       <Card
-        className={`card-impact overflow-hidden`}
+        className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] overflow-hidden"
       >
         <CardContent className="p-0">
           <div className={`${overallConfig.bg} p-6 text-center`}>
@@ -157,7 +157,7 @@ export default function MLInstantResult({
             </div>
 
             <p
-              className={`text-lg font-bold mt-2 ${overallConfig.color} mb-4`}
+              className={`text-lg font-black uppercase tracking-wider mt-2 ${overallConfig.color} mb-4`}
             >
               {overallConfig.label}
             </p>
@@ -247,13 +247,13 @@ export default function MLInstantResult({
       </Card>
 
       {/* Expandable Clause List */}
-      <Card className="card-impact mt-6">
+      <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] mt-6">
         <CardContent className="p-0">
           <button
             onClick={() => setShowClauses(!showClauses)}
-            className="w-full flex items-center justify-between p-4 text-sm hover:bg-muted transition-colors rounded-lg"
+            className="w-full flex items-center justify-between p-4 text-sm hover:bg-muted transition-colors border-b-2 border-transparent hover:border-foreground"
           >
-            <span className="flex items-center gap-2 font-medium">
+            <span className="flex items-center gap-2 font-black uppercase tracking-wider text-foreground">
               <Brain className="h-4 w-4 text-amber-400" />
               Clause-by-Clause Preview ({result.totalClauses})
             </span>
@@ -284,7 +284,7 @@ export default function MLInstantResult({
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: i * 0.05 }}
-                        className={`flex items-start gap-3 p-3 rounded-lg bg-muted border-2 border-border`}
+                        className="flex items-start gap-3 p-3 bg-muted border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(10,10,10,1)] hover:-translate-y-[1px] transition-transform"
                       >
                         <div className={`mt-0.5`}>
                           {config.icon}
@@ -293,20 +293,20 @@ export default function MLInstantResult({
                           <div className="flex items-center gap-2 mb-2">
                             <Badge
                               variant="outline"
-                              className={`text-[10px] font-bold ${config.color} ${config.border}`}
+                              className={`text-[10px] font-black uppercase tracking-wider bg-background shadow-[2px_2px_0px_0px_rgba(10,10,10,1)] ${config.color} ${config.border}`}
                             >
                               {config.label}
                             </Badge>
-                            <span className="text-[10px] font-medium text-muted-foreground">
+                            <span className="text-[10px] font-black uppercase tracking-wider text-muted-foreground">
                               {confPercent}% confident
                             </span>
                             {clause.confidence < 0.65 && (
-                              <span className="text-[10px] font-medium text-amber-600">
+                              <span className="text-[10px] font-black uppercase tracking-wider text-amber-600">
                                 (needs AI verification)
                               </span>
                             )}
                           </div>
-                          <p className="text-sm font-medium text-muted-foreground leading-relaxed truncate">
+                          <p className="text-sm font-bold text-muted-foreground leading-relaxed truncate">
                             {clause.truncatedText}
                           </p>
                         </div>
@@ -345,7 +345,7 @@ export default function MLInstantResult({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
           >
-            <Card className="card-impact mt-6">
+            <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] mt-6">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
                   <Loader2 className="h-5 w-5 text-blue-400 animate-spin" />
@@ -371,7 +371,7 @@ export default function MLInstantResult({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
           >
-            <Card className="card-impact bg-green-50 mt-6">
+            <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] bg-green-100 mt-6">
               <CardContent className="p-5">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="relative">
@@ -385,10 +385,10 @@ export default function MLInstantResult({
                     </motion.div>
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-green-400">
+                    <p className="text-sm font-black uppercase tracking-wider text-green-800">
                       Detailed AI Scan Complete!
                     </p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs font-bold text-green-900">
                       Verified red flags, legal citations & negotiation scripts
                       ready
                     </p>
@@ -397,7 +397,7 @@ export default function MLInstantResult({
 
                 <Button
                   onClick={onContinueToQuickScan}
-                  className="w-full gap-2 py-6 text-lg mt-4 group"
+                  className="w-full button text-impact-heading border-2 border-foreground hover:-translate-y-[2px] shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] gap-2 py-6 text-lg mt-4 group"
                   variant="default"
                 >
                   <Shield className="h-5 w-5" />

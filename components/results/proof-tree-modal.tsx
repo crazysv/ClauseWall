@@ -136,12 +136,12 @@ export default function ProofTreeModal({
   const verdictLabel = summary.verdict.replace("proven_", "").toUpperCase();
   const verdictColor =
     summary.riskLevel === "illegal"
-      ? "text-red-400"
+      ? "text-red-600"
       : summary.riskLevel === "dangerous"
-        ? "text-orange-400"
+        ? "text-orange-600"
         : summary.riskLevel === "warning"
-          ? "text-amber-400"
-          : "text-emerald-400";
+          ? "text-yellow-600"
+          : "text-green-600";
 
   return (
     <AnimatePresence>
@@ -159,33 +159,33 @@ export default function ProofTreeModal({
             exit={{ scale: 0.95, opacity: 0 }}
             transition={{ duration: 0.2 }}
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-5xl max-h-[90vh] bg-gray-900 rounded-2xl border border-white/10 overflow-hidden flex flex-col"
+            className="relative w-full max-w-5xl max-h-[90vh] bg-background card-impact border-2 border-foreground overflow-hidden flex flex-col rounded-none"
           >
             {/* Header */}
-            <div className="px-6 py-4 border-b border-white/5 flex items-center justify-between flex-shrink-0">
+            <div className="px-6 py-4 border-b-2 border-foreground flex items-center justify-between flex-shrink-0 bg-muted">
               <div className="flex items-center gap-3">
-                <TreePine className="h-5 w-5 text-cyan-400" />
+                <TreePine className="h-5 w-5 text-foreground" />
                 <div>
-                  <h2 className="text-lg font-bold">Proof Tree</h2>
-                  <p className="text-xs text-gray-500">
+                  <h2 className="text-lg font-black uppercase tracking-wider text-foreground">Proof Tree</h2>
+                  <p className="text-xs font-bold text-muted-foreground">
                     {proofTree.clauseText.substring(0, 80)}
                     {proofTree.clauseText.length > 80 ? "..." : ""}
                   </p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <Badge className={`${verdictColor} bg-white/5 border-white/10 text-xs`}>
+                <Badge variant="outline" className={`${verdictColor} border-2 border-foreground bg-background text-xs font-black uppercase tracking-wider`}>
                   {verdictLabel}
                 </Badge>
-                <Badge variant="outline" className="text-xs border-white/10 text-gray-500">
+                <Badge variant="outline" className="text-xs border-2 border-foreground text-foreground font-black uppercase tracking-wider bg-background">
                   {summary.stepsCount} steps
                 </Badge>
-                <Badge variant="outline" className="text-xs border-white/10 text-gray-500">
+                <Badge variant="outline" className="text-xs border-2 border-foreground text-foreground font-black uppercase tracking-wider bg-background">
                   {Math.round(summary.confidence * 100)}% conf
                 </Badge>
                 <button
                   onClick={onClose}
-                  className="p-1.5 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors"
+                  className="p-1.5 text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <X className="h-5 w-5" />
                 </button>
@@ -213,19 +213,19 @@ export default function ProofTreeModal({
             </div>
 
             {/* Footer controls */}
-            <div className="px-6 py-3 border-t border-white/5 flex items-center justify-between flex-shrink-0 flex-wrap gap-2">
+            <div className="px-6 py-3 border-t-2 border-foreground bg-muted flex items-center justify-between flex-shrink-0 flex-wrap gap-2">
               <div className="flex items-center gap-2">
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={handlePrev}
                   disabled={currentStep <= 0}
-                  className="gap-1 h-8"
+                  className="gap-1 h-8 button text-impact-heading bg-background border-foreground text-foreground hover:bg-foreground hover:text-background"
                 >
                   <ChevronLeft className="h-3.5 w-3.5" />
                   Prev
                 </Button>
-                <span className="text-xs text-gray-500 min-w-[4rem] text-center">
+                <span className="text-xs font-black uppercase tracking-wider text-foreground min-w-[4rem] text-center">
                   {currentStep + 1} / {totalSteps}
                 </span>
                 <Button
@@ -233,16 +233,16 @@ export default function ProofTreeModal({
                   size="sm"
                   onClick={handleNext}
                   disabled={currentStep >= totalSteps - 1}
-                  className="gap-1 h-8"
+                  className="gap-1 h-8 button text-impact-heading bg-background border-foreground text-foreground hover:bg-foreground hover:text-background"
                 >
                   Next
                   <ChevronRight className="h-3.5 w-3.5" />
                 </Button>
                 <Button
-                  variant={walkthrough ? "default" : "outline"}
+                  variant="outline"
                   size="sm"
                   onClick={toggleWalkthrough}
-                  className="gap-1 h-8"
+                  className={`gap-1 h-8 button text-impact-heading border-foreground ${walkthrough ? "bg-foreground text-background" : "bg-background text-foreground hover:bg-foreground hover:text-background"}`}
                 >
                   {walkthrough ? (
                     <><Pause className="h-3.5 w-3.5" /> Stop</>
@@ -254,29 +254,29 @@ export default function ProofTreeModal({
 
               <div className="flex items-center gap-2">
                 <Button
-                  variant={mode === "visual" ? "default" : "outline"}
+                  variant="outline"
                   size="sm"
                   onClick={() => setMode("visual")}
-                  className="gap-1 h-8"
+                  className={`gap-1 h-8 button text-impact-heading border-foreground ${mode === "visual" ? "bg-foreground text-background" : "bg-background text-foreground hover:bg-foreground hover:text-background"}`}
                 >
                   <TreePine className="h-3.5 w-3.5" />
                   Tree
                 </Button>
                 <Button
-                  variant={mode === "text" ? "default" : "outline"}
+                  variant="outline"
                   size="sm"
                   onClick={() => setMode("text")}
-                  className="gap-1 h-8"
+                  className={`gap-1 h-8 button text-impact-heading border-foreground ${mode === "text" ? "bg-foreground text-background" : "bg-background text-foreground hover:bg-foreground hover:text-background"}`}
                 >
                   <FileText className="h-3.5 w-3.5" />
                   Text
                 </Button>
-                <span className="text-gray-700">|</span>
+                <span className="text-foreground font-black">|</span>
                 <Button
-                  variant={eli5 ? "default" : "outline"}
+                  variant="outline"
                   size="sm"
                   onClick={() => setEli5(!eli5)}
-                  className="gap-1 h-8"
+                  className={`gap-1 h-8 button text-impact-heading border-foreground ${eli5 ? "bg-foreground text-background" : "bg-background text-foreground hover:bg-foreground hover:text-background"}`}
                 >
                   <Baby className="h-3.5 w-3.5" />
                   ELI5
@@ -285,7 +285,7 @@ export default function ProofTreeModal({
                   variant="outline"
                   size="sm"
                   onClick={exportAsPNG}
-                  className="gap-1 h-8"
+                  className="gap-1 h-8 button text-impact-heading bg-background border-foreground text-foreground hover:bg-foreground hover:text-background"
                 >
                   <Download className="h-3.5 w-3.5" />
                   Export

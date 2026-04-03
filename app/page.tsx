@@ -43,7 +43,7 @@ export default function HomePage() {
           <div className="animate-fade-in-up mb-8">
             <Badge
               variant="outline"
-              className="px-4 py-1.5 text-sm border-2 border-foreground bg-background text-foreground font-bold"
+              className="px-4 py-1.5 text-sm border-2 border-foreground bg-background text-foreground font-black uppercase tracking-wider"
             >
               <Zap className="h-3.5 w-3.5 mr-1.5 text-foreground" />
               Free & Open Source — No Sign Up Required
@@ -70,14 +70,14 @@ export default function HomePage() {
 
           <div className="animate-fade-in-up stagger-3 mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link href="/upload">
-              <span className="inline-flex items-center justify-center bg-primary text-primary-foreground font-bold px-8 py-4 rounded-lg text-lg hover:bg-red-700 transition-colors duration-150 shadow-sm gap-2 w-full sm:w-auto">
+              <span className="inline-flex items-center justify-center button text-impact-heading border-2 border-foreground bg-primary text-primary-foreground px-8 py-4 text-lg hover:bg-red-700 transition-all duration-150 shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] hover:-translate-y-[2px] gap-2 w-full sm:w-auto">
                 <Upload className="h-5 w-5" />
                 Analyze Your Contract
                 <ArrowRight className="h-5 w-5" />
               </span>
             </Link>
             <Link href="#features">
-              <span className="inline-flex items-center justify-center bg-foreground text-background font-bold px-8 py-4 rounded-lg text-lg hover:bg-neutral-800 transition-colors duration-150 gap-2 w-full sm:w-auto">
+              <span className="inline-flex items-center justify-center button text-impact-heading border-2 border-foreground bg-muted text-foreground px-8 py-4 text-lg hover:bg-background transition-all duration-150 shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] hover:-translate-y-[2px] gap-2 w-full sm:w-auto">
                 <Eye className="h-5 w-5" />
                 See All Features
               </span>
@@ -108,28 +108,28 @@ export default function HomePage() {
       {/* Extension Highlight Banner */}
       <section className="bg-muted py-16 px-4 md:px-6">
         <div className="mx-auto max-w-5xl">
-          <div className="bg-card rounded-lg border-2 border-border shadow-sm p-6 sm:p-8">
+          <div className="card-impact border-2 border-foreground p-6 sm:p-8 bg-card">
             <div className="flex flex-col md:flex-row items-center gap-6">
               <div className="flex-shrink-0">
-                <div className="h-16 w-16 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <Chrome className="h-8 w-8 text-primary" />
+                <div className="h-16 w-16 border-2 border-foreground bg-primary flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(10,10,10,1)]">
+                  <Chrome className="h-8 w-8 text-white" />
                 </div>
               </div>
               <div className="flex-1 text-center md:text-left">
                 <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
-                  <h3 className="text-xl font-bold text-foreground tracking-tight">Browser Extension</h3>
-                  <Badge className="bg-primary text-primary-foreground font-bold border-transparent">
+                  <h3 className="text-xl font-black uppercase tracking-wider text-foreground">Browser Extension</h3>
+                  <Badge className="bg-primary text-primary-foreground font-black uppercase tracking-wider border-2 border-primary">
                     NEW
                   </Badge>
                 </div>
-                <p className="text-muted-foreground text-sm font-medium">
+                <p className="text-muted-foreground text-sm font-bold mt-2">
                   Automatically scan Terms of Service on any website. Visit Spotify, Uber, or any app&apos;s
                   legal page — ClauseWall highlights dangerous clauses in real-time.
                 </p>
               </div>
               <div className="flex-shrink-0 mt-4 md:mt-0">
                 <Link href="#extension">
-                  <span className="inline-flex items-center justify-center bg-foreground text-background font-bold px-6 py-2.5 rounded-lg hover:bg-neutral-800 transition-colors duration-150 gap-2 text-sm">
+                  <span className="inline-flex items-center justify-center button text-impact-heading border-2 border-foreground px-6 py-2.5 bg-foreground text-background hover:bg-muted hover:text-foreground transition-all duration-150 hover:-translate-y-[2px] shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] gap-2 text-sm">
                     <Globe className="h-4 w-4" />
                     Learn More
                   </span>
@@ -143,78 +143,78 @@ export default function HomePage() {
       {/* Demo Preview */}
       <section className="bg-background py-24 px-4 md:px-6 border-y-2 border-border">
         <div className="mx-auto max-w-5xl">
-          <div className="border-2 border-foreground rounded-lg p-6 sm:p-8 shadow-sm bg-card">
-            <div className="flex items-center gap-3 mb-8 border-b-2 border-border pb-4">
-              <div className="h-3 w-3 rounded-full bg-red-500" />
-              <div className="h-3 w-3 rounded-full bg-yellow-500" />
-              <div className="h-3 w-3 rounded-full bg-green-500" />
-              <span className="text-sm font-bold text-foreground ml-2">
+          <div className="card-impact border-2 border-foreground p-6 sm:p-8 bg-card relative shadow-[8px_8px_0px_0px_rgba(10,10,10,1)]">
+            <div className="flex items-center gap-3 mb-8 border-b-2 border-foreground pb-4">
+              <div className="h-3 w-3 rounded-full bg-red-600" />
+              <div className="h-3 w-3 rounded-full bg-yellow-600" />
+              <div className="h-3 w-3 rounded-full bg-green-600" />
+              <span className="text-sm font-black text-foreground ml-2 uppercase tracking-wider">
                 ClauseWall — sample_rental_agreement.pdf
               </span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <div className="border-2 border-border rounded-lg p-6 text-center bg-background">
+              <div className="border-2 border-foreground card-impact p-6 text-center bg-background">
                 <div className="text-primary text-5xl font-black tabular-nums">73</div>
-                <div className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mt-2">Overall Risk Score</div>
+                <div className="text-sm font-black text-muted-foreground uppercase tracking-wider mt-2">Overall Risk Score</div>
               </div>
-              <div className="border-2 border-border rounded-lg p-6 text-center bg-background">
+              <div className="border-2 border-foreground card-impact p-6 text-center bg-background">
                 <div className="text-foreground text-5xl font-black tabular-nums">12</div>
-                <div className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mt-2">Clauses Analyzed</div>
+                <div className="text-sm font-black text-muted-foreground uppercase tracking-wider mt-2">Clauses Analyzed</div>
               </div>
-              <div className="border-2 border-border rounded-lg p-6 text-center bg-background">
+              <div className="border-2 border-foreground card-impact p-6 text-center bg-background">
                 <div className="text-purple-600 text-5xl font-black tabular-nums">3</div>
-                <div className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mt-2">Illegal Clauses Found</div>
+                <div className="text-sm font-black text-muted-foreground uppercase tracking-wider mt-2">Illegal Clauses Found</div>
               </div>
             </div>
 
             <div className="space-y-4">
-              <div className="bg-background rounded-lg p-6 border-l-4 border-l-purple-600 border-2 border-border shadow-sm">
+              <div className="bg-background card-impact p-6 border-l-8 border-l-purple-600 border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] relative ml-2">
                 <div className="flex items-center justify-between mb-4">
-                  <Badge className="bg-purple-600 text-white font-bold tracking-wider">
+                  <Badge className="bg-purple-600 text-white font-black uppercase tracking-wider border-2 border-purple-600">
                     ⛔ ILLEGAL
                   </Badge>
-                  <span className="text-sm font-bold text-foreground">Score: 92/100</span>
+                  <span className="text-sm font-black text-foreground uppercase tracking-wider">Score: 92/100</span>
                 </div>
-                <p className="text-sm text-foreground font-medium italic">
+                <p className="text-sm text-foreground font-bold italic border-l-2 border-foreground/20 pl-4 py-1">
                   &quot;The security deposit of 10 months rent shall be forfeited entirely if tenant
                   terminates before lock-in period...&quot;
                 </p>
-                <p className="text-sm font-bold text-purple-700 mt-3">
-                  ⚖️ Violates Model Tenancy Act, 2021 — Security deposit cannot exceed 2 months
-                  rent for residential property.
+                <p className="text-sm font-black text-purple-700 mt-4 uppercase tracking-wider leading-relaxed">
+                  <span className="text-xl inline-block mr-2 relative top-0.5">⚖️</span>
+                  Violates Model Tenancy Act, 2021 — Security deposit cannot exceed 2 months rent for residential property.
                 </p>
               </div>
 
-              <div className="bg-background rounded-lg p-6 border-l-4 border-l-primary border-2 border-border shadow-sm">
+              <div className="bg-background card-impact p-6 border-l-8 border-l-primary border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] relative ml-2">
                 <div className="flex items-center justify-between mb-4">
-                  <Badge className="bg-primary text-primary-foreground font-bold tracking-wider">
+                  <Badge className="bg-primary text-primary-foreground font-black uppercase tracking-wider border-2 border-primary">
                     🔴 DANGEROUS
                   </Badge>
-                  <span className="text-sm font-bold text-foreground">Score: 74/100</span>
+                  <span className="text-sm font-black text-foreground uppercase tracking-wider">Score: 74/100</span>
                 </div>
-                <p className="text-sm text-foreground font-medium italic">
+                <p className="text-sm text-foreground font-bold italic border-l-2 border-foreground/20 pl-4 py-1">
                   &quot;Tenant shall not be entitled to any interest on the security deposit
                   amount for the entire duration...&quot;
                 </p>
-                <p className="text-sm font-bold text-primary mt-3">
-                  ⚖️ Potential violation of Maharashtra Rent Control Act — Landlord must pay
-                  interest on deposit in certain states.
+                <p className="text-sm font-black text-primary mt-4 uppercase tracking-wider leading-relaxed">
+                  <span className="text-xl inline-block mr-2 relative top-0.5">⚖️</span>
+                  Potential violation of Maharashtra Rent Control Act — Landlord must pay interest on deposit in certain states.
                 </p>
               </div>
 
-              <div className="bg-background rounded-lg p-6 border-l-4 border-l-green-600 border-2 border-border shadow-sm">
+              <div className="bg-background card-impact p-6 border-l-8 border-l-green-600 border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] relative ml-2">
                 <div className="flex items-center justify-between mb-4">
-                  <Badge className="bg-green-600 text-white font-bold tracking-wider">
+                  <Badge className="bg-green-600 text-white font-black uppercase tracking-wider border-2 border-green-600">
                     ✅ SAFE
                   </Badge>
-                  <span className="text-sm font-bold text-foreground">Score: 8/100</span>
+                  <span className="text-sm font-black text-foreground uppercase tracking-wider">Score: 8/100</span>
                 </div>
-                <p className="text-sm text-foreground font-medium italic">
+                <p className="text-sm text-foreground font-bold italic border-l-2 border-foreground/20 pl-4 py-1">
                   &quot;The monthly rent shall be ₹25,000 payable on or before the 5th of each
                   month via bank transfer...&quot;
                 </p>
-                <p className="text-sm font-bold text-green-700 mt-3">
+                <p className="text-sm font-black text-green-700 mt-4 uppercase tracking-wider leading-relaxed">
                   Standard rent payment clause. Fair and straightforward.
                 </p>
               </div>
@@ -238,13 +238,13 @@ export default function HomePage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {/* Existing Features */}
           <Link href="/upload" className="block group">
-            <Card className="bg-card rounded-lg border-2 border-border shadow-sm p-8 hover:border-foreground transition-all duration-150 h-full">
+            <Card className="card-impact border-2 border-foreground p-8 hover:-translate-y-[4px] hover:shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] transition-all duration-150 h-full">
               <CardContent className="p-0">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 transition-transform group-hover:bg-primary/20">
+                <div className="w-12 h-12 border-2 border-foreground bg-muted flex items-center justify-center mb-4 transition-transform group-hover:-translate-y-1">
                   <Scale className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-bold text-foreground mt-4 mb-2">750+ Legal Rules</h3>
-                <p className="text-muted-foreground font-medium leading-relaxed text-sm">
+                <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">750+ Legal Rules</h3>
+                <p className="text-muted-foreground font-bold leading-relaxed text-sm">
                   Verified against Indian Contract Act, RERA, Model Tenancy Act, and state-specific
                   laws. Not AI guesses — real legal database.
                 </p>
@@ -253,13 +253,13 @@ export default function HomePage() {
           </Link>
 
           <Link href="/upload" className="block group">
-            <Card className="bg-card rounded-lg border-2 border-border shadow-sm p-8 hover:border-foreground transition-all duration-150 h-full">
+            <Card className="card-impact border-2 border-foreground p-8 hover:-translate-y-[4px] hover:shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] transition-all duration-150 h-full">
               <CardContent className="p-0">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 transition-transform group-hover:bg-primary/20">
+                <div className="w-12 h-12 border-2 border-foreground bg-muted flex items-center justify-center mb-4 transition-transform group-hover:-translate-y-1">
                   <AlertTriangle className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-bold text-foreground mt-4 mb-2">Clause-by-Clause Scoring</h3>
-                <p className="text-muted-foreground font-medium leading-relaxed text-sm">
+                <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">Clause-by-Clause Scoring</h3>
+                <p className="text-muted-foreground font-bold leading-relaxed text-sm">
                   Every clause gets a 0-100 risk score with plain English explanation. No legal
                   jargon. No confusion.
                 </p>
@@ -268,13 +268,13 @@ export default function HomePage() {
           </Link>
 
           <Link href="/upload" className="block group">
-            <Card className="bg-card rounded-lg border-2 border-border shadow-sm p-8 hover:border-foreground transition-all duration-150 h-full">
+            <Card className="card-impact border-2 border-foreground p-8 hover:-translate-y-[4px] hover:shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] transition-all duration-150 h-full">
               <CardContent className="p-0">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 transition-transform group-hover:bg-primary/20">
+                <div className="w-12 h-12 border-2 border-foreground bg-muted flex items-center justify-center mb-4 transition-transform group-hover:-translate-y-1">
                   <FileText className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-bold text-foreground mt-4 mb-2">Legal Notice Generator</h3>
-                <p className="text-muted-foreground font-medium leading-relaxed text-sm">
+                <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">Legal Notice Generator</h3>
+                <p className="text-muted-foreground font-bold leading-relaxed text-sm">
                   Don&apos;t just find problems — fight back. Auto-generate a professional legal
                   notice citing every violation.
                 </p>
@@ -284,18 +284,18 @@ export default function HomePage() {
 
           {/* NEW Feature Cards */}
           <Link href="/upload" className="block group">
-            <Card className="bg-card rounded-lg border-2 border-border shadow-sm p-8 hover:border-foreground transition-all duration-150 h-full relative overflow-hidden">
+            <Card className="card-impact border-2 border-foreground p-8 hover:-translate-y-[4px] hover:shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] transition-all duration-150 h-full relative overflow-hidden">
               <div className="absolute top-4 right-4">
-                <Badge className="bg-foreground text-background font-bold text-[10px] border-transparent">
+                <Badge className="bg-foreground text-background font-black uppercase tracking-wider text-[10px] border-2 border-foreground">
                   NEW
                 </Badge>
               </div>
               <CardContent className="p-0">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 transition-transform group-hover:bg-primary/20">
+                <div className="w-12 h-12 border-2 border-foreground bg-muted flex items-center justify-center mb-4 transition-transform group-hover:-translate-y-1">
                   <MessageSquare className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-bold text-foreground mt-4 mb-2">Negotiation Playbook</h3>
-                <p className="text-muted-foreground font-medium leading-relaxed text-sm">
+                <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">Negotiation Playbook</h3>
+                <p className="text-muted-foreground font-bold leading-relaxed text-sm">
                   Get exact scripts for what to say to your landlord. Counter-responses for every
                   pushback. Share to WhatsApp.
                 </p>
@@ -303,62 +303,62 @@ export default function HomePage() {
             </Card>
           </Link>
 
-          <Card id="extension" className="bg-card rounded-lg border-2 border-border shadow-sm p-8 hover:border-foreground transition-all duration-150 h-full relative overflow-hidden group">
+          <Card id="extension" className="card-impact border-2 border-foreground p-8 hover:-translate-y-[4px] hover:shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] transition-all duration-150 h-full relative overflow-hidden group">
             <div className="absolute top-4 right-4">
-              <Badge className="bg-foreground text-background font-bold text-[10px] border-transparent">
+              <Badge className="bg-foreground text-background font-black uppercase tracking-wider text-[10px] border-2 border-foreground">
                 NEW
               </Badge>
             </div>
             <CardContent className="p-0">
-              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 transition-transform group-hover:bg-primary/20">
+              <div className="w-12 h-12 border-2 border-foreground bg-muted flex items-center justify-center mb-4 transition-transform group-hover:-translate-y-1">
                 <Chrome className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-xl font-bold text-foreground mt-4 mb-2">Browser Extension</h3>
-              <p className="text-muted-foreground font-medium leading-relaxed text-sm">
+              <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">Browser Extension</h3>
+              <p className="text-muted-foreground font-bold leading-relaxed text-sm">
                 Auto-scan Terms of Service on any website. Extension highlights dangerous clauses
                 in real-time. Works on Chrome, Brave, Edge.
               </p>
             </CardContent>
           </Card>
 
-          <Card className="bg-card rounded-lg border-2 border-border shadow-sm p-8 hover:border-foreground transition-all duration-150 h-full relative overflow-hidden group">
+          <Card className="card-impact border-2 border-foreground p-8 hover:-translate-y-[4px] hover:shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] transition-all duration-150 h-full relative overflow-hidden group">
             <div className="absolute top-4 right-4">
-              <Badge className="bg-foreground text-background font-bold text-[10px] border-transparent">
+              <Badge className="bg-foreground text-background font-black uppercase tracking-wider text-[10px] border-2 border-foreground">
                 NEW
               </Badge>
             </div>
             <CardContent className="p-0">
-              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 transition-transform group-hover:bg-primary/20">
+              <div className="w-12 h-12 border-2 border-foreground bg-muted flex items-center justify-center mb-4 transition-transform group-hover:-translate-y-1">
                 <QrCode className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-xl font-bold text-foreground mt-4 mb-2">QR Verification Badge</h3>
-              <p className="text-muted-foreground font-medium leading-relaxed text-sm">
+              <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">QR Verification Badge</h3>
+              <p className="text-muted-foreground font-bold leading-relaxed text-sm">
                 &quot;Scan Before You Sign&quot; — Generate a QR badge for your contract. Tenant scans,
                 sees verification status. Build trust.
               </p>
             </CardContent>
           </Card>
 
-          <Card className="bg-card rounded-lg border-2 border-border shadow-sm p-8 hover:border-foreground transition-all duration-150 h-full group">
+          <Card className="card-impact border-2 border-foreground p-8 hover:-translate-y-[4px] hover:shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] transition-all duration-150 h-full group">
             <CardContent className="p-0">
-              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 transition-transform group-hover:bg-primary/20">
+              <div className="w-12 h-12 border-2 border-foreground bg-muted flex items-center justify-center mb-4 transition-transform group-hover:-translate-y-1">
                 <BookOpen className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-xl font-bold text-foreground mt-4 mb-2">Fair Alternative Suggestions</h3>
-              <p className="text-muted-foreground font-medium leading-relaxed text-sm">
+              <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">Fair Alternative Suggestions</h3>
+              <p className="text-muted-foreground font-bold leading-relaxed text-sm">
                 For every predatory clause, we show how it SHOULD read. Copy-paste the fair
                 version into your counter-proposal.
               </p>
             </CardContent>
           </Card>
 
-          <Card className="bg-card rounded-lg border-2 border-border shadow-sm p-8 hover:border-foreground transition-all duration-150 h-full group">
+          <Card className="card-impact border-2 border-foreground p-8 hover:-translate-y-[4px] hover:shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] transition-all duration-150 h-full group">
             <CardContent className="p-0">
-              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 transition-transform group-hover:bg-primary/20">
+              <div className="w-12 h-12 border-2 border-foreground bg-muted flex items-center justify-center mb-4 transition-transform group-hover:-translate-y-1">
                 <Users className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-xl font-bold text-foreground mt-4 mb-2">Community Intelligence</h3>
-              <p className="text-muted-foreground font-medium leading-relaxed text-sm">
+              <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">Community Intelligence</h3>
+              <p className="text-muted-foreground font-bold leading-relaxed text-sm">
                 &quot;This clause pattern has been flagged 47 times in Mumbai.&quot; Learn from
                 others&apos; experiences. Crowdsourced protection.
               </p>
@@ -366,13 +366,13 @@ export default function HomePage() {
           </Card>
 
           <Link href="/wall-of-shame" className="block group">
-            <Card className="bg-card rounded-lg border-2 border-border shadow-sm p-8 hover:border-foreground transition-all duration-150 h-full">
+            <Card className="card-impact border-2 border-foreground p-8 hover:-translate-y-[4px] hover:shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] transition-all duration-150 h-full">
               <CardContent className="p-0">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 transition-transform group-hover:bg-primary/20">
+                <div className="w-12 h-12 border-2 border-foreground bg-muted flex items-center justify-center mb-4 transition-transform group-hover:-translate-y-1">
                   <Blocks className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-bold text-foreground mt-4 mb-2">Wall of Shame</h3>
-                <p className="text-muted-foreground font-medium leading-relaxed text-sm">
+                <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">Wall of Shame</h3>
+                <p className="text-muted-foreground font-bold leading-relaxed text-sm">
                   &quot;This landlord&apos;s contracts have been flagged 47
                   times.&quot; Check entity reputation before you sign.
                 </p>
@@ -395,34 +395,34 @@ export default function HomePage() {
 
         <div className="flex flex-col md:flex-row items-start gap-12 md:gap-8 max-w-7xl mx-auto">
           <div className="flex-1 text-center md:text-left relative group w-full">
-            <div className="hidden md:block absolute top-[24px] left-[60px] lg:left-[80px] right-[-20%] lg:right-[-10%] border-t-2 border-dashed border-border" />
-            <div className="w-12 h-12 rounded-full bg-foreground text-background font-black text-lg flex items-center justify-center mb-6 mx-auto md:mx-0 relative z-10">
+            <div className="hidden md:block absolute top-[24px] left-[60px] lg:left-[80px] right-[-20%] lg:right-[-10%] border-t-2 border-dashed border-foreground/30" />
+            <div className="w-12 h-12 border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] bg-primary text-primary-foreground font-black text-lg flex items-center justify-center mb-6 mx-auto md:mx-0 relative z-10 transition-transform group-hover:-translate-y-1">
               1
             </div>
-            <h3 className="text-xl font-bold text-foreground mt-4 mb-3">Upload</h3>
-            <p className="text-sm text-muted-foreground font-medium leading-relaxed">
+            <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-3">Upload</h3>
+            <p className="text-sm text-muted-foreground font-bold leading-relaxed">
               Drop your PDF or paste the contract text. Rental agreements, offer letters,
               loan documents — we handle them all.
             </p>
           </div>
 
           <div className="flex-1 text-center md:text-left relative group w-full">
-            <div className="hidden md:block absolute top-[24px] left-[60px] lg:left-[80px] right-[-20%] lg:right-[-10%] border-t-2 border-dashed border-border" />
-            <div className="w-12 h-12 rounded-full bg-foreground text-background font-black text-lg flex items-center justify-center mb-6 mx-auto md:mx-0 relative z-10">
+            <div className="hidden md:block absolute top-[24px] left-[60px] lg:left-[80px] right-[-20%] lg:right-[-10%] border-t-2 border-dashed border-foreground/30" />
+            <div className="w-12 h-12 border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] bg-primary text-primary-foreground font-black text-lg flex items-center justify-center mb-6 mx-auto md:mx-0 relative z-10 transition-transform group-hover:-translate-y-1">
               2
             </div>
-            <h3 className="text-xl font-bold text-foreground mt-4 mb-3">Analyze</h3>
-            <p className="text-sm text-muted-foreground font-medium leading-relaxed">
+            <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-3">Analyze</h3>
+            <p className="text-sm text-muted-foreground font-bold leading-relaxed">
               Quick scan in 5 seconds. Full verified analysis in 60 seconds.
             </p>
           </div>
 
           <div className="flex-1 text-center md:text-left relative group w-full">
-            <div className="w-12 h-12 rounded-full bg-foreground text-background font-black text-lg flex items-center justify-center mb-6 mx-auto md:mx-0 relative z-10">
+            <div className="w-12 h-12 border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] bg-primary text-primary-foreground font-black text-lg flex items-center justify-center mb-6 mx-auto md:mx-0 relative z-10 transition-transform group-hover:-translate-y-1">
               3
             </div>
-            <h3 className="text-xl font-bold text-foreground mt-4 mb-3">Protect</h3>
-            <p className="text-sm text-muted-foreground font-medium leading-relaxed">
+            <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-3">Protect</h3>
+            <p className="text-sm text-muted-foreground font-bold leading-relaxed">
               Get negotiation scripts, generate legal notices, share QR badge.
             </p>
           </div>
@@ -466,7 +466,7 @@ export default function HomePage() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link href="/upload">
-              <span className="inline-flex items-center justify-center bg-primary text-primary-foreground font-bold px-10 py-5 rounded-lg text-lg hover:bg-red-700 transition-colors duration-150 shadow-sm gap-3">
+              <span className="inline-flex items-center justify-center button text-impact-heading border-2 border-foreground bg-primary text-primary-foreground px-10 py-5 hover:bg-red-700 transition-all duration-150 shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] hover:-translate-y-[2px] gap-3">
                 <Shield className="h-6 w-6" />
                 Build Your Wall — It&apos;s Free
                 <ChevronRight className="h-6 w-6" />

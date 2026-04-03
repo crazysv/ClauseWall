@@ -158,7 +158,7 @@ export default function QuickScanResult({
       return {
         color: "text-purple-600",
         bg: "bg-purple-500/10",
-        border: "card-impact-emphasis",
+        border: "card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)]",
         label: "CRITICAL RISK",
         sublabel: "Do NOT sign this contract",
         icon: <Scale className="h-12 w-12 text-purple-600" />,
@@ -168,7 +168,7 @@ export default function QuickScanResult({
       return {
         color: "text-red-600",
         bg: "bg-red-500/10",
-        border: "card-impact-emphasis",
+        border: "card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)]",
         label: "HIGH RISK",
         sublabel: "Significant issues found",
         icon: <XCircle className="h-12 w-12 text-red-600" />,
@@ -178,7 +178,7 @@ export default function QuickScanResult({
       return {
         color: "text-yellow-600",
         bg: "bg-yellow-500/10",
-        border: "card-impact",
+        border: "card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)]",
         label: "MEDIUM RISK",
         sublabel: "Some concerns to review",
         icon: <AlertTriangle className="h-12 w-12 text-yellow-600" />,
@@ -187,7 +187,7 @@ export default function QuickScanResult({
     return {
       color: "text-green-600",
       bg: "bg-green-500/10",
-      border: "card-impact",
+      border: "card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)]",
       label: "LOW RISK",
       sublabel: "Looks mostly fair",
       icon: <CheckCircle2 className="h-12 w-12 text-green-600" />,
@@ -211,13 +211,13 @@ export default function QuickScanResult({
   const getSeverityBadge = (severity: string) => {
     switch (severity) {
       case "illegal":
-        return "bg-purple-600 text-white font-bold border-2 border-foreground";
+        return "bg-purple-600 text-white font-black uppercase tracking-wider border-2 border-foreground";
       case "dangerous":
-        return "bg-primary text-primary-foreground font-bold border-2 border-foreground";
+        return "bg-primary text-primary-foreground font-black uppercase tracking-wider border-2 border-foreground";
       case "warning":
-        return "bg-yellow-500 text-foreground font-bold border-2 border-foreground";
+        return "bg-yellow-500 text-foreground font-black uppercase tracking-wider border-2 border-foreground";
       default:
-        return "bg-yellow-500 text-foreground font-bold border-2 border-foreground";
+        return "bg-yellow-500 text-foreground font-black uppercase tracking-wider border-2 border-foreground";
     }
   };
 
@@ -237,29 +237,29 @@ export default function QuickScanResult({
       case "illegal":
         return {
           color: "text-purple-600",
-          bg: "bg-purple-500/10",
-          border: "border-2 border-purple-600",
+          bg: "bg-background",
+          border: "border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(147,51,234,1)]",
           label: "CRITICAL",
         };
       case "dangerous":
         return {
           color: "text-primary",
-          bg: "bg-red-500/10",
-          border: "border-2 border-primary",
+          bg: "bg-background",
+          border: "border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(220,38,38,1)]",
           label: "HIGH RISK",
         };
       case "warning":
         return {
           color: "text-yellow-600",
-          bg: "bg-yellow-500/10",
-          border: "border-2 border-yellow-600",
+          bg: "bg-background",
+          border: "border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(202,138,4,1)]",
           label: "CAUTION",
         };
       default:
         return {
           color: "text-green-600",
-          bg: "bg-green-500/10",
-          border: "border-2 border-green-600",
+          bg: "bg-background",
+          border: "border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(22,163,74,1)]",
           label: "LOW RISK",
         };
     }
@@ -381,9 +381,9 @@ export default function QuickScanResult({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <Card className="card-impact mt-6">
+            <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] mt-6">
               <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                <h3 className="text-xl font-black uppercase tracking-wider text-foreground mb-4 flex items-center gap-2">
                   🚩 Red Flags Found
                 </h3>
                 <div className="space-y-4">
@@ -393,7 +393,7 @@ export default function QuickScanResult({
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: i * 0.08 }}
-                      className="flex items-start gap-4 p-4 rounded-lg bg-muted border-2 border-border"
+                      className="flex items-start gap-4 p-4 border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] bg-card border-l-8 border-l-primary"
                     >
                       <div className="mt-0.5">
                         {getSeverityIcon(flag.severity)}
@@ -403,7 +403,7 @@ export default function QuickScanResult({
                           <Badge className={getSeverityBadge(flag.severity)}>
                             {flag.severity.toUpperCase()}
                           </Badge>
-                          <span className="font-bold text-base text-foreground">
+                          <span className="font-black uppercase tracking-wider text-base text-foreground">
                             {flag.title}
                           </span>
                         </div>
@@ -432,9 +432,9 @@ export default function QuickScanResult({
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
           >
-            <Card className="card-impact mt-6">
+            <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] mt-6">
               <CardContent className="p-6">
-                <h3 className="text-lg font-bold text-foreground mb-1 flex items-center gap-2">
+                <h3 className="text-lg font-black uppercase tracking-wider text-foreground mb-1 flex items-center gap-2">
                   🚩 Preliminary Flags
                   <Badge className="bg-foreground text-background font-bold border-2 border-foreground text-[10px] gap-1">
                     <Cpu className="h-2.5 w-2.5" />
@@ -455,7 +455,7 @@ export default function QuickScanResult({
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: i * 0.06 }}
-                        className={`flex items-start gap-3 p-3 rounded-lg ${config.bg} border ${config.border}`}
+                        className={`flex items-start gap-3 p-3 ${config.bg} border ${config.border}`}
                       >
                         <div className={`mt-0.5 ${config.color}`}>
                           {getSeverityIcon(clause.riskLevel)}
@@ -464,11 +464,11 @@ export default function QuickScanResult({
                           <div className="flex items-center gap-2 mb-1">
                             <Badge
                               variant="outline"
-                              className={`text-[10px] ${config.color} ${config.border}`}
+                              className={`text-[10px] font-black uppercase tracking-wider shadow-[2px_2px_0px_0px_rgba(10,10,10,1)] ${config.color} ${config.border}`}
                             >
                               {config.label}
                             </Badge>
-                            <span className="text-[10px] text-muted-foreground">
+                            <span className="text-[10px] font-bold text-muted-foreground">
                               {confPercent}% confident
                             </span>
                           </div>
@@ -517,9 +517,9 @@ export default function QuickScanResult({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <Card className="card-impact">
+            <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)]">
               <CardContent className="p-6">
-                <h3 className="text-lg font-bold text-foreground mb-3 flex items-center gap-2">
+                <h3 className="text-lg font-black uppercase tracking-wider text-foreground mb-3 flex items-center gap-2">
                   ✅ What Looks Good
                 </h3>
                 <div className="space-y-3">
@@ -566,12 +566,12 @@ export default function QuickScanResult({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <Card className="card-impact bg-muted">
+            <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] bg-muted">
               <CardContent className="p-6">
-                <h3 className="text-lg font-bold text-foreground mb-2 flex items-center gap-2">
+                <h3 className="text-lg font-black uppercase tracking-wider text-foreground mb-2 flex items-center gap-2">
                   💬 Quick Verdict
                 </h3>
-                <p className="text-foreground font-semibold italic">
+                <p className="text-foreground font-black italic text-lg leading-relaxed">
                   &quot;{result.one_line_verdict}&quot;
                 </p>
               </CardContent>
@@ -634,12 +634,12 @@ export default function QuickScanResult({
       {/* ============================================ */}
       {documentId && (
         <Card
-          className={`glass border overflow-hidden transition-all duration-500 ${
+          className={`card-impact border-2 border-foreground transition-all duration-500 hover:-translate-y-[2px] shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] ${
             isCompleted
-              ? "border-green-500/30 shadow-lg shadow-green-500/10"
+              ? "bg-green-100"
               : isFailed
-                ? "border-red-500/30 shadow-lg shadow-red-500/10"
-                : "border-blue-500/20"
+                ? "bg-red-100"
+                : "bg-muted"
           }`}
         >
           <CardContent className="p-6">
@@ -805,7 +805,7 @@ export default function QuickScanResult({
                   )}
 
                   <Link href={`/results/${documentId}`} scroll={true}>
-                    <Button className="w-full bg-green-600 hover:bg-green-700 gap-2 py-6 text-lg shadow-lg shadow-green-500/20 group">
+                    <Button className="w-full button text-impact-heading border-2 border-foreground bg-green-600 hover:bg-green-700 text-white gap-2 py-6 text-lg hover:-translate-y-[2px] shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] group">
                       <FileText className="h-5 w-5" />
                       View Full Report
                       <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -858,7 +858,7 @@ export default function QuickScanResult({
           variant="outline"
           size="lg"
           onClick={onReset}
-          className="gap-2"
+          className="button text-impact-heading border-2 border-foreground hover:-translate-y-[2px] shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] hover:bg-background gap-2"
         >
           <Upload className="h-5 w-5" />
           Analyze Another Contract

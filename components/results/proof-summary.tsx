@@ -38,37 +38,36 @@ export default function ProofSummary({ proofTree, onViewProof, documentId }: Pro
 
   const summary = getProofSummary(proofTree);
 
-  // Color scheme based on verdict
   const colorMap: Record<string, {
     bg: string; border: string; text: string; icon: string; badge: string;
   }> = {
     illegal: {
-      bg: "bg-red-500/5",
-      border: "border-red-500/30",
-      text: "text-red-400",
-      icon: "text-red-400",
-      badge: "bg-red-500/15 text-red-400 border-red-500/30",
+      bg: "bg-background",
+      border: "border-red-600",
+      text: "text-red-600",
+      icon: "text-red-600",
+      badge: "bg-background text-red-600 border-red-600",
     },
     dangerous: {
-      bg: "bg-orange-500/5",
-      border: "border-orange-500/30",
-      text: "text-orange-400",
-      icon: "text-orange-400",
-      badge: "bg-orange-500/15 text-orange-400 border-orange-500/30",
+      bg: "bg-background",
+      border: "border-orange-600",
+      text: "text-orange-600",
+      icon: "text-orange-600",
+      badge: "bg-background text-orange-600 border-orange-600",
     },
     warning: {
-      bg: "bg-amber-500/5",
-      border: "border-amber-500/30",
-      text: "text-amber-400",
-      icon: "text-amber-400",
-      badge: "bg-amber-500/15 text-amber-400 border-amber-500/30",
+      bg: "bg-background",
+      border: "border-yellow-600",
+      text: "text-yellow-600",
+      icon: "text-yellow-600",
+      badge: "bg-background text-yellow-600 border-yellow-600",
     },
     safe: {
-      bg: "bg-emerald-500/5",
-      border: "border-emerald-500/30",
-      text: "text-emerald-400",
-      icon: "text-emerald-400",
-      badge: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
+      bg: "bg-background",
+      border: "border-green-600",
+      text: "text-green-600",
+      icon: "text-green-600",
+      badge: "bg-background text-green-600 border-green-600",
     },
   };
 
@@ -84,24 +83,24 @@ export default function ProofSummary({ proofTree, onViewProof, documentId }: Pro
         e.stopPropagation();
         onViewProof();
       }}
-      className={`w-full flex items-center justify-between p-3 rounded-lg ${colors.bg} border ${colors.border} hover:brightness-110 transition-all group`}
+      className={`w-full flex items-center justify-between p-3 card-impact border-2 ${colors.bg} ${colors.border} hover:-translate-y-[1px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all group`}
     >
       <div className="flex items-center gap-2 flex-wrap">
         <Scale className={`h-4 w-4 ${colors.icon}`} />
-        <span className={`text-xs font-semibold ${colors.text}`}>
+        <span className={`text-xs font-black uppercase tracking-wider ${colors.text}`}>
           Formally Proven:
         </span>
-        <Badge className={`${colors.badge} text-[10px] gap-1`}>
+        <Badge variant="outline" className={`${colors.badge} border-2 text-[10px] gap-1 font-black uppercase tracking-wider`}>
           <ShieldCheck className="h-3 w-3" />
           {verdictLabel}
         </Badge>
-        <span className="text-xs text-gray-500">
+        <span className="text-xs font-bold text-muted-foreground">
           {summary.stepsCount} steps · {summary.verifiedPercent}% verified
           {summary.mainStatute ? ` · ${summary.mainStatute}` : ""}
         </span>
       </div>
       <div className="flex items-center gap-1">
-        <span className={`text-xs ${colors.text} opacity-0 group-hover:opacity-100 transition-opacity`}>
+        <span className={`text-xs font-black uppercase tracking-wider ${colors.text} opacity-0 group-hover:opacity-100 transition-opacity`}>
           View Proof Tree
         </span>
         <ChevronRight className={`h-4 w-4 ${colors.icon} group-hover:translate-x-0.5 transition-transform`} />
@@ -112,20 +111,20 @@ export default function ProofSummary({ proofTree, onViewProof, documentId }: Pro
         proofTree.verdict === 'proven_illegal' ||
         proofTree.verdict === 'proven_dangerous'
       ) && (
-        <div className="flex flex-wrap items-center gap-2 mt-2 pt-2 border-t border-white/5">
-          <span className="text-[10px] text-white/20">Next:</span>
+        <div className="flex flex-wrap items-center gap-2 mt-2 pt-2 border-t-2 border-foreground">
+          <span className="text-[10px] font-black uppercase tracking-wider text-muted-foreground">Next:</span>
           <Link
             href={`/negotiate/${documentId}`}
             onClick={(e) => e.stopPropagation()}
-            className="text-[10px] text-emerald-400/60 hover:text-emerald-400 transition-colors"
+            className="text-[10px] font-black tracking-wider uppercase text-emerald-600 hover:text-emerald-700 transition-colors"
           >
             Get negotiation script →
           </Link>
-          <span className="text-white/10">·</span>
+          <span className="text-muted-foreground">·</span>
           <Link
             href={`/letter/${documentId}`}
             onClick={(e) => e.stopPropagation()}
-            className="text-[10px] text-amber-400/60 hover:text-amber-400 transition-colors"
+            className="text-[10px] font-black tracking-wider uppercase text-amber-600 hover:text-amber-700 transition-colors"
           >
             Generate legal notice →
           </Link>

@@ -153,10 +153,10 @@ export default function ELI5Section({
         variant="outline"
         size="sm"
         onClick={handleToggle}
-        className={`gap-2 text-xs ${
+        className={`gap-2 text-xs button text-impact-heading border-foreground ${
           isOpen
-            ? "bg-yellow-500/10 border-yellow-500/30 text-yellow-400"
-            : "border-white/10 text-muted-foreground hover:text-yellow-400 hover:border-yellow-500/30"
+            ? "bg-foreground text-background"
+            : "bg-background text-foreground hover:bg-foreground hover:text-background"
         }`}
       >
         <Lightbulb className="h-3.5 w-3.5" />
@@ -165,12 +165,12 @@ export default function ELI5Section({
 
       {/* Explanation Panel */}
       {isOpen && (
-        <div className="mt-3 rounded-xl border border-yellow-500/20 bg-yellow-500/5 overflow-hidden">
+        <div className="mt-3 card-impact border-2 border-yellow-600 bg-background overflow-hidden">
           {/* Loading State */}
           {loading && (
             <div className="p-6 flex items-center justify-center gap-3">
-              <Loader2 className="h-5 w-5 animate-spin text-yellow-400" />
-              <span className="text-sm text-muted-foreground">
+              <Loader2 className="h-5 w-5 animate-spin text-yellow-600" />
+              <span className="text-sm font-bold text-muted-foreground">
                 Generating simple explanation...
               </span>
             </div>
@@ -180,13 +180,13 @@ export default function ELI5Section({
           {data && !loading && (
             <>
               {/* Tab Buttons */}
-              <div className="flex border-b border-yellow-500/20">
+              <div className="flex border-b-2 border-foreground">
                 <button
                   onClick={() => setActiveTab("simple")}
-                  className={`flex-1 px-4 py-3 text-sm font-medium flex items-center justify-center gap-2 transition-colors ${
+                  className={`flex-1 px-4 py-3 text-sm font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-colors ${
                     activeTab === "simple"
-                      ? "bg-yellow-500/10 text-yellow-400 border-b-2 border-yellow-400"
-                      : "text-muted-foreground hover:text-foreground"
+                      ? "bg-muted text-foreground border-b-4 border-foreground"
+                      : "bg-background text-muted-foreground hover:bg-muted hover:text-foreground"
                   }`}
                 >
                   <Lightbulb className="h-4 w-4" />
@@ -194,10 +194,10 @@ export default function ELI5Section({
                 </button>
                 <button
                   onClick={() => setActiveTab("hindi")}
-                  className={`flex-1 px-4 py-3 text-sm font-medium flex items-center justify-center gap-2 transition-colors ${
+                  className={`flex-1 px-4 py-3 text-sm font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-colors ${
                     activeTab === "hindi"
-                      ? "bg-orange-500/10 text-orange-400 border-b-2 border-orange-400"
-                      : "text-muted-foreground hover:text-foreground"
+                      ? "bg-muted text-foreground border-b-4 border-foreground"
+                      : "bg-background text-muted-foreground hover:bg-muted hover:text-foreground"
                   }`}
                 >
                   <Languages className="h-4 w-4" />
@@ -208,7 +208,7 @@ export default function ELI5Section({
               {/* Simple English */}
               {activeTab === "simple" && (
                 <div className="p-4">
-                  <p className="text-sm leading-relaxed text-foreground">
+                  <p className="text-sm font-bold leading-relaxed text-foreground">
                     {data.simple_english}
                   </p>
                   <div className="mt-3 flex items-center gap-2">
@@ -220,10 +220,10 @@ export default function ELI5Section({
                           ? stopSpeaking()
                           : speak(data.simple_english, "en-IN")
                       }
-                      className={`gap-2 text-xs ${
+                      className={`gap-2 text-xs button text-impact-heading border-foreground ${
                         isSpeaking && activeTab === "simple"
-                          ? "text-yellow-400 bg-yellow-500/10"
-                          : "text-muted-foreground"
+                          ? "bg-foreground text-background"
+                          : "bg-background text-muted-foreground hover:text-foreground hover:bg-muted"
                       }`}
                     >
                       {isSpeaking && activeTab === "simple" ? (
@@ -245,7 +245,7 @@ export default function ELI5Section({
               {/* Hindi */}
               {activeTab === "hindi" && (
                 <div className="p-4">
-                  <p className="text-sm leading-relaxed text-foreground" dir="auto">
+                  <p className="text-sm font-bold leading-relaxed text-foreground" dir="auto">
                     {data.hindi}
                   </p>
                   <div className="mt-3 flex items-center gap-2">
@@ -258,10 +258,10 @@ export default function ELI5Section({
                             ? stopSpeaking()
                             : speak(data.hindi, "hi-IN")
                         }
-                        className={`gap-2 text-xs ${
+                        className={`gap-2 text-xs button text-impact-heading border-foreground ${
                           isSpeaking && activeTab === "hindi"
-                            ? "text-orange-400 bg-orange-500/10"
-                            : "text-muted-foreground"
+                            ? "bg-foreground text-background"
+                            : "bg-background text-muted-foreground hover:text-foreground hover:bg-muted"
                         }`}
                       >
                         {isSpeaking && activeTab === "hindi" ? (
@@ -277,7 +277,7 @@ export default function ELI5Section({
                         )}
                       </Button>
                     ) : (
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-xs font-black uppercase tracking-wider text-muted-foreground">
                         ⚠️ Hindi voice not available on this device
                       </span>
                     )}

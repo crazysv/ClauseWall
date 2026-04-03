@@ -151,23 +151,23 @@ export default function MismatchBanner({
   };
 
   return (
-    <div className="mb-6 p-4 rounded-lg bg-yellow-500/10 border border-yellow-500/30 relative">
+    <div className="mb-6 p-4 card-impact border-2 border-yellow-600 bg-background relative">
       {/* Dismiss button */}
       <button
         onClick={() => setDismissed(true)}
-        className="absolute top-3 right-3 p-1 rounded-full hover:bg-white/10 transition-colors"
+        className="absolute top-3 right-3 p-1 rounded-full hover:bg-muted transition-colors"
         aria-label="Dismiss"
       >
-        <X className="h-4 w-4 text-yellow-400/70" />
+        <X className="h-4 w-4 text-yellow-600" />
       </button>
 
       <div className="flex items-start gap-3">
-        <div className="h-10 w-10 rounded-lg bg-yellow-500/20 flex items-center justify-center flex-shrink-0">
-          <AlertTriangle className="h-5 w-5 text-yellow-400" />
+        <div className="h-10 w-10 border-2 border-yellow-600 bg-muted flex items-center justify-center flex-shrink-0">
+          <AlertTriangle className="h-5 w-5 text-yellow-600" />
         </div>
 
         <div className="flex-1 pr-6">
-          <h3 className="font-semibold text-yellow-300 mb-1">
+          <h3 className="font-black uppercase tracking-wider text-yellow-600 mb-1">
             {hasJurisdictionMismatch && hasDocTypeMismatch
               ? "Multiple Mismatches Detected"
               : hasJurisdictionMismatch
@@ -175,17 +175,17 @@ export default function MismatchBanner({
                 : "Document Type Mismatch Detected"}
           </h3>
 
-          <div className="text-sm text-yellow-200/80 mb-3 space-y-2">
+          <div className="text-sm font-bold text-foreground mb-3 space-y-2">
             {hasJurisdictionMismatch && (
               <p className="flex items-center gap-2">
                 <MapPin className="h-4 w-4 flex-shrink-0" />
                 <span>
                   Contract mentions{" "}
-                  <strong className="text-yellow-200">
+                  <strong className="text-yellow-600 font-black uppercase tracking-wider">
                     {getStateName(normalizedDetected!)}
                   </strong>{" "}
                   but you selected{" "}
-                  <strong className="text-yellow-200">
+                  <strong className="text-yellow-600 font-black uppercase tracking-wider">
                     {getStateName(selectedJurisdiction)}
                   </strong>
                 </span>
@@ -197,11 +197,11 @@ export default function MismatchBanner({
                 <FileText className="h-4 w-4 flex-shrink-0" />
                 <span>
                   This looks like{" "}
-                  <strong className="text-yellow-200">
+                  <strong className="text-yellow-600 font-black uppercase tracking-wider">
                     {getDocumentTypeLabel(normalizedDetectedDocType!)}
                   </strong>{" "}
                   but you selected{" "}
-                  <strong className="text-yellow-200">
+                  <strong className="text-yellow-600 font-black uppercase tracking-wider">
                     {getDocumentTypeLabel(selectedDocType)}
                   </strong>
                 </span>
@@ -209,7 +209,7 @@ export default function MismatchBanner({
             )}
           </div>
 
-          <p className="text-xs text-yellow-300/60 mb-3">
+          <p className="text-xs font-bold text-muted-foreground mb-3">
             Using incorrect settings may result in wrong legal references and risk scores.
           </p>
 
@@ -218,7 +218,7 @@ export default function MismatchBanner({
               size="sm"
               onClick={handleReanalyze}
               disabled={reanalyzing}
-              className="gap-2 bg-yellow-600 hover:bg-yellow-700 text-white"
+              className="gap-2 button text-impact-heading border-foreground bg-yellow-500 text-foreground hover:bg-yellow-600"
             >
               {reanalyzing ? (
                 <>
@@ -235,7 +235,7 @@ export default function MismatchBanner({
 
             <button
               onClick={() => setDismissed(true)}
-              className="text-sm text-yellow-300/70 hover:text-yellow-300 transition-colors"
+              className="text-sm font-black uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors"
             >
               Keep Current Settings
             </button>

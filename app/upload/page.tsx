@@ -544,8 +544,8 @@ export default function UploadPage() {
           <>
             {/* Header */}
             <div className="text-center mb-10">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 mb-6">
-                <Shield className="h-8 w-8 text-primary" />
+              <div className="inline-flex items-center justify-center w-16 h-16 border-2 border-foreground bg-primary shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] mb-6">
+                <Shield className="h-8 w-8 text-white" />
               </div>
               <h1 className="text-impact-heading text-foreground mb-4">
                 Analyze Your Contract
@@ -560,14 +560,16 @@ export default function UploadPage() {
                 {mlStatus === "ready" && (
                   <Badge
                     variant="outline"
+                    className="border-2 border-primary text-primary font-black uppercase tracking-wider bg-primary/10"
                   >
-                    <Cpu className="h-3 w-3 mr-1" />
+                    <Cpu className="h-3 w-3 mr-1 text-primary" />
                     On-device AI ready
                   </Badge>
                 )}
                 {mlStatus === "loading" && (
                   <Badge
                     variant="outline"
+                    className="border-2 border-foreground text-foreground font-black uppercase tracking-wider bg-muted"
                   >
                     <Loader2 className="h-3 w-3 animate-spin mr-1" />
                     Loading on-device AI...
@@ -577,24 +579,24 @@ export default function UploadPage() {
             </div>
 
             {/* Upload Card */}
-            <Card className="card-impact">
+            <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] bg-card">
               <CardContent className="p-6 sm:p-8 space-y-8">
                 <Tabs
                   value={activeTab}
                   onValueChange={setActiveTab}
                   className="mb-6"
                 >
-                  <TabsList className="grid w-full grid-cols-2">
+                  <TabsList className="grid w-full grid-cols-2 border-2 border-foreground bg-muted p-1 rounded-md shadow-[4px_4px_0px_0px_rgba(10,10,10,1)]">
                     <TabsTrigger
                       value="upload"
-                      className="gap-2 font-bold"
+                      className="gap-2 font-black uppercase tracking-wider data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:border-2 data-[state=active]:border-foreground data-[state=active]:shadow-sm"
                     >
                       <Upload className="h-4 w-4" />
                       Upload PDF
                     </TabsTrigger>
                     <TabsTrigger
                       value="paste"
-                      className="gap-2 font-bold"
+                      className="gap-2 font-black uppercase tracking-wider data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:border-2 data-[state=active]:border-foreground data-[state=active]:shadow-sm"
                     >
                       <ClipboardPaste className="h-4 w-4" />
                       Paste Text
@@ -605,10 +607,10 @@ export default function UploadPage() {
                     {!file ? (
                       <div
                         {...getRootProps()}
-                        className={`border-2 border-dashed rounded-lg p-12 md:p-16 text-center cursor-pointer transition-colors duration-150 ${
+                        className={`border-4 border-dashed rounded-lg p-12 md:p-16 text-center cursor-pointer transition-all duration-150 ${
                           isDragActive
-                            ? "border-primary bg-primary/5"
-                            : "border-border hover:border-primary hover:bg-primary/5"
+                            ? "border-primary bg-primary/10"
+                            : "border-foreground/50 bg-background hover:border-foreground hover:bg-muted"
                         }`}
                       >
                         <input {...getInputProps()} />
@@ -616,36 +618,36 @@ export default function UploadPage() {
                           className={`w-12 h-12 mx-auto mb-4 transition-colors ${
                             isDragActive
                               ? "text-primary"
-                              : "text-muted-foreground hover:text-primary"
+                              : "text-foreground"
                           }`}
                         />
                         {isDragActive ? (
-                          <p className="text-lg font-bold text-primary mt-4">
+                          <p className="text-xl font-black uppercase tracking-wider text-primary mt-4">
                             Drop your contract here...
                           </p>
                         ) : (
                           <>
-                            <p className="text-lg font-bold text-foreground mt-4">
+                            <p className="text-xl font-black uppercase tracking-wider text-foreground mt-4">
                               Drag & drop your PDF here
                             </p>
-                            <p className="text-sm text-muted-foreground mt-1">
+                            <p className="text-sm font-bold text-muted-foreground mt-2">
                               or click to browse
                             </p>
-                            <p className="text-xs text-muted-foreground mt-4">
+                            <p className="text-xs font-bold text-muted-foreground mt-4 uppercase tracking-wider">
                               PDF or TXT • Max 10MB
                             </p>
                           </>
                         )}
                       </div>
                     ) : (
-                      <div className="border-2 border-foreground bg-muted rounded-lg p-4 flex items-center justify-between mt-4">
+                      <div className="border-2 border-foreground bg-muted card-impact p-4 flex items-center justify-between mt-4">
                         <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                            <FileText className="h-5 w-5 text-primary" />
+                          <div className="h-10 w-10 border-2 border-foreground bg-primary flex items-center justify-center">
+                            <FileText className="h-5 w-5 text-white" />
                           </div>
                           <div>
-                            <p className="text-base font-bold text-foreground">{file.name}</p>
-                            <p className="text-sm text-muted-foreground">
+                            <p className="text-base font-black uppercase tracking-wider text-foreground">{file.name}</p>
+                            <p className="text-sm font-bold text-muted-foreground">
                               {(file.size / 1024).toFixed(1)} KB
                             </p>
                           </div>
@@ -664,7 +666,7 @@ export default function UploadPage() {
 
                   <TabsContent value="paste" className="mt-6">
                     <div className="space-y-2">
-                      <label className="text-sm font-bold text-foreground">Paste Contract Text</label>
+                      <label className="text-sm font-black uppercase tracking-wider text-foreground">Paste Contract Text</label>
                       <Textarea
                         placeholder="Paste your contract text here...
 
@@ -674,14 +676,14 @@ export default function UploadPage() {
                                   3. LOCK-IN PERIOD: The Licensee cannot terminate this agreement for the first 11 months..."
                         value={pastedText}
                         onChange={(e) => setPastedText(e.target.value)}
-                        className="min-h-[200px] w-full resize-none font-medium"
+                        className="min-h-[200px] w-full resize-none font-bold border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] focus-visible:ring-0 focus-visible:ring-offset-0 bg-background text-foreground"
                       />
                     </div>
-                    <div className="flex justify-between mt-1">
-                      <p className="text-xs text-muted-foreground tabular-nums">
+                    <div className="flex justify-between mt-3">
+                      <p className="text-xs font-black uppercase tracking-wider text-muted-foreground tabular-nums">
                         Minimum 50 characters required
                       </p>
-                      <p className="text-xs text-muted-foreground tabular-nums text-right">
+                      <p className="text-xs font-black uppercase tracking-wider text-muted-foreground tabular-nums text-right">
                         {pastedText.length} characters
                       </p>
                     </div>
@@ -761,17 +763,17 @@ export default function UploadPage() {
                 <Button
                   onClick={handleAnalyze}
                   disabled={!hasContent || !documentType || !jurisdiction}
-                  className="w-full py-6 text-lg gap-2"
+                  className="w-full py-6 text-lg gap-2 button text-impact-heading border-2 border-foreground hover:-translate-y-[2px] shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] disabled:opacity-50 disabled:hover:translate-y-0 disabled:shadow-none"
                 >
                   {mlStatus === "ready" ? (
                     <>
-                      <Zap className="h-5 w-5" />
-                      Instant Scan Contract
+                      <Zap className="h-6 w-6" />
+                      INSTANT SCAN CONTRACT
                     </>
                   ) : (
                     <>
-                      <Zap className="h-5 w-5" />
-                      Quick Scan Contract
+                      <Zap className="h-6 w-6" />
+                      QUICK SCAN CONTRACT
                     </>
                   )}
                 </Button>

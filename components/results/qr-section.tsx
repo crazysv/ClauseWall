@@ -229,37 +229,37 @@ export default function QRSection({ document: doc }: QRSectionProps) {
   if (!shareId) {
     return (
       <>
-        <Card className="bg-gray-900/50 border-gray-800 mt-8">
+        <Card className="bg-background card-impact border-2 border-foreground mt-8 rounded-none">
           <CardContent className="p-6 text-center">
             <div className="flex justify-center mb-4">
-              <div className="h-14 w-14 rounded-full bg-blue-500/10 flex items-center justify-center">
-                <QrCode className="h-7 w-7 text-blue-400" />
+              <div className="h-14 w-14 border-2 border-foreground bg-muted card-impact flex items-center justify-center">
+                <QrCode className="h-7 w-7 text-foreground" />
               </div>
             </div>
-            <h3 className="text-lg font-bold mb-2">Scan Before You Sign</h3>
-            <p className="text-sm text-muted-foreground max-w-md mx-auto mb-6">
+            <h3 className="text-lg font-black uppercase tracking-wider mb-2 text-foreground">Scan Before You Sign</h3>
+            <p className="text-sm font-bold text-muted-foreground max-w-md mx-auto mb-6">
               Generate a QR verification badge for this contract. Share it with
               the other party to build trust before signing.
             </p>
-            <Button
+            <button
               onClick={() => setShowSettings(true)}
-              className="gap-2 bg-blue-600 hover:bg-blue-700"
+              className="flex items-center justify-center gap-2 px-6 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors mx-auto"
             >
               <ShieldCheck className="h-4 w-4" />
               Generate QR Badge
-            </Button>
+            </button>
           </CardContent>
         </Card>
 
         {/* Settings Dialog */}
         <Dialog open={showSettings} onOpenChange={setShowSettings}>
-          <DialogContent className="bg-gray-900 border-gray-800 max-w-md">
+          <DialogContent className="bg-background card-impact border-2 border-foreground rounded-none shadow-none max-w-md p-6">
             <DialogHeader>
-              <DialogTitle className="flex items-center gap-2">
-                <Settings2 className="h-5 w-5 text-blue-400" />
+              <DialogTitle className="flex items-center gap-2 font-black uppercase tracking-wider text-xl text-foreground">
+                <Settings2 className="h-5 w-5 text-foreground" />
                 Badge Privacy Settings
               </DialogTitle>
-              <DialogDescription>
+              <DialogDescription className="font-bold text-muted-foreground uppercase tracking-wider text-xs mt-2">
                 Choose what information is visible when someone scans the QR
                 code.
               </DialogDescription>
@@ -298,17 +298,18 @@ export default function QRSection({ document: doc }: QRSectionProps) {
               />
             </div>
 
-            <div className="rounded-lg bg-blue-500/5 border border-blue-500/10 p-3">
-              <p className="text-xs text-blue-300">
+            <div className="card-impact bg-muted border-2 border-foreground p-3">
+              <p className="text-xs font-bold text-foreground">
                 <strong>Always visible:</strong> Verification badge, risk score,
                 clause breakdown counts, document type, jurisdiction, and analysis
                 date.
               </p>
             </div>
 
-            <DialogFooter className="gap-2 sm:gap-0">
+            <DialogFooter className="gap-2 sm:gap-0 mt-4">
               <Button
-                variant="ghost"
+                variant="outline"
+                className="button text-impact-heading bg-muted border-foreground text-foreground hover:bg-background"
                 onClick={() => setShowSettings(false)}
                 disabled={generating}
               >
@@ -317,7 +318,7 @@ export default function QRSection({ document: doc }: QRSectionProps) {
               <Button
                 onClick={handleGenerate}
                 disabled={generating}
-                className="gap-2 bg-blue-600 hover:bg-blue-700"
+                className="button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors"
               >
                 {generating ? (
                   <>
@@ -342,34 +343,32 @@ export default function QRSection({ document: doc }: QRSectionProps) {
 
   return (
     <>
-      <Card className="bg-gray-900/50 border-gray-800 mt-8 overflow-hidden">
+      <Card className="bg-background card-impact border-2 border-foreground mt-8 overflow-hidden rounded-none">
         {/* Header stripe */}
         <div
-          className="h-1"
+          className="h-2 border-b-2 border-foreground"
           style={{ backgroundColor: tierConfig.color }}
         />
 
         <CardContent className="p-6">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-bold flex items-center gap-2">
-              <QrCode className="h-5 w-5 text-blue-400" />
+            <h3 className="text-lg font-black uppercase tracking-wider flex items-center gap-2 text-foreground">
+              <QrCode className="h-5 w-5 text-foreground" />
               Scan Before You Sign
             </h3>
-            <Button
-              variant="ghost"
-              size="sm"
+            <button
               onClick={() => setShowSettings(true)}
-              className="gap-1.5 text-xs text-muted-foreground"
+              className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors p-1"
             >
               <Settings2 className="h-3.5 w-3.5" />
               Settings
-            </Button>
+            </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Left — QR Code */}
             <div className="flex flex-col items-center gap-4">
-              <div className="p-4 bg-white rounded-xl">
+              <div className="p-4 bg-white border-2 border-foreground card-impact">
                 <QRCodeSVG
                   value={verifyUrl}
                   size={160}
@@ -379,7 +378,7 @@ export default function QRSection({ document: doc }: QRSectionProps) {
                   includeMargin={false}
                 />
               </div>
-              <p className="text-xs text-muted-foreground text-center">
+              <p className="text-xs font-bold text-muted-foreground text-center">
                 Scan with any phone camera
               </p>
             </div>
@@ -389,14 +388,14 @@ export default function QRSection({ document: doc }: QRSectionProps) {
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-2xl">{tierConfig.icon}</span>
                 <span
-                  className="text-lg font-bold"
+                  className="text-lg font-black uppercase tracking-wider"
                   style={{ color: tierConfig.color }}
                 >
                   {tierConfig.label}
                 </span>
               </div>
 
-              <p className="text-sm text-muted-foreground mb-4">
+              <p className="text-sm font-bold text-muted-foreground mb-4">
                 {tierConfig.description}
               </p>
 
@@ -422,13 +421,13 @@ export default function QRSection({ document: doc }: QRSectionProps) {
               </div>
 
               {/* Verify URL */}
-              <div className="mt-4 flex items-center gap-2 bg-white/[0.03] rounded-lg px-3 py-2 border border-white/5">
-                <code className="text-xs text-blue-400 truncate flex-1">
+              <div className="mt-4 flex items-center gap-2 bg-muted card-impact border-2 border-foreground px-3 py-2">
+                <code className="text-xs font-bold text-foreground truncate flex-1">
                   {verifyUrl}
                 </code>
                 <button
                   onClick={copyLink}
-                  className="flex-shrink-0 text-muted-foreground hover:text-white transition-colors"
+                  className="flex-shrink-0 text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {copied ? (
                     <Check className="h-4 w-4 text-green-400" />
@@ -441,79 +440,62 @@ export default function QRSection({ document: doc }: QRSectionProps) {
           </div>
 
           {/* Download Buttons */}
-          <div className="flex flex-wrap gap-2 mt-6 pt-6 border-t border-white/5">
-            <Button
-              variant="outline"
-              size="sm"
+          <div className="flex flex-wrap gap-2 mt-6 pt-6 border-t-2 border-foreground border-dashed">
+            <button
               onClick={() => setShowEmbed(true)}
-              className="gap-2"
+              className="flex items-center justify-center gap-2 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors text-xs py-1.5 px-3"
             >
               <Code2 className="h-3.5 w-3.5" />
               Embed Code
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
+            </button>
+            <button
               onClick={downloadPNG}
-              className="gap-2"
+              className="flex items-center justify-center gap-2 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors text-xs py-1.5 px-3"
             >
               <Download className="h-3.5 w-3.5" />
               Download PNG
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
+            </button>
+            <button
               onClick={printBadge}
-              className="gap-2"
+              className="flex items-center justify-center gap-2 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors text-xs py-1.5 px-3"
             >
               <Printer className="h-3.5 w-3.5" />
               Print / Save PDF
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
+            </button>
+            <button
               onClick={copyLink}
-              className="gap-2"
+              className="flex items-center justify-center gap-2 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors text-xs py-1.5 px-3"
             >
               {copied ? (
-                <Check className="h-3.5 w-3.5 text-green-400" />
+                <Check className="h-3.5 w-3.5 text-background" />
               ) : (
                 <Copy className="h-3.5 w-3.5" />
               )}
               Copy Link
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowEmbed(true)}
-              className="gap-2"
-            >
-              <Code2 className="h-3.5 w-3.5" />
-              Embed Code
-            </Button>
+            </button>
           </div>
 
           {/* Privacy indicator */}
           <div className="mt-4 flex flex-wrap gap-2">
             {settings.show_entity && (
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
+              <span className="text-[10px] px-2 py-0.5 font-bold uppercase tracking-wider bg-muted text-foreground border-2 border-foreground card-impact">
                 Entity visible
               </span>
             )}
             {settings.show_summary && (
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
+              <span className="text-[10px] px-2 py-0.5 font-bold uppercase tracking-wider bg-muted text-foreground border-2 border-foreground card-impact">
                 Summary visible
               </span>
             )}
             {settings.allow_full_analysis && (
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
+              <span className="text-[10px] px-2 py-0.5 font-bold uppercase tracking-wider bg-muted text-foreground border-2 border-foreground card-impact">
                 Full analysis accessible
               </span>
             )}
             {!settings.show_entity &&
               !settings.show_summary &&
               !settings.allow_full_analysis && (
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-muted-foreground border border-white/5">
+                <span className="text-[10px] px-2 py-0.5 font-bold uppercase tracking-wider bg-muted text-muted-foreground border-2 border-foreground card-impact">
                   Summary only — maximum privacy
                 </span>
               )}
@@ -674,13 +656,13 @@ export default function QRSection({ document: doc }: QRSectionProps) {
 
       {/* Settings Update Dialog */}
       <Dialog open={showSettings} onOpenChange={setShowSettings}>
-        <DialogContent className="bg-gray-900 border-gray-800 max-w-md">
+        <DialogContent className="bg-background card-impact border-2 border-foreground rounded-none shadow-none max-w-md p-6">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Settings2 className="h-5 w-5 text-blue-400" />
+            <DialogTitle className="flex items-center gap-2 font-black uppercase tracking-wider text-xl text-foreground">
+              <Settings2 className="h-5 w-5 text-foreground" />
               Update Badge Settings
             </DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="font-bold text-muted-foreground uppercase tracking-wider text-xs mt-2">
               Change what information is visible when someone scans the QR code.
             </DialogDescription>
           </DialogHeader>
@@ -718,18 +700,19 @@ export default function QRSection({ document: doc }: QRSectionProps) {
             />
           </div>
 
-          <DialogFooter className="gap-2 sm:gap-0">
+          <DialogFooter className="gap-2 sm:gap-0 mt-4">
             <Button
-              variant="ghost"
+              variant="outline"
+              className="button text-impact-heading bg-muted border-foreground text-foreground hover:bg-background"
               onClick={() => setShowSettings(false)}
               disabled={generating}
             >
               Cancel
             </Button>
-            <Button
+            <button
               onClick={handleGenerate}
               disabled={generating}
-              className="gap-2 bg-blue-600 hover:bg-blue-700"
+              className="flex items-center justify-center gap-2 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors"
             >
               {generating ? (
                 <>
@@ -742,7 +725,7 @@ export default function QRSection({ document: doc }: QRSectionProps) {
                   Update Settings
                 </>
               )}
-            </Button>
+            </button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -775,25 +758,25 @@ function SettingsToggle({
     <button
       type="button"
       onClick={() => onChange(!checked)}
-      className={`flex items-center gap-3 w-full p-3 rounded-lg border transition-all text-left ${
+      className={`flex items-center gap-3 w-full p-3 card-impact border-2 transition-all text-left ${
         checked
-          ? "bg-blue-500/10 border-blue-500/30"
-          : "bg-white/[0.02] border-white/5 hover:border-white/10"
+          ? "bg-muted border-foreground"
+          : "bg-background border-muted hover:border-foreground"
       }`}
     >
       <div
-        className={`w-5 h-5 rounded flex items-center justify-center flex-shrink-0 transition-colors ${
-          checked ? "bg-blue-500" : "bg-white/10"
+        className={`w-5 h-5 flex items-center justify-center flex-shrink-0 transition-colors border-2 ${
+          checked ? "bg-foreground border-foreground" : "bg-muted border-muted"
         }`}
       >
-        {checked && <Check className="h-3 w-3 text-white" />}
+        {checked && <Check className="h-3 w-3 text-background" />}
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium flex items-center gap-2">
+        <p className="text-sm font-black uppercase tracking-wider text-foreground flex items-center gap-2">
           <Icon className="h-3.5 w-3.5 text-muted-foreground" />
           {label}
         </p>
-        <p className="text-xs text-muted-foreground mt-0.5">{description}</p>
+        <p className="text-xs font-bold text-muted-foreground mt-0.5">{description}</p>
       </div>
     </button>
   );
