@@ -3,6 +3,7 @@
 import { Shield, ShieldCheck, ShieldOff, Info } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { usePrivacy } from "@/lib/privacy";
+import { Card, CardContent } from "@/components/ui/card";
 import type { PrivacyLevel } from "@/lib/privacy";
 
 const PRIVACY_CONFIG: Record<
@@ -51,49 +52,55 @@ const LEVELS: PrivacyLevel[] = ["maximum", "balanced", "standard"];
 export default function PrivacyToggle() {
   const { level, setLevel } = usePrivacy();
   const config = PRIVACY_CONFIG[level];
+  const isPrivacyMode = level === 'maximum';
 
   return (
-    <div className="space-y-2">
-      <div className="flex items-center justify-between">
-        <label className="text-xs font-medium text-muted-foreground flex items-center gap-1.5">
-          <Shield className="h-3 w-3" />
-          Privacy Mode
-        </label>
-        <Badge variant="outline" className={`text-[10px] gap-1 ${config.badgeColor}`}>
-          {config.icon}
-          {config.label}
-        </Badge>
-      </div>
+    <Card className={`card-impact transition-all duration-300 ${isPrivacyMode ? 'bg-green-50' : 'bg-background'}`}>
+      <CardContent className="p-4">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className={`font-bold ${isPrivacyMode ? 'text-green-700' : 'text-foreground'}`}>
+            Quantum Privacy Mode
+          </h3>
+          {isPrivacyMode && (
+            <Badge className="bg-green-600 text-white border-2 border-foreground text-[10px] h-5 px-1.5 font-bold font-mono">
+              ACTIVE
+            </Badge>
+          )}
+        </div>
+        <p className="text-sm font-medium text-muted-foreground mb-4">
+          Pre-process sensitive data locally in your browser before sending array references to the server for analysis.
+        </p>
 
-      <div className="flex gap-1 p-1 rounded-lg bg-white/5 border border-white/5">
-        {LEVELS.map((l) => {
-          const c = PRIVACY_CONFIG[l];
-          const isActive = level === l;
+        <div className="flex gap-1 p-1 rounded-lg bg-white/5 border border-white/5">
+          {LEVELS.map((l) => {
+            const c = PRIVACY_CONFIG[l] as any;
+            const isActive = level === l;
 
-          return (
-            <button
-              key={l}
-              onClick={() => setLevel(l)}
-              className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-md text-xs font-medium transition-all ${
-                isActive
-                  ? `${c.bgColor} ${c.color} ${c.borderColor} border`
-                  : "text-muted-foreground hover:text-white hover:bg-white/5"
-              }`}
-            >
-              {c.icon}
-              <span className="hidden sm:inline">{c.label}</span>
-              <span className="sm:hidden">
-                {l === "maximum" ? "Max" : l === "balanced" ? "Bal" : "Std"}
-              </span>
-            </button>
-          );
-        })}
-      </div>
+            return (
+              <button
+                key={l}
+                onClick={() => setLevel(l)}
+                className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-md text-xs font-medium transition-all ${
+                  isActive
+                    ? `${c.bgColor} ${c.color} ${c.borderColor} border`
+                    : "text-muted-foreground hover:text-white hover:bg-white/5"
+                }`}
+              >
+                {c.icon}
+                <span className="hidden sm:inline">{c.label}</span>
+                <span className="sm:hidden">
+                  {l === "maximum" ? "Max" : l === "balanced" ? "Bal" : "Std"}
+                </span>
+              </button>
+            );
+          })}
+        </div>
 
-      <p className="text-[10px] text-muted-foreground flex items-center gap-1">
-        <Info className="h-3 w-3 flex-shrink-0" />
-        {config.description}
-      </p>
-    </div>
+        <p className="text-[10px] text-muted-foreground flex items-center gap-1 mt-3">
+          <Info className="h-3 w-3 flex-shrink-0" />
+          {config.description}
+        </p>
+      </CardContent>
+    </Card>
   );
 }

@@ -475,24 +475,18 @@ export default function UploadPage() {
     (activeTab === "paste" && pastedText.trim().length > 50);
 
   return (
-    <div className="relative px-4 sm:px-6 lg:px-8 py-12">
-      {/* Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/3 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/3 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl" />
-      </div>
-
-      <div className="relative mx-auto max-w-3xl">
+    <div className="min-h-screen bg-background text-foreground">
+      <div className="relative mx-auto max-w-4xl px-4 md:px-6 py-12 md:py-20">
         {/* SCANNING STATE — Only shows when ML didn't run */}
         {pageState === "scanning" && (
           <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6">
             <div className="relative">
-              <Loader2 className="h-16 w-16 text-blue-500 animate-spin" />
-              <div className="absolute inset-0 h-16 w-16 bg-blue-500/20 blur-xl rounded-full animate-pulse" />
+              <Loader2 className="h-16 w-16 text-primary animate-spin" />
+              <div className="absolute inset-0 h-16 w-16 bg-primary/20 blur-xl rounded-full animate-pulse" />
             </div>
             <div className="text-center">
               <h2 className="text-2xl font-bold mb-2">Quick Scanning...</h2>
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground font-medium">
                 Finding red flags in your contract. This takes 3-5 seconds.
               </p>
             </div>
@@ -503,20 +497,18 @@ export default function UploadPage() {
         {pageState === "results" && (quickScanResult || mlResult) && (
           <>
             <div className="text-center mb-8">
-              <h1 className="text-3xl sm:text-4xl font-bold mb-3">
+              <h1 className="text-impact-heading text-foreground mb-3">
                 {!quickScanResult && mlResult ? (
                   <>
-                    ⚡ Instant{" "}
-                    <span className="gradient-text">Analysis</span>
+                    ⚡ Instant Analysis
                   </>
                 ) : (
                   <>
-                    🛡️ Contract{" "}
-                    <span className="gradient-text">Analysis</span>
+                    🛡️ Contract Analysis
                   </>
                 )}
               </h1>
-              <p className="text-muted-foreground">
+              <p className="text-lg md:text-xl text-muted-foreground">
                 {!quickScanResult && mlResult
                   ? "On-device scan complete • Enhancing with AI..."
                   : "AI analysis of your contract"}
@@ -552,14 +544,13 @@ export default function UploadPage() {
           <>
             {/* Header */}
             <div className="text-center mb-10">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-500/10 mb-6">
-                <Shield className="h-8 w-8 text-blue-400" />
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 mb-6">
+                <Shield className="h-8 w-8 text-primary" />
               </div>
-              <h1 className="text-3xl sm:text-4xl font-bold mb-3">
-                Analyze Your{" "}
-                <span className="gradient-text">Contract</span>
+              <h1 className="text-impact-heading text-foreground mb-4">
+                Analyze Your Contract
               </h1>
-              <p className="text-muted-foreground max-w-lg mx-auto">
+              <p className="text-lg md:text-xl text-muted-foreground mt-4 max-w-2xl mx-auto">
                 Upload your document or paste the text. Get instant red flags in
                 5 seconds, then a full verified analysis in 60 seconds.
               </p>
@@ -569,18 +560,16 @@ export default function UploadPage() {
                 {mlStatus === "ready" && (
                   <Badge
                     variant="outline"
-                    className="border-green-500/30 text-green-400 gap-1"
                   >
-                    <Cpu className="h-3 w-3" />
+                    <Cpu className="h-3 w-3 mr-1" />
                     On-device AI ready
                   </Badge>
                 )}
                 {mlStatus === "loading" && (
                   <Badge
                     variant="outline"
-                    className="border-blue-500/30 text-blue-400 gap-1"
                   >
-                    <Loader2 className="h-3 w-3 animate-spin" />
+                    <Loader2 className="h-3 w-3 animate-spin mr-1" />
                     Loading on-device AI...
                   </Badge>
                 )}
@@ -588,24 +577,24 @@ export default function UploadPage() {
             </div>
 
             {/* Upload Card */}
-            <Card className="glass border-white/5 glow-blue">
-              <CardContent className="p-6 sm:p-8">
+            <Card className="card-impact">
+              <CardContent className="p-6 sm:p-8 space-y-8">
                 <Tabs
                   value={activeTab}
                   onValueChange={setActiveTab}
                   className="mb-6"
                 >
-                  <TabsList className="grid w-full grid-cols-2 bg-white/5">
+                  <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger
                       value="upload"
-                      className="gap-2 data-[state=active]:bg-blue-600"
+                      className="gap-2 font-bold"
                     >
                       <Upload className="h-4 w-4" />
                       Upload PDF
                     </TabsTrigger>
                     <TabsTrigger
                       value="paste"
-                      className="gap-2 data-[state=active]:bg-blue-600"
+                      className="gap-2 font-bold"
                     >
                       <ClipboardPaste className="h-4 w-4" />
                       Paste Text
@@ -616,44 +605,47 @@ export default function UploadPage() {
                     {!file ? (
                       <div
                         {...getRootProps()}
-                        className={`border-2 border-dashed rounded-xl p-12 text-center cursor-pointer transition-all ${
+                        className={`border-2 border-dashed rounded-lg p-12 md:p-16 text-center cursor-pointer transition-colors duration-150 ${
                           isDragActive
-                            ? "border-blue-500 bg-blue-500/5"
-                            : "border-white/10 hover:border-blue-500/50 hover:bg-white/[0.02]"
+                            ? "border-primary bg-primary/5"
+                            : "border-border hover:border-primary hover:bg-primary/5"
                         }`}
                       >
                         <input {...getInputProps()} />
                         <Upload
-                          className={`h-12 w-12 mx-auto mb-4 ${
+                          className={`w-12 h-12 mx-auto mb-4 transition-colors ${
                             isDragActive
-                              ? "text-blue-400"
-                              : "text-muted-foreground"
+                              ? "text-primary"
+                              : "text-muted-foreground hover:text-primary"
                           }`}
                         />
                         {isDragActive ? (
-                          <p className="text-blue-400 font-medium">
+                          <p className="text-lg font-bold text-primary mt-4">
                             Drop your contract here...
                           </p>
                         ) : (
                           <>
-                            <p className="text-foreground font-medium mb-1">
-                              Drag & drop your contract here
+                            <p className="text-lg font-bold text-foreground mt-4">
+                              Drag & drop your PDF here
                             </p>
-                            <p className="text-sm text-muted-foreground">
-                              or click to browse • PDF or TXT • Max 10MB
+                            <p className="text-sm text-muted-foreground mt-1">
+                              or click to browse
+                            </p>
+                            <p className="text-xs text-muted-foreground mt-4">
+                              PDF or TXT • Max 10MB
                             </p>
                           </>
                         )}
                       </div>
                     ) : (
-                      <div className="glass rounded-xl p-4 flex items-center justify-between">
+                      <div className="border-2 border-foreground bg-muted rounded-lg p-4 flex items-center justify-between mt-4">
                         <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 rounded-lg bg-blue-500/10 flex items-center justify-center">
-                            <FileText className="h-5 w-5 text-blue-400" />
+                          <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                            <FileText className="h-5 w-5 text-primary" />
                           </div>
                           <div>
-                            <p className="text-sm font-medium">{file.name}</p>
-                            <p className="text-xs text-muted-foreground">
+                            <p className="text-base font-bold text-foreground">{file.name}</p>
+                            <p className="text-sm text-muted-foreground">
                               {(file.size / 1024).toFixed(1)} KB
                             </p>
                           </div>
@@ -662,31 +654,34 @@ export default function UploadPage() {
                           variant="ghost"
                           size="sm"
                           onClick={removeFile}
-                          className="text-muted-foreground hover:text-red-400"
+                          className="text-sm text-primary hover:text-red-700 font-semibold hover:bg-transparent"
                         >
-                          <X className="h-4 w-4" />
+                          <X className="h-4 w-4 mr-1" /> Remove
                         </Button>
                       </div>
                     )}
                   </TabsContent>
 
                   <TabsContent value="paste" className="mt-6">
-                    <Textarea
-                      placeholder="Paste your contract text here...
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold text-foreground">Paste Contract Text</label>
+                      <Textarea
+                        placeholder="Paste your contract text here...
 
-                                Example:
-                                1. RENT: The Licensee agrees to pay a monthly rent of ₹25,000...
-                                2. SECURITY DEPOSIT: The Licensee shall deposit ₹1,50,000...
-                                3. LOCK-IN PERIOD: The Licensee cannot terminate this agreement for the first 11 months..."
-                      value={pastedText}
-                      onChange={(e) => setPastedText(e.target.value)}
-                      className="min-h-[250px] bg-white/5 border-white/10 resize-none text-sm font-mono"
-                    />
-                    <div className="flex justify-between mt-2">
-                      <p className="text-xs text-muted-foreground">
+                                  Example:
+                                  1. RENT: The Licensee agrees to pay a monthly rent of ₹25,000...
+                                  2. SECURITY DEPOSIT: The Licensee shall deposit ₹1,50,000...
+                                  3. LOCK-IN PERIOD: The Licensee cannot terminate this agreement for the first 11 months..."
+                        value={pastedText}
+                        onChange={(e) => setPastedText(e.target.value)}
+                        className="min-h-[200px] w-full resize-none font-medium"
+                      />
+                    </div>
+                    <div className="flex justify-between mt-1">
+                      <p className="text-xs text-muted-foreground tabular-nums">
                         Minimum 50 characters required
                       </p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-muted-foreground tabular-nums text-right">
                         {pastedText.length} characters
                       </p>
                     </div>
@@ -700,14 +695,14 @@ export default function UploadPage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                   <div>
-                    <label className="text-sm font-medium mb-2 block">
-                      Document Type <span className="text-red-400">*</span>
+                    <label className="text-sm font-bold text-foreground mb-2 block">
+                      Document Type <span className="text-primary">*</span>
                     </label>
                     <Select
                       value={documentType}
                       onValueChange={setDocumentType}
                     >
-                      <SelectTrigger className="bg-white/5 border-white/10">
+                      <SelectTrigger className="h-11 font-medium">
                         <SelectValue placeholder="Select type..." />
                       </SelectTrigger>
                       <SelectContent>
@@ -721,14 +716,14 @@ export default function UploadPage() {
                   </div>
 
                   <div>
-                    <label className="text-sm font-medium mb-2 block">
-                      State <span className="text-red-400">*</span>
+                    <label className="text-sm font-bold text-foreground mb-2 block">
+                      State <span className="text-primary">*</span>
                     </label>
                     <Select
                       value={jurisdiction}
                       onValueChange={setJurisdiction}
                     >
-                      <SelectTrigger className="bg-white/5 border-white/10">
+                      <SelectTrigger className="h-11 font-medium">
                         <SelectValue placeholder="Select state..." />
                       </SelectTrigger>
                       <SelectContent>
@@ -744,7 +739,7 @@ export default function UploadPage() {
 
                 {/* Language Selector */}
                 <div className="mb-6">
-                  <label className="text-sm font-medium mb-2 block">
+                  <label className="text-sm font-bold text-foreground mb-2 block">
                     Document Language
                   </label>
                   <LanguageSelector
@@ -757,7 +752,7 @@ export default function UploadPage() {
                 </div>
 
                 {error && (
-                  <div className="flex items-center gap-2 text-red-400 text-sm mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20">
+                  <div className="flex items-center gap-2 text-destructive text-sm font-medium mb-4 p-3 rounded-lg bg-destructive/5 border border-destructive">
                     <AlertCircle className="h-4 w-4 flex-shrink-0" />
                     {error}
                   </div>
@@ -766,7 +761,7 @@ export default function UploadPage() {
                 <Button
                   onClick={handleAnalyze}
                   disabled={!hasContent || !documentType || !jurisdiction}
-                  className="w-full bg-blue-600 hover:bg-blue-700 py-6 text-lg gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-500/20"
+                  className="w-full py-6 text-lg gap-2"
                 >
                   {mlStatus === "ready" ? (
                     <>
@@ -781,19 +776,19 @@ export default function UploadPage() {
                   )}
                 </Button>
 
-                <div className="mt-4 flex items-center justify-center gap-6 text-xs text-muted-foreground">
+                <div className="flex flex-wrap items-center justify-center gap-6 mt-6 pt-6 border-t border-border">
                   {mlStatus === "ready" && (
-                    <div className="flex items-center gap-1">
-                      <Cpu className="h-3 w-3 text-amber-500" />
+                    <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
+                      <Cpu className="h-4 w-4 text-primary" />
                       ML scan: instant
                     </div>
                   )}
-                  <div className="flex items-center gap-1">
-                    <Zap className="h-3 w-3 text-yellow-500" />
+                  <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
+                    <Zap className="h-4 w-4 text-primary" />
                     Quick scan: 5 sec
                   </div>
-                  <div className="flex items-center gap-1">
-                    <Shield className="h-3 w-3 text-blue-500" />
+                  <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
+                    <Shield className="h-4 w-4 text-primary" />
                     Full report: 60 sec
                   </div>
                 </div>

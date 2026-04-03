@@ -67,34 +67,34 @@ export default function MLInstantResult({
     switch (risk) {
       case "illegal":
         return {
-          color: "text-purple-400",
+          color: "text-purple-600",
           bg: "bg-purple-500/10",
-          border: "border-purple-500/30",
-          icon: <Scale className="h-5 w-5" />,
+          border: "border-2 border-purple-600",
+          icon: <Scale className="h-5 w-5 text-purple-600" />,
           label: "CRITICAL",
         };
       case "dangerous":
         return {
-          color: "text-red-400",
+          color: "text-primary",
           bg: "bg-red-500/10",
-          border: "border-red-500/30",
-          icon: <XCircle className="h-5 w-5" />,
+          border: "border-2 border-primary",
+          icon: <XCircle className="h-5 w-5 text-primary" />,
           label: "HIGH RISK",
         };
       case "warning":
         return {
-          color: "text-yellow-400",
+          color: "text-yellow-600",
           bg: "bg-yellow-500/10",
-          border: "border-yellow-500/30",
-          icon: <AlertTriangle className="h-5 w-5" />,
+          border: "border-2 border-yellow-600",
+          icon: <AlertTriangle className="h-5 w-5 text-yellow-600" />,
           label: "CAUTION",
         };
       default:
         return {
-          color: "text-green-400",
+          color: "text-green-600",
           bg: "bg-green-500/10",
-          border: "border-green-500/30",
-          icon: <CheckCircle2 className="h-5 w-5" />,
+          border: "border-2 border-green-600",
+          icon: <CheckCircle2 className="h-5 w-5 text-green-600" />,
           label: "LOW RISK",
         };
     }
@@ -112,8 +112,8 @@ export default function MLInstantResult({
       className="space-y-4"
     >
       {/* Header Badge */}
-      <div className="flex items-center justify-center gap-2">
-        <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30 gap-1.5 px-3 py-1">
+      <div className="flex items-center justify-center gap-2 mb-4">
+        <Badge className="bg-foreground text-background font-bold border-2 border-foreground gap-1.5 px-3 py-1">
           <Zap className="h-3.5 w-3.5" />
           ON-DEVICE AI — No data sent to server
         </Badge>
@@ -121,7 +121,7 @@ export default function MLInstantResult({
 
       {/* Main Score Card */}
       <Card
-        className={`glass border ${overallConfig.border} overflow-hidden`}
+        className={`card-impact overflow-hidden`}
       >
         <CardContent className="p-0">
           <div className={`${overallConfig.bg} p-6 text-center`}>
@@ -150,14 +150,14 @@ export default function MLInstantResult({
 
             {/* Score */}
             <div className="flex items-center justify-center gap-2 mb-1">
-              <span className={`text-4xl font-bold ${overallConfig.color}`}>
+              <span className={`text-6xl font-black tabular-nums ${overallConfig.color}`}>
                 {animatedScore}
               </span>
-              <span className="text-xl text-muted-foreground">/100</span>
+              <span className="text-3xl font-bold text-muted-foreground">/100</span>
             </div>
 
             <p
-              className={`text-sm font-semibold ${overallConfig.color} mb-2`}
+              className={`text-lg font-bold mt-2 ${overallConfig.color} mb-4`}
             >
               {overallConfig.label}
             </p>
@@ -247,11 +247,11 @@ export default function MLInstantResult({
       </Card>
 
       {/* Expandable Clause List */}
-      <Card className="glass border-white/5">
+      <Card className="card-impact mt-6">
         <CardContent className="p-0">
           <button
             onClick={() => setShowClauses(!showClauses)}
-            className="w-full flex items-center justify-between p-4 text-sm hover:bg-white/[0.02] transition-colors"
+            className="w-full flex items-center justify-between p-4 text-sm hover:bg-muted transition-colors rounded-lg"
           >
             <span className="flex items-center gap-2 font-medium">
               <Brain className="h-4 w-4 text-amber-400" />
@@ -284,29 +284,29 @@ export default function MLInstantResult({
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: i * 0.05 }}
-                        className={`flex items-start gap-3 p-3 rounded-lg ${config.bg} border ${config.border}`}
+                        className={`flex items-start gap-3 p-3 rounded-lg bg-muted border-2 border-border`}
                       >
-                        <div className={`mt-0.5 ${config.color}`}>
+                        <div className={`mt-0.5`}>
                           {config.icon}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
+                          <div className="flex items-center gap-2 mb-2">
                             <Badge
                               variant="outline"
-                              className={`text-[10px] ${config.color} ${config.border}`}
+                              className={`text-[10px] font-bold ${config.color} ${config.border}`}
                             >
                               {config.label}
                             </Badge>
-                            <span className="text-[10px] text-muted-foreground">
+                            <span className="text-[10px] font-medium text-muted-foreground">
                               {confPercent}% confident
                             </span>
                             {clause.confidence < 0.65 && (
-                              <span className="text-[10px] text-amber-400">
+                              <span className="text-[10px] font-medium text-amber-600">
                                 (needs AI verification)
                               </span>
                             )}
                           </div>
-                          <p className="text-xs text-muted-foreground leading-relaxed truncate">
+                          <p className="text-sm font-medium text-muted-foreground leading-relaxed truncate">
                             {clause.truncatedText}
                           </p>
                         </div>
@@ -345,7 +345,7 @@ export default function MLInstantResult({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
           >
-            <Card className="glass border-blue-500/20">
+            <Card className="card-impact mt-6">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
                   <Loader2 className="h-5 w-5 text-blue-400 animate-spin" />
@@ -371,7 +371,7 @@ export default function MLInstantResult({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
           >
-            <Card className="glass border-green-500/20 shadow-lg shadow-green-500/5">
+            <Card className="card-impact bg-green-50 mt-6">
               <CardContent className="p-5">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="relative">
@@ -397,7 +397,8 @@ export default function MLInstantResult({
 
                 <Button
                   onClick={onContinueToQuickScan}
-                  className="w-full bg-green-600 hover:bg-green-700 gap-2 py-5 text-base shadow-lg shadow-green-500/20 group"
+                  className="w-full gap-2 py-6 text-lg mt-4 group"
+                  variant="default"
                 >
                   <Shield className="h-5 w-5" />
                   View Detailed Results

@@ -12,6 +12,9 @@ import {
   ChevronDown,
   ChevronUp,
   Check,
+  AlertTriangle,
+  ShieldAlert,
+  UploadCloud,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -52,81 +55,81 @@ export default function PreSendReviewModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="bg-gray-900 border-gray-800 max-w-lg max-h-[85vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Eye className="h-5 w-5 text-blue-400" />
-            Review Before Sending
-          </DialogTitle>
-          <DialogDescription>
-            The following anonymized text will be sent to our AI for detailed
-            analysis. No original text or personal data is included.
-          </DialogDescription>
-        </DialogHeader>
+      <DialogContent className="sm:max-w-xl card-impact p-0 overflow-hidden border-2 border-foreground">
+        {/* Header styling */}
+        <div className="bg-muted border-b-2 border-border p-6">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold flex items-center gap-2 text-foreground">
+              <ShieldAlert className="h-5 w-5 text-primary" />
+              Pre-Send Review
+            </DialogTitle>
+            <DialogDescription className="text-muted-foreground font-medium pt-2">
+              Review your document before sending to ClauseWall cloud for Deep Analysis.
+            </DialogDescription>
+          </DialogHeader>
+        </div>
 
         {/* Redaction Stats */}
-        <div className="p-3 rounded-lg bg-green-500/5 border border-green-500/20">
-          <div className="flex items-center gap-2 mb-2">
-            <ShieldCheck className="h-4 w-4 text-green-400" />
-            <span className="text-sm font-medium text-green-400">
+        <div className="p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <ShieldCheck className="h-5 w-5 text-primary" />
+            <span className="text-sm font-bold text-foreground uppercase tracking-wider">
               Privacy Protection Applied
             </span>
           </div>
-          <div className="grid grid-cols-2 gap-2 text-xs text-green-300/70">
+          
+          <div className="grid grid-cols-2 gap-3 text-sm text-foreground font-medium">
             {redactionStats.names > 0 && (
-              <span className="flex items-center gap-1">
-                <Check className="h-3 w-3" />
-                {redactionStats.names} names redacted
+              <span className="flex items-center gap-2 bg-muted p-2 rounded border">
+                <Check className="h-4 w-4 text-primary" />
+                {redactionStats.names} names
               </span>
             )}
             {redactionStats.ids > 0 && (
-              <span className="flex items-center gap-1">
-                <Check className="h-3 w-3" />
-                {redactionStats.ids} IDs redacted
+              <span className="flex items-center gap-2 bg-muted p-2 rounded border">
+                <Check className="h-4 w-4 text-primary" />
+                {redactionStats.ids} IDs
               </span>
             )}
             {redactionStats.contacts > 0 && (
-              <span className="flex items-center gap-1">
-                <Check className="h-3 w-3" />
-                {redactionStats.contacts} contacts redacted
+              <span className="flex items-center gap-2 bg-muted p-2 rounded border">
+                <Check className="h-4 w-4 text-primary" />
+                {redactionStats.contacts} contacts
               </span>
             )}
             {redactionStats.addresses > 0 && (
-              <span className="flex items-center gap-1">
-                <Check className="h-3 w-3" />
-                {redactionStats.addresses} addresses redacted
+              <span className="flex items-center gap-2 bg-muted p-2 rounded border">
+                <Check className="h-4 w-4 text-primary" />
+                {redactionStats.addresses} addresses
               </span>
             )}
             {redactionStats.financial > 0 && (
-              <span className="flex items-center gap-1">
-                <Check className="h-3 w-3" />
-                {redactionStats.financial} amounts redacted
+              <span className="flex items-center gap-2 bg-muted p-2 rounded border">
+                <Check className="h-4 w-4 text-primary" />
+                {redactionStats.financial} amounts
               </span>
-            )}
-            {redactionStats.total === 0 && (
-              <span className="col-span-2">No personal data detected</span>
             )}
           </div>
         </div>
 
         {/* Clause Preview */}
-        <div>
-          <div className="flex items-center justify-between mb-2">
-            <p className="text-xs font-medium text-muted-foreground">
-              {originalClauseCount} clauses will be sent ({(totalBytes / 1024).toFixed(1)} KB)
+        <div className="px-6 pb-6">
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-xs font-bold text-muted-foreground uppercase">
+              {originalClauseCount} clauses • {(totalBytes / 1024).toFixed(1)} KB
             </p>
           </div>
 
-          <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1">
+          <div className="space-y-2 max-h-[200px] overflow-y-auto pr-1">
             {displayClauses.map((clause, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 5 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className="p-3 rounded-lg bg-white/[0.03] border border-white/5 text-xs text-muted-foreground font-mono leading-relaxed"
+                className="p-3 rounded border-2 border-border bg-background text-xs text-foreground font-mono leading-relaxed"
               >
-                <span className="text-blue-400 font-sans font-medium">
+                <span className="text-primary font-bold font-sans">
                   Clause {i + 1}:
                 </span>{" "}
                 {clause.length > 200
@@ -139,7 +142,7 @@ export default function PreSendReviewModal({
           {redactedClauses.length > 3 && (
             <button
               onClick={() => setShowAllClauses(!showAllClauses)}
-              className="flex items-center gap-1 mt-2 text-xs text-blue-400 hover:text-blue-300"
+              className="flex items-center gap-1 mt-3 text-xs font-bold text-primary hover:underline"
             >
               {showAllClauses ? (
                 <>
@@ -156,36 +159,17 @@ export default function PreSendReviewModal({
           )}
         </div>
 
-        {/* Highlighted redactions */}
-        <div className="p-2 rounded-lg bg-white/[0.02] border border-white/5">
-          <p className="text-[10px] text-muted-foreground flex items-center gap-1">
-            <Fingerprint className="h-3 w-3 text-green-400" />
-            Redacted items appear as{" "}
-            <code className="px-1 py-0.5 rounded bg-green-500/10 text-green-400">
-              [PERSON]
-            </code>{" "}
-            <code className="px-1 py-0.5 rounded bg-green-500/10 text-green-400">
-              [ADDRESS]
-            </code>{" "}
-            <code className="px-1 py-0.5 rounded bg-green-500/10 text-green-400">
-              [AADHAAR]
-            </code>{" "}
-            etc.
-          </p>
+        <div className="px-6 pb-6">
+          <div className="flex gap-3 justify-end">
+            <Button variant="outline" onClick={onClose} className="font-bold border-2">
+              Cancel
+            </Button>
+            <Button onClick={onApprove} className="gap-2 font-bold px-8" variant="default">
+              <UploadCloud className="h-4 w-4" />
+              Send for Deep Analysis
+            </Button>
+          </div>
         </div>
-
-        <DialogFooter className="gap-2 sm:gap-0">
-          <Button variant="ghost" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button
-            onClick={onApprove}
-            className="gap-2 bg-blue-600 hover:bg-blue-700"
-          >
-            <Send className="h-4 w-4" />
-            Send for AI Analysis
-          </Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
