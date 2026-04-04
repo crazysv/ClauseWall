@@ -127,20 +127,20 @@ export function DeadlineCard({
   return (
     <motion.div
       layout
-      className={`relative rounded-xl border overflow-hidden transition-all ${
+      className={`relative border-4 border-black transition-all ${
         isDefused
-          ? "border-green-500/20 bg-green-500/5 opacity-70"
+          ? "bg-green-100 border-green-500 opacity-80 shadow-none hover:shadow-[4px_4px_0px_0px_rgba(34,197,94,1)]"
           : isMissed
-            ? "border-gray-500/20 bg-gray-500/5 opacity-60"
-            : "border-white/10 bg-white/[0.02] hover:bg-white/[0.04]"
+            ? "bg-gray-100 border-gray-500 opacity-60"
+            : "bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none"
       }`}
     >
       {/* Left urgency bar */}
       <div
-        className="absolute left-0 top-0 bottom-0 w-1"
+        className="absolute left-0 top-0 bottom-0 w-3 border-r-4 border-black"
         style={{
           backgroundColor: isDefused
-            ? "#10b981"
+            ? "#22c55e"
             : isMissed
               ? "#6b7280"
               : urgencyColor,
@@ -150,45 +150,45 @@ export function DeadlineCard({
       {/* Collapsed header */}
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full pl-5 pr-4 py-3 flex items-center gap-3 text-left"
+        className="w-full pl-8 pr-4 py-4 flex items-center gap-4 text-left"
         aria-label={`${expanded ? "Collapse" : "Expand"} ${deadline.title}`}
       >
         <UrgencyIcon
-          className="w-4 h-4 flex-shrink-0"
-          style={{ color: isDefused ? "#10b981" : urgencyColor }}
+          className="w-6 h-6 flex-shrink-0 stroke-[3px]"
+          style={{ color: isDefused ? "#22c55e" : urgencyColor }}
         />
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
             <span
-              className={`text-sm font-medium truncate ${isDefused ? "line-through text-white/40" : "text-white"}`}
+              className={`text-sm font-black uppercase tracking-widest truncate ${isDefused ? "line-through text-muted-foreground" : "text-foreground"}`}
             >
               {deadline.title}
             </span>
             {isDefused && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-green-500/20 text-green-400">
-                Defused ✓
+              <span className="text-xs font-bold uppercase tracking-widest px-2 py-1 bg-green-200 dark:bg-green-900 border-2 border-green-500 text-green-900 dark:text-green-300">
+                DEFUSED ✓
               </span>
             )}
             {isMissed && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-red-500/20 text-red-400">
-                Missed
+              <span className="text-xs font-bold uppercase tracking-widest px-2 py-1 bg-red-200 dark:bg-red-900 border-2 border-red-500 text-red-900 dark:text-red-300">
+                MISSED
               </span>
             )}
           </div>
-          <div className="flex items-center gap-3 mt-0.5">
-            <span className="text-xs text-white/40">
+          <div className="flex items-center gap-3 mt-1">
+            <span className="text-xs font-medium text-muted-foreground uppercase tracking-widest">
               {formatDate(deadline.deadline_date)}
             </span>
             <span
-              className={`text-xs font-medium ${
+              className={`text-xs font-black uppercase tracking-widest ${
                 daysUntil <= 3
-                  ? "text-red-400"
+                  ? "text-red-600 dark:text-red-400"
                   : daysUntil <= 7
-                    ? "text-orange-400"
+                    ? "text-orange-600 dark:text-orange-400"
                     : daysUntil <= 30
-                      ? "text-yellow-400"
-                      : "text-blue-400"
+                      ? "text-amber-600 dark:text-amber-400"
+                      : "text-blue-600 dark:text-blue-400"
               }`}
             >
               {getDaysLabel()} {daysUntil <= 3 && daysUntil >= 0 ? "⚡" : ""}
@@ -197,8 +197,8 @@ export function DeadlineCard({
         </div>
 
         {deadline.financial_impact && deadline.financial_impact > 0 && !isDefused && (
-          <span className="flex items-center gap-1 text-xs px-2 py-1 rounded-lg bg-red-500/10 text-red-400 flex-shrink-0">
-            <IndianRupee className="w-3 h-3" />
+          <span className="flex items-center gap-1 text-xs font-black uppercase tracking-widest px-2 py-1 border-2 border-red-500 bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-400 flex-shrink-0 shadow-[2px_2px_0px_0px_rgba(239,68,68,1)]">
+            <IndianRupee className="w-3 h-3 stroke-[3px]" />
             {formatIndianCurrency(deadline.financial_impact)}
           </span>
         )}
@@ -220,20 +220,20 @@ export function DeadlineCard({
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <div className="px-5 pb-4 space-y-3 border-t border-white/5 pt-3">
+            <div className="px-5 pb-4 space-y-4 border-t-4 border-black pt-4 ml-3">
               {/* Description */}
-              <p className="text-sm text-white/60">{deadline.description}</p>
+              <p className="text-sm font-medium text-muted-foreground leading-relaxed">{deadline.description}</p>
 
               {/* Consequence warning */}
               {deadline.consequence_if_missed && (
-                <div className="rounded-lg bg-red-500/5 border border-red-500/10 p-3">
-                  <div className="flex items-start gap-2">
-                    <AlertTriangle className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" />
+                <div className="border-4 border-red-500 bg-red-50 dark:bg-red-950 p-4 shadow-[4px_4px_0px_0px_rgba(239,68,68,1)]">
+                  <div className="flex items-start gap-3">
+                    <AlertTriangle className="w-6 h-6 text-red-600 dark:text-red-400 flex-shrink-0 stroke-[3px]" />
                     <div>
-                      <span className="text-xs font-medium text-red-400">
-                        If missed:
+                      <span className="text-xs font-black uppercase tracking-widest text-red-800 dark:text-red-400">
+                        IF MISSED:
                       </span>
-                      <p className="text-sm text-white/50 mt-0.5">
+                      <p className="text-sm font-bold text-red-900 dark:text-red-300 mt-1">
                         {deadline.consequence_if_missed}
                       </p>
                     </div>
@@ -243,14 +243,14 @@ export function DeadlineCard({
 
               {/* Action required */}
               {deadline.action_required && (
-                <div className="rounded-lg bg-blue-500/5 border border-blue-500/10 p-3">
-                  <div className="flex items-start gap-2">
-                    <CheckCircle className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                <div className="border-4 border-blue-500 bg-blue-50 dark:bg-blue-950 p-4 shadow-[4px_4px_0px_0px_rgba(59,130,246,1)]">
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="w-6 h-6 text-blue-600 dark:text-blue-400 flex-shrink-0 stroke-[3px]" />
                     <div>
-                      <span className="text-xs font-medium text-blue-400">
-                        Action required:
+                      <span className="text-xs font-black uppercase tracking-widest text-blue-800 dark:text-blue-400">
+                        ACTION REQUIRED:
                       </span>
-                      <p className="text-sm text-white/50 mt-0.5">
+                      <p className="text-sm font-bold text-blue-900 dark:text-blue-300 mt-1">
                         {deadline.action_required}
                       </p>
                     </div>
@@ -260,10 +260,10 @@ export function DeadlineCard({
 
               {/* Financial details */}
               {deadline.financial_description && (
-                <div className="rounded-lg bg-yellow-500/5 border border-yellow-500/10 p-3">
-                  <div className="flex items-start gap-2">
-                    <IndianRupee className="w-4 h-4 text-yellow-400 mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-white/50">
+                <div className="border-4 border-yellow-500 bg-yellow-50 dark:bg-yellow-900/30 p-4 shadow-[4px_4px_0px_0px_rgba(234,179,8,1)]">
+                  <div className="flex items-start gap-3">
+                    <IndianRupee className="w-6 h-6 text-yellow-600 dark:text-yellow-400 flex-shrink-0 stroke-[3px]" />
+                    <p className="text-sm font-bold text-yellow-900 dark:text-yellow-300 mt-1">
                       {deadline.financial_description}
                     </p>
                   </div>
@@ -272,42 +272,42 @@ export function DeadlineCard({
 
               {/* Action buttons */}
               {!isDefused && !isMissed && (
-                <div className="flex flex-wrap gap-2 pt-2">
+                <div className="flex flex-wrap gap-3 pt-4 border-t-4 border-black">
                   <button
                     onClick={handleDownloadLetter}
                     disabled={letterLoading}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition-all disabled:opacity-50"
+                    className="flex items-center gap-2 px-4 py-2 border-4 border-black bg-white dark:bg-black font-black uppercase tracking-widest text-xs text-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all disabled:opacity-50"
                     aria-label="Download action letter"
                   >
                     {letterLoading ? (
-                      <Loader2 className="w-3 h-3 animate-spin" />
+                      <Loader2 className="w-4 h-4 animate-spin stroke-[3px]" />
                     ) : (
-                      <FileText className="w-3 h-3" />
+                      <FileText className="w-4 h-4 stroke-[3px]" />
                     )}
-                    Action Letter
+                    ACTION LETTER
                   </button>
 
                   <button
                     onClick={handleDefuse}
                     disabled={defuseLoading}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-green-500/10 border border-green-500/20 text-green-400 hover:bg-green-500/20 transition-all disabled:opacity-50"
+                    className="flex items-center gap-2 px-4 py-2 border-4 border-black bg-green-500 hover:bg-green-600 font-black uppercase tracking-widest text-xs text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all disabled:opacity-50"
                     aria-label="Mark deadline as defused"
                   >
                     {defuseLoading ? (
-                      <Loader2 className="w-3 h-3 animate-spin" />
+                      <Loader2 className="w-4 h-4 animate-spin stroke-[3px]" />
                     ) : (
-                      <ShieldCheck className="w-3 h-3" />
+                      <ShieldCheck className="w-4 h-4 stroke-[3px]" />
                     )}
-                    Mark Defused
+                    MARK DEFUSED
                   </button>
 
                   <button
                     onClick={handleAddToCalendar}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition-all"
+                    className="flex items-center gap-2 px-4 py-2 border-4 border-black bg-blue-100 dark:bg-blue-900/30 font-black uppercase tracking-widest text-xs text-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all"
                     aria-label="Add to calendar"
                   >
-                    <CalendarCheck className="w-3 h-3" />
-                    Calendar
+                    <CalendarCheck className="w-4 h-4 stroke-[3px]" />
+                    CALENDAR
                   </button>
                 </div>
               )}

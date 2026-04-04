@@ -348,7 +348,7 @@ export default function QuickScanResult({
             exit={{ opacity: 0, y: -10, height: 0, marginBottom: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <Card className="glass border-blue-500/20">
+            <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] bg-background">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
                   <div className="relative">
@@ -493,7 +493,7 @@ export default function QuickScanResult({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
           >
-            <Card className="glass border-green-500/20">
+            <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] bg-background">
               <CardContent className="p-6 text-center">
                 <CheckCircle2 className="h-8 w-8 text-green-400 mx-auto mb-2" />
                 <p className="text-sm font-medium text-green-400">

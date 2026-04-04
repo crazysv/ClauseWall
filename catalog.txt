@@ -1,0 +1,527 @@
+
+**app/complaint/page.tsx**
+1. Imports: import { useEffect, useState } from "react";, impo ...
+2. State: const [filings, setFilings] = useState, const [loading, setLoading] = useState
+3. Effects: Uses useEffect
+4. API Calls: fetch("/api/complaint/list")
+5. Handlers: None
+6. Navigation: Uses navigation/router
+7. Conditionals: Yes
+
+**app/complaint/[documentId]/page.tsx**
+1. Imports: import { useEffect, useState, useCallback } from " ...
+2. State: const [step, setStep] = useState, const [loading, setLoading] = useState, const [routing, setRouting] = useState, const [selectedAuth, setSelectedAuth] = useState, const [guide, setGuide] = useState
+3. Effects: Uses useEffect
+4. API Calls: fetch("/api/complaint/determine", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          documentId,
+          claimAmount: claimAmount ? Number(claimAmount), fetch("/api/complaint/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          documentId,
+          authorityType: selectedAuth.primary.type,
+          complainantName, complainantAddress, complainantPhone,
+          respondentName, respondentAddress,
+          claimAmount: claimAmount ? Number(claimAmount), fetch(`/api/complaint/filing-guide?authorityType=${selectedAuth.primary.type}`)
+5. Handlers: const handleGenerate =
+6. Navigation: Uses navigation/router
+7. Conditionals: Yes
+
+**app/authority/page.tsx**
+1. Imports: import type { Metadata } from "next";, import Auth ...
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: No
+
+**app/authority/[authorityId]/page.tsx**
+1. Imports: import type { Metadata } from "next";, import Auth ...
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: Uses navigation/router
+7. Conditionals: No
+
+**app/authority/escalation/page.tsx**
+1. Imports: import type { Metadata } from "next";, import Esca ...
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: No
+
+**app/authority/legal-aid/page.tsx**
+1. Imports: import type { Metadata } from "next";, import Lega ...
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: No
+
+**app/authority/rti/page.tsx**
+1. Imports: import type { Metadata } from "next";, import RTIF ...
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: No
+
+**app/authority/rti/[documentId]/page.tsx**
+1. Imports: import type { Metadata } from "next";, import RTIF ...
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: No
+
+**app/evidence/page.tsx**
+1. Imports: import { useState, useEffect } from "react";, impo ...
+2. State: const [cases, setCases] = useState, const [loading, setLoading] = useState
+3. Effects: Uses useEffect
+4. API Calls: fetch("/api/evidence/cases")
+5. Handlers: None
+6. Navigation: Uses navigation/router
+7. Conditionals: Yes
+
+**app/evidence/new/page.tsx**
+1. Imports: import { useState, Suspense } from "react";, impor ...
+2. State: const [title, setTitle] = useState, const [description, setDescription] = useState, const [counterpartyName, setCounterpartyName] = useState, const [counterpartyType, setCounterpartyType] = useState, const [disputeType, setDisputeType] = useState
+3. Effects: No useEffect
+4. API Calls: fetch("/api/evidence/cases", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title,
+          description,
+          counterparty_name: counterpartyName,
+          counterparty_type: counterpartyType,
+          dispute_type: disputeType,
+          dispute_description: disputeDescription,
+          document_id: documentId || null,
+        })
+5. Handlers: const handleSubmit =
+6. Navigation: Uses navigation/router
+7. Conditionals: Yes
+
+**app/evidence/[caseId]/page.tsx**
+1. Imports: import { useState, useEffect, useCallback } from " ...
+2. State: const [evidenceCase, setEvidenceCase] = useState, const [items, setItems] = useState, const [chainLinks, setChainLinks] = useState, const [loading, setLoading] = useState, const [uploading, setUploading] = useState
+3. Effects: Uses useEffect
+4. API Calls: fetch(`/api/evidence/cases/${caseId}`), fetch(endpoint, {
+        method: "POST",
+        body: body as BodyInit,
+        ...(Object.keys(headers), fetch("/api/evidence/chain/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ case_id: caseId })
+5. Handlers: const handleUpload =, const handleVerifyChain =, const handleDeleteItem =, const handleCertifyItem =
+6. Navigation: Uses navigation/router
+7. Conditionals: Yes
+
+**app/evidence/[caseId]/bundle/page.tsx**
+1. Imports: import { useState } from "react";, import { usePar ...
+2. State: const [bundleType, setBundleType] = useState, const [title, setTitle] = useState, const [includeCerts, setIncludeCerts] = useState, const [includeIndex, setIncludeIndex] = useState, const [includeChain, setIncludeChain] = useState
+3. Effects: No useEffect
+4. API Calls: fetch("/api/evidence/bundle/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ case_id: caseId, bundle_type: bundleType, title, config })
+5. Handlers: const handleGenerate =
+6. Navigation: Uses navigation/router
+7. Conditionals: Yes
+
+**app/builder/page.tsx**
+1. Imports: import { useState } from "react";, import { useRou ...
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: Uses navigation/router
+7. Conditionals: Yes
+
+**app/builder/[type]/page.tsx**
+1. Imports: import { useState, useEffect } from "react";, impo ...
+2. State: const [jurisdiction, setJurisdiction] = useState, const [values, setValues] = useState, const [errors, setErrors] = useState, const [isGenerating, setIsGenerating] = useState, const [generationError, setGenerationError] = useState
+3. Effects: Uses useEffect
+4. API Calls: fetch("/api/builder/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          template_type: type,
+          jurisdiction,
+          values,
+        })
+5. Handlers: const handleNext =, const handlePrev =, const handleGenerate =
+6. Navigation: Uses navigation/router
+7. Conditionals: Yes
+
+**app/builder/preview/[id]/page.tsx**
+1. Imports: import { useState, useEffect } from "react";, impo ...
+2. State: const [contract, setContract] = useState, const [loading, setLoading] = useState, const [copied, setCopied] = useState, const [expandedClauses, setExpandedClauses] = useState, const [viewMode, setViewMode] = useState
+3. Effects: Uses useEffect
+4. API Calls: None
+5. Handlers: const handleCopy =, const handleDownload =, const handlePrint =
+6. Navigation: Uses navigation/router
+7. Conditionals: Yes
+
+**app/verify/[id]/page.tsx**
+1. Imports: import { Metadata } from "next";, import Link from ...
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: Uses navigation/router
+7. Conditionals: Yes
+
+**components/complaint/complaint-cta.tsx**
+1. Imports: import { useState } from "react";, import { motion ...
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: Uses navigation/router
+7. Conditionals: Yes
+
+**components/complaint/complaint-dashboard-widget.tsx**
+1. Imports: import { motion } from "framer-motion";, import {  ...
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: Uses navigation/router
+7. Conditionals: Yes
+
+**components/complaint/complaint-dashboard-widget-wrapper.tsx**
+1. Imports: import { useEffect, useState } from "react";, impo ...
+2. State: const [filings, setFilings] = useState
+3. Effects: Uses useEffect
+4. API Calls: fetch("/api/complaint/list")
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: No
+
+**components/authority/authority-card.tsx**
+1. Imports: import { motion } from "framer-motion";, import {  ...
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: Yes
+
+**components/authority/authority-contact-buttons.tsx**
+1. Imports: import { Phone, Mail, Globe, MapPin, FileUp, Exter ...
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: Yes
+
+**components/authority/authority-detail.tsx**
+1. Imports: import { useState, useEffect } from "react";, impo ...
+2. State: const [authority, setAuthority] = useState, const [loading, setLoading] = useState, const [showReport, setShowReport] = useState
+3. Effects: Uses useEffect
+4. API Calls: fetch(`/api/authority/${authorityId}`)
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: Yes
+
+**components/authority/authority-finder.tsx**
+1. Imports: import { useState } from "react";, import { motion ...
+2. State: const [documentType, setDocumentType] = useState, const [jurisdiction, setJurisdiction] = useState, const [claimAmount, setClaimAmount] = useState, const [counterpartyType, setCounterpartyType] = useState, const [loading, setLoading] = useState
+3. Effects: No useEffect
+4. API Calls: fetch("/api/authority/route", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          document_type: documentType,
+          jurisdiction,
+          claim_amount: claimAmount ? parseInt(claimAmount)
+5. Handlers: const handleSearch =
+6. Navigation: No explicit router/Link
+7. Conditionals: Yes
+
+**components/authority/authority-hours-badge.tsx**
+1. Imports: import { Clock, CheckCircle2, XCircle, Wifi } from ...
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: Yes
+
+**components/authority/authority-search-bar.tsx**
+1. Imports: import { useState } from "react";, import { Search ...
+2. State: const [query, setQuery] = useState, const [loading, setLoading] = useState, const [results, setResults] = useState
+3. Effects: No useEffect
+4. API Calls: fetch(`/api/authority/search?q=${encodeURIComponent(query)
+5. Handlers: const handleSearch =
+6. Navigation: No explicit router/Link
+7. Conditionals: Yes
+
+**components/authority/authority-section.tsx**
+1. Imports: import { useState, useEffect } from "react";, impo ...
+2. State: const [routingResult, setRoutingResult] = useState, const [escalationPath, setEscalationPath] = useState, const [loading, setLoading] = useState, const [activeTab, setActiveTab] = useState
+3. Effects: Uses useEffect
+4. API Calls: fetch("/api/authority/route", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            document_type: documentType,
+            jurisdiction,
+            claim_amount: claimAmount,
+            entity_name: entityName,
+            clause_types: clauseTypes,
+          }), fetch("/api/authority/escalation", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            dispute_category: null,
+            document_type: documentType,
+          })
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: Yes
+
+**components/authority/complaint-email-preview.tsx**
+1. Imports: import { useState } from "react";, import { Copy,  ...
+2. State: const [copied, setCopied] = useState
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: Yes
+
+**components/authority/escalation-countdown.tsx**
+1. Imports: import { useState, useEffect } from "react";, impo ...
+2. State: const [daysRemaining, setDaysRemaining] = useState
+3. Effects: Uses useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: Yes
+
+**components/authority/escalation-path-visualizer.tsx**
+1. Imports: import type { EscalationPath } from "@/types/autho ...
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: Yes
+
+**components/authority/escalation-step-card.tsx**
+1. Imports: import { motion } from "framer-motion";, import {  ...
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: Yes
+
+**components/authority/fee-breakdown.tsx**
+1. Imports: import { Wallet, CreditCard, AlertCircle } from "l ...
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: Yes
+
+**components/authority/filing-checklist.tsx**
+1. Imports: import { useState } from "react";, import { CheckC ...
+2. State: const [checked, setChecked] = useState
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: Yes
+
+**components/authority/jurisdiction-reasoning.tsx**
+1. Imports: import { Scale, BookOpen } from "lucide-react";, i ...
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: Yes
+
+**components/authority/jurisdiction-result.tsx**
+1. Imports: import { Scale, AlertTriangle, CheckCircle2, Arrow ...
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: Yes
+
+**components/authority/legal-aid-checker.tsx**
+1. Imports: import { useState } from "react";, import { motion ...
+2. State: const [income, setIncome] = useState, const [category, setCategory] = useState, const [state, setState] = useState, const [gender, setGender] = useState, const [loading, setLoading] = useState
+3. Effects: No useEffect
+4. API Calls: fetch("/api/authority/legal-aid", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          annual_income: income ? parseInt(income)
+5. Handlers: const handleCheck =
+6. Navigation: No explicit router/Link
+7. Conditionals: Yes
+
+**components/authority/legal-aid-result.tsx**
+1. Imports: import { CheckCircle2, XCircle, Phone, Heart } fro ...
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: Yes
+
+**components/authority/not-this-authority.tsx**
+1. Imports: import { XCircle, AlertTriangle } from "lucide-rea ...
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: Yes
+
+**components/authority/report-issue-modal.tsx**
+1. Imports: import { useState } from "react";, import { motion ...
+2. State: const [issueType, setIssueType] = useState, const [description, setDescription] = useState, const [suggestion, setSuggestion] = useState, const [submitting, setSubmitting] = useState, const [submitted, setSubmitted] = useState
+3. Effects: No useEffect
+4. API Calls: fetch("/api/authority/report-issue", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ authority_id: authorityId, issue_type: issueType, description, suggested_correction: suggestion || undefined })
+5. Handlers: const handleSubmit =
+6. Navigation: No explicit router/Link
+7. Conditionals: Yes
+
+**components/authority/rti-form.tsx**
+1. Imports: import { useState } from "react";, import { motion ...
+2. State: const [name, setName] = useState, const [address, setAddress] = useState, const [authority, setAuthority] = useState, const [authorityAddress, setAuthorityAddress] = useState, const [context, setContext] = useState
+3. Effects: No useEffect
+4. API Calls: fetch("/api/authority/rti/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          applicant_name: name,
+          applicant_address: address,
+          target_authority: authority || "Public Information Officer",
+          target_address: authorityAddress,
+          dispute_context: context,
+        })
+5. Handlers: const handleGenerate =
+6. Navigation: No explicit router/Link
+7. Conditionals: Yes
+
+**components/authority/rti-preview.tsx**
+1. Imports: import { Copy, FileText } from "lucide-react";, im ...
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: No
+
+**components/evidence/chain-status-badge.tsx**
+1. Imports: import { Shield, AlertTriangle, Clock } from "luci ...
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: Yes
+
+**components/evidence/evidence-case-card.tsx**
+1. Imports: import Link from "next/link";, import type { Evide ...
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: Uses navigation/router
+7. Conditionals: Yes
+
+**components/evidence/evidence-chain-visualizer.tsx**
+1. Imports: import type { ChainLink } from "@/types/evidence"; ...
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: Uses navigation/router
+7. Conditionals: Yes
+
+**components/evidence/evidence-item-card.tsx**
+1. Imports: import type { EvidenceItem } from "@/types/evidenc ...
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: Yes
+
+**components/evidence/evidence-stats.tsx**
+1. Imports: import { EVIDENCE_TYPE_META, type EvidenceType } f ...
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: Yes
+
+**components/evidence/evidence-timeline.tsx**
+1. Imports: import type { EvidenceItem } from "@/types/evidenc ...
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: Yes
+
+**components/evidence/evidence-type-icon.tsx**
+1. Imports: import { EVIDENCE_TYPE_META, type EvidenceType } f ...
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: No
+
+**components/evidence/evidence-upload-zone.tsx**
+1. Imports: import { useState, useCallback } from "react";, im ...
+2. State: const [selectedType, setSelectedType] = useState, const [urlInput, setUrlInput] = useState, const [cinInput, setCinInput] = useState
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: Yes
+
+**components/evidence/storage-usage-bar.tsx**
+1. Imports: None
+2. State: None
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: None
+6. Navigation: No explicit router/Link
+7. Conditionals: Yes
+
+**components/embed/embed-code-modal.tsx**
+1. Imports: import { useState } from "react";, import { Button ...
+2. State: const [style, setStyle] = useState, const [copiedType, setCopiedType] = useState
+3. Effects: No useEffect
+4. API Calls: None
+5. Handlers: const handleCopy =
+6. Navigation: No explicit router/Link
+7. Conditionals: Yes

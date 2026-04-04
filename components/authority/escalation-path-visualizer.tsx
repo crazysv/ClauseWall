@@ -16,11 +16,11 @@ export default function EscalationPathVisualizer({ path, compact = false }: Prop
 
   return (
     <div>
-      <div className="flex items-center gap-2 mb-4">
-        <ArrowUpCircle className="h-5 w-5 text-blue-400" />
+      <div className="flex items-center gap-3 mb-6 border-b-4 border-black pb-4">
+        <ArrowUpCircle className="h-8 w-8 text-amber-600 dark:text-amber-400 stroke-[3px]" />
         <div>
-          <h3 className="font-semibold text-sm">Escalation Path</h3>
-          <p className="text-xs text-muted-foreground">{label} — {path.total_steps} steps</p>
+          <h3 className="font-black text-xl uppercase tracking-widest">Escalation Path</h3>
+          <p className="text-sm font-bold text-muted-foreground">{label} — {path.total_steps} steps</p>
         </div>
       </div>
 

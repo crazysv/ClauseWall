@@ -276,7 +276,7 @@ export default function WallOfShamePage() {
 
         {/* Empty State */}
         {entities.length === 0 && (
-          <Card className="glass border-white/5">
+          <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] bg-background">
             <CardContent className="p-12 text-center">
               <Shield className="h-12 w-12 text-green-500 mx-auto mb-4" />
               <h3 className="text-lg font-semibold mb-2">
@@ -299,7 +299,7 @@ export default function WallOfShamePage() {
 
         {/* Filtered Empty State */}
         {entities.length > 0 && filteredEntities.length === 0 && (
-          <Card className="glass border-white/5">
+          <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] bg-background">
             <CardContent className="p-8 text-center">
               <Search className="h-8 w-8 text-muted-foreground mx-auto mb-3" />
               <p className="text-muted-foreground">
@@ -323,8 +323,8 @@ export default function WallOfShamePage() {
           {filteredEntities.map((entity, index) => (
             <Card
               key={entity.id}
-              className={`bg-gray-900/50 border-gray-800 hover:border-red-500/20 transition-all overflow-hidden ${
-                index < 3 ? "border-red-500/20" : ""
+              className={`card-impact border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] bg-background hover:translate-y-1 hover:shadow-none transition-all overflow-hidden ${
+                index < 3 ? "border-l-8 border-l-red-500" : ""
               }`}
             >
               {/* Top 3 get a red stripe */}
@@ -458,7 +458,7 @@ export default function WallOfShamePage() {
         )}
 
         {/* Disclaimer */}
-        <div className="mt-12 p-4 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
+        <div className="mt-12 p-4 border-4 border-yellow-500 shadow-[4px_4px_0px_0px_rgba(234,179,8,1)] bg-background">
           <div className="flex items-start gap-3">
             <AlertTriangle className="h-5 w-5 text-yellow-400 flex-shrink-0 mt-0.5" />
             <div className="text-sm text-yellow-300">

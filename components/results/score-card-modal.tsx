@@ -546,7 +546,7 @@ export default function ScoreCardModal({
                     {currentSlide > 0 && (
                       <button
                         onClick={() => setCurrentSlide((p) => p - 1)}
-                        className="absolute left-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/80 transition-colors"
+                        className="absolute left-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full bg-black border-2 border-foreground flex items-center justify-center text-white hover:bg-black/80 transition-colors"
                       >
                         <ChevronLeft className="h-4 w-4" />
                       </button>
@@ -556,14 +556,14 @@ export default function ScoreCardModal({
                     {currentSlide < carouselPreviews.length - 1 && (
                       <button
                         onClick={() => setCurrentSlide((p) => p + 1)}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/80 transition-colors"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full bg-black border-2 border-foreground flex items-center justify-center text-white hover:bg-black/80 transition-colors"
                       >
                         <ChevronRight className="h-4 w-4" />
                       </button>
                     )}
 
                     {/* Slide label */}
-                    <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-sm text-[10px] text-white font-medium">
+                    <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-black border-2 border-foreground text-[10px] text-white font-medium">
                       {currentSlide + 1} / {carouselPreviews.length}
                     </div>
                   </div>

@@ -57,120 +57,125 @@ export default function EmbedCodeModal({ isOpen, onClose, shareId }: EmbedCodeMo
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-gray-900 border-gray-800 max-w-lg max-h-[90vh] overflow-y-auto">
+      <DialogContent className="border-4 border-black bg-white dark:bg-zinc-950 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] max-w-lg max-h-[90vh] overflow-y-auto rounded-none">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Code2 className="h-5 w-5 text-blue-400" />
-            Embed Badge
+          <DialogTitle className="flex items-center gap-3 font-black uppercase tracking-widest text-xl text-foreground">
+            <Code2 className="h-6 w-6 text-black dark:text-white stroke-[3px]" />
+            EMBED BADGE
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-muted-foreground font-bold mt-2">
             Add a ClauseWall verification badge to your website, listing, or portfolio.
           </DialogDescription>
         </DialogHeader>
 
         {/* Style Selector */}
-        <div className="space-y-2">
-          <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Badge Style</p>
-          <div className="flex gap-2">
+        <div className="space-y-4">
+          <p className="text-sm text-foreground font-black uppercase tracking-widest">BADGE STYLE</p>
+          <div className="flex gap-3">
             {STYLES.map((s) => (
               <button
                 key={s.value}
                 onClick={() => setStyle(s.value)}
-                className={`flex-1 p-3 rounded-lg border text-left transition-all ${
+                className={`flex-1 p-3 border-4 border-black text-left transition-all ${
                   style === s.value
-                    ? "bg-blue-600/10 border-blue-500/30"
-                    : "bg-white/[0.02] border-white/5 hover:border-white/10"
+                    ? "bg-blue-100 dark:bg-blue-900/30 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] translate-y-0"
+                    : "bg-white dark:bg-zinc-900 shadow-none hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1"
                 }`}
               >
-                <p className="text-xs font-medium text-white">{s.label}</p>
-                <p className="text-[10px] text-gray-500 mt-0.5">{s.description}</p>
+                <p className={`text-xs font-black uppercase tracking-widest ${style === s.value ? "text-blue-900 dark:text-blue-100" : "text-foreground"}`}>{s.label}</p>
+                <p className="text-[10px] text-muted-foreground font-bold mt-1 uppercase tracking-wider">{s.description}</p>
               </button>
             ))}
           </div>
         </div>
 
         {/* Preview */}
-<div className="p-6 rounded-lg bg-white/[0.03] border border-white/5 flex items-center justify-center min-h-[120px]">
-  {/* eslint-disable-next-line @next/next/no-img-element */}
-  <img
-    src={`${badgeUrl}&t=${Date.now()}`}
-    alt="Badge Preview"
-    style={{ maxWidth: "100%" }}
-    key={`${style}-${Date.now()}`}
-    onError={(e) => {
-      console.error("Badge failed to load:", badgeUrl);
-      (e.target as HTMLImageElement).style.display = "none";
-    }}
-    onLoad={(e) => {
-      (e.target as HTMLImageElement).style.display = "block";
-    }}
-  />
-</div>
+        {/* Preview */}
+        <div className="p-6 border-4 border-black border-dashed bg-gray-50 dark:bg-zinc-900 flex items-center justify-center min-h-[120px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={`${badgeUrl}&t=${Date.now()}`}
+            alt="Badge Preview"
+            style={{ maxWidth: "100%" }}
+            key={`${style}-${Date.now()}`}
+            onError={(e) => {
+              console.error("Badge failed to load:", badgeUrl);
+              (e.target as HTMLImageElement).style.display = "none";
+            }}
+            onLoad={(e) => {
+              (e.target as HTMLImageElement).style.display = "block";
+            }}
+          />
+        </div>
 
         {/* Code Blocks */}
-        <div className="space-y-4">
+        <div className="space-y-6">
           {/* HTML */}
-          <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <p className="text-xs text-gray-500 font-medium">HTML</p>
+          <div className="relative group">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-sm text-foreground font-black uppercase tracking-widest">HTML</p>
               <button onClick={() => handleCopy(htmlCode, "HTML")}
-                className="text-xs text-gray-400 hover:text-white flex items-center gap-1 transition-colors">
-                {copiedType === "HTML" ? <Check className="h-3 w-3 text-green-400" /> : <Copy className="h-3 w-3" />}
-                {copiedType === "HTML" ? "Copied!" : "Copy"}
+                className="text-xs text-muted-foreground hover:text-foreground font-bold uppercase tracking-widest flex items-center gap-1 transition-colors">
+                {copiedType === "HTML" ? <Check className="h-4 w-4 text-green-600 stroke-[3px]" /> : <Copy className="h-4 w-4 stroke-[3px]" />}
+                {copiedType === "HTML" ? "COPIED!" : "COPY"}
               </button>
             </div>
-            <pre className="p-3 rounded-lg bg-black/40 border border-white/5 text-xs text-green-400 overflow-x-auto">
+            <pre className="p-4 border-4 border-black bg-black text-xs text-green-400 overflow-x-auto shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
               <code>{htmlCode}</code>
             </pre>
           </div>
 
           {/* Markdown */}
-          <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <p className="text-xs text-gray-500 font-medium">Markdown</p>
+          <div className="relative group">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-sm text-foreground font-black uppercase tracking-widest">MARKDOWN</p>
               <button onClick={() => handleCopy(markdownCode, "Markdown")}
-                className="text-xs text-gray-400 hover:text-white flex items-center gap-1 transition-colors">
-                {copiedType === "Markdown" ? <Check className="h-3 w-3 text-green-400" /> : <Copy className="h-3 w-3" />}
-                {copiedType === "Markdown" ? "Copied!" : "Copy"}
+                className="text-xs text-muted-foreground hover:text-foreground font-bold uppercase tracking-widest flex items-center gap-1 transition-colors">
+                {copiedType === "Markdown" ? <Check className="h-4 w-4 text-green-600 stroke-[3px]" /> : <Copy className="h-4 w-4 stroke-[3px]" />}
+                {copiedType === "Markdown" ? "COPIED!" : "COPY"}
               </button>
             </div>
-            <pre className="p-3 rounded-lg bg-black/40 border border-white/5 text-xs text-blue-400 overflow-x-auto">
+            <pre className="p-4 border-4 border-black bg-black text-xs text-blue-400 overflow-x-auto shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
               <code>{markdownCode}</code>
             </pre>
           </div>
 
           {/* Direct URL */}
-          <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <p className="text-xs text-gray-500 font-medium">Direct URL</p>
+          <div className="relative group">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-sm text-foreground font-black uppercase tracking-widest">DIRECT URL</p>
               <button onClick={() => handleCopy(directUrl, "URL")}
-                className="text-xs text-gray-400 hover:text-white flex items-center gap-1 transition-colors">
-                {copiedType === "URL" ? <Check className="h-3 w-3 text-green-400" /> : <Copy className="h-3 w-3" />}
-                {copiedType === "URL" ? "Copied!" : "Copy"}
+                className="text-xs text-muted-foreground hover:text-foreground font-bold uppercase tracking-widest flex items-center gap-1 transition-colors">
+                {copiedType === "URL" ? <Check className="h-4 w-4 text-green-600 stroke-[3px]" /> : <Copy className="h-4 w-4 stroke-[3px]" />}
+                {copiedType === "URL" ? "COPIED!" : "COPY"}
               </button>
             </div>
-            <pre className="p-3 rounded-lg bg-black/40 border border-white/5 text-xs text-gray-400 overflow-x-auto">
+            <pre className="p-4 border-4 border-black bg-black text-xs text-gray-400 overflow-x-auto shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
               <code>{directUrl}</code>
             </pre>
           </div>
         </div>
 
         {/* Use Cases */}
-        <div className="p-3 rounded-lg bg-white/[0.02] border border-white/5">
-          <p className="text-[10px] text-gray-500 font-medium uppercase tracking-wider mb-2">Where to use</p>
-          <div className="grid grid-cols-2 gap-1.5 text-[11px] text-gray-400">
-            <div>🏠 Property listings</div>
-            <div>💼 Company careers page</div>
-            <div>📧 Email signatures</div>
-            <div>📝 Contract templates</div>
+        <div className="p-4 border-4 border-black bg-yellow-100 dark:bg-yellow-900/30 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mt-4">
+          <p className="text-sm text-yellow-900 dark:text-yellow-100 font-black uppercase tracking-widest mb-3">WHERE TO USE</p>
+          <div className="grid grid-cols-2 gap-2 text-xs font-bold uppercase tracking-widest text-foreground">
+            <div>🏠 PROPERTY LISTINGS</div>
+            <div>💼 COMPANY CAREERS PAGE</div>
+            <div>📧 EMAIL SIGNATURES</div>
+            <div>📝 CONTRACT TEMPLATES</div>
           </div>
         </div>
 
         {/* Open Preview */}
-        <Button variant="outline" size="sm" onClick={() => window.open(verifyUrl, "_blank")} className="gap-2 w-full">
-          <ExternalLink className="h-4 w-4" />
-          Open Verification Page
-        </Button>
+        {/* Open Preview */}
+        <button
+          onClick={() => window.open(verifyUrl, "_blank")}
+          className="flex items-center justify-center gap-3 w-full px-4 py-4 border-4 border-black bg-blue-400 hover:bg-blue-500 text-black text-sm font-black uppercase tracking-widest shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all mt-4"
+        >
+          <ExternalLink className="h-5 w-5 stroke-[3px]" />
+          OPEN VERIFICATION PAGE
+        </button>
       </DialogContent>
     </Dialog>
   );

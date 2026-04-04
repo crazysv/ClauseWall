@@ -138,49 +138,43 @@ export default async function VerifyPage({
   const viewCount = (doc.share_count || 0) + 1; // +1 for current view
 
   return (
-    <div className="min-h-[calc(100vh-140px)] flex items-center justify-center px-4 py-8">
+    <div className="min-h-[calc(100vh-80px)] flex items-center justify-center px-4 py-12 bg-background border-t-4 border-black">
       {/* Background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div
-          className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full blur-[120px] opacity-10"
-          style={{ backgroundColor: tier.color }}
-        />
-      </div>
+      <div className="fixed inset-0 overflow-hidden pointer-events-none" />
 
       <div className="relative w-full max-w-md">
         {/* Main Card */}
-        <div className="bg-gray-900/80 backdrop-blur-sm border border-gray-800 rounded-2xl overflow-hidden">
+        <div className="bg-white dark:bg-zinc-950 border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all duration-300">
           {/* Top color stripe */}
-          <div className="h-1.5" style={{ backgroundColor: tier.color }} />
+          <div className="h-4 border-b-4 border-black" style={{ backgroundColor: tier.color }} />
 
           <div className="p-6 sm:p-8">
             {/* Badge Icon + Label */}
-            <div className="text-center mb-6">
-              <div className="text-5xl mb-3">{tier.icon}</div>
+            <div className="text-center mb-8 border-b-4 border-black pb-8 border-dashed">
+              <div className="text-6xl mb-4">{tier.icon}</div>
               <h1
-                className="text-xl sm:text-2xl font-bold"
-                style={{ color: tier.color }}
+                className="text-2xl sm:text-3xl font-black uppercase tracking-widest text-black dark:text-white"
               >
-                {tier.label}
+                <span style={{ color: tier.color }}>{tier.label}</span>
               </h1>
             </div>
 
             {/* Score Gauge */}
-            <div className="flex justify-center mb-6">
+            <div className="flex justify-center mb-8">
               <div
-                className="relative h-28 w-28 rounded-full flex items-center justify-center"
+                className="relative h-32 w-32 border-4 border-black rounded-full flex items-center justify-center bg-gray-100 dark:bg-zinc-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                 style={{
-                  background: `conic-gradient(${tier.color} ${doc.overall_risk_score}%, rgba(255,255,255,0.05) 0)`,
+                  background: `conic-gradient(${tier.color} ${doc.overall_risk_score}%, transparent 0)`,
                 }}
               >
-                <div className="absolute inset-2.5 bg-gray-900 rounded-full flex flex-col items-center justify-center">
+                <div className="absolute inset-2 md:inset-3 bg-white dark:bg-zinc-950 border-4 border-black rounded-full flex flex-col items-center justify-center">
                   <span
-                    className="text-3xl font-bold"
+                    className="text-4xl font-black"
                     style={{ color: tier.color }}
                   >
                     {doc.overall_risk_score}
                   </span>
-                  <span className="text-xs text-muted-foreground">/100</span>
+                  <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">/100</span>
                 </div>
               </div>
             </div>
@@ -194,139 +188,132 @@ export default async function VerifyPage({
             <div className="h-px bg-white/5 mb-6" />
 
             {/* Contract Details */}
-            <div className="space-y-3 mb-6">
-              <div className="flex items-center gap-3 text-sm">
-                <FileText className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                <span className="text-muted-foreground">Type:</span>
-                <span className="font-medium">
+            <div className="space-y-4 mb-8 pt-6 border-t-4 border-black border-dashed">
+              <div className="flex items-center gap-4 text-sm font-bold uppercase tracking-widest">
+                <FileText className="h-5 w-5 text-black dark:text-white flex-shrink-0 stroke-[3px]" />
+                <span className="text-muted-foreground w-32">TYPE</span>
+                <span className="font-black text-foreground">
                   {getDocumentTypeLabel(doc.document_type)}
                 </span>
               </div>
-              <div className="flex items-center gap-3 text-sm">
-                <MapPin className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                <span className="text-muted-foreground">Jurisdiction:</span>
-                <span className="font-medium">
+              <div className="flex items-center gap-4 text-sm font-bold uppercase tracking-widest">
+                <MapPin className="h-5 w-5 text-black dark:text-white flex-shrink-0 stroke-[3px]" />
+                <span className="text-muted-foreground w-32">JURISDICTION</span>
+                <span className="font-black text-foreground">
                   {getStateName(doc.jurisdiction)}
                 </span>
               </div>
-              <div className="flex items-center gap-3 text-sm">
-                <Calendar className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                <span className="text-muted-foreground">Verified:</span>
-                <span className="font-medium">{formattedDate}</span>
+              <div className="flex items-center gap-4 text-sm font-bold uppercase tracking-widest">
+                <Calendar className="h-5 w-5 text-black dark:text-white flex-shrink-0 stroke-[3px]" />
+                <span className="text-muted-foreground w-32">VERIFIED</span>
+                <span className="font-black text-foreground">{formattedDate}</span>
               </div>
 
               {/* Entity — only if owner enabled */}
               {settings.show_entity && doc.entity_name && (
-                <div className="flex items-center gap-3 text-sm">
-                  <Building2 className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                  <span className="text-muted-foreground">Entity:</span>
-                  <span className="font-medium">{doc.entity_name}</span>
+                <div className="flex items-center gap-4 text-sm font-bold uppercase tracking-widest">
+                  <Building2 className="h-5 w-5 text-black dark:text-white flex-shrink-0 stroke-[3px]" />
+                  <span className="text-muted-foreground w-32">ENTITY</span>
+                  <span className="font-black text-foreground">{doc.entity_name}</span>
                 </div>
               )}
 
               {viewCount > 1 && (
-                <div className="flex items-center gap-3 text-sm">
-                  <Users className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                  <span className="text-muted-foreground">
-                    Verified by {viewCount} people
+                <div className="flex items-center gap-4 text-sm font-bold uppercase tracking-widest mx-auto mt-6 border-2 border-black bg-blue-100 dark:bg-blue-900/30 p-2 justify-center">
+                  <Users className="h-5 w-5 text-blue-900 dark:text-blue-100 flex-shrink-0 stroke-[3px]" />
+                  <span className="text-blue-900 dark:text-blue-100">
+                    VERIFIED BY {viewCount} PEOPLE
                   </span>
                 </div>
               )}
             </div>
 
-            {/* Divider */}
-            <div className="h-px bg-white/5 mb-6" />
-
             {/* Clause Breakdown */}
-            <div className="mb-6">
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
-                Clause Breakdown
+            <div className="mb-8 pt-6 border-t-4 border-black border-dashed">
+              <h3 className="text-sm font-black uppercase tracking-widest text-muted-foreground mb-4">
+                CLAUSE BREAKDOWN
               </h3>
-              <div className="grid grid-cols-4 gap-2">
-                <div className="text-center p-2.5 rounded-lg bg-green-500/10">
-                  <CheckCircle2 className="h-4 w-4 text-green-400 mx-auto mb-1" />
-                  <p className="text-lg font-bold text-green-400">
+              <div className="grid grid-cols-4 gap-3">
+                <div className="text-center p-3 border-4 border-black bg-green-100 dark:bg-green-900/30 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                  <CheckCircle2 className="h-5 w-5 text-green-700 dark:text-green-400 mx-auto mb-2 stroke-[3px]" />
+                  <p className="text-xl font-black text-green-800 dark:text-green-300">
                     {doc.safe_count}
                   </p>
-                  <p className="text-[10px] text-muted-foreground">Safe</p>
+                  <p className="text-xs font-bold uppercase tracking-widest text-green-900 dark:text-green-300 mt-1">SAFE</p>
                 </div>
-                <div className="text-center p-2.5 rounded-lg bg-yellow-500/10">
-                  <AlertTriangle className="h-4 w-4 text-yellow-400 mx-auto mb-1" />
-                  <p className="text-lg font-bold text-yellow-400">
+                <div className="text-center p-3 border-4 border-black bg-yellow-100 dark:bg-yellow-900/30 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                  <AlertTriangle className="h-5 w-5 text-yellow-700 dark:text-yellow-400 mx-auto mb-2 stroke-[3px]" />
+                  <p className="text-xl font-black text-yellow-800 dark:text-yellow-300">
                     {doc.warning_count}
                   </p>
-                  <p className="text-[10px] text-muted-foreground">Warning</p>
+                  <p className="text-xs font-bold uppercase tracking-widest text-yellow-900 dark:text-yellow-300 mt-1">WARN</p>
                 </div>
-                <div className="text-center p-2.5 rounded-lg bg-red-500/10">
-                  <XCircle className="h-4 w-4 text-red-400 mx-auto mb-1" />
-                  <p className="text-lg font-bold text-red-400">
+                <div className="text-center p-3 border-4 border-black bg-red-100 dark:bg-red-900/30 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                  <XCircle className="h-5 w-5 text-red-700 dark:text-red-400 mx-auto mb-2 stroke-[3px]" />
+                  <p className="text-xl font-black text-red-800 dark:text-red-300">
                     {doc.dangerous_count}
                   </p>
-                  <p className="text-[10px] text-muted-foreground">
-                    Dangerous
+                  <p className="text-xs font-bold uppercase tracking-widest text-red-900 dark:text-red-300 mt-1">
+                    DANG
                   </p>
                 </div>
-                <div className="text-center p-2.5 rounded-lg bg-purple-500/10">
-                  <Ban className="h-4 w-4 text-purple-400 mx-auto mb-1" />
-                  <p className="text-lg font-bold text-purple-400">
+                <div className="text-center p-3 border-4 border-black bg-purple-100 dark:bg-purple-900/30 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                  <Ban className="h-5 w-5 text-purple-700 dark:text-purple-400 mx-auto mb-2 stroke-[3px]" />
+                  <p className="text-xl font-black text-purple-800 dark:text-purple-300">
                     {doc.illegal_count}
                   </p>
-                  <p className="text-[10px] text-muted-foreground">Illegal</p>
+                  <p className="text-xs font-bold uppercase tracking-widest text-purple-900 dark:text-purple-300 mt-1">BANNED</p>
                 </div>
               </div>
-              <p className="text-xs text-muted-foreground text-center mt-2">
-                {doc.total_clauses} total clauses analyzed
+              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground text-center mt-4">
+                {doc.total_clauses} TOTAL CLAUSES ANALYZED
               </p>
             </div>
 
             {/* Summary — only if owner enabled */}
             {settings.show_summary && doc.summary && (
               <>
-                <div className="h-px bg-white/5 mb-6" />
-                <div className="mb-6">
-                  <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
-                    Analysis Summary
+                <div className="mb-8 pt-6 border-t-4 border-black border-dashed">
+                  <h3 className="text-sm font-black uppercase tracking-widest text-muted-foreground mb-4">
+                    ANALYSIS SUMMARY
                   </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
+                  <p className="text-base font-medium text-foreground leading-relaxed p-4 border-l-4 border-black bg-gray-50 dark:bg-zinc-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                     {doc.summary}
                   </p>
                 </div>
               </>
             )}
 
-            {/* Divider */}
-            <div className="h-px bg-white/5 mb-6" />
-
             {/* Actions */}
-            <div className="space-y-3">
+            <div className="space-y-4 mb-4 pt-6 border-t-4 border-black border-dashed">
               {/* Full Analysis — only if owner enabled */}
               {settings.allow_full_analysis && (
                 <Link
                   href={`/results/${doc.id}`}
-                  className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors"
+                  className="flex items-center justify-center gap-3 w-full px-4 py-4 border-4 border-black bg-blue-400 hover:bg-blue-500 text-black text-sm font-black uppercase tracking-widest shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all"
                 >
-                  <ExternalLink className="h-4 w-4" />
-                  View Full Analysis
+                  <ExternalLink className="h-5 w-5 stroke-[3px]" />
+                  VIEW FULL ANALYSIS
                 </Link>
               )}
 
               <Link
                 href="/upload"
-                className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-white text-sm font-medium transition-colors"
+                className="flex items-center justify-center gap-3 w-full px-4 py-4 border-4 border-black bg-white dark:bg-zinc-900 text-foreground text-sm font-black uppercase tracking-widest shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all"
               >
-                <Search className="h-4 w-4" />
-                Analyze Your Own Contract
+                <Search className="h-5 w-5 stroke-[3px]" />
+                ANALYZE YOUR OWN CONTRACT
               </Link>
             </div>
           </div>
 
           {/* Footer */}
-          <div className="px-6 sm:px-8 py-4 bg-white/[0.02] border-t border-white/5">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <Shield className="h-4 w-4 text-blue-400" />
-              <span className="text-sm font-semibold">ClauseWall</span>
+          <div className="px-6 py-6 border-t-4 border-black bg-gray-100 dark:bg-zinc-900">
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <Shield className="h-5 w-5 text-black dark:text-white stroke-[3px]" />
+              <span className="text-base font-black uppercase tracking-widest">CLAUSEWALL</span>
             </div>
-            <p className="text-[10px] text-center text-muted-foreground leading-relaxed">
+            <p className="text-xs text-center font-bold text-muted-foreground uppercase tracking-widest leading-relaxed">
               India&apos;s AI Contract Analyzer. This verification is valid as of the
               date shown. Contract terms may have changed since verification.
               This is not legal advice.

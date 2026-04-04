@@ -14,7 +14,7 @@ export default function PresenceBar({
   roomCode,
 }: PresenceBarProps) {
   return (
-    <div className="flex items-center justify-between px-4 py-2.5 bg-gray-900/80 backdrop-blur-md border-b border-gray-800/50">
+    <div className="flex items-center justify-between px-4 py-2.5 bg-background border-b-4 border-foreground z-30 relative shadow-[0px_4px_0px_0px_rgba(0,0,0,1)]">
       <div className="flex items-center gap-3">
         {/* Avatar Stack */}
         <div className="flex -space-x-2">

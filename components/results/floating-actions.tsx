@@ -520,7 +520,7 @@ export default function FloatingActions({
                 exit={{ x: -10, opacity: 0 }}
                 transition={{ type: "spring", damping: 25, stiffness: 350 }}
                 onClick={() => setIsOpen(true)}
-                className="ml-3 flex flex-col items-center gap-1 w-16 py-3 rounded-xl bg-gray-900/90 backdrop-blur-md border border-gray-700/50 text-gray-400 hover:text-white hover:bg-gray-800/90 hover:border-gray-600/50 transition-all shadow-lg"
+                className="ml-3 flex flex-col items-center gap-1 w-16 py-3 rounded-none bg-foreground text-background border-2 border-foreground hover:bg-muted hover:text-foreground transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
               >
                 {isRoastMode ? (
                   <Flame className="h-5 w-5 text-orange-400 animate-bounce" />
@@ -572,7 +572,7 @@ export default function FloatingActions({
                 animate={{ y: 0 }}
                 exit={{ y: 400 }}
                 transition={{ type: "spring", damping: 28, stiffness: 300 }}
-                className="relative z-50 bg-gray-900/98 backdrop-blur-xl border-t border-gray-700/50 rounded-t-2xl shadow-2xl p-4 pb-8 max-h-[80vh] overflow-y-auto"
+                className="relative z-50 bg-background border-t-4 border-foreground shadow-[0px_-4px_0px_0px_rgba(0,0,0,1)] p-4 pb-8 max-h-[80vh] overflow-y-auto"
               >
                 {/* Handle */}
                 <div className="w-10 h-1 bg-gray-600 rounded-full mx-auto mb-4" />
@@ -695,7 +695,7 @@ export default function FloatingActions({
             >
               <button
                 onClick={() => setIsOpen(true)}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gray-900/90 backdrop-blur-md border border-gray-700/50 text-gray-300 hover:text-white hover:bg-gray-800/90 transition-all shadow-lg"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-none bg-foreground text-background border-2 border-foreground hover:bg-muted hover:text-foreground transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
               >
                 {isRoastMode ? (
                   <Flame className="h-4 w-4 text-orange-400 animate-bounce" />

@@ -57,7 +57,7 @@ function IndiaHeatMapComponent({
   return (
     <div className="relative">
       {/* Map */}
-      <div className="relative rounded-xl overflow-hidden border border-white/5 bg-gray-950">
+      <div className="relative rounded-none overflow-hidden border-4 border-foreground bg-background shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
         <ComposableMap
           projection="geoMercator"
           projectionConfig={{
@@ -125,8 +125,8 @@ function IndiaHeatMapComponent({
               top: tooltip.y - 60,
             }}
           >
-            <div className="rounded-lg bg-gray-900/95 border border-white/10 p-3 shadow-xl backdrop-blur-sm min-w-[160px]">
-              <p className="text-sm font-semibold text-white">{tooltip.name}</p>
+            <div className="rounded-none bg-background border-2 border-foreground p-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] min-w-[160px]">
+              <p className="text-sm font-black text-foreground uppercase tracking-wider">{tooltip.name}</p>
               {tooltip.data ? (
                 <div className="mt-1.5 space-y-1">
                   <div className="flex justify-between text-xs">
@@ -187,7 +187,7 @@ function IndiaHeatMapComponent({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
-            className="mt-4 p-4 rounded-xl bg-white/[0.03] border border-white/5"
+            className="mt-4 p-4 rounded-none card-impact bg-muted border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
           >
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">

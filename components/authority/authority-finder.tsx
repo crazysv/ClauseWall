@@ -74,40 +74,42 @@ export default function AuthorityFinder() {
   return (
     <div className="space-y-6">
       {/* Search Form */}
-      <Card className="border-white/10 bg-white/[0.02]">
-        <CardContent className="p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <Building2 className="h-5 w-5 text-blue-400" />
-            <h2 className="font-semibold">Find Your Legal Authority</h2>
+      <Card className="card-impact p-8 rounded-none">
+        <CardContent className="p-0">
+          <div className="flex items-center gap-3 border-b-4 border-black pb-4 mb-6">
+            <div className="p-3 bg-blue-100 border-4 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+              <Building2 className="h-6 w-6 text-blue-600 stroke-[3px]" />
+            </div>
+            <h2 className="font-black text-2xl uppercase tracking-widest">Route Your Dispute</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="text-xs text-muted-foreground mb-1 block">Document Type</label>
-              <select value={documentType} onChange={(e) => setDocumentType(e.target.value)} className="w-full bg-gray-900 border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-blue-500 focus:outline-none">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-sm font-black uppercase tracking-widest">Document Type</label>
+              <select value={documentType} onChange={(e) => setDocumentType(e.target.value)} className="w-full border-4 border-black p-3 bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-bold focus:outline-none focus:translate-x-1 focus:translate-y-1 focus:shadow-none transition-all">
                 {DOC_TYPES.map((t) => (
                   <option key={t.value} value={t.value}>{t.label}</option>
                 ))}
               </select>
             </div>
 
-            <div>
-              <label className="text-xs text-muted-foreground mb-1 block">State / Jurisdiction</label>
-              <select value={jurisdiction} onChange={(e) => setJurisdiction(e.target.value)} className="w-full bg-gray-900 border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-blue-500 focus:outline-none">
+            <div className="space-y-2">
+              <label className="text-sm font-black uppercase tracking-widest">State / Jurisdiction</label>
+              <select value={jurisdiction} onChange={(e) => setJurisdiction(e.target.value)} className="w-full border-4 border-black p-3 bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-bold focus:outline-none focus:translate-x-1 focus:translate-y-1 focus:shadow-none transition-all">
                 {JURISDICTIONS.map((j) => (
                   <option key={j.value} value={j.value}>{j.label}</option>
                 ))}
               </select>
             </div>
 
-            <div>
-              <label className="text-xs text-muted-foreground mb-1 block">Claim Amount (₹, optional)</label>
-              <input type="number" value={claimAmount} onChange={(e) => setClaimAmount(e.target.value)} placeholder="e.g. 500000" className="w-full bg-gray-900 border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-blue-500 focus:outline-none" />
+            <div className="space-y-2">
+              <label className="text-sm font-black uppercase tracking-widest">Claim Amount (₹, optional)</label>
+              <input type="number" value={claimAmount} onChange={(e) => setClaimAmount(e.target.value)} placeholder="e.g. 500000" className="w-full border-4 border-black p-3 bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-bold focus:outline-none focus:translate-x-1 focus:translate-y-1 focus:shadow-none transition-all placeholder:font-medium" />
             </div>
 
-            <div>
-              <label className="text-xs text-muted-foreground mb-1 block">Counterparty Type</label>
-              <select value={counterpartyType} onChange={(e) => setCounterpartyType(e.target.value)} className="w-full bg-gray-900 border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-blue-500 focus:outline-none">
+            <div className="space-y-2">
+              <label className="text-sm font-black uppercase tracking-widest">Counterparty Type</label>
+              <select value={counterpartyType} onChange={(e) => setCounterpartyType(e.target.value)} className="w-full border-4 border-black p-3 bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-bold focus:outline-none focus:translate-x-1 focus:translate-y-1 focus:shadow-none transition-all">
                 {COUNTERPARTIES.map((c) => (
                   <option key={c.value} value={c.value}>{c.label}</option>
                 ))}
@@ -115,9 +117,9 @@ export default function AuthorityFinder() {
             </div>
           </div>
 
-          <Button onClick={handleSearch} disabled={loading} className="w-full mt-4 bg-blue-600 hover:bg-blue-700 gap-2" id="authority-finder-search">
-            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
-            {loading ? "Finding Authority..." : "Find the Right Authority"}
+          <Button onClick={handleSearch} disabled={loading} className="w-full mt-8 btn-impact btn-impact-primary py-6" id="authority-finder-search">
+            {loading ? <Loader2 className="h-6 w-6 animate-spin mr-2" /> : <Search className="h-6 w-6 mr-2 stroke-[3px]" />}
+            {loading ? "ROUTING..." : "FIND JURISDICTION"}
           </Button>
         </CardContent>
       </Card>

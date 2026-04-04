@@ -31,35 +31,35 @@ export default function ComplaintCTA({
       transition={{ delay: 0.2 }}
     >
       <Link href={`/complaint/${documentId}`}>
-        <Card className="group cursor-pointer border-orange-500/20 bg-gradient-to-br from-orange-500/5 via-red-500/5 to-transparent hover:border-orange-500/40 transition-all duration-300">
-          <CardContent className="p-5">
+        <Card className="card-impact group cursor-pointer hover:-translate-y-1 hover:shadow-none transition-all duration-300 p-6 rounded-none">
+          <CardContent className="p-0">
             <div className="flex items-start justify-between gap-4">
-              <div className="flex items-start gap-3">
-                <div className="rounded-xl bg-orange-500/10 p-2.5 mt-0.5">
-                  <Gavel className="h-5 w-5 text-orange-400" />
+              <div className="flex items-start gap-4">
+                <div className="flex-shrink-0 w-12 h-12 border-4 border-black bg-orange-100 dark:bg-orange-900/50 flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                  <Gavel className="h-6 w-6 text-orange-600 dark:text-orange-400" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-sm mb-1 group-hover:text-orange-300 transition-colors">
+                  <h3 className="font-black text-lg uppercase tracking-widest mb-2 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
                     File Regulatory Complaint
                   </h3>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
+                  <p className="text-sm font-medium text-muted-foreground leading-relaxed">
                     {illegalCount > 0
                       ? `${illegalCount} illegal clause${illegalCount > 1 ? "s" : ""} found`
                       : `${dangerousCount} dangerous clause${dangerousCount > 1 ? "s" : ""} found`}
                     {entityName ? ` in ${entityName}'s contract` : ""}.
                     File a formal complaint with the correct regulatory authority.
                   </p>
-                  <div className="flex items-center gap-2 mt-2">
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 border border-green-500/20">
+                  <div className="flex items-center gap-2 mt-4">
+                    <span className="text-xs font-bold uppercase tracking-widest px-3 py-1 bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-400 border-2 border-green-500 shadow-[2px_2px_0px_0px_rgba(34,197,94,1)]">
                       Free for claims ≤ ₹5 lakh
                     </span>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                    <span className="text-xs font-bold uppercase tracking-widest px-3 py-1 bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-400 border-2 border-blue-500 shadow-[2px_2px_0px_0px_rgba(59,130,246,1)]">
                       Step-by-step guide
                     </span>
                   </div>
                 </div>
               </div>
-              <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:translate-x-1 transition-transform flex-shrink-0 mt-2" />
+              <ArrowRight className="h-6 w-6 stroke-[3px] text-black dark:text-white group-hover:translate-x-1 transition-transform flex-shrink-0 mt-2" />
             </div>
           </CardContent>
         </Card>

@@ -44,7 +44,7 @@ export default function BuilderPage() {
   const comingSoon = templates.filter((t) => t.fields.length === 0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 text-white">
+    <div className="min-h-screen bg-background text-foreground">
       <div className="max-w-6xl mx-auto px-4 py-16">
         {/* Header */}
         <motion.div
@@ -52,17 +52,17 @@ export default function BuilderPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-emerald-400 text-sm mb-6">
-            <Sparkles className="w-4 h-4" />
-            AI-Powered Fair Contract Generator
+          <div className="inline-flex items-center gap-2 px-4 py-2 border-4 border-black bg-emerald-200 dark:bg-emerald-900 text-emerald-900 dark:text-emerald-100 text-sm font-black uppercase tracking-widest shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-8">
+            <Sparkles className="w-5 h-5 stroke-[3px]" />
+            AI-POWERED FAIR CONTRACT GENERATOR
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Build a{" "}
-            <span className="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
-              Fair Contract
+          <h1 className="text-4xl md:text-5xl lg:text-7xl font-black uppercase tracking-widest mb-6">
+            BUILD A{" "}
+            <span className="text-emerald-600 dark:text-emerald-400">
+              FAIR CONTRACT
             </span>
           </h1>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-lg font-bold max-w-2xl mx-auto tracking-wide">
             Don&apos;t just find bad contracts — create good ones. Every clause complies
             with Indian law and protects <strong>both</strong> parties equally.
           </p>
@@ -82,9 +82,9 @@ export default function BuilderPage() {
           ].map((feature, i) => (
             <div
               key={i}
-              className="flex items-center gap-2 text-sm text-gray-400"
+              className="flex items-center gap-2 text-sm font-black uppercase tracking-widest text-muted-foreground border-2 border-black px-3 py-1 bg-white dark:bg-zinc-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
             >
-              <span className="text-emerald-400">{feature.icon}</span>
+              <span className="text-emerald-600 dark:text-emerald-400">{feature.icon}</span>
               {feature.text}
             </div>
           ))}
@@ -99,27 +99,27 @@ export default function BuilderPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 + index * 0.1 }}
               onClick={() => router.push(`/builder/${template.type}`)}
-              className="group relative bg-gray-900/50 border border-gray-800 rounded-2xl p-8 text-left hover:border-emerald-500/50 hover:bg-gray-900/80 transition-all duration-300"
+              className="group relative border-4 border-black bg-white dark:bg-zinc-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all duration-300 p-8 text-left"
             >
               {/* Icon */}
-              <div className="w-14 h-14 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-5 group-hover:bg-emerald-500/20 transition-colors">
+              <div className="w-14 h-14 border-4 border-black bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-6 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                 {ICON_MAP[template.icon]}
               </div>
 
               {/* Content */}
-              <h3 className="text-xl font-semibold mb-2 group-hover:text-emerald-400 transition-colors">
+              <h3 className="text-2xl font-black uppercase tracking-widest mb-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                 {template.name}
               </h3>
-              <p className="text-gray-400 text-sm mb-4 leading-relaxed">
+              <p className="text-muted-foreground text-sm font-bold mb-6 leading-relaxed">
                 {template.description}
               </p>
 
               {/* Laws */}
-              <div className="flex flex-wrap gap-2 mb-4">
+              <div className="flex flex-wrap gap-2 mb-6">
                 {template.applicableLaws.slice(0, 3).map((law, i) => (
                   <span
                     key={i}
-                    className="text-xs px-2 py-1 bg-gray-800 rounded-md text-gray-400"
+                    className="text-xs px-2 py-0.5 border-2 border-black bg-gray-100 dark:bg-zinc-800 font-bold uppercase tracking-widest text-muted-foreground"
                   >
                     {law.name}
                   </span>
@@ -127,9 +127,9 @@ export default function BuilderPage() {
               </div>
 
               {/* Arrow */}
-              <div className="flex items-center gap-2 text-emerald-400 text-sm font-medium">
-                Create Now
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 text-sm font-black uppercase tracking-widest">
+                CREATE NOW
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform stroke-[3px]" />
               </div>
             </motion.button>
           ))}
@@ -138,27 +138,27 @@ export default function BuilderPage() {
         {/* Coming Soon */}
         {comingSoon.length > 0 && (
           <>
-            <h3 className="text-lg font-semibold text-gray-500 mb-4 text-center">
-              Coming Soon
+            <h3 className="text-xl font-black uppercase tracking-widest text-muted-foreground mb-6 text-center border-t-4 border-black pt-8">
+              COMING SOON
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {comingSoon.map((template, index) => (
                 <motion.div
                   key={template.type}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4 + index * 0.1 }}
-                  className="bg-gray-900/30 border border-gray-800/50 rounded-xl p-6 opacity-60"
+                  className="border-4 border-black border-dashed bg-white/50 dark:bg-zinc-900/50 p-6 opacity-60"
                 >
-                  <div className="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center text-gray-500 mb-3">
+                  <div className="w-10 h-10 border-4 border-black bg-gray-200 dark:bg-gray-800 flex items-center justify-center text-muted-foreground mb-4">
                     {ICON_MAP[template.icon]}
                   </div>
-                  <h4 className="font-medium text-gray-500 mb-1">
+                  <h4 className="font-black uppercase tracking-widest text-muted-foreground mb-2">
                     {template.name}
                   </h4>
-                  <div className="flex items-center gap-1 text-xs text-gray-600">
-                    <Clock className="w-3 h-3" />
-                    Coming Soon
+                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                    <Clock className="w-4 h-4 stroke-[3px]" />
+                    COMING SOON
                   </div>
                 </motion.div>
               ))}

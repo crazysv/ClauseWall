@@ -93,7 +93,7 @@ export function NotificationBell() {
       {/* Bell button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 rounded-lg hover:bg-white/5 transition-colors"
+        className="relative p-2 border-4 border-transparent hover:border-black hover:bg-gray-100 dark:hover:bg-zinc-800 transition-all group"
         aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount} unread)` : ""}`}
       >
         <motion.div
@@ -110,7 +110,7 @@ export function NotificationBell() {
               : {}
           }
         >
-          <Bell className="w-5 h-5 text-white/50" />
+          <Bell className="w-5 h-5 text-black dark:text-white stroke-[3px] group-hover:-translate-y-0.5 transition-transform" />
         </motion.div>
 
         {/* Unread badge */}
@@ -118,7 +118,7 @@ export function NotificationBell() {
           <motion.span
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-red-500 text-[9px] text-white font-bold flex items-center justify-center"
+            className="absolute -top-1 -right-1 w-5 h-5 border-2 border-black bg-red-500 text-[10px] text-white font-black flex items-center justify-center shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
           >
             {unreadCount > 9 ? "9+" : unreadCount}
           </motion.span>
@@ -133,32 +133,32 @@ export function NotificationBell() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -5, scale: 0.95 }}
             transition={{ duration: 0.15 }}
-            className="absolute right-0 mt-2 w-80 max-h-96 overflow-y-auto rounded-xl border border-white/10 bg-gray-950 shadow-2xl z-50"
+            className="absolute right-0 mt-2 w-80 max-h-96 overflow-y-auto border-4 border-black bg-white dark:bg-zinc-950 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] z-50 text-foreground"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-3 border-b border-white/5">
-              <span className="text-sm font-semibold text-white">
-                Notifications
+            <div className="flex items-center justify-between p-4 border-b-4 border-black bg-gray-50 dark:bg-zinc-900">
+              <span className="text-sm font-black uppercase tracking-widest text-foreground block">
+                NOTIFICATIONS
               </span>
               {unreadCount > 0 && (
                 <button
                   onClick={markAllRead}
                   disabled={loading}
-                  className="text-xs text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1"
+                  className="text-[10px] font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400 hover:text-blue-800 transition-colors flex items-center gap-1 bg-blue-50 dark:bg-blue-900/30 px-2 py-1 border-2 border-black"
                 >
-                  <Check className="w-3 h-3" />
-                  Mark all read
+                  <Check className="w-3 h-3 stroke-[3px]" />
+                  MARK ALL READ
                 </button>
               )}
             </div>
 
             {/* List */}
             {notifications.length === 0 ? (
-              <div className="p-6 text-center">
-                <Bell className="w-8 h-8 text-white/10 mx-auto mb-2" />
-                <p className="text-sm text-white/30">No notifications yet</p>
-                <p className="text-xs text-white/15 mt-1">
-                  Activate Time Bomb Defuser to get deadline alerts
+              <div className="p-8 text-center border-b-4 border-black last:border-b-0">
+                <Bell className="w-10 h-10 text-muted-foreground mx-auto mb-4 stroke-[1.5px]" />
+                <p className="text-sm font-black uppercase tracking-widest text-foreground">NO NOTIFICATIONS YET</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mt-2 leading-relaxed">
+                  ACTIVATE TIME BOMB DEFUSER TO GET DEADLINE ALERTS
                 </p>
               </div>
             ) : (
@@ -170,21 +170,21 @@ export function NotificationBell() {
                       router.push(`/timebomb/${n.deadline_id}`);
                       setIsOpen(false);
                     }}
-                    className={`w-full flex items-start gap-3 p-3 text-left hover:bg-white/5 transition-colors border-b border-white/5 last:border-0 ${
-                      !n.read ? "bg-white/[0.02]" : ""
+                    className={`w-full flex items-start gap-4 p-4 text-left hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors border-b-2 border-black/10 dark:border-white/10 last:border-b-0 border-dashed ${
+                      !n.read ? "bg-orange-50 dark:bg-orange-900/10" : ""
                     }`}
                   >
-                    <div className="mt-0.5">{getIcon(n.days_before)}</div>
+                    <div className="mt-1 border-2 border-black bg-white dark:bg-black p-1 shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] flex-shrink-0">{getIcon(n.days_before)}</div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs text-white/60 truncate">
-                        Deadline reminder ({n.days_before}d before)
+                      <p className="text-xs font-black uppercase tracking-widest text-foreground truncate block">
+                        DEADLINE REMINDER ({n.days_before}D BEFORE)
                       </p>
-                      <p className="text-[10px] text-white/25 mt-0.5">
+                      <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mt-1 block">
                         {getTimeAgo(n.sent_at)} • {n.notification_type}
                       </p>
                     </div>
                     {!n.read && (
-                      <span className="w-2 h-2 rounded-full bg-blue-500 mt-1.5 flex-shrink-0" />
+                      <span className="w-3 h-3 border-2 border-black bg-orange-500 mt-1 flex-shrink-0" />
                     )}
                   </button>
                 ))}
@@ -198,10 +198,10 @@ export function NotificationBell() {
                   router.push("/dashboard");
                   setIsOpen(false);
                 }}
-                className="w-full p-2.5 text-center text-xs text-white/30 hover:text-white/50 transition-colors border-t border-white/5 flex items-center justify-center gap-1"
+                className="w-full p-4 text-center text-xs font-black uppercase tracking-widest text-foreground hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors border-t-4 border-black flex items-center justify-center gap-2 group"
               >
-                View all deadlines
-                <ExternalLink className="w-3 h-3" />
+                VIEW ALL DEADLINES
+                <ExternalLink className="w-4 h-4 stroke-[3px] group-hover:translate-x-0.5 transition-transform" />
               </button>
             )}
           </motion.div>

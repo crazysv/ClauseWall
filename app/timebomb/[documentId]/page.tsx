@@ -89,39 +89,39 @@ export default function TimebombPage() {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="flex flex-col items-center gap-4"
         >
-          <Loader2 className="w-8 h-8 text-orange-400 animate-spin" />
-          <p className="text-white/40 text-sm">Loading Time Bomb Defuser...</p>
+          <Loader2 className="w-10 h-10 text-orange-500 animate-spin" />
+          <p className="text-muted-foreground font-black uppercase tracking-widest">LOADING DEFUSER...</p>
         </motion.div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Top bar */}
-      <div className="sticky top-0 z-30 bg-gray-950/80 backdrop-blur-xl border-b border-white/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+      <div className="sticky top-0 z-30 bg-background border-b-4 border-foreground shadow-[0px_4px_0px_0px_rgba(0,0,0,1)]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-4">
             <Link
               href={`/results/${documentId}`}
-              className="p-2 rounded-lg hover:bg-white/5 transition-colors"
+              className="p-3 border-4 border-black bg-white dark:bg-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all"
               aria-label="Back to results"
             >
-              <ArrowLeft className="w-4 h-4 text-white/50" />
+              <ArrowLeft className="w-5 h-5" />
             </Link>
             <div>
-              <h1 className="text-sm font-bold flex items-center gap-2">
-                <Clock className="w-4 h-4 text-orange-400" />
-                Time Bomb Defuser
+              <h1 className="text-xl font-black uppercase tracking-widest flex items-center gap-2">
+                <Clock className="w-6 h-6 text-orange-500 stroke-[3px]" />
+                TIME BOMB DEFUSER
               </h1>
-              <p className="text-[10px] text-white/30">
-                {deadlines.length} deadline{deadlines.length !== 1 ? "s" : ""} tracked
+              <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mt-1">
+                {deadlines.length} DEADLINE{deadlines.length !== 1 ? "S" : ""} TRACKED
               </p>
             </div>
           </div>
@@ -130,10 +130,10 @@ export default function TimebombPage() {
             <Link
               href={`/api/timebomb/calendar/${documentId}`}
               target="_blank"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600/20 border border-blue-500/20 text-blue-400 text-xs font-medium hover:bg-blue-600/30 transition-all"
+              className="flex items-center gap-2 px-4 py-2 border-4 border-black bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/30 font-black uppercase tracking-widest text-sm shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all"
             >
-              <Download className="w-3.5 h-3.5" />
-              Export Calendar
+              <Download className="w-4 h-4 stroke-[3px]" />
+              EXPORT CALENDAR
             </Link>
           )}
         </div>

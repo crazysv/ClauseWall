@@ -89,12 +89,12 @@ export function DeadlineTimeline({
 
   if (deadlines.length === 0) {
     return (
-      <div className="text-center py-16">
-        <p className="text-white/40 text-lg">
-          No deadlines found in this contract 🎉
+      <div className="text-center py-16 border-4 border-dashed border-black bg-white dark:bg-zinc-950">
+        <p className="text-foreground font-black uppercase tracking-widest text-xl mb-2">
+          NO DEADLINES FOUND IN THIS CONTRACT 🎉
         </p>
-        <p className="text-white/20 text-sm mt-2">
-          This contract has no significant temporal obligations.
+        <p className="text-muted-foreground font-bold uppercase tracking-widest text-sm">
+          THIS CONTRACT HAS NO SIGNIFICANT TEMPORAL OBLIGATIONS.
         </p>
       </div>
     );
@@ -105,14 +105,14 @@ export function DeadlineTimeline({
       <motion.div
         initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        className="text-center py-16"
+        className="text-center py-16 border-4 border-black bg-green-100 dark:bg-green-950 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
       >
-        <PartyPopper className="w-12 h-12 mx-auto text-green-400 mb-4" />
-        <h3 className="text-xl font-bold text-green-400 mb-2">
-          All Deadlines Defused! 🛡️
+        <PartyPopper className="w-16 h-16 mx-auto text-green-600 dark:text-green-500 mb-6 stroke-[3px]" />
+        <h3 className="text-2xl font-black text-green-700 dark:text-green-400 mb-2 uppercase tracking-widest">
+          ALL DEADLINES DEFUSED! 🛡️
         </h3>
-        <p className="text-white/40">
-          You&apos;ve addressed every deadline in this contract. You&apos;re protected.
+        <p className="text-green-900 dark:text-green-300 font-bold uppercase tracking-widest max-w-md mx-auto leading-relaxed">
+          YOU&apos;VE ADDRESSED EVERY DEADLINE IN THIS CONTRACT. YOU&apos;RE PROTECTED.
         </p>
       </motion.div>
     );
@@ -121,29 +121,31 @@ export function DeadlineTimeline({
   return (
     <div>
       {/* Filter bar */}
-      <div className="flex items-center gap-2 mb-6 flex-wrap">
-        <Filter className="w-4 h-4 text-white/30" />
+      <div className="flex items-center gap-3 mb-8 flex-wrap border-b-4 border-black pb-4">
+        <div className="p-2 border-4 border-black bg-white dark:bg-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+          <Filter className="w-5 h-5 text-black dark:text-white stroke-[3px]" />
+        </div>
         {(
           [
-            { key: "all", label: "All" },
-            { key: "critical", label: "Critical" },
-            { key: "upcoming", label: "Upcoming" },
-            { key: "defused", label: "Defused" },
-            { key: "missed", label: "Missed" },
+            { key: "all", label: "ALL" },
+            { key: "critical", label: "CRITICAL" },
+            { key: "upcoming", label: "UPCOMING" },
+            { key: "defused", label: "DEFUSED" },
+            { key: "missed", label: "MISSED" },
           ] as { key: FilterType; label: string }[]
         ).map((f) => (
           <button
             key={f.key}
             onClick={() => setFilter(f.key)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
+            className={`px-4 py-2 font-black uppercase tracking-widest text-xs border-4 border-black transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none ${
               filter === f.key
-                ? "bg-white/10 border-white/20 text-white"
-                : "bg-white/[0.02] border-white/5 text-white/40 hover:text-white/60"
+                ? "bg-black text-white dark:bg-white dark:text-black"
+                : "bg-white text-black dark:bg-zinc-900 dark:text-white hover:bg-gray-100 dark:hover:bg-zinc-800"
             }`}
             aria-label={`Filter ${f.label}`}
           >
             {f.label}
-            <span className="ml-1.5 text-white/30">
+            <span className={`ml-2 px-1.5 py-0.5 border-2 border-black text-[10px] ${filter === f.key ? 'bg-white text-black dark:bg-black dark:text-white' : 'bg-gray-200 text-black dark:bg-zinc-800 dark:text-white'}`}>
               {counts[f.key]}
             </span>
           </button>
@@ -151,13 +153,13 @@ export function DeadlineTimeline({
       </div>
 
       {/* Timeline */}
-      <div className="relative">
-        {/* Vertical line */}
+      <div className="relative pt-4">
+        {/* Vertical line mt-4 is optional, handled by wrapper padding */}
         <motion.div
           initial={{ scaleY: 0 }}
           animate={{ scaleY: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-white/10 via-white/5 to-transparent origin-top"
+          className="absolute left-6 md:left-1/2 top-4 bottom-0 w-1.5 border-l-4 border-r-4 border-black bg-black origin-top -translate-x-[3px]"
         />
 
         <AnimatePresence mode="popLayout">
@@ -179,30 +181,30 @@ export function DeadlineTimeline({
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="relative flex items-center gap-2 mb-4 pl-4 md:pl-0 md:justify-center"
+                    className="relative flex items-center gap-4 mb-8 pl-8 md:pl-0 md:justify-center z-10"
                   >
-                    <div className="h-px flex-1 bg-orange-500/30 max-w-[100px]" />
+                    <div className="h-1 flex-1 bg-black max-w-[80px]" />
                     <motion.span
-                      animate={{ opacity: [0.5, 1, 0.5] }}
+                      animate={{ scale: [1, 1.05, 1] }}
                       transition={{
                         repeat: Infinity,
                         duration: 2,
                       }}
-                      className="text-xs font-bold text-orange-400 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20"
+                      className="text-xs font-black uppercase tracking-widest text-orange-600 dark:text-orange-400 px-4 py-2 border-4 border-black bg-orange-100 dark:bg-orange-950 shadow-[4px_4px_0px_0px_rgba(249,115,22,1)]"
                     >
                       TODAY
                     </motion.span>
-                    <div className="h-px flex-1 bg-orange-500/30 max-w-[100px]" />
+                    <div className="h-1 flex-1 bg-black max-w-[80px]" />
                   </motion.div>
                 )}
 
                 {/* Timeline node */}
-                <div className="flex items-start gap-4 pl-4 md:pl-0">
+                <div className="flex items-start gap-6 pl-6 md:pl-0">
                   {/* Mobile: all on right. Desktop: alternate */}
-                  <div className="hidden md:block md:w-1/2 md:pr-8">
+                  <div className="hidden md:block md:w-1/2 md:pr-10">
                     {isLeft && (
                       <div className="flex justify-end">
-                        <div className="max-w-md w-full">
+                        <div className="max-w-xl w-full">
                           <DeadlineCard
                             deadline={event.deadline}
                             onDefuse={onDefuse}
@@ -214,18 +216,15 @@ export function DeadlineTimeline({
                   </div>
 
                   {/* Dot on the line */}
-                  <div className="relative z-10 flex-shrink-0 -ml-4 md:ml-0">
+                  <div className="relative z-10 flex-shrink-0 -ml-[5px] md:ml-[3px]">
                     <motion.div
-                      className="w-3 h-3 rounded-full border-2 border-gray-900"
+                      className="w-5 h-5 border-4 border-black bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
                       style={{ backgroundColor: event.urgency_color }}
                       animate={
                         event.deadline.urgency === "critical" &&
                         !event.deadline.status.includes("defus")
                           ? {
-                              boxShadow: [
-                                `0 0 0 0px ${event.urgency_color}40`,
-                                `0 0 0 6px ${event.urgency_color}00`,
-                              ],
+                              scale: [1, 1.2, 1],
                             }
                           : {}
                       }
@@ -236,7 +235,7 @@ export function DeadlineTimeline({
                       }
                     />
                     {/* Date label */}
-                    <span className="absolute left-5 md:hidden top-0 text-[10px] text-white/30 whitespace-nowrap">
+                    <span className="absolute left-8 md:hidden top-0 text-[10px] font-black uppercase tracking-widest text-muted-foreground whitespace-nowrap bg-background px-1">
                       {new Date(event.date).toLocaleDateString("en-IN", {
                         day: "numeric",
                         month: "short",
@@ -245,9 +244,9 @@ export function DeadlineTimeline({
                     </span>
                   </div>
 
-                  <div className="hidden md:block md:w-1/2 md:pl-8">
+                  <div className="hidden md:block md:w-1/2 md:pl-10">
                     {!isLeft && (
-                      <div className="max-w-md w-full">
+                      <div className="max-w-xl w-full">
                         <DeadlineCard
                           deadline={event.deadline}
                           onDefuse={onDefuse}
@@ -273,9 +272,9 @@ export function DeadlineTimeline({
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    className="absolute left-2 md:left-1/2 md:-translate-x-1/2 top-0"
+                    className="absolute left-[3px] md:left-1/2 md:-translate-x-1/2 -top-1"
                   >
-                    <ShieldCheck className="w-4 h-4 text-green-400" />
+                    <ShieldCheck className="w-5 h-5 text-green-600 dark:text-green-500 fill-white dark:fill-black stroke-[3px] z-20" />
                   </motion.div>
                 )}
               </motion.div>
@@ -285,15 +284,15 @@ export function DeadlineTimeline({
 
         {/* Empty filter state */}
         {filteredEvents.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-white/30 text-sm">
-              No {filter} deadlines found.
+          <div className="text-center py-12 border-4 border-dashed border-black bg-gray-50 dark:bg-zinc-900 my-8">
+            <p className="text-muted-foreground font-black uppercase tracking-widest text-sm">
+              NO {filter.toUpperCase()} DEADLINES FOUND.
             </p>
             <button
               onClick={() => setFilter("all")}
-              className="text-blue-400 text-xs mt-2 hover:underline"
+              className="mt-4 px-4 py-2 border-4 border-black bg-white dark:bg-black font-black uppercase tracking-widest text-xs shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all"
             >
-              Show all deadlines
+              SHOW ALL DEADLINES
             </button>
           </div>
         )}

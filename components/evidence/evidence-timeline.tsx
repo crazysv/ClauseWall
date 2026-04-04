@@ -18,31 +18,28 @@ export function EvidenceTimeline({ items }: { items: EvidenceItem[] }) {
   }
 
   return (
-    <div className="relative pl-6 space-y-0">
-      {/* Vertical line */}
-      <div className="absolute left-[11px] top-2 bottom-2 w-0.5 bg-gradient-to-b from-blue-500/50 via-blue-500/20 to-transparent" />
-
+    <div className="relative pl-8 space-y-4 pt-4 border-l-4 border-black ml-4">
       {sorted.map((item, i) => {
         const meta = EVIDENCE_TYPE_META[item.evidence_type];
         return (
-          <div key={item.id} className="relative pb-6 last:pb-0">
+          <div key={item.id} className="relative pb-2">
             {/* Dot */}
-            <div className={`absolute left-[-17px] top-1 h-3 w-3 rounded-full border-2 ${item.is_certified ? "bg-emerald-500 border-emerald-400" : "bg-blue-500 border-blue-400"}`} />
+            <div className={`absolute -left-[42px] top-4 h-4 w-4 rounded-full border-4 border-black ${item.is_certified ? "bg-emerald-500" : "bg-blue-500"}`} />
 
-            <div className="rounded-lg bg-white/[0.02] border border-white/5 p-3 ml-2 hover:bg-white/[0.04] transition-colors">
-              <div className="flex items-center gap-2 mb-1">
-                <EvidenceTypeIcon type={item.evidence_type} className="h-4 w-4 text-muted-foreground" />
-                <span className="text-xs font-medium text-foreground">{item.title}</span>
-                {item.is_certified && <span className="text-[10px] text-emerald-400">65B ✓</span>}
+            <div className="border-4 border-black bg-white dark:bg-zinc-900 p-4 ml-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all duration-200">
+              <div className="flex items-center gap-3 mb-2">
+                <EvidenceTypeIcon type={item.evidence_type} className="h-6 w-6 text-black dark:text-white stroke-[3px]" />
+                <span className="text-lg font-black uppercase tracking-widest text-foreground">{item.title}</span>
+                {item.is_certified && <span className="text-xs font-black uppercase tracking-widest bg-emerald-100 dark:bg-emerald-900/30 text-emerald-900 dark:text-emerald-100 px-2 py-0.5 border-2 border-black ml-2">65B ✓</span>}
               </div>
-              <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+              <div className="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-muted-foreground mt-3 pt-3 border-t-2 border-dashed border-black">
                 <span>{new Date(item.captured_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</span>
-                <span>•</span>
+                <span className="text-black">•</span>
                 <span>{meta?.label}</span>
                 {item.issue_category && (
                   <>
-                    <span>•</span>
-                    <span className="text-amber-400">{item.issue_category}</span>
+                    <span className="text-black">•</span>
+                    <span className="bg-amber-100 dark:bg-amber-900/30 text-amber-900 dark:text-amber-100 px-2 py-0.5 border-2 border-black">{item.issue_category}</span>
                   </>
                 )}
               </div>

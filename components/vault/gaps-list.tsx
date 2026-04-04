@@ -12,22 +12,22 @@ interface GapsListProps {
 
 const IMPORTANCE_CONFIG = {
   essential: {
-    color: "text-red-400",
-    bg: "bg-red-500/10",
-    border: "border-red-500/20",
-    label: "Essential",
+    color: "text-red-600 dark:text-red-500",
+    bg: "bg-red-100 dark:bg-red-950",
+    border: "border-red-500",
+    label: "ESSENTIAL",
   },
   recommended: {
-    color: "text-yellow-400",
-    bg: "bg-yellow-500/10",
-    border: "border-yellow-500/20",
-    label: "Recommended",
+    color: "text-yellow-600 dark:text-yellow-500",
+    bg: "bg-yellow-100 dark:bg-yellow-950",
+    border: "border-yellow-500",
+    label: "RECOMMENDED",
   },
   optional: {
-    color: "text-blue-400",
-    bg: "bg-blue-500/10",
-    border: "border-blue-500/20",
-    label: "Optional",
+    color: "text-blue-600 dark:text-blue-500",
+    bg: "bg-blue-100 dark:bg-blue-950",
+    border: "border-blue-500",
+    label: "OPTIONAL",
   },
 };
 
@@ -55,14 +55,14 @@ const CATEGORY_EMOJIS: Record<string, string> = {
 export default function GapsList({ gaps }: GapsListProps) {
   if (gaps.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 text-center">
-        <CheckCircle2 className="w-12 h-12 text-green-400/50 mb-4" />
-        <h3 className="text-lg font-semibold text-green-400 mb-2">
-          Full Coverage
+      <div className="flex flex-col items-center justify-center py-16 text-center border-4 border-black bg-green-50 dark:bg-green-950 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <CheckCircle2 className="w-16 h-16 text-green-600 dark:text-green-500 mb-6 stroke-[3px]" />
+        <h3 className="text-2xl font-black uppercase tracking-widest text-green-700 dark:text-green-400 mb-4">
+          FULL COVERAGE
         </h3>
-        <p className="text-sm text-white/40 max-w-md">
-          No significant coverage gaps were identified across your contracts.
-          Your protections appear comprehensive.
+        <p className="text-sm font-bold uppercase tracking-widest text-green-900/60 dark:text-green-200/60 max-w-md leading-relaxed">
+          NO SIGNIFICANT COVERAGE GAPS WERE IDENTIFIED ACROSS YOUR CONTRACTS.
+          YOUR PROTECTIONS APPEAR COMPREHENSIVE.
         </p>
       </div>
     );
@@ -74,14 +74,16 @@ export default function GapsList({ gaps }: GapsListProps) {
     <div className="space-y-4">
       {/* Essential gaps banner */}
       {essentialCount > 0 && (
-        <div className="rounded-lg bg-red-500/5 border border-red-500/10 p-4 flex items-start gap-3">
-          <ShieldOff className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+        <div className="border-4 border-black bg-red-50 dark:bg-red-950 p-6 flex flex-col sm:flex-row items-center sm:items-start gap-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center sm:text-left">
+          <div className="p-3 border-4 border-black bg-white dark:bg-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex-shrink-0">
+            <ShieldOff className="w-6 h-6 text-red-600 dark:text-red-500 stroke-[3px]" />
+          </div>
           <div>
-            <p className="text-sm font-semibold text-red-400">
-              {essentialCount} Essential Protection{essentialCount > 1 ? "s" : ""} Missing
+            <p className="text-base font-black uppercase tracking-widest text-red-600 dark:text-red-400 mb-2">
+              {essentialCount} ESSENTIAL PROTECTION{essentialCount > 1 ? "S" : ""} MISSING
             </p>
-            <p className="text-xs text-white/40 mt-1">
-              These gaps expose you to significant financial or legal risk. Address them as a priority.
+            <p className="text-xs font-bold uppercase tracking-widest text-red-900/60 dark:text-red-200/60">
+              THESE GAPS EXPOSE YOU TO SIGNIFICANT FINANCIAL OR LEGAL RISK. ADDRESS THEM AS A PRIORITY.
             </p>
           </div>
         </div>
@@ -100,38 +102,44 @@ export default function GapsList({ gaps }: GapsListProps) {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.05 }}
             >
-              <Card className={`${config.bg} ${config.border}`}>
-                <CardContent className="p-4">
-                  <div className="flex items-start gap-3">
-                    <span className="text-xl">{emoji}</span>
+              <Card className={`border-4 border-black rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${config.bg} hover:-translate-y-1 hover:shadow-none transition-all`}>
+                <CardContent className="p-6">
+                  <div className="flex items-start gap-4 flex-col sm:flex-row">
+                    <div className="p-4 border-4 border-black bg-white dark:bg-black text-3xl shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] sm:mb-0 mb-2">
+                      {emoji}
+                    </div>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <Badge className={`${config.bg} ${config.color} text-[10px] border-0`}>
+                      <div className="flex items-center gap-3 mb-2 flex-wrap">
+                        <Badge className={`px-2 py-0.5 border-2 border-black rounded-none shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] ${config.bg} ${config.color} font-black uppercase tracking-widest text-[10px]`}>
                           {config.label}
                         </Badge>
-                        <span className="text-[10px] text-white/30">
+                        <span className="text-xs font-black uppercase tracking-widest text-muted-foreground bg-white dark:bg-black px-2 py-0.5 border-2 border-black">
                           {gap.category.replace(/_/g, " ")}
                         </span>
                       </div>
-                      <h4 className="text-sm font-semibold text-white mb-1">
+                      <h4 className="text-lg font-black uppercase tracking-widest text-foreground mb-3 border-b-2 border-black pb-2">
                         {gap.title}
                       </h4>
-                      <p className="text-xs text-white/50">{gap.description}</p>
+                      <p className="text-sm font-bold uppercase tracking-widest text-foreground leading-relaxed">
+                        {gap.description}
+                      </p>
 
                       {/* Risk estimate */}
                       {gap.estimated_annual_risk != null && gap.estimated_annual_risk > 0 && (
-                        <p className="text-xs text-red-300 mt-2">
-                          💰 Estimated annual risk: ₹{gap.estimated_annual_risk.toLocaleString("en-IN")}
+                        <p className="mt-4 text-sm font-black uppercase tracking-widest text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-950 px-3 py-2 border-4 border-red-500 shadow-[2px_2px_0px_0px_rgba(239,68,68,1)] inline-block">
+                          💰 ESTIMATED ANNUAL RISK: ₹{gap.estimated_annual_risk.toLocaleString("en-IN")}
                         </p>
                       )}
 
                       {/* Suggestion */}
                       {gap.suggestion && (
-                        <div className="mt-3 rounded-lg bg-green-500/5 border border-green-500/10 p-3">
-                          <p className="text-[10px] text-green-400 font-medium mb-1">
-                            💡 Suggestion
+                        <div className="mt-6 border-4 border-black bg-green-50 dark:bg-green-950/20 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                          <p className="text-[10px] font-black uppercase tracking-widest text-green-600 dark:text-green-500 mb-2 border-b-2 border-green-500 pb-2">
+                            💡 SUGGESTION
                           </p>
-                          <p className="text-xs text-white/60">{gap.suggestion}</p>
+                          <p className="text-xs font-bold uppercase tracking-widest text-green-900/80 dark:text-green-200/80 leading-relaxed">
+                            {gap.suggestion}
+                          </p>
                         </div>
                       )}
                     </div>

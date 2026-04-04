@@ -64,7 +64,7 @@ export default function JoinCollectiveModal({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+          className="absolute inset-0 bg-black/80"
           onClick={onClose}
         />
 
@@ -73,7 +73,7 @@ export default function JoinCollectiveModal({
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
-          className="relative w-full max-w-md rounded-2xl bg-gray-900 border border-white/10 shadow-2xl overflow-hidden"
+          className="relative w-full max-w-md rounded-none bg-background border-4 border-foreground shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden"
         >
           {/* Header */}
           <div className="p-5 border-b border-white/5">

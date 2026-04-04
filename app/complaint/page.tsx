@@ -43,14 +43,11 @@ export default function ComplaintListPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-orange-500/5 rounded-full blur-3xl" />
-      </div>
-      <div className="relative px-4 sm:px-6 lg:px-8 py-8 max-w-4xl mx-auto">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-10 md:py-16">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-2xl font-bold flex items-center gap-2">
-              <Gavel className="h-6 w-6 text-orange-400" />
+            <h1 className="text-impact-heading flex items-center gap-2">
+              <Gavel className="h-6 w-6 text-orange-500" />
               Complaint Filings
             </h1>
             <p className="text-sm text-muted-foreground mt-1">Track and manage your regulatory complaints</p>
@@ -58,22 +55,22 @@ export default function ComplaintListPage() {
         </div>
 
         {/* Summary Cards */}
-        <div className="grid grid-cols-3 gap-3 mb-6">
-          <Card className="bg-gray-900/50 border-gray-800">
-            <CardContent className="p-4 text-center">
-              <p className="text-2xl font-bold text-orange-400">{active.length}</p>
+        <div className="grid grid-cols-3 gap-4 mb-8">
+          <Card className="border-4 border-black bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-4 rounded-none hover:-translate-y-1 hover:shadow-none transition-all">
+            <CardContent className="p-0 text-center">
+              <p className="text-2xl font-black text-orange-500">{active.length}</p>
               <p className="text-xs text-muted-foreground">Active</p>
             </CardContent>
           </Card>
-          <Card className="bg-gray-900/50 border-gray-800">
-            <CardContent className="p-4 text-center">
-              <p className="text-2xl font-bold text-green-400">{resolved.length}</p>
+          <Card className="card-impact p-4 rounded-lg">
+            <CardContent className="p-0 text-center">
+              <p className="text-2xl font-black text-green-500">{resolved.length}</p>
               <p className="text-xs text-muted-foreground">Resolved</p>
             </CardContent>
           </Card>
-          <Card className="bg-gray-900/50 border-gray-800">
-            <CardContent className="p-4 text-center">
-              <p className="text-2xl font-bold text-blue-400">{filings.length}</p>
+          <Card className="card-impact p-4 rounded-lg">
+            <CardContent className="p-0 text-center">
+              <p className="text-2xl font-black text-blue-500">{filings.length}</p>
               <p className="text-xs text-muted-foreground">Total</p>
             </CardContent>
           </Card>
@@ -84,16 +81,16 @@ export default function ComplaintListPage() {
             {[1, 2, 3].map(i => <Skeleton key={i} className="h-24 w-full rounded-xl" />)}
           </div>
         ) : filings.length === 0 ? (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-16">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-orange-500/10 mb-4">
-              <Gavel className="h-8 w-8 text-orange-400" />
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="border-4 border-black bg-white dark:bg-zinc-900 border-dashed shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-16 rounded-none text-center">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-none border-4 border-black bg-orange-100 mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:bg-orange-900/20 dark:border-orange-500">
+              <Gavel className="h-8 w-8 text-orange-500" />
             </div>
-            <h3 className="text-lg font-semibold mb-2">No Complaints Filed Yet</h3>
-            <p className="text-sm text-muted-foreground mb-6">
+            <h3 className="text-impact-subheading mb-2">No Complaints Filed Yet</h3>
+            <p className="text-muted-foreground mb-6">
               Analyze a contract first, then file a complaint if violations are found.
             </p>
             <Link href="/">
-              <Button className="bg-orange-600 hover:bg-orange-700 gap-2">
+              <Button className="border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] bg-orange-600 hover:bg-orange-700 hover:translate-y-0.5 hover:shadow-none transition-all gap-2 font-bold uppercase tracking-widest text-white rounded-none">
                 <Plus className="h-4 w-4" /> Analyze a Contract
               </Button>
             </Link>
@@ -111,8 +108,8 @@ export default function ComplaintListPage() {
                   transition={{ delay: i * 0.05 }}
                 >
                   <Link href={`/complaint/${filing.document_id}`}>
-                    <Card className="bg-gray-900/50 border-gray-800 hover:border-gray-700 transition-all cursor-pointer group">
-                      <CardContent className="p-5">
+                    <Card className="border-4 border-black bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all cursor-pointer group p-6 rounded-none">
+                      <CardContent className="p-0">
                         <div className="flex items-start justify-between gap-3">
                           <div className="min-w-0">
                             <div className="flex items-center gap-2 mb-1">
@@ -125,11 +122,11 @@ export default function ComplaintListPage() {
                             <h4 className="font-semibold text-sm truncate group-hover:text-orange-300 transition-colors">
                               {filing.complaint_title}
                             </h4>
-                            <p className="text-xs text-muted-foreground mt-1">
+                            <p className="text-xs text-muted-foreground mt-1 font-bold uppercase tracking-wider">
                               {filing.authority_type.replace(/_/g, " ")} • ₹{(filing.claim_amount || 0).toLocaleString("en-IN")}
                             </p>
                             {filing.next_hearing_date && (
-                              <p className="text-xs text-amber-400 mt-1 flex items-center gap-1">
+                              <p className="text-xs font-bold text-amber-500 mt-2 flex items-center gap-1 uppercase tracking-wider border-2 border-amber-500/20 bg-amber-500/10 px-2 py-1 rounded w-fit">
                                 <Clock className="h-3 w-3" />
                                 Next hearing: {new Date(filing.next_hearing_date).toLocaleDateString("en-IN")}
                               </p>

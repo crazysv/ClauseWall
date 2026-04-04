@@ -56,25 +56,24 @@ export function VaultCTA() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <Card className="bg-gradient-to-br from-indigo-500/5 to-violet-500/5 border border-indigo-500/10 overflow-hidden">
-          <CardContent className="p-5">
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-xl bg-indigo-500/10">
-                <FileStack className="w-6 h-6 text-indigo-400" />
+        <Card className="border-4 border-black bg-indigo-50 dark:bg-indigo-950/20 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] rounded-none">
+          <CardContent className="p-6">
+            <div className="flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
+              <div className="p-4 border-4 border-black bg-white dark:bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <FileStack className="w-8 h-8 text-black dark:text-white stroke-[3px]" />
               </div>
               <div className="flex-1">
-                <h3 className="text-sm font-semibold text-white">
-                  Contract Vault
+                <h3 className="text-xl font-black uppercase tracking-widest text-foreground">
+                  CONTRACT VAULT
                 </h3>
-                <p className="text-xs text-white/40 mt-0.5">
-                  Analyze {data.contract_count}/2 contracts uploaded. Upload{" "}
-                  {2 - data.contract_count} more to unlock cross-contract analysis.
+                <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground mt-2 leading-relaxed">
+                  ANALYZE {data.contract_count}/2 CONTRACTS UPLOADED. UPLOAD{" "}
+                  {2 - data.contract_count} MORE TO UNLOCK CROSS-CONTRACT ANALYSIS.
                 </p>
               </div>
-              <Link href="/upload">
-                <Button size="sm" className="bg-indigo-600 hover:bg-indigo-700 gap-2">
-                  Upload
-                  <ArrowRight className="w-3.5 h-3.5" />
+              <Link href="/upload" className="w-full sm:w-auto">
+                <Button className="w-full sm:w-auto border-4 border-black bg-indigo-600 hover:bg-indigo-700 text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all font-black uppercase tracking-widest rounded-none h-12">
+                  UPLOAD <ArrowRight className="w-5 h-5 ml-2 stroke-[3px]" />
                 </Button>
               </Link>
             </div>
@@ -99,42 +98,44 @@ export function VaultCTA() {
       >
         <Link href="/vault">
           <Card
-            className={`cursor-pointer hover:brightness-110 transition-all overflow-hidden ${
+            className={`cursor-pointer hover:-translate-y-2 hover:shadow-none transition-all border-4 border-black rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] ${
               isHighRisk
-                ? "bg-gradient-to-br from-red-500/5 to-orange-500/5 border-red-500/15"
-                : "bg-gradient-to-br from-indigo-500/5 to-violet-500/5 border-indigo-500/15"
+                ? "bg-red-50 dark:bg-red-950/20"
+                : "bg-indigo-50 dark:bg-indigo-950/20"
             }`}
           >
-            <CardContent className="p-5">
-              <div className="flex items-center gap-4">
-                <div className={`p-3 rounded-xl ${isHighRisk ? "bg-red-500/10" : "bg-indigo-500/10"}`}>
+            <CardContent className="p-6">
+              <div className="flex items-center gap-6">
+                <div className={`p-4 border-4 border-black bg-white dark:bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex-shrink-0`}>
                   {isHighRisk ? (
-                    <AlertTriangle className="w-6 h-6 text-red-400" />
+                    <AlertTriangle className="w-8 h-8 text-red-600 dark:text-red-500 stroke-[3px]" />
                   ) : (
-                    <ShieldCheck className="w-6 h-6 text-indigo-400" />
+                    <ShieldCheck className="w-8 h-8 text-indigo-600 dark:text-indigo-500 stroke-[3px]" />
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-sm font-semibold text-white">
-                      Contract Vault
+                  <div className="flex items-center gap-3 mb-2 flex-wrap">
+                    <h3 className="text-xl font-black uppercase tracking-widest text-foreground">
+                      CONTRACT VAULT
                     </h3>
                     {data.is_stale && (
-                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-yellow-500/10 text-yellow-400">
-                        Stale
+                      <span className="text-[10px] font-black uppercase tracking-widest border-2 border-yellow-500 bg-yellow-100 dark:bg-yellow-950 text-yellow-700 dark:text-yellow-400 px-2 py-0.5 shadow-[2px_2px_0px_0px_rgba(234,179,8,1)]">
+                        STALE
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-white/40 mt-0.5 line-clamp-1">
-                    {conflictCount > 0 && `${conflictCount} conflict${conflictCount > 1 ? "s" : ""}`}
+                  <p className={`text-sm font-bold uppercase tracking-widest leading-relaxed line-clamp-2 ${isHighRisk ? 'text-red-900/60 dark:text-red-200/60' : 'text-indigo-900/60 dark:text-indigo-200/60'}`}>
+                    {conflictCount > 0 && `${conflictCount} CONFLICT${conflictCount > 1 ? "S" : ""}`}
                     {conflictCount > 0 && gapCount > 0 && " · "}
-                    {gapCount > 0 && `${gapCount} gap${gapCount > 1 ? "s" : ""}`}
+                    {gapCount > 0 && `${gapCount} GAP${gapCount > 1 ? "S" : ""}`}
                     {(conflictCount > 0 || gapCount > 0) && cascadeCount > 0 && " · "}
-                    {cascadeCount > 0 && `${cascadeCount} cascade${cascadeCount > 1 ? "s" : ""}`}
-                    {conflictCount === 0 && gapCount === 0 && cascadeCount === 0 && "All clear"}
+                    {cascadeCount > 0 && `${cascadeCount} CASCADE${cascadeCount > 1 ? "S" : ""}`}
+                    {conflictCount === 0 && gapCount === 0 && cascadeCount === 0 && "ALL CLEAR - NO CRITICAL ISSUES"}
                   </p>
                 </div>
-                <ArrowRight className="w-4 h-4 text-white/30 flex-shrink-0" />
+                <div className="p-3 border-4 border-black bg-white dark:bg-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hidden sm:block">
+                  <ArrowRight className="w-6 h-6 text-black dark:text-white stroke-[3px]" />
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -150,22 +151,24 @@ export function VaultCTA() {
       animate={{ opacity: 1, y: 0 }}
     >
       <Link href="/vault">
-        <Card className="cursor-pointer hover:brightness-110 transition-all bg-gradient-to-br from-indigo-500/5 to-violet-500/5 border border-indigo-500/10 overflow-hidden">
-          <CardContent className="p-5">
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-xl bg-indigo-500/10">
-                <FileStack className="w-6 h-6 text-indigo-400" />
+        <Card className="cursor-pointer hover:-translate-y-2 hover:shadow-none transition-all bg-indigo-50 dark:bg-indigo-950/20 border-4 border-black rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <CardContent className="p-6">
+            <div className="flex items-center gap-6">
+              <div className="p-4 border-4 border-black bg-white dark:bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex-shrink-0">
+                <FileStack className="w-8 h-8 text-black dark:text-white stroke-[3px]" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="text-sm font-semibold text-white">
-                  Contract Vault
+                <h3 className="text-xl font-black uppercase tracking-widest text-foreground mb-2">
+                  CONTRACT VAULT
                 </h3>
-                <p className="text-xs text-white/40 mt-0.5">
-                  You have {data.contract_count} contracts. Run a cross-contract analysis to find
-                  conflicts, gaps, and hidden risks.
+                <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground leading-relaxed">
+                  YOU HAVE <span className="text-indigo-600 dark:text-indigo-400 font-black">{data.contract_count}</span> CONTRACTS. RUN A CROSS-CONTRACT ANALYSIS TO FIND
+                  CONFLICTS, GAPS, AND HIDDEN RISKS.
                 </p>
               </div>
-              <ArrowRight className="w-4 h-4 text-white/30 flex-shrink-0" />
+              <div className="p-3 border-4 border-black bg-white dark:bg-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hidden sm:block">
+                <ArrowRight className="w-6 h-6 text-black dark:text-white stroke-[3px]" />
+              </div>
             </div>
           </CardContent>
         </Card>

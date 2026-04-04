@@ -90,7 +90,7 @@ export default function ShadowLandingPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Left Column: Upload New */}
           <div className="md:col-span-1">
-            <Card className="glass border-white/5 bg-white/[0.01] h-full">
+            <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] bg-background h-full">
               <CardContent className="p-6 flex flex-col items-center justify-center text-center h-full min-h-[300px]">
                 <div className="w-16 h-16 rounded-full bg-blue-500/10 flex items-center justify-center mb-4">
                   <Upload className="h-8 w-8 text-blue-400" />
@@ -111,7 +111,7 @@ export default function ShadowLandingPage() {
 
           {/* Right Column: Select Existing */}
           <div className="md:col-span-2">
-            <Card className="glass border-white/5 bg-white/[0.01] h-full">
+            <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] bg-background h-full">
               <CardContent className="p-6">
                 <h3 className="text-xl font-semibold mb-1">Select from Vault</h3>
                 <p className="text-sm text-white/50 mb-6">
@@ -159,7 +159,7 @@ export default function ShadowLandingPage() {
                             transition={{ delay: index * 0.03 }}
                           >
                             <Link href={`/shadow/${doc.id}`}>
-                              <Card className="glass border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-amber-500/30 transition-all group cursor-pointer">
+                              <Card className="card-impact border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] bg-background hover:translate-y-1 hover:shadow-none transition-all group cursor-pointer mb-2">
                                 <CardContent className="p-4 flex items-center gap-4">
                                   <div className="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center flex-shrink-0">
                                     <FileText className="w-5 h-5 text-amber-500/70" />

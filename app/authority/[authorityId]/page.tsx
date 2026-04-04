@@ -16,10 +16,10 @@ export default async function AuthorityDetailPage({
   const { authorityId } = await params;
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-950 to-gray-900">
-      <div className="container mx-auto px-4 py-8 max-w-3xl">
-        <Link href="/authority" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-white mb-6 transition-colors">
-          <ArrowLeft className="h-4 w-4" /> Back to Authority Finder
+    <main className="min-h-screen bg-background">
+      <div className="max-w-4xl mx-auto px-4 md:px-6 py-10 md:py-16">
+        <Link href="/authority" className="inline-flex items-center gap-2 font-bold uppercase tracking-widest text-sm text-foreground hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors group">
+          <ArrowLeft className="h-5 w-5 stroke-[3px] group-hover:-translate-x-1 transition-transform" /> Back to Finder
         </Link>
         <AuthorityDetail authorityId={authorityId} />
       </div>

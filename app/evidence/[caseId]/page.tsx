@@ -11,7 +11,7 @@ import { ChainStatusBadge } from "@/components/evidence/chain-status-badge";
 import { StorageUsageBar } from "@/components/evidence/storage-usage-bar";
 import { EvidenceStats } from "@/components/evidence/evidence-stats";
 import { Button } from "@/components/ui/button";
-import { Shield, ArrowLeft, Loader2, Package, FileText, Clock, Link as LinkIcon, CheckCircle2, RefreshCw, Trash2 } from "lucide-react";
+import { Shield, ArrowLeft, Loader2, Package, FileText, Clock, Link as LinkIcon, CheckCircle2, RefreshCw, Trash2, AlertTriangle, Plus } from "lucide-react";
 import Link from "next/link";
 
 type ViewMode = "items" | "timeline" | "chain";
@@ -222,28 +222,28 @@ export default function EvidenceCaseDetailPage() {
     <main className="min-h-screen bg-background">
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
-        <Link href="/evidence" className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground mb-4">
-          <ArrowLeft className="h-3 w-3" />Back to Cases
+        <Link href="/evidence" className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest text-muted-foreground hover:text-foreground mb-6 border-b-2 border-transparent hover:border-black transition-all">
+          <ArrowLeft className="h-4 w-4 stroke-[3px]" />BACK TO CASES
         </Link>
 
-        <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4 mb-6">
+        <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6 mb-8 border-b-4 border-black pb-6">
           <div>
-            <h1 className="text-xl font-bold text-foreground">{evidenceCase.title}</h1>
-            <p className="text-sm text-muted-foreground mt-1">
-              vs. {evidenceCase.counterparty_name} • {evidenceCase.dispute_type || "General"} Dispute
+            <h1 className="text-3xl font-black uppercase tracking-widest text-foreground">{evidenceCase.title}</h1>
+            <p className="text-sm font-bold text-muted-foreground mt-2 tracking-wide uppercase">
+              vs. {evidenceCase.counterparty_name} <span className="mx-2">•</span> {evidenceCase.dispute_type || "General"} Dispute
             </p>
           </div>
-          <div className="flex items-center gap-2 flex-wrap">
-            <Button variant="outline" size="sm" onClick={handleVerifyChain} disabled={verifying} className="text-xs border-white/10">
-              {verifying ? <Loader2 className="h-3 w-3 mr-1 animate-spin" /> : <CheckCircle2 className="h-3 w-3 mr-1" />}
-              Verify Chain
+          <div className="flex items-center gap-4 flex-wrap">
+            <Button variant="outline" onClick={handleVerifyChain} disabled={verifying} className="btn-impact bg-white dark:bg-zinc-900 border-2 px-6">
+              {verifying ? <Loader2 className="h-4 w-4 mr-2 animate-spin stroke-[3px]" /> : <CheckCircle2 className="h-4 w-4 mr-2 stroke-[3px]" />}
+              VERIFY CHAIN
             </Button>
-            <Button variant="outline" size="sm" onClick={() => setShowUpload(!showUpload)} className="text-xs border-white/10">
-              + Add Evidence
+            <Button variant="outline" onClick={() => setShowUpload(!showUpload)} className="btn-impact bg-white dark:bg-zinc-900 border-2 px-6">
+              + ADD EVIDENCE
             </Button>
             <Link href={`/evidence/${caseId}/bundle`}>
-              <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-xs">
-                <Package className="h-3 w-3 mr-1" />Generate Bundle
+              <Button className="btn-impact bg-blue-600 hover:bg-blue-700 text-white px-6">
+                <Package className="h-4 w-4 mr-2 stroke-[3px]" />GENERATE BUNDLE
               </Button>
             </Link>
           </div>
@@ -251,7 +251,8 @@ export default function EvidenceCaseDetailPage() {
 
         {/* Message */}
         {message && (
-          <div className={`mb-4 p-3 rounded-lg text-sm ${message.type === "success" ? "bg-emerald-500/10 border border-emerald-500/20 text-emerald-400" : "bg-red-500/10 border border-red-500/20 text-red-400"}`}>
+          <div className={`mb-8 p-4 border-4 border-black font-bold uppercase tracking-widest text-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${message.type === "success" ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-900 dark:text-emerald-100" : "bg-red-100 dark:bg-red-900/30 text-red-900 dark:text-red-100"}`}>
+            {message.type === "success" ? <CheckCircle2 className="inline h-5 w-5 mr-2 stroke-[3px]" /> : <AlertTriangle className="inline h-5 w-5 mr-2 stroke-[3px]" />}
             {message.text}
           </div>
         )}
@@ -262,43 +263,47 @@ export default function EvidenceCaseDetailPage() {
         </div>
 
         {/* Storage */}
-        <div className="mb-6 rounded-lg border border-white/5 bg-white/[0.02] p-4">
+        <div className="mb-8 border-4 border-black bg-white dark:bg-zinc-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
           <StorageUsageBar usedBytes={evidenceCase.storage_used_bytes} />
         </div>
 
         {/* Upload area */}
         {showUpload && (
-          <div className="mb-6 rounded-xl border border-blue-500/20 bg-blue-500/5 p-6">
-            <h3 className="text-sm font-medium text-foreground mb-4">Add Evidence</h3>
+          <div className="mb-8 border-4 border-black bg-blue-50 dark:bg-blue-900/20 p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+            <h3 className="text-lg font-black uppercase tracking-widest text-foreground mb-6 flex items-center gap-3"><Plus className="h-6 w-6 stroke-[3px]" /> ADD EVIDENCE</h3>
             <EvidenceUploadZone caseId={caseId} onUpload={handleUpload} />
             {uploading && (
-              <div className="flex items-center gap-2 mt-4 text-sm text-blue-400">
-                <Loader2 className="h-4 w-4 animate-spin" />Processing...
+              <div className="flex items-center gap-3 mt-6 text-sm font-bold text-blue-700 dark:text-blue-400 uppercase tracking-widest">
+                <Loader2 className="h-5 w-5 animate-spin stroke-[3px]" />PROCESSING...
               </div>
             )}
           </div>
         )}
 
         {/* View mode tabs */}
-        <div className="flex items-center gap-1 mb-4 border-b border-white/5 pb-2">
-          {(["items", "timeline", "chain"] as ViewMode[]).map((mode) => {
-            const Icon = mode === "items" ? FileText : mode === "timeline" ? Clock : LinkIcon;
-            return (
-              <button
-                key={mode}
-                onClick={() => setViewMode(mode)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
-                  viewMode === mode
-                    ? "bg-blue-500/10 text-blue-400"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                <Icon className="h-3.5 w-3.5" />
-                {mode === "items" ? "Items" : mode === "timeline" ? "Timeline" : "Chain"}
-              </button>
-            );
-          })}
-          <ChainStatusBadge verified={evidenceCase.chain_verified} />
+        <div className="flex items-center gap-4 mb-8 border-b-4 border-black pb-4">
+          <div className="flex gap-2">
+            {(["items", "timeline", "chain"] as ViewMode[]).map((mode) => {
+              const Icon = mode === "items" ? FileText : mode === "timeline" ? Clock : LinkIcon;
+              return (
+                <button
+                  key={mode}
+                  onClick={() => setViewMode(mode)}
+                  className={`flex items-center gap-2 px-4 py-2 border-2 border-black text-sm font-black uppercase tracking-widest transition-all ${
+                    viewMode === mode
+                      ? "bg-black text-white dark:bg-white dark:text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                      : "bg-white dark:bg-zinc-900 text-muted-foreground hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                  }`}
+                >
+                  <Icon className="h-5 w-5 stroke-[3px]" />
+                  {mode === "items" ? "ITEMS" : mode === "timeline" ? "TIMELINE" : "CHAIN"}
+                </button>
+              );
+            })}
+          </div>
+          <div className="ml-auto">
+            <ChainStatusBadge verified={evidenceCase.chain_verified} />
+          </div>
         </div>
 
         {/* Content */}

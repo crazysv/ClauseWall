@@ -23,10 +23,10 @@ interface ContractSelectorProps {
 }
 
 const RISK_COLOR = (score: number) => {
-  if (score >= 75) return "text-red-400 bg-red-500/10";
-  if (score >= 50) return "text-orange-400 bg-orange-500/10";
-  if (score >= 25) return "text-yellow-400 bg-yellow-500/10";
-  return "text-green-400 bg-green-500/10";
+  if (score >= 75) return "text-red-600 dark:text-red-500 border-red-500 bg-red-100 dark:bg-red-950";
+  if (score >= 50) return "text-orange-600 dark:text-orange-500 border-orange-500 bg-orange-100 dark:bg-orange-950";
+  if (score >= 25) return "text-yellow-600 dark:text-yellow-500 border-yellow-500 bg-yellow-100 dark:bg-yellow-950";
+  return "text-green-600 dark:text-green-500 border-green-500 bg-green-100 dark:bg-green-950";
 };
 
 export default function ContractSelector({
@@ -95,10 +95,10 @@ export default function ContractSelector({
 
   if (documents.length === 0) {
     return (
-      <div className="text-center py-8 text-white/40">
-        <FileText className="w-8 h-8 mx-auto mb-3 opacity-50" />
-        <p className="text-sm">No analyzed contracts found.</p>
-        <p className="text-xs mt-1">Upload and analyze contracts first.</p>
+      <div className="text-center py-12 border-4 border-black bg-gray-50 dark:bg-zinc-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <FileText className="w-12 h-12 mx-auto mb-4 stroke-[3px] text-muted-foreground" />
+        <p className="text-base font-black uppercase tracking-widest text-foreground">NO ANALYZED CONTRACTS FOUND.</p>
+        <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mt-2">UPLOAD AND ANALYZE CONTRACTS FIRST.</p>
       </div>
     );
   }
@@ -106,37 +106,37 @@ export default function ContractSelector({
   return (
     <div className="space-y-3">
       {/* Search + Select All/None */}
-      <div className="flex gap-2">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+      <div className="flex gap-3 flex-wrap sm:flex-nowrap">
+        <div className="relative flex-1 min-w-[200px]">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground stroke-[3px]" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search contracts..."
-            className="w-full pl-9 pr-3 py-2 rounded-lg bg-white/[0.03] border border-white/10 text-sm text-white/80 placeholder:text-white/20 focus:outline-none focus:border-indigo-500/30"
+            placeholder="SEARCH CONTRACTS..."
+            className="w-full pl-10 pr-4 py-3 border-4 border-black bg-white dark:bg-zinc-900 text-sm font-black uppercase tracking-widest text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-4 focus:ring-indigo-500/30 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
           />
         </div>
         <button
           onClick={selectAll}
-          className="px-3 py-2 text-xs text-white/40 hover:text-white/60 bg-white/[0.03] border border-white/10 rounded-lg transition-colors"
+          className="px-6 py-3 text-xs font-black uppercase tracking-widest text-foreground bg-white dark:bg-zinc-900 border-4 border-black hover:-translate-y-1 hover:shadow-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
         >
-          All
+          ALL
         </button>
         <button
           onClick={selectNone}
-          className="px-3 py-2 text-xs text-white/40 hover:text-white/60 bg-white/[0.03] border border-white/10 rounded-lg transition-colors"
+          className="px-6 py-3 text-xs font-black uppercase tracking-widest text-foreground bg-white dark:bg-zinc-900 border-4 border-black hover:-translate-y-1 hover:shadow-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
         >
-          None
+          NONE
         </button>
       </div>
 
       {/* Selection count */}
-      <p className="text-xs text-white/30">
-        {selectedIds.length} of {documents.length} selected
+      <p className="text-xs font-black uppercase tracking-widest text-muted-foreground pt-2">
+        <span className="text-foreground bg-white dark:bg-zinc-900 px-2 py-0.5 border-2 border-black inline-block mr-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">{selectedIds.length}</span> OF {documents.length} SELECTED
         {selectedIds.length < 2 && (
-          <span className="text-yellow-400 ml-2">
-            (minimum 2 required)
+          <span className="text-yellow-600 dark:text-yellow-500 ml-3 inline-block px-2 py-0.5 border-2 border-yellow-500 bg-yellow-100 dark:bg-yellow-950 font-bold">
+            (MINIMUM 2 REQUIRED)
           </span>
         )}
       </p>
@@ -155,44 +155,44 @@ export default function ContractSelector({
               transition={{ delay: index * 0.03 }}
             >
               <Card
-                className={`cursor-pointer transition-all ${
+                className={`cursor-pointer transition-all border-4 rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none ${
                   isSelected
-                    ? "bg-indigo-500/10 border-indigo-500/30"
-                    : "bg-white/[0.02] border-white/5 hover:bg-white/[0.04]"
+                    ? "bg-indigo-50 dark:bg-indigo-950/30 border-black"
+                    : "bg-white dark:bg-zinc-900 border-black"
                 }`}
                 onClick={() => toggleDoc(doc.id)}
               >
-                <CardContent className="p-3 flex items-center gap-3">
+                <CardContent className="p-4 flex items-center gap-4">
                   {/* Checkbox */}
                   <div
-                    className={`w-5 h-5 rounded flex items-center justify-center flex-shrink-0 border transition-colors ${
+                    className={`w-6 h-6 flex items-center justify-center flex-shrink-0 border-4 transition-colors ${
                       isSelected
-                        ? "bg-indigo-500 border-indigo-500"
-                        : "border-white/20 bg-white/5"
+                        ? "bg-black border-black dark:bg-white dark:text-black dark:border-white shadow-[2px_2px_0px_0px_rgba(81,73,246,1)]"
+                        : "border-black bg-white dark:bg-black"
                     }`}
                   >
-                    {isSelected && <Check className="w-3 h-3 text-white" />}
+                    {isSelected && <Check className="w-4 h-4 text-white dark:text-black stroke-[4px]" />}
                   </div>
 
                   {/* Content */}
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-white/80 truncate">
-                      {doc.original_filename || "Unnamed Document"}
+                    <p className="text-base font-black uppercase tracking-widest text-foreground truncate">
+                      {doc.original_filename || "UNNAMED DOCUMENT"}
                     </p>
-                    <div className="flex items-center gap-2 mt-0.5">
-                      <span className="text-[10px] text-white/30 capitalize">
-                        {(doc.document_type || "unknown").replace(/_/g, " ")}
+                    <div className="flex items-center gap-3 mt-2 flex-wrap">
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground bg-gray-100 dark:bg-zinc-800 px-2 py-0.5 border-2 border-black">
+                        {(doc.document_type || "UNKNOWN").replace(/_/g, " ")}
                       </span>
                       {doc.entity_name && (
-                        <span className="text-[10px] text-white/30">
-                          · {doc.entity_name}
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-1">
+                          <span className="text-black dark:text-white font-black">•</span> {doc.entity_name}
                         </span>
                       )}
                     </div>
                   </div>
 
                   {/* Risk Badge */}
-                  <Badge className={`${riskColor} text-[10px] border-0`}>
+                  <Badge className={`${riskColor} text-[10px] font-black uppercase tracking-widest border-2 rounded-none px-2 py-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]`}>
                     {doc.overall_risk_score}/100
                   </Badge>
                 </CardContent>

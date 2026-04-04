@@ -63,43 +63,43 @@ export function TimebombSummary({
   }
 
   const riskColors = {
-    low: "text-blue-400 bg-blue-500/10 border-blue-500/20",
-    medium: "text-yellow-400 bg-yellow-500/10 border-yellow-500/20",
-    high: "text-orange-400 bg-orange-500/10 border-orange-500/20",
-    extreme: "text-red-400 bg-red-500/10 border-red-500/20",
+    low: "text-blue-900 bg-blue-100 border-4 border-blue-500",
+    medium: "text-yellow-900 bg-yellow-100 border-4 border-yellow-500",
+    high: "text-orange-900 bg-orange-100 border-4 border-orange-500",
+    extreme: "text-red-900 bg-red-100 border-4 border-red-500",
   };
 
   return (
-    <div className="rounded-xl border border-white/10 bg-white/[0.02] p-5">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-semibold text-white flex items-center gap-2">
-          <Target className="w-4 h-4 text-orange-400" />
-          Deadline Summary
+    <div className="border-4 border-black bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6">
+      <div className="flex items-center justify-between mb-6 pb-4 border-b-4 border-black">
+        <h3 className="text-sm font-black uppercase tracking-widest text-foreground flex items-center gap-2">
+          <Target className="w-6 h-6 text-orange-500 stroke-[3px]" />
+          DEADLINE SUMMARY
         </h3>
         {temporalRisk && (
           <span
-            className={`text-xs px-2.5 py-1 rounded-full border font-medium ${riskColors[temporalRisk]}`}
+            className={`text-xs px-3 py-1 font-black uppercase tracking-widest shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${riskColors[temporalRisk]}`}
           >
             {temporalRisk.toUpperCase()} RISK
           </span>
         )}
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {/* Total */}
-        <StatBox label="Total" value={stats.total} color="text-white/70" />
+        <StatBox label="TOTAL" value={stats.total} color="text-foreground" />
 
         {/* Critical */}
         <StatBox
-          label="Critical"
+          label="CRITICAL"
           value={stats.critical}
-          color="text-red-400"
+          color="text-red-600 dark:text-red-500"
           pulse={stats.critical > 0}
         />
 
         {/* Financial Exposure */}
         <StatBox
-          label="At Risk"
+          label="AT RISK"
           value={
             stats.total_financial_exposure > 0
               ? formatIndianCurrency(stats.total_financial_exposure)
@@ -107,27 +107,27 @@ export function TimebombSummary({
           }
           color={
             stats.total_financial_exposure > 100000
-              ? "text-red-400"
-              : "text-yellow-400"
+              ? "text-red-600 dark:text-red-500"
+              : "text-amber-600 dark:text-amber-500"
           }
         />
 
         {/* Defused Progress */}
-        <div className="rounded-lg bg-white/[0.03] p-3">
-          <span className="text-[10px] uppercase tracking-wider text-white/30 block mb-1">
-            Defused
+        <div className="border-4 border-black bg-gray-50 dark:bg-black p-4 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+          <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground block mb-2">
+            DEFUSED
           </span>
           <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-green-400" />
-            <span className="text-lg font-bold text-green-400">
+            <ShieldCheck className="w-6 h-6 text-green-600 dark:text-green-500 stroke-[3px]" />
+            <span className="text-2xl font-black text-green-600 dark:text-green-500">
               {stats.defused}
-              <span className="text-xs text-white/30 font-normal">
+              <span className="text-sm text-muted-foreground ml-1">
                 /{stats.total}
               </span>
             </span>
           </div>
           {/* Progress bar */}
-          <div className="mt-2 h-1 bg-white/5 rounded-full overflow-hidden">
+          <div className="mt-3 h-3 border-2 border-black bg-white dark:bg-black overflow-hidden flex">
             <motion.div
               initial={{ width: 0 }}
               animate={{
@@ -137,7 +137,7 @@ export function TimebombSummary({
                     : "0%",
               }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="h-full bg-green-500 rounded-full"
+              className="h-full bg-green-500 border-r-2 border-black"
             />
           </div>
         </div>
@@ -145,26 +145,26 @@ export function TimebombSummary({
 
       {/* Next critical deadline */}
       {stats.next_critical && nextCriticalDays !== null && (
-        <div className="mt-4 rounded-lg bg-gradient-to-r from-red-500/5 to-orange-500/5 border border-red-500/10 p-3">
-          <span className="text-[10px] uppercase tracking-wider text-white/30">
-            Next Critical
+        <div className="mt-6 border-4 border-red-500 bg-red-100 dark:bg-red-950 p-4 shadow-[4px_4px_0px_0px_rgba(239,68,68,1)]">
+          <span className="text-xs font-bold uppercase tracking-widest text-red-800 dark:text-red-400">
+            NEXT CRITICAL
           </span>
-          <div className="flex items-center justify-between mt-1">
-            <span className="text-sm text-white/70 truncate flex-1 mr-2">
+          <div className="flex items-center justify-between mt-2">
+            <span className="text-sm font-black uppercase tracking-wide text-red-950 dark:text-red-300 truncate flex-1 mr-4">
               {stats.next_critical.title}
             </span>
             <span
-              className={`text-sm font-bold ${
+              className={`text-lg font-black uppercase tracking-widest px-3 py-1 border-2 ${
                 nextCriticalDays <= 7
-                  ? "text-red-400"
+                  ? "text-red-700 dark:text-red-400 border-red-500 bg-red-200 dark:bg-red-900/50"
                   : nextCriticalDays <= 30
-                    ? "text-orange-400"
-                    : "text-yellow-400"
+                    ? "text-orange-700 dark:text-orange-400 border-orange-500 bg-orange-200 dark:bg-orange-900/50"
+                    : "text-amber-700 dark:text-amber-400 border-amber-500 bg-amber-200 dark:bg-amber-900/50"
               }`}
             >
               {nextCriticalDays <= 0
                 ? "OVERDUE"
-                : `${nextCriticalDays} day${nextCriticalDays !== 1 ? "s" : ""}`}
+                : `${nextCriticalDays} DAY${nextCriticalDays !== 1 ? "S" : ""}`}
             </span>
           </div>
         </div>
@@ -186,14 +186,14 @@ function StatBox({
 }) {
   return (
     <motion.div
-      className="rounded-lg bg-white/[0.03] p-3"
-      animate={pulse ? { opacity: [1, 0.7, 1] } : {}}
+      className="border-4 border-black bg-gray-50 dark:bg-black p-4 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex flex-col justify-between h-full"
+      animate={pulse ? { scale: [1, 1.02, 1] } : {}}
       transition={pulse ? { repeat: Infinity, duration: 2 } : {}}
     >
-      <span className="text-[10px] uppercase tracking-wider text-white/30 block mb-1">
+      <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground block mb-2">
         {label}
       </span>
-      <span className={`text-lg font-bold ${color}`}>{value}</span>
+      <span className={`text-2xl font-black ${color}`}>{value}</span>
     </motion.div>
   );
 }

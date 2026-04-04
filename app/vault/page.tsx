@@ -71,39 +71,39 @@ export default function VaultPage() {
   };
 
   return (
-    <div className="relative min-h-screen px-4 sm:px-6 lg:px-8 py-8 pb-24 sm:pb-8">
+    <div className="relative min-h-screen px-4 sm:px-6 lg:px-8 py-8 pb-24 sm:pb-8 bg-background">
       {/* Background decoration */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-500/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-violet-500/5 rounded-full blur-3xl" />
+      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+        <div className="absolute top-0 w-full h-[2px] bg-black/10" />
+        <div className="absolute top-1/4 left-0 w-full h-[4px] border-y-2 border-black" />
       </div>
 
       <div className="relative mx-auto max-w-5xl">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
-            <div className="flex items-center gap-2 text-muted-foreground text-sm mb-2">
-              <FileStack className="h-4 w-4" />
-              <span>Cross-Contract Analysis</span>
+            <div className="flex items-center gap-3 text-muted-foreground mb-4">
+              <div className="p-2 border-4 border-black bg-white dark:bg-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                <FileStack className="h-5 w-5 text-black dark:text-white stroke-[3px]" />
+              </div>
+              <span className="font-black uppercase tracking-widest text-xs">CROSS-CONTRACT ANALYSIS</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold">
-              Contract <span className="text-indigo-400">Vault</span>
+            <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-widest text-foreground">
+              CONTRACT <span className="text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-950 px-2 py-1 border-4 border-black shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]">VAULT</span>
             </h1>
-            <p className="text-sm text-white/40 mt-1">
-              Detect conflicts, coverage gaps, cascading failures, and hidden
-              risks across all your contracts.
+            <p className="font-bold uppercase tracking-widest text-muted-foreground mt-4 max-w-2xl text-sm leading-relaxed">
+              DETECT CONFLICTS, COVERAGE GAPS, CASCADING FAILURES, AND HIDDEN
+              RISKS ACROSS ALL YOUR CONTRACTS.
             </p>
           </div>
           {state === "results" && (
-            <Button
-              variant="outline"
-              size="sm"
+            <button
               onClick={resetToSelector}
-              className="gap-2"
+              className="flex items-center gap-2 px-4 py-2 border-4 border-black bg-white dark:bg-black font-black uppercase tracking-widest text-xs shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all"
             >
-              <RefreshCw className="h-4 w-4" />
-              New Analysis
-            </Button>
+              <RefreshCw className="h-4 w-4 stroke-[3px]" />
+              NEW ANALYSIS
+            </button>
           )}
         </div>
 
@@ -117,13 +117,13 @@ export default function VaultPage() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <div className="rounded-xl border border-white/10 bg-white/[0.02] p-6">
-                <h2 className="text-lg font-semibold mb-1">
-                  Select Contracts to Analyze
+              <div className="border-4 border-black bg-white dark:bg-zinc-900 p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+                <h2 className="text-xl font-black uppercase tracking-widest text-foreground mb-2">
+                  SELECT CONTRACTS TO ANALYZE
                 </h2>
-                <p className="text-sm text-white/40 mb-4">
-                  Choose at least 2 analyzed contracts for cross-contract
-                  analysis.
+                <p className="font-bold uppercase tracking-widest text-muted-foreground mb-8 text-sm">
+                  CHOOSE AT LEAST 2 ANALYZED CONTRACTS FOR CROSS-CONTRACT
+                  ANALYSIS.
                 </p>
 
                 <ContractSelector
@@ -131,16 +131,15 @@ export default function VaultPage() {
                   onSelectionChange={setSelectedIds}
                 />
 
-                <div className="mt-6 flex justify-end">
-                  <Button
+                <div className="mt-8 flex justify-end pt-6 border-t-4 border-black">
+                  <button
                     onClick={runAnalysis}
                     disabled={selectedIds.length < 2}
-                    className="bg-indigo-600 hover:bg-indigo-700 gap-2"
+                    className="flex items-center gap-3 px-6 py-4 border-4 border-black bg-indigo-500 hover:bg-indigo-600 font-black uppercase tracking-widest text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                   >
-                    Analyze {selectedIds.length} Contract
-                    {selectedIds.length !== 1 ? "s" : ""}
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
+                    ANALYZE {selectedIds.length} CONTRACT{selectedIds.length !== 1 ? "S" : ""}
+                    <ArrowRight className="w-5 h-5 stroke-[3px]" />
+                  </button>
                 </div>
               </div>
             </motion.div>

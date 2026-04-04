@@ -81,8 +81,8 @@ export function TrapCard({ trap, isExpanded, onToggle }: Props) {
 
   return (
     <div
-      className={`relative overflow-hidden rounded-xl border border-white/5 bg-white/[0.02] backdrop-blur-sm transition-all ${
-        style.glow ? `shadow-lg ${style.glow}` : ""
+      className={`relative overflow-hidden rounded-none border-2 border-foreground bg-background transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none ${
+        style.glow ? style.glow : ""
       }`}
     >
       {/* Severity bar */}

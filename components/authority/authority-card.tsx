@@ -20,9 +20,9 @@ interface Props {
 }
 
 const CONFIDENCE_COLORS = {
-  high: "border-green-500/30 bg-green-500/5",
-  medium: "border-amber-500/30 bg-amber-500/5",
-  low: "border-gray-500/30 bg-gray-500/5",
+  high: "border-green-600 bg-green-50 dark:bg-green-900/20 shadow-[4px_4px_0px_0px_rgba(22,163,74,1)]",
+  medium: "border-amber-500 bg-amber-50 dark:bg-amber-900/20 shadow-[4px_4px_0px_0px_rgba(245,158,11,1)]",
+  low: "border-gray-500 bg-gray-50 dark:bg-gray-900/20 shadow-[4px_4px_0px_0px_rgba(107,114,128,1)]",
 };
 
 export default function AuthorityCard({
@@ -40,36 +40,36 @@ export default function AuthorityCard({
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: (priority || 1) * 0.1 }}>
       <Card
-        className={`border transition-all ${
-          confidence ? CONFIDENCE_COLORS[confidence] : "border-white/10 bg-white/[0.02]"
-        } ${onClick ? "cursor-pointer hover:border-blue-500/40 hover:bg-white/[0.04]" : ""}`}
+        className={`border-4 rounded-none transition-all ${
+          confidence ? CONFIDENCE_COLORS[confidence] : "border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-white dark:bg-zinc-900"
+        } ${onClick ? "cursor-pointer hover:-translate-y-1 hover:shadow-none" : ""}`}
         onClick={onClick}
       >
         <CardContent className={compact ? "p-4" : "p-5"}>
           {/* Header */}
           <div className="flex items-start justify-between gap-3 mb-3">
             <div className="flex-1">
-              <div className="flex items-center gap-2 mb-1">
+              <div className="flex flex-wrap items-center gap-2 mb-2">
                 {priority === 1 && (
-                  <span className="px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400 text-[10px] font-bold uppercase">
-                    Primary
+                  <span className="px-3 py-1 border-2 border-black bg-blue-200 text-blue-900 text-xs font-black uppercase tracking-widest">
+                    RECOMMENDED
                   </span>
                 )}
                 {priority && priority > 1 && (
-                  <span className="px-2 py-0.5 rounded-full bg-gray-500/20 text-gray-400 text-[10px] font-bold uppercase">
-                    Alternative
+                  <span className="px-3 py-1 border-2 border-dashed border-gray-500 bg-gray-200 text-gray-800 text-xs font-bold uppercase tracking-widest">
+                    ALTERNATIVE
                   </span>
                 )}
                 {authority.has_e_filing && (
-                  <span className="px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-400 text-[10px] font-medium flex items-center gap-1">
-                    <ExternalLink className="h-2.5 w-2.5" /> E-Filing
+                  <span className="px-3 py-1 border-2 border-black bg-purple-200 text-purple-900 text-xs font-black uppercase tracking-widest flex items-center gap-1">
+                    <ExternalLink className="h-3 w-3 stroke-[3px]" /> E-FILING
                   </span>
                 )}
               </div>
-              <h3 className={`font-semibold ${compact ? "text-sm" : "text-base"}`}>
+              <h3 className={`font-black uppercase tracking-widest ${compact ? "text-base" : "text-xl"}`}>
                 {authority.short_name || authority.name}
               </h3>
-              <p className="text-xs text-muted-foreground mt-0.5">{typeLabel}</p>
+              <p className="text-sm font-bold text-muted-foreground mt-1">{typeLabel}</p>
             </div>
 
             {confidence && (
@@ -87,28 +87,28 @@ export default function AuthorityCard({
 
           {/* Reasoning */}
           {reasoning && !compact && (
-            <div className="mb-3 p-3 rounded-lg bg-blue-500/5 border border-blue-500/10">
-              <div className="flex items-start gap-2">
-                <Scale className="h-4 w-4 text-blue-400 mt-0.5 flex-shrink-0" />
-                <p className="text-sm text-blue-200/80 leading-relaxed">{reasoning}</p>
+            <div className="mb-4 p-4 border-2 border-blue-500 bg-blue-50 dark:bg-blue-900/20 relative">
+              <div className="absolute -top-3 -left-3 bg-blue-500 p-1 border-2 border-black">
+                <Scale className="h-4 w-4 text-white stroke-[3px]" />
               </div>
+              <p className="text-sm font-bold text-blue-900 dark:text-blue-100 leading-relaxed ml-2">{reasoning}</p>
             </div>
           )}
 
           {/* Info Row */}
-          <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground mb-2">
+          <div className="flex flex-wrap items-center gap-4 text-sm font-bold text-muted-foreground mb-4">
             {authority.city && (
               <span className="flex items-center gap-1">
-                <MapPin className="h-3 w-3" /> {authority.city}
+                <MapPin className="h-4 w-4 stroke-[3px]" /> {authority.city}
               </span>
             )}
             {authority.typical_resolution_days && (
               <span className="flex items-center gap-1">
-                <Clock className="h-3 w-3" /> ~{authority.typical_resolution_days}d resolution
+                <Clock className="h-4 w-4 stroke-[3px]" /> ~{authority.typical_resolution_days}d resolution
               </span>
             )}
             {authority.filing_fee_structure?.base_fee === 0 && (
-              <span className="text-green-400 font-medium">FREE Filing</span>
+              <span className="text-green-600 dark:text-green-400 border-2 border-green-500 px-2 uppercase tracking-widest">FREE Filing</span>
             )}
           </div>
 

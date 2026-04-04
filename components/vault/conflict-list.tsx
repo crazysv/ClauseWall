@@ -27,28 +27,28 @@ const SEVERITY_CONFIG: Record<
   { color: string; bg: string; border: string; label: string }
 > = {
   critical: {
-    color: "text-red-400",
-    bg: "bg-red-500/10",
-    border: "border-red-500/20",
-    label: "Critical",
+    color: "text-red-600 dark:text-red-500",
+    bg: "bg-red-100 dark:bg-red-950",
+    border: "border-red-500",
+    label: "CRITICAL",
   },
   high: {
-    color: "text-orange-400",
-    bg: "bg-orange-500/10",
-    border: "border-orange-500/20",
-    label: "High",
+    color: "text-orange-600 dark:text-orange-500",
+    bg: "bg-orange-100 dark:bg-orange-950",
+    border: "border-orange-500",
+    label: "HIGH",
   },
   medium: {
-    color: "text-yellow-400",
-    bg: "bg-yellow-500/10",
-    border: "border-yellow-500/20",
-    label: "Medium",
+    color: "text-yellow-600 dark:text-yellow-500",
+    bg: "bg-yellow-100 dark:bg-yellow-950",
+    border: "border-yellow-500",
+    label: "MEDIUM",
   },
   low: {
-    color: "text-blue-400",
-    bg: "bg-blue-500/10",
-    border: "border-blue-500/20",
-    label: "Low",
+    color: "text-blue-600 dark:text-blue-500",
+    bg: "bg-blue-100 dark:bg-blue-950",
+    border: "border-blue-500",
+    label: "LOW",
   },
 };
 
@@ -95,14 +95,14 @@ export default function ConflictList({ conflicts }: ConflictListProps) {
 
   if (conflicts.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 text-center">
-        <CheckCircle2 className="w-12 h-12 text-green-400/50 mb-4" />
-        <h3 className="text-lg font-semibold text-green-400 mb-2">
-          No Conflicts Found
+      <div className="flex flex-col items-center justify-center py-16 text-center border-4 border-black bg-green-50 dark:bg-green-950 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <CheckCircle2 className="w-16 h-16 text-green-600 dark:text-green-500 mb-6 stroke-[3px]" />
+        <h3 className="text-2xl font-black uppercase tracking-widest text-green-700 dark:text-green-400 mb-4">
+          NO CONFLICTS FOUND
         </h3>
-        <p className="text-sm text-white/40 max-w-md">
-          Great news! No conflicts were detected between your contracts. Your
-          agreements appear to be consistent with each other.
+        <p className="text-sm font-bold uppercase tracking-widest text-green-900/60 dark:text-green-200/60 max-w-md leading-relaxed">
+          GREAT NEWS! NO CONFLICTS WERE DETECTED BETWEEN YOUR CONTRACTS. YOUR
+          AGREEMENTS APPEAR TO BE CONSISTENT WITH EACH OTHER.
         </p>
       </div>
     );
@@ -111,7 +111,7 @@ export default function ConflictList({ conflicts }: ConflictListProps) {
   return (
     <div className="space-y-4">
       {/* Filter Bar */}
-      <div className="flex gap-2 flex-wrap">
+      <div className="flex gap-3 flex-wrap p-4 border-4 border-black bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         {(["all", "critical", "high", "medium"] as FilterType[]).map((f) => {
           const count = counts[f as keyof typeof counts] ?? 0;
           const isActive = filter === f;
@@ -119,14 +119,14 @@ export default function ConflictList({ conflicts }: ConflictListProps) {
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
+              className={`px-4 py-2 font-black uppercase tracking-widest text-xs border-4 transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none ${
                 isActive
-                  ? "bg-white/10 border-white/20 text-white"
-                  : "bg-white/[0.02] border-white/5 text-white/40 hover:text-white/60"
+                  ? "bg-black text-white border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] translate-y-[-2px] dark:bg-white dark:text-black"
+                  : "bg-white text-black border-black dark:bg-zinc-800 dark:text-white"
               }`}
             >
-              {f === "all" ? "All" : f.charAt(0).toUpperCase() + f.slice(1)}{" "}
-              <span className="opacity-60">({count})</span>
+              {f === "all" ? "ALL" : f.toUpperCase()}{" "}
+              <span className={isActive ? "opacity-80" : "text-muted-foreground"}>({count})</span>
             </button>
           );
         })}
@@ -147,46 +147,50 @@ export default function ConflictList({ conflicts }: ConflictListProps) {
               transition={{ delay: index * 0.05 }}
             >
               <Card
-                className={`${config.bg} ${config.border} cursor-pointer hover:brightness-110 transition-all`}
+                className={`border-4 border-black rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${config.bg} cursor-pointer hover:-translate-y-1 hover:shadow-none transition-all`}
                 onClick={() => toggleExpand(conflict.id)}
               >
-                <CardContent className="p-4">
+                <CardContent className="p-6">
                   {/* Header */}
-                  <div className="flex items-start gap-3">
-                    <div className={`p-2 rounded-lg ${config.bg}`}>
-                      <Icon className={`w-4 h-4 ${config.color}`} />
+                  <div className="flex items-start gap-4">
+                    <div className={`p-3 border-4 border-black bg-white dark:bg-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]`}>
+                      <Icon className={`w-5 h-5 ${config.color} stroke-[3px]`} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <Badge className={`${config.bg} ${config.color} text-[10px] border-0`}>
+                      <div className="flex items-center gap-3 mb-2 flex-wrap">
+                        <Badge className={`px-2 py-0.5 border-2 border-black rounded-none shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] ${config.bg} ${config.color} font-black uppercase tracking-widest text-[10px]`}>
                           {config.label}
                         </Badge>
-                        <span className="text-[10px] text-white/30">
+                        <span className="text-xs font-black uppercase tracking-widest text-muted-foreground bg-white dark:bg-black px-2 py-0.5 border-2 border-black">
                           {conflict.conflict_type.replace(/_/g, " ")}
                         </span>
                       </div>
-                      <h4 className="text-sm font-semibold text-white">
+                      <h4 className="text-base font-black uppercase tracking-widest text-foreground block">
                         {conflict.title}
                       </h4>
                     </div>
                     <ChevronDown
-                      className={`w-4 h-4 text-white/30 transition-transform flex-shrink-0 ${
+                      className={`w-6 h-6 stroke-[3px] text-black dark:text-white transition-transform flex-shrink-0 mt-1 ${
                         isExpanded ? "rotate-180" : ""
                       }`}
                     />
                   </div>
 
                   {/* Two-column contract comparison */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
-                    <div className="rounded-lg bg-white/[0.03] border border-white/5 p-3">
-                      <p className="text-[10px] text-white/40 mb-1">📄 {conflict.document_a_title}</p>
-                      <p className="text-xs text-white/70 line-clamp-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+                    <div className="border-4 border-black bg-white dark:bg-zinc-900 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                      <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-3 flex items-center gap-2 border-b-2 border-black pb-2">
+                        <span className="text-black dark:text-white">📄</span> {conflict.document_a_title}
+                      </p>
+                      <p className="text-sm font-bold uppercase tracking-widest text-foreground leading-relaxed line-clamp-3">
                         {conflict.document_a_clause || "—"}
                       </p>
                     </div>
-                    <div className="rounded-lg bg-white/[0.03] border border-white/5 p-3">
-                      <p className="text-[10px] text-white/40 mb-1">📄 {conflict.document_b_title}</p>
-                      <p className="text-xs text-white/70 line-clamp-2">
+                    <div className="border-4 border-black bg-white dark:bg-zinc-900 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                      <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-3 flex items-center gap-2 border-b-2 border-black pb-2">
+                        <span className="text-black dark:text-white">📄</span> {conflict.document_b_title}
+                      </p>
+                      <p className="text-sm font-bold uppercase tracking-widest text-foreground leading-relaxed line-clamp-3">
                         {conflict.document_b_clause || "—"}
                       </p>
                     </div>
@@ -202,17 +206,19 @@ export default function ConflictList({ conflicts }: ConflictListProps) {
                         transition={{ duration: 0.2 }}
                         className="overflow-hidden"
                       >
-                        <div className="mt-4 space-y-3">
+                        <div className="mt-8 space-y-4">
                           {/* Description */}
-                          <p className="text-sm text-white/60">{conflict.description}</p>
+                          <p className="text-sm font-bold uppercase tracking-widest text-foreground leading-relaxed p-4 border-l-4 border-black bg-white dark:bg-zinc-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                            {conflict.description}
+                          </p>
 
                           {/* Legal Implication */}
                           {conflict.legal_implication && (
-                            <div className="rounded-lg bg-red-500/5 border border-red-500/10 p-3">
-                              <p className="text-[10px] text-red-400 font-medium mb-1">
-                                ⚠️ Legal Implication
+                            <div className="border-4 border-black bg-red-50 dark:bg-red-950/20 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                              <p className="text-[10px] font-black uppercase tracking-widest text-red-600 dark:text-red-400 mb-2 border-b-2 border-red-500 pb-2">
+                                ⚠️ LEGAL IMPLICATION
                               </p>
-                              <p className="text-xs text-white/60">
+                              <p className="text-sm font-bold uppercase tracking-widest text-red-900/80 dark:text-red-200/80 leading-relaxed">
                                 {conflict.legal_implication}
                               </p>
                             </div>
@@ -220,18 +226,18 @@ export default function ConflictList({ conflicts }: ConflictListProps) {
 
                           {/* Legal Citation */}
                           {conflict.legal_citation && (
-                            <p className="text-[10px] text-white/30">
-                              📜 {conflict.legal_citation}
+                            <p className="text-xs font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                              <span className="p-1 border-2 border-black bg-gray-100 dark:bg-zinc-800">📜</span> {conflict.legal_citation}
                             </p>
                           )}
 
                           {/* Resolution */}
                           {conflict.resolution_suggestion && (
-                            <div className="rounded-lg bg-green-500/5 border border-green-500/10 p-3">
-                              <p className="text-[10px] text-green-400 font-medium mb-1">
-                                ✅ Resolution Suggestion
+                            <div className="border-4 border-black bg-green-50 dark:bg-green-950/20 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                              <p className="text-[10px] font-black uppercase tracking-widest text-green-600 dark:text-green-500 mb-2 border-b-2 border-green-500 pb-2">
+                                ✅ RESOLUTION SUGGESTION
                               </p>
-                              <p className="text-xs text-white/60">
+                              <p className="text-sm font-bold uppercase tracking-widest text-green-900/80 dark:text-green-200/80 leading-relaxed">
                                 {conflict.resolution_suggestion}
                               </p>
                             </div>
@@ -240,8 +246,8 @@ export default function ConflictList({ conflicts }: ConflictListProps) {
                           {/* Financial Risk */}
                           {conflict.financial_risk != null &&
                             conflict.financial_risk > 0 && (
-                              <p className="text-sm text-red-400 font-semibold">
-                                💰 Financial Risk: ₹
+                              <p className="text-base font-black uppercase tracking-widest text-red-600 dark:text-red-400 inline-block px-4 py-2 border-4 border-red-500 bg-red-100 dark:bg-red-950 shadow-[4px_4px_0px_0px_rgba(239,68,68,1)]">
+                                💰 FINANCIAL RISK: ₹
                                 {conflict.financial_risk.toLocaleString("en-IN")}
                               </p>
                             )}

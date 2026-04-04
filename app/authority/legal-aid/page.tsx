@@ -8,13 +8,13 @@ export const metadata: Metadata = {
 
 export default function LegalAidPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-950 to-gray-900">
-      <div className="container mx-auto px-4 py-8 max-w-3xl">
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold mb-2">
+    <main className="min-h-screen bg-background">
+      <div className="max-w-4xl mx-auto px-4 md:px-6 py-10 md:py-16">
+        <div className="mb-12 text-center">
+          <h1 className="text-4xl sm:text-5xl font-black uppercase tracking-widest mb-4">
             💗 Free Legal Aid
           </h1>
-          <p className="text-muted-foreground text-sm max-w-xl mx-auto">
+          <p className="text-muted-foreground font-medium max-w-2xl mx-auto leading-relaxed">
             Under the Legal Services Authorities Act 1987, eligible Indians can get FREE legal representation.
             Check your eligibility and find providers near you.
           </p>

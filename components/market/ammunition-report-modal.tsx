@@ -61,12 +61,12 @@ export default function AmmunitionReportModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
-        className="bg-gray-950 border border-white/10 rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-hidden flex flex-col"
+        className="bg-background border-4 border-foreground rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] w-full max-w-2xl max-h-[85vh] overflow-hidden flex flex-col"
       >
         {/* Header */}
         <div className="flex items-center justify-between p-5 border-b border-white/5">
@@ -92,10 +92,10 @@ export default function AmmunitionReportModal({
               <button
                 key={opt.value}
                 onClick={() => setAudience(opt.value)}
-                className={`p-3 rounded-lg border text-center transition-all ${
+                className={`p-3 rounded-none border-2 text-center transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none ${
                   audience === opt.value
-                    ? "bg-cyan-500/10 border-cyan-500/30 text-cyan-400"
-                    : "bg-white/[0.02] border-white/5 text-white/40 hover:text-white/60"
+                    ? "bg-cyan-100 border-cyan-600 text-cyan-900"
+                    : "bg-muted border-foreground text-foreground"
                 }`}
               >
                 <opt.icon className="h-5 w-5 mx-auto mb-1" />
@@ -128,7 +128,7 @@ export default function AmmunitionReportModal({
 
               {/* Sections */}
               {report.sections.map((section, i) => (
-                <Card key={i} className="bg-white/[0.02] border-white/5">
+                <Card key={i} className="card-impact border-2 border-foreground bg-background rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-2">
                       <h4 className="text-sm font-semibold text-white">{section.heading}</h4>

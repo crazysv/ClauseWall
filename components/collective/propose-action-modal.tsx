@@ -106,7 +106,7 @@ export default function ProposeActionModal({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+          className="absolute inset-0 bg-black/80"
           onClick={onClose}
         />
 
@@ -114,7 +114,7 @@ export default function ProposeActionModal({
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
-          className="relative w-full max-w-lg rounded-2xl bg-gray-900 border border-white/10 shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto"
+          className="relative w-full max-w-lg rounded-none bg-background border-4 border-foreground shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden max-h-[90vh] overflow-y-auto"
         >
           <div className="p-5 border-b border-white/5 flex items-center justify-between">
             <h3 className="font-semibold text-white">Propose Collective Action</h3>
@@ -137,10 +137,10 @@ export default function ProposeActionModal({
                   <button
                     key={at.type}
                     onClick={() => setSelectedType(at.type)}
-                    className={`flex items-start gap-2 p-3 rounded-lg border text-left transition-colors ${
+                    className={`flex items-start gap-2 p-3 rounded-none border-2 text-left transition-all hover:-translate-y-1 hover:shadow-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${
                       selectedType === at.type
-                        ? "border-amber-500/30 bg-amber-500/10"
-                        : "border-white/5 bg-white/[0.02] hover:bg-white/[0.04]"
+                        ? "border-foreground bg-amber-300 text-black"
+                        : "border-foreground bg-muted text-foreground"
                     }`}
                   >
                     <span

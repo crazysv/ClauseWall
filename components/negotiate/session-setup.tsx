@@ -73,11 +73,11 @@ export default function SessionSetup({ onSessionStart, existingSessions }: Sessi
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-8">
       {/* Hero */}
       <div className="text-center mb-8">
-        <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-emerald-500/20 to-blue-500/20 flex items-center justify-center mx-auto mb-4 border border-white/5">
-          <Handshake className="w-10 h-10 text-emerald-400" />
+        <div className="w-20 h-20 bg-background flex items-center justify-center mx-auto mb-4 border-4 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <Handshake className="w-10 h-10 text-foreground" />
         </div>
-        <h1 className="text-2xl font-bold text-white mb-2">Live Negotiation Companion</h1>
-        <p className="text-sm text-white/40 max-w-xs mx-auto">
+        <h1 className="text-2xl font-black uppercase tracking-wider text-foreground mb-2">Live Negotiation Companion</h1>
+        <p className="text-sm font-bold text-muted-foreground max-w-xs mx-auto">
           Your AI co-pilot for in-person contract negotiations. Instant legal intelligence at your fingertips.
         </p>
       </div>
@@ -142,7 +142,7 @@ export default function SessionSetup({ onSessionStart, existingSessions }: Sessi
         <button
           onClick={handleStart}
           disabled={!documentType || !jurisdiction}
-          className="w-full py-4 rounded-xl bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 text-white font-medium text-base flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-lg shadow-emerald-500/20"
+          className="w-full py-4 bg-foreground text-background font-black uppercase tracking-wider text-base flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed transition-all border-4 border-transparent hover:bg-background hover:text-foreground hover:border-foreground"
           style={{ minHeight: "56px" }}
         >
           Start Session

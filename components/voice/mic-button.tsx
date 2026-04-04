@@ -90,19 +90,19 @@ export default function MicButton({ documentId, onCommand }: MicButtonProps) {
       <motion.button
         onClick={handleMicClick}
         whileTap={{ scale: 0.9 }}
-        className={`fixed bottom-24 right-6 z-50 w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transition-all ${isListening
-            ? "bg-red-500 animate-pulse shadow-red-500/30"
+        className={`fixed bottom-24 right-6 z-50 w-14 h-14 rounded-none border-4 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center transition-all ${isListening
+            ? "bg-red-500 animate-pulse hover:shadow-none hover:-translate-y-1"
             : isSpeaking
-              ? "bg-blue-500 shadow-blue-500/30"
-              : "bg-gradient-to-br from-blue-600 to-purple-600 shadow-blue-500/20 hover:shadow-blue-500/40"
+              ? "bg-blue-500 hover:shadow-none hover:-translate-y-1"
+              : "bg-orange-500 hover:shadow-none hover:-translate-y-1"
           }`}
       >
         {isListening ? (
-          <Mic className="h-6 w-6 text-white animate-bounce" />
+          <Mic className="h-6 w-6 text-black animate-bounce stroke-[3px]" />
         ) : isSpeaking ? (
-          <Volume2 className="h-6 w-6 text-white" />
+          <Volume2 className="h-6 w-6 text-black stroke-[3px]" />
         ) : (
-          <Mic className="h-6 w-6 text-white" />
+          <Mic className="h-6 w-6 text-black stroke-[3px]" />
         )}
 
         {/* Pulse rings when listening */}
@@ -121,7 +121,7 @@ export default function MicButton({ documentId, onCommand }: MicButtonProps) {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="fixed bottom-44 right-6 z-50 w-80 bg-gray-900/95 backdrop-blur-xl border border-gray-700/50 rounded-2xl shadow-2xl p-4"
+            className="fixed bottom-44 right-6 z-50 w-80 bg-background text-foreground border-4 border-foreground rounded-none p-4 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
           >
             {/* Close */}
             <button
@@ -160,7 +160,7 @@ export default function MicButton({ documentId, onCommand }: MicButtonProps) {
             {transcript && (
               <div className="mb-3">
                 <p className="text-xs text-gray-500 mb-1">You said:</p>
-                <p className="text-sm text-white bg-white/5 p-2 rounded-lg">
+                <p className="text-sm text-foreground bg-muted p-2 border-2 border-foreground font-mono font-bold">
                   &quot;{transcript}&quot;
                 </p>
               </div>
@@ -178,7 +178,7 @@ export default function MicButton({ documentId, onCommand }: MicButtonProps) {
             {lastAnswer && (
               <div className="mb-2">
                 <p className="text-xs text-gray-500 mb-1">ClauseWall:</p>
-                <p className="text-sm text-cyan-300 bg-cyan-500/5 p-2 rounded-lg border border-cyan-500/15 leading-relaxed">
+                <p className="text-sm text-foreground bg-muted p-2 rounded-none border-2 border-foreground leading-relaxed font-bold font-mono">
                   {lastAnswer}
                 </p>
               </div>
@@ -209,7 +209,7 @@ export default function MicButton({ documentId, onCommand }: MicButtonProps) {
                   setLastAnswer(null);
                   startVoice();
                 }}
-                className="w-full mt-2 flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs hover:bg-blue-500/20 transition-colors"
+                className="w-full mt-2 flex items-center justify-center gap-2 px-3 py-2 rounded-none bg-orange-500 border-2 border-black text-black font-black uppercase tracking-wider text-xs hover:bg-orange-600 transition-colors shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
                 <Mic className="h-3.5 w-3.5" />
                 {error ? "Try again" : "Ask another question"}

@@ -12,10 +12,10 @@ interface ObligationsListProps {
 }
 
 const RISK_COLORS: Record<RiskLevel, { color: string; bg: string }> = {
-  illegal: { color: "text-purple-400", bg: "bg-purple-500/10" },
-  dangerous: { color: "text-red-400", bg: "bg-red-500/10" },
-  warning: { color: "text-yellow-400", bg: "bg-yellow-500/10" },
-  safe: { color: "text-green-400", bg: "bg-green-500/10" },
+  illegal: { color: "text-purple-600 dark:text-purple-400", bg: "bg-purple-100 dark:bg-purple-900/30" },
+  dangerous: { color: "text-red-600 dark:text-red-400", bg: "bg-red-100 dark:bg-red-900/30" },
+  warning: { color: "text-yellow-600 dark:text-yellow-400", bg: "bg-yellow-100 dark:bg-yellow-900/30" },
+  safe: { color: "text-green-600 dark:text-green-400", bg: "bg-green-100 dark:bg-green-900/30" },
 };
 
 const TYPE_LABELS: Record<string, { emoji: string; label: string }> = {
@@ -56,13 +56,13 @@ export default function ObligationsList({ obligations }: ObligationsListProps) {
 
   if (obligations.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 text-center">
-        <ListChecks className="w-12 h-12 text-white/20 mb-4" />
-        <h3 className="text-lg font-semibold text-white/60 mb-2">
-          No Obligations Found
+      <div className="flex flex-col items-center justify-center py-16 text-center border-4 border-black bg-gray-50 dark:bg-zinc-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <ListChecks className="w-16 h-16 text-muted-foreground mb-6 stroke-[3px]" />
+        <h3 className="text-xl font-black uppercase tracking-widest text-foreground mb-4">
+          NO OBLIGATIONS FOUND
         </h3>
-        <p className="text-sm text-white/40 max-w-md">
-          No obligations could be extracted from your contracts.
+        <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground max-w-md leading-relaxed">
+          NO OBLIGATIONS COULD BE EXTRACTED FROM YOUR CONTRACTS.
         </p>
       </div>
     );
@@ -71,7 +71,7 @@ export default function ObligationsList({ obligations }: ObligationsListProps) {
   return (
     <div className="space-y-4">
       {/* Type Filters */}
-      <div className="flex gap-2 flex-wrap">
+      <div className="flex gap-3 flex-wrap p-4 border-4 border-black bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         {(
           ["all", "payment", "action", "restriction", "deadline"] as TypeFilter[]
         ).map((f) => {
@@ -83,14 +83,14 @@ export default function ObligationsList({ obligations }: ObligationsListProps) {
             <button
               key={f}
               onClick={() => setTypeFilter(f)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
+              className={`px-4 py-2 font-black uppercase tracking-widest text-xs border-4 transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none ${
                 isActive
-                  ? "bg-white/10 border-white/20 text-white"
-                  : "bg-white/[0.02] border-white/5 text-white/40 hover:text-white/60"
+                  ? "bg-black text-white border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] translate-y-[-2px] dark:bg-white dark:text-black"
+                  : "bg-white text-black border-black dark:bg-zinc-800 dark:text-white"
               }`}
             >
-              {f === "all" ? "All" : `${typeInfo?.emoji || ""} ${typeInfo?.label || f}`}{" "}
-              <span className="opacity-60">({count})</span>
+              {f === "all" ? "ALL" : `${typeInfo?.emoji || ""} ${typeInfo?.label.toUpperCase() || f.toUpperCase()}`}{" "}
+              <span className={isActive ? "opacity-80" : "text-muted-foreground"}>({count})</span>
             </button>
           );
         })}
@@ -110,31 +110,33 @@ export default function ObligationsList({ obligations }: ObligationsListProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: Math.min(index * 0.02, 0.5) }}
             >
-              <Card className="bg-white/[0.02] border-white/5 hover:bg-white/[0.04] transition-colors">
-                <CardContent className="p-3">
-                  <div className="flex items-start gap-3">
-                    <span className="text-base mt-0.5">{typeInfo.emoji}</span>
+              <Card className="border-4 border-black bg-white dark:bg-zinc-900 rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all mb-4">
+                <CardContent className="p-4 sm:p-6">
+                  <div className="flex items-start gap-4">
+                    <span className="text-2xl mt-0.5 p-2 border-4 border-black bg-gray-50 dark:bg-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex-shrink-0">{typeInfo.emoji}</span>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-0.5">
-                        <Badge className={`${risk.bg} ${risk.color} text-[9px] border-0 px-1.5`}>
+                      <div className="flex items-center gap-3 mb-2 flex-wrap">
+                        <Badge className={`${risk.bg} ${risk.color} text-[10px] border-2 border-black rounded-none shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] font-black uppercase tracking-widest`}>
                           {obligation.risk_level}
                         </Badge>
-                        <span className="text-[10px] text-white/30 truncate">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground truncate bg-gray-100 dark:bg-zinc-800 px-2 py-0.5 border-2 border-black">
                           {obligation.document_title}
                         </span>
                       </div>
-                      <p className="text-sm text-white/80">{obligation.title}</p>
-                      <p className="text-xs text-white/40 mt-0.5 line-clamp-2">
+                      <p className="text-base font-black uppercase tracking-widest text-foreground">{obligation.title}</p>
+                      <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mt-2 line-clamp-2 leading-relaxed">
                         {obligation.description}
                       </p>
                     </div>
-                    <div className="text-right flex-shrink-0">
+                    <div className="text-right flex-shrink-0 flex flex-col items-end">
                       {obligation.amount != null && obligation.amount > 0 && (
-                        <p className="text-sm font-semibold text-white/70">
+                        <p className="text-sm font-black tabular-nums tracking-tighter bg-red-100 dark:bg-red-950 text-red-600 dark:text-red-400 px-2 py-1 border-2 border-red-500 shadow-[1px_1px_0px_0px_rgba(239,68,68,1)] mb-2">
                           ₹{obligation.amount.toLocaleString("en-IN")}
                         </p>
                       )}
-                      <p className="text-[10px] text-white/30">{freq}</p>
+                      <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mt-auto px-2 py-1 border-b-2 border-black">
+                        {freq}
+                      </p>
                     </div>
                   </div>
                 </CardContent>
@@ -143,8 +145,8 @@ export default function ObligationsList({ obligations }: ObligationsListProps) {
           );
         })}
         {filtered.length > 50 && (
-          <p className="text-xs text-white/30 text-center py-2">
-            Showing 50 of {filtered.length} obligations
+          <p className="text-xs font-black uppercase tracking-widest text-muted-foreground text-center py-4 border-t-4 border-black mt-4">
+            SHOWING 50 OF {filtered.length} OBLIGATIONS
           </p>
         )}
       </div>

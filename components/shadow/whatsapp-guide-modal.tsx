@@ -20,40 +20,40 @@ const STEPS = [
 export default function WhatsAppGuideModal({ open, onClose }: WhatsAppGuideModalProps) {
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-md bg-gray-950 border-white/10">
-        <div className="space-y-4">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-green-500/10">
-              <MessageSquare className="w-5 h-5 text-green-400" />
+      <DialogContent className="max-w-md border-4 border-black bg-white dark:bg-zinc-950 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] rounded-none">
+        <div className="space-y-6">
+          <div className="flex items-center gap-4 border-b-4 border-black pb-4">
+            <div className="p-3 border-4 border-black bg-green-400 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+              <MessageSquare className="w-6 h-6 text-black stroke-[3px]" />
             </div>
             <div>
-              <h3 className="font-semibold">How to Export WhatsApp Chat</h3>
-              <p className="text-xs text-white/40">Step-by-step guide</p>
+              <h3 className="font-black text-xl uppercase tracking-widest text-foreground">Extract Promises</h3>
+              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">WHATSAPP CHAT EXPORT GUIDE</p>
             </div>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-4">
             {STEPS.map(({ step, icon, title, desc }, i) => (
-              <div key={step} className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-lg">
+              <div key={step} className="flex items-start gap-4">
+                <div className="flex-shrink-0 w-10 h-10 border-4 border-black bg-gray-100 dark:bg-zinc-800 flex items-center justify-center text-lg shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                   {icon}
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium">
-                    <span className="text-white/40 mr-1">Step {step}:</span> {title}
+                  <p className="text-sm font-black uppercase tracking-wide text-foreground">
+                    <span className="text-muted-foreground mr-2 font-bold uppercase tracking-widest">STEP {step}:</span> {title}
                   </p>
-                  <p className="text-xs text-white/40 mt-0.5">{desc}</p>
+                  <p className="text-xs font-medium text-muted-foreground mt-1 leading-relaxed">{desc}</p>
                 </div>
                 {i < STEPS.length - 1 && (
-                  <ArrowRight className="w-3 h-3 text-white/10 mt-2 flex-shrink-0 hidden sm:block" />
+                  <ArrowRight className="w-4 h-4 text-black dark:text-white mt-3 flex-shrink-0 hidden sm:block stroke-[3px]" />
                 )}
               </div>
             ))}
           </div>
 
-          <div className="p-3 rounded-lg bg-green-500/5 border border-green-500/10">
-            <p className="text-xs text-green-300">
-              💡 Your chat data stays private. We only extract promises and commitments — personal messages are never stored.
+          <div className="p-4 border-4 border-black bg-green-100 dark:bg-green-900/30 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-bold text-green-900 dark:text-green-300 uppercase tracking-wide leading-relaxed">
+              💡 <span className="font-black text-black dark:text-white">YOUR DATA STAYS PRIVATE.</span> We only extract promises and commitments — personal messages are never stored.
             </p>
           </div>
         </div>

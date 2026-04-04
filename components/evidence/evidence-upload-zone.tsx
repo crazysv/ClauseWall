@@ -56,7 +56,7 @@ export function EvidenceUploadZone({
   return (
     <div className="space-y-4">
       {/* Type selector */}
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-3">
         {CAPTURE_TYPES.map((ct) => {
           const Icon = ct.icon;
           const isActive = selectedType === ct.type;
@@ -64,14 +64,14 @@ export function EvidenceUploadZone({
             <button
               key={ct.type}
               onClick={() => setSelectedType(ct.type)}
-              className={`flex flex-col items-center gap-1 p-3 rounded-lg border transition-all text-xs ${
+              className={`flex flex-col items-center gap-2 p-3 border-4 transition-all text-sm font-bold tracking-wide shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${
                 isActive
-                  ? "border-blue-500/50 bg-blue-500/10 text-blue-400"
-                  : "border-white/5 bg-white/[0.02] text-muted-foreground hover:bg-white/[0.04] hover:border-white/10"
+                  ? "border-black bg-blue-200 text-blue-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] -translate-y-0.5"
+                  : "border-black bg-white dark:bg-zinc-900 text-muted-foreground"
               }`}
             >
-              <Icon className="h-5 w-5" />
-              <span>{ct.label}</span>
+              <Icon className="h-6 w-6 stroke-[3px]" />
+              <span className="uppercase">{ct.label}</span>
             </button>
           );
         })}
@@ -79,57 +79,57 @@ export function EvidenceUploadZone({
 
       {/* Upload area or input */}
       {isUrlType ? (
-        <div className="space-y-3">
+        <div className="space-y-4 pt-4 mt-6 border-t-4 border-black">
           <input
             type="url"
             placeholder="https://example.com/terms-of-service"
             value={urlInput}
             onChange={(e) => setUrlInput(e.target.value)}
-            className="w-full rounded-lg bg-white/5 border border-white/10 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-blue-500/50"
+            className="w-full border-4 border-black p-3 bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-bold focus:outline-none focus:translate-x-1 focus:translate-y-1 focus:shadow-none transition-all placeholder:font-medium"
           />
           <Button
             onClick={() => { if (urlInput) onUpload(selectedType, [], urlInput); }}
             disabled={!urlInput}
-            className="bg-blue-600 hover:bg-blue-700"
+            className="btn-impact bg-blue-600 hover:bg-blue-700 text-white"
           >
-            <Globe className="h-4 w-4 mr-2" />
-            Archive Page
+            <Globe className="h-5 w-5 mr-2 stroke-[3px]" />
+            ARCHIVE PAGE
           </Button>
         </div>
       ) : isCompanyType ? (
-        <div className="space-y-3">
+        <div className="space-y-4 pt-4 mt-6 border-t-4 border-black">
           <input
             type="text"
             placeholder="Enter CIN (e.g., U72900MH2020PTC345678)"
             value={cinInput}
             onChange={(e) => setCinInput(e.target.value.toUpperCase())}
-            className="w-full rounded-lg bg-white/5 border border-white/10 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-blue-500/50 font-mono"
+            className="w-full border-4 border-black p-3 bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-bold focus:outline-none focus:translate-x-1 focus:translate-y-1 focus:shadow-none transition-all placeholder:font-medium font-mono"
           />
           <Button
             onClick={() => { if (cinInput) onUpload(selectedType, [], cinInput); }}
             disabled={!cinInput}
-            className="bg-orange-600 hover:bg-orange-700"
+            className="btn-impact bg-orange-500 hover:bg-orange-600 text-white"
           >
-            <Building2 className="h-4 w-4 mr-2" />
-            Lookup Company
+            <Building2 className="h-5 w-5 mr-2 stroke-[3px]" />
+            LOOKUP COMPANY
           </Button>
         </div>
       ) : (
         <div
           {...getRootProps()}
-          className={`relative rounded-xl border-2 border-dashed p-8 text-center transition-all cursor-pointer ${
+          className={`relative border-4 border-dashed pt-4 mt-6 p-12 text-center transition-all cursor-pointer ${
             isDragActive
-              ? "border-blue-500 bg-blue-500/5"
-              : "border-white/10 bg-white/[0.01] hover:border-white/20 hover:bg-white/[0.03]"
+              ? "border-blue-600 bg-blue-100 dark:bg-blue-900/30 shadow-[8px_8px_0px_0px_rgba(37,99,235,1)]"
+              : "border-black bg-white dark:bg-zinc-900 hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1"
           }`}
         >
           <input {...getInputProps()} />
-          <Upload className={`h-8 w-8 mx-auto mb-3 ${isDragActive ? "text-blue-400" : "text-muted-foreground"}`} />
-          <p className="text-sm text-foreground font-medium">
-            {isDragActive ? "Drop files here..." : "Drag & drop files here"}
+          <Upload className={`h-12 w-12 mx-auto mb-4 stroke-[3px] ${isDragActive ? "text-blue-600 dark:text-blue-400 animate-bounce" : "text-black dark:text-white"}`} />
+          <p className="text-xl font-black uppercase tracking-widest text-foreground">
+            {isDragActive ? "DROP FILES HERE..." : "DRAG & DROP FILES HERE"}
           </p>
-          <p className="text-xs text-muted-foreground mt-1">
-            or click to browse • {selectedMeta?.description}
+          <p className="text-sm font-bold text-muted-foreground mt-2 uppercase tracking-widest">
+            OR CLICK TO BROWSE • {selectedMeta?.description}
           </p>
         </div>
       )}

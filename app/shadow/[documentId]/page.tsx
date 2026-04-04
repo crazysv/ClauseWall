@@ -203,7 +203,7 @@ export default function ShadowPage() {
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+                  className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
                 >
                   <div className="bg-white border-8 border-black shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] p-8 sm:p-12 max-w-lg w-full text-center space-y-6">
                     <div className="relative mx-auto w-20 h-20">

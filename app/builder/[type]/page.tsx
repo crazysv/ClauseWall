@@ -195,10 +195,10 @@ export default function BuilderFormPage() {
     const value = values[field.name] ?? "";
     const error = errors[field.name];
 
-    const baseInputClass = `w-full bg-gray-800/50 border rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 transition-colors ${
+    const baseInputClass = `w-full border-4 bg-white dark:bg-zinc-950 px-4 py-3 font-bold placeholder:font-medium transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-foreground placeholder-muted-foreground focus:outline-none focus:translate-x-1 focus:translate-y-1 focus:shadow-none ${
       error
-        ? "border-red-500/50 focus:ring-red-500/30"
-        : "border-gray-700 focus:ring-emerald-500/30 focus:border-emerald-500/50"
+        ? "border-red-500"
+        : "border-black"
     }`;
 
     return (
@@ -296,54 +296,54 @@ export default function BuilderFormPage() {
   const progress = ((currentGroup + 1) / groupNames.length) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 text-white">
+    <div className="min-h-screen bg-background text-foreground">
       <div className="max-w-3xl mx-auto px-4 py-12">
         {/* Back button */}
         <button
           onClick={() => router.push("/builder")}
-          className="flex items-center gap-2 text-gray-400 hover:text-white mb-8 transition-colors"
+          className="flex items-center gap-2 text-muted-foreground hover:text-foreground font-black uppercase tracking-widest mb-8 transition-colors border-b-4 border-transparent hover:border-black"
         >
-          <ArrowLeft className="w-4 h-4" />
-          Back to templates
+          <ArrowLeft className="w-5 h-5 stroke-[3px]" />
+          BACK TO TEMPLATES
         </button>
 
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
+          className="mb-8 p-6 border-4 border-black bg-blue-100 dark:bg-blue-900/30 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
         >
-          <h1 className="text-3xl font-bold mb-2">{config.name}</h1>
-          <p className="text-gray-400">
+          <h1 className="text-3xl font-black uppercase tracking-widest mb-2 text-foreground">{config.name}</h1>
+          <p className="text-muted-foreground font-bold">
             Fill in the details below. Every clause will be fair and legally compliant.
           </p>
         </motion.div>
 
         {/* Progress Bar */}
-        <div className="mb-8">
-          <div className="flex justify-between text-xs text-gray-500 mb-2">
+        <div className="mb-10">
+          <div className="flex justify-between items-end text-sm font-black uppercase tracking-widest text-muted-foreground mb-3">
             <span>
-              Step {currentGroup + 1} of {groupNames.length}:{" "}
-              <span className="text-gray-300">{groupNames[currentGroup]}</span>
+              STEP {currentGroup + 1} OF {groupNames.length}:{" "}
+              <span className="text-foreground border-b-4 border-emerald-500">{groupNames[currentGroup]}</span>
             </span>
-            <span>{Math.round(progress)}%</span>
+            <span className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-900 dark:text-emerald-100 px-2 border-2 border-black">{Math.round(progress)}%</span>
           </div>
-          <div className="w-full h-1.5 bg-gray-800 rounded-full overflow-hidden">
+          <div className="w-full h-8 border-4 border-black bg-white dark:bg-zinc-900 overflow-hidden shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <motion.div
-              className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full"
+              className="h-full bg-emerald-400 border-r-4 border-black"
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
               transition={{ duration: 0.3 }}
             />
           </div>
           {/* Step indicators */}
-          <div className="flex mt-3 gap-1">
+          <div className="flex mt-4 gap-2">
             {groupNames.map((name, i) => (
               <button
                 key={name}
                 onClick={() => setCurrentGroup(i)}
-                className={`flex-1 h-1 rounded-full transition-colors ${
-                  i <= currentGroup ? "bg-emerald-500/50" : "bg-gray-800"
+                className={`flex-1 h-3 border-2 border-black transition-colors ${
+                  i <= currentGroup ? "bg-emerald-400" : "bg-white dark:bg-zinc-800"
                 }`}
               />
             ))}
@@ -355,11 +355,11 @@ export default function BuilderFormPage() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-8 p-6 bg-gray-900/50 border border-gray-800 rounded-xl"
+            className="mb-8 p-8 border-4 border-black bg-white dark:bg-zinc-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
           >
-            <label className="block text-sm font-medium text-gray-300 mb-2">
-              <Scale className="w-4 h-4 inline mr-2" />
-              State / Jurisdiction <span className="text-red-400">*</span>
+            <label className="block text-sm font-black uppercase tracking-widest text-foreground mb-4">
+              <Scale className="w-5 h-5 inline mr-2 stroke-[3px]" />
+              STATE / JURISDICTION <span className="text-red-500">*</span>
             </label>
             <select
               value={jurisdiction}
@@ -373,10 +373,10 @@ export default function BuilderFormPage() {
                   });
                 }
               }}
-              className={`w-full bg-gray-800/50 border rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 transition-colors ${
+              className={`w-full border-4 bg-white dark:bg-zinc-950 px-4 py-3 font-bold transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:translate-x-1 focus:translate-y-1 focus:shadow-none ${
                 errors["_jurisdiction"]
-                  ? "border-red-500/50 focus:ring-red-500/30"
-                  : "border-gray-700 focus:ring-emerald-500/30"
+                  ? "border-red-500"
+                  : "border-black"
               }`}
             >
               <option value="">Select your state...</option>
@@ -406,12 +406,12 @@ export default function BuilderFormPage() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.2 }}
-            className="bg-gray-900/50 border border-gray-800 rounded-xl p-6 md:p-8 mb-8"
+            className="border-4 border-black bg-white dark:bg-zinc-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-8 mb-12"
           >
-            <h2 className="text-lg font-semibold text-emerald-400 mb-6">
+            <h2 className="text-2xl font-black uppercase tracking-widest text-emerald-600 dark:text-emerald-400 mb-8 border-b-4 border-black pb-4">
               {groupNames[currentGroup]}
             </h2>
-            <div className="space-y-5">
+            <div className="space-y-8">
               {groupedFields[groupNames[currentGroup]].map(renderField)}
             </div>
           </motion.div>
@@ -433,45 +433,45 @@ export default function BuilderFormPage() {
         )}
 
         {/* Navigation Buttons */}
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center mt-8">
           <button
             onClick={handlePrev}
             disabled={currentGroup === 0}
-            className={`flex items-center gap-2 px-5 py-3 rounded-lg font-medium transition-all ${
+            className={`flex items-center gap-2 px-6 py-3 border-4 font-black uppercase tracking-widest transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${
               currentGroup === 0
-                ? "text-gray-600 cursor-not-allowed"
-                : "text-gray-300 hover:text-white hover:bg-gray-800"
+                ? "border-gray-300 text-gray-400 bg-gray-100 cursor-not-allowed shadow-none"
+                : "border-black bg-white hover:-translate-y-1 hover:shadow-none hover:bg-gray-100 text-foreground"
             }`}
           >
-            <ArrowLeft className="w-4 h-4" />
-            Previous
+            <ArrowLeft className="w-5 h-5 stroke-[3px]" />
+            PREVIOUS
           </button>
 
           {isLastGroup ? (
             <button
               onClick={handleGenerate}
               disabled={isGenerating}
-              className="flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-emerald-500/20"
+              className="flex items-center gap-2 px-8 py-3 border-4 border-black bg-emerald-400 hover:bg-emerald-500 text-black font-black uppercase tracking-widest transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none"
             >
               {isGenerating ? (
                 <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  Generating Contract...
+                  <Loader2 className="w-6 h-6 animate-spin stroke-[3px]" />
+                  GENERATING...
                 </>
               ) : (
                 <>
-                  <Sparkles className="w-5 h-5" />
-                  Generate Fair Contract
+                  <Sparkles className="w-6 h-6 stroke-[3px]" />
+                  GENERATE CONTRACT
                 </>
               )}
             </button>
           ) : (
             <button
               onClick={handleNext}
-              className="flex items-center gap-2 px-6 py-3 bg-gray-800 hover:bg-gray-700 text-white rounded-lg font-medium transition-all"
+              className="flex items-center gap-2 px-8 py-3 border-4 border-black bg-black text-white hover:bg-gray-800 font-black uppercase tracking-widest transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none"
             >
-              Next
-              <ArrowRight className="w-4 h-4" />
+              NEXT
+              <ArrowRight className="w-5 h-5 stroke-[3px]" />
             </button>
           )}
         </div>

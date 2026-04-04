@@ -48,32 +48,32 @@ function AnimatedNumber({ value, prefix = "" }: { value: number; prefix?: string
 
 const RISK_CONFIG = {
   low: {
-    color: "text-green-400",
-    bg: "from-green-500/10 to-emerald-500/10",
-    border: "border-green-500/20",
-    gauge: "bg-green-500",
-    label: "Your contracts are well-coordinated",
+    color: "text-green-600 dark:text-green-500",
+    bg: "bg-green-100 dark:bg-green-950",
+    border: "border-green-500",
+    gauge: "text-green-500",
+    label: "YOUR CONTRACTS ARE WELL-COORDINATED",
   },
   medium: {
-    color: "text-yellow-400",
-    bg: "from-yellow-500/10 to-amber-500/10",
-    border: "border-yellow-500/20",
-    gauge: "bg-yellow-500",
-    label: "Some cross-contract issues found",
+    color: "text-yellow-600 dark:text-yellow-500",
+    bg: "bg-yellow-100 dark:bg-yellow-950",
+    border: "border-yellow-500",
+    gauge: "text-yellow-500",
+    label: "SOME CROSS-CONTRACT ISSUES FOUND",
   },
   high: {
-    color: "text-orange-400",
-    bg: "from-orange-500/10 to-red-500/10",
-    border: "border-orange-500/20",
-    gauge: "bg-orange-500",
-    label: "Significant cross-contract risks",
+    color: "text-orange-600 dark:text-orange-500",
+    bg: "bg-orange-100 dark:bg-orange-950",
+    border: "border-orange-500",
+    gauge: "text-orange-500",
+    label: "SIGNIFICANT CROSS-CONTRACT RISKS",
   },
   extreme: {
-    color: "text-red-400",
-    bg: "from-red-500/10 to-pink-500/10",
-    border: "border-red-500/20",
-    gauge: "bg-red-500",
-    label: "Critical cross-contract dangers",
+    color: "text-red-700 dark:text-red-500",
+    bg: "bg-red-100 dark:bg-red-950",
+    border: "border-red-500",
+    gauge: "text-red-500",
+    label: "CRITICAL CROSS-CONTRACT DANGERS",
   },
 };
 
@@ -93,41 +93,41 @@ export default function VaultSummaryCard({ stats }: VaultSummaryCardProps) {
   const metrics = [
     {
       icon: FileStack,
-      label: "Contracts",
+      label: "CONTRACTS",
       value: stats.total_contracts,
-      color: "text-blue-400",
+      color: "text-blue-600 dark:text-blue-500",
     },
     {
       icon: AlertTriangle,
-      label: "Critical Conflicts",
+      label: "CRITICAL CONFLICTS",
       value: stats.critical_conflicts,
-      color: stats.critical_conflicts > 0 ? "text-red-400" : "text-green-400",
+      color: stats.critical_conflicts > 0 ? "text-red-600 dark:text-red-500" : "text-green-600 dark:text-green-500",
     },
     {
       icon: ShieldOff,
-      label: "Coverage Gaps",
+      label: "COVERAGE GAPS",
       value: stats.coverage_gaps,
-      color: stats.essential_gaps > 0 ? "text-orange-400" : "text-blue-400",
+      color: stats.essential_gaps > 0 ? "text-orange-600 dark:text-orange-500" : "text-blue-600 dark:text-blue-500",
     },
     {
       icon: IndianRupee,
-      label: "Financial Exposure",
+      label: "FINANCIAL EXPOSURE",
       value: stats.total_financial_exposure,
       isRupee: true,
-      color: stats.total_financial_exposure > 500000 ? "text-red-400" : "text-yellow-400",
+      color: stats.total_financial_exposure > 500000 ? "text-red-600 dark:text-red-500" : "text-yellow-600 dark:text-yellow-500",
     },
     {
       icon: GitBranch,
-      label: "Cascade Chains",
+      label: "CASCADE CHAINS",
       value: stats.cascading_failure_chains,
-      color: stats.cascading_failure_chains > 0 ? "text-orange-400" : "text-green-400",
+      color: stats.cascading_failure_chains > 0 ? "text-orange-600 dark:text-orange-500" : "text-green-600 dark:text-green-500",
     },
     {
       icon: Calendar,
-      label: "Monthly Obligations",
+      label: "MONTHLY OBLIGATIONS",
       value: stats.total_monthly_obligations,
       isRupee: true,
-      color: "text-indigo-400",
+      color: "text-indigo-600 dark:text-indigo-500",
     },
   ];
 
@@ -136,44 +136,43 @@ export default function VaultSummaryCard({ stats }: VaultSummaryCardProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
     >
-      <Card className={`bg-gradient-to-br ${config.bg} border ${config.border} overflow-hidden`}>
-        <CardContent className="p-6">
-          <div className="flex flex-col lg:flex-row gap-6">
+      <div className={`border-8 border-black ${config.bg} p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]`}>
+          <div className="flex flex-col lg:flex-row gap-8 items-center lg:items-start border-b-4 lg:border-b-0 lg:border-r-4 border-black pb-8 lg:pb-0 lg:pr-8">
             {/* Left: Risk Gauge */}
-            <div className="flex flex-col items-center justify-center min-w-[200px]">
-              <div className="relative w-32 h-32">
+            <div className="flex flex-col items-center justify-center min-w-[240px]">
+              <div className="relative w-40 h-40">
                 {/* Background circle */}
                 <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
                   <circle
                     cx="50" cy="50" r="42"
                     fill="none"
                     stroke="currentColor"
-                    strokeWidth="8"
-                    className="text-white/5"
+                    strokeWidth="12"
+                    className="text-black/10 dark:text-white/10"
                   />
                   <circle
                     cx="50" cy="50" r="42"
                     fill="none"
                     stroke="currentColor"
-                    strokeWidth="8"
+                    strokeWidth="12"
                     strokeDasharray={`${gaugeWidth * 2.64} ${264 - gaugeWidth * 2.64}`}
-                    strokeLinecap="round"
-                    className={`${config.gauge} transition-all duration-1000 ease-out`}
+                    strokeLinecap="butt"
+                    className={`${config.gauge} transition-all duration-1000 ease-out drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]`}
                   />
                 </svg>
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className={`text-3xl font-bold ${config.color}`}>
-                    {stats.overall_vault_risk.toUpperCase()}
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-white dark:bg-black rounded-full m-5 border-4 border-black shadow-[inset_2px_2px_0px_0px_rgba(0,0,0,1)]">
+                  <span className={`text-2xl font-black uppercase tracking-widest ${config.color}`}>
+                    {stats.overall_vault_risk}
                   </span>
                 </div>
               </div>
-              <p className={`text-sm mt-3 text-center ${config.color}`}>
+              <p className={`text-sm font-bold uppercase tracking-widest mt-6 text-center ${config.color} px-4 py-2 border-4 border-black bg-white dark:bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]`}>
                 {config.label}
               </p>
             </div>
 
             {/* Right: Metrics Grid */}
-            <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 gap-4 w-full">
               {metrics.map((metric, i) => {
                 const Icon = metric.icon;
                 return (
@@ -182,15 +181,17 @@ export default function VaultSummaryCard({ stats }: VaultSummaryCardProps) {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.1 + i * 0.05 }}
-                    className="rounded-lg bg-white/[0.03] border border-white/5 p-3"
+                    className="border-4 border-black bg-white dark:bg-zinc-900 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all flex flex-col justify-between"
                   >
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <Icon className={`w-3.5 h-3.5 ${metric.color}`} />
-                      <span className="text-[10px] text-white/40 uppercase tracking-wider">
+                    <div className="flex items-center gap-3 mb-4 flex-wrap">
+                      <div className="p-1.5 border-2 border-black bg-gray-100 dark:bg-black w-fit">
+                        <Icon className={`w-4 h-4 ${metric.color} stroke-[3px]`} />
+                      </div>
+                      <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground w-full sm:w-auto">
                         {metric.label}
                       </span>
                     </div>
-                    <p className={`text-xl font-bold ${metric.color}`}>
+                    <p className={`text-2xl font-black tabular-nums tracking-tighter ${metric.color}`}>
                       {metric.isRupee ? (
                         <AnimatedNumber value={metric.value} prefix="₹" />
                       ) : (
@@ -202,8 +203,7 @@ export default function VaultSummaryCard({ stats }: VaultSummaryCardProps) {
               })}
             </div>
           </div>
-        </CardContent>
-      </Card>
+      </div>
     </motion.div>
   );
 }

@@ -61,55 +61,55 @@ export function CountdownWidget({ deadline }: CountdownWidgetProps) {
   }, [deadline.deadline_date]);
 
   const getColor = () => {
-    if (timeLeft.overdue) return "text-red-400";
-    if (timeLeft.days < 1) return "text-red-400";
-    if (timeLeft.days < 7) return "text-orange-400";
-    if (timeLeft.days < 30) return "text-yellow-400";
-    return "text-blue-400";
+    if (timeLeft.overdue) return "text-red-700 dark:text-red-500 font-black";
+    if (timeLeft.days < 1) return "text-red-700 dark:text-red-500 font-black";
+    if (timeLeft.days < 7) return "text-orange-700 dark:text-orange-500 font-black";
+    if (timeLeft.days < 30) return "text-amber-700 dark:text-amber-500 font-black";
+    return "text-blue-700 dark:text-blue-500 font-black";
   };
 
   return (
     <Link
       href={`/timebomb/${deadline.document_id}`}
-      className="block rounded-xl border border-white/10 bg-white/[0.02] p-4 hover:bg-white/[0.04] transition-all"
+      className="block border-4 border-black bg-white dark:bg-zinc-900 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all"
     >
-      <div className="flex items-center gap-2 mb-3">
+      <div className="flex items-center gap-2 mb-4 border-b-2 border-black pb-2">
         {timeLeft.overdue ? (
           <motion.div
             animate={{ x: [0, -2, 2, -2, 2, 0] }}
             transition={{ repeat: Infinity, repeatDelay: 3, duration: 0.4 }}
           >
-            <AlertTriangle className="w-4 h-4 text-red-400" />
+            <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-500 stroke-[3px]" />
           </motion.div>
         ) : (
-          <Clock className="w-4 h-4 text-white/30" />
+          <Clock className="w-5 h-5 text-black dark:text-white stroke-[3px]" />
         )}
-        <span className="text-[10px] uppercase tracking-wider text-white/30 font-medium">
-          {timeLeft.overdue ? "OVERDUE" : "Next Deadline"}
+        <span className="text-xs font-black uppercase tracking-widest text-foreground">
+          {timeLeft.overdue ? "OVERDUE" : "NEXT DEADLINE"}
         </span>
       </div>
 
       {/* Countdown display */}
-      <div className={`flex items-baseline gap-1 ${getColor()}`}>
+      <div className={`flex items-baseline gap-1 ${getColor()} tabular-nums tracking-tighter`}>
         {timeLeft.overdue && (
           <motion.span
             animate={{ opacity: [1, 0.4, 1] }}
             transition={{ repeat: Infinity, duration: 1.5 }}
-            className="text-xs mr-1"
+            className="text-xs mr-2 uppercase tracking-widest"
           >
-            OVERDUE by
+            OVERDUE BY
           </motion.span>
         )}
 
-        <CountdownUnit value={timeLeft.days} label="days" />
-        <span className="text-white/20 mx-0.5">:</span>
-        <CountdownUnit value={timeLeft.hours} label="hrs" />
-        <span className="text-white/20 mx-0.5">:</span>
-        <CountdownUnit value={timeLeft.minutes} label="min" />
+        <CountdownUnit value={timeLeft.days} label="DAYS" />
+        <span className="text-muted-foreground mx-1 font-black">:</span>
+        <CountdownUnit value={timeLeft.hours} label="HRS" />
+        <span className="text-muted-foreground mx-1 font-black">:</span>
+        <CountdownUnit value={timeLeft.minutes} label="MIN" />
       </div>
 
       {/* Deadline title */}
-      <p className="text-xs text-white/40 mt-2 truncate">{deadline.title}</p>
+      <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mt-3 truncate">{deadline.title}</p>
     </Link>
   );
 }
@@ -122,7 +122,7 @@ function CountdownUnit({
   label: string;
 }) {
   return (
-    <div className="flex items-baseline gap-0.5">
+    <div className="flex items-baseline gap-1">
       <AnimatePresence mode="popLayout">
         <motion.span
           key={value}
@@ -130,12 +130,12 @@ function CountdownUnit({
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 10, opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="text-2xl font-bold tabular-nums"
+          className="text-3xl font-black"
         >
           {String(value).padStart(2, "0")}
         </motion.span>
       </AnimatePresence>
-      <span className="text-[10px] text-white/30 ml-0.5">{label}</span>
+      <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">{label}</span>
     </div>
   );
 }

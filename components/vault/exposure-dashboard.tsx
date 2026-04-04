@@ -17,17 +17,17 @@ function formatINR(amount: number): string {
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
-  rent: "bg-blue-500",
-  loan_emi: "bg-red-500",
-  insurance_premium: "bg-green-500",
-  subscription: "bg-purple-500",
-  maintenance: "bg-yellow-500",
-  utility: "bg-cyan-500",
-  penalty: "bg-orange-500",
-  deposit: "bg-pink-500",
-  tax_obligation: "bg-emerald-500",
-  salary: "bg-indigo-500",
-  other: "bg-gray-500",
+  rent: "bg-blue-600 dark:bg-blue-500 border-4 border-black",
+  loan_emi: "bg-red-600 dark:bg-red-500 border-4 border-black",
+  insurance_premium: "bg-green-600 dark:bg-green-500 border-4 border-black",
+  subscription: "bg-purple-600 dark:bg-purple-500 border-4 border-black",
+  maintenance: "bg-yellow-500 border-4 border-black",
+  utility: "bg-cyan-500 border-4 border-black",
+  penalty: "bg-orange-500 border-4 border-black",
+  deposit: "bg-pink-500 border-4 border-black",
+  tax_obligation: "bg-emerald-500 border-4 border-black",
+  salary: "bg-indigo-600 dark:bg-indigo-500 border-4 border-black",
+  other: "bg-gray-500 dark:bg-gray-400 border-4 border-black",
 };
 
 export default function ExposureDashboard({
@@ -45,35 +45,35 @@ export default function ExposureDashboard({
   return (
     <div className="space-y-6">
       {/* Top Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
           {
             icon: IndianRupee,
-            label: "Worst Case Total",
+            label: "WORST CASE TOTAL",
             value: formatINR(exposure.total_worst_case),
-            color: "text-red-400",
-            bg: "bg-red-500/10",
+            color: "text-red-700 dark:text-red-500",
+            bg: "bg-red-100 dark:bg-red-950",
           },
           {
             icon: TrendingUp,
-            label: "Monthly Obligations",
+            label: "MONTHLY OBLIGATIONS",
             value: formatINR(exposure.total_monthly_obligations),
-            color: "text-blue-400",
-            bg: "bg-blue-500/10",
+            color: "text-blue-700 dark:text-blue-500",
+            bg: "bg-blue-100 dark:bg-blue-950",
           },
           {
             icon: Landmark,
-            label: "Deposits at Risk",
+            label: "DEPOSITS AT RISK",
             value: formatINR(exposure.total_deposits_at_risk),
-            color: "text-yellow-400",
-            bg: "bg-yellow-500/10",
+            color: "text-yellow-700 dark:text-yellow-500",
+            bg: "bg-yellow-100 dark:bg-yellow-950",
           },
           {
             icon: AlertTriangle,
-            label: "Max Penalties",
+            label: "MAX PENALTIES",
             value: formatINR(exposure.total_penalties_possible),
-            color: "text-orange-400",
-            bg: "bg-orange-500/10",
+            color: "text-orange-700 dark:text-orange-500",
+            bg: "bg-orange-100 dark:bg-orange-950",
           },
         ].map((stat, i) => {
           const Icon = stat.icon;
@@ -84,11 +84,13 @@ export default function ExposureDashboard({
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: i * 0.05 }}
             >
-              <Card className={`${stat.bg} border border-white/5`}>
-                <CardContent className="p-4 text-center">
-                  <Icon className={`w-5 h-5 mx-auto mb-2 ${stat.color}`} />
-                  <p className={`text-xl font-bold ${stat.color}`}>{stat.value}</p>
-                  <p className="text-[10px] text-white/40 mt-1">{stat.label}</p>
+              <Card className={`${stat.bg} border-4 border-black rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all`}>
+                <CardContent className="p-6 text-center">
+                  <div className="mx-auto w-10 h-10 border-4 border-black bg-white dark:bg-black mb-4 flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                    <Icon className={`w-5 h-5 ${stat.color} stroke-[3px]`} />
+                  </div>
+                  <p className={`text-2xl font-black tabular-nums tracking-tighter ${stat.color}`}>{stat.value}</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mt-2 border-t-2 border-black pt-2">{stat.label}</p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -97,32 +99,34 @@ export default function ExposureDashboard({
       </div>
 
       {/* By Contract — Horizontal Bars */}
-      <div>
-        <h4 className="text-sm font-semibold text-white/60 mb-3">By Contract</h4>
-        <div className="space-y-2">
+      <div className="border-4 border-black bg-white dark:bg-zinc-900 p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <h4 className="text-xl font-black uppercase tracking-widest text-foreground mb-6 border-b-4 border-black pb-4">
+          BY CONTRACT
+        </h4>
+        <div className="space-y-6">
           {exposure.by_contract.map((contract, i) => (
             <motion.div
               key={contract.document_id}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.05 }}
-              className="rounded-lg bg-white/[0.03] border border-white/5 p-3"
+              className="border-4 border-black p-4 bg-gray-50 dark:bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
             >
-              <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center justify-between mb-4">
                 <div className="min-w-0">
-                  <p className="text-sm text-white/80 truncate">{contract.document_title}</p>
-                  <p className="text-[10px] text-white/30">{contract.document_type.replace(/_/g, " ")}</p>
+                  <p className="text-sm font-black uppercase tracking-widest text-foreground truncate block">{contract.document_title}</p>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mt-1 inline-block border-2 border-black bg-white dark:bg-zinc-800 px-2 py-0.5">{contract.document_type.replace(/_/g, " ")}</p>
                 </div>
-                <p className="text-sm font-bold text-white/70 flex-shrink-0 ml-3">
+                <p className="text-lg font-black tabular-nums tracking-tighter flex-shrink-0 ml-4 bg-red-100 dark:bg-red-950 text-red-600 dark:text-red-400 px-3 py-1 border-4 border-red-500 shadow-[2px_2px_0px_0px_rgba(239,68,68,1)]">
                   {formatINR(contract.worst_case_total)}
                 </p>
               </div>
 
               {/* Stacked bar */}
-              <div className="h-3 rounded-full bg-white/5 overflow-hidden flex">
+              <div className="h-6 border-4 border-black bg-white dark:bg-zinc-800 flex shadow-[inset_2px_2px_0px_0px_rgba(0,0,0,1)]">
                 {contract.monthly_obligation > 0 && (
                   <div
-                    className="h-full bg-blue-500 transition-all duration-500"
+                    className="h-full bg-blue-500 border-r-4 border-black last:border-r-0 transition-all duration-500"
                     style={{
                       width: `${(contract.monthly_obligation * 12 / maxContractExposure) * 100}%`,
                     }}
@@ -131,7 +135,7 @@ export default function ExposureDashboard({
                 )}
                 {contract.deposits > 0 && (
                   <div
-                    className="h-full bg-yellow-500 transition-all duration-500"
+                    className="h-full bg-yellow-400 border-r-4 border-black last:border-r-0 transition-all duration-500"
                     style={{
                       width: `${(contract.deposits / maxContractExposure) * 100}%`,
                     }}
@@ -140,7 +144,7 @@ export default function ExposureDashboard({
                 )}
                 {contract.max_penalty > 0 && (
                   <div
-                    className="h-full bg-red-500 transition-all duration-500"
+                    className="h-full bg-red-500 border-r-4 border-black last:border-r-0 transition-all duration-500"
                     style={{
                       width: `${(contract.max_penalty / maxContractExposure) * 100}%`,
                     }}
@@ -150,23 +154,23 @@ export default function ExposureDashboard({
               </div>
 
               {/* Legend */}
-              <div className="flex gap-3 mt-1.5 text-[10px] text-white/40">
+              <div className="flex flex-wrap gap-4 mt-4 pt-4 border-t-2 border-dashed border-black">
                 {contract.monthly_obligation > 0 && (
-                  <span className="flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-full bg-blue-500" />
-                    {formatINR(contract.monthly_obligation)}/mo
+                  <span className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-foreground">
+                    <span className="w-4 h-4 border-2 border-black bg-blue-500 shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]" />
+                    {formatINR(contract.monthly_obligation)}/MO
                   </span>
                 )}
                 {contract.deposits > 0 && (
-                  <span className="flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-full bg-yellow-500" />
-                    Deposits
+                  <span className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-foreground">
+                    <span className="w-4 h-4 border-2 border-black bg-yellow-400 shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]" />
+                    DEPOSITS
                   </span>
                 )}
                 {contract.max_penalty > 0 && (
-                  <span className="flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-full bg-red-500" />
-                    Penalties
+                  <span className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-foreground">
+                    <span className="w-4 h-4 border-2 border-black bg-red-500 shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]" />
+                    PENALTIES
                   </span>
                 )}
               </div>
@@ -177,12 +181,14 @@ export default function ExposureDashboard({
 
       {/* By Category — Horizontal Bars */}
       {exposure.by_category.length > 0 && (
-        <div>
-          <h4 className="text-sm font-semibold text-white/60 mb-3">By Category</h4>
-          <div className="space-y-2">
+        <div className="border-4 border-black bg-white dark:bg-zinc-900 p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] mt-8">
+          <h4 className="text-xl font-black uppercase tracking-widest text-foreground mb-6 border-b-4 border-black pb-4">
+            BY CATEGORY
+          </h4>
+          <div className="space-y-4">
             {exposure.by_category.map((cat, i) => {
               const barColor =
-                CATEGORY_COLORS[cat.category] || "bg-gray-500";
+                CATEGORY_COLORS[cat.category] || "bg-gray-500 border-4 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]";
               const barWidth = Math.max(
                 5,
                 (cat.total / maxCategoryTotal) * 100
@@ -194,18 +200,18 @@ export default function ExposureDashboard({
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.05 }}
-                  className="flex items-center gap-3"
+                  className="flex items-center gap-4"
                 >
-                  <span className="text-xs text-white/40 w-28 text-right truncate">
+                  <span className="text-xs font-black uppercase tracking-widest text-muted-foreground w-36 text-right truncate">
                     {cat.category.replace(/_/g, " ")}
                   </span>
-                  <div className="flex-1 h-4 rounded-full bg-white/5 overflow-hidden">
+                  <div className="flex-1 h-8 border-4 border-black bg-gray-100 dark:bg-zinc-800 flex shadow-[inset_2px_2px_0px_0px_rgba(0,0,0,1)]">
                     <div
-                      className={`h-full ${barColor} rounded-full transition-all duration-700`}
+                      className={`h-full ${barColor} transition-all duration-700`}
                       style={{ width: `${barWidth}%` }}
                     />
                   </div>
-                  <span className="text-xs text-white/60 w-20 text-right font-mono">
+                  <span className="text-sm font-black tabular-nums tracking-tighter text-foreground w-28 text-left bg-white dark:bg-zinc-950 border-4 border-black px-2 py-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                     {formatINR(cat.total)}
                   </span>
                 </motion.div>
