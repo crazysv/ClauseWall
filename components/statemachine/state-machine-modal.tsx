@@ -150,13 +150,13 @@ export default function StateMachineModal({
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
           transition={{ duration: 0.2 }}
-          className="bg-white border-4 border-black shadow-[12px_12px_0_0_rgba(0,0,0,1)] w-full max-w-7xl h-[95vh] flex flex-col overflow-hidden"
+          className="bg-background border-4 border-black shadow-[12px_12px_0_0_rgba(0,0,0,1)] w-full max-w-7xl h-[95vh] flex flex-col overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
           {/* ── HEADER ── */}
-          <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b-4 border-black bg-gray-100 flex-shrink-0">
+          <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b-4 border-black bg-muted flex-shrink-0">
             <div className="flex items-center gap-4">
-              <span className="text-3xl bg-white border-2 border-black p-1">
+              <span className="text-3xl bg-background border-2 border-black p-1">
                 🔄
               </span>
               <div>
@@ -179,7 +179,7 @@ export default function StateMachineModal({
                     setGraphMode(m);
                     if (m !== "path") setSelectedPath(null);
                   }}
-                  className={`px-3 py-2 text-xs font-black uppercase tracking-widest border-2 transition-all ${graphMode === m ? "bg-black text-foreground border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)] translate-y-0.5 shadow-none" : "bg-white text-black border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:translate-y-0.5 hover:shadow-none"}`}
+                  className={`px-3 py-2 text-xs font-black uppercase tracking-widest border-2 transition-all ${graphMode === m ? "bg-black text-foreground border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)] translate-y-0.5 shadow-none" : "bg-background text-black border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:translate-y-0.5 hover:shadow-none"}`}
                 >
                   {m === "explore"
                     ? "Explore"
@@ -190,7 +190,7 @@ export default function StateMachineModal({
               ))}
               <button
                 onClick={onClose}
-                className="p-2 bg-white text-black border-2 border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:translate-y-0.5 hover:shadow-none transition-all ml-2"
+                className="p-2 bg-background text-black border-2 border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:translate-y-0.5 hover:shadow-none transition-all ml-2"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -199,7 +199,7 @@ export default function StateMachineModal({
 
           {/* ── GRAPH AREA ── */}
           <div
-            className="flex-1 min-h-0 relative bg-gray-50 border-b-4 border-black"
+            className="flex-1 min-h-0 relative bg-background border-b-4 border-black"
             style={{ maxHeight: "55%" }}
           >
             <StateGraph
@@ -212,15 +212,15 @@ export default function StateMachineModal({
           </div>
 
           {/* ── TABS ── */}
-          <div className="flex-shrink-0 bg-white">
-            <div className="flex gap-0 overflow-x-auto border-b-4 border-black bg-gray-100">
+          <div className="flex-shrink-0 bg-background">
+            <div className="flex gap-0 overflow-x-auto border-b-4 border-black bg-muted">
               {TABS.map((tab) => {
                 const Icon = tab.icon;
                 return (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center gap-2 px-5 py-3 text-xs font-black uppercase tracking-widest whitespace-nowrap transition-all border-r-4 border-black border-b-4 -mb-1 ${activeTab === tab.id ? "bg-white text-black border-b-white" : "bg-gray-100 text-black/60 border-b-transparent hover:bg-gray-200"}`}
+                    className={`flex items-center gap-2 px-5 py-3 text-xs font-black uppercase tracking-widest whitespace-nowrap transition-all border-r-4 border-black border-b-4 -mb-1 ${activeTab === tab.id ? "bg-background text-black border-b-white" : "bg-muted text-black/60 border-b-transparent hover:bg-gray-200"}`}
                   >
                     <Icon className="h-4 w-4" />
                     {tab.label}
@@ -236,7 +236,7 @@ export default function StateMachineModal({
 
             {/* ── TAB CONTENT ── */}
             <div
-              className="overflow-y-auto p-4 sm:p-6 bg-white"
+              className="overflow-y-auto p-4 sm:p-6 bg-background"
               style={{ maxHeight: "40vh" }}
             >
               {/* OVERVIEW */}
@@ -253,7 +253,7 @@ export default function StateMachineModal({
                     </span>
                   </div>
 
-                  <p className="text-sm font-bold text-black leading-relaxed bg-gray-100 p-4 border-4 border-black">
+                  <p className="text-sm font-bold text-black leading-relaxed bg-muted p-4 border-4 border-black">
                     {report.summary}
                   </p>
 
@@ -293,7 +293,7 @@ export default function StateMachineModal({
                         label: "Confidence",
                         value: `${Math.round(sm.metadata.confidence * 100)}%`,
                         color: "text-gray-900",
-                        bg: "bg-gray-100",
+                        bg: "bg-muted",
                         border: "border-gray-900",
                       },
                     ].map((stat) => (
@@ -372,7 +372,7 @@ export default function StateMachineModal({
                   ) : (
                     <>
                       <select
-                        className="w-full bg-white border-4 border-black p-3 text-sm font-black uppercase tracking-widest text-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] focus:outline-none appearance-none cursor-pointer"
+                        className="w-full bg-background border-4 border-black p-3 text-sm font-black uppercase tracking-widest text-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] focus:outline-none appearance-none cursor-pointer"
                         value={
                           selectedPath
                             ? selectablePaths.findIndex(
@@ -399,7 +399,7 @@ export default function StateMachineModal({
                       </select>
 
                       {selectedPath && (
-                        <div className="p-5 bg-gray-100 border-4 border-black shadow-[6px_6px_0_0_rgba(0,0,0,1)] space-y-4">
+                        <div className="p-5 bg-muted border-4 border-black shadow-[6px_6px_0_0_rgba(0,0,0,1)] space-y-4">
                           <div className="flex flex-wrap gap-2 items-center">
                             {selectedPath.states.map((sid, i) => {
                               const st = sm.states.find((s) => s.id === sid);
@@ -414,7 +414,7 @@ export default function StateMachineModal({
                                       →
                                     </span>
                                   )}
-                                  <span className="text-xs font-black uppercase tracking-widest px-2 py-1 bg-white border-2 border-black text-black shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
+                                  <span className="text-xs font-black uppercase tracking-widest px-2 py-1 bg-background border-2 border-black text-black shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
                                     {st.name}
                                   </span>
                                 </span>
@@ -424,7 +424,7 @@ export default function StateMachineModal({
 
                           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t-2 border-black border-dashed">
                             {selectedPath.totalDuration && (
-                              <div className="bg-white border-2 border-black p-2">
+                              <div className="bg-background border-2 border-black p-2">
                                 <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-1">
                                   Duration
                                 </p>
@@ -444,7 +444,7 @@ export default function StateMachineModal({
                                 </p>
                               </div>
                             )}
-                            <div className="bg-white border-2 border-black p-2">
+                            <div className="bg-background border-2 border-black p-2">
                               <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-1">
                                 Probability
                               </p>
@@ -466,7 +466,7 @@ export default function StateMachineModal({
                             {report.pathAnalysis.asymmetries.map((a, i) => (
                               <div
                                 key={i}
-                                className={`text-sm font-bold p-4 border-4 shadow-[4px_4px_0_0_rgba(0,0,0,1)] ${a.severity === "high" ? "bg-red-100 border-red-900 text-red-900" : a.severity === "medium" ? "bg-yellow-100 border-yellow-600 text-yellow-900" : "bg-gray-100 border-gray-500 text-black"}`}
+                                className={`text-sm font-bold p-4 border-4 shadow-[4px_4px_0_0_rgba(0,0,0,1)] ${a.severity === "high" ? "bg-red-100 border-red-900 text-red-900" : a.severity === "medium" ? "bg-yellow-100 border-yellow-600 text-yellow-900" : "bg-muted border-foreground text-black"}`}
                               >
                                 <span className="font-black uppercase tracking-widest block mb-1">
                                   Favors {a.favoredParty}
@@ -502,7 +502,7 @@ export default function StateMachineModal({
               {/* RAW DATA */}
               {activeTab === "data" && (
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between bg-gray-100 border-4 border-black p-3">
+                  <div className="flex items-center justify-between bg-muted border-4 border-black p-3">
                     <p className="text-xs font-black uppercase tracking-widest text-black">
                       State machine JSON data
                     </p>
@@ -512,7 +512,7 @@ export default function StateMachineModal({
                           JSON.stringify(report, null, 2),
                         );
                       }}
-                      className="text-xs font-black uppercase tracking-widest text-black bg-white border-2 border-black px-3 py-1 shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:translate-y-0.5 hover:shadow-none transition-all"
+                      className="text-xs font-black uppercase tracking-widest text-black bg-background border-2 border-black px-3 py-1 shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:translate-y-0.5 hover:shadow-none transition-all"
                     >
                       Copy to clipboard
                     </button>
@@ -527,7 +527,7 @@ export default function StateMachineModal({
                     {dataExpanded ? "Collapse" : "Expand"} JSON
                   </button>
                   {dataExpanded && (
-                    <pre className="text-xs font-mono text-black bg-gray-50 p-4 border-4 border-black overflow-auto max-h-[50vh] shadow-[inset_4px_4px_0_0_rgba(0,0,0,0.05)]">
+                    <pre className="text-xs font-mono text-black bg-background p-4 border-4 border-black overflow-auto max-h-[50vh] shadow-[inset_4px_4px_0_0_rgba(0,0,0,0.05)]">
                       {JSON.stringify(report, null, 2)}
                     </pre>
                   )}

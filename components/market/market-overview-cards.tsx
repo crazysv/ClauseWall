@@ -22,7 +22,7 @@ const statCards = [
     label: "Contracts Analyzed",
     icon: FileText,
     color: "text-cyan-400",
-    bgColor: "from-cyan-500/10 to-blue-500/10",
+    bgColor: "bg-cyan-50 dark:bg-cyan-950",
     borderColor: "border-cyan-500/15",
   },
   {
@@ -30,7 +30,7 @@ const statCards = [
     label: "States Covered",
     icon: MapPin,
     color: "text-green-400",
-    bgColor: "from-green-500/10 to-emerald-500/10",
+    bgColor: "bg-green-50 dark:bg-green-950",
     borderColor: "border-green-500/15",
   },
   {
@@ -38,7 +38,7 @@ const statCards = [
     label: "Entities Tracked",
     icon: Building2,
     color: "text-purple-400",
-    bgColor: "from-purple-500/10 to-pink-500/10",
+    bgColor: "bg-purple-50 dark:bg-purple-950",
     borderColor: "border-purple-500/15",
   },
   {
@@ -46,7 +46,7 @@ const statCards = [
     label: "Benchmarks",
     icon: BarChart3,
     color: "text-amber-400",
-    bgColor: "from-amber-500/10 to-orange-500/10",
+    bgColor: "bg-amber-50 dark:bg-amber-950",
     borderColor: "border-amber-500/15",
   },
   {
@@ -54,7 +54,7 @@ const statCards = [
     label: "Contract Types",
     icon: Database,
     color: "text-blue-400",
-    bgColor: "from-blue-500/10 to-indigo-500/10",
+    bgColor: "bg-blue-50 dark:bg-blue-950",
     borderColor: "border-blue-500/15",
   },
   {
@@ -62,7 +62,7 @@ const statCards = [
     label: "Trends Detected",
     icon: TrendingUp,
     color: "text-rose-400",
-    bgColor: "from-rose-500/10 to-red-500/10",
+    bgColor: "bg-rose-50 dark:bg-rose-950",
     borderColor: "border-rose-500/15",
   },
 ];

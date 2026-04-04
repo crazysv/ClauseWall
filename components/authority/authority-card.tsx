@@ -54,7 +54,7 @@ export default function AuthorityCard({
       transition={{ delay: (priority || 1) * 0.1 }}
     >
       <Card
-        className={`border-4 rounded-none transition-all ${confidence ? CONFIDENCE_COLORS[confidence] : "border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-white dark:bg-zinc-900"} ${onClick ? "cursor-pointer hover:-translate-y-1 hover:shadow-none" : ""}`}
+        className={`border-4 rounded-none transition-all ${confidence ? CONFIDENCE_COLORS[confidence] : "border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-background card-impact"} ${onClick ? "cursor-pointer hover:-translate-y-1 hover:shadow-none" : ""}`}
         onClick={onClick}
       >
         <CardContent className={compact ? "p-4" : "p-5"}>
@@ -68,7 +68,7 @@ export default function AuthorityCard({
                   </span>
                 )}
                 {priority && priority > 1 && (
-                  <span className="px-3 py-1 border-2 border-dashed border-gray-500 bg-gray-200 text-gray-800 text-xs font-bold uppercase tracking-widest">
+                  <span className="px-3 py-1 border-2 border-dashed border-foreground bg-gray-200 text-gray-800 text-xs font-bold uppercase tracking-widest">
                     ALTERNATIVE
                   </span>
                 )}

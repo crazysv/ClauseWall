@@ -61,7 +61,7 @@ export default function LawChangeCard({ change, compact }: Props) {
   });
 
   return (
-    <Card className="bg-white/[0.02] border-foreground border-2 hover:border-indigo-500/20 transition-all">
+    <Card className="bg-card card-impact border-2 border-foreground hover:border-foreground/80 hover:-translate-y-1 transition-all">
       <CardContent className="p-4">
         {/* Header */}
         <button

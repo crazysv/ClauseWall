@@ -61,7 +61,7 @@ export default function MyCollectivesSection() {
           const statusColors: Record<string, string> = {
             forming: "bg-blue-500/10 text-blue-400",
             active: "bg-green-500/10 text-green-400",
-            threshold_reached: "bg-amber-500/10 text-amber-400",
+            threshold_reached: "bg-amber-500 text-white font-bold",
             action_taken: "bg-purple-500/10 text-purple-400",
             resolved: "bg-emerald-500/10 text-emerald-400",
             dormant: "bg-white/5 text-white/30",
@@ -69,7 +69,7 @@ export default function MyCollectivesSection() {
 
           return (
             <Link key={collective.id} href={`/collective/${collective.id}`}>
-              <Card className="border-amber-500/10 bg-white/[0.02] hover:bg-white/[0.04] hover:border-amber-500/20 transition-all cursor-pointer">
+              <Card className="card-impact bg-card border-foreground border-2 hover:-translate-y-1 hover:shadow-[4px_4px_border-amber-500] transition-all cursor-pointer">
                 <CardContent className="p-4">
                   <div className="flex items-start justify-between mb-2">
                     <div>

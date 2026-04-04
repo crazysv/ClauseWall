@@ -110,7 +110,7 @@ export default function CollectiveDashboard({
   const statusColors: Record<string, string> = {
     forming: "bg-blue-500/10 text-blue-400",
     active: "bg-green-500/10 text-green-400",
-    threshold_reached: "bg-amber-500/10 text-amber-400",
+    threshold_reached: "bg-amber-500 text-white font-bold",
     action_taken: "bg-purple-500/10 text-purple-400",
     resolved: "bg-emerald-500/10 text-emerald-400",
     dormant: "bg-white/5 text-white/30",
@@ -119,7 +119,7 @@ export default function CollectiveDashboard({
   return (
     <div className="space-y-4">
       {/* Header */}
-      <Card className="border-amber-500/10 bg-background /5 /5 to-transparent">
+      <Card className="border-amber-500/10 bg-background card-impact">
         <div className="h-1 bg-background" />
         <CardContent className="p-5">
           <div className="flex items-start justify-between mb-4">
@@ -127,7 +127,7 @@ export default function CollectiveDashboard({
               <h2 className="text-xl font-bold text-foreground">
                 {collective.entity_name}
               </h2>
-              <p className="text-xs text-foreground/40 mt-0.5">
+              <p className="text-xs text-muted-foreground mt-0.5">
                 {collective.entity_type} • {collective.primary_jurisdiction}
               </p>
             </div>
@@ -141,25 +141,25 @@ export default function CollectiveDashboard({
               <p className="text-lg font-bold text-amber-400">
                 {collective.member_count}
               </p>
-              <p className="text-[10px] text-foreground/30">Members</p>
+              <p className="text-[10px] text-muted-foreground">Members</p>
             </div>
             <div className="text-center">
               <p className="text-lg font-bold text-orange-400">
                 {collective.total_documents}
               </p>
-              <p className="text-[10px] text-foreground/30">Documents</p>
+              <p className="text-[10px] text-muted-foreground">Documents</p>
             </div>
             <div className="text-center">
               <p className="text-lg font-bold text-red-400">
                 {(collective.common_violations || []).length}
               </p>
-              <p className="text-[10px] text-foreground/30">Violations</p>
+              <p className="text-[10px] text-muted-foreground">Violations</p>
             </div>
             <div className="text-center">
-              <p className="text-lg font-bold text-foreground/60">
+              <p className="text-lg font-bold text-foreground">
                 {collective.jurisdictions?.length || 0}
               </p>
-              <p className="text-[10px] text-foreground/30">Jurisdictions</p>
+              <p className="text-[10px] text-muted-foreground">Jurisdictions</p>
             </div>
           </div>
 
@@ -170,7 +170,7 @@ export default function CollectiveDashboard({
 
           {membership && (
             <div className="flex items-center justify-between mt-3 pt-3 border-t border-foreground border-2">
-              <div className="flex items-center gap-2 text-xs text-foreground/40">
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
                 <Shield className="h-3 w-3 text-green-400" />
                 Your identity:{" "}
                 <span className="text-amber-400 font-medium">
@@ -202,7 +202,7 @@ export default function CollectiveDashboard({
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
-            className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-none text-xs transition-colors ${tab === t.key ? "bg-amber-500/10 text-amber-400" : "text-foreground/30 hover:text-foreground/50 hover:bg-white/[0.02]"}`}
+            className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-none text-xs transition-colors ${tab === t.key ? "bg-amber-500 text-white font-bold" : "text-muted-foreground hover:text-foreground/50 hover:bg-white/[0.02]"}`}
           >
             {t.icon}
             {t.label}
@@ -232,7 +232,7 @@ export default function CollectiveDashboard({
                           <p className="text-xs font-medium text-foreground">
                             {v.clause_type}
                           </p>
-                          <p className="text-[10px] text-foreground/30 line-clamp-1">
+                          <p className="text-[10px] text-muted-foreground line-clamp-1">
                             {v.violation_description}
                           </p>
                         </div>
@@ -250,7 +250,7 @@ export default function CollectiveDashboard({
           {leverage && <LeverageCard leverage={leverage} />}
 
           {collective.description && (
-            <p className="text-xs text-foreground/30">
+            <p className="text-xs text-muted-foreground">
               {collective.description}
             </p>
           )}
@@ -272,7 +272,7 @@ export default function CollectiveDashboard({
           {actions.length === 0 ? (
             <div className="text-center py-8">
               <Gavel className="h-8 w-8 text-foreground/10 mx-auto mb-2" />
-              <p className="text-xs text-foreground/30">
+              <p className="text-xs text-muted-foreground">
                 No actions proposed yet
               </p>
             </div>
@@ -303,7 +303,7 @@ export default function CollectiveDashboard({
           {legalAid.length === 0 ? (
             <div className="text-center py-8">
               <Building2 className="h-8 w-8 text-foreground/10 mx-auto mb-2" />
-              <p className="text-xs text-foreground/30">
+              <p className="text-xs text-muted-foreground">
                 No matching legal aid organizations found
               </p>
             </div>

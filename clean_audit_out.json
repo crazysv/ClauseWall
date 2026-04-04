@@ -1,8 +1,8 @@
 {
   "totalAudited": 307,
-  "verifiedUpdated": 297,
-  "partiallyUpdated": 6,
-  "notUpdated": 4,
+  "verifiedUpdated": 298,
+  "partiallyUpdated": 9,
+  "notUpdated": 0,
   "notApplicable": 5,
   "modules": {
     "analyze": {
@@ -25,8 +25,8 @@
       "pages": 6,
       "components": 21,
       "verified": 26,
-      "partial": 0,
-      "missing": 1,
+      "partial": 1,
+      "missing": 0,
       "na": 0
     },
     "battle": {
@@ -57,8 +57,8 @@
       "pages": 2,
       "components": 10,
       "verified": 10,
-      "partial": 1,
-      "missing": 1,
+      "partial": 2,
+      "missing": 0,
       "na": 0
     },
     "compare": {
@@ -128,8 +128,8 @@
     "market": {
       "pages": 5,
       "components": 14,
-      "verified": 18,
-      "partial": 1,
+      "verified": 19,
+      "partial": 0,
       "missing": 0,
       "na": 0
     },
@@ -177,8 +177,8 @@
       "pages": 1,
       "components": 6,
       "verified": 6,
-      "partial": 0,
-      "missing": 1,
+      "partial": 1,
+      "missing": 0,
       "na": 0
     },
     "timebomb": {
@@ -305,8 +305,8 @@
       "pages": 0,
       "components": 17,
       "verified": 13,
-      "partial": 3,
-      "missing": 1,
+      "partial": 4,
+      "missing": 0,
       "na": 0
     },
     "voice-aid": {
@@ -318,17 +318,15 @@
       "na": 0
     }
   },
-  "missedFiles": [
-    "components/authority/authority-card.tsx",
-    "components/collective/my-collectives-section.tsx",
-    "components/statemachine/state-machine-modal.tsx",
-    "components/ui/dropdown-menu.tsx"
-  ],
+  "missedFiles": [],
   "partialFiles": [
+    "components/authority/authority-card.tsx",
     "components/collective/collective-dashboard.tsx",
+    "components/collective/my-collectives-section.tsx",
     "components/lawchange/law-change-card.tsx",
-    "components/market/market-overview-cards.tsx",
+    "components/statemachine/state-machine-modal.tsx",
     "components/ui/dialog.tsx",
+    "components/ui/dropdown-menu.tsx",
     "components/ui/select.tsx",
     "components/ui/tooltip.tsx"
   ],
@@ -337,7 +335,6 @@
     "backdrop-blur": [],
     "rounded-3xl": [],
     "gradients": [
-      "components/market/market-overview-cards.tsx",
       "components/ui/dialog.tsx",
       "components/ui/dropdown-menu.tsx",
       "components/ui/select.tsx",
