@@ -52,25 +52,25 @@ const STEP_ICONS: Record<string, React.ReactNode> = {
 };
 
 const STEP_COLORS: Record<string, { bg: string; text: string; border: string }> = {
-  awareness: { bg: "bg-blue-500/10", text: "text-blue-400", border: "border-blue-500/20" },
-  notice: { bg: "bg-yellow-500/10", text: "text-yellow-400", border: "border-yellow-500/20" },
-  negotiate: { bg: "bg-purple-500/10", text: "text-purple-400", border: "border-purple-500/20" },
-  complaint: { bg: "bg-red-500/10", text: "text-red-400", border: "border-red-500/20" },
-  refund: { bg: "bg-green-500/10", text: "text-green-400", border: "border-green-500/20" },
+  awareness: { bg: "bg-blue-100", text: "text-blue-900", border: "border-black" },
+  notice: { bg: "bg-yellow-100", text: "text-yellow-900", border: "border-black" },
+  negotiate: { bg: "bg-purple-100", text: "text-purple-900", border: "border-black" },
+  complaint: { bg: "bg-red-100", text: "text-red-900", border: "border-black" },
+  refund: { bg: "bg-green-100", text: "text-green-900", border: "border-black" },
 };
 
 const SEVERITY_CONFIG = {
-  low: { color: "text-green-400", bg: "bg-green-500/10", label: "Low Risk" },
-  medium: { color: "text-yellow-400", bg: "bg-yellow-500/10", label: "Medium Risk" },
-  high: { color: "text-red-400", bg: "bg-red-500/10", label: "High Risk" },
-  critical: { color: "text-purple-400", bg: "bg-purple-500/10", label: "Critical" },
+  low: { color: "text-green-700", bg: "bg-green-400", label: "LOW RISK" },
+  medium: { color: "text-yellow-700", bg: "bg-yellow-400", label: "MEDIUM RISK" },
+  high: { color: "text-red-700", bg: "bg-red-400", label: "HIGH RISK" },
+  critical: { color: "text-purple-700", bg: "bg-purple-400", label: "CRITICAL" },
 };
 
 const PROBABILITY_CONFIG = {
-  low: { color: "text-red-400", label: "Low", width: "25%" },
-  medium: { color: "text-yellow-400", label: "Moderate", width: "50%" },
-  high: { color: "text-green-400", label: "High", width: "75%" },
-  very_high: { color: "text-green-400", label: "Very High", width: "90%" },
+  low: { color: "text-red-700", label: "LOW", width: "25%" },
+  medium: { color: "text-yellow-700", label: "MODERATE", width: "50%" },
+  high: { color: "text-green-700", label: "HIGH", width: "75%" },
+  very_high: { color: "text-green-700", label: "VERY HIGH", width: "90%" },
 };
 
 function formatCurrency(amount: number): string {
@@ -230,14 +230,11 @@ export default function EscapePlanPage() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 px-4">
-        <div className="relative">
-          <Loader2 className="h-16 w-16 text-orange-500 animate-spin" />
-          <div className="absolute inset-0 h-16 w-16 bg-orange-500/20 blur-xl rounded-full animate-pulse" />
-        </div>
+        <Loader2 className="h-16 w-16 text-black animate-spin" />
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-2">Generating Your Escape Plan</h2>
-          <p className="text-muted-foreground max-w-md">
-            Analyzing void clauses, calculating recoverable amounts, and building your step-by-step exit strategy...
+          <h2 className="text-2xl font-black uppercase tracking-tighter text-black mb-2 border-b-4 border-black pb-2">GENERATING ESCAPE PLAN</h2>
+          <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground mt-4">
+            FINDING LOOPHOLES. CALCULATING RECOVERY.
           </p>
         </div>
       </div>
@@ -247,16 +244,18 @@ export default function EscapePlanPage() {
   // Error
   if (error || !document) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4 px-4">
-        <XCircle className="h-12 w-12 text-red-500" />
-        <p className="text-red-400 text-center">{error || "Something went wrong"}</p>
-        <div className="flex gap-3">
-          <Button onClick={fetchEscapePlan} variant="outline">
-            Try Again
-          </Button>
-          <Link href={`/results/${documentId}`}>
-            <Button variant="outline">Back to Results</Button>
-          </Link>
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 px-4">
+        <div className="bg-white border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center max-w-md">
+          <XCircle className="h-16 w-16 text-red-600 mx-auto mb-4" />
+          <p className="text-2xl font-black text-red-700 uppercase tracking-tighter mb-8">{error || "Something went wrong"}</p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button onClick={fetchEscapePlan} className="border-2 border-black font-black uppercase tracking-wider rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none transition-all">
+              TRY AGAIN
+            </Button>
+            <Link href={`/results/${documentId}`}>
+              <Button variant="outline" className="border-2 border-black font-black uppercase tracking-wider rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none transition-all">BACK TO RESULTS</Button>
+            </Link>
+          </div>
         </div>
       </div>
     );
@@ -268,41 +267,32 @@ export default function EscapePlanPage() {
   const probability = PROBABILITY_CONFIG[plan.success_probability] || PROBABILITY_CONFIG.medium;
 
   return (
-    <div className="relative px-4 sm:px-6 lg:px-8 py-8">
-      {/* Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-orange-500/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-red-500/5 rounded-full blur-3xl" />
-      </div>
-
+    <div className="relative px-4 sm:px-6 lg:px-8 py-8 bg-gray-50 min-h-screen">
       <div className="relative mx-auto max-w-4xl">
         {/* Back Button */}
         <button
           onClick={() => router.push(`/results/${documentId}`)}
-          className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors mb-6"
+          className="flex items-center gap-2 text-sm font-black uppercase tracking-widest text-muted-foreground hover:text-black transition-all hover:-translate-x-1 mb-8"
         >
           <ArrowLeft className="h-4 w-4" />
-          Back to Results
+          BACK TO RESULTS
         </button>
 
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-2 text-muted-foreground text-sm mb-2">
-            <FileText className="h-4 w-4" />
-            <span>{document.original_filename || "Contract"}</span>
-            <span>•</span>
-            <span>{getDocumentTypeLabel(document.document_type)}</span>
-            <span>•</span>
-            <span>{getStateName(document.jurisdiction)}</span>
+        <div className="mb-10">
+          <div className="flex flex-wrap items-center gap-2 text-black font-bold uppercase tracking-widest text-xs mb-4">
+            <span className="bg-white border-2 border-black px-2 py-1 flex items-center gap-2"><FileText className="h-3 w-3" /> {document.original_filename || "Contract"}</span>
+            <span className="bg-white border-2 border-black px-2 py-1">{getDocumentTypeLabel(document.document_type)}</span>
+            <span className="bg-white border-2 border-black px-2 py-1">{getStateName(document.jurisdiction)}</span>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="p-3 rounded-xl bg-orange-500/10 border border-orange-500/20">
-              <DoorOpen className="h-7 w-7 text-orange-400" />
+          <div className="flex items-center gap-4">
+            <div className="h-16 w-16 border-4 border-black bg-orange-400 flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              <DoorOpen className="h-8 w-8 text-black" />
             </div>
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold">Your Escape Plan</h1>
-              <p className="text-sm text-muted-foreground mt-0.5">
-                Already signed? Here&apos;s how to protect yourself.
+              <h1 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter text-black">ESCAPE PLAN</h1>
+              <p className="text-sm font-bold tracking-widest uppercase text-muted-foreground mt-2">
+                ALREADY SIGNED? HERE'S HOW TO BREAK IT.
               </p>
             </div>
           </div>
@@ -310,67 +300,59 @@ export default function EscapePlanPage() {
 
         {/* ── Escape Verdict ── */}
         <Card
-          className={`mb-6 ${
-            plan.can_escape
-              ? "bg-green-500/5 border-green-500/20"
-              : "bg-red-500/5 border-red-500/20"
-          }`}
+          className={`mb-12 border-4 border-black rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white`}
         >
-          <CardContent className="p-6">
-            <div className="flex items-start gap-4">
-              <div
-                className={`p-3 rounded-xl ${
-                  plan.can_escape ? "bg-green-500/15" : "bg-red-500/15"
-                }`}
-              >
+          <CardContent className="p-0">
+            {/* Top Verdict Bar */}
+            <div className={`p-6 border-b-4 border-black flex items-center gap-4 ${
+              plan.can_escape ? "bg-green-400" : "bg-red-500"
+            }`}>
+              <div className="bg-white border-2 border-black p-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                 {plan.can_escape ? (
-                  <CheckCircle2 className="h-8 w-8 text-green-400" />
+                  <CheckCircle2 className="h-8 w-8 text-black" />
                 ) : (
-                  <ShieldX className="h-8 w-8 text-red-400" />
+                  <ShieldX className="h-8 w-8 text-black" />
                 )}
               </div>
-              <div className="flex-1">
-                <h2
-                  className={`text-xl font-bold mb-1 ${
-                    plan.can_escape ? "text-green-400" : "text-red-400"
-                  }`}
-                >
-                  {plan.can_escape
-                    ? "You CAN Escape This Contract"
-                    : "Limited Escape Options"}
-                </h2>
-                <p className="text-sm text-gray-300 leading-relaxed mb-4">
-                  {plan.summary}
-                </p>
+              <h2 className="text-2xl font-black uppercase tracking-tighter text-black">
+                {plan.can_escape
+                  ? "YOU CAN ESCAPE THIS CONTRACT"
+                  : "LIMITED ESCAPE OPTIONS"}
+              </h2>
+            </div>
+            {/* Main Stats */}
+            <div className="p-8">
+              <p className="text-base font-bold text-black leading-relaxed mb-8 border-l-4 border-black pl-4">
+                {plan.summary}
+              </p>
 
-                {/* Stats Row */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  <div className="p-3 rounded-lg bg-white/5">
-                    <p className="text-xs text-gray-500 mb-0.5">Recoverable</p>
-                    <p className="text-lg font-bold text-green-400">
-                      {plan.total_recoverable > 0
-                        ? formatCurrency(plan.total_recoverable)
-                        : "—"}
-                    </p>
-                  </div>
-                  <div className="p-3 rounded-lg bg-white/5">
-                    <p className="text-xs text-gray-500 mb-0.5">Void Clauses</p>
-                    <p className="text-lg font-bold text-orange-400">
-                      {plan.void_clauses.length}
-                    </p>
-                  </div>
-                  <div className="p-3 rounded-lg bg-white/5">
-                    <p className="text-xs text-gray-500 mb-0.5">Timeline</p>
-                    <p className="text-lg font-bold text-blue-400">
-                      {plan.estimated_timeline}
-                    </p>
-                  </div>
-                  <div className="p-3 rounded-lg bg-white/5">
-                    <p className="text-xs text-gray-500 mb-0.5">Success Rate</p>
-                    <p className={`text-lg font-bold ${probability.color}`}>
-                      {probability.label}
-                    </p>
-                  </div>
+              {/* Stats Row */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="p-4 border-2 border-black bg-gray-50 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                  <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-2">RECOVERABLE</p>
+                  <p className="text-2xl font-black text-green-700">
+                    {plan.total_recoverable > 0
+                      ? formatCurrency(plan.total_recoverable)
+                      : "—"}
+                  </p>
+                </div>
+                <div className="p-4 border-2 border-black bg-gray-50 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                  <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-2">VOID CLAUSES</p>
+                  <p className="text-2xl font-black text-orange-600">
+                    {plan.void_clauses.length}
+                  </p>
+                </div>
+                <div className="p-4 border-2 border-black bg-gray-50 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                  <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-2">TIMELINE</p>
+                  <p className="text-xl font-black text-blue-700 uppercase tracking-tight truncate">
+                    {plan.estimated_timeline}
+                  </p>
+                </div>
+                <div className="p-4 border-2 border-black bg-gray-50 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                  <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-2">SUCCESS RATE</p>
+                  <p className={`text-xl font-black uppercase tracking-widest ${probability.color}`}>
+                    {probability.label}
+                  </p>
                 </div>
               </div>
             </div>
@@ -379,12 +361,12 @@ export default function EscapePlanPage() {
 
         {/* ── Void Clauses ── */}
         {plan.void_clauses.length > 0 && (
-          <div className="mb-8">
-            <h2 className="text-lg font-bold mb-3 flex items-center gap-2">
-              <Scale className="h-5 w-5 text-orange-400" />
-              Void Clauses — Cannot Be Enforced
+          <div className="mb-12">
+            <h2 className="text-2xl font-black uppercase tracking-tighter text-black mb-6 flex items-center gap-3 border-b-4 border-black pb-4">
+              <Scale className="h-6 w-6 text-black" />
+              VOID CLAUSES — CANNOT BE ENFORCED
             </h2>
-            <div className="space-y-3">
+            <div className="space-y-6">
               {plan.void_clauses.map((vc, i) => (
                 <motion.div
                   key={i}
@@ -392,73 +374,76 @@ export default function EscapePlanPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.08 }}
                 >
-                  <Card className="bg-gray-900/50 border-red-500/20 border-l-4 border-l-red-500">
-                    <CardContent className="p-4">
-                      <div className="flex items-start justify-between gap-3 mb-3">
-                        <div>
-                          <div className="flex items-center gap-2 mb-1 flex-wrap">
-                            <Badge className="bg-red-500/15 text-red-400 border-red-500/30 text-xs">
-                              Clause #{vc.clause_number}
-                            </Badge>
-                            <Badge
-                              className={`text-xs ${
-                                vc.void_type === "fully_void"
-                                  ? "bg-purple-500/15 text-purple-400 border-purple-500/30"
-                                  : "bg-yellow-500/15 text-yellow-400 border-yellow-500/30"
-                              }`}
-                            >
-                              {vc.void_type === "fully_void"
-                                ? "Fully Void"
-                                : "Partially Void"}
-                            </Badge>
-                          </div>
-                          <p className="text-sm font-medium text-red-300">
-                            {vc.why_void}
+                  <Card className="border-2 border-black rounded-none shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] bg-white overflow-hidden">
+                    {/* Header */}
+                    <div className="bg-red-500 border-b-2 border-black px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                      <div>
+                        <div className="flex items-center gap-3 mb-2 flex-wrap">
+                          <Badge className="bg-white text-black border-2 border-black font-black uppercase tracking-widest text-xs shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-gray-100 rounded-none">
+                            CLAUSE #{vc.clause_number}
+                          </Badge>
+                          <Badge
+                            className={`text-xs font-black uppercase tracking-widest border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-gray-100 rounded-none ${
+                              vc.void_type === "fully_void"
+                                ? "bg-purple-200 text-purple-900"
+                                : "bg-yellow-200 text-yellow-900"
+                            }`}
+                          >
+                            {vc.void_type === "fully_void"
+                              ? "FULLY VOID"
+                              : "PARTIALLY VOID"}
+                          </Badge>
+                        </div>
+                        <p className="text-sm font-bold text-white uppercase tracking-tight">
+                          {vc.why_void}
+                        </p>
+                      </div>
+                      {vc.recoverable_amount > 0 && (
+                        <div className="flex-shrink-0 bg-white border-2 border-black p-2 sm:px-4 sm:py-2 text-right sm:text-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] w-full sm:w-auto flex justify-between sm:block">
+                          <p className="text-xs font-black uppercase tracking-widest text-black">RECOVERABLE</p>
+                          <p className="text-xl sm:text-lg font-black text-green-700">
+                            {formatCurrency(vc.recoverable_amount)}
                           </p>
                         </div>
-                        {vc.recoverable_amount > 0 && (
-                          <div className="text-right flex-shrink-0">
-                            <p className="text-xs text-gray-500">Recoverable</p>
-                            <p className="text-lg font-bold text-green-400">
-                              {formatCurrency(vc.recoverable_amount)}
-                            </p>
-                          </div>
-                        )}
+                      )}
+                    </div>
+                    
+                    <CardContent className="p-6">
+                      <div className="p-4 bg-gray-50 border-2 border-black mb-6">
+                        <p className="text-sm font-bold text-black italic line-clamp-3">
+                          &quot;{vc.clause_text}&quot;
+                        </p>
                       </div>
 
-                      <p className="text-sm text-gray-400 italic mb-3 line-clamp-2">
-                        &quot;{vc.clause_text}&quot;
-                      </p>
-
-                      <div className="space-y-2">
-                        <div className="p-3 rounded-lg bg-blue-500/5 border border-blue-500/15">
-                          <p className="text-xs font-medium text-blue-400 mb-1">
-                            📖 Legal Basis
+                      <div className="space-y-4">
+                        <div className="border-2 border-black p-4 bg-blue-50">
+                          <p className="text-xs font-black uppercase tracking-widest text-blue-900 mb-2 border-b-2 border-blue-900/10 pb-2">
+                            📖 LEGAL BASIS
                           </p>
-                          <p className="text-sm text-blue-300 font-medium">
+                          <p className="text-sm font-bold text-black mb-1">
                             {vc.law}
                           </p>
-                          <p className="text-xs text-gray-400 mt-1">
+                          <p className="text-xs text-gray-700 font-bold">
                             {vc.law_explanation}
                           </p>
                         </div>
 
                         {vc.enforceable_portion && (
-                          <div className="p-3 rounded-lg bg-yellow-500/5 border border-yellow-500/15">
-                            <p className="text-xs font-medium text-yellow-400 mb-1">
-                              ⚠️ What IS Enforceable
+                          <div className="border-2 border-black p-4 bg-yellow-50">
+                            <p className="text-xs font-black uppercase tracking-widest text-yellow-900 mb-2 border-b-2 border-yellow-900/10 pb-2">
+                              ⚠️ WHAT IS ENFORCEABLE
                             </p>
-                            <p className="text-sm text-yellow-300">
+                            <p className="text-sm font-bold text-black">
                               {vc.enforceable_portion}
                             </p>
                           </div>
                         )}
 
-                        <div className="p-3 rounded-lg bg-green-500/5 border border-green-500/15">
-                          <p className="text-xs font-medium text-green-400 mb-1">
-                            🔄 How to Recover
+                        <div className="border-2 border-black p-4 bg-green-50">
+                          <p className="text-xs font-black uppercase tracking-widest text-green-900 mb-2 border-b-2 border-green-900/10 pb-2">
+                            🔄 HOW TO RECOVER
                           </p>
-                          <p className="text-sm text-green-300">
+                          <p className="text-sm font-bold text-black">
                             {vc.recovery_method}
                           </p>
                         </div>
@@ -473,32 +458,32 @@ export default function EscapePlanPage() {
 
         {/* ── Step-by-Step Escape ── */}
         {plan.escape_steps.length > 0 && (
-          <div className="mb-8">
-            <h2 className="text-lg font-bold mb-3 flex items-center gap-2">
-              <TrendingUp className="h-5 w-5 text-blue-400" />
-              Step-by-Step Escape Plan
+          <div className="mb-12">
+            <h2 className="text-2xl font-black uppercase tracking-tighter text-black mb-6 flex items-center gap-3 border-b-4 border-black pb-4">
+              <TrendingUp className="h-6 w-6 text-black" />
+              STEP-BY-STEP ESCAPE PLAN
             </h2>
 
             {/* Progress Steps (horizontal) */}
-            <div className="flex items-center gap-1 mb-4 overflow-x-auto pb-2">
+            <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-4 custom-scrollbar">
               {plan.escape_steps.map((step, i) => {
                 const stepColor =
                   STEP_COLORS[step.action_type] || STEP_COLORS.awareness;
                 return (
-                  <div key={i} className="flex items-center">
+                  <div key={i} className="flex items-center flex-shrink-0">
                     <button
                       onClick={() => toggleStep(step.step_number)}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all whitespace-nowrap ${
+                      className={`flex items-center gap-2 px-4 py-2 font-black uppercase tracking-widest transition-all whitespace-nowrap border-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none ${
                         expandedSteps.has(step.step_number)
-                          ? `${stepColor.bg} ${stepColor.text} border ${stepColor.border}`
-                          : "bg-white/5 text-gray-500 border border-white/5 hover:text-gray-300"
+                          ? `${stepColor.bg} ${stepColor.text} ${stepColor.border}`
+                          : "bg-white text-gray-500 border-gray-300 hover:text-black hover:border-black"
                       }`}
                     >
-                      <span className="font-bold">{"①②③④⑤⑥⑦⑧⑨⑩"[step.step_number - 1] || step.step_number}</span>
+                      <span>{step.step_number}</span>
                       {step.title}
                     </button>
                     {i < plan.escape_steps.length - 1 && (
-                      <div className="w-4 h-px bg-gray-700 mx-0.5" />
+                      <div className="w-6 h-1 w-6 bg-black mx-2" />
                     )}
                   </div>
                 );
@@ -506,12 +491,11 @@ export default function EscapePlanPage() {
             </div>
 
             {/* Step Cards */}
-            <div className="space-y-3">
+            <div className="space-y-6">
               {plan.escape_steps.map((step, i) => {
                 const isExpanded = expandedSteps.has(step.step_number);
                 const stepColor =
                   STEP_COLORS[step.action_type] || STEP_COLORS.awareness;
-                const CIRCLED = ["①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨", "⑩"];
 
                 return (
                   <motion.div
@@ -521,41 +505,45 @@ export default function EscapePlanPage() {
                     transition={{ delay: i * 0.05 }}
                   >
                     <Card
-                      className={`bg-gray-900/50 border-gray-800 overflow-hidden ${
-                        isExpanded ? `border-l-4 ${stepColor.border.replace("border-", "border-l-")}` : ""
+                      className={`bg-white border-4 border-black rounded-none shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] overflow-hidden transition-all ${
+                        isExpanded ? "ring-4 ring-black/10" : ""
                       }`}
                     >
                       {/* Step Header */}
                       <button
                         onClick={() => toggleStep(step.step_number)}
-                        className="w-full flex items-center justify-between p-4 text-left hover:bg-white/[0.02] transition-colors"
+                        className={`w-full flex items-center justify-between p-6 text-left transition-colors ${
+                          isExpanded ? stepColor.bg : "hover:bg-gray-50"
+                        }`}
                       >
-                        <div className="flex items-center gap-3">
-                          <div className={`p-2 rounded-lg ${stepColor.bg}`}>
+                        <div className="flex items-center gap-6">
+                          <div className={`p-4 border-2 border-black bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]`}>
                             <span className={stepColor.text}>
                               {STEP_ICONS[step.action_type] || STEP_ICONS.awareness}
                             </span>
                           </div>
                           <div>
-                            <div className="flex items-center gap-2">
-                              <span className={`text-sm font-bold ${stepColor.text}`}>
-                                {CIRCLED[step.step_number - 1] || `Step ${step.step_number}`}
+                            <div className="flex items-center gap-3">
+                              <span className={`text-lg font-black ${stepColor.text}`}>
+                                STEP {step.step_number}
                               </span>
-                              <span className="font-semibold text-sm">
+                              <span className="text-xl font-black text-black uppercase tracking-tight">
                                 {step.title}
                               </span>
                             </div>
-                            <p className="text-xs text-gray-500 mt-0.5 flex items-center gap-1">
-                              <Clock className="h-3 w-3" />
+                            <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground mt-1 flex items-center gap-2">
+                              <Clock className="h-4 w-4" />
                               {step.timeframe}
                             </p>
                           </div>
                         </div>
+                        <div className="border-2 border-black p-2 bg-white">
                         {isExpanded ? (
-                          <ChevronUp className="h-5 w-5 text-gray-500" />
+                          <ChevronUp className="h-6 w-6 text-black" />
                         ) : (
-                          <ChevronDown className="h-5 w-5 text-gray-500" />
+                          <ChevronDown className="h-6 w-6 text-black" />
                         )}
+                        </div>
                       </button>
 
                       {/* Expanded Content */}
@@ -568,8 +556,8 @@ export default function EscapePlanPage() {
                             transition={{ duration: 0.2 }}
                             className="overflow-hidden"
                           >
-                            <div className="px-4 pb-4 space-y-3 border-t border-white/5 pt-3">
-                              <p className="text-sm text-gray-300 leading-relaxed">
+                            <div className="px-6 pb-6 space-y-6 border-t-4 border-black pt-6 bg-white">
+                              <p className="text-base font-bold text-black leading-relaxed">
                                 {step.details}
                               </p>
 
@@ -581,55 +569,56 @@ export default function EscapePlanPage() {
                                       ? `/letter/${documentId}`
                                       : `/negotiate/${documentId}`
                                   }
-                                  className="flex items-center justify-between p-3 rounded-lg bg-blue-500/5 border border-blue-500/20 hover:bg-blue-500/10 transition-colors group"
+                                  className="flex items-center justify-between p-4 bg-blue-50 border-2 border-blue-900 shadow-[4px_4px_0px_0px_rgba(30,58,138,1)] hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(30,58,138,1)] transition-all group"
                                 >
-                                  <div className="flex items-center gap-2">
+                                  <div className="flex items-center gap-3">
                                     {step.link_to === "letter" ? (
-                                      <FileText className="h-4 w-4 text-blue-400" />
+                                      <FileText className="h-5 w-5 text-blue-900" />
                                     ) : (
-                                      <Swords className="h-4 w-4 text-blue-400" />
+                                      <Swords className="h-5 w-5 text-blue-900" />
                                     )}
-                                    <span className="text-sm text-blue-400 font-medium">
+                                    <span className="text-base text-blue-900 font-black uppercase tracking-wider">
                                       {step.link_to === "letter"
-                                        ? "Generate Legal Notice →"
-                                        : "View Negotiation Playbook →"}
+                                        ? "GENERATE LEGAL NOTICE"
+                                        : "VIEW NEGOTIATION PLAYBOOK"}
                                     </span>
                                   </div>
-                                  <ExternalLink className="h-4 w-4 text-blue-400 group-hover:translate-x-1 transition-transform" />
+                                  <ExternalLink className="h-5 w-5 text-blue-900 group-hover:translate-x-1 transition-transform" />
                                 </Link>
                               )}
 
                               {/* Authorities */}
                               {step.authorities && step.authorities.length > 0 && (
-                                <div className="space-y-2">
-                                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Where to File
+                                <div className="space-y-4">
+                                  <p className="text-sm font-black text-black uppercase tracking-widest border-b-2 border-black pb-2">
+                                    WHERE TO FILE
                                   </p>
                                   {step.authorities.map((auth, ai) => (
                                     <div
                                       key={ai}
-                                      className="p-3 rounded-lg bg-white/[0.03] border border-white/5"
+                                      className="p-4 bg-gray-50 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                                     >
-                                      <div className="flex items-start justify-between gap-2 mb-1">
-                                        <p className="text-sm font-medium text-white">
+                                      <div className="flex items-start justify-between gap-4 mb-2">
+                                        <p className="text-lg font-black text-black uppercase tracking-tight">
                                           {auth.name}
                                         </p>
                                         <Badge
                                           variant="outline"
-                                          className="text-[10px] border-white/10 text-gray-500"
+                                          className="text-xs font-black uppercase tracking-widest border-2 border-black text-black rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
                                         >
                                           {auth.jurisdiction}
                                         </Badge>
                                       </div>
-                                      <p className="text-xs text-gray-400 mb-2">
-                                        For: {auth.for}
+                                      <p className="text-sm font-bold text-gray-700 mb-4 border-l-4 border-black pl-3">
+                                        FOR: {auth.for}
                                       </p>
-                                      <div className="flex items-center gap-4 text-xs text-gray-500">
-                                        <span>💰 Cost: {auth.cost}</span>
-                                        <span>⏰ Timeline: {auth.timeline}</span>
+                                      <div className="flex flex-col sm:flex-row gap-4 sm:items-center text-sm font-black uppercase tracking-widest text-black bg-white border-2 border-black p-3">
+                                        <span className="flex items-center gap-2">💰 {auth.cost}</span>
+                                        <span className="hidden sm:inline">•</span>
+                                        <span className="flex items-center gap-2">⏰ {auth.timeline}</span>
                                       </div>
                                       {auth.how_to_file && (
-                                        <p className="text-xs text-gray-400 mt-2 italic">
+                                        <p className="text-xs font-bold text-gray-600 mt-4 italic bg-yellow-50 p-3 border-l-4 border-yellow-400">
                                           {auth.how_to_file}
                                         </p>
                                       )}
@@ -638,7 +627,7 @@ export default function EscapePlanPage() {
                                 </div>
                               )}
                             </div>
-                          </motion.div>
+                           </motion.div>
                         )}
                       </AnimatePresence>
                     </Card>
@@ -651,55 +640,55 @@ export default function EscapePlanPage() {
 
         {/* ── Money Recovery ── */}
         {plan.recovery.items.length > 0 && (
-          <Card className="bg-gray-900/50 border-green-500/20 mb-8">
-            <CardContent className="p-6">
-              <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
-                <IndianRupee className="h-5 w-5 text-green-400" />
-                Money Recovery Breakdown
+          <Card className="border-4 border-black rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] mb-12 bg-white">
+            <CardContent className="p-0">
+              <h2 className="text-2xl font-black text-white bg-green-700 p-6 flex items-center gap-3 border-b-4 border-black uppercase tracking-tighter">
+                <IndianRupee className="h-8 w-8 text-white" />
+                MONEY RECOVERY BREAKDOWN
               </h2>
 
-              <div className="space-y-3 mb-4">
+              <div className="p-6 sm:p-8 space-y-4">
                 {plan.recovery.items.map((item, i) => (
                   <div
                     key={i}
-                    className="flex items-center justify-between p-3 rounded-lg bg-white/[0.03]"
+                    className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-gray-50 border-2 border-black"
                   >
                     <div>
-                      <p className="text-sm font-medium text-gray-300">
+                      <p className="text-base font-black uppercase tracking-widest text-black mb-1">
                         {item.label}
                       </p>
-                      <p className="text-xs text-gray-500">{item.explanation}</p>
+                      <p className="text-sm font-bold text-gray-500">{item.explanation}</p>
                     </div>
-                    <p className="text-lg font-bold text-green-400 flex-shrink-0 ml-4">
+                    <p className="text-xl font-black text-green-700 flex-shrink-0 sm:ml-4 mt-2 sm:mt-0">
                       {formatCurrencyFull(item.amount)}
                     </p>
                   </div>
                 ))}
 
                 {plan.recovery.interest_amount > 0 && (
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-white/[0.03]">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-yellow-50 border-2 border-black">
                     <div>
-                      <p className="text-sm font-medium text-gray-300">
-                        Interest
+                      <p className="text-base font-black uppercase tracking-widest text-black mb-1">
+                        INTEREST
                       </p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-sm font-bold text-gray-700">
                         @ {plan.recovery.interest_rate}
                       </p>
                     </div>
-                    <p className="text-lg font-bold text-green-400 flex-shrink-0 ml-4">
+                    <p className="text-xl font-black text-green-700 flex-shrink-0 sm:ml-4 mt-2 sm:mt-0">
                       {formatCurrencyFull(plan.recovery.interest_amount)}
                     </p>
                   </div>
                 )}
-              </div>
 
-              <div className="border-t border-white/10 pt-3 flex items-center justify-between">
-                <p className="text-sm font-bold text-gray-300">
-                  TOTAL RECOVERABLE
-                </p>
-                <p className="text-2xl font-bold text-green-400">
-                  {formatCurrencyFull(plan.recovery.total)}
-                </p>
+                <div className="border-4 border-black p-6 bg-green-50 mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between">
+                  <p className="text-sm font-black uppercase tracking-widest text-black mb-2 sm:mb-0">
+                    TOTAL RECOVERABLE
+                  </p>
+                  <p className="text-3xl sm:text-4xl font-black text-green-700">
+                    {formatCurrencyFull(plan.recovery.total)}
+                  </p>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -707,39 +696,39 @@ export default function EscapePlanPage() {
 
         {/* ── Immediate Actions Checklist ── */}
         {plan.immediate_actions.length > 0 && (
-          <Card className="bg-gray-900/50 border-orange-500/20 mb-8">
-            <CardContent className="p-6">
-              <h2 className="text-lg font-bold mb-3 flex items-center gap-2">
-                <AlertTriangle className="h-5 w-5 text-orange-400" />
-                Do This RIGHT NOW
+          <Card className="border-4 border-black rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white mb-12">
+            <CardContent className="p-6 sm:p-8">
+              <h2 className="text-2xl font-black uppercase tracking-tighter text-black mb-6 flex items-center gap-3 border-b-4 border-black pb-4">
+                <AlertTriangle className="h-8 w-8 text-orange-500" />
+                DO THIS RIGHT NOW
               </h2>
-              <div className="space-y-2">
+              <div className="space-y-4">
                 {plan.immediate_actions.map((action, i) => (
                   <button
                     key={i}
                     onClick={() => toggleCheck(i)}
-                    className={`w-full flex items-start gap-3 p-3 rounded-lg text-left transition-all ${
+                    className={`w-full flex items-start gap-4 p-4 border-2 transition-all ${
                       checkedItems.has(i)
-                        ? "bg-green-500/5 border border-green-500/15"
-                        : "bg-white/[0.03] border border-white/5 hover:bg-white/[0.05]"
+                        ? "bg-green-50 border-green-700 opacity-60"
+                        : "bg-white border-black hover:bg-gray-100 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none"
                     }`}
                   >
                     <div
-                      className={`w-5 h-5 rounded border-2 flex-shrink-0 mt-0.5 flex items-center justify-center transition-colors ${
+                      className={`w-6 h-6 border-2 flex-shrink-0 mt-0.5 flex items-center justify-center transition-colors ${
                         checkedItems.has(i)
-                          ? "bg-green-500 border-green-500"
-                          : "border-gray-600"
+                          ? "bg-green-500 border-green-700"
+                          : "border-black bg-white"
                       }`}
                     >
                       {checkedItems.has(i) && (
-                        <Check className="h-3 w-3 text-white" />
+                        <Check className="h-4 w-4 text-white" />
                       )}
                     </div>
                     <span
-                      className={`text-sm ${
+                      className={`text-base font-bold text-left leading-relaxed ${
                         checkedItems.has(i)
-                          ? "text-green-400 line-through"
-                          : "text-gray-300"
+                          ? "text-green-900 line-through"
+                          : "text-black"
                       }`}
                     >
                       {action}
@@ -747,38 +736,42 @@ export default function EscapePlanPage() {
                   </button>
                 ))}
               </div>
-              <p className="text-xs text-gray-600 mt-3">
-                ✓ {checkedItems.size}/{plan.immediate_actions.length} completed
-                — your progress is saved
+              <p className="text-xs font-black uppercase tracking-widest text-black mt-6 border-t-2 border-black/10 pt-4">
+                ✓ {checkedItems.size}/{plan.immediate_actions.length} COMPLETED
+                — YOUR PROGRESS IS SAVED
               </p>
             </CardContent>
           </Card>
         )}
 
         {/* ── Success Probability ── */}
-        <Card className="bg-gray-900/50 border-gray-800 mb-8">
-          <CardContent className="p-6">
-            <h2 className="text-lg font-bold mb-3 flex items-center gap-2">
-              <TrendingUp className="h-5 w-5 text-blue-400" />
-              Success Probability
+        <Card className="border-4 border-black rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white mb-12">
+          <CardContent className="p-6 sm:p-8">
+            <h2 className="text-2xl font-black uppercase tracking-tighter text-black mb-6 flex items-center gap-3 border-b-2 border-black/10 pb-4">
+              <TrendingUp className="h-6 w-6 text-black" />
+              SUCCESS PROBABILITY
             </h2>
-            <div className="mb-3">
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-sm text-gray-400">Likelihood of favorable outcome</span>
-                <span className={`text-sm font-bold ${probability.color}`}>
+            <div className="mb-6">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-black uppercase tracking-widest text-muted-foreground">LIKELIHOOD OF FAVORABLE OUTCOME</span>
+                <span className={`text-sm font-black uppercase tracking-widest ${probability.color}`}>
                   {probability.label}
                 </span>
               </div>
-              <div className="w-full h-3 bg-gray-800 rounded-full overflow-hidden">
+              <div className="w-full h-8 bg-gray-100 border-2 border-black overflow-hidden relative">
                 <motion.div
-                  className="h-full rounded-full bg-gradient-to-r from-green-500 to-emerald-400"
+                  className={`h-full border-r-2 border-black ${probability.color.replace('text-', 'bg-').replace('-700', '-400')}`}
                   initial={{ width: 0 }}
                   animate={{ width: probability.width }}
                   transition={{ duration: 1, delay: 0.5 }}
+                  style={{
+                    background: "repeating-linear-gradient(45deg, rgba(0,0,0,0.1) 0px, rgba(0,0,0,0.1) 10px, transparent 10px, transparent 20px)",
+                    backgroundColor: probability.color.includes('green') ? '#4ade80' : probability.color.includes('yellow') ? '#facc15' : '#f87171' // hacky way, but works
+                  }}
                 />
               </div>
             </div>
-            <p className="text-sm text-gray-400 leading-relaxed">
+            <p className="text-sm font-bold text-gray-700 leading-relaxed border-l-4 border-black pl-4">
               {plan.success_explanation}
             </p>
           </CardContent>
@@ -786,15 +779,16 @@ export default function EscapePlanPage() {
 
         {/* ── Disclaimers ── */}
         {plan.warnings.length > 0 && (
-          <Card className="bg-gray-900/50 border-yellow-500/10 mb-8">
-            <CardContent className="p-4">
-              <p className="text-xs font-medium text-yellow-400/70 mb-2">
-                ⚠️ Important Disclaimers
+          <Card className="border-4 border-yellow-400 rounded-none bg-yellow-50 mb-12 shadow-[8px_8px_0px_0px_rgba(250,204,21,1)]">
+            <CardContent className="p-6">
+              <p className="text-sm font-black uppercase tracking-widest text-yellow-900 mb-4 border-b-2 border-yellow-200 pb-2 flex items-center gap-2">
+                <AlertTriangle className="h-4 w-4" />
+                IMPORTANT DISCLAIMERS
               </p>
-              <ul className="space-y-1">
+              <ul className="space-y-3">
                 {plan.warnings.map((w, i) => (
-                  <li key={i} className="text-xs text-gray-500 flex items-start gap-1.5">
-                    <span className="text-yellow-500/50 mt-0.5">•</span>
+                  <li key={i} className="text-sm font-bold text-yellow-900 flex items-start gap-3">
+                    <span className="text-yellow-500 text-lg leading-none mt-0.5">•</span>
                     {w}
                   </li>
                 ))}
@@ -804,18 +798,17 @@ export default function EscapePlanPage() {
         )}
 
         {/* ── Action Bar ── */}
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-4 mb-12">
           <Button
-            variant="outline"
-            className="gap-2"
+            className="border-2 border-black font-black uppercase tracking-wider rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none transition-all gap-2 px-6 py-6 bg-white hover:bg-gray-100 text-black"
             onClick={copyPlan}
           >
             {copied ? (
-              <Check className="h-4 w-4 text-green-400" />
+              <Check className="h-5 w-5 text-green-600" />
             ) : (
-              <Copy className="h-4 w-4" />
+              <Copy className="h-5 w-5" />
             )}
-            {copied ? "Copied!" : "Copy Plan"}
+            {copied ? "COPIED PLAN!" : "COPY ESCAPE PLAN"}
           </Button>
         </div>
 

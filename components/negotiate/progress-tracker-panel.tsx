@@ -21,13 +21,13 @@ interface ProgressTrackerPanelProps {
 const STATUS_CONFIG: Record<NegotiationClauseStatus, {
   label: string; icon: string; color: string; bg: string;
 }> = {
-  pending: { label: "Pending", icon: "⏳", color: "text-white/40", bg: "bg-white/5" },
-  negotiating: { label: "Active", icon: "🔄", color: "text-blue-400", bg: "bg-blue-500/10" },
-  won: { label: "Won", icon: "✅", color: "text-green-400", bg: "bg-green-500/10" },
-  conceded: { label: "Conceded", icon: "❌", color: "text-red-400", bg: "bg-red-500/10" },
-  compromised: { label: "Compromise", icon: "🤝", color: "text-yellow-400", bg: "bg-yellow-500/10" },
-  deadlocked: { label: "Deadlock", icon: "🔒", color: "text-orange-400", bg: "bg-orange-500/10" },
-  skipped: { label: "Skipped", icon: "⏭️", color: "text-gray-400", bg: "bg-gray-500/10" },
+  pending: { label: "Pending", icon: "⏳", color: "text-gray-600", bg: "bg-gray-200" },
+  negotiating: { label: "Active", icon: "🔄", color: "text-blue-700", bg: "bg-blue-100" },
+  won: { label: "Won", icon: "✅", color: "text-green-700", bg: "bg-green-100" },
+  conceded: { label: "Conceded", icon: "❌", color: "text-red-700", bg: "bg-red-100" },
+  compromised: { label: "Compromise", icon: "🤝", color: "text-yellow-700", bg: "bg-yellow-100" },
+  deadlocked: { label: "Deadlock", icon: "🔒", color: "text-orange-700", bg: "bg-orange-100" },
+  skipped: { label: "Skipped", icon: "⏭️", color: "text-gray-700", bg: "bg-gray-200" },
 };
 
 export default function ProgressTrackerPanel({ session, onSessionUpdate }: ProgressTrackerPanelProps) {
@@ -94,54 +94,54 @@ export default function ProgressTrackerPanel({ session, onSessionUpdate }: Progr
   return (
     <div className="space-y-4">
       {/* Score Card */}
-      <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
-        <div className="text-center mb-4">
-          <p className="text-4xl font-bold text-white">
+      <div className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6">
+        <div className="text-center mb-6">
+          <p className="text-5xl font-black text-black tracking-tighter">
             {score.win_percentage}
-            <span className="text-lg text-white/30">%</span>
+            <span className="text-xl font-bold text-muted-foreground">%</span>
           </p>
-          <p className="text-xs text-white/30 mt-1">Win Rate</p>
+          <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mt-2">Win Rate</p>
         </div>
 
-        <div className="grid grid-cols-5 gap-1 text-center">
+        <div className="grid grid-cols-5 gap-2 text-center">
           {[
-            { label: "Won", value: score.won, color: "text-green-400" },
-            { label: "Lost", value: score.conceded, color: "text-red-400" },
-            { label: "Split", value: score.compromised, color: "text-yellow-400" },
-            { label: "Stuck", value: score.deadlocked, color: "text-orange-400" },
-            { label: "Left", value: score.pending, color: "text-white/40" },
+            { label: "Won", value: score.won, color: "text-green-700" },
+            { label: "Lost", value: score.conceded, color: "text-red-700" },
+            { label: "Split", value: score.compromised, color: "text-yellow-700" },
+            { label: "Stuck", value: score.deadlocked, color: "text-orange-700" },
+            { label: "Left", value: score.pending, color: "text-gray-400" },
           ].map((stat) => (
             <div key={stat.label}>
-              <p className={`text-lg font-bold ${stat.color}`}>{stat.value}</p>
-              <p className="text-[10px] text-white/30">{stat.label}</p>
+              <p className={`text-2xl font-black ${stat.color}`}>{stat.value}</p>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mt-1">{stat.label}</p>
             </div>
           ))}
         </div>
 
         {/* Win/Loss bar */}
         {score.total_clauses > 0 && (
-          <div className="mt-4 h-2 rounded-full bg-white/5 overflow-hidden flex">
+          <div className="mt-6 h-4 border-2 border-black rounded-sm bg-gray-200 overflow-hidden flex shadow-[inset_0px_2px_4px_rgba(0,0,0,0.1)]">
             {score.won > 0 && (
               <div
-                className="h-full bg-green-500 transition-all"
+                className="h-full bg-green-500 transition-all border-r-2 border-black last:border-r-0"
                 style={{ width: `${(score.won / score.total_clauses) * 100}%` }}
               />
             )}
             {score.compromised > 0 && (
               <div
-                className="h-full bg-yellow-500 transition-all"
+                className="h-full bg-yellow-500 transition-all border-r-2 border-black last:border-r-0"
                 style={{ width: `${(score.compromised / score.total_clauses) * 100}%` }}
               />
             )}
             {score.conceded > 0 && (
               <div
-                className="h-full bg-red-500 transition-all"
+                className="h-full bg-red-500 transition-all border-r-2 border-black last:border-r-0"
                 style={{ width: `${(score.conceded / score.total_clauses) * 100}%` }}
               />
             )}
             {score.deadlocked > 0 && (
               <div
-                className="h-full bg-orange-500 transition-all"
+                className="h-full bg-orange-500 transition-all border-r-2 border-black last:border-r-0"
                 style={{ width: `${(score.deadlocked / score.total_clauses) * 100}%` }}
               />
             )}
@@ -153,7 +153,7 @@ export default function ProgressTrackerPanel({ session, onSessionUpdate }: Progr
       {!showAddForm && (
         <button
           onClick={() => setShowAddForm(true)}
-          className="w-full py-3 rounded-xl border border-dashed border-white/10 text-white/30 hover:text-white/60 hover:border-white/20 hover:bg-white/[0.02] transition-all flex items-center justify-center gap-2"
+          className="w-full py-4 border-2 border-dashed border-black text-black font-black uppercase tracking-wider hover:bg-gray-100 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all flex items-center justify-center gap-2"
           style={{ minHeight: "48px" }}
         >
           <Plus className="w-5 h-5" />
@@ -163,40 +163,40 @@ export default function ProgressTrackerPanel({ session, onSessionUpdate }: Progr
 
       {/* Add Clause Form */}
       {showAddForm && (
-        <div className="rounded-xl border border-indigo-500/20 bg-indigo-500/5 p-4 space-y-3 animate-in fade-in duration-200">
+        <div className="border-2 border-indigo-900 bg-indigo-50 shadow-[4px_4px_0px_0px_rgba(49,46,129,1)] p-5 space-y-4 animate-in fade-in duration-200">
           <input
-            placeholder="Clause name (e.g., Security Deposit)"
+            placeholder="CLAUSE NAME (E.G., SECURITY DEPOSIT)"
             value={newClauseSummary}
             onChange={(e) => setNewClauseSummary(e.target.value)}
-            className="w-full px-3 py-2.5 text-sm bg-white/[0.03] border border-white/10 rounded-lg text-white placeholder:text-white/20 focus:outline-none focus:border-indigo-500/30"
+            className="w-full px-4 py-3 text-sm font-bold text-black bg-white border-2 border-black placeholder:text-muted-foreground placeholder:uppercase placeholder:tracking-wider focus:outline-none focus:ring-2 focus:ring-indigo-900 shadow-[inset_2px_2px_0px_0px_rgba(0,0,0,0.05)]"
             style={{ fontSize: "16px" }}
           />
           <input
-            placeholder="Their terms (e.g., 6 months deposit)"
+            placeholder="THEIR TERMS (E.G., 6 MONTHS DEPOSIT)"
             value={newOriginalTerms}
             onChange={(e) => setNewOriginalTerms(e.target.value)}
-            className="w-full px-3 py-2.5 text-sm bg-white/[0.03] border border-white/10 rounded-lg text-white placeholder:text-white/20 focus:outline-none focus:border-indigo-500/30"
+            className="w-full px-4 py-3 text-sm font-bold text-black bg-white border-2 border-black placeholder:text-muted-foreground placeholder:uppercase placeholder:tracking-wider focus:outline-none focus:ring-2 focus:ring-indigo-900 shadow-[inset_2px_2px_0px_0px_rgba(0,0,0,0.05)]"
             style={{ fontSize: "16px" }}
           />
           <input
-            placeholder="Your ask (e.g., 2 months deposit)"
+            placeholder="YOUR ASK (E.G., 2 MONTHS DEPOSIT)"
             value={newYourAsk}
             onChange={(e) => setNewYourAsk(e.target.value)}
-            className="w-full px-3 py-2.5 text-sm bg-white/[0.03] border border-white/10 rounded-lg text-white placeholder:text-white/20 focus:outline-none focus:border-indigo-500/30"
+            className="w-full px-4 py-3 text-sm font-bold text-black bg-white border-2 border-black placeholder:text-muted-foreground placeholder:uppercase placeholder:tracking-wider focus:outline-none focus:ring-2 focus:ring-indigo-900 shadow-[inset_2px_2px_0px_0px_rgba(0,0,0,0.05)]"
             style={{ fontSize: "16px" }}
           />
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             <button
               onClick={handleAddClause}
               disabled={!newClauseSummary.trim()}
-              className="flex-1 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium disabled:opacity-30 transition-colors"
+              className="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-black uppercase tracking-widest border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50 transition-all active:translate-y-1 active:shadow-none"
               style={{ minHeight: "44px" }}
             >
               Add Clause
             </button>
             <button
               onClick={() => setShowAddForm(false)}
-              className="px-4 py-2.5 rounded-lg bg-white/5 text-white/40 hover:text-white/60 text-sm transition-colors"
+              className="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-black text-sm font-black uppercase tracking-widest border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all active:translate-y-1 active:shadow-none"
               style={{ minHeight: "44px" }}
             >
               Cancel
@@ -207,8 +207,8 @@ export default function ProgressTrackerPanel({ session, onSessionUpdate }: Progr
 
       {/* Clause List */}
       {session.clauses.length > 0 && (
-        <div className="space-y-2">
-          <p className="text-xs text-white/20 font-medium px-1">
+        <div className="space-y-4">
+          <p className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1 mb-3 pt-6 border-t-2 border-black/10">
             {session.clauses.length} clause{session.clauses.length !== 1 ? "s" : ""} tracked
           </p>
           {session.clauses.map((clause) => {
@@ -217,29 +217,29 @@ export default function ProgressTrackerPanel({ session, onSessionUpdate }: Progr
             return (
               <div
                 key={clause.id}
-                className={`rounded-xl border border-white/5 bg-white/[0.01] p-4 space-y-2`}
+                className="border-2 border-black bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] p-5 space-y-4 hover:translate-x-1 transition-transform"
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className={`text-xs px-1.5 py-0.5 rounded ${config.bg} ${config.color} font-medium`}>
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className={`text-[10px] px-2 py-1 uppercase tracking-wider font-black border-2 border-black ${config.bg} ${config.color}`}>
                         {config.icon} {config.label}
                       </span>
                     </div>
-                    <p className="text-sm font-medium text-white">{clause.clause_summary}</p>
+                    <p className="text-base font-black text-black leading-tight mb-2">{clause.clause_summary}</p>
                     {clause.original_terms && (
-                      <p className="text-xs text-white/30 mt-1">
-                        Their terms: {clause.original_terms}
+                      <p className="text-xs font-bold text-red-700 mt-1">
+                        Their terms: <span className="font-medium text-black">{clause.original_terms}</span>
                       </p>
                     )}
                     {clause.your_ask && (
-                      <p className="text-xs text-blue-400/60 mt-0.5">
-                        Your ask: {clause.your_ask}
+                      <p className="text-xs font-bold text-blue-700 mt-1">
+                        Your ask: <span className="font-medium text-black">{clause.your_ask}</span>
                       </p>
                     )}
                     {clause.final_terms && (
-                      <p className="text-xs text-emerald-400/60 mt-0.5">
-                        Final: {clause.final_terms}
+                      <p className="text-xs font-bold text-green-700 mt-1">
+                        Final: <span className="font-medium text-black">{clause.final_terms}</span>
                       </p>
                     )}
                   </div>
@@ -247,12 +247,12 @@ export default function ProgressTrackerPanel({ session, onSessionUpdate }: Progr
 
                 {/* Status action buttons */}
                 {clause.status === "pending" || clause.status === "negotiating" ? (
-                  <div className="flex gap-1 flex-wrap">
+                  <div className="flex gap-2 flex-wrap pt-2 border-t-2 border-black/5">
                     {statusActions.map((action) => (
                       <button
                         key={action.status}
                         onClick={() => handleStatusChange(clause.id, action.status)}
-                        className={`flex items-center gap-1 px-2 py-1.5 rounded-lg text-[10px] font-medium border border-white/5 hover:bg-white/5 transition-colors ${
+                        className={`flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider border-2 border-black bg-white hover:bg-gray-100 transition-colors shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] active:translate-y-px active:shadow-none ${
                           STATUS_CONFIG[action.status].color
                         }`}
                         style={{ minHeight: "32px" }}
@@ -270,31 +270,31 @@ export default function ProgressTrackerPanel({ session, onSessionUpdate }: Progr
       )}
 
       {/* Quick Note */}
-      <div className="relative">
+      <div className="relative mt-8">
         <input
-          placeholder="Quick note..."
+          placeholder="QUICK NOTE..."
           value={noteText}
           onChange={(e) => setNoteText(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleAddNote()}
-          className="w-full px-4 py-3 pr-12 text-sm bg-white/[0.02] border border-white/5 rounded-xl text-white placeholder:text-white/15 focus:outline-none focus:border-white/10 transition-all"
+          className="w-full px-4 py-4 pr-12 text-sm font-bold text-black bg-white border-2 border-black placeholder:text-muted-foreground placeholder:uppercase placeholder:font-black tracking-widest focus:outline-none focus:bg-gray-50 focus:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
           style={{ fontSize: "16px" }}
         />
         <button
           onClick={handleAddNote}
           disabled={!noteText.trim()}
-          className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-lg text-white/20 hover:text-white/40 disabled:opacity-20 transition-colors"
+          className="absolute right-3 top-1/2 -translate-y-1/2 p-2 bg-black text-white hover:bg-gray-800 disabled:opacity-20 transition-colors border-2 border-transparent active:scale-95"
         >
-          <ArrowRight className="w-4 h-4" />
+          <ArrowRight className="w-5 h-5" />
         </button>
       </div>
 
       {/* Notes */}
       {session.notes.length > 0 && (
-        <div className="space-y-1">
-          <p className="text-xs text-white/20 font-medium px-1">Notes</p>
-          <div className="max-h-40 overflow-y-auto rounded-xl border border-white/5 bg-white/[0.01] p-3 space-y-1">
+        <div className="space-y-2">
+          <p className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1 mt-6 mb-2">Notes</p>
+          <div className="max-h-40 overflow-y-auto border-2 border-black bg-gray-50 p-4 space-y-3 shadow-[inset_2px_2px_0px_0px_rgba(0,0,0,0.05)]">
             {session.notes.map((note, idx) => (
-              <p key={idx} className="text-xs text-white/40">{note}</p>
+              <p key={idx} className="text-sm font-bold text-black/70 border-b-2 border-black/10 pb-3 last:border-0 last:pb-0">{note}</p>
             ))}
           </div>
         </div>
@@ -303,10 +303,10 @@ export default function ProgressTrackerPanel({ session, onSessionUpdate }: Progr
       {/* Export */}
       <button
         onClick={handleExport}
-        className="w-full py-3 rounded-xl border border-white/5 text-white/30 hover:text-white/60 hover:bg-white/[0.02] transition-all flex items-center justify-center gap-2 text-sm"
+        className="w-full mt-8 py-4 border-2 border-black bg-white text-black font-black uppercase tracking-widest hover:bg-gray-100 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all flex items-center justify-center gap-2 active:translate-y-1 active:shadow-none"
         style={{ minHeight: "48px" }}
       >
-        <Download className="w-4 h-4" />
+        <Download className="w-5 h-5" />
         Export Session Summary
       </button>
     </div>

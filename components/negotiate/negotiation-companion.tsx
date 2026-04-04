@@ -150,27 +150,27 @@ export default function NegotiationCompanion() {
   return (
     <div className="min-h-screen bg-background flex flex-col" style={{ paddingBottom: "80px" }}>
       {/* Top Bar */}
-      <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm border-b border-white/5 px-4 py-3">
+      <div className="sticky top-0 z-40 bg-white border-b-2 border-black px-4 py-3">
         <div className="flex items-center justify-between max-w-2xl mx-auto">
           <div className="flex items-center gap-3">
             <Link
               href="/dashboard"
-              className="p-2 -ml-2 rounded-lg text-white/40 hover:text-white/80 hover:bg-white/5 transition-colors"
+              className="p-2 -ml-2 text-muted-foreground hover:text-black transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <div>
-              <p className="text-sm font-medium text-white truncate max-w-[140px] sm:max-w-none">
+              <p className="text-sm font-black uppercase tracking-tight text-black truncate max-w-[140px] sm:max-w-none">
                 {session.entity_name}
               </p>
-              <p className="text-[10px] text-white/30 font-mono">
+              <p className="text-[10px] text-muted-foreground font-black uppercase tracking-wider">
                 {formatTime(elapsedTime)}
               </p>
             </div>
           </div>
           <button
             onClick={handleEndSession}
-            className="text-xs text-red-400/70 hover:text-red-400 px-3 py-1.5 rounded-lg border border-red-500/20 hover:border-red-500/40 transition-colors"
+            className="text-xs font-bold uppercase tracking-wider text-black bg-red-400 hover:bg-red-500 px-3 py-1.5 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-colors"
           >
             End Session
           </button>
@@ -178,25 +178,22 @@ export default function NegotiationCompanion() {
       </div>
 
       {/* Mode Selector */}
-      <div className="sticky top-[61px] z-30 bg-background/95 backdrop-blur-sm border-b border-white/5 px-2 py-2">
-        <div className="flex gap-1 max-w-2xl mx-auto justify-center">
+      <div className="sticky top-[61px] z-30 bg-gray-50 border-b-2 border-black px-2 py-2">
+        <div className="flex gap-2 max-w-2xl mx-auto justify-center overflow-x-auto pb-1">
           {MODE_CONFIG.map((mode) => (
             <button
               key={mode.id}
               onClick={() => setActiveMode(mode.id)}
-              className={`flex flex-col items-center gap-0.5 px-3 py-2 rounded-xl transition-all min-w-[56px] ${
+              className={`flex flex-col items-center gap-1 px-3 py-2 transition-all min-w-[56px] border-2 ${
                 activeMode === mode.id
-                  ? "bg-white/10 shadow-lg"
-                  : "hover:bg-white/5"
+                  ? "bg-white border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                  : "bg-transparent border-transparent hover:border-black/20"
               }`}
-              style={{
-                borderBottom: activeMode === mode.id ? `2px solid ${mode.color}` : "2px solid transparent",
-              }}
             >
               <span className="text-lg leading-none">{mode.icon}</span>
               <span
-                className={`text-[10px] font-medium ${
-                  activeMode === mode.id ? "text-white" : "text-white/40"
+                className={`text-[10px] font-black uppercase tracking-wider ${
+                  activeMode === mode.id ? "text-black" : "text-muted-foreground"
                 }`}
               >
                 {mode.label}

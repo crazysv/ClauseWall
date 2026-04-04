@@ -157,21 +157,20 @@ export default function LetterPage() {
   // Loading state
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-        <Loader2 className="h-12 w-12 text-blue-500 animate-spin" />
-        <p className="text-muted-foreground">Loading document...</p>
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6">
+        <Loader2 className="h-16 w-16 text-black animate-spin" />
+        <p className="text-sm font-black uppercase tracking-widest text-muted-foreground">Loading document...</p>
       </div>
     );
   }
 
-  // No document
   if (!document) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-        <AlertTriangle className="h-12 w-12 text-red-500" />
-        <p className="text-red-400">Document not found</p>
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 bg-white border-2 border-black p-8 m-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <AlertTriangle className="h-16 w-16 text-red-600" />
+        <p className="text-2xl font-black text-red-700">Document not found</p>
         <Link href="/upload">
-          <Button>Upload New Document</Button>
+          <Button className="border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-bold uppercase hover:translate-y-1 hover:shadow-none transition-all rounded-none">UPLOAD NEW DOCUMENT</Button>
         </Link>
       </div>
     );
@@ -184,31 +183,27 @@ export default function LetterPage() {
 
   return (
     <div className="relative px-4 sm:px-6 lg:px-8 py-8">
-      {/* Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl" />
-      </div>
+
 
       <div className="relative mx-auto max-w-4xl">
         {/* Back Link */}
         <Link
           href={`/results/${documentId}`}
-          className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-6 transition-colors"
+          className="inline-flex items-center gap-2 text-muted-foreground font-black uppercase tracking-wider hover:text-black mb-8 transition-colors hover:translate-x-1"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Results
         </Link>
 
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="h-12 w-12 rounded-xl bg-blue-500/10 flex items-center justify-center">
-              <Scale className="h-6 w-6 text-blue-400" />
+        <div className="mb-10">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="h-14 w-14 border-2 border-black bg-blue-100 flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(30,58,138,1)]">
+              <Scale className="h-7 w-7 text-blue-900" />
             </div>
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold">Legal Notice Generator</h1>
-              <p className="text-muted-foreground text-sm">
+              <h1 className="text-3xl sm:text-4xl font-black text-black uppercase tracking-tighter">Legal Notice Generator</h1>
+              <p className="text-muted-foreground font-bold uppercase tracking-widest mt-2">
                 {document.original_filename} • {getDocumentTypeLabel(document.document_type)} •{" "}
                 {getStateName(document.jurisdiction)}
               </p>
@@ -217,54 +212,54 @@ export default function LetterPage() {
         </div>
 
         {/* Problematic Clauses Summary */}
-        <Card className="glass border-white/5 mb-6">
-          <CardContent className="p-6">
-            <h3 className="font-semibold mb-4">Problematic Clauses Found</h3>
-            <div className="grid grid-cols-3 gap-4 mb-4">
-              <div className="text-center p-3 rounded-lg bg-purple-500/10">
-                <p className="text-2xl font-bold text-purple-400">{illegalCount}</p>
-                <p className="text-xs text-muted-foreground">Illegal</p>
+        <Card className="border-2 border-black rounded-none bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] mb-10">
+          <CardContent className="p-8">
+            <h3 className="text-lg font-black uppercase tracking-widest text-black mb-6 border-b-2 border-black/10 pb-4">Problematic Clauses Found</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+              <div className="border-2 border-purple-900 bg-purple-100 p-4 shadow-[4px_4px_0px_0px_rgba(88,28,135,1)] text-center">
+                <p className="text-4xl font-black text-purple-900 mb-1">{illegalCount}</p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-purple-900">Illegal</p>
               </div>
-              <div className="text-center p-3 rounded-lg bg-red-500/10">
-                <p className="text-2xl font-bold text-red-400">{dangerousCount}</p>
-                <p className="text-xs text-muted-foreground">Dangerous</p>
+              <div className="border-2 border-red-900 bg-red-100 p-4 shadow-[4px_4px_0px_0px_rgba(127,29,29,1)] text-center">
+                <p className="text-4xl font-black text-red-900 mb-1">{dangerousCount}</p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-red-900">Dangerous</p>
               </div>
-              <div className="text-center p-3 rounded-lg bg-yellow-500/10">
-                <p className="text-2xl font-bold text-yellow-400">{warningCount}</p>
-                <p className="text-xs text-muted-foreground">Warning</p>
+              <div className="border-2 border-yellow-900 bg-yellow-100 p-4 shadow-[4px_4px_0px_0px_rgba(113,63,18,1)] text-center">
+                <p className="text-4xl font-black text-yellow-900 mb-1">{warningCount}</p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-yellow-900">Warning</p>
               </div>
             </div>
 
             {clauses.length === 0 ? (
-              <p className="text-muted-foreground text-sm">
+              <p className="font-bold text-black text-lg p-6 bg-green-100 border-2 border-green-900 text-center">
                 No problematic clauses found. Your contract looks good! 🎉
               </p>
             ) : (
-              <div className="space-y-2 max-h-48 overflow-y-auto">
+              <div className="space-y-3 max-h-64 overflow-y-auto pr-2">
                 {clauses.slice(0, 5).map((clause, i) => (
                   <div
                     key={clause.id}
-                    className="flex items-center gap-2 text-sm p-2 rounded-lg bg-white/5"
+                    className="flex items-center gap-4 text-sm p-4 border-2 border-black bg-gray-50 hover:bg-white transition-colors"
                   >
                     <Badge
-                      className={
+                      className={`rounded-none border-2 px-2 py-1 font-black uppercase tracking-wider ${
                         clause.risk_level === "illegal"
-                          ? "bg-purple-500/20 text-purple-400"
+                          ? "bg-purple-100 border-purple-900 text-purple-900"
                           : clause.risk_level === "dangerous"
-                          ? "bg-red-500/20 text-red-400"
-                          : "bg-yellow-500/20 text-yellow-400"
-                      }
+                          ? "bg-red-100 border-red-900 text-red-900"
+                          : "bg-yellow-100 border-yellow-900 text-yellow-900"
+                      }`}
                     >
                       {clause.risk_level}
                     </Badge>
-                    <span className="text-muted-foreground truncate flex-1">
+                    <span className="font-bold text-black truncate flex-1 leading-relaxed">
                       {clause.original_text.substring(0, 80)}...
                     </span>
                   </div>
                 ))}
                 {clauses.length > 5 && (
-                  <p className="text-xs text-muted-foreground text-center">
-                    + {clauses.length - 5} more clauses
+                  <p className="text-xs font-black uppercase tracking-widest text-muted-foreground text-center mt-6">
+                    + {clauses.length - 5} MORE CLAUSES
                   </p>
                 )}
               </div>
@@ -274,26 +269,26 @@ export default function LetterPage() {
 
         {/* Generate Button */}
         {!letter && (
-          <div className="text-center mb-8">
+          <div className="text-center mb-12">
             <Button
               onClick={generateLetter}
               disabled={generating || clauses.length === 0}
               size="lg"
-              className="bg-blue-600 hover:bg-blue-700 gap-2 px-8"
+              className="border-2 border-black bg-blue-500 hover:bg-blue-600 text-white font-black uppercase tracking-widest gap-3 px-12 py-8 text-lg shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] active:translate-y-2 active:translate-x-2 active:shadow-none transition-all rounded-none w-full sm:w-auto"
             >
               {generating ? (
                 <>
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                  Generating Legal Notice...
+                  <Loader2 className="h-6 w-6 animate-spin text-white" />
+                  GENERATING LEGAL NOTICE...
                 </>
               ) : (
                 <>
-                  <FileText className="h-5 w-5" />
-                  Generate Legal Notice
+                  <FileText className="h-6 w-6" />
+                  GENERATE LEGAL NOTICE
                 </>
               )}
             </Button>
-            <p className="text-xs text-muted-foreground mt-3">
+            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mt-8">
               This will create a formal legal notice citing Indian laws
             </p>
           </div>
@@ -301,13 +296,13 @@ export default function LetterPage() {
 
         {/* Generated Letter */}
         {letter && (
-          <Card className="glass border-white/5 glow-blue">
-            <CardContent className="p-6">
+          <Card className="border-2 border-black rounded-none bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+            <CardContent className="p-8">
               {/* Letter Header */}
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
                 <div>
-                  <h3 className="font-semibold text-lg">{letter.subject}</h3>
-                  <p className="text-sm text-muted-foreground">
+                  <h3 className="font-black text-2xl uppercase tracking-tight text-black">{letter.subject}</h3>
+                  <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mt-2">
                     Generated under Indian law
                   </p>
                 </div>
@@ -317,10 +312,10 @@ export default function LetterPage() {
                     size="sm"
                     onClick={generateLetter}
                     disabled={generating}
-                    className="gap-2"
+                    className="border-2 border-black font-bold uppercase tracking-wider shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none transition-all gap-2 rounded-none"
                   >
                     <RefreshCw className={`h-4 w-4 ${generating ? "animate-spin" : ""}`} />
-                    Regenerate
+                    REGENERATE
                   </Button>
                 </div>
               </div>
@@ -329,22 +324,22 @@ export default function LetterPage() {
               <Textarea
                 value={editedBody}
                 onChange={(e) => setEditedBody(e.target.value)}
-                className="min-h-[400px] bg-white/5 border-white/10 font-mono text-sm leading-relaxed"
+                className="min-h-[500px] bg-gray-50 border-2 border-black font-mono text-sm leading-relaxed p-6 shadow-[inset_4px_4px_0px_0px_rgba(0,0,0,0.05)] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-blue-500 rounded-none resize-y"
                 placeholder="Letter content..."
               />
 
               {/* Legal References */}
               {letter.legal_references && letter.legal_references.length > 0 && (
-                <div className="mt-4 p-4 rounded-lg bg-blue-500/10 border border-blue-500/20">
-                  <p className="text-sm font-medium text-blue-400 mb-2">
-                    Laws & Sections Referenced:
+                <div className="mt-6 p-6 bg-blue-50 border-2 border-blue-900 border-dashed">
+                  <p className="text-xs font-black uppercase tracking-widest text-blue-900 mb-4">
+                    LAWS & SECTIONS REFERENCED:
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {letter.legal_references.map((ref, i) => (
                       <Badge
                         key={i}
                         variant="outline"
-                        className="border-blue-500/30 text-blue-300"
+                        className="rounded-none border-2 border-blue-900 bg-white text-blue-900 font-bold uppercase shadow-[2px_2px_0px_0px_rgba(30,58,138,1)]"
                       >
                         {ref}
                       </Badge>
@@ -355,14 +350,14 @@ export default function LetterPage() {
 
               {/* Agencies */}
               {letter.agencies && letter.agencies.length > 0 && (
-                <div className="mt-4 p-4 rounded-lg bg-purple-500/10 border border-purple-500/20">
-                  <p className="text-sm font-medium text-purple-400 mb-2">
-                    Where to File Complaints:
+                <div className="mt-6 p-6 bg-purple-50 border-2 border-purple-900 border-dashed">
+                  <p className="text-xs font-black uppercase tracking-widest text-purple-900 mb-4">
+                    WHERE TO FILE COMPLAINTS:
                   </p>
-                  <ul className="text-sm text-purple-300 space-y-1">
+                  <ul className="text-sm font-bold text-purple-950 space-y-3">
                     {letter.agencies.map((agency, i) => (
-                      <li key={i} className="flex items-center gap-2">
-                        <CheckCircle2 className="h-3 w-3" />
+                      <li key={i} className="flex items-start gap-3">
+                        <CheckCircle2 className="h-5 w-5 text-purple-600 flex-shrink-0" />
                         {agency}
                       </li>
                     ))}
@@ -371,27 +366,27 @@ export default function LetterPage() {
               )}
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap gap-3 mt-6">
-                <Button onClick={copyToClipboard} className="gap-2">
+              <div className="flex flex-wrap gap-4 mt-8 pt-6 border-t-2 border-black/10">
+                <Button onClick={copyToClipboard} className="border-2 border-black font-black uppercase tracking-wider shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none transition-all gap-2 rounded-none px-6">
                   {copied ? (
                     <>
                       <CheckCircle2 className="h-4 w-4" />
-                      Copied!
+                      COPIED!
                     </>
                   ) : (
                     <>
                       <Copy className="h-4 w-4" />
-                      Copy to Clipboard
+                      COPY TO CLIPBOARD
                     </>
                   )}
                 </Button>
-                <Button variant="outline" onClick={downloadLetter} className="gap-2">
+                <Button variant="outline" onClick={downloadLetter} className="border-2 border-black font-black uppercase tracking-wider shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none transition-all gap-2 rounded-none px-6">
                   <Download className="h-4 w-4" />
-                  Download as TXT
+                  DOWNLOAD AS TXT
                 </Button>
-                <Button variant="outline" className="gap-2" disabled>
+                <Button variant="outline" className="border-2 border-black font-black uppercase tracking-wider gap-2 rounded-none px-6 disabled:opacity-50" disabled>
                   <Send className="h-4 w-4" />
-                  Send via Email (Coming Soon)
+                  EMAIL (SOON)
                 </Button>
               </div>
             </CardContent>
@@ -399,12 +394,12 @@ export default function LetterPage() {
         )}
 
         {/* Disclaimer */}
-        <div className="mt-8 p-4 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
-          <div className="flex items-start gap-3">
-            <AlertTriangle className="h-5 w-5 text-yellow-400 flex-shrink-0 mt-0.5" />
-            <div className="text-sm text-yellow-300">
-              <p className="font-medium mb-1">Important Disclaimer</p>
-              <p className="text-yellow-300/80">
+        <div className="mt-12 p-6 bg-yellow-50 border-2 border-yellow-900 shadow-[4px_4px_0px_0px_rgba(113,63,18,1)]">
+          <div className="flex flex-col sm:flex-row items-start gap-4">
+            <AlertTriangle className="text-yellow-700 h-8 w-8 flex-shrink-0" />
+            <div className="text-yellow-900">
+              <p className="font-black uppercase tracking-widest text-base mb-2">IMPORTANT DISCLAIMER</p>
+              <p className="font-bold leading-relaxed">
                 This legal notice is auto-generated for informational purposes only. It is NOT
                 a substitute for professional legal advice. We recommend consulting with a
                 qualified lawyer before sending any legal notice. ClauseWall is not responsible
@@ -416,27 +411,27 @@ export default function LetterPage() {
 
         {/* Notice Follow-Up: File at Authority */}
         {letter && (
-          <Card className="mt-6 border-blue-500/20 bg-blue-500/5">
-            <CardContent className="p-5">
-              <div className="flex items-center gap-2 mb-3">
-                <Building2 className="h-5 w-5 text-blue-400" />
-                <h3 className="font-semibold">Notice sent? If no response in 15 days, file here:</h3>
+          <Card className="mt-8 border-2 border-black rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white">
+            <CardContent className="p-8">
+              <div className="flex items-center gap-4 mb-6 pb-4 border-b-2 border-black/10">
+                <Building2 className="h-6 w-6 text-black" />
+                <h3 className="font-black uppercase tracking-widest text-lg">HAVE YOU SENT THE NOTICE?</h3>
               </div>
 
               {/* Mini Escalation Preview */}
-              <div className="flex items-center gap-2 mb-4">
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-green-500/15 border border-green-500/30">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-green-400" />
-                  <span className="text-xs font-medium text-green-400">Step 1: Legal Notice</span>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
+                <div className="border-2 border-black bg-green-300 px-4 py-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-black" />
+                  <span className="text-xs font-black uppercase tracking-wider text-black">Step 1: Legal Notice</span>
                 </div>
-                <ArrowRight className="h-4 w-4 text-muted-foreground" />
-                <Link href="/authority" className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-500/15 border border-blue-500/30 hover:bg-blue-500/25 transition-colors">
-                  <Building2 className="h-3.5 w-3.5 text-blue-400" />
-                  <span className="text-xs font-medium text-blue-400">Step 2: File at Authority →</span>
+                <ArrowRight className="h-5 w-5 text-black hidden sm:block" />
+                <Link href="/authority" className="border-2 border-black bg-white hover:bg-gray-100 flex items-center gap-2 px-4 py-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:-translate-y-1">
+                  <Building2 className="h-4 w-4 text-black" />
+                  <span className="text-xs font-black uppercase tracking-wider text-black">Step 2: File at Authority →</span>
                 </Link>
               </div>
 
-              <p className="text-xs text-muted-foreground">
+              <p className="text-sm font-bold text-muted-foreground leading-relaxed">
                 Under Indian consumer law, if the opposing party does not respond to your legal notice
                 within 15 days, you can escalate by filing a formal complaint at the appropriate forum.
               </p>

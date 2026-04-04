@@ -59,7 +59,7 @@ export default function FloatingLookupBar({ jurisdiction, documentType, onResult
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-4 right-4 z-50 w-14 h-14 rounded-full bg-blue-600/90 hover:bg-blue-600 shadow-lg shadow-blue-500/20 text-white flex items-center justify-center transition-all active:scale-95"
+        className="fixed bottom-4 right-4 z-50 w-14 h-14 bg-blue-500 hover:bg-blue-600 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-white flex items-center justify-center transition-all active:translate-y-1 active:shadow-none"
         style={{ minWidth: "56px", minHeight: "56px" }}
       >
         <Search className="w-6 h-6" />
@@ -68,50 +68,54 @@ export default function FloatingLookupBar({ jurisdiction, documentType, onResult
   }
 
   return (
-    <div className="fixed bottom-0 inset-x-0 z-50 bg-background/95 backdrop-blur-xl border-t border-white/10 shadow-2xl animate-in slide-in-from-bottom-4 duration-200">
+    <div className="fixed bottom-0 inset-x-0 z-50 bg-white border-t-2 border-black shadow-[0_-4px_0px_0px_rgba(0,0,0,0.1)] animate-in slide-in-from-bottom-4 duration-200">
       {/* Result */}
       {result && (
-        <div className="px-4 pt-3 pb-2">
-          <div className="rounded-xl border border-white/5 bg-white/[0.02] p-3 max-h-40 overflow-y-auto">
-            <p className="text-sm text-white/80 mb-1">{result.legal_answer}</p>
-            {result.legal_limit && (
-              <span className="text-[10px] text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded mr-1">
-                📏 {result.legal_limit}
-              </span>
-            )}
+        <div className="px-4 pt-4 pb-2">
+          <div className="border-2 border-black bg-blue-50 p-4 max-h-40 overflow-y-auto">
+            <p className="text-sm font-bold text-black mb-3 leading-relaxed">{result.legal_answer}</p>
+            <div className="flex flex-wrap gap-2 items-center">
+              {result.legal_limit && (
+                <span className="text-[10px] font-black uppercase tracking-wider text-black bg-white border-2 border-black px-2 py-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                  📏 {result.legal_limit}
+                </span>
+              )}
+            </div>
             {result.what_to_say && (
-              <p className="text-xs text-emerald-400/70 mt-1.5">
-                💬 &ldquo;{result.what_to_say}&rdquo;
-              </p>
+              <div className="mt-3 p-3 bg-green-100 border-2 border-green-900 border-dashed">
+                <p className="text-xs font-bold text-green-950 uppercase tracking-tight">
+                  💬 &ldquo;{result.what_to_say}&rdquo;
+                </p>
+              </div>
             )}
           </div>
         </div>
       )}
 
       {/* Input Bar */}
-      <div className="px-4 py-3 flex items-center gap-2">
+      <div className="px-4 py-4 flex items-center gap-3">
         <input
           ref={inputRef}
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-          placeholder="Quick legal question..."
-          className="flex-1 px-4 py-3 text-sm bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder:text-white/20 focus:outline-none focus:border-blue-500/30"
+          placeholder="QUICK LEGAL QUESTION..."
+          className="flex-1 px-4 py-3 text-sm font-bold text-black bg-white border-2 border-black shadow-[inner_2px_2px_0px_0px_rgba(0,0,0,0.1)] placeholder:text-muted-foreground placeholder:uppercase placeholder:font-black placeholder:tracking-widest focus:outline-none focus:ring-2 focus:ring-blue-500"
           style={{ fontSize: "16px" }}
           disabled={loading}
         />
         <button
           onClick={handleSubmit}
           disabled={!query.trim() || loading}
-          className="p-3 rounded-xl bg-blue-600 text-white disabled:opacity-30 transition-all"
+          className="p-3 bg-blue-500 hover:bg-blue-600 border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] text-white disabled:opacity-50 transition-all active:translate-y-1 active:shadow-none"
           style={{ minWidth: "48px", minHeight: "48px" }}
         >
-          {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
+          {loading ? <Loader2 className="w-5 h-5 text-white animate-spin" /> : <Send className="w-5 h-5 text-white" />}
         </button>
         <button
           onClick={handleClose}
-          className="p-3 rounded-xl text-white/30 hover:text-white/60 hover:bg-white/5 transition-colors"
+          className="p-3 bg-gray-200 hover:bg-red-400 hover:text-white border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] text-black transition-all active:translate-y-1 active:shadow-none"
           style={{ minWidth: "48px", minHeight: "48px" }}
         >
           <X className="w-5 h-5" />

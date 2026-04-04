@@ -18,12 +18,12 @@ export default function TacticAlert({ tactic, bluffCheck, onDismiss, onSpeak }: 
   const tacticData = getTacticByType(tactic.tactic_type);
 
   const isBluff = tactic.tactic_type === "false_legal_claim" && bluffCheck;
-  const borderColor = isBluff ? "border-red-500/30" : "border-orange-500/20";
-  const bgColor = isBluff ? "bg-red-500/5" : "bg-orange-500/5";
+  const borderColor = isBluff ? "border-red-600" : "border-yellow-600";
+  const bgColor = isBluff ? "bg-red-100" : "bg-yellow-50";
 
   return (
     <div
-      className={`rounded-2xl border ${borderColor} ${bgColor} overflow-hidden animate-in slide-in-from-top-2 fade-in duration-300`}
+      className={`border-2 ${borderColor} ${bgColor} shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] animate-in slide-in-from-top-2 fade-in duration-300`}
     >
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3">
@@ -34,17 +34,17 @@ export default function TacticAlert({ tactic, bluffCheck, onDismiss, onSpeak }: 
             <AlertTriangle className="w-5 h-5 text-orange-400 animate-pulse" />
           )}
           <div>
-            <p className={`text-sm font-bold ${isBluff ? "text-red-400" : "text-orange-400"}`}>
+            <p className={`text-sm font-black uppercase tracking-widest ${isBluff ? "text-red-700" : "text-yellow-700"}`}>
               {isBluff ? "⚡ BLUFF DETECTED" : `⚠️ ${tacticData?.name || "Tactic Detected"}`}
             </p>
-            <p className="text-[10px] text-white/30">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-black/60 mt-0.5">
               {tactic.confidence} confidence
             </p>
           </div>
         </div>
         <button
           onClick={onDismiss}
-          className="p-1.5 rounded-lg text-white/20 hover:text-white/50 hover:bg-white/5 transition-colors"
+          className="p-1 border-2 border-transparent hover:border-black hover:bg-white text-black transition-colors"
         >
           <X className="w-4 h-4" />
         </button>
@@ -52,31 +52,31 @@ export default function TacticAlert({ tactic, bluffCheck, onDismiss, onSpeak }: 
 
       {/* Matched phrase */}
       {expanded && (
-        <div className="px-4 pb-2">
-          <p className="text-xs text-white/30">Detected:</p>
-          <p className="text-sm text-white/60 italic">&ldquo;{tactic.matched_phrase}&rdquo;</p>
+        <div className="px-4 pb-4">
+          <p className="text-[10px] font-black uppercase tracking-wider text-black/50 mb-1">Detected:</p>
+          <p className="text-sm font-bold text-black italic leading-relaxed">&ldquo;{tactic.matched_phrase}&rdquo;</p>
         </div>
       )}
 
       {/* Bluff details */}
       {expanded && isBluff && bluffCheck && (
-        <div className="mx-4 mb-3 p-3 rounded-xl bg-red-500/5 border border-red-500/10 space-y-2">
-          <p className="text-xs text-red-400/70 font-medium">Legal Reality:</p>
-          <p className="text-sm text-white/80">{bluffCheck.actual_legal_position}</p>
+        <div className="mx-4 mb-4 p-4 border-2 border-red-900 bg-white shadow-[2px_2px_0px_0px_rgba(127,29,29,1)] space-y-3">
+          <p className="text-xs font-black uppercase tracking-wider text-red-900">Legal Reality:</p>
+          <p className="text-sm font-bold text-red-950 leading-relaxed">{bluffCheck.actual_legal_position}</p>
           {bluffCheck.legal_limit && (
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-green-400/80 bg-green-500/10 px-2 py-0.5 rounded">
+            <div className="flex flex-wrap items-center gap-2 pt-1">
+              <span className="text-[10px] font-black uppercase tracking-wider text-black bg-blue-100 border-2 border-blue-900 px-2 py-1">
                 📏 Legal Limit: {bluffCheck.legal_limit}
               </span>
               {bluffCheck.their_claim_value && (
-                <span className="text-xs text-red-400/80 bg-red-500/10 px-2 py-0.5 rounded">
+                <span className="text-[10px] font-black uppercase tracking-wider text-black bg-red-100 border-2 border-red-900 px-2 py-1">
                   They want: {bluffCheck.their_claim_value}
                 </span>
               )}
             </div>
           )}
           {bluffCheck.statute_name && (
-            <p className="text-[10px] text-white/20">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-red-900/60 pt-2 border-t-2 border-red-900/10">
               📖 {bluffCheck.statute_name} {bluffCheck.statute_code ? `(${bluffCheck.statute_code})` : ""}
             </p>
           )}
@@ -85,18 +85,18 @@ export default function TacticAlert({ tactic, bluffCheck, onDismiss, onSpeak }: 
 
       {/* Counter response */}
       {expanded && (
-        <div className="mx-4 mb-4 p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/10">
-          <div className="flex items-center justify-between mb-1">
-            <p className="text-xs text-emerald-400/70 font-medium">💬 Say This:</p>
+        <div className="mx-4 mb-5 p-4 border-2 border-green-900 bg-green-100 border-dashed">
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-xs font-black uppercase tracking-wider text-green-900">💬 Say This:</p>
             <button
               onClick={() => onSpeak(isBluff && bluffCheck?.what_to_say ? bluffCheck.what_to_say : tactic.counter_response)}
-              className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] text-emerald-400/50 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 border-2 border-green-900 bg-white text-[10px] font-bold uppercase tracking-wider text-green-900 hover:bg-green-200 transition-colors shadow-[2px_2px_0px_0px_rgba(20,83,45,1)] active:translate-y-0.5 active:shadow-[1px_1px_0px_0px_rgba(20,83,45,1)]"
             >
               <Volume2 className="w-3 h-3" />
               Whisper
             </button>
           </div>
-          <p className="text-sm text-emerald-300 leading-relaxed">
+          <p className="text-base font-bold text-green-950 leading-relaxed">
             &ldquo;{isBluff && bluffCheck?.what_to_say ? bluffCheck.what_to_say : tactic.counter_response}&rdquo;
           </p>
         </div>
@@ -105,9 +105,9 @@ export default function TacticAlert({ tactic, bluffCheck, onDismiss, onSpeak }: 
       {/* Expand/Collapse toggle */}
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full py-2 text-[10px] text-white/20 hover:text-white/40 border-t border-white/5 transition-colors"
+        className="w-full py-3 text-[10px] font-bold uppercase tracking-widest text-black/50 hover:text-black hover:bg-white/50 border-t-2 border-black/10 transition-colors"
       >
-        {expanded ? "▲ Collapse" : "▼ Show details"}
+        {expanded ? "▲ COLLAPSE" : "▼ SHOW DETAILS"}
       </button>
     </div>
   );

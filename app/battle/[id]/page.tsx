@@ -31,17 +31,17 @@ import type { Document, Clause } from "@/types";
 import { toast } from "sonner";
 
 const SEVERITY_COLORS = {
-  critical: { bg: "rgba(168, 85, 247, 0.15)", border: "#A855F7", text: "#A855F7" },
-  worse: { bg: "rgba(239, 68, 68, 0.15)", border: "#EF4444", text: "#EF4444" },
-  average: { bg: "rgba(234, 179, 8, 0.15)", border: "#EAB308", text: "#EAB308" },
-  better: { bg: "rgba(34, 197, 94, 0.15)", border: "#22C55E", text: "#22C55E" },
+  critical: { bg: "#f3e8ff", border: "#581c87", text: "#581c87" },
+  worse: { bg: "#fee2e2", border: "#7f1d1d", text: "#7f1d1d" },
+  average: { bg: "#fef9c3", border: "#713f12", text: "#713f12" },
+  better: { bg: "#dcfce7", border: "#14532d", text: "#14532d" },
 };
 
 const RISK_BAR_COLORS: Record<string, string> = {
-  safe: "#22C55E",
-  warning: "#EAB308",
-  dangerous: "#EF4444",
-  illegal: "#A855F7",
+  safe: "#22c55e",
+  warning: "#eab308",
+  dangerous: "#ef4444",
+  illegal: "#a855f7",
 };
 
 export default function BattlePage() {
@@ -149,9 +149,9 @@ export default function BattlePage() {
   // Loading
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-        <Loader2 className="h-12 w-12 text-purple-500 animate-spin" />
-        <p className="text-muted-foreground">Loading battle data...</p>
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6">
+        <Loader2 className="h-16 w-16 text-black animate-spin" />
+        <p className="text-sm font-black uppercase tracking-widest text-muted-foreground">Loading battle data...</p>
       </div>
     );
   }
@@ -159,10 +159,10 @@ export default function BattlePage() {
   // Error
   if (error || !doc) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-        <XCircle className="h-12 w-12 text-red-500" />
-        <p className="text-red-400">{error || "Document not found"}</p>
-        <Link href="/upload"><Button>Upload Contract</Button></Link>
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 bg-white border-2 border-black p-8 m-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <XCircle className="h-16 w-16 text-red-600" />
+        <p className="text-2xl font-black text-red-700">{error || "Document not found"}</p>
+        <Link href="/upload"><Button className="border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-bold uppercase hover:translate-y-1 hover:shadow-none transition-all rounded-none px-6">UPLOAD CONTRACT</Button></Link>
       </div>
     );
   }
@@ -171,34 +171,34 @@ export default function BattlePage() {
   if (insufficient) {
     return (
       <div className="px-4 sm:px-6 lg:px-8 py-8 max-w-3xl mx-auto">
-        <Link href={`/results/${documentId}`} className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white mb-8">
+        <Link href={`/results/${documentId}`} className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest text-muted-foreground hover:text-black mb-8 transition-all hover:-translate-x-1">
           <ArrowLeft className="h-4 w-4" /> Back to Results
         </Link>
-        <Card className="bg-gray-900/50 border-gray-800">
-          <CardContent className="p-8 text-center">
-            <BarChart3 className="h-12 w-12 text-gray-500 mx-auto mb-4" />
-            <h2 className="text-xl font-bold mb-2">Not Enough Data Yet</h2>
-            <p className="text-muted-foreground mb-4 max-w-md mx-auto">
-              We need at least 10 analyzed {getDocumentTypeLabel(doc.document_type).toLowerCase()} contracts 
+        <Card className="border-2 border-black rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white">
+          <CardContent className="p-10 text-center">
+            <BarChart3 className="h-16 w-16 text-black mx-auto mb-6" />
+            <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-4">NOT ENOUGH DATA YET</h2>
+            <p className="text-sm font-bold text-muted-foreground leading-relaxed max-w-md mx-auto mb-6">
+              We need at least 10 analyzed <span className="text-black uppercase">{getDocumentTypeLabel(doc.document_type).toLowerCase()}</span> contracts 
               to show meaningful comparisons. Currently we have{" "}
-              {indiaScope?.count || 0} across India.
+              <span className="text-black underline">{indiaScope?.count || 0}</span> across India.
             </p>
-            <p className="text-sm text-gray-500 mb-6">
+            <p className="text-xs font-black uppercase tracking-widest text-blue-800 bg-blue-100 p-4 border-2 border-blue-900 mb-8 mx-auto max-w-md">
               Help us grow! Share ClauseWall with friends who have contracts to analyze.
             </p>
-            <div className="flex gap-3 justify-center">
+            <div className="flex gap-4 justify-center">
               <Link href={`/results/${documentId}`}>
-                <Button variant="outline">Back to Results</Button>
+                <Button variant="outline" className="border-2 border-black font-black uppercase tracking-wider rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none transition-all">Back to Results</Button>
               </Link>
               <Button
                 onClick={() => {
                   navigator.clipboard.writeText(window.location.origin);
                   toast.success("Link copied!");
                 }}
-                className="gap-2"
+                className="gap-2 border-2 border-black bg-blue-500 hover:bg-blue-600 text-white font-black uppercase tracking-wider rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none transition-all"
               >
                 <Share2 className="h-4 w-4" />
-                Share ClauseWall
+                Share
               </Button>
             </div>
           </CardContent>
@@ -212,58 +212,62 @@ export default function BattlePage() {
       {/* Back link */}
       <Link
         href={`/results/${documentId}`}
-        className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white mb-6 transition-colors"
+        className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest text-muted-foreground hover:text-black mb-8 transition-all hover:-translate-x-1"
       >
         <ArrowLeft className="h-4 w-4" /> Back to Results
       </Link>
 
       {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-2">
-          <BarChart3 className="h-6 w-6 text-purple-400" />
-          <h1 className="text-2xl sm:text-3xl font-bold">Contract Battle</h1>
+      <div className="mb-10">
+        <div className="flex items-center gap-4 mb-4">
+          <div className="h-14 w-14 border-2 border-black bg-purple-100 flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(88,28,135,1)]">
+            <BarChart3 className="h-7 w-7 text-purple-900" />
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-black text-black uppercase tracking-tighter">Contract Battle</h1>
         </div>
-        <p className="text-muted-foreground">
-          Your {getDocumentTypeLabel(doc.document_type)} vs{" "}
-          {scope === "state" ? getStateName(doc.jurisdiction) : "All India"} average
+        <p className="text-muted-foreground font-bold uppercase tracking-widest">
+          Your <span className="text-black">{getDocumentTypeLabel(doc.document_type)}</span> vs{" "}
+          <span className="text-black">{scope === "state" ? getStateName(doc.jurisdiction) : "All India"}</span> average
         </p>
       </div>
 
       {/* Scope Toggle */}
-      <div className="flex items-center gap-2 mb-8">
-        <span className="text-sm text-gray-400 mr-2">Compare against:</span>
-        <button
-          onClick={() => stateScope?.available && setScope("state")}
-          disabled={!stateScope?.available}
-          className={`px-4 py-2 rounded-lg text-sm font-medium border transition-all ${
-            scope === "state"
-              ? "bg-purple-500/20 border-purple-500/50 text-purple-300"
-              : stateScope?.available
-              ? "bg-white/[0.02] border-white/10 text-gray-400 hover:text-white hover:border-white/20"
-              : "bg-white/[0.01] border-white/5 text-gray-600 cursor-not-allowed"
-          }`}
-        >
-          🏠 {stateScope?.label || "State"}{" "}
-          <span className="text-xs opacity-60">({stateScope?.count || 0})</span>
-        </button>
-        <button
-          onClick={() => indiaScope?.available && setScope("india")}
-          disabled={!indiaScope?.available}
-          className={`px-4 py-2 rounded-lg text-sm font-medium border transition-all ${
-            scope === "india"
-              ? "bg-purple-500/20 border-purple-500/50 text-purple-300"
-              : indiaScope?.available
-              ? "bg-white/[0.02] border-white/10 text-gray-400 hover:text-white hover:border-white/20"
-              : "bg-white/[0.01] border-white/5 text-gray-600 cursor-not-allowed"
-          }`}
-        >
-          🇮🇳 All India{" "}
-          <span className="text-xs opacity-60">({indiaScope?.count || 0})</span>
-        </button>
+      <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-10 pb-6 border-b-2 border-black/10">
+        <span className="text-sm font-black uppercase tracking-widest text-black">Compare against:</span>
+        <div className="flex gap-3">
+          <button
+            onClick={() => stateScope?.available && setScope("state")}
+            disabled={!stateScope?.available}
+            className={`px-5 py-3 border-2 font-black uppercase tracking-wider transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none ${
+              scope === "state"
+                ? "bg-purple-600 border-black text-white"
+                : stateScope?.available
+                ? "bg-white border-black text-black hover:bg-gray-100"
+                : "bg-gray-100 border-gray-300 text-gray-400 cursor-not-allowed shadow-none"
+            }`}
+          >
+            🏠 {stateScope?.label || "State"}{" "}
+            <span className="text-xs ml-1 opacity-80">({stateScope?.count || 0})</span>
+          </button>
+          <button
+            onClick={() => indiaScope?.available && setScope("india")}
+            disabled={!indiaScope?.available}
+            className={`px-5 py-3 border-2 font-black uppercase tracking-wider transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none ${
+              scope === "india"
+                ? "bg-purple-600 border-black text-white"
+                : indiaScope?.available
+                ? "bg-white border-black text-black hover:bg-gray-100"
+                : "bg-gray-100 border-gray-300 text-gray-400 cursor-not-allowed shadow-none"
+            }`}
+          >
+            🇮🇳 ALL INDIA{" "}
+            <span className="text-xs ml-1 opacity-80">({indiaScope?.count || 0})</span>
+          </button>
+        </div>
 
         {stateScope && !stateScope.available && scope === "india" && (
-          <span className="text-xs text-yellow-500/70 ml-2">
-            <AlertTriangle className="h-3 w-3 inline mr-1" />
+          <span className="text-xs font-bold text-yellow-800 bg-yellow-100 px-3 py-2 border-2 border-yellow-900 shadow-[2px_2px_0px_0px_rgba(113,63,18,1)] flex items-center">
+            <AlertTriangle className="h-4 w-4 mr-2" />
             Limited data for {stateScope.label}
           </span>
         )}
@@ -271,9 +275,9 @@ export default function BattlePage() {
 
       {/* Battle Loading */}
       {battleLoading && (
-        <div className="flex flex-col items-center justify-center py-20 gap-4">
-          <Loader2 className="h-10 w-10 text-purple-400 animate-spin" />
-          <p className="text-muted-foreground">Calculating comparisons...</p>
+        <div className="flex flex-col items-center justify-center py-20 gap-6">
+          <Loader2 className="h-16 w-16 text-black animate-spin" />
+          <p className="text-sm font-black uppercase tracking-widest text-muted-foreground">Calculating comparisons...</p>
         </div>
       )}
 
@@ -285,71 +289,80 @@ export default function BattlePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <Card className="bg-gray-900/50 border-gray-800 mb-8">
+            <Card className="border-2 border-black rounded-none bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] mb-12">
               <CardContent className="p-8">
-                <div className="flex flex-col sm:flex-row items-center gap-6">
+                <div className="flex flex-col sm:flex-row items-center gap-8">
                   {/* Percentile circle */}
                   <div className="relative flex-shrink-0">
                     <div
-                      className="h-32 w-32 rounded-full flex items-center justify-center"
+                      className="h-36 w-36 rounded-none flex items-center justify-center border-4 border-black"
                       style={{
                         background: `conic-gradient(${
                           activeData.overallPercentile >= 75
-                            ? "#A855F7"
+                            ? "#a855f7"
                             : activeData.overallPercentile >= 50
-                            ? "#EF4444"
+                            ? "#ef4444"
                             : activeData.overallPercentile >= 25
-                            ? "#EAB308"
-                            : "#22C55E"
-                        } ${activeData.overallPercentile}%, rgba(255,255,255,0.05) 0)`,
+                            ? "#eab308"
+                            : "#22c55e"
+                        } ${activeData.overallPercentile}%, #f3f4f6 0)`,
                       }}
                     >
-                      <div className="absolute inset-2 bg-gray-950 rounded-full flex flex-col items-center justify-center">
-                        <span className="text-3xl font-bold">{activeData.overallPercentile}%</span>
+                      <div className="absolute inset-3 bg-white border-2 border-black flex flex-col items-center justify-center">
+                        <span className="text-4xl font-black">{activeData.overallPercentile}%</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="text-center sm:text-left">
-                    <p className="text-lg font-semibold mb-1">
-                      Your contract is <span className="text-purple-400">harsher than {activeData.overallPercentile}%</span>
+                  <div className="text-center sm:text-left flex-1">
+                    <p className="text-xl font-black tracking-tight text-black mb-2">
+                      YOUR CONTRACT IS <span className="uppercase" style={{
+                      color: activeData.overallPercentile >= 75 ? "#a855f7" :
+                             activeData.overallPercentile >= 50 ? "#ef4444" :
+                             activeData.overallPercentile >= 25 ? "#eab308" : "#22c55e"
+                    }}>HARSHER THAN {activeData.overallPercentile}%</span>
                     </p>
-                    <p className="text-sm text-muted-foreground mb-1">
+                    <p className="text-sm font-bold text-muted-foreground mb-4 leading-relaxed">
                       of {getDocumentTypeLabel(doc.document_type).toLowerCase()} agreements{" "}
-                      {scope === "state" ? `in ${getStateName(doc.jurisdiction)}` : "across India"}
+                      <span className="text-black uppercase">{scope === "state" ? `in ${getStateName(doc.jurisdiction)}` : "across India"}</span>
                     </p>
-                    <p className="text-xs text-gray-500">
-                      Based on {activeData.totalContractsAnalyzed} analyzed contracts
-                    </p>
-                    <p className="text-sm mt-2 font-medium" style={{
-                      color: activeData.overallPercentile >= 75 ? "#A855F7" :
-                             activeData.overallPercentile >= 50 ? "#EF4444" :
-                             activeData.overallPercentile >= 25 ? "#EAB308" : "#22C55E"
+                    
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 border-2 border-black">
+                      <span className="text-xs font-black uppercase tracking-widest text-black">
+                        {activeData.totalContractsAnalyzed} SAMPLES
+                      </span>
+                    </div>
+
+                    <p className="text-lg font-black uppercase tracking-widest mt-6 border-t-2 border-black/10 pt-4" style={{
+                      color: activeData.overallPercentile >= 75 ? "#7e22ce" :
+                             activeData.overallPercentile >= 50 ? "#b91c1c" :
+                             activeData.overallPercentile >= 25 ? "#a16207" : "#15803d"
                     }}>
-                      {activeData.overallVerdict}
+                      VERDICT: {activeData.overallVerdict}
                     </p>
                   </div>
                 </div>
 
                 {/* Progress bar version */}
-                <div className="mt-6">
-                  <div className="flex justify-between text-xs text-gray-500 mb-1.5">
-                    <span>Fairest</span>
-                    <span>Average</span>
-                    <span>Harshest</span>
+                <div className="mt-8 pt-6 border-t-2 border-black/10">
+                  <div className="flex justify-between text-xs font-black uppercase tracking-widest text-black mb-3">
+                    <span className="text-green-700">FAIREST</span>
+                    <span>AVERAGE</span>
+                    <span className="text-purple-700">HARSHEST</span>
                   </div>
-                  <div className="h-3 bg-gray-800 rounded-full overflow-hidden relative">
+                  <div className="h-6 border-2 border-black bg-gray-100 relative shadow-[inset_2px_2px_0px_0px_rgba(0,0,0,0.1)]">
                     <div className="absolute inset-0 flex">
-                      <div className="w-1/4 bg-green-500/20" />
-                      <div className="w-1/4 bg-yellow-500/20" />
-                      <div className="w-1/4 bg-red-500/20" />
-                      <div className="w-1/4 bg-purple-500/20" />
+                      <div className="w-1/4 bg-green-200 border-r-2 border-black/20" />
+                      <div className="w-1/4 bg-yellow-200 border-r-2 border-black/20" />
+                      <div className="w-1/4 bg-red-200 border-r-2 border-black/20" />
+                      <div className="w-1/4 bg-purple-200" />
                     </div>
                     <motion.div
-                      className="absolute top-0 bottom-0 w-1 bg-white rounded-full shadow-lg shadow-white/50"
+                      className="absolute top-0 bottom-0 w-2 bg-black shadow-[2px_0_0_0_rgba(255,255,255,0.5)]"
                       initial={{ left: "0%" }}
-                      animate={{ left: `${activeData.overallPercentile}%` }}
+                      animate={{ left: `${Math.min(Math.max(activeData.overallPercentile, 1), 99)}%` }}
                       transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
+                      style={{ transform: 'translateX(-50%)' }}
                     />
                   </div>
                 </div>
@@ -373,10 +386,10 @@ export default function BattlePage() {
           {battleScores && battleScores.scoreComparisons.length > 0 && (
             <>
               {hasValueComparisons && (
-                <div className="flex items-center gap-3 my-6">
-                  <div className="h-px bg-gray-800 flex-1" />
-                  <span className="text-xs text-gray-500">Risk Score Comparison</span>
-                  <div className="h-px bg-gray-800 flex-1" />
+                <div className="flex items-center gap-4 my-10">
+                  <div className="h-0.5 bg-black/10 flex-1" />
+                  <span className="text-sm font-black uppercase tracking-widest text-black/50">Risk Score Matchups</span>
+                  <div className="h-0.5 bg-black/10 flex-1" />
                 </div>
               )}
 
@@ -402,15 +415,15 @@ export default function BattlePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
             >
-              <Card className="bg-gray-900/50 border-gray-800 mt-8">
-                <CardContent className="p-6">
-                  <h3 className="font-semibold mb-3 flex items-center gap-2">
-                    <Info className="h-4 w-4 text-blue-400" />
-                    Key Insights
+              <Card className="border-2 border-black rounded-none bg-blue-50 shadow-[8px_8px_0px_0px_rgba(30,58,138,1)] mt-12 mb-8">
+                <CardContent className="p-8">
+                  <h3 className="font-black uppercase tracking-widest text-blue-900 mb-6 flex items-center gap-3 border-b-2 border-blue-200 pb-4">
+                    <Info className="h-6 w-6" />
+                    KEY INSIGHTS
                   </h3>
-                  <ul className="space-y-2">
+                  <ul className="space-y-4">
                     {activeData.insights.map((insight, i) => (
-                      <li key={i} className="text-sm text-gray-300 leading-relaxed">
+                      <li key={i} className="text-sm border-2 border-blue-900 bg-white p-4 font-bold text-black leading-relaxed shadow-[4px_4px_0px_0px_rgba(30,58,138,0.2)]">
                         {insight}
                       </li>
                     ))}
@@ -421,17 +434,16 @@ export default function BattlePage() {
           )}
 
           {/* Bottom Actions */}
-          <div className="mt-8 flex flex-wrap gap-3 justify-center">
+          <div className="mt-12 mb-8 flex flex-wrap gap-4 justify-center">
             <Button
-              variant="outline"
-              className="gap-2"
+              className="border-2 border-black font-black uppercase tracking-wider shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none transition-all gap-2 rounded-none px-8 py-6 bg-white hover:bg-gray-100 text-black"
               onClick={() => {
                 navigator.clipboard.writeText(window.location.href);
                 toast.success("Battle link copied!");
               }}
             >
-              <Share2 className="h-4 w-4" />
-              Share
+              <Share2 className="h-5 w-5" />
+              COPY BATTLE LINK
             </Button>
           </div>
 
@@ -458,53 +470,53 @@ function ComparisonCard({ comparison: comp }: { comparison: ClauseComparison }) 
   const severity = SEVERITY_COLORS[comp.severity];
 
   return (
-    <Card className="bg-gray-900/50 border-gray-800 mb-4">
-      <CardContent className="p-5">
+    <Card className="border-2 border-black rounded-none bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] mb-6 hover:-translate-y-1 hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] transition-all">
+      <CardContent className="p-6 sm:p-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-4">
-          <h4 className="font-semibold">{comp.clauseLabel}</h4>
-          <div className="flex items-center gap-2">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
+          <h4 className="font-black text-xl uppercase tracking-tight text-black">{comp.clauseLabel}</h4>
+          <div className="flex items-center gap-3">
             <span
-              className="text-xs px-2 py-0.5 rounded-full font-medium"
-              style={{ backgroundColor: severity.bg, color: severity.text, border: `1px solid ${severity.border}30` }}
+              className="text-xs px-3 py-1.5 uppercase font-black tracking-widest border-2"
+              style={{ backgroundColor: severity.bg, color: severity.text, borderColor: severity.border }}
             >
-              {comp.severity === "critical" ? "⛔" : comp.severity === "worse" ? "🔴" : comp.severity === "average" ? "🟡" : "✅"}{" "}
-              P{comp.percentile}
+               {comp.severity === "critical" ? "⛔" : comp.severity === "worse" ? "🔴" : comp.severity === "average" ? "🟡" : "✅"}{" "}
+               P{comp.percentile}
             </span>
-            <span className="text-xs text-gray-500">{comp.sampleCount} contracts</span>
+            <span className="text-xs font-bold uppercase tracking-widest bg-gray-100 border-2 border-black px-3 py-1.5 text-black">{comp.sampleCount} SAMPLES</span>
           </div>
         </div>
 
         {/* Bars */}
-        <div className="space-y-3">
+        <div className="space-y-4 pr-10">
           {/* Your value */}
-          <div className="flex items-center gap-3">
-            <span className="text-xs text-gray-400 w-16 flex-shrink-0">You</span>
-            <div className="flex-1 h-7 bg-gray-800/60 rounded-md overflow-hidden relative">
+          <div className="flex items-center gap-4">
+            <span className="text-xs font-black uppercase tracking-widest text-black w-24 flex-shrink-0">YOUR TERMS</span>
+            <div className="flex-1 h-8 bg-gray-100 border-2 border-black rounded-none relative">
               <motion.div
-                className="h-full rounded-md"
-                style={{ backgroundColor: RISK_BAR_COLORS[comp.yourRiskLevel] || "#EF4444" }}
+                className="h-full border-r-2 border-black"
+                style={{ backgroundColor: RISK_BAR_COLORS[comp.yourRiskLevel] || "#ef4444" }}
                 initial={{ width: 0 }}
-                animate={{ width: `${Math.max(comp.yourValue * scale, 4)}%` }}
+                animate={{ width: `${Math.max(comp.yourValue * scale, 1)}%` }}
                 transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
               />
-              <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs font-bold text-white mix-blend-difference">
+              <span className="absolute -right-2 top-1/2 -translate-y-1/2 translate-x-full text-sm font-black text-black">
                 {comp.yourValue} {comp.yourUnit}
               </span>
             </div>
           </div>
 
           {/* Average */}
-          <div className="flex items-center gap-3">
-            <span className="text-xs text-gray-400 w-16 flex-shrink-0">Average</span>
-            <div className="flex-1 h-7 bg-gray-800/60 rounded-md overflow-hidden relative">
+          <div className="flex items-center gap-4">
+            <span className="text-xs font-black uppercase tracking-widest text-muted-foreground w-24 flex-shrink-0">MARKET APG</span>
+            <div className="flex-1 h-8 bg-gray-100 border-2 border-gray-400 border-dashed rounded-none relative opacity-70">
               <motion.div
-                className="h-full rounded-md bg-gray-500/60"
+                className="h-full bg-gray-300 border-r-2 border-gray-400 border-dashed"
                 initial={{ width: 0 }}
-                animate={{ width: `${Math.max(comp.avgValue * scale, 4)}%` }}
+                animate={{ width: `${Math.max(comp.avgValue * scale, 1)}%` }}
                 transition={{ duration: 0.8, ease: "easeOut", delay: 0.35 }}
               />
-              <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs font-medium text-gray-300">
+              <span className="absolute -right-2 top-1/2 -translate-y-1/2 translate-x-full text-sm font-bold text-gray-500">
                 {comp.avgValue} {comp.avgUnit}
               </span>
             </div>
@@ -512,16 +524,19 @@ function ComparisonCard({ comparison: comp }: { comparison: ClauseComparison }) 
 
           {/* Legal limit */}
           {comp.legalLimit != null && (
-            <div className="flex items-center gap-3">
-              <span className="text-xs text-gray-400 w-16 flex-shrink-0">Legal</span>
-              <div className="flex-1 h-7 bg-gray-800/60 rounded-md overflow-hidden relative">
+            <div className="flex items-center gap-4">
+              <span className="text-xs font-black uppercase tracking-widest text-green-700 w-24 flex-shrink-0">LEGAL LIMIT</span>
+              <div className="flex-1 h-8 bg-green-50 border-2 border-green-700 border-dotted rounded-none relative">
                 <motion.div
-                  className="h-full rounded-md bg-green-500/40"
+                  className="h-full border-r-2 border-green-700 border-dotted opacity-50"
                   initial={{ width: 0 }}
-                  animate={{ width: `${Math.max(comp.legalLimit * scale, 4)}%` }}
+                  animate={{ width: `${Math.max(comp.legalLimit * scale, 1)}%` }}
                   transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
+                  style={{
+                    background: "repeating-linear-gradient(45deg, #166534 0px, #166534 2px, transparent 2px, transparent 6px)"
+                  }}
                 />
-                <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs font-medium text-green-400">
+                <span className="absolute -right-2 top-1/2 -translate-y-1/2 translate-x-full text-sm font-black text-green-700">
                   {comp.legalLimit} {comp.legalUnit || comp.yourUnit}
                 </span>
               </div>
@@ -530,12 +545,15 @@ function ComparisonCard({ comparison: comp }: { comparison: ClauseComparison }) 
         </div>
 
         {/* Insight */}
-        <p className="text-xs mt-3 leading-relaxed" style={{ color: severity.text }}>
-          {comp.insight}
-          {comp.statuteCode && (
-            <span className="text-gray-500 ml-1">— {comp.statuteCode}</span>
-          )}
-        </p>
+        <div className="mt-8 pt-6 border-t-2 border-black/10">
+          <p className="text-sm font-bold leading-relaxed" style={{ color: severity.text }}>
+            <span className="font-black uppercase tracking-widest mr-2">VERDICT:</span> 
+            {comp.insight}
+            {comp.statuteCode && (
+              <span className="text-gray-500 ml-2 font-black text-xs uppercase tracking-widest border-2 border-gray-300 px-2 py-0.5 rounded-none inline-block mt-2 sm:mt-0">— {comp.statuteCode}</span>
+            )}
+          </p>
+        </div>
       </CardContent>
     </Card>
   );
@@ -550,54 +568,54 @@ function ScoreComparisonCard({ comparison: comp }: { comparison: ScoreComparison
   const severity = SEVERITY_COLORS[comp.severity];
 
   return (
-    <Card className="bg-gray-900/50 border-gray-800 mb-3">
-      <CardContent className="p-4">
-        <div className="flex items-center justify-between mb-3">
-          <h4 className="font-medium text-sm">{comp.clauseLabel}</h4>
+    <Card className="border-2 border-black rounded-none bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-4">
+      <CardContent className="p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h4 className="font-black text-black uppercase tracking-wider">{comp.clauseLabel}</h4>
           <span
-            className="text-[10px] px-2 py-0.5 rounded-full font-medium"
-            style={{ backgroundColor: severity.bg, color: severity.text }}
+            className="text-[10px] px-3 py-1 font-black uppercase tracking-widest border-2"
+            style={{ backgroundColor: severity.bg, color: severity.text, borderColor: severity.border }}
           >
             P{comp.percentile}
           </span>
         </div>
 
-        <div className="space-y-2">
-          <div className="flex items-center gap-3">
-            <span className="text-[11px] text-gray-400 w-14 flex-shrink-0">You</span>
-            <div className="flex-1 h-5 bg-gray-800/60 rounded overflow-hidden relative">
+        <div className="space-y-4 pr-10">
+          <div className="flex items-center gap-4">
+            <span className="text-[11px] font-black uppercase tracking-widest text-black w-16 flex-shrink-0">YOURS</span>
+            <div className="flex-1 h-6 bg-gray-100 border-2 border-black relative">
               <motion.div
-                className="h-full rounded"
-                style={{ backgroundColor: RISK_BAR_COLORS[comp.yourRiskLevel] || "#EF4444" }}
+                className="h-full border-r-2 border-black"
+                style={{ backgroundColor: RISK_BAR_COLORS[comp.yourRiskLevel] || "#ef4444" }}
                 initial={{ width: 0 }}
                 animate={{ width: `${(comp.yourScore / maxScore) * 100}%` }}
                 transition={{ duration: 0.7, delay: 0.2 }}
               />
-              <span className="absolute right-1.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-white mix-blend-difference">
+              <span className="absolute -right-2 top-1/2 -translate-y-1/2 translate-x-full text-[11px] font-black text-black">
                 {comp.yourScore}
               </span>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <span className="text-[11px] text-gray-400 w-14 flex-shrink-0">Average</span>
-            <div className="flex-1 h-5 bg-gray-800/60 rounded overflow-hidden relative">
+          <div className="flex items-center gap-4">
+            <span className="text-[11px] font-black uppercase tracking-widest text-muted-foreground w-16 flex-shrink-0">MARKET</span>
+            <div className="flex-1 h-6 bg-gray-100 border-2 border-gray-400 border-dashed relative opacity-70">
               <motion.div
-                className="h-full rounded bg-gray-500/50"
+                className="h-full bg-gray-300 border-r-2 border-gray-400 border-dashed"
                 initial={{ width: 0 }}
                 animate={{ width: `${(comp.avgScore / maxScore) * 100}%` }}
                 transition={{ duration: 0.7, delay: 0.35 }}
               />
-              <span className="absolute right-1.5 top-1/2 -translate-y-1/2 text-[10px] font-medium text-gray-400">
+              <span className="absolute -right-2 top-1/2 -translate-y-1/2 translate-x-full text-[11px] font-bold text-gray-500">
                 {comp.avgScore}
               </span>
             </div>
           </div>
-
         </div>
 
-        <p className="text-[11px] mt-2" style={{ color: severity.text }}>
-          {comp.insight} ({comp.sampleCount} samples)
+        <p className="text-sm font-bold mt-6 leading-relaxed bg-gray-50 border-2 border-black/10 p-3" style={{ color: severity.text }}>
+          <span className="font-black uppercase tracking-widest text-black/50 mr-2">INSIGHT:</span>
+          {comp.insight} <span className="text-xs text-black/40 font-black tracking-widest uppercase ml-2">({comp.sampleCount} SAMPLES)</span>
         </p>
       </CardContent>
     </Card>

@@ -63,10 +63,10 @@ const FORMATS: Record<CardFormat, { width: number; height: number; label: string
 // ── Helpers ───────────────────────────────
 
 function getScoreTheme(score: number) {
-  if (score <= 30) return { color: "#4ade80", label: "LOW RISK", bg: "rgba(74, 222, 128, 0.15)" };
-  if (score <= 60) return { color: "#facc15", label: "MEDIUM RISK", bg: "rgba(250, 204, 21, 0.15)" };
-  if (score <= 80) return { color: "#f87171", label: "HIGH RISK", bg: "rgba(248, 113, 113, 0.15)" };
-  return { color: "#c084fc", label: "CRITICAL", bg: "rgba(192, 132, 252, 0.15)" };
+  if (score <= 30) return { color: "#16a34a", label: "LOW RISK", bg: "#dcfce7", brd: "#000000" };
+  if (score <= 60) return { color: "#ca8a04", label: "MEDIUM RISK", bg: "#fef08a", brd: "#000000" };
+  if (score <= 80) return { color: "#dc2626", label: "HIGH RISK", bg: "#fecaca", brd: "#000000" };
+  return { color: "#9333ea", label: "CRITICAL", bg: "#e9d5ff", brd: "#000000" };
 }
 
 // ── Component ─────────────────────────────
@@ -133,81 +133,62 @@ export default function ComparisonCardModal({
   const sectionGap = isCompact ? 18 : 28;
   const gaugeSize = isCompact ? 120 : 160;
 
-  function ScoreGauge({ score, size }: { score: number; size: number }) {
-    const t = getScoreTheme(score);
-    const r = size / 2 - 10;
-    const c = size / 2;
-    const circ = 2 * Math.PI * r;
-    const fill = (score / 100) * circ;
-    return (
-      <div style={{ position: "relative", width: size, height: size }}>
-        <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-          <circle cx={c} cy={c} r={r} fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth={8} />
-          <circle cx={c} cy={c} r={r} fill="none" stroke={t.color} strokeWidth={8}
-            strokeDasharray={`${fill} ${circ}`} transform={`rotate(-90 ${c} ${c})`} strokeLinecap="round"
-            style={{ filter: `drop-shadow(0 0 6px ${t.color}60)` }} />
-        </svg>
-        <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-          <span style={{ fontSize: isCompact ? 36 : 48, fontWeight: 800, color: "#fff", lineHeight: 1 }}>{score}</span>
-          <span style={{ fontSize: 14, color: "rgba(255,255,255,0.5)", marginTop: 2 }}>/100</span>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="bg-gray-900 border-gray-800 max-w-lg max-h-[90vh] overflow-y-auto">
+        <DialogContent className="bg-white border-4 border-black rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Share2 className="h-5 w-5 text-blue-400" />
-              Share Comparison
+            <DialogTitle className="flex items-center gap-3 text-2xl font-black uppercase tracking-tighter text-black border-b-4 border-black pb-4">
+              <Share2 className="h-6 w-6 text-black" />
+              SHARE COMPARISON
             </DialogTitle>
-            <DialogDescription>Download or share your contract comparison card</DialogDescription>
+            <DialogDescription className="text-sm font-bold text-gray-600 uppercase tracking-widest pt-2">
+              DOWNLOAD OR SHARE YOUR CONTRACT COMPARISON CARD
+            </DialogDescription>
           </DialogHeader>
 
           {/* Format Toggle */}
-          <div className="flex gap-1.5 p-1 bg-white/5 rounded-lg">
+          <div className="flex gap-1.5 p-1 bg-gray-100 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
             {(Object.keys(FORMATS) as CardFormat[]).map((f) => {
               const Icon = FORMATS[f].icon;
               return (
                 <button key={f} onClick={() => setFormat(f)}
-                  className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-md text-xs font-medium transition-all ${format === f ? "bg-blue-600 text-white" : "text-gray-400 hover:text-gray-200 hover:bg-white/5"}`}>
-                  <Icon className="h-3.5 w-3.5" />{FORMATS[f].label}
+                  className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 text-xs font-black uppercase tracking-widest transition-colors ${format === f ? "bg-black text-white" : "text-black hover:bg-gray-200"}`}>
+                  <Icon className="h-4 w-4" />{FORMATS[f].label}
                 </button>
               );
             })}
           </div>
 
           {/* Preview */}
-          <div className="flex justify-center py-4">
+          <div className="flex justify-center py-6">
             {generating || !preview ? (
-              <div className="flex flex-col items-center justify-center gap-3 rounded-xl bg-white/5 border border-white/10"
+              <div className="flex flex-col items-center justify-center gap-3 bg-gray-50 border-4 border-black border-dashed"
                 style={{ width: "100%", maxWidth: 360, aspectRatio: `${fmt.width}/${fmt.height}` }}>
-                <Loader2 className="h-8 w-8 text-blue-400 animate-spin" />
-                <p className="text-xs text-gray-400">Generating...</p>
+                <Loader2 className="h-10 w-10 text-black animate-spin" />
+                <p className="text-sm font-black uppercase tracking-widest text-black">GENERATING...</p>
               </div>
             ) : (
-              <img src={preview} alt="Comparison Card" className="rounded-xl shadow-2xl border border-white/10"
+              <img src={preview} alt="Comparison Card" className="border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                 style={{ width: "100%", maxWidth: format === "story" ? 280 : 360 }} />
             )}
           </div>
 
           {/* Buttons */}
-          <div className="grid grid-cols-2 gap-2">
-            <Button onClick={handleDownload} disabled={!preview} className="gap-2 bg-blue-600 hover:bg-blue-700">
-              <Download className="h-4 w-4" />Download
+          <div className="grid grid-cols-2 gap-3">
+            <Button onClick={handleDownload} disabled={!preview} className="gap-2 bg-[#FAEA5F] hover:bg-yellow-400 text-black border-2 border-black font-black uppercase tracking-widest rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none">
+              <Download className="h-4 w-4" />DOWNLOAD
             </Button>
-            <Button onClick={handleWhatsApp} className="gap-2 bg-green-600 hover:bg-green-700">
-              <Share2 className="h-4 w-4" />WhatsApp
+            <Button onClick={handleWhatsApp} className="gap-2 bg-[#25D366] hover:bg-[#20b858] text-white border-2 border-black font-black uppercase tracking-widest rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none">
+              <Share2 className="h-4 w-4" />WHATSAPP
             </Button>
-            <Button onClick={handleTwitter} variant="outline" className="gap-2">
-              <Share2 className="h-4 w-4" />Twitter
+            <Button onClick={handleTwitter} className="gap-2 bg-black hover:bg-gray-800 text-white border-2 border-black font-black uppercase tracking-widest rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none">
+              <Share2 className="h-4 w-4" />TWITTER
             </Button>
-            <Button onClick={handleCopyLink} variant="outline" className="gap-2">
-              {copied ? <Check className="h-4 w-4 text-green-400" /> : <Copy className="h-4 w-4" />}
-              {copied ? "Copied!" : "Copy Link"}
+            <Button onClick={handleCopyLink} className="gap-2 bg-white hover:bg-gray-100 text-black border-2 border-black font-black uppercase tracking-widest rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none">
+              {copied ? <Check className="h-4 w-4 text-green-600" /> : <Copy className="h-4 w-4" />}
+              {copied ? "COPIED PLAN!" : "COPY LINK"}
             </Button>
           </div>
         </DialogContent>
@@ -217,54 +198,55 @@ export default function ComparisonCardModal({
       <div style={{ position: "fixed", left: "-9999px", top: 0 }}>
         <div ref={cardRef} style={{
           width: fmt.width, height: fmt.height, padding,
-          background: "linear-gradient(145deg, #030508 0%, #0a0f18 50%, #080d15 100%)",
+          background: "#ffffff",
           fontFamily: "Inter, -apple-system, sans-serif",
-          display: "flex", flexDirection: "column", overflow: "hidden", position: "relative",
+          display: "flex", flexDirection: "column", position: "relative",
+          border: "8px solid #000000",
         }}>
-          {/* Glow */}
-          <div style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: "60%", height: 200, background: "radial-gradient(ellipse, rgba(59,130,246,0.1) 0%, transparent 70%)" }} />
 
           {/* Header */}
-          <div style={{ textAlign: "center", marginBottom: sectionGap, position: "relative", zIndex: 1 }}>
-            <div style={{ fontSize: isCompact ? 20 : 24, fontWeight: 800, color: "#fff", letterSpacing: 2, textShadow: "0 2px 4px rgba(0,0,0,0.3)" }}>
+          <div style={{ textAlign: "center", marginBottom: sectionGap, position: "relative", zIndex: 1, paddingBottom: isCompact ? 16 : 24, borderBottom: "4px solid #000000" }}>
+            <div style={{ fontSize: isCompact ? 28 : 40, fontWeight: 900, color: "#000000", letterSpacing: 2, textTransform: "uppercase" }}>
               🛡️ CLAUSEWALL
             </div>
-            <div style={{ fontSize: isCompact ? 12 : 14, color: "#94a3b8", letterSpacing: 1, marginTop: 4 }}>
+            <div style={{ fontSize: isCompact ? 14 : 18, color: "#000000", fontWeight: 800, letterSpacing: 2, marginTop: 8, textTransform: "uppercase" }}>
               CONTRACT COMPARISON
             </div>
           </div>
 
-          <div style={{ height: 1, background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent)", marginBottom: sectionGap }} />
-
           {/* VS Section */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: isCompact ? 20 : 40, marginBottom: sectionGap }}>
             {/* Contract A */}
-            <div style={{ textAlign: "center", flex: 1 }}>
-              <div style={{ fontSize: isCompact ? 14 : 16, fontWeight: 700, color: data.winner === "A" ? "#4ade80" : "#e2e8f0", marginBottom: 12 }}>
-                🅰️ Contract A
-                {data.winner === "A" && <span style={{ display: "block", fontSize: 11, color: "#4ade80", marginTop: 4 }}>🏆 WINNER</span>}
+            <div style={{ textAlign: "center", flex: 1, border: "4px solid #000000", padding: "24px 16px", background: "#f8fafc", boxShadow: "8px 8px 0px 0px #000000" }}>
+              <div style={{ fontSize: isCompact ? 18 : 24, fontWeight: 900, color: "#000000", marginBottom: 20, textTransform: "uppercase" }}>
+                <span style={{ background: "#000", color: "#fff", padding: "4px 8px", marginRight: "8px", border: "2px solid #000" }}>A</span>
+                CONTRACT A
+                {data.winner === "A" && <span style={{ display: "inline-block", fontSize: 12, background: "#4ade80", color: "#000", padding: "4px 8px", border: "2px solid #000", marginLeft: 10, fontWeight: 900, boxShadow: "2px 2px 0px 0px #000" }}>🏆 WINNER</span>}
               </div>
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                <ScoreGauge score={data.score_a} size={gaugeSize} />
+              <div style={{ fontSize: isCompact ? 72 : 100, fontWeight: 900, color: themeA.color, lineHeight: 1, textShadow: "4px 4px 0px #000000", WebkitTextStroke: "2px #000" }}>
+                {data.score_a}
               </div>
-              <div style={{ marginTop: 10, padding: "6px 16px", borderRadius: 100, background: themeA.bg, fontSize: 12, fontWeight: 700, color: themeA.color, display: "inline-block" }}>
+              <div style={{ fontSize: 16, fontWeight: 900, color: "#000000", marginTop: 8, marginBottom: 20 }}>/100 RISK SCORE</div>
+              <div style={{ padding: "8px 24px", background: themeA.bg, border: `2px solid ${themeA.brd}`, fontSize: 16, fontWeight: 900, color: "#000000", display: "inline-block", textTransform: "uppercase", boxShadow: "4px 4px 0px 0px #000000" }}>
                 {themeA.label}
               </div>
             </div>
 
             {/* VS */}
-            <div style={{ fontSize: isCompact ? 24 : 32, fontWeight: 800, color: "rgba(255,255,255,0.15)" }}>VS</div>
+            <div style={{ fontSize: isCompact ? 32 : 48, fontWeight: 900, color: "#000000", padding: "16px", background: "#f1f5f9", border: "4px solid #000000", boxShadow: "4px 4px 0px 0px #000000" }}>VS</div>
 
             {/* Contract B */}
-            <div style={{ textAlign: "center", flex: 1 }}>
-              <div style={{ fontSize: isCompact ? 14 : 16, fontWeight: 700, color: data.winner === "B" ? "#4ade80" : "#e2e8f0", marginBottom: 12 }}>
-                🅱️ Contract B
-                {data.winner === "B" && <span style={{ display: "block", fontSize: 11, color: "#4ade80", marginTop: 4 }}>🏆 WINNER</span>}
+            <div style={{ textAlign: "center", flex: 1, border: "4px solid #000000", padding: "24px 16px", background: "#f8fafc", boxShadow: "8px 8px 0px 0px #000000" }}>
+              <div style={{ fontSize: isCompact ? 18 : 24, fontWeight: 900, color: "#000000", marginBottom: 20, textTransform: "uppercase" }}>
+                <span style={{ background: "#000", color: "#fff", padding: "4px 8px", marginRight: "8px", border: "2px solid #000" }}>B</span>
+                CONTRACT B
+                {data.winner === "B" && <span style={{ display: "inline-block", fontSize: 12, background: "#4ade80", color: "#000", padding: "4px 8px", border: "2px solid #000", marginLeft: 10, fontWeight: 900, boxShadow: "2px 2px 0px 0px #000" }}>🏆 WINNER</span>}
               </div>
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                <ScoreGauge score={data.score_b} size={gaugeSize} />
+              <div style={{ fontSize: isCompact ? 72 : 100, fontWeight: 900, color: themeB.color, lineHeight: 1, textShadow: "4px 4px 0px #000000", WebkitTextStroke: "2px #000" }}>
+                {data.score_b}
               </div>
-              <div style={{ marginTop: 10, padding: "6px 16px", borderRadius: 100, background: themeB.bg, fontSize: 12, fontWeight: 700, color: themeB.color, display: "inline-block" }}>
+              <div style={{ fontSize: 16, fontWeight: 900, color: "#000000", marginTop: 8, marginBottom: 20 }}>/100 RISK SCORE</div>
+              <div style={{ padding: "8px 24px", background: themeB.bg, border: `2px solid ${themeB.brd}`, fontSize: 16, fontWeight: 900, color: "#000000", display: "inline-block", textTransform: "uppercase", boxShadow: "4px 4px 0px 0px #000000" }}>
                 {themeB.label}
               </div>
             </div>
@@ -272,25 +254,26 @@ export default function ComparisonCardModal({
 
           {/* Verdict */}
           <div style={{
-            padding: isCompact ? "14px 18px" : "18px 24px", borderRadius: 16,
-            background: "rgba(74, 222, 128, 0.06)", border: "1px solid rgba(74, 222, 128, 0.15)",
-            textAlign: "center", marginBottom: sectionGap,
+            padding: isCompact ? "24px" : "32px",
+            background: "#dbeafe", border: "4px solid #000000",
+            textAlign: "center", marginBottom: sectionGap, boxShadow: "8px 8px 0px 0px #000000"
           }}>
-            <div style={{ fontSize: isCompact ? 14 : 18, fontWeight: 700, color: "#4ade80", marginBottom: 4 }}>
-              {data.winner === "tie" ? "🤝 Both contracts are similar" : `📊 ${data.winner === "A" ? "Contract A" : "Contract B"} is ${saferPct}% safer`}
+            <div style={{ fontSize: isCompact ? 24 : 32, fontWeight: 900, color: "#000000", marginBottom: 16, textTransform: "uppercase" }}>
+              {data.winner === "tie" ? "🤝 BOTH CONTRACTS ARE SIMILAR" : `📊 ${data.winner === "A" ? "CONTRACT A" : "CONTRACT B"} IS ${saferPct}% SAFER`}
             </div>
-            <div style={{ fontSize: isCompact ? 12 : 14, color: "#94a3b8", lineHeight: 1.5 }}>
+            <div style={{ fontSize: isCompact ? 16 : 20, color: "#000000", fontWeight: 700, lineHeight: 1.5, borderTop: "2px solid #000", paddingTop: 16 }}>
               {data.verdict.length > 120 ? data.verdict.substring(0, 117) + "..." : data.verdict}
             </div>
           </div>
 
           {/* Key Differences (non-compact only) */}
           {!isCompact && data.key_differences.length > 0 && (
-            <div style={{ marginBottom: sectionGap, padding: "16px 24px", borderRadius: 16, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
-              <div style={{ fontSize: 12, fontWeight: 700, color: "#94a3b8", letterSpacing: 1, marginBottom: 10 }}>⚡ KEY DIFFERENCES</div>
+            <div style={{ marginBottom: sectionGap, padding: "24px", background: "#fef08a", border: "4px solid #000000", boxShadow: "8px 8px 0px 0px #000000" }}>
+              <div style={{ fontSize: 18, fontWeight: 900, color: "#000000", letterSpacing: 2, marginBottom: 16, borderBottom: "2px solid #000", paddingBottom: 8 }}>⚡ KEY DIFFERENCES</div>
               {data.key_differences.slice(0, 3).map((d, i) => (
-                <div key={i} style={{ fontSize: 13, color: "#e2e8f0", lineHeight: 1.6, marginBottom: 4 }}>
-                  → {d.length > 80 ? d.substring(0, 77) + "..." : d}
+                <div key={i} style={{ fontSize: 16, fontWeight: 700, color: "#000000", lineHeight: 1.6, marginBottom: 12, display: "flex", alignItems: "flex-start", gap: 12 }}>
+                  <span style={{ fontSize: 20 }}>→</span>
+                  <span>{d.length > 80 ? d.substring(0, 77) + "..." : d}</span>
                 </div>
               ))}
             </div>
@@ -299,14 +282,14 @@ export default function ComparisonCardModal({
           <div style={{ flex: 1 }} />
 
           {/* Footer */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: isCompact ? "12px 16px" : "16px 24px", borderRadius: 16, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: isCompact ? "16px 24px" : "24px 32px", background: "#000000", borderTop: "4px solid #000000", margin: `0 -${padding}px -${padding}px -${padding}px` }}>
             <div>
-              <div style={{ fontSize: isCompact ? 16 : 20, fontWeight: 800, color: "#fff" }}>🛡️ ClauseWall</div>
-              <div style={{ fontSize: isCompact ? 11 : 13, color: "#94a3b8", marginTop: 2 }}>India&apos;s AI Contract Analyzer 🇮🇳</div>
+              <div style={{ fontSize: isCompact ? 20 : 28, fontWeight: 900, color: "#ffffff" }}>🛡️ CLAUSEWALL</div>
+              <div style={{ fontSize: isCompact ? 12 : 16, color: "#94a3b8", marginTop: 4, fontWeight: 700, textTransform: "uppercase" }}>INDIA'S AI CONTRACT ANALYZER 🇮🇳</div>
             </div>
             <div style={{ textAlign: "right" }}>
-              <div style={{ fontSize: isCompact ? 11 : 13, color: "#4ade80", fontWeight: 600 }}>Compare yours free →</div>
-              <div style={{ fontSize: isCompact ? 10 : 12, color: "#64748b", marginTop: 2 }}>clausewall.vercel.app</div>
+              <div style={{ fontSize: isCompact ? 14 : 18, color: "#4ade80", fontWeight: 900, textTransform: "uppercase" }}>COMPARE YOURS FREE →</div>
+              <div style={{ fontSize: isCompact ? 12 : 16, color: "#ffffff", marginTop: 4, fontWeight: 700 }}>CLAUSEWALL.VERCEL.APP</div>
             </div>
           </div>
         </div>
