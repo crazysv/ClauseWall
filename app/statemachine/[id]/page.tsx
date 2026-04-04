@@ -114,7 +114,7 @@ export default function StateMachinePage({
             <button
               onClick={handleExtract}
               disabled={extracting}
-              className="px-6 py-3 bg-black text-white hover:bg-gray-800 text-sm font-black uppercase tracking-widest transition-all disabled:opacity-50 flex items-center justify-center gap-2 mx-auto border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] w-full"
+              className="px-6 py-3 bg-black text-foreground hover:bg-background border-2 border-foreground bg-popover text-sm font-black uppercase tracking-widest transition-all disabled:opacity-50 flex items-center justify-center gap-2 mx-auto border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] w-full"
             >
               {extracting ? (
                 <>
@@ -176,7 +176,7 @@ export default function StateMachinePage({
                       key={i}
                       className="text-sm font-bold text-blue-900 flex gap-3"
                     >
-                      <span className="font-black text-white bg-blue-600 px-2 border-2 border-blue-900 shrink-0">
+                      <span className="font-black text-foreground bg-blue-600 px-2 border-2 border-blue-900 shrink-0">
                         {i + 1}
                       </span>
                       <span>{rec}</span>

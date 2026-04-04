@@ -67,7 +67,7 @@ export default function FloatingLookupBar({
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-4 right-4 z-50 w-14 h-14 bg-blue-500 hover:bg-blue-600 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-white flex items-center justify-center transition-all active:translate-y-1 active:shadow-none"
+        className="fixed bottom-4 right-4 z-50 w-14 h-14 bg-blue-500 hover:bg-blue-600 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-foreground flex items-center justify-center transition-all active:translate-y-1 active:shadow-none"
         style={{ minWidth: "56px", minHeight: "56px" }}
       >
         <Search className="w-6 h-6" />
@@ -76,7 +76,7 @@ export default function FloatingLookupBar({
   }
 
   return (
-    <div className="fixed bottom-0 inset-x-0 z-50 bg-white border-t-2 border-black shadow-[0_-4px_0px_0px_rgba(0,0,0,0.1)] animate-in slide-in-from-bottom-4 duration-200">
+    <div className="fixed bottom-0 inset-x-0 z-50 bg-white border-t-2 border-black shadow-[0_-4px_0px_0px_rgba(0,0,0,0.1)] animate-in slide-in- duration-200">
       {/* Result */}
       {result && (
         <div className="px-4 pt-4 pb-2">
@@ -118,18 +118,18 @@ export default function FloatingLookupBar({
         <button
           onClick={handleSubmit}
           disabled={!query.trim() || loading}
-          className="p-3 bg-blue-500 hover:bg-blue-600 border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] text-white disabled:opacity-50 transition-all active:translate-y-1 active:shadow-none"
+          className="p-3 bg-blue-500 hover:bg-blue-600 border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] text-foreground disabled:opacity-50 transition-all active:translate-y-1 active:shadow-none"
           style={{ minWidth: "48px", minHeight: "48px" }}
         >
           {loading ? (
-            <Loader2 className="w-5 h-5 text-white animate-spin" />
+            <Loader2 className="w-5 h-5 text-foreground animate-spin" />
           ) : (
-            <Send className="w-5 h-5 text-white" />
+            <Send className="w-5 h-5 text-foreground" />
           )}
         </button>
         <button
           onClick={handleClose}
-          className="p-3 bg-gray-200 hover:bg-red-400 hover:text-white border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] text-black transition-all active:translate-y-1 active:shadow-none"
+          className="p-3 bg-gray-200 hover:bg-red-400 hover:text-foreground border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] text-black transition-all active:translate-y-1 active:shadow-none"
           style={{ minWidth: "48px", minHeight: "48px" }}
         >
           <X className="w-5 h-5" />

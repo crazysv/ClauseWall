@@ -24,7 +24,7 @@ export default function FilingChecklist({ steps, documents }: Props) {
     steps.length > 0 ? Math.round((checked.size / steps.length) * 100) : 0;
 
   return (
-    <Card className="border-white/10 bg-white/[0.02]">
+    <Card className="border-foreground border-2 bg-white/[0.02]">
       <CardContent className="p-4">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
@@ -37,7 +37,7 @@ export default function FilingChecklist({ steps, documents }: Props) {
         </div>
 
         {/* Progress bar */}
-        <div className="h-1.5 bg-white/5 rounded-full mb-4 overflow-hidden">
+        <div className="h-1.5 bg-muted rounded-full mb-4 overflow-hidden">
           <div
             className="h-full bg-blue-500 rounded-full transition-all"
             style={{ width: `${progress}%` }}
@@ -54,7 +54,7 @@ export default function FilingChecklist({ steps, documents }: Props) {
               <button
                 key={step.step}
                 onClick={() => toggle(step.step)}
-                className="flex items-start gap-2 w-full text-left p-2 rounded-lg hover:bg-white/[0.03] transition-colors"
+                className="flex items-start gap-2 w-full text-left p-2 rounded-none hover:bg-white/[0.03] transition-colors"
               >
                 {checked.has(step.step) ? (
                   <CheckCircle2 className="h-4 w-4 text-green-400 mt-0.5 flex-shrink-0" />

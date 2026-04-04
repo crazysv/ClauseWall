@@ -109,8 +109,8 @@ export function RelatedActions({
   if (actions.length === 0) return null;
 
   return (
-    <div className="mt-8 pt-6 border-t border-white/5">
-      <h4 className="text-[10px] font-medium text-white/30 uppercase tracking-widest mb-3">
+    <div className="mt-8 pt-6 border-t border-foreground border-2">
+      <h4 className="text-[10px] font-medium text-foreground uppercase tracking-widest mb-3">
         Related Actions
       </h4>
       <div className="flex flex-wrap gap-2">
@@ -118,16 +118,16 @@ export function RelatedActions({
           <Link
             key={action.key}
             href={action.href(documentId)}
-            className="group inline-flex items-center gap-2.5 px-3 py-2 rounded-lg bg-white/[0.02] border border-white/5 hover:bg-white/[0.05] hover:border-white/10 transition-all"
+            className="group inline-flex items-center gap-2.5 px-3 py-2 rounded-none bg-white/[0.02] border border-foreground border-2 hover:bg-white/[0.05] hover:border-foreground border-2 transition-all"
           >
-            <span className="text-white/25 group-hover:text-white/50 transition-colors">
+            <span className="text-foreground group-hover:text-foreground transition-colors">
               {action.icon}
             </span>
             <div>
-              <p className="text-[11px] font-medium text-white/60 group-hover:text-white/80 transition-colors">
+              <p className="text-[11px] font-medium text-foreground group-hover:text-foreground transition-colors">
                 {action.label}
               </p>
-              <p className="text-[9px] text-white/25 hidden sm:block">
+              <p className="text-[9px] text-foreground hidden sm:block">
                 {action.description}
               </p>
             </div>

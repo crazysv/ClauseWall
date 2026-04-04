@@ -58,11 +58,7 @@ export default function SectorFilter({
     <div className="flex flex-wrap gap-2">
       <button
         onClick={() => onChange("all")}
-        className={`px-3 py-1.5 rounded-full text-sm border transition-all ${
-          selected === "all"
-            ? "bg-blue-500/15 border-blue-500/30 text-blue-400"
-            : "bg-gray-900/50 border-gray-800 text-muted-foreground hover:border-white/20"
-        }`}
+        className={`px-3 py-1.5 rounded-full text-sm border transition-all ${selected === "all" ? "bg-blue-500/15 border-blue-500/30 text-blue-400" : "bg-background border-2 border-foreground card-impact/50 border-foreground border-2 text-muted-foreground hover:border-foreground border-2"}`}
       >
         All
       </button>
@@ -70,11 +66,7 @@ export default function SectorFilter({
         <button
           key={sector}
           onClick={() => onChange(sector)}
-          className={`px-3 py-1.5 rounded-full text-sm border transition-all ${
-            selected === sector
-              ? "bg-blue-500/15 border-blue-500/30 text-blue-400"
-              : "bg-gray-900/50 border-gray-800 text-muted-foreground hover:border-white/20"
-          }`}
+          className={`px-3 py-1.5 rounded-full text-sm border transition-all ${selected === sector ? "bg-blue-500/15 border-blue-500/30 text-blue-400" : "bg-background border-2 border-foreground card-impact/50 border-foreground border-2 text-muted-foreground hover:border-foreground border-2"}`}
         >
           {SECTOR_ICONS[sector]} {SECTOR_LABELS[sector]}
         </button>

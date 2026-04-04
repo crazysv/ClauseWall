@@ -155,7 +155,7 @@ export default async function VerifyPage({
             {/* Badge Icon + Label */}
             <div className="text-center mb-8 border-b-4 border-black pb-8 border-dashed">
               <div className="text-6xl mb-4">{tier.icon}</div>
-              <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-widest text-black dark:text-white">
+              <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-widest text-black dark:text-foreground">
                 <span style={{ color: tier.color }}>{tier.label}</span>
               </h1>
             </div>
@@ -188,26 +188,26 @@ export default async function VerifyPage({
             </p>
 
             {/* Divider */}
-            <div className="h-px bg-white/5 mb-6" />
+            <div className="h-px bg-muted mb-6" />
 
             {/* Contract Details */}
             <div className="space-y-4 mb-8 pt-6 border-t-4 border-black border-dashed">
               <div className="flex items-center gap-4 text-sm font-bold uppercase tracking-widest">
-                <FileText className="h-5 w-5 text-black dark:text-white flex-shrink-0 stroke-[3px]" />
+                <FileText className="h-5 w-5 text-black dark:text-foreground flex-shrink-0 stroke-[3px]" />
                 <span className="text-muted-foreground w-32">TYPE</span>
                 <span className="font-black text-foreground">
                   {getDocumentTypeLabel(doc.document_type)}
                 </span>
               </div>
               <div className="flex items-center gap-4 text-sm font-bold uppercase tracking-widest">
-                <MapPin className="h-5 w-5 text-black dark:text-white flex-shrink-0 stroke-[3px]" />
+                <MapPin className="h-5 w-5 text-black dark:text-foreground flex-shrink-0 stroke-[3px]" />
                 <span className="text-muted-foreground w-32">JURISDICTION</span>
                 <span className="font-black text-foreground">
                   {getStateName(doc.jurisdiction)}
                 </span>
               </div>
               <div className="flex items-center gap-4 text-sm font-bold uppercase tracking-widest">
-                <Calendar className="h-5 w-5 text-black dark:text-white flex-shrink-0 stroke-[3px]" />
+                <Calendar className="h-5 w-5 text-black dark:text-foreground flex-shrink-0 stroke-[3px]" />
                 <span className="text-muted-foreground w-32">VERIFIED</span>
                 <span className="font-black text-foreground">
                   {formattedDate}
@@ -217,7 +217,7 @@ export default async function VerifyPage({
               {/* Entity — only if owner enabled */}
               {settings.show_entity && doc.entity_name && (
                 <div className="flex items-center gap-4 text-sm font-bold uppercase tracking-widest">
-                  <Building2 className="h-5 w-5 text-black dark:text-white flex-shrink-0 stroke-[3px]" />
+                  <Building2 className="h-5 w-5 text-black dark:text-foreground flex-shrink-0 stroke-[3px]" />
                   <span className="text-muted-foreground w-32">ENTITY</span>
                   <span className="font-black text-foreground">
                     {doc.entity_name}
@@ -323,7 +323,7 @@ export default async function VerifyPage({
           {/* Footer */}
           <div className="px-6 py-6 border-t-4 border-black bg-gray-100 dark:bg-zinc-900">
             <div className="flex items-center justify-center gap-2 mb-3">
-              <Shield className="h-5 w-5 text-black dark:text-white stroke-[3px]" />
+              <Shield className="h-5 w-5 text-black dark:text-foreground stroke-[3px]" />
               <span className="text-base font-black uppercase tracking-widest">
                 CLAUSEWALL
               </span>
@@ -354,7 +354,7 @@ function NotFound() {
         </p>
         <Link
           href="/upload"
-          className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors"
+          className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-none bg-blue-600 hover:bg-blue-700 text-foreground text-sm font-medium transition-colors"
         >
           <Search className="h-4 w-4" />
           Analyze Your Contract

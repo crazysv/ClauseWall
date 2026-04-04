@@ -399,7 +399,7 @@ export default function GraphCanvas({ data, highlightType }: GraphCanvasProps) {
 
   if (!data || data.nodes.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full text-gray-500 text-sm">
+      <div className="flex items-center justify-center h-full text-muted-foreground text-sm">
         No graph data to visualize
       </div>
     );
@@ -413,8 +413,8 @@ export default function GraphCanvas({ data, highlightType }: GraphCanvasProps) {
       <canvas ref={canvasRef} className="w-full h-full" />
 
       {/* Legend */}
-      <div className="absolute bottom-3 left-3 p-2 rounded-lg bg-black/70 border border-white/10">
-        <p className="text-[9px] text-gray-500 mb-1.5 font-medium">
+      <div className="absolute bottom-3 left-3 p-2 rounded-none bg-black/70 border border-foreground border-2">
+        <p className="text-[9px] text-muted-foreground mb-1.5 font-medium">
           NODE TYPES
         </p>
         <div className="flex flex-wrap gap-x-3 gap-y-1">
@@ -424,7 +424,7 @@ export default function GraphCanvas({ data, highlightType }: GraphCanvasProps) {
                 className="w-2.5 h-2.5 rounded-full"
                 style={{ backgroundColor: NODE_COLORS[type] || "#6B7280" }}
               />
-              <span className="text-[9px] text-gray-400">
+              <span className="text-[9px] text-muted-foreground">
                 {type.replace(/_/g, " ")}
               </span>
             </div>
@@ -433,8 +433,8 @@ export default function GraphCanvas({ data, highlightType }: GraphCanvasProps) {
       </div>
 
       {/* Controls hint */}
-      <div className="absolute top-3 right-3 p-2 rounded-lg bg-black/70 border border-white/10">
-        <p className="text-[9px] text-gray-500">
+      <div className="absolute top-3 right-3 p-2 rounded-none bg-black/70 border border-foreground border-2">
+        <p className="text-[9px] text-muted-foreground">
           Scroll: Zoom • Drag: Move nodes
         </p>
       </div>

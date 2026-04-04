@@ -94,7 +94,7 @@ export default function ReportIssueModal({
           className="w-full max-w-md"
           onClick={(e) => e.stopPropagation()}
         >
-          <Card className="border-amber-500/20 bg-gray-900">
+          <Card className="border-amber-500/20 bg-background border-2 border-foreground card-impact">
             <CardContent className="p-6">
               {submitted ? (
                 <div className="text-center py-8">
@@ -126,7 +126,7 @@ export default function ReportIssueModal({
                       <select
                         value={issueType}
                         onChange={(e) => setIssueType(e.target.value)}
-                        className="w-full bg-gray-800 border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-amber-500 focus:outline-none"
+                        className="w-full bg-background border-2 border-foreground card-impact border border-foreground border-2 rounded-none px-3 py-2 text-sm focus:border-amber-500 focus:outline-none"
                       >
                         {ISSUE_TYPES.map((t) => (
                           <option key={t.value} value={t.value}>
@@ -144,7 +144,7 @@ export default function ReportIssueModal({
                         onChange={(e) => setDescription(e.target.value)}
                         rows={3}
                         placeholder="What's incorrect?"
-                        className="w-full bg-gray-800 border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-amber-500 focus:outline-none resize-none"
+                        className="w-full bg-background border-2 border-foreground card-impact border border-foreground border-2 rounded-none px-3 py-2 text-sm focus:border-amber-500 focus:outline-none resize-none"
                       />
                     </div>
                     <div>
@@ -156,7 +156,7 @@ export default function ReportIssueModal({
                         value={suggestion}
                         onChange={(e) => setSuggestion(e.target.value)}
                         placeholder="What should it be?"
-                        className="w-full bg-gray-800 border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-amber-500 focus:outline-none"
+                        className="w-full bg-background border-2 border-foreground card-impact border border-foreground border-2 rounded-none px-3 py-2 text-sm focus:border-amber-500 focus:outline-none"
                       />
                     </div>
                   </div>

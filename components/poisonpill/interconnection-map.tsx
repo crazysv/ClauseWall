@@ -67,9 +67,9 @@ export function InterconnectionMap({
 
   if (graph.nodes.length === 0) {
     return (
-      <Card className="bg-white/[0.02] border-white/10">
+      <Card className="bg-white/[0.02] border-foreground border-2">
         <CardContent className="p-8 text-center">
-          <p className="text-xs text-white/30">
+          <p className="text-xs text-foreground">
             No interconnection data available.
           </p>
         </CardContent>
@@ -106,17 +106,13 @@ export function InterconnectionMap({
   };
 
   return (
-    <Card className="bg-white/[0.02] border-white/10 overflow-hidden">
+    <Card className="bg-white/[0.02] border-foreground border-2 overflow-hidden">
       <CardContent className="p-0">
         {/* Legend */}
-        <div className="px-4 py-2 border-b border-white/5 flex flex-wrap gap-3">
+        <div className="px-4 py-2 border-b border-foreground border-2 flex flex-wrap gap-3">
           <button
             onClick={() => onTrapSelect(null)}
-            className={`text-[9px] px-2 py-0.5 rounded-full transition-all ${
-              !selectedTrapId
-                ? "bg-purple-500/15 text-purple-300"
-                : "text-white/25 hover:text-white/40"
-            }`}
+            className={`text-[9px] px-2 py-0.5 rounded-full transition-all ${!selectedTrapId ? "bg-purple-500/15 text-purple-300" : "text-foreground hover:text-foreground"}`}
           >
             All
           </button>
@@ -126,11 +122,7 @@ export function InterconnectionMap({
               onClick={() =>
                 onTrapSelect(selectedTrapId === trap.id ? null : trap.id)
               }
-              className={`text-[9px] px-2 py-0.5 rounded-full transition-all truncate max-w-[120px] ${
-                selectedTrapId === trap.id
-                  ? "bg-purple-500/15 text-purple-300"
-                  : "text-white/25 hover:text-white/40"
-              }`}
+              className={`text-[9px] px-2 py-0.5 rounded-full transition-all truncate max-w-[120px] ${selectedTrapId === trap.id ? "bg-purple-500/15 text-purple-300" : "text-foreground hover:text-foreground"}`}
             >
               {trap.trap_name}
             </button>
@@ -331,7 +323,7 @@ export function InterconnectionMap({
         </div>
 
         {/* Edge Type Legend */}
-        <div className="px-4 py-2 border-t border-white/5 flex flex-wrap gap-3">
+        <div className="px-4 py-2 border-t border-foreground border-2 flex flex-wrap gap-3">
           {Object.entries(EDGE_COLORS)
             .filter(([type]) =>
               graph.edges.some((e) => e.connection_type === type),
@@ -342,7 +334,7 @@ export function InterconnectionMap({
                   className="w-3 h-0.5 rounded"
                   style={{ backgroundColor: color }}
                 />
-                <span className="text-[9px] text-white/25 capitalize">
+                <span className="text-[9px] text-foreground capitalize">
                   {type.replace(/_/g, " ")}
                 </span>
               </div>

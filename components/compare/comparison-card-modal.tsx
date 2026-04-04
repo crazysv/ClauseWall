@@ -177,7 +177,7 @@ export default function ComparisonCardModal({
               <Share2 className="h-6 w-6 text-black" />
               SHARE COMPARISON
             </DialogTitle>
-            <DialogDescription className="text-sm font-bold text-gray-600 uppercase tracking-widest pt-2">
+            <DialogDescription className="text-sm font-bold text-muted-foreground uppercase tracking-widest pt-2">
               DOWNLOAD OR SHARE YOUR CONTRACT COMPARISON CARD
             </DialogDescription>
           </DialogHeader>
@@ -190,7 +190,7 @@ export default function ComparisonCardModal({
                 <button
                   key={f}
                   onClick={() => setFormat(f)}
-                  className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 text-xs font-black uppercase tracking-widest transition-colors ${format === f ? "bg-black text-white" : "text-black hover:bg-gray-200"}`}
+                  className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 text-xs font-black uppercase tracking-widest transition-colors ${format === f ? "bg-black text-foreground" : "text-black hover:bg-gray-200"}`}
                 >
                   <Icon className="h-4 w-4" />
                   {FORMATS[f].label}
@@ -240,14 +240,14 @@ export default function ComparisonCardModal({
             </Button>
             <Button
               onClick={handleWhatsApp}
-              className="gap-2 bg-[#25D366] hover:bg-[#20b858] text-white border-2 border-black font-black uppercase tracking-widest rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none"
+              className="gap-2 bg-[#25D366] hover:bg-[#20b858] text-foreground border-2 border-black font-black uppercase tracking-widest rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none"
             >
               <Share2 className="h-4 w-4" />
               WHATSAPP
             </Button>
             <Button
               onClick={handleTwitter}
-              className="gap-2 bg-black hover:bg-gray-800 text-white border-2 border-black font-black uppercase tracking-widest rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none"
+              className="gap-2 bg-black hover:bg-background border-2 border-foreground card-impact text-foreground border-2 border-black font-black uppercase tracking-widest rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none"
             >
               <Share2 className="h-4 w-4" />
               TWITTER

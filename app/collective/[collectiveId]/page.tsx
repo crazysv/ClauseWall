@@ -81,7 +81,7 @@ export default function CollectiveDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+      <div className="min-h-screen bg-background border-2 border-foreground card-impact flex items-center justify-center">
         <Loader2 className="h-8 w-8 text-amber-400 animate-spin" />
       </div>
     );
@@ -89,8 +89,8 @@ export default function CollectiveDetailPage() {
 
   if (error || !collective) {
     return (
-      <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center gap-4">
-        <p className="text-white/40">{error || "Collective not found"}</p>
+      <div className="min-h-screen bg-background border-2 border-foreground card-impact flex flex-col items-center justify-center gap-4">
+        <p className="text-foreground">{error || "Collective not found"}</p>
         <Link
           href="/collective"
           className="text-xs text-amber-400 hover:text-amber-300 flex items-center gap-1"
@@ -102,7 +102,7 @@ export default function CollectiveDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 pt-24 pb-16 px-4">
+    <div className="min-h-screen bg-background border-2 border-foreground card-impact pt-24 pb-16 px-4">
       <div className="max-w-3xl mx-auto">
         {/* Back nav */}
         <motion.div
@@ -112,7 +112,7 @@ export default function CollectiveDetailPage() {
         >
           <Link
             href="/collective"
-            className="inline-flex items-center gap-1 text-xs text-white/30 hover:text-white/50"
+            className="inline-flex items-center gap-1 text-xs text-foreground hover:text-foreground"
           >
             <ArrowLeft className="h-3 w-3" />
             All Collectives
@@ -126,14 +126,14 @@ export default function CollectiveDetailPage() {
             animate={{ opacity: 1, y: 0 }}
             className="mb-4"
           >
-            <div className="rounded-xl bg-amber-500/5 border border-amber-500/20 p-4 flex items-center justify-between">
+            <div className="rounded-none bg-amber-500/5 border border-amber-500/20 p-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Users className="h-5 w-5 text-amber-400" />
                 <div>
-                  <p className="text-sm font-medium text-white">
+                  <p className="text-sm font-medium text-foreground">
                     Join this collective
                   </p>
-                  <p className="text-[10px] text-white/30">
+                  <p className="text-[10px] text-foreground">
                     {collective.member_count} members already joined —
                     completely anonymous
                   </p>

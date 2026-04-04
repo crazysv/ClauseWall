@@ -76,22 +76,24 @@ export default function JoinCollectiveModal({
           className="relative w-full max-w-md rounded-none bg-background border-4 border-foreground shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden"
         >
           {/* Header */}
-          <div className="p-5 border-b border-white/5">
+          <div className="p-5 border-b border-foreground border-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-xl bg-amber-500/10 flex items-center justify-center">
+                <div className="h-10 w-10 rounded-none bg-amber-500/10 flex items-center justify-center">
                   <Users className="h-5 w-5 text-amber-400" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-white">Join Collective</h3>
-                  <p className="text-xs text-white/40">
+                  <h3 className="font-semibold text-foreground">
+                    Join Collective
+                  </h3>
+                  <p className="text-xs text-foreground">
                     Against {entityName} • {memberCount} members
                   </p>
                 </div>
               </div>
               <button
                 onClick={onClose}
-                className="p-1.5 rounded-lg text-white/30 hover:text-white/60 hover:bg-white/5"
+                className="p-1.5 rounded-none text-foreground hover:text-foreground hover:bg-muted"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -100,7 +102,7 @@ export default function JoinCollectiveModal({
 
           {/* Privacy notice */}
           <div className="p-5 space-y-4">
-            <div className="rounded-xl bg-green-500/5 border border-green-500/20 p-4">
+            <div className="rounded-none bg-green-500/5 border border-green-500/20 p-4">
               <div className="flex items-start gap-3">
                 <Shield className="h-5 w-5 text-green-400 mt-0.5 flex-shrink-0" />
                 <div>
@@ -122,16 +124,18 @@ export default function JoinCollectiveModal({
 
             {/* Options */}
             <div className="space-y-3">
-              <label className="flex items-center justify-between rounded-lg bg-white/[0.03] p-3 cursor-pointer hover:bg-white/[0.05] transition-colors">
+              <label className="flex items-center justify-between rounded-none bg-white/[0.03] p-3 cursor-pointer hover:bg-white/[0.05] transition-colors">
                 <div className="flex items-center gap-2">
                   {optInToChat ? (
                     <Eye className="h-4 w-4 text-blue-400" />
                   ) : (
-                    <EyeOff className="h-4 w-4 text-white/30" />
+                    <EyeOff className="h-4 w-4 text-foreground" />
                   )}
                   <div>
-                    <p className="text-xs text-white">Enable anonymous chat</p>
-                    <p className="text-[10px] text-white/30">
+                    <p className="text-xs text-foreground">
+                      Enable anonymous chat
+                    </p>
+                    <p className="text-[10px] text-foreground">
                       Communicate with other members anonymously
                     </p>
                   </div>
@@ -140,18 +144,18 @@ export default function JoinCollectiveModal({
                   type="checkbox"
                   checked={optInToChat}
                   onChange={(e) => setOptInToChat(e.target.checked)}
-                  className="rounded border-white/20 bg-white/5 text-amber-500 focus:ring-amber-500"
+                  className="rounded border-foreground border-2 bg-muted text-amber-500 focus:ring-amber-500"
                 />
               </label>
 
-              <label className="flex items-center justify-between rounded-lg bg-white/[0.03] p-3 cursor-pointer hover:bg-white/[0.05] transition-colors">
+              <label className="flex items-center justify-between rounded-none bg-white/[0.03] p-3 cursor-pointer hover:bg-white/[0.05] transition-colors">
                 <div className="flex items-center gap-2">
-                  <Shield className="h-4 w-4 text-white/30" />
+                  <Shield className="h-4 w-4 text-foreground" />
                   <div>
-                    <p className="text-xs text-white">
+                    <p className="text-xs text-foreground">
                       Opt-in for legal action
                     </p>
-                    <p className="text-[10px] text-white/30">
+                    <p className="text-[10px] text-foreground">
                       Be included in collective legal notices (can change later)
                     </p>
                   </div>
@@ -160,7 +164,7 @@ export default function JoinCollectiveModal({
                   type="checkbox"
                   checked={optInToAction}
                   onChange={(e) => setOptInToAction(e.target.checked)}
-                  className="rounded border-white/20 bg-white/5 text-amber-500 focus:ring-amber-500"
+                  className="rounded border-foreground border-2 bg-muted text-amber-500 focus:ring-amber-500"
                 />
               </label>
             </div>

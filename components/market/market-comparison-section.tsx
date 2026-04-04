@@ -73,7 +73,7 @@ export default function MarketComparisonSection({
 
   if (loading) {
     return (
-      <Card className="bg-background/50 border-gray-800 animate-pulse">
+      <Card className="bg-background/50 border-foreground border-2 animate-pulse">
         <CardContent className="p-6">
           <div className="flex items-center gap-2 mb-4">
             <BarChart3 className="h-5 w-5 text-cyan-400" />
@@ -81,7 +81,7 @@ export default function MarketComparisonSection({
           </div>
           <div className="space-y-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-16 bg-white/[0.02] rounded-lg" />
+              <div key={i} className="h-16 bg-white/[0.02] rounded-none" />
             ))}
           </div>
         </CardContent>
@@ -103,7 +103,7 @@ export default function MarketComparisonSection({
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <div className="p-1.5 rounded-lg bg-cyan-500/10">
+            <div className="p-1.5 rounded-none bg-cyan-500/10">
               <BarChart3 className="h-5 w-5 text-cyan-400" />
             </div>
             <div>
@@ -154,7 +154,7 @@ export default function MarketComparisonSection({
                   onClick={() =>
                     setExpandedChart(isExpanded ? null : ctx.clause_id)
                   }
-                  className="w-full text-left p-3 rounded-lg bg-white/[0.03] hover:bg-white/[0.05] transition-colors border border-foreground border-2"
+                  className="w-full text-left p-3 rounded-none bg-white/[0.03] hover:bg-white/[0.05] transition-colors border border-foreground border-2"
                 >
                   <div className="flex items-center justify-between mb-1.5">
                     <div className="flex items-center gap-2">
@@ -197,7 +197,7 @@ export default function MarketComparisonSection({
                     />
                     {/* Median marker */}
                     <div
-                      className="absolute top-0 h-full w-0.5 bg-white/30"
+                      className="absolute top-0 h-full w-0.5 bg-muted"
                       style={{ left: "50%" }}
                     />
                   </div>

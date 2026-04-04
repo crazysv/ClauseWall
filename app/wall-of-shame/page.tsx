@@ -136,7 +136,7 @@ export default function WallOfShamePage() {
         </span>
       );
     return (
-      <div className="h-10 w-10 rounded-lg bg-red-500/10 flex items-center justify-center">
+      <div className="h-10 w-10 rounded-none bg-red-500/10 flex items-center justify-center">
         <span className="text-sm font-bold text-red-400">#{index + 1}</span>
       </div>
     );
@@ -188,7 +188,7 @@ export default function WallOfShamePage() {
       <div className="relative mx-auto max-w-5xl">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-red-500/10 mb-6">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-none bg-red-500/10 mb-6">
             <Skull className="h-8 w-8 text-red-400" />
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold mb-3">
@@ -203,7 +203,7 @@ export default function WallOfShamePage() {
         {/* Stats */}
         {entities.length > 0 && (
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-            <Card className="bg-gray-900/50 border-gray-800">
+            <Card className="bg-background border-2 border-foreground card-impact/50 border-foreground border-2">
               <CardContent className="p-4 text-center">
                 <p className="text-2xl font-bold text-red-400">
                   {entities.length}
@@ -213,7 +213,7 @@ export default function WallOfShamePage() {
                 </p>
               </CardContent>
             </Card>
-            <Card className="bg-gray-900/50 border-gray-800">
+            <Card className="bg-background border-2 border-foreground card-impact/50 border-foreground border-2">
               <CardContent className="p-4 text-center">
                 <p className="text-2xl font-bold text-orange-400">
                   {totalFlags}
@@ -221,7 +221,7 @@ export default function WallOfShamePage() {
                 <p className="text-xs text-muted-foreground">Total Flags</p>
               </CardContent>
             </Card>
-            <Card className="bg-gray-900/50 border-gray-800">
+            <Card className="bg-background border-2 border-foreground card-impact/50 border-foreground border-2">
               <CardContent className="p-4 text-center">
                 <p className="text-2xl font-bold text-purple-400">
                   {avgRiskScore}
@@ -229,7 +229,7 @@ export default function WallOfShamePage() {
                 <p className="text-xs text-muted-foreground">Avg Risk Score</p>
               </CardContent>
             </Card>
-            <Card className="bg-gray-900/50 border-gray-800">
+            <Card className="bg-background border-2 border-foreground card-impact/50 border-foreground border-2">
               <CardContent className="p-4 text-center">
                 <p className="text-2xl font-bold text-blue-400">
                   {totalDocuments}
@@ -250,14 +250,14 @@ export default function WallOfShamePage() {
               placeholder="Search by entity name..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 bg-gray-900/50 border-gray-800"
+              className="pl-9 bg-background border-2 border-foreground card-impact/50 border-foreground border-2"
             />
           </div>
           <Select
             value={filterJurisdiction}
             onValueChange={setFilterJurisdiction}
           >
-            <SelectTrigger className="w-full sm:w-[200px] bg-gray-900/50 border-gray-800">
+            <SelectTrigger className="w-full sm:w-[200px] bg-background border-2 border-foreground card-impact/50 border-foreground border-2">
               <Filter className="h-4 w-4 mr-2 text-muted-foreground" />
               <SelectValue placeholder="All States" />
             </SelectTrigger>
@@ -321,9 +321,7 @@ export default function WallOfShamePage() {
           {filteredEntities.map((entity, index) => (
             <Card
               key={entity.id}
-              className={`card-impact border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] bg-background hover:translate-y-1 hover:shadow-none transition-all overflow-hidden ${
-                index < 3 ? "border-l-8 border-l-red-500" : ""
-              }`}
+              className={`card-impact border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] bg-background hover:translate-y-1 hover:shadow-none transition-all overflow-hidden ${index < 3 ? "border-l-8 border-l-red-500" : ""}`}
             >
               {/* Top 3 get a red stripe */}
               {index < 3 && <div className="h-0.5 bg-red-500" />}
@@ -342,7 +340,7 @@ export default function WallOfShamePage() {
                       <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground mb-3">
                         <Badge
                           variant="outline"
-                          className="text-xs border-white/10"
+                          className="text-xs border-foreground border-2"
                         >
                           {entity.entity_type}
                         </Badge>
@@ -356,11 +354,7 @@ export default function WallOfShamePage() {
                         {marketAvgRisk !== null &&
                           entity.avg_risk_score > 0 && (
                             <Badge
-                              className={`text-[10px] ${
-                                entity.avg_risk_score > marketAvgRisk
-                                  ? "bg-red-500/10 text-red-300 border-red-500/20"
-                                  : "bg-green-500/10 text-green-300 border-green-500/20"
-                              }`}
+                              className={`text-[10px] ${entity.avg_risk_score > marketAvgRisk ? "bg-red-500/10 text-red-300 border-red-500/20" : "bg-green-500/10 text-green-300 border-green-500/20"}`}
                             >
                               Market avg: {marketAvgRisk} | This entity:{" "}
                               {entity.avg_risk_score}

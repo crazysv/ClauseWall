@@ -140,11 +140,7 @@ export default function QuickLookupPanel({
         <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2 pr-1">
           <button
             onClick={handleVoiceInput}
-            className={`p-2 transition-all border-2 ${
-              isListening
-                ? "bg-red-100 text-red-600 border-red-600 shadow-[2px_2px_0px_0px_rgba(220,38,38,1)] animate-pulse"
-                : "text-muted-foreground hover:text-black border-transparent hover:bg-gray-100"
-            }`}
+            className={`p-2 transition-all border-2 ${isListening ? "bg-red-100 text-red-600 border-red-600 shadow-[2px_2px_0px_0px_rgba(220,38,38,1)] animate-pulse" : "text-muted-foreground hover:text-black border-transparent hover:bg-gray-100"}`}
             disabled={loading}
           >
             {isListening ? (
@@ -156,12 +152,12 @@ export default function QuickLookupPanel({
           <button
             onClick={handleSubmit}
             disabled={!query.trim() || loading}
-            className="p-2.5 bg-blue-500 hover:bg-blue-600 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all active:translate-y-1 active:shadow-none"
+            className="p-2.5 bg-blue-500 hover:bg-blue-600 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-foreground disabled:opacity-50 disabled:cursor-not-allowed transition-all active:translate-y-1 active:shadow-none"
           >
             {loading ? (
-              <Loader2 className="w-5 h-5 text-white animate-spin" />
+              <Loader2 className="w-5 h-5 text-foreground animate-spin" />
             ) : (
-              <Send className="w-5 h-5 text-white" />
+              <Send className="w-5 h-5 text-foreground" />
             )}
           </button>
         </div>
@@ -179,7 +175,7 @@ export default function QuickLookupPanel({
 
       {/* Current Result */}
       {currentResult && !loading && (
-        <div className="border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-white overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-300">
+        <div className="border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-white overflow-hidden animate-in fade-in slide-in- duration-300">
           {/* Answer */}
           <div className="p-5 lg:p-6 pb-2">
             <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-3">
@@ -223,13 +219,7 @@ export default function QuickLookupPanel({
           {/* Source Badge */}
           <div className="px-5 lg:px-6 pb-5 pt-2 border-t-2 border-black bg-gray-50 flex items-center pt-4">
             <span
-              className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] uppercase font-black tracking-wider border-2 ${
-                currentResult.source === "database"
-                  ? "bg-green-100 text-green-900 border-green-900 shadow-[2px_2px_0px_0px_rgba(20,83,45,1)]"
-                  : currentResult.source === "hybrid"
-                    ? "bg-purple-100 text-purple-900 border-purple-900 shadow-[2px_2px_0px_0px_rgba(88,28,135,1)]"
-                    : "bg-blue-100 text-blue-900 border-blue-900 shadow-[2px_2px_0px_0px_rgba(30,58,138,1)]"
-              }`}
+              className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] uppercase font-black tracking-wider border-2 ${currentResult.source === "database" ? "bg-green-100 text-green-900 border-green-900 shadow-[2px_2px_0px_0px_rgba(20,83,45,1)]" : currentResult.source === "hybrid" ? "bg-purple-100 text-purple-900 border-purple-900 shadow-[2px_2px_0px_0px_rgba(88,28,135,1)]" : "bg-blue-100 text-blue-900 border-blue-900 shadow-[2px_2px_0px_0px_rgba(30,58,138,1)]"}`}
             >
               {currentResult.source === "database" ? (
                 <>

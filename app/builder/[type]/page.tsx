@@ -213,7 +213,7 @@ export default function BuilderFormPage() {
 
     return (
       <div key={field.name} className="space-y-1.5">
-        <label className="block text-sm font-medium text-gray-300">
+        <label className="block text-sm font-medium text-muted-foreground">
           {field.label}
           {field.required && <span className="text-red-400 ml-1">*</span>}
         </label>
@@ -241,7 +241,7 @@ export default function BuilderFormPage() {
           />
         ) : field.type === "currency" ? (
           <div className="relative">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">
               ₹
             </span>
             <input
@@ -292,7 +292,7 @@ export default function BuilderFormPage() {
         )}
 
         {field.helpText && !error && (
-          <p className="text-xs text-gray-500 flex items-center gap-1">
+          <p className="text-xs text-muted-foreground flex items-center gap-1">
             <Info className="w-3 h-3" />
             {field.helpText}
           </p>
@@ -365,11 +365,7 @@ export default function BuilderFormPage() {
               <button
                 key={name}
                 onClick={() => setCurrentGroup(i)}
-                className={`flex-1 h-3 border-2 border-black transition-colors ${
-                  i <= currentGroup
-                    ? "bg-emerald-400"
-                    : "bg-white dark:bg-zinc-800"
-                }`}
+                className={`flex-1 h-3 border-2 border-black transition-colors ${i <= currentGroup ? "bg-emerald-400" : "bg-white dark:bg-zinc-800"}`}
               />
             ))}
           </div>
@@ -398,9 +394,7 @@ export default function BuilderFormPage() {
                   });
                 }
               }}
-              className={`w-full border-4 bg-white dark:bg-zinc-950 px-4 py-3 font-bold transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:translate-x-1 focus:translate-y-1 focus:shadow-none ${
-                errors["_jurisdiction"] ? "border-red-500" : "border-black"
-              }`}
+              className={`w-full border-4 bg-white dark:bg-zinc-950 px-4 py-3 font-bold transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:translate-x-1 focus:translate-y-1 focus:shadow-none ${errors["_jurisdiction"] ? "border-red-500" : "border-black"}`}
             >
               <option value="">Select your state...</option>
               {INDIAN_STATES.map((state) => (
@@ -415,7 +409,7 @@ export default function BuilderFormPage() {
                 {errors["_jurisdiction"]}
               </p>
             )}
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-xs text-muted-foreground mt-2">
               Laws vary by state. This ensures your contract references the
               correct statutes.
             </p>
@@ -446,7 +440,7 @@ export default function BuilderFormPage() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-sm flex items-start gap-3"
+            className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-none text-red-400 text-sm flex items-start gap-3"
           >
             <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
             <div>
@@ -461,11 +455,7 @@ export default function BuilderFormPage() {
           <button
             onClick={handlePrev}
             disabled={currentGroup === 0}
-            className={`flex items-center gap-2 px-6 py-3 border-4 font-black uppercase tracking-widest transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${
-              currentGroup === 0
-                ? "border-gray-300 text-gray-400 bg-gray-100 cursor-not-allowed shadow-none"
-                : "border-black bg-white hover:-translate-y-1 hover:shadow-none hover:bg-gray-100 text-foreground"
-            }`}
+            className={`flex items-center gap-2 px-6 py-3 border-4 font-black uppercase tracking-widest transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${currentGroup === 0 ? "border-gray-300 text-muted-foreground bg-gray-100 cursor-not-allowed shadow-none" : "border-black bg-white hover:-translate-y-1 hover:shadow-none hover:bg-gray-100 text-foreground"}`}
           >
             <ArrowLeft className="w-5 h-5 stroke-[3px]" />
             PREVIOUS
@@ -492,7 +482,7 @@ export default function BuilderFormPage() {
           ) : (
             <button
               onClick={handleNext}
-              className="flex items-center gap-2 px-8 py-3 border-4 border-black bg-black text-white hover:bg-gray-800 font-black uppercase tracking-widest transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none"
+              className="flex items-center gap-2 px-8 py-3 border-4 border-black bg-black text-foreground hover:bg-background border-2 border-foreground card-impact font-black uppercase tracking-widest transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none"
             >
               NEXT
               <ArrowRight className="w-5 h-5 stroke-[3px]" />
@@ -506,9 +496,9 @@ export default function BuilderFormPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="mt-12 p-6 bg-gray-900/30 border border-gray-800/50 rounded-xl"
+            className="mt-12 p-6 bg-background border-2 border-foreground card-impact/30 border border-foreground border-2/50 rounded-none"
           >
-            <h3 className="text-sm font-medium text-gray-400 mb-3 flex items-center gap-2">
+            <h3 className="text-sm font-medium text-muted-foreground mb-3 flex items-center gap-2">
               <Scale className="w-4 h-4" />
               Laws Applied in This Contract
             </h3>
@@ -517,9 +507,14 @@ export default function BuilderFormPage() {
                 <div key={i} className="flex items-start gap-2 text-sm">
                   <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
                   <div>
-                    <span className="text-gray-300">{law.name}</span>
-                    <span className="text-gray-600"> · {law.section}</span>
-                    <p className="text-gray-500 text-xs">{law.relevance}</p>
+                    <span className="text-muted-foreground">{law.name}</span>
+                    <span className="text-muted-foreground">
+                      {" "}
+                      · {law.section}
+                    </span>
+                    <p className="text-muted-foreground text-xs">
+                      {law.relevance}
+                    </p>
                   </div>
                 </div>
               ))}

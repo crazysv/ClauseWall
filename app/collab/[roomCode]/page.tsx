@@ -341,12 +341,12 @@ export default function CollabPage() {
   if (needsName && !userName) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="max-w-sm w-full mx-4 p-6 rounded-2xl bg-gray-900 border border-gray-800">
+        <div className="max-w-sm w-full mx-4 p-6 rounded-none bg-background border-2 border-foreground card-impact border border-foreground border-2">
           <div className="flex items-center gap-3 mb-4">
             <Users className="h-6 w-6 text-blue-400" />
             <h2 className="text-lg font-bold">Join Collaboration</h2>
           </div>
-          <p className="text-sm text-gray-400 mb-4">
+          <p className="text-sm text-muted-foreground mb-4">
             Room:{" "}
             <span className="font-mono font-bold text-blue-400">
               {roomCode}
@@ -356,7 +356,7 @@ export default function CollabPage() {
             value={nameInput}
             onChange={(e) => setNameInput(e.target.value)}
             placeholder="Enter your name"
-            className="mb-3 bg-gray-800 border-gray-700"
+            className="mb-3 bg-background border-2 border-foreground card-impact border-foreground border-2"
             onKeyDown={(e) => {
               if (e.key === "Enter" && nameInput.trim()) {
                 setUserName(nameInput.trim());
@@ -467,7 +467,7 @@ export default function CollabPage() {
             >
               Risk Score: {document.overall_risk_score}/100
             </div>
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-muted-foreground">
               {document.total_clauses} clauses
             </span>
           </div>
@@ -475,13 +475,13 @@ export default function CollabPage() {
 
         {/* Vote Summary */}
         {Object.keys(votes).length > 0 && (
-          <div className="mb-6 p-4 rounded-xl bg-gray-900/50 border border-gray-800">
+          <div className="mb-6 p-4 rounded-none bg-background border-2 border-foreground card-impact/50 border border-foreground border-2">
             <h3 className="text-sm font-semibold mb-2 flex items-center gap-2">
               <Users className="h-4 w-4 text-blue-400" />
               Team Consensus
             </h3>
             <div className="grid grid-cols-3 gap-3 text-center">
-              <div className="p-2 rounded-lg bg-green-500/10">
+              <div className="p-2 rounded-none bg-green-500/10">
                 <p className="text-lg font-bold text-green-400">
                   {
                     Object.values(votes).filter(
@@ -489,9 +489,9 @@ export default function CollabPage() {
                     ).length
                   }
                 </p>
-                <p className="text-[10px] text-gray-500">Accept</p>
+                <p className="text-[10px] text-muted-foreground">Accept</p>
               </div>
-              <div className="p-2 rounded-lg bg-yellow-500/10">
+              <div className="p-2 rounded-none bg-yellow-500/10">
                 <p className="text-lg font-bold text-yellow-400">
                   {
                     Object.values(votes).filter(
@@ -499,9 +499,9 @@ export default function CollabPage() {
                     ).length
                   }
                 </p>
-                <p className="text-[10px] text-gray-500">Negotiate</p>
+                <p className="text-[10px] text-muted-foreground">Negotiate</p>
               </div>
-              <div className="p-2 rounded-lg bg-red-500/10">
+              <div className="p-2 rounded-none bg-red-500/10">
                 <p className="text-lg font-bold text-red-400">
                   {
                     Object.values(votes).filter(
@@ -509,7 +509,7 @@ export default function CollabPage() {
                     ).length
                   }
                 </p>
-                <p className="text-[10px] text-gray-500">Reject</p>
+                <p className="text-[10px] text-muted-foreground">Reject</p>
               </div>
             </div>
           </div>
@@ -529,30 +529,30 @@ export default function CollabPage() {
                 key={clause.id}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="rounded-xl border border-white/5 bg-gray-900/50 p-4 space-y-3"
+                className="rounded-none border border-foreground border-2 bg-background border-2 border-foreground card-impact/50 p-4 space-y-3"
               >
                 {/* Clause Header */}
                 <div className="flex items-center gap-2 flex-wrap">
                   {risk.icon}
                   <Badge className={risk.badgeClass}>{risk.label}</Badge>
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs text-muted-foreground">
                     Clause {clause.clause_number}
                   </span>
                   <Badge
                     variant="outline"
-                    className="text-[10px] border-white/10 text-gray-500"
+                    className="text-[10px] border-foreground border-2 text-muted-foreground"
                   >
                     {clause.clause_type}
                   </Badge>
                 </div>
 
                 {/* Text */}
-                <p className="text-sm text-gray-300 leading-relaxed">
+                <p className="text-sm text-muted-foreground leading-relaxed">
                   {clause.original_text}
                 </p>
 
                 {/* Explanation */}
-                <p className="text-xs text-gray-500 leading-relaxed">
+                <p className="text-xs text-muted-foreground leading-relaxed">
                   {clause.explanation}
                 </p>
 
@@ -575,7 +575,7 @@ export default function CollabPage() {
                     {clauseAnnotations.map((ann) => (
                       <div key={ann.id} className="flex items-start gap-2">
                         <div
-                          className="w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center text-[8px] font-bold text-white mt-0.5"
+                          className="w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center text-[8px] font-bold text-foreground mt-0.5"
                           style={{ backgroundColor: ann.author_color }}
                         >
                           {ann.author_name.charAt(0).toUpperCase()}
@@ -587,7 +587,9 @@ export default function CollabPage() {
                           >
                             {ann.author_name}
                           </span>
-                          <p className="text-xs text-gray-400">{ann.content}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {ann.content}
+                          </p>
                         </div>
                       </div>
                     ))}
@@ -601,7 +603,7 @@ export default function CollabPage() {
                       value={annotationText}
                       onChange={(e) => setAnnotationText(e.target.value)}
                       placeholder="Add a note..."
-                      className="text-xs bg-gray-800 border-gray-700 h-8"
+                      className="text-xs bg-background border-2 border-foreground card-impact border-foreground border-2 h-8"
                       onKeyDown={(e) => {
                         if (e.key === "Enter") handleAddAnnotation(clause.id);
                         if (e.key === "Escape") setAnnotatingClause(null);
@@ -620,12 +622,12 @@ export default function CollabPage() {
                 ) : (
                   <button
                     onClick={() => setAnnotatingClause(clause.id)}
-                    className="flex items-center gap-1.5 text-[10px] text-gray-600 hover:text-gray-400 transition-colors"
+                    className="flex items-center gap-1.5 text-[10px] text-muted-foreground hover:text-muted-foreground transition-colors"
                   >
                     <MessageSquare className="h-3 w-3" />
                     Add note
                     {clauseAnnotations.length > 0 && (
-                      <span className="text-gray-600">
+                      <span className="text-muted-foreground">
                         ({clauseAnnotations.length})
                       </span>
                     )}

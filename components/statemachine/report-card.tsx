@@ -116,7 +116,7 @@ export default function ReportCard({
         </div>
       </div>
 
-      <p className="text-sm font-bold text-black mb-6 flex items-start gap-2 bg-white/60 p-4 border-l-4 border-black">
+      <p className="text-sm font-bold text-black mb-6 flex items-start gap-2 bg-muted p-4 border-l-4 border-black">
         {report.trapAnalysis.length > 0 && (
           <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
         )}
@@ -125,7 +125,7 @@ export default function ReportCard({
 
       <button
         onClick={onExplore}
-        className="flex items-center justify-center gap-2 text-sm font-black uppercase tracking-widest text-black hover:bg-black hover:text-white transition-colors group border-4 border-black p-3 w-full sm:w-auto shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] bg-white"
+        className="flex items-center justify-center gap-2 text-sm font-black uppercase tracking-widest text-black hover:bg-black hover:text-foreground transition-colors group border-4 border-black p-3 w-full sm:w-auto shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] bg-white"
       >
         <Activity className="h-5 w-5 group-hover:animate-pulse" />
         Explore State Machine
@@ -136,7 +136,7 @@ export default function ReportCard({
       {documentId && report.trapAnalysis && report.trapAnalysis.length > 0 && (
         <Link
           href={`/escape/${documentId}`}
-          className="text-xs font-black uppercase tracking-widest text-red-700 hover:text-red-900 hover:underline transition-colors mt-4 inline-flex items-center gap-2 bg-white/50 px-2 py-1 border-2 border-red-700"
+          className="text-xs font-black uppercase tracking-widest text-red-700 hover:text-red-900 hover:underline transition-colors mt-4 inline-flex items-center gap-2 bg-muted px-2 py-1 border-2 border-red-700"
         >
           <DoorOpen className="w-4 h-4" />
           {report.trapAnalysis.length} trap

@@ -62,7 +62,7 @@ export default function AlertPanel() {
   };
 
   return (
-    <Card className="bg-gray-900/50 border-gray-800">
+    <Card className="bg-background border-2 border-foreground card-impact/50 border-foreground border-2">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-base flex items-center gap-2">
@@ -96,11 +96,7 @@ export default function AlertPanel() {
             <Link
               key={alert.id}
               href={`/watchdog/changes/${alert.change_id}`}
-              className={`block p-3 rounded-lg transition-colors ${
-                alert.is_read
-                  ? "bg-gray-900/30"
-                  : "bg-blue-500/5 border border-blue-500/10"
-              } hover:bg-white/5`}
+              className={`block p-3 rounded-none transition-colors ${alert.is_read ? "bg-background border-2 border-foreground card-impact/30" : "bg-blue-500/5 border border-blue-500/10"} hover:bg-muted`}
             >
               <div className="flex items-start gap-2">
                 <span className="flex-shrink-0 mt-0.5">

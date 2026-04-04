@@ -54,11 +54,7 @@ export default function AuthorityCard({
       transition={{ delay: (priority || 1) * 0.1 }}
     >
       <Card
-        className={`border-4 rounded-none transition-all ${
-          confidence
-            ? CONFIDENCE_COLORS[confidence]
-            : "border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-white dark:bg-zinc-900"
-        } ${onClick ? "cursor-pointer hover:-translate-y-1 hover:shadow-none" : ""}`}
+        className={`border-4 rounded-none transition-all ${confidence ? CONFIDENCE_COLORS[confidence] : "border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-white dark:bg-zinc-900"} ${onClick ? "cursor-pointer hover:-translate-y-1 hover:shadow-none" : ""}`}
         onClick={onClick}
       >
         <CardContent className={compact ? "p-4" : "p-5"}>
@@ -99,7 +95,7 @@ export default function AuthorityCard({
                 ) : confidence === "medium" ? (
                   <AlertCircle className="h-4 w-4 text-amber-400" />
                 ) : (
-                  <AlertCircle className="h-4 w-4 text-gray-400" />
+                  <AlertCircle className="h-4 w-4 text-muted-foreground" />
                 )}
               </div>
             )}
@@ -109,7 +105,7 @@ export default function AuthorityCard({
           {reasoning && !compact && (
             <div className="mb-4 p-4 border-2 border-blue-500 bg-blue-50 dark:bg-blue-900/20 relative">
               <div className="absolute -top-3 -left-3 bg-blue-500 p-1 border-2 border-black">
-                <Scale className="h-4 w-4 text-white stroke-[3px]" />
+                <Scale className="h-4 w-4 text-foreground stroke-[3px]" />
               </div>
               <p className="text-sm font-bold text-blue-900 dark:text-blue-100 leading-relaxed ml-2">
                 {reasoning}

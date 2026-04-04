@@ -43,7 +43,7 @@ export default function BenchmarkExplorerPage() {
   }, [filterType, filterScope, filterDocType]);
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-foreground">
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
         <motion.div
@@ -53,17 +53,17 @@ export default function BenchmarkExplorerPage() {
         >
           <Link
             href="/market"
-            className="text-xs text-white/30 hover:text-white/50 mb-3 flex items-center gap-1"
+            className="text-xs text-foreground hover:text-foreground mb-3 flex items-center gap-1"
           >
             <ArrowLeft className="h-3 w-3" /> Back to Market Dashboard
           </Link>
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-gradient-to-br from-amber-500/20 to-orange-500/20">
+            <div className="p-2 rounded-none bg-background">
               <Database className="h-6 w-6 text-amber-400" />
             </div>
             <div>
               <h1 className="text-2xl font-bold">Benchmark Explorer</h1>
-              <p className="text-sm text-white/50">
+              <p className="text-sm text-foreground">
                 Filter and compare market benchmarks by metric, contract type,
                 and region
               </p>
@@ -89,18 +89,18 @@ export default function BenchmarkExplorerPage() {
             </div>
           ) : benchmarks.length === 0 ? (
             <div className="text-center py-16">
-              <BarChart3 className="h-10 w-10 text-white/10 mx-auto mb-3" />
-              <p className="text-sm text-white/40">
+              <BarChart3 className="h-10 w-10 text-foreground mx-auto mb-3" />
+              <p className="text-sm text-foreground">
                 No benchmarks match your filters.
               </p>
-              <p className="text-xs text-white/20 mt-1">
+              <p className="text-xs text-foreground mt-1">
                 Try broadening your filters or analyze more contracts to build
                 data.
               </p>
             </div>
           ) : (
             <>
-              <p className="text-xs text-white/30 mb-3">
+              <p className="text-xs text-foreground mb-3">
                 Showing {benchmarks.length} benchmark
                 {benchmarks.length !== 1 ? "s" : ""}
               </p>

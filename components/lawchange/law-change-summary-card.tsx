@@ -15,22 +15,18 @@ export default function LawChangeSummaryCard({ summary }: Props) {
   return (
     <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
       <Card
-        className={`relative overflow-hidden border-0 ${
-          hasImpacts
-            ? "bg-gradient-to-r from-red-500/10 via-indigo-500/10 to-purple-500/10"
-            : "bg-gradient-to-r from-indigo-500/10 via-blue-500/10 to-purple-500/10"
-        }`}
+        className={`relative overflow-hidden border-0 ${hasImpacts ? "bg-background " : "bg-background "}`}
       >
         {/* Background glow */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-indigo-500/10 to-transparent rounded-full blur-3xl" />
-          <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-tl from-purple-500/10 to-transparent rounded-full blur-3xl" />
+          <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-background to-transparent rounded-full blur-3xl" />
+          <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-background to-transparent rounded-full blur-3xl" />
         </div>
 
         <CardContent className="relative p-5 sm:p-6">
           {/* Alert Banner */}
           {hasImpacts && (
-            <div className="flex items-center gap-2 mb-4 px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/20">
+            <div className="flex items-center gap-2 mb-4 px-3 py-2 rounded-none bg-red-500/10 border border-red-500/20">
               <AlertCircle className="h-4 w-4 text-red-400 flex-shrink-0" />
               <span className="text-sm text-red-300">
                 ⚖️ {summary.affected_contracts} of your contracts{" "}
@@ -51,9 +47,7 @@ export default function LawChangeSummaryCard({ summary }: Props) {
             <StatItem
               icon={
                 <AlertCircle
-                  className={`h-4 w-4 ${
-                    hasImpacts ? "text-red-400" : "text-green-400"
-                  }`}
+                  className={`h-4 w-4 ${hasImpacts ? "text-red-400" : "text-green-400"}`}
                 />
               }
               label="Contracts Affected"
@@ -63,11 +57,7 @@ export default function LawChangeSummaryCard({ summary }: Props) {
             <StatItem
               icon={
                 <Bell
-                  className={`h-4 w-4 ${
-                    summary.unacknowledged_impacts > 0
-                      ? "text-orange-400"
-                      : "text-white/30"
-                  }`}
+                  className={`h-4 w-4 ${summary.unacknowledged_impacts > 0 ? "text-orange-400" : "text-foreground"}`}
                 />
               }
               label="Unacknowledged"
@@ -106,7 +96,7 @@ function StatItem({
     <div className="text-center">
       <div className="flex items-center justify-center mb-1.5">{icon}</div>
       <p className={`text-2xl font-bold ${color}`}>{value}</p>
-      <p className="text-[10px] text-white/30 mt-0.5">{label}</p>
+      <p className="text-[10px] text-foreground mt-0.5">{label}</p>
     </div>
   );
 }

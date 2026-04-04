@@ -164,12 +164,12 @@ export default function ComplaintFilingPage() {
     return (
       <div className="min-h-screen bg-background p-4 sm:p-8 max-w-4xl mx-auto">
         <div className="flex items-center gap-3 mb-8">
-          <Skeleton className="h-8 w-8 rounded-lg" />
+          <Skeleton className="h-8 w-8 rounded-none" />
           <Skeleton className="h-6 w-48" />
         </div>
-        <Skeleton className="h-12 w-full rounded-xl mb-6" />
-        <Skeleton className="h-64 w-full rounded-xl mb-4" />
-        <Skeleton className="h-48 w-full rounded-xl" />
+        <Skeleton className="h-12 w-full rounded-none mb-6" />
+        <Skeleton className="h-64 w-full rounded-none mb-4" />
+        <Skeleton className="h-48 w-full rounded-none" />
       </div>
     );
   }
@@ -206,13 +206,7 @@ export default function ComplaintFilingPage() {
               <button
                 key={s.id}
                 onClick={() => i <= step && setStep(i)}
-                className={`flex items-center gap-2 px-4 py-2 font-bold uppercase tracking-widest border-2 transition-all ${
-                  i === step
-                    ? "bg-orange-500 text-black border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-                    : i < step
-                      ? "bg-green-500 text-black border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] opacity-80"
-                      : "bg-white dark:bg-zinc-900 text-gray-500 border-gray-400 opacity-50 shadow-none border-dashed"
-                }`}
+                className={`flex items-center gap-2 px-4 py-2 font-bold uppercase tracking-widest border-2 transition-all ${i === step ? "bg-orange-500 text-black border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]" : i < step ? "bg-green-500 text-black border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] opacity-80" : "bg-white dark:bg-zinc-900 text-muted-foreground border-gray-400 opacity-50 shadow-none border-dashed"}`}
               >
                 {i < step ? (
                   <CheckCircle2 className="h-3.5 w-3.5" />
@@ -268,7 +262,7 @@ export default function ComplaintFilingPage() {
                     <Button
                       size="sm"
                       onClick={determineAuthority}
-                      className="border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] bg-orange-600 hover:bg-orange-700 font-bold uppercase tracking-widest text-white rounded-none"
+                      className="border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] bg-orange-600 hover:bg-orange-700 font-bold uppercase tracking-widest text-foreground rounded-none"
                     >
                       Update
                     </Button>
@@ -285,11 +279,7 @@ export default function ComplaintFilingPage() {
                 <Card
                   key={rec.primary.id}
                   onClick={() => setSelectedAuth(rec)}
-                  className={`mb-4 cursor-pointer transition-all rounded-none p-6 ${
-                    selectedAuth?.primary.id === rec.primary.id
-                      ? "card-impact-emphasis bg-orange-50 dark:bg-orange-900/10 border-orange-500 shadow-[6px_6px_0px_0px_rgba(249,115,22,1)]"
-                      : "card-impact hover:-translate-y-1"
-                  }`}
+                  className={`mb-4 cursor-pointer transition-all rounded-none p-6 ${selectedAuth?.primary.id === rec.primary.id ? "card-impact-emphasis bg-orange-50 dark:bg-orange-900/10 border-orange-500 shadow-[6px_6px_0px_0px_rgba(249,115,22,1)]" : "card-impact hover:-translate-y-1"}`}
                 >
                   <CardContent className="p-0">
                     <div className="flex items-start justify-between gap-3">
@@ -300,7 +290,7 @@ export default function ComplaintFilingPage() {
                               Recommended
                             </span>
                           )}
-                          <span className="text-[10px] px-2 py-1 font-black uppercase tracking-widest bg-white dark:bg-black text-gray-600 dark:text-gray-300 border-2 border-black">
+                          <span className="text-[10px] px-2 py-1 font-black uppercase tracking-widest bg-white dark:bg-black text-muted-foreground dark:text-muted-foreground border-2 border-black">
                             {rec.primary.filing_method === "online"
                               ? "🌐 Online"
                               : rec.primary.filing_method === "offline"
@@ -342,11 +332,7 @@ export default function ComplaintFilingPage() {
                         )}
                       </div>
                       <div
-                        className={`h-6 w-6 border-4 flex-shrink-0 mt-1 ${
-                          selectedAuth?.primary.id === rec.primary.id
-                            ? "border-orange-500 bg-orange-500 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-                            : "border-black bg-white dark:bg-black"
-                        }`}
+                        className={`h-6 w-6 border-4 flex-shrink-0 mt-1 ${selectedAuth?.primary.id === rec.primary.id ? "border-orange-500 bg-orange-500 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]" : "border-black bg-white dark:bg-black"}`}
                       />
                     </div>
 
@@ -395,7 +381,7 @@ export default function ComplaintFilingPage() {
                 <Button
                   onClick={() => setStep(1)}
                   disabled={!selectedAuth}
-                  className="border-4 border-black text-white bg-orange-600 hover:bg-orange-700 hover:-translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none font-black uppercase tracking-widest px-8 py-6 text-lg gap-3"
+                  className="border-4 border-black text-foreground bg-orange-600 hover:bg-orange-700 hover:-translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none font-black uppercase tracking-widest px-8 py-6 text-lg gap-3"
                 >
                   Next: Your Details{" "}
                   <ArrowRight className="h-6 w-6 stroke-[3px]" />
@@ -483,13 +469,13 @@ export default function ComplaintFilingPage() {
                 <Button
                   variant="outline"
                   onClick={() => setStep(0)}
-                  className="border-4 border-black text-black dark:text-white hover:-translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none font-black uppercase tracking-widest px-6 py-6 text-lg gap-3"
+                  className="border-4 border-black text-black dark:text-foreground hover:-translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none font-black uppercase tracking-widest px-6 py-6 text-lg gap-3"
                 >
                   <ArrowLeft className="h-6 w-6 mr-2 stroke-[3px]" /> Back
                 </Button>
                 <Button
                   onClick={() => setStep(2)}
-                  className="border-4 border-black text-white bg-orange-600 hover:bg-orange-700 hover:-translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none font-black uppercase tracking-widest px-8 py-6 text-lg gap-3"
+                  className="border-4 border-black text-foreground bg-orange-600 hover:bg-orange-700 hover:-translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none font-black uppercase tracking-widest px-8 py-6 text-lg gap-3"
                 >
                   Next: Generate <ArrowRight className="h-6 w-6 stroke-[3px]" />
                 </Button>
@@ -515,7 +501,7 @@ export default function ComplaintFilingPage() {
                   </h3>
                   <p className="font-bold text-muted-foreground uppercase tracking-widest mb-2">
                     Filing at:{" "}
-                    <span className="text-black dark:text-white underline decoration-2">
+                    <span className="text-black dark:text-foreground underline decoration-2">
                       {selectedAuth?.primary.short_name}
                     </span>
                   </p>
@@ -526,7 +512,7 @@ export default function ComplaintFilingPage() {
                   <Button
                     onClick={handleGenerate}
                     disabled={generating}
-                    className="border-4 border-black text-white bg-orange-600 hover:bg-orange-700 hover:-translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none font-black uppercase tracking-widest px-8 py-6 text-lg gap-3"
+                    className="border-4 border-black text-foreground bg-orange-600 hover:bg-orange-700 hover:-translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none font-black uppercase tracking-widest px-8 py-6 text-lg gap-3"
                   >
                     {generating ? (
                       <Loader2 className="h-6 w-6 animate-spin" />
@@ -574,7 +560,7 @@ export default function ComplaintFilingPage() {
                               onClick={() =>
                                 copyToClipboard(doc!.content, doc!.title)
                               }
-                              className="border-2 border-black font-bold uppercase tracking-widest bg-white dark:bg-black hover:bg-gray-100 dark:hover:bg-gray-800 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] rounded-none gap-2"
+                              className="border-2 border-black font-bold uppercase tracking-widest bg-white dark:bg-black hover:bg-gray-100 dark:hover:bg-background border-2 border-foreground card-impact shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] rounded-none gap-2"
                             >
                               <Copy className="h-4 w-4" /> Copy
                             </Button>
@@ -632,13 +618,13 @@ export default function ComplaintFilingPage() {
                     <Button
                       variant="outline"
                       onClick={() => setStep(1)}
-                      className="border-4 border-black text-black dark:text-white hover:-translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none font-black uppercase tracking-widest px-6 py-6 text-lg gap-3"
+                      className="border-4 border-black text-black dark:text-foreground hover:-translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none font-black uppercase tracking-widest px-6 py-6 text-lg gap-3"
                     >
                       <ArrowLeft className="h-6 w-6 mr-2 stroke-[3px]" /> Back
                     </Button>
                     <Button
                       onClick={() => setStep(3)}
-                      className="border-4 border-black text-white bg-orange-600 hover:bg-orange-700 hover:-translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none font-black uppercase tracking-widest px-8 py-6 text-lg gap-3"
+                      className="border-4 border-black text-foreground bg-orange-600 hover:bg-orange-700 hover:-translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none font-black uppercase tracking-widest px-8 py-6 text-lg gap-3"
                     >
                       Next: Filing Guide{" "}
                       <ArrowRight className="h-6 w-6 stroke-[3px]" />
@@ -725,7 +711,7 @@ export default function ComplaintFilingPage() {
                         {guide.documents_checklist.map((item, i) => (
                           <div
                             key={i}
-                            className="flex items-start gap-4 p-4 border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-zinc-900 hover:border-black dark:hover:border-white transition-colors"
+                            className="flex items-start gap-4 p-4 border-2 border-gray-200 dark:border-foreground border-2 bg-white dark:bg-zinc-900 hover:border-black dark:hover:border-white transition-colors"
                           >
                             <span className="text-2xl pt-1">
                               {item.available
@@ -755,7 +741,7 @@ export default function ComplaintFilingPage() {
                     <div className="p-6 bg-blue-100 dark:bg-blue-900/30 border-4 border-blue-500 text-center shadow-[4px_4px_0px_0px_rgba(59,130,246,1)]">
                       <p className="font-black text-xl uppercase tracking-widest text-blue-700 dark:text-blue-300">
                         📞 Need help? Call:{" "}
-                        <span className="bg-white dark:bg-black px-4 py-2 border-2 border-blue-500 ml-2 shadow-[2px_2px_0px_0px_rgba(59,130,246,1)] text-black dark:text-white">
+                        <span className="bg-white dark:bg-black px-4 py-2 border-2 border-blue-500 ml-2 shadow-[2px_2px_0px_0px_rgba(59,130,246,1)] text-black dark:text-foreground">
                           {guide.helpline}
                         </span>
                       </p>
@@ -766,12 +752,12 @@ export default function ComplaintFilingPage() {
                     <Button
                       variant="outline"
                       onClick={() => setStep(2)}
-                      className="border-4 border-black text-black dark:text-white hover:-translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none font-black uppercase tracking-widest px-6 py-6 text-lg gap-3"
+                      className="border-4 border-black text-black dark:text-foreground hover:-translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none font-black uppercase tracking-widest px-6 py-6 text-lg gap-3"
                     >
                       <ArrowLeft className="h-6 w-6 mr-2 stroke-[3px]" /> Back
                     </Button>
                     <Link href={`/complaint`}>
-                      <Button className="border-4 border-black text-white bg-green-600 hover:bg-green-700 hover:-translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none font-black uppercase tracking-widest px-8 py-6 text-lg gap-3">
+                      <Button className="border-4 border-black text-foreground bg-green-600 hover:bg-green-700 hover:-translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none font-black uppercase tracking-widest px-8 py-6 text-lg gap-3">
                         <CheckCircle2 className="h-6 w-6 stroke-[3px]" /> Done —
                         View All
                       </Button>

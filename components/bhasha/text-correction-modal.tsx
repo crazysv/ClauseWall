@@ -72,17 +72,17 @@ export function TextCorrectionModal({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1 overflow-hidden">
           {/* Original (read-only) */}
           <div className="flex flex-col overflow-hidden">
-            <p className="text-xs font-medium text-gray-500 mb-2">
+            <p className="text-xs font-medium text-muted-foreground mb-2">
               Original OCR Text
             </p>
-            <div className="flex-1 overflow-y-auto p-3 rounded-lg bg-white/[0.03] border border-white/10 text-sm text-gray-400 font-mono leading-relaxed">
+            <div className="flex-1 overflow-y-auto p-3 rounded-none bg-white/[0.03] border border-foreground border-2 text-sm text-muted-foreground font-mono leading-relaxed">
               {originalText}
             </div>
           </div>
 
           {/* Editable */}
           <div className="flex flex-col overflow-hidden">
-            <p className="text-xs font-medium text-gray-500 mb-2">
+            <p className="text-xs font-medium text-muted-foreground mb-2">
               Corrected Text{" "}
               {hasChanges && (
                 <span className="text-indigo-400 ml-1">
@@ -93,7 +93,7 @@ export function TextCorrectionModal({
             <Textarea
               value={correctedText}
               onChange={(e) => setCorrectedText(e.target.value)}
-              className="flex-1 min-h-[300px] bg-white/[0.03] border-white/10 font-mono text-sm leading-relaxed resize-none"
+              className="flex-1 min-h-[300px] bg-white/[0.03] border-foreground border-2 font-mono text-sm leading-relaxed resize-none"
             />
           </div>
         </div>

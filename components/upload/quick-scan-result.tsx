@@ -644,9 +644,7 @@ export default function QuickScanResult({
       {/* ============================================ */}
       {documentId && (
         <Card
-          className={`card-impact border-2 border-foreground transition-all duration-500 hover:-translate-y-[2px] shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] ${
-            isCompleted ? "bg-green-100" : isFailed ? "bg-red-100" : "bg-muted"
-          }`}
+          className={`card-impact border-2 border-foreground transition-all duration-500 hover:-translate-y-[2px] shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] ${isCompleted ? "bg-green-100" : isFailed ? "bg-red-100" : "bg-muted"}`}
         >
           <CardContent className="p-6">
             <AnimatePresence mode="wait">
@@ -690,7 +688,7 @@ export default function QuickScanResult({
                         className="h-2.5"
                       />
                       <motion.div
-                        className="absolute top-0 h-2.5 bg-gradient-to-r from-transparent via-blue-400/50 to-transparent rounded-full"
+                        className="absolute top-0 h-2.5 bg-background from-transparent to-transparent rounded-full"
                         style={{ width: "20%" }}
                         animate={{ left: ["0%", "80%", "0%"] }}
                         transition={{
@@ -703,7 +701,7 @@ export default function QuickScanResult({
                   </div>
 
                   {progressData.total_clauses > 0 && (
-                    <div className="flex items-center justify-between text-sm mb-4 p-3 rounded-lg bg-white/5">
+                    <div className="flex items-center justify-between text-sm mb-4 p-3 rounded-none bg-muted">
                       <div className="flex items-center gap-2">
                         <Brain className="h-4 w-4 text-blue-400" />
                         <span className="text-muted-foreground">
@@ -785,16 +783,13 @@ export default function QuickScanResult({
                   </div>
 
                   {progressData.overall_risk_score !== null && (
-                    <div className="flex items-center gap-6 mb-5 p-4 rounded-xl bg-white/5">
+                    <div className="flex items-center gap-6 mb-5 p-4 rounded-none bg-muted">
                       <div>
                         <span className="text-xs text-muted-foreground block mb-1">
                           Verified Score
                         </span>
                         <span
-                          className={`text-3xl font-bold ${
-                            getTrafficLight(progressData.overall_risk_score)
-                              .color
-                          }`}
+                          className={`text-3xl font-bold ${getTrafficLight(progressData.overall_risk_score).color}`}
                         >
                           {progressData.overall_risk_score}/100
                         </span>
@@ -811,7 +806,7 @@ export default function QuickScanResult({
                   )}
 
                   <Link href={`/results/${documentId}`} scroll={true}>
-                    <Button className="w-full button text-impact-heading border-2 border-foreground bg-green-600 hover:bg-green-700 text-white gap-2 py-6 text-lg hover:-translate-y-[2px] shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] group">
+                    <Button className="w-full button text-impact-heading border-2 border-foreground bg-green-600 hover:bg-green-700 text-foreground gap-2 py-6 text-lg hover:-translate-y-[2px] shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] group">
                       <FileText className="h-5 w-5" />
                       View Full Report
                       <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />

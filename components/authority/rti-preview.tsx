@@ -39,7 +39,7 @@ export default function RTIPreview({ rti }: Props) {
           </Button>
         </div>
 
-        <div className="bg-gray-900/80 rounded-lg p-4 font-mono text-xs leading-relaxed whitespace-pre-wrap max-h-80 overflow-y-auto border border-white/5">
+        <div className="bg-background border-2 border-foreground card-impact/80 rounded-none p-4 font-mono text-xs leading-relaxed whitespace-pre-wrap max-h-80 overflow-y-auto border border-foreground border-2">
           {rti.full_text}
         </div>
 

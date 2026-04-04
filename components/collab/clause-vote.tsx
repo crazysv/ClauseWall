@@ -66,11 +66,7 @@ export default function ClauseVote({
             whileTap={{ scale: 0.95 }}
             onClick={() => handleVote(btn.value)}
             disabled={voting}
-            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-medium transition-all ${
-              isActive
-                ? btn.activeClass
-                : "bg-white/[0.03] border-white/10 text-gray-500 hover:text-gray-300"
-            }`}
+            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-none border text-xs font-medium transition-all ${isActive ? btn.activeClass : "bg-white/[0.03] border-foreground border-2 text-muted-foreground hover:text-muted-foreground"}`}
           >
             {btn.icon}
             {btn.label}

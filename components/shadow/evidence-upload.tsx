@@ -297,16 +297,12 @@ export default function EvidenceUpload({
               onClick={() =>
                 setSelectedType(selectedType === type ? null : type)
               }
-              className={`group relative p-4 transition-all text-left flex flex-col border-4 border-black ${
-                selectedType === type
-                  ? `${bg} shadow-[inset_4px_4px_0px_rgba(0,0,0,0.1)] translate-y-1`
-                  : "bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] hover:bg-gray-50"
-              }`}
+              className={`group relative p-4 transition-all text-left flex flex-col border-4 border-black ${selectedType === type ? `${bg} shadow-[inset_4px_4px_0px_rgba(0,0,0,0.1)] translate-y-1` : "bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] hover:bg-gray-50"}`}
             >
               <div
                 className={`p-2 border-2 border-black inline-block mb-3 bg-white ${color}`}
               >
-                <Icon className="w-6 h-6 " />
+                <Icon className="w-6 h-6" />
               </div>
               <p className="text-sm font-black uppercase tracking-widest text-black">
                 {label}
@@ -333,7 +329,7 @@ export default function EvidenceUpload({
                 <div className="flex items-center justify-between pb-3 border-b-4 border-black">
                   <p className="text-base font-black uppercase tracking-widest text-black flex items-center gap-2">
                     {typeConfig && (
-                      <span className="p-1 bg-black text-white">
+                      <span className="p-1 bg-black text-foreground">
                         <typeConfig.icon className="w-5 h-5" />
                       </span>
                     )}
@@ -360,7 +356,7 @@ export default function EvidenceUpload({
                     <Button
                       onClick={handleTextSubmit}
                       disabled={!textInput.trim()}
-                      className="w-full h-12 bg-black text-white font-black uppercase tracking-widest rounded-none border-4 border-black hover:bg-gray-800 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] disabled:opacity-50 disabled:shadow-none"
+                      className="w-full h-12 bg-black text-foreground font-black uppercase tracking-widest rounded-none border-4 border-black hover:bg-background border-2 border-foreground card-impact transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] disabled:opacity-50 disabled:shadow-none"
                     >
                       Add Evidence
                     </Button>
@@ -478,7 +474,7 @@ export default function EvidenceUpload({
           <Button
             onClick={handleAnalyze}
             disabled={isAnalyzing}
-            className="w-full h-16 bg-black text-white font-black uppercase tracking-widest border-4 border-black hover:bg-gray-800 transition-colors shadow-[6px_6px_0px_0px_rgba(0,0,0,0.5)] disabled:opacity-50 disabled:shadow-none rounded-none text-base sm:text-lg gap-3"
+            className="w-full h-16 bg-black text-foreground font-black uppercase tracking-widest border-4 border-black hover:bg-background border-2 border-foreground card-impact transition-colors shadow-[6px_6px_0px_0px_rgba(0,0,0,0.5)] disabled:opacity-50 disabled:shadow-none rounded-none text-base sm:text-lg gap-3"
             size="lg"
           >
             {isAnalyzing ? (

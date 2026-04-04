@@ -62,7 +62,7 @@ export default async function CampaignDetailPage({
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-2 flex-wrap">
             <Badge
-              className={`text-[10px] ${campaign.status === "active" ? "bg-green-500/15 text-green-400 border-green-500/30" : "bg-gray-500/15 text-gray-400 border-gray-500/30"}`}
+              className={`text-[10px] ${campaign.status === "active" ? "bg-green-500/15 text-green-400 border-green-500/30" : "bg-gray-500/15 text-muted-foreground border-gray-500/30"}`}
             >
               {campaign.status}
             </Badge>
@@ -75,7 +75,7 @@ export default async function CampaignDetailPage({
         </div>
 
         {/* Progress */}
-        <Card className="bg-background/50 border-gray-800 mb-6">
+        <Card className="bg-background/50 border-foreground border-2 mb-6">
           <CardContent className="p-5">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
@@ -89,7 +89,7 @@ export default async function CampaignDetailPage({
               </div>
               <span className="text-lg font-bold">{Math.round(progress)}%</span>
             </div>
-            <div className="h-3 bg-gray-800 rounded-full overflow-hidden">
+            <div className="h-3 bg-background border-2 border-foreground card-impact rounded-full overflow-hidden">
               <div
                 className="h-full bg-background rounded-full transition-all"
                 style={{ width: `${progress}%` }}
@@ -101,7 +101,7 @@ export default async function CampaignDetailPage({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Left: Details + Legal basis */}
           <div className="space-y-6">
-            <Card className="bg-background/50 border-gray-800">
+            <Card className="bg-background/50 border-foreground border-2">
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center gap-2">
                   <Scale className="h-4 w-4" /> Legal Basis
@@ -115,7 +115,7 @@ export default async function CampaignDetailPage({
             </Card>
 
             {campaign.objection_template && (
-              <Card className="bg-background/50 border-gray-800">
+              <Card className="bg-background/50 border-foreground border-2">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-base flex items-center gap-2">
                     <FileText className="h-4 w-4" /> Objection Letter
@@ -130,7 +130,7 @@ export default async function CampaignDetailPage({
             )}
 
             {/* Signatories */}
-            <Card className="bg-background/50 border-gray-800">
+            <Card className="bg-background/50 border-foreground border-2">
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center gap-2">
                   <Users className="h-4 w-4" /> Signatories (

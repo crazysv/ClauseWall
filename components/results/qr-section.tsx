@@ -201,18 +201,12 @@ export default function QRSection({ document: doc }: QRSectionProps) {
     <button
       type="button"
       onClick={() => onChange(!checked)}
-      className={`flex items-center gap-3 w-full p-3 rounded-lg border transition-all text-left ${
-        checked
-          ? "bg-blue-500/10 border-blue-500/30"
-          : "bg-white/[0.02] border-white/5 hover:border-white/10"
-      }`}
+      className={`flex items-center gap-3 w-full p-3 rounded-none border transition-all text-left ${checked ? "bg-blue-500/10 border-blue-500/30" : "bg-white/[0.02] border-foreground border-2 hover:border-foreground border-2"}`}
     >
       <div
-        className={`w-5 h-5 rounded flex items-center justify-center flex-shrink-0 transition-colors ${
-          checked ? "bg-blue-500" : "bg-white/10"
-        }`}
+        className={`w-5 h-5 rounded flex items-center justify-center flex-shrink-0 transition-colors ${checked ? "bg-blue-500" : "bg-muted"}`}
       >
-        {checked && <Check className="h-3 w-3 text-white" />}
+        {checked && <Check className="h-3 w-3 text-foreground" />}
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium flex items-center gap-2">
@@ -758,16 +752,10 @@ function SettingsToggle({
     <button
       type="button"
       onClick={() => onChange(!checked)}
-      className={`flex items-center gap-3 w-full p-3 card-impact border-2 transition-all text-left ${
-        checked
-          ? "bg-muted border-foreground"
-          : "bg-background border-muted hover:border-foreground"
-      }`}
+      className={`flex items-center gap-3 w-full p-3 card-impact border-2 transition-all text-left ${checked ? "bg-muted border-foreground" : "bg-background border-muted hover:border-foreground"}`}
     >
       <div
-        className={`w-5 h-5 flex items-center justify-center flex-shrink-0 transition-colors border-2 ${
-          checked ? "bg-foreground border-foreground" : "bg-muted border-muted"
-        }`}
+        className={`w-5 h-5 flex items-center justify-center flex-shrink-0 transition-colors border-2 ${checked ? "bg-foreground border-foreground" : "bg-muted border-muted"}`}
       >
         {checked && <Check className="h-3 w-3 text-background" />}
       </div>

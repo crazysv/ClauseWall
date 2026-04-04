@@ -157,9 +157,9 @@ export default function BuilderPage() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4 + index * 0.1 }}
-                  className="border-4 border-black border-dashed bg-white/50 dark:bg-zinc-900/50 p-6 opacity-60"
+                  className="border-4 border-black border-dashed bg-muted dark:bg-zinc-900/50 p-6 opacity-60"
                 >
-                  <div className="w-10 h-10 border-4 border-black bg-gray-200 dark:bg-gray-800 flex items-center justify-center text-muted-foreground mb-4">
+                  <div className="w-10 h-10 border-4 border-black bg-gray-200 dark:bg-background border-2 border-foreground card-impact flex items-center justify-center text-muted-foreground mb-4">
                     {ICON_MAP[template.icon]}
                   </div>
                   <h4 className="font-black uppercase tracking-widest text-muted-foreground mb-2">

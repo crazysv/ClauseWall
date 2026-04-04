@@ -36,7 +36,7 @@ export default function DeliberationModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-4xl max-h-[90vh] bg-gray-950 border-white/10 p-0">
+      <DialogContent className="max-w-4xl max-h-[90vh] bg-background border-2 border-foreground card-impact border-foreground border-2 p-0">
         <DialogHeader className="p-4 sm:p-6 pb-0">
           <DialogTitle className="flex items-center gap-2 text-lg">
             <span>⚔️</span>
@@ -47,15 +47,15 @@ export default function DeliberationModal({
         <ScrollArea className="max-h-[calc(90vh-100px)]">
           <div className="px-4 sm:px-6 pb-6 space-y-4">
             {/* Clause Text */}
-            <div className="p-3 sm:p-4 rounded-lg bg-white/[0.03] border border-white/10">
-              <p className="text-[10px] text-white/40 uppercase tracking-wider mb-1.5">
+            <div className="p-3 sm:p-4 rounded-none bg-white/[0.03] border border-foreground border-2">
+              <p className="text-[10px] text-foreground uppercase tracking-wider mb-1.5">
                 Clause Under Deliberation
               </p>
-              <p className="text-sm text-white/80 leading-relaxed">
+              <p className="text-sm text-foreground leading-relaxed">
                 &ldquo;{deliberation.clauseText}&rdquo;
               </p>
               {deliberation.clauseType && (
-                <p className="text-[10px] text-white/30 mt-2">
+                <p className="text-[10px] text-foreground mt-2">
                   Type: {deliberation.clauseType} · {deliberation.jurisdiction}
                 </p>
               )}
@@ -65,19 +65,19 @@ export default function DeliberationModal({
             <DeliberationPanel deliberation={deliberation} animated={true} />
 
             {/* Summary Stats Footer */}
-            <div className="flex flex-wrap items-center gap-4 pt-3 border-t border-white/5">
-              <div className="flex items-center gap-1.5 text-xs text-white/40">
+            <div className="flex flex-wrap items-center gap-4 pt-3 border-t border-foreground border-2">
+              <div className="flex items-center gap-1.5 text-xs text-foreground">
                 <span>⏱️</span>
                 <span>Deliberation time: {durationSec}s</span>
               </div>
-              <div className="flex items-center gap-3 text-xs text-white/40">
+              <div className="flex items-center gap-3 text-xs text-foreground">
                 <span>📊</span>
                 <span className="text-red-400/70">Defense: {predConf}%</span>
-                <span className="text-white/20">|</span>
+                <span className="text-foreground">|</span>
                 <span className="text-emerald-400/70">
                   Advocate: {guardConf}%
                 </span>
-                <span className="text-white/20">|</span>
+                <span className="text-foreground">|</span>
                 <span className="text-amber-400/70">Arbiter: {arbConf}%</span>
               </div>
             </div>

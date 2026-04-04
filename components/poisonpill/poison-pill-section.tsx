@@ -75,13 +75,13 @@ export function PoisonPillSection({
   // Loading state
   if (loading) {
     return (
-      <Card className="bg-white/[0.02] border-white/10">
+      <Card className="bg-white/[0.02] border-foreground border-2">
         <CardContent className="p-8 text-center">
           <Loader2 className="w-8 h-8 text-purple-400 animate-spin mx-auto mb-4" />
-          <p className="text-sm text-white/60">
+          <p className="text-sm text-foreground">
             Analyzing clause interconnections...
           </p>
-          <p className="text-xs text-white/30 mt-1">
+          <p className="text-xs text-foreground mt-1">
             Pre-screening patterns → Deep analysis → Building graph...
           </p>
         </CardContent>
@@ -96,17 +96,17 @@ export function PoisonPillSection({
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <Card className="bg-gradient-to-br from-purple-500/5 to-pink-500/5 border-purple-500/10">
+        <Card className="bg-background border-purple-500/10">
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="p-3 rounded-xl bg-purple-500/10">
+              <div className="p-3 rounded-none bg-purple-500/10">
                 <Network className="w-6 h-6 text-purple-400" />
               </div>
               <div className="flex-1">
-                <h3 className="text-sm font-semibold text-white">
+                <h3 className="text-sm font-semibold text-foreground">
                   Poison Pill Scanner
                 </h3>
-                <p className="text-xs text-white/40 mt-0.5">
+                <p className="text-xs text-foreground mt-0.5">
                   Detect hidden traps — clause combinations that look safe
                   individually but create devastating effects together.
                 </p>
@@ -132,17 +132,17 @@ export function PoisonPillSection({
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <Card className="bg-white/[0.02] border-white/10">
+        <Card className="bg-white/[0.02] border-foreground border-2">
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="p-3 rounded-xl bg-green-500/10">
+              <div className="p-3 rounded-none bg-green-500/10">
                 <Shield className="w-6 h-6 text-green-400" />
               </div>
               <div className="flex-1">
-                <h3 className="text-sm font-semibold text-white">
+                <h3 className="text-sm font-semibold text-foreground">
                   No Hidden Traps Found
                 </h3>
-                <p className="text-xs text-white/40 mt-0.5">
+                <p className="text-xs text-foreground mt-0.5">
                   All clause combinations checked — no synergistic risks
                   detected.
                 </p>
@@ -151,7 +151,7 @@ export function PoisonPillSection({
                 onClick={reanalyze}
                 variant="ghost"
                 size="sm"
-                className="text-white/30 hover:text-white/60 gap-1"
+                className="text-foreground hover:text-foreground gap-1"
               >
                 <RefreshCcw className="w-3.5 h-3.5" />
                 Re-scan
@@ -191,14 +191,14 @@ export function PoisonPillSection({
       {/* Section Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-purple-500/10">
+          <div className="p-2 rounded-none bg-purple-500/10">
             <ShieldAlert className="w-5 h-5 text-purple-400" />
           </div>
           <div>
-            <h2 className="text-sm font-semibold text-white">
+            <h2 className="text-sm font-semibold text-foreground">
               Poison Pill Interconnection Analysis
             </h2>
-            <p className="text-xs text-white/30">
+            <p className="text-xs text-foreground">
               {data.traps.length} hidden trap
               {data.traps.length !== 1 ? "s" : ""} detected
             </p>
@@ -208,7 +208,7 @@ export function PoisonPillSection({
           onClick={reanalyze}
           variant="ghost"
           size="sm"
-          className="text-white/30 hover:text-white/60 gap-1"
+          className="text-foreground hover:text-foreground gap-1"
         >
           <RefreshCcw className="w-3.5 h-3.5" />
           Re-scan
@@ -219,16 +219,12 @@ export function PoisonPillSection({
       <TrapSummaryBar result={data} />
 
       {/* Tabs */}
-      <div className="flex gap-1 p-1 bg-white/[0.03] rounded-lg border border-white/5">
+      <div className="flex gap-1 p-1 bg-white/[0.03] rounded-none border border-foreground border-2">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
-              activeTab === tab.id
-                ? "bg-purple-500/15 text-purple-300 border border-purple-500/20"
-                : "text-white/40 hover:text-white/60 border border-transparent"
-            }`}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-none text-xs font-medium transition-all ${activeTab === tab.id ? "bg-purple-500/15 text-purple-300 border border-purple-500/20" : "text-foreground hover:text-foreground border border-transparent"}`}
           >
             {tab.icon}
             {tab.label}

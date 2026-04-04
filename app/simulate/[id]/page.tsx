@@ -157,8 +157,8 @@ function ChartTooltipContent({
 }) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="bg-gray-900 border border-gray-700 rounded-lg p-3 shadow-xl">
-      <p className="text-xs text-gray-400 mb-1">Month {label}</p>
+    <div className="bg-background border-2 border-foreground card-impact border border-foreground border-2 rounded-none p-3 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+      <p className="text-xs text-muted-foreground mb-1">Month {label}</p>
       {payload.map((p, i) => (
         <p
           key={i}
@@ -326,7 +326,7 @@ export default function SimulatorPage() {
         {/* Back */}
         <button
           onClick={() => router.push(`/results/${documentId}`)}
-          className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors mb-6"
+          className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
         >
           <ArrowLeft className="h-4 w-4" /> Back to Results
         </button>
@@ -342,7 +342,7 @@ export default function SimulatorPage() {
             <span>{getStateName(document.jurisdiction)}</span>
           </div>
           <div className="flex items-center gap-3">
-            <div className="p-3 rounded-xl bg-cyan-500/10 border border-cyan-500/20">
+            <div className="p-3 rounded-none bg-cyan-500/10 border border-cyan-500/20">
               <Gamepad2 className="h-7 w-7 text-cyan-400" />
             </div>
             <div>
@@ -360,35 +360,39 @@ export default function SimulatorPage() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
           <Card className="bg-red-500/5 border-red-500/20">
             <CardContent className="p-5 text-center">
-              <p className="text-xs text-gray-500 mb-1">This Contract</p>
+              <p className="text-xs text-muted-foreground mb-1">
+                This Contract
+              </p>
               <p className="text-2xl font-bold text-red-400">
                 {formatINR(data.worst_case_total)}
               </p>
-              <p className="text-[10px] text-gray-600 mt-1">
+              <p className="text-[10px] text-muted-foreground mt-1">
                 worst case total cost
               </p>
             </CardContent>
           </Card>
           <Card className="bg-green-500/5 border-green-500/20">
             <CardContent className="p-5 text-center">
-              <p className="text-xs text-gray-500 mb-1">Fair Contract</p>
+              <p className="text-xs text-muted-foreground mb-1">
+                Fair Contract
+              </p>
               <p className="text-2xl font-bold text-green-400">
                 {formatINR(data.fair_contract_total)}
               </p>
-              <p className="text-[10px] text-gray-600 mt-1">
+              <p className="text-[10px] text-muted-foreground mt-1">
                 what it should cost
               </p>
             </CardContent>
           </Card>
           <Card className="bg-orange-500/5 border-orange-500/20">
             <CardContent className="p-5 text-center">
-              <p className="text-xs text-gray-500 mb-1">
+              <p className="text-xs text-muted-foreground mb-1">
                 You&apos;re Overpaying
               </p>
               <p className="text-2xl font-bold text-orange-400">
                 {formatINR(data.overpayment_vs_fair)}
               </p>
-              <p className="text-[10px] text-gray-600 mt-1">
+              <p className="text-[10px] text-muted-foreground mt-1">
                 money you could save
               </p>
             </CardContent>
@@ -396,20 +400,20 @@ export default function SimulatorPage() {
         </div>
 
         {/* ── Interactive Slider ── */}
-        <Card className="bg-gray-900/50 border-gray-800 mb-8">
+        <Card className="bg-background border-2 border-foreground card-impact/50 border-foreground border-2 mb-8">
           <CardContent className="p-6">
             <h2 className="text-lg font-bold mb-1 flex items-center gap-2">
               <Clock className="h-5 w-5 text-cyan-400" />
               What If I Leave At Month...
             </h2>
-            <p className="text-xs text-gray-500 mb-5">
+            <p className="text-xs text-muted-foreground mb-5">
               Drag the slider to see your cost at any point
             </p>
 
             {/* Slider */}
             <div className="relative mb-6">
               {/* Danger zone backgrounds */}
-              <div className="absolute top-0 left-0 right-0 h-2 rounded-full bg-gray-800 overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-2 rounded-full bg-background border-2 border-foreground card-impact overflow-hidden">
                 {data.danger_zones.map((z, i) => {
                   const left =
                     (z.month_start / data.contract_duration_months) * 100;
@@ -443,7 +447,7 @@ export default function SimulatorPage() {
               />
 
               {/* Labels */}
-              <div className="flex justify-between mt-2 text-xs text-gray-600">
+              <div className="flex justify-between mt-2 text-xs text-muted-foreground">
                 <span>Month 1</span>
                 <span className="text-cyan-400 font-bold">
                   Month {sliderMonth}
@@ -461,14 +465,18 @@ export default function SimulatorPage() {
                 transition={{ duration: 0.15 }}
                 className="grid grid-cols-2 sm:grid-cols-4 gap-3"
               >
-                <div className="p-3 rounded-lg bg-white/5">
-                  <p className="text-xs text-gray-500 mb-0.5">Total Spent</p>
-                  <p className="text-lg font-bold text-white">
+                <div className="p-3 rounded-none bg-muted">
+                  <p className="text-xs text-muted-foreground mb-0.5">
+                    Total Spent
+                  </p>
+                  <p className="text-lg font-bold text-foreground">
                     {formatINR(sliderResult.totalSpent)}
                   </p>
                 </div>
-                <div className="p-3 rounded-lg bg-white/5">
-                  <p className="text-xs text-gray-500 mb-0.5">Penalty</p>
+                <div className="p-3 rounded-none bg-muted">
+                  <p className="text-xs text-muted-foreground mb-0.5">
+                    Penalty
+                  </p>
                   <p
                     className={`text-lg font-bold ${sliderResult.penalty > 0 ? "text-red-400" : "text-green-400"}`}
                   >
@@ -477,8 +485,10 @@ export default function SimulatorPage() {
                       : "None"}
                   </p>
                 </div>
-                <div className="p-3 rounded-lg bg-white/5">
-                  <p className="text-xs text-gray-500 mb-0.5">Deposit Back</p>
+                <div className="p-3 rounded-none bg-muted">
+                  <p className="text-xs text-muted-foreground mb-0.5">
+                    Deposit Back
+                  </p>
                   <p
                     className={`text-lg font-bold ${sliderResult.depositRefund > 0 ? "text-green-400" : "text-red-400"}`}
                   >
@@ -487,7 +497,7 @@ export default function SimulatorPage() {
                       : "₹0"}
                   </p>
                 </div>
-                <div className="p-3 rounded-lg bg-cyan-500/10 border border-cyan-500/20">
+                <div className="p-3 rounded-none bg-cyan-500/10 border border-cyan-500/20">
                   <p className="text-xs text-cyan-400 mb-0.5">Net Cost</p>
                   <p className="text-lg font-bold text-cyan-300">
                     {formatINR(sliderResult.netCost)}
@@ -498,7 +508,7 @@ export default function SimulatorPage() {
 
             {/* Lock-in warning */}
             {sliderMonth < data.lock_in.months && (
-              <div className="mt-3 flex items-center gap-2 p-3 rounded-lg bg-red-500/5 border border-red-500/20">
+              <div className="mt-3 flex items-center gap-2 p-3 rounded-none bg-red-500/5 border border-red-500/20">
                 <Lock className="h-4 w-4 text-red-400 flex-shrink-0" />
                 <p className="text-sm text-red-300">
                   ⚠️ Month {sliderMonth} is within the{" "}
@@ -517,7 +527,7 @@ export default function SimulatorPage() {
         </Card>
 
         {/* ── Cost Chart ── */}
-        <Card className="bg-gray-900/50 border-gray-800 mb-8">
+        <Card className="bg-background border-2 border-foreground card-impact/50 border-foreground border-2 mb-8">
           <CardContent className="p-6">
             <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
               <TrendingUp className="h-5 w-5 text-cyan-400" />
@@ -603,14 +613,14 @@ export default function SimulatorPage() {
               </ResponsiveContainer>
             </div>
             <div className="flex items-center gap-4 mt-3 justify-center">
-              <span className="flex items-center gap-1.5 text-xs text-gray-500">
+              <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
                 <span className="w-3 h-0.5 bg-red-500 rounded" /> This Contract
               </span>
-              <span className="flex items-center gap-1.5 text-xs text-gray-500">
+              <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
                 <span className="w-3 h-0.5 bg-green-500 rounded" /> Fair
                 Contract
               </span>
-              <span className="flex items-center gap-1.5 text-xs text-gray-500">
+              <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
                 <span className="w-3 h-0.5 bg-cyan-500 rounded border-dashed" />{" "}
                 Your Exit
               </span>
@@ -619,7 +629,7 @@ export default function SimulatorPage() {
         </Card>
 
         {/* ── Upfront Costs ── */}
-        <Card className="bg-gray-900/50 border-gray-800 mb-8">
+        <Card className="bg-background border-2 border-foreground card-impact/50 border-foreground border-2 mb-8">
           <CardContent className="p-6">
             <h2 className="text-lg font-bold mb-3 flex items-center gap-2">
               <IndianRupee className="h-5 w-5 text-red-400" />
@@ -629,11 +639,11 @@ export default function SimulatorPage() {
               {data.upfront_costs.map((cost, i) => (
                 <div
                   key={i}
-                  className="flex items-center justify-between p-3 rounded-lg bg-white/[0.03]"
+                  className="flex items-center justify-between p-3 rounded-none bg-white/[0.03]"
                 >
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <p className="text-sm font-medium text-gray-300">
+                      <p className="text-sm font-medium text-muted-foreground">
                         {cost.label}
                       </p>
                       {cost.issue && (
@@ -649,7 +659,7 @@ export default function SimulatorPage() {
                     )}
                   </div>
                   <div className="text-right ml-4">
-                    <p className="text-sm font-bold text-white">
+                    <p className="text-sm font-bold text-foreground">
                       {formatINR(cost.amount)}
                     </p>
                     {cost.fair_amount !== cost.amount && (
@@ -660,8 +670,10 @@ export default function SimulatorPage() {
                   </div>
                 </div>
               ))}
-              <div className="flex items-center justify-between p-3 rounded-lg bg-red-500/5 border border-red-500/15">
-                <p className="text-sm font-bold text-gray-300">Total Upfront</p>
+              <div className="flex items-center justify-between p-3 rounded-none bg-red-500/5 border border-red-500/15">
+                <p className="text-sm font-bold text-muted-foreground">
+                  Total Upfront
+                </p>
                 <p className="text-lg font-bold text-red-400">
                   {formatINR(totalUpfront)}
                 </p>
@@ -671,7 +683,7 @@ export default function SimulatorPage() {
         </Card>
 
         {/* ── Monthly Costs ── */}
-        <Card className="bg-gray-900/50 border-gray-800 mb-8">
+        <Card className="bg-background border-2 border-foreground card-impact/50 border-foreground border-2 mb-8">
           <CardContent className="p-6">
             <h2 className="text-lg font-bold mb-3 flex items-center gap-2">
               <Clock className="h-5 w-5 text-yellow-400" />
@@ -681,10 +693,10 @@ export default function SimulatorPage() {
               {data.monthly_costs.map((cost, i) => (
                 <div
                   key={i}
-                  className="flex items-center justify-between p-3 rounded-lg bg-white/[0.03]"
+                  className="flex items-center justify-between p-3 rounded-none bg-white/[0.03]"
                 >
                   <div>
-                    <p className="text-sm font-medium text-gray-300">
+                    <p className="text-sm font-medium text-muted-foreground">
                       {cost.label}
                     </p>
                     {cost.escalation_percent > 0 && (
@@ -695,7 +707,7 @@ export default function SimulatorPage() {
                     )}
                   </div>
                   <div className="text-right ml-4">
-                    <p className="text-sm font-bold text-white">
+                    <p className="text-sm font-bold text-foreground">
                       {formatINR(cost.amount)}/mo
                     </p>
                     {cost.fair_amount !== cost.amount && (
@@ -706,8 +718,10 @@ export default function SimulatorPage() {
                   </div>
                 </div>
               ))}
-              <div className="flex items-center justify-between p-3 rounded-lg bg-yellow-500/5 border border-yellow-500/15">
-                <p className="text-sm font-bold text-gray-300">Total Monthly</p>
+              <div className="flex items-center justify-between p-3 rounded-none bg-yellow-500/5 border border-yellow-500/15">
+                <p className="text-sm font-bold text-muted-foreground">
+                  Total Monthly
+                </p>
                 <p className="text-lg font-bold text-yellow-400">
                   {formatINR(totalMonthly)}/mo
                 </p>
@@ -718,7 +732,7 @@ export default function SimulatorPage() {
 
         {/* ── Danger Zones ── */}
         {data.danger_zones.length > 0 && (
-          <Card className="bg-gray-900/50 border-red-500/20 mb-8">
+          <Card className="bg-background border-2 border-foreground card-impact/50 border-red-500/20 mb-8">
             <CardContent className="p-6">
               <h2 className="text-lg font-bold mb-3 flex items-center gap-2">
                 <AlertTriangle className="h-5 w-5 text-red-400" />
@@ -728,19 +742,11 @@ export default function SimulatorPage() {
                 {data.danger_zones.map((zone, i) => (
                   <div
                     key={i}
-                    className={`p-3 rounded-lg border ${
-                      zone.severity === "critical"
-                        ? "bg-red-500/5 border-red-500/20"
-                        : "bg-yellow-500/5 border-yellow-500/20"
-                    }`}
+                    className={`p-3 rounded-none border ${zone.severity === "critical" ? "bg-red-500/5 border-red-500/20" : "bg-yellow-500/5 border-yellow-500/20"}`}
                   >
                     <div className="flex items-center gap-2 mb-1">
                       <Badge
-                        className={`text-[10px] ${
-                          zone.severity === "critical"
-                            ? "bg-red-500/15 text-red-400 border-red-500/30"
-                            : "bg-yellow-500/15 text-yellow-400 border-yellow-500/30"
-                        }`}
+                        className={`text-[10px] ${zone.severity === "critical" ? "bg-red-500/15 text-red-400 border-red-500/30" : "bg-yellow-500/15 text-yellow-400 border-yellow-500/30"}`}
                       >
                         Month {zone.month_start}–{zone.month_end}
                       </Badge>
@@ -750,7 +756,9 @@ export default function SimulatorPage() {
                         {zone.label}
                       </span>
                     </div>
-                    <p className="text-xs text-gray-400">{zone.description}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {zone.description}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -760,7 +768,7 @@ export default function SimulatorPage() {
 
         {/* ── Scenario Comparison ── */}
         {data.scenarios.length > 0 && (
-          <Card className="bg-gray-900/50 border-gray-800 mb-8">
+          <Card className="bg-background border-2 border-foreground card-impact/50 border-foreground border-2 mb-8">
             <CardContent className="p-6">
               <h2 className="text-lg font-bold mb-3 flex items-center gap-2">
                 <Gamepad2 className="h-5 w-5 text-purple-400" />
@@ -775,19 +783,13 @@ export default function SimulatorPage() {
                   return (
                     <div
                       key={i}
-                      className={`flex items-center justify-between p-3 rounded-lg ${
-                        isFair
-                          ? "bg-green-500/5 border border-green-500/20"
-                          : isWorst
-                            ? "bg-red-500/5 border border-red-500/20"
-                            : "bg-white/[0.03]"
-                      }`}
+                      className={`flex items-center justify-between p-3 rounded-none ${isFair ? "bg-green-500/5 border border-green-500/20" : isWorst ? "bg-red-500/5 border border-red-500/20" : "bg-white/[0.03]"}`}
                     >
                       <div>
-                        <p className="text-sm font-medium text-gray-300">
+                        <p className="text-sm font-medium text-muted-foreground">
                           {s.label}
                         </p>
-                        <div className="flex items-center gap-3 mt-0.5 text-xs text-gray-500">
+                        <div className="flex items-center gap-3 mt-0.5 text-xs text-muted-foreground">
                           {s.penalty > 0 && (
                             <span className="text-red-400">
                               Penalty: {formatINR(s.penalty)}
@@ -802,7 +804,7 @@ export default function SimulatorPage() {
                       </div>
                       <div className="text-right">
                         <p
-                          className={`text-lg font-bold ${isFair ? "text-green-400" : isWorst ? "text-red-400" : "text-white"}`}
+                          className={`text-lg font-bold ${isFair ? "text-green-400" : isWorst ? "text-red-400" : "text-foreground"}`}
                         >
                           {formatINR(s.net_cost)}
                         </p>
@@ -824,9 +826,9 @@ export default function SimulatorPage() {
         )}
 
         {/* ── Summary ── */}
-        <Card className="bg-gray-900/50 border-gray-800 mb-8">
+        <Card className="bg-background border-2 border-foreground card-impact/50 border-foreground border-2 mb-8">
           <CardContent className="p-6">
-            <p className="text-sm text-gray-300 leading-relaxed">
+            <p className="text-sm text-muted-foreground leading-relaxed">
               {data.summary}
             </p>
           </CardContent>

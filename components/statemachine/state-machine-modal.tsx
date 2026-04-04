@@ -179,11 +179,7 @@ export default function StateMachineModal({
                     setGraphMode(m);
                     if (m !== "path") setSelectedPath(null);
                   }}
-                  className={`px-3 py-2 text-xs font-black uppercase tracking-widest border-2 transition-all ${
-                    graphMode === m
-                      ? "bg-black text-white border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)] translate-y-0.5 shadow-none"
-                      : "bg-white text-black border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:translate-y-0.5 hover:shadow-none"
-                  }`}
+                  className={`px-3 py-2 text-xs font-black uppercase tracking-widest border-2 transition-all ${graphMode === m ? "bg-black text-foreground border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)] translate-y-0.5 shadow-none" : "bg-white text-black border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:translate-y-0.5 hover:shadow-none"}`}
                 >
                   {m === "explore"
                     ? "Explore"
@@ -224,16 +220,12 @@ export default function StateMachineModal({
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center gap-2 px-5 py-3 text-xs font-black uppercase tracking-widest whitespace-nowrap transition-all border-r-4 border-black border-b-4 -mb-1 ${
-                      activeTab === tab.id
-                        ? "bg-white text-black border-b-white"
-                        : "bg-gray-100 text-black/60 border-b-transparent hover:bg-gray-200"
-                    }`}
+                    className={`flex items-center gap-2 px-5 py-3 text-xs font-black uppercase tracking-widest whitespace-nowrap transition-all border-r-4 border-black border-b-4 -mb-1 ${activeTab === tab.id ? "bg-white text-black border-b-white" : "bg-gray-100 text-black/60 border-b-transparent hover:bg-gray-200"}`}
                   >
                     <Icon className="h-4 w-4" />
                     {tab.label}
                     {tab.id === "traps" && report.trapAnalysis.length > 0 && (
-                      <span className="px-2 py-0.5 text-[10px] bg-red-500 text-white border-2 border-black ml-1">
+                      <span className="px-2 py-0.5 text-[10px] bg-red-500 text-foreground border-2 border-black ml-1">
                         {report.trapAnalysis.length}
                       </span>
                     )}
@@ -474,13 +466,7 @@ export default function StateMachineModal({
                             {report.pathAnalysis.asymmetries.map((a, i) => (
                               <div
                                 key={i}
-                                className={`text-sm font-bold p-4 border-4 shadow-[4px_4px_0_0_rgba(0,0,0,1)] ${
-                                  a.severity === "high"
-                                    ? "bg-red-100 border-red-900 text-red-900"
-                                    : a.severity === "medium"
-                                      ? "bg-yellow-100 border-yellow-600 text-yellow-900"
-                                      : "bg-gray-100 border-gray-500 text-black"
-                                }`}
+                                className={`text-sm font-bold p-4 border-4 shadow-[4px_4px_0_0_rgba(0,0,0,1)] ${a.severity === "high" ? "bg-red-100 border-red-900 text-red-900" : a.severity === "medium" ? "bg-yellow-100 border-yellow-600 text-yellow-900" : "bg-gray-100 border-gray-500 text-black"}`}
                               >
                                 <span className="font-black uppercase tracking-widest block mb-1">
                                   Favors {a.favoredParty}
@@ -533,7 +519,7 @@ export default function StateMachineModal({
                   </div>
                   <button
                     onClick={() => setDataExpanded(!dataExpanded)}
-                    className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-black border-2 border-black p-2 w-full justify-center hover:bg-black hover:text-white transition-colors"
+                    className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-black border-2 border-black p-2 w-full justify-center hover:bg-black hover:text-foreground transition-colors"
                   >
                     <ChevronDown
                       className={`h-4 w-4 transition-transform ${dataExpanded ? "rotate-180" : ""}`}

@@ -197,12 +197,12 @@ export default function CollectiveDashboard({
       </Card>
 
       {/* Tabs */}
-      <div className="flex gap-1 p-1 rounded-lg bg-white/[0.02] border border-foreground border-2">
+      <div className="flex gap-1 p-1 rounded-none bg-white/[0.02] border border-foreground border-2">
         {tabs.map((t) => (
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
-            className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-md text-xs transition-colors ${tab === t.key ? "bg-amber-500/10 text-amber-400" : "text-foreground/30 hover:text-foreground/50 hover:bg-white/[0.02]"}`}
+            className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-none text-xs transition-colors ${tab === t.key ? "bg-amber-500/10 text-amber-400" : "text-foreground/30 hover:text-foreground/50 hover:bg-white/[0.02]"}`}
           >
             {t.icon}
             {t.label}
@@ -226,7 +226,7 @@ export default function CollectiveDashboard({
                     .map((v, i) => (
                       <div
                         key={i}
-                        className="flex items-center justify-between rounded-lg bg-white/[0.02] p-3"
+                        className="flex items-center justify-between rounded-none bg-white/[0.02] p-3"
                       >
                         <div>
                           <p className="text-xs font-medium text-foreground">

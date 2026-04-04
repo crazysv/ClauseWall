@@ -52,14 +52,16 @@ export function PoisonPillCTA({
   // Loading
   if (loading) {
     return (
-      <Card className="bg-gradient-to-br from-purple-500/5 to-pink-500/5 border-purple-500/10 h-full">
+      <Card className="bg-background border-purple-500/10 h-full">
         <CardContent className="p-5 flex items-center gap-4">
-          <div className="p-3 rounded-xl bg-purple-500/10">
+          <div className="p-3 rounded-none bg-purple-500/10">
             <Loader2 className="w-6 h-6 text-purple-400 animate-spin" />
           </div>
           <div className="flex-1">
-            <h4 className="text-sm font-semibold text-white">Scanning...</h4>
-            <p className="text-xs text-white/40 mt-0.5">
+            <h4 className="text-sm font-semibold text-foreground">
+              Scanning...
+            </h4>
+            <p className="text-xs text-foreground mt-0.5">
               Detecting clause interconnection traps
             </p>
           </div>
@@ -76,17 +78,17 @@ export function PoisonPillCTA({
         animate={{ opacity: 1, y: 0 }}
         className="h-full"
       >
-        <Card className="cursor-pointer hover:brightness-110 transition-all bg-gradient-to-br from-purple-500/5 to-pink-500/5 border-purple-500/10 h-full">
+        <Card className="cursor-pointer hover:brightness-110 transition-all bg-background border-purple-500/10 h-full">
           <CardContent className="p-5">
             <div className="flex items-center gap-4">
-              <div className="p-3 rounded-xl bg-purple-500/10">
+              <div className="p-3 rounded-none bg-purple-500/10">
                 <Network className="w-6 h-6 text-purple-400" />
               </div>
               <div className="flex-1">
-                <h4 className="text-sm font-semibold text-white">
+                <h4 className="text-sm font-semibold text-foreground">
                   Poison Pill Scanner
                 </h4>
-                <p className="text-xs text-white/40 mt-0.5">
+                <p className="text-xs text-foreground mt-0.5">
                   Detect clause combos that create hidden traps
                 </p>
               </div>
@@ -123,24 +125,24 @@ export function PoisonPillCTA({
       >
         <Card
           onClick={scrollToSection}
-          className="cursor-pointer hover:brightness-110 transition-all bg-gradient-to-br from-purple-500/5 to-red-500/5 border-purple-500/15 h-full"
+          className="cursor-pointer hover:brightness-110 transition-all bg-background border-purple-500/15 h-full"
         >
           <CardContent className="p-5">
             <div className="flex items-center gap-4">
-              <div className="p-3 rounded-xl bg-purple-500/10">
+              <div className="p-3 rounded-none bg-purple-500/10">
                 <ShieldAlert className="w-6 h-6 text-purple-400" />
               </div>
               <div className="flex-1">
-                <h4 className="text-sm font-semibold text-white">
+                <h4 className="text-sm font-semibold text-foreground">
                   {data.traps.length} Hidden Trap
                   {data.traps.length > 1 ? "s" : ""} Found
                 </h4>
-                <p className="text-xs text-white/40 mt-0.5">
+                <p className="text-xs text-foreground mt-0.5">
                   Score: {data.combined_trap_score}/100 —{" "}
                   {data.most_dangerous_trap?.trap_name}
                 </p>
               </div>
-              <ArrowRight className="w-4 h-4 text-white/30 flex-shrink-0" />
+              <ArrowRight className="w-4 h-4 text-foreground flex-shrink-0" />
             </div>
           </CardContent>
         </Card>
@@ -155,17 +157,17 @@ export function PoisonPillCTA({
       animate={{ opacity: 1, y: 0 }}
       className="h-full"
     >
-      <Card className="bg-white/[0.02] border-white/10 h-full">
+      <Card className="bg-white/[0.02] border-foreground border-2 h-full">
         <CardContent className="p-5">
           <div className="flex items-center gap-4">
-            <div className="p-3 rounded-xl bg-green-500/10">
+            <div className="p-3 rounded-none bg-green-500/10">
               <Shield className="w-6 h-6 text-green-400" />
             </div>
             <div className="flex-1">
-              <h4 className="text-sm font-semibold text-white">
+              <h4 className="text-sm font-semibold text-foreground">
                 No Hidden Traps
               </h4>
-              <p className="text-xs text-white/40 mt-0.5">
+              <p className="text-xs text-foreground mt-0.5">
                 All clause combinations checked — no traps detected
               </p>
             </div>

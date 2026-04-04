@@ -187,11 +187,7 @@ export default function ContractDNAModal({
             <button
               key={s.id}
               onClick={() => setStyle(s.id)}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-none text-sm font-black uppercase tracking-wider border-2 transition-all whitespace-nowrap ${
-                style === s.id
-                  ? "bg-foreground border-foreground text-background"
-                  : "bg-muted border-transparent text-muted-foreground hover:text-foreground hover:border-foreground"
-              }`}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-none text-sm font-black uppercase tracking-wider border-2 transition-all whitespace-nowrap ${style === s.id ? "bg-foreground border-foreground text-background" : "bg-muted border-transparent text-muted-foreground hover:text-foreground hover:border-foreground"}`}
             >
               <span>{s.icon}</span>
               <span>{s.name}</span>
@@ -203,7 +199,7 @@ export default function ContractDNAModal({
         <div className="relative px-5 py-3">
           <div
             ref={svgContainerRef}
-            className="relative w-full aspect-[3/2] bg-black/40 rounded-xl overflow-hidden border border-white/5"
+            className="relative w-full aspect-[3/2] bg-black/40 rounded-none overflow-hidden border border-foreground border-2"
             style={{
               background: `linear-gradient(180deg, ${personality.gradient[0]}30, ${personality.gradient[1]}15)`,
             }}

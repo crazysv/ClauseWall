@@ -28,7 +28,7 @@ export default function TacticAlert({
 
   return (
     <div
-      className={`border-2 ${borderColor} ${bgColor} shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] animate-in slide-in-from-top-2 fade-in duration-300`}
+      className={`border-2 ${borderColor} ${bgColor} shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] animate-in slide-in- fade-in duration-300`}
     >
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3">
@@ -135,7 +135,7 @@ export default function TacticAlert({
       {/* Expand/Collapse toggle */}
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full py-3 text-[10px] font-bold uppercase tracking-widest text-black/50 hover:text-black hover:bg-white/50 border-t-2 border-black/10 transition-colors"
+        className="w-full py-3 text-[10px] font-bold uppercase tracking-widest text-black/50 hover:text-black hover:bg-muted border-t-2 border-black/10 transition-colors"
       >
         {expanded ? "▲ COLLAPSE" : "▼ SHOW DETAILS"}
       </button>

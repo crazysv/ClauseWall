@@ -33,7 +33,7 @@ export default async function CampaignsPage() {
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-5xl">
         <div className="flex items-center gap-3 mb-2">
-          <div className="h-10 w-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+          <div className="h-10 w-10 rounded-none bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
             <Shield className="h-5 w-5 text-amber-400" />
           </div>
           <div>
@@ -45,7 +45,7 @@ export default async function CampaignsPage() {
         </div>
 
         <div className="grid grid-cols-2 gap-4 my-6">
-          <Card className="bg-gray-900/50 border-gray-800">
+          <Card className="bg-background border-2 border-foreground bg-popover/50 border-foreground border-2">
             <CardContent className="p-4 text-center">
               <p className="text-2xl font-bold text-amber-400">
                 {activeCampaigns.length}
@@ -53,7 +53,7 @@ export default async function CampaignsPage() {
               <p className="text-xs text-muted-foreground">Active Campaigns</p>
             </CardContent>
           </Card>
-          <Card className="bg-gray-900/50 border-gray-800">
+          <Card className="bg-background border-2 border-foreground bg-popover/50 border-foreground border-2">
             <CardContent className="p-4 flex items-center justify-center gap-2">
               <Users className="h-5 w-5 text-muted-foreground" />
               <p className="text-2xl font-bold">{totalSignatories}</p>

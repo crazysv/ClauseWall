@@ -1,0 +1,354 @@
+{
+  "totalAudited": 307,
+  "verifiedUpdated": 297,
+  "partiallyUpdated": 6,
+  "notUpdated": 4,
+  "notApplicable": 5,
+  "modules": {
+    "analyze": {
+      "pages": 1,
+      "components": 0,
+      "verified": 1,
+      "partial": 0,
+      "missing": 0,
+      "na": 0
+    },
+    "auth": {
+      "pages": 2,
+      "components": 0,
+      "verified": 2,
+      "partial": 0,
+      "missing": 0,
+      "na": 0
+    },
+    "authority": {
+      "pages": 6,
+      "components": 21,
+      "verified": 26,
+      "partial": 0,
+      "missing": 1,
+      "na": 0
+    },
+    "battle": {
+      "pages": 1,
+      "components": 0,
+      "verified": 1,
+      "partial": 0,
+      "missing": 0,
+      "na": 0
+    },
+    "builder": {
+      "pages": 3,
+      "components": 0,
+      "verified": 3,
+      "partial": 0,
+      "missing": 0,
+      "na": 0
+    },
+    "collab": {
+      "pages": 1,
+      "components": 3,
+      "verified": 4,
+      "partial": 0,
+      "missing": 0,
+      "na": 0
+    },
+    "collective": {
+      "pages": 2,
+      "components": 10,
+      "verified": 10,
+      "partial": 1,
+      "missing": 1,
+      "na": 0
+    },
+    "compare": {
+      "pages": 1,
+      "components": 1,
+      "verified": 2,
+      "partial": 0,
+      "missing": 0,
+      "na": 0
+    },
+    "complaint": {
+      "pages": 2,
+      "components": 3,
+      "verified": 4,
+      "partial": 0,
+      "missing": 0,
+      "na": 1
+    },
+    "dashboard": {
+      "pages": 1,
+      "components": 4,
+      "verified": 5,
+      "partial": 0,
+      "missing": 0,
+      "na": 0
+    },
+    "escape": {
+      "pages": 1,
+      "components": 0,
+      "verified": 1,
+      "partial": 0,
+      "missing": 0,
+      "na": 0
+    },
+    "evidence": {
+      "pages": 4,
+      "components": 9,
+      "verified": 13,
+      "partial": 0,
+      "missing": 0,
+      "na": 0
+    },
+    "lawchange": {
+      "pages": 1,
+      "components": 7,
+      "verified": 7,
+      "partial": 1,
+      "missing": 0,
+      "na": 0
+    },
+    "root": {
+      "pages": 2,
+      "components": 1,
+      "verified": 2,
+      "partial": 0,
+      "missing": 0,
+      "na": 1
+    },
+    "letter": {
+      "pages": 1,
+      "components": 1,
+      "verified": 2,
+      "partial": 0,
+      "missing": 0,
+      "na": 0
+    },
+    "market": {
+      "pages": 5,
+      "components": 14,
+      "verified": 18,
+      "partial": 1,
+      "missing": 0,
+      "na": 0
+    },
+    "negotiate": {
+      "pages": 2,
+      "components": 10,
+      "verified": 11,
+      "partial": 0,
+      "missing": 0,
+      "na": 1
+    },
+    "results": {
+      "pages": 2,
+      "components": 38,
+      "verified": 39,
+      "partial": 0,
+      "missing": 0,
+      "na": 1
+    },
+    "ruin-calculator": {
+      "pages": 1,
+      "components": 11,
+      "verified": 12,
+      "partial": 0,
+      "missing": 0,
+      "na": 0
+    },
+    "shadow": {
+      "pages": 2,
+      "components": 9,
+      "verified": 11,
+      "partial": 0,
+      "missing": 0,
+      "na": 0
+    },
+    "simulate": {
+      "pages": 1,
+      "components": 0,
+      "verified": 1,
+      "partial": 0,
+      "missing": 0,
+      "na": 0
+    },
+    "statemachine": {
+      "pages": 1,
+      "components": 6,
+      "verified": 6,
+      "partial": 0,
+      "missing": 1,
+      "na": 0
+    },
+    "timebomb": {
+      "pages": 1,
+      "components": 10,
+      "verified": 11,
+      "partial": 0,
+      "missing": 0,
+      "na": 0
+    },
+    "upload": {
+      "pages": 1,
+      "components": 9,
+      "verified": 10,
+      "partial": 0,
+      "missing": 0,
+      "na": 0
+    },
+    "vault": {
+      "pages": 1,
+      "components": 11,
+      "verified": 12,
+      "partial": 0,
+      "missing": 0,
+      "na": 0
+    },
+    "verify": {
+      "pages": 1,
+      "components": 0,
+      "verified": 1,
+      "partial": 0,
+      "missing": 0,
+      "na": 0
+    },
+    "voice": {
+      "pages": 2,
+      "components": 1,
+      "verified": 2,
+      "partial": 0,
+      "missing": 0,
+      "na": 1
+    },
+    "wall-of-shame": {
+      "pages": 1,
+      "components": 0,
+      "verified": 1,
+      "partial": 0,
+      "missing": 0,
+      "na": 0
+    },
+    "watchdog": {
+      "pages": 8,
+      "components": 16,
+      "verified": 24,
+      "partial": 0,
+      "missing": 0,
+      "na": 0
+    },
+    "wrapped": {
+      "pages": 1,
+      "components": 0,
+      "verified": 1,
+      "partial": 0,
+      "missing": 0,
+      "na": 0
+    },
+    "bhasha": {
+      "pages": 0,
+      "components": 12,
+      "verified": 12,
+      "partial": 0,
+      "missing": 0,
+      "na": 0
+    },
+    "deliberation": {
+      "pages": 0,
+      "components": 5,
+      "verified": 5,
+      "partial": 0,
+      "missing": 0,
+      "na": 0
+    },
+    "embed": {
+      "pages": 0,
+      "components": 1,
+      "verified": 1,
+      "partial": 0,
+      "missing": 0,
+      "na": 0
+    },
+    "graph": {
+      "pages": 0,
+      "components": 1,
+      "verified": 1,
+      "partial": 0,
+      "missing": 0,
+      "na": 0
+    },
+    "landing": {
+      "pages": 0,
+      "components": 3,
+      "verified": 3,
+      "partial": 0,
+      "missing": 0,
+      "na": 0
+    },
+    "poisonpill": {
+      "pages": 0,
+      "components": 7,
+      "verified": 7,
+      "partial": 0,
+      "missing": 0,
+      "na": 0
+    },
+    "shared": {
+      "pages": 0,
+      "components": 4,
+      "verified": 4,
+      "partial": 0,
+      "missing": 0,
+      "na": 0
+    },
+    "ui": {
+      "pages": 0,
+      "components": 17,
+      "verified": 13,
+      "partial": 3,
+      "missing": 1,
+      "na": 0
+    },
+    "voice-aid": {
+      "pages": 0,
+      "components": 8,
+      "verified": 8,
+      "partial": 0,
+      "missing": 0,
+      "na": 0
+    }
+  },
+  "missedFiles": [
+    "components/authority/authority-card.tsx",
+    "components/collective/my-collectives-section.tsx",
+    "components/statemachine/state-machine-modal.tsx",
+    "components/ui/dropdown-menu.tsx"
+  ],
+  "partialFiles": [
+    "components/collective/collective-dashboard.tsx",
+    "components/lawchange/law-change-card.tsx",
+    "components/market/market-overview-cards.tsx",
+    "components/ui/dialog.tsx",
+    "components/ui/select.tsx",
+    "components/ui/tooltip.tsx"
+  ],
+  "remnants": {
+    "glass": [],
+    "backdrop-blur": [],
+    "rounded-3xl": [],
+    "gradients": [
+      "components/market/market-overview-cards.tsx",
+      "components/ui/dialog.tsx",
+      "components/ui/dropdown-menu.tsx",
+      "components/ui/select.tsx",
+      "components/ui/tooltip.tsx"
+    ],
+    "other_old": [
+      "components/authority/authority-card.tsx",
+      "components/collective/collective-dashboard.tsx",
+      "components/collective/my-collectives-section.tsx",
+      "components/lawchange/law-change-card.tsx",
+      "components/statemachine/state-machine-modal.tsx"
+    ]
+  }
+}

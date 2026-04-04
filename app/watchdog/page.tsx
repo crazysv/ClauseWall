@@ -97,7 +97,7 @@ export default async function WatchdogPage() {
             const Icon = stat.icon;
             return (
               <Link key={stat.label} href={stat.href}>
-                <Card className="bg-background/50 border-gray-800 hover:border-foreground border-2 transition-all">
+                <Card className="bg-background/50 border-foreground border-2 hover:border-foreground border-2 transition-all">
                   <CardContent className="p-4">
                     <div className="flex items-center gap-3">
                       <div className={`${stat.color}`}>
@@ -121,19 +121,19 @@ export default async function WatchdogPage() {
         <div className="flex flex-wrap gap-3 mb-8">
           <Link
             href="/watchdog/companies"
-            className="text-sm bg-background/50 border border-gray-800 rounded-lg px-4 py-2 hover:border-foreground border-2 transition-colors flex items-center gap-2"
+            className="text-sm bg-background/50 border border-foreground border-2 rounded-none px-4 py-2 hover:border-foreground border-2 transition-colors flex items-center gap-2"
           >
             <Building2 className="h-4 w-4" /> Browse Companies
           </Link>
           <Link
             href="/watchdog/leaderboard"
-            className="text-sm bg-background/50 border border-gray-800 rounded-lg px-4 py-2 hover:border-foreground border-2 transition-colors flex items-center gap-2"
+            className="text-sm bg-background/50 border border-foreground border-2 rounded-none px-4 py-2 hover:border-foreground border-2 transition-colors flex items-center gap-2"
           >
             <Trophy className="h-4 w-4" /> ToS Leaderboard
           </Link>
           <Link
             href="/watchdog/campaigns"
-            className="text-sm bg-background/50 border border-gray-800 rounded-lg px-4 py-2 hover:border-foreground border-2 transition-colors flex items-center gap-2"
+            className="text-sm bg-background/50 border border-foreground border-2 rounded-none px-4 py-2 hover:border-foreground border-2 transition-colors flex items-center gap-2"
           >
             <Shield className="h-4 w-4" /> Campaigns
           </Link>

@@ -19,11 +19,7 @@ export default function VoiceMessageBubble({ message, onPlayAudio }: Props) {
       className={`flex ${isUser ? "justify-end" : "justify-start"} mb-3`}
     >
       <div
-        className={`relative max-w-[85%] rounded-2xl px-4 py-3 ${
-          isUser
-            ? "bg-blue-600/80 text-white rounded-br-md"
-            : "bg-white/10 text-white/90 rounded-bl-md border border-white/5"
-        }`}
+        className={`relative max-w-[85%] rounded-none px-4 py-3 ${isUser ? "bg-blue-600/80 text-foreground rounded-br-md" : "bg-muted text-foreground rounded-bl-md border border-foreground border-2"}`}
       >
         {/* Role indicator */}
         <div
@@ -54,7 +50,7 @@ export default function VoiceMessageBubble({ message, onPlayAudio }: Props) {
 
         {/* Time */}
         <div
-          className={`text-[10px] mt-1 ${isUser ? "text-blue-200/50" : "text-white/30"}`}
+          className={`text-[10px] mt-1 ${isUser ? "text-blue-200/50" : "text-foreground"}`}
         >
           {new Date(message.created_at).toLocaleTimeString([], {
             hour: "2-digit",

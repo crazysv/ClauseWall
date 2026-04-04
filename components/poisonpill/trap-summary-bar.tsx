@@ -67,7 +67,7 @@ export function TrapSummaryBar({ result }: Props) {
       className="grid grid-cols-2 sm:grid-cols-4 gap-3"
     >
       {/* Combined Trap Score */}
-      <div className="bg-white/[0.03] border border-white/5 rounded-xl p-3 flex items-center gap-3">
+      <div className="bg-white/[0.03] border border-foreground border-2 rounded-none p-3 flex items-center gap-3">
         <svg
           width="50"
           height="50"
@@ -105,7 +105,7 @@ export function TrapSummaryBar({ result }: Props) {
           </text>
         </svg>
         <div>
-          <p className="text-[10px] text-white/30 uppercase tracking-wider">
+          <p className="text-[10px] text-foreground uppercase tracking-wider">
             Trap Score
           </p>
           <p
@@ -117,8 +117,8 @@ export function TrapSummaryBar({ result }: Props) {
       </div>
 
       {/* Severity Breakdown */}
-      <div className="bg-white/[0.03] border border-white/5 rounded-xl p-3">
-        <p className="text-[10px] text-white/30 uppercase tracking-wider mb-1.5">
+      <div className="bg-white/[0.03] border border-foreground border-2 rounded-none p-3">
+        <p className="text-[10px] text-foreground uppercase tracking-wider mb-1.5">
           By Severity
         </p>
         <div className="space-y-0.5">
@@ -136,24 +136,24 @@ export function TrapSummaryBar({ result }: Props) {
       </div>
 
       {/* Trap Density */}
-      <div className="bg-white/[0.03] border border-white/5 rounded-xl p-3">
-        <p className="text-[10px] text-white/30 uppercase tracking-wider mb-1">
+      <div className="bg-white/[0.03] border border-foreground border-2 rounded-none p-3">
+        <p className="text-[10px] text-foreground uppercase tracking-wider mb-1">
           Trap Density
         </p>
-        <p className="text-lg font-bold text-white/80">{trap_density}%</p>
-        <p className="text-[10px] text-white/25">of clauses involved</p>
+        <p className="text-lg font-bold text-foreground">{trap_density}%</p>
+        <p className="text-[10px] text-foreground">of clauses involved</p>
       </div>
 
       {/* Most Dangerous / Amplification */}
-      <div className="bg-white/[0.03] border border-white/5 rounded-xl p-3">
-        <p className="text-[10px] text-white/30 uppercase tracking-wider mb-1">
+      <div className="bg-white/[0.03] border border-foreground border-2 rounded-none p-3">
+        <p className="text-[10px] text-foreground uppercase tracking-wider mb-1">
           Risk Amplification
         </p>
         <p className="text-lg font-bold text-orange-400">
           {avgMultiplier.toFixed(1)}x
         </p>
         {most_dangerous_trap && (
-          <p className="text-[10px] text-white/25 truncate">
+          <p className="text-[10px] text-foreground truncate">
             Worst: {most_dangerous_trap.trap_name}
           </p>
         )}

@@ -47,7 +47,7 @@ export default function HeatMapExplorerPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-foreground">
       <div className="max-w-5xl mx-auto px-4 py-8">
         {/* Header */}
         <motion.div
@@ -57,17 +57,17 @@ export default function HeatMapExplorerPage() {
         >
           <Link
             href="/market"
-            className="text-xs text-white/30 hover:text-white/50 mb-3 flex items-center gap-1"
+            className="text-xs text-foreground hover:text-foreground mb-3 flex items-center gap-1"
           >
             <ArrowLeft className="h-3 w-3" /> Back to Market Dashboard
           </Link>
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-gradient-to-br from-cyan-500/20 to-green-500/20">
+            <div className="p-2 rounded-none bg-background">
               <Map className="h-6 w-6 text-cyan-400" />
             </div>
             <div>
               <h1 className="text-2xl font-bold">Geographic Risk Map</h1>
-              <p className="text-sm text-white/50">
+              <p className="text-sm text-foreground">
                 State-wise contract risk visualization across India
               </p>
             </div>
@@ -91,7 +91,7 @@ export default function HeatMapExplorerPage() {
             />
           </>
         ) : (
-          <p className="text-center text-white/30 py-20">
+          <p className="text-center text-foreground py-20">
             No geographic data available yet.
           </p>
         )}

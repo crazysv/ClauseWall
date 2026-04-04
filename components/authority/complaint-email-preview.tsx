@@ -76,12 +76,12 @@ export default function ComplaintEmailPreview({
           </div>
         </div>
 
-        <div className="mb-3 p-2 rounded-lg bg-white/[0.03] border border-white/5">
+        <div className="mb-3 p-2 rounded-none bg-white/[0.03] border border-foreground border-2">
           <p className="text-xs text-muted-foreground">Subject:</p>
           <p className="text-sm font-medium">{draft.subject}</p>
         </div>
 
-        <div className="bg-gray-900/80 rounded-lg p-4 font-mono text-xs leading-relaxed whitespace-pre-wrap max-h-80 overflow-y-auto border border-white/5">
+        <div className="bg-background border-2 border-foreground card-impact/80 rounded-none p-4 font-mono text-xs leading-relaxed whitespace-pre-wrap max-h-80 overflow-y-auto border border-foreground border-2">
           {draft.body}
         </div>
 

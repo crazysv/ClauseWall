@@ -89,14 +89,14 @@ export default function ShareRoomModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-md bg-[#0A0A0F] border-gray-800 p-0 gap-0">
+      <DialogContent className="max-w-md bg-[#0A0A0F] border-foreground border-2 p-0 gap-0">
         <VisuallyHidden>
           <DialogTitle>Start Collaboration</DialogTitle>
         </VisuallyHidden>
 
-        <div className="p-5 border-b border-gray-800/50">
+        <div className="p-5 border-b border-foreground border-2/50">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-blue-500/30 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-none bg-background border border-blue-500/30 flex items-center justify-center">
               <Users className="h-4 w-4 text-blue-400" />
             </div>
             <div>
@@ -112,17 +112,17 @@ export default function ShareRoomModal({
           {!roomCode ? (
             <>
               <div>
-                <label className="text-sm text-gray-400 mb-1.5 block">
+                <label className="text-sm text-muted-foreground mb-1.5 block">
                   Your Name
                 </label>
                 <Input
                   value={hostName}
                   onChange={(e) => setHostName(e.target.value)}
                   placeholder="e.g., Tenant, Rahul, etc."
-                  className="bg-gray-900 border-gray-700"
+                  className="bg-background border-2 border-foreground card-impact border-foreground border-2"
                   onKeyDown={(e) => e.key === "Enter" && handleCreate()}
                 />
-                <p className="text-[10px] text-gray-600 mt-1">
+                <p className="text-[10px] text-muted-foreground mt-1">
                   Others will see this name in the collaboration room
                 </p>
               </div>
@@ -144,12 +144,14 @@ export default function ShareRoomModal({
             <>
               {/* Room Created */}
               <div className="text-center py-3">
-                <div className="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-blue-500/10 border border-blue-500/20 mb-3">
+                <div className="inline-flex items-center gap-2 px-4 py-3 rounded-none bg-blue-500/10 border border-blue-500/20 mb-3">
                   <span className="text-2xl font-mono font-bold text-blue-400 tracking-wider">
                     {roomCode}
                   </span>
                 </div>
-                <p className="text-xs text-gray-500">Share this code or link</p>
+                <p className="text-xs text-muted-foreground">
+                  Share this code or link
+                </p>
               </div>
 
               {/* Share URL */}
@@ -157,7 +159,7 @@ export default function ShareRoomModal({
                 <Input
                   value={shareUrl}
                   readOnly
-                  className="bg-gray-900 border-gray-700 text-xs font-mono"
+                  className="bg-background border-2 border-foreground card-impact border-foreground border-2 text-xs font-mono"
                 />
                 <Button variant="outline" size="icon" onClick={handleCopy}>
                   {copied ? (
@@ -199,7 +201,7 @@ export default function ShareRoomModal({
                 </Button>
               </div>
 
-              <p className="text-[10px] text-gray-600 text-center">
+              <p className="text-[10px] text-muted-foreground text-center">
                 Room expires in 24 hours • Up to 10 participants
               </p>
             </>

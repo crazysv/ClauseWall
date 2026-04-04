@@ -214,15 +214,7 @@ export default function EntityReputation({
   return (
     <>
       <Card
-        className={`card-impact overflow-hidden transition-all ${
-          isSevere
-            ? "border-red-600 bg-red-50 dark:bg-red-950"
-            : isModerate
-              ? "border-red-600"
-              : isKnownBadActor
-                ? "border-orange-600"
-                : "border-foreground"
-        }`}
+        className={`card-impact overflow-hidden transition-all ${isSevere ? "border-red-600 bg-red-50 dark:bg-red-950" : isModerate ? "border-red-600" : isKnownBadActor ? "border-orange-600" : "border-foreground"}`}
       >
         {/* ============================================ */}
         {/* DRAMATIC HEADER — For entities with 3+ flags */}
@@ -233,11 +225,11 @@ export default function EntityReputation({
               <div className="absolute inset-0 bg-red-800 animate-pulse mix-blend-overlay" />
             )}
             <div className="relative flex items-center justify-center gap-2">
-              <Skull className="h-4 w-4 text-white" />
-              <span className="text-sm font-black tracking-widest text-white uppercase">
+              <Skull className="h-4 w-4 text-foreground" />
+              <span className="text-sm font-black tracking-widest text-foreground uppercase">
                 Entity Reputation Alert
               </span>
-              <Skull className="h-4 w-4 text-white" />
+              <Skull className="h-4 w-4 text-foreground" />
             </div>
           </div>
         )}
@@ -252,19 +244,11 @@ export default function EntityReputation({
           <div className="flex items-start justify-between gap-4 mb-4">
             <div className="flex items-start gap-3">
               <div
-                className={`h-12 w-12 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                  isSevere
-                    ? "bg-red-500/15 ring-1 ring-red-500/30"
-                    : isKnownBadActor
-                      ? "bg-red-500/10"
-                      : "bg-blue-500/10"
-                }`}
+                className={`h-12 w-12 rounded-none flex items-center justify-center flex-shrink-0 ${isSevere ? "bg-red-500/15 ring-1 ring-red-500/30" : isKnownBadActor ? "bg-red-500/10" : "bg-blue-500/10"}`}
               >
                 {isKnownBadActor ? (
                   <ShieldAlert
-                    className={`h-6 w-6 ${
-                      isSevere ? "text-red-400" : "text-orange-400"
-                    }`}
+                    className={`h-6 w-6 ${isSevere ? "text-red-400" : "text-orange-400"}`}
                   />
                 ) : (
                   <Shield className="h-6 w-6 text-blue-400" />
@@ -314,11 +298,7 @@ export default function EntityReputation({
               size="sm"
               onClick={() => setShowFlagDialog(true)}
               disabled={flagged}
-              className={`gap-1.5 flex-shrink-0 ${
-                flagged
-                  ? "text-green-400 border-green-500/30"
-                  : "text-red-400 border-red-500/30 hover:bg-red-500/10"
-              }`}
+              className={`gap-1.5 flex-shrink-0 ${flagged ? "text-green-400 border-green-500/30" : "text-red-400 border-red-500/30 hover:bg-red-500/10"}`}
             >
               {flagged ? (
                 <>
@@ -340,7 +320,7 @@ export default function EntityReputation({
           {isKnownBadActor && (
             <div className="space-y-4">
               {/* Social Proof Line */}
-              <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-red-500/5 border border-red-500/10">
+              <div className="flex items-center gap-2 px-3 py-2 rounded-none bg-red-500/5 border border-red-500/10">
                 <Users className="h-4 w-4 text-red-400 flex-shrink-0" />
                 <p className="text-sm text-red-300">
                   <strong>{flagCount}</strong>{" "}
@@ -351,7 +331,7 @@ export default function EntityReputation({
 
               {/* Stats Row */}
               <div className="grid grid-cols-3 gap-3">
-                <div className="text-center p-3 rounded-lg bg-red-500/10 border border-red-500/10">
+                <div className="text-center p-3 rounded-none bg-red-500/10 border border-red-500/10">
                   <div className="flex items-center justify-center gap-1 mb-1">
                     <Flag className="h-3.5 w-3.5 text-red-400" />
                     <span className="text-2xl font-bold text-red-400">
@@ -362,7 +342,7 @@ export default function EntityReputation({
                     Times Flagged
                   </p>
                 </div>
-                <div className="text-center p-3 rounded-lg bg-orange-500/10 border border-orange-500/10">
+                <div className="text-center p-3 rounded-none bg-orange-500/10 border border-orange-500/10">
                   <div className="flex items-center justify-center gap-1 mb-1">
                     <TrendingUp className="h-3.5 w-3.5 text-orange-400" />
                     <span className="text-2xl font-bold text-orange-400">
@@ -373,7 +353,7 @@ export default function EntityReputation({
                     Avg Risk Score
                   </p>
                 </div>
-                <div className="text-center p-3 rounded-lg bg-purple-500/10 border border-purple-500/10">
+                <div className="text-center p-3 rounded-none bg-purple-500/10 border border-purple-500/10">
                   <div className="flex items-center justify-center gap-1 mb-1">
                     <BarChart3 className="h-3.5 w-3.5 text-purple-400" />
                     <span className="text-2xl font-bold text-purple-400">
@@ -388,7 +368,7 @@ export default function EntityReputation({
 
               {/* Community Risk Level Bar */}
               {avgScore > 0 && (
-                <div className="p-3 rounded-lg bg-white/[0.02] border border-white/5">
+                <div className="p-3 rounded-none bg-white/[0.02] border border-foreground border-2">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-medium text-muted-foreground">
                       Community Risk Level
@@ -400,7 +380,7 @@ export default function EntityReputation({
                       {avgScore}/100
                     </span>
                   </div>
-                  <div className="h-2.5 rounded-full bg-white/5 overflow-hidden">
+                  <div className="h-2.5 rounded-full bg-muted overflow-hidden">
                     <div
                       className="h-full rounded-full transition-all duration-1000 ease-out"
                       style={{
@@ -414,7 +394,7 @@ export default function EntityReputation({
 
               {/* Percentile Warning — Severe */}
               {percentile >= 80 && (
-                <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20">
+                <div className="p-3 rounded-none bg-red-500/10 border border-red-500/20">
                   <p className="text-sm text-red-300 flex items-center gap-2">
                     <Skull className="h-4 w-4 text-red-400 flex-shrink-0" />
                     <span>
@@ -433,7 +413,7 @@ export default function EntityReputation({
 
               {/* Percentile Warning — Moderate */}
               {percentile >= 50 && percentile < 80 && (
-                <div className="p-3 rounded-lg bg-orange-500/10 border border-orange-500/20">
+                <div className="p-3 rounded-none bg-orange-500/10 border border-orange-500/20">
                   <p className="text-sm text-orange-300 flex items-center gap-2">
                     <AlertTriangle className="h-4 w-4 text-orange-400 flex-shrink-0" />
                     <span>
@@ -469,7 +449,7 @@ export default function EntityReputation({
               {/* Wall of Shame Link */}
               <Link
                 href="/wall-of-shame"
-                className="flex items-center justify-between p-3 rounded-lg bg-white/[0.03] border border-white/5 hover:bg-white/[0.06] transition-colors group"
+                className="flex items-center justify-between p-3 rounded-none bg-white/[0.03] border border-foreground border-2 hover:bg-white/[0.06] transition-colors group"
               >
                 <div className="flex items-center gap-2">
                   <Skull className="h-4 w-4 text-red-400" />
@@ -487,7 +467,7 @@ export default function EntityReputation({
           {/* ============================================ */}
           {!isKnownBadActor && (
             <div className="space-y-3">
-              <div className="p-3 rounded-lg bg-green-500/5 border border-green-500/15">
+              <div className="p-3 rounded-none bg-green-500/5 border border-green-500/15">
                 <p className="text-sm text-green-400 flex items-center gap-2">
                   <Check className="h-4 w-4" />
                   No community flags found for this entity.
@@ -500,7 +480,7 @@ export default function EntityReputation({
 
               {/* Show current contract risk context */}
               {overallRiskScore >= 60 && (
-                <div className="p-3 rounded-lg bg-yellow-500/5 border border-yellow-500/15">
+                <div className="p-3 rounded-none bg-yellow-500/5 border border-yellow-500/15">
                   <p className="text-xs text-yellow-300 flex items-center gap-2">
                     <AlertTriangle className="h-3.5 w-3.5 flex-shrink-0" />
                     <span>
@@ -520,7 +500,7 @@ export default function EntityReputation({
       {/* FLAG CONFIRMATION DIALOG                     */}
       {/* ============================================ */}
       <Dialog open={showFlagDialog} onOpenChange={setShowFlagDialog}>
-        <DialogContent className="bg-gray-900 border-gray-800 max-w-md">
+        <DialogContent className="bg-background border-2 border-foreground card-impact border-foreground border-2 max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Flag className="h-5 w-5 text-red-400" />
@@ -539,7 +519,7 @@ export default function EntityReputation({
           </DialogHeader>
 
           <div className="py-4 space-y-3">
-            <div className="p-3 rounded-lg bg-white/5 border border-white/10">
+            <div className="p-3 rounded-none bg-muted border border-foreground border-2">
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-xs text-muted-foreground">
                   {entityTypeInfo.emoji} {entityTypeInfo.label}
@@ -564,7 +544,7 @@ export default function EntityReputation({
                       className="flex items-start gap-2 text-xs"
                     >
                       <span className="text-purple-400">⛔</span>
-                      <span className="text-gray-400 line-clamp-2">
+                      <span className="text-muted-foreground line-clamp-2">
                         {clause}
                       </span>
                     </div>
@@ -575,7 +555,7 @@ export default function EntityReputation({
                       className="flex items-start gap-2 text-xs"
                     >
                       <span className="text-red-400">🔴</span>
-                      <span className="text-gray-400 line-clamp-2">
+                      <span className="text-muted-foreground line-clamp-2">
                         {clause}
                       </span>
                     </div>
@@ -584,7 +564,7 @@ export default function EntityReputation({
               </div>
             )}
 
-            <div className="p-3 rounded-lg bg-yellow-500/5 border border-yellow-500/15">
+            <div className="p-3 rounded-none bg-yellow-500/5 border border-yellow-500/15">
               <p className="text-xs text-yellow-300">
                 <strong>Note:</strong> All flags are anonymous. Your personal
                 information is never shared. This report helps the community

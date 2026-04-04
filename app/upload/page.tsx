@@ -620,7 +620,7 @@ export default function UploadPage() {
             {/* Header */}
             <div className="text-center mb-10">
               <div className="inline-flex items-center justify-center w-16 h-16 border-2 border-foreground bg-primary shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] mb-6">
-                <Shield className="h-8 w-8 text-white" />
+                <Shield className="h-8 w-8 text-foreground" />
               </div>
               <h1 className="text-impact-heading text-foreground mb-4">
                 Analyze Your Contract
@@ -661,7 +661,7 @@ export default function UploadPage() {
                   onValueChange={setActiveTab}
                   className="mb-6"
                 >
-                  <TabsList className="grid w-full grid-cols-2 border-2 border-foreground bg-muted p-1 rounded-md shadow-[4px_4px_0px_0px_rgba(10,10,10,1)]">
+                  <TabsList className="grid w-full grid-cols-2 border-2 border-foreground bg-muted p-1 rounded-none shadow-[4px_4px_0px_0px_rgba(10,10,10,1)]">
                     <TabsTrigger
                       value="upload"
                       className="gap-2 font-black uppercase tracking-wider data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:border-2 data-[state=active]:border-foreground data-[state=active]:shadow-sm"
@@ -682,17 +682,11 @@ export default function UploadPage() {
                     {!file ? (
                       <div
                         {...getRootProps()}
-                        className={`border-4 border-dashed rounded-lg p-12 md:p-16 text-center cursor-pointer transition-all duration-150 ${
-                          isDragActive
-                            ? "border-primary bg-primary/10"
-                            : "border-foreground/50 bg-background hover:border-foreground hover:bg-muted"
-                        }`}
+                        className={`border-4 border-dashed rounded-none p-12 md:p-16 text-center cursor-pointer transition-all duration-150 ${isDragActive ? "border-primary bg-primary/10" : "border-foreground/50 bg-background hover:border-foreground hover:bg-muted"}`}
                       >
                         <input {...getInputProps()} />
                         <Upload
-                          className={`w-12 h-12 mx-auto mb-4 transition-colors ${
-                            isDragActive ? "text-primary" : "text-foreground"
-                          }`}
+                          className={`w-12 h-12 mx-auto mb-4 transition-colors ${isDragActive ? "text-primary" : "text-foreground"}`}
                         />
                         {isDragActive ? (
                           <p className="text-xl font-black uppercase tracking-wider text-primary mt-4">
@@ -716,7 +710,7 @@ export default function UploadPage() {
                       <div className="border-2 border-foreground bg-muted card-impact p-4 flex items-center justify-between mt-4">
                         <div className="flex items-center gap-3">
                           <div className="h-10 w-10 border-2 border-foreground bg-primary flex items-center justify-center">
-                            <FileText className="h-5 w-5 text-white" />
+                            <FileText className="h-5 w-5 text-foreground" />
                           </div>
                           <div>
                             <p className="text-base font-black uppercase tracking-wider text-foreground">
@@ -832,7 +826,7 @@ export default function UploadPage() {
                 </div>
 
                 {error && (
-                  <div className="flex items-center gap-2 text-destructive text-sm font-medium mb-4 p-3 rounded-lg bg-destructive/5 border border-destructive">
+                  <div className="flex items-center gap-2 text-destructive text-sm font-medium mb-4 p-3 rounded-none bg-destructive/5 border border-destructive">
                     <AlertCircle className="h-4 w-4 flex-shrink-0" />
                     {error}
                   </div>
@@ -889,7 +883,7 @@ export default function UploadPage() {
                   <Badge
                     key={type.value}
                     variant="outline"
-                    className="border-white/10 text-muted-foreground"
+                    className="border-foreground border-2 text-muted-foreground"
                   >
                     {type.label}
                   </Badge>

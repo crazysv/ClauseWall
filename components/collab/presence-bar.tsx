@@ -21,18 +21,18 @@ export default function PresenceBar({
           {participants.slice(0, 6).map((p, i) => (
             <div
               key={p.user_id}
-              className="relative w-7 h-7 rounded-full border-2 border-gray-900 flex items-center justify-center text-[10px] font-bold text-white"
+              className="relative w-7 h-7 rounded-full border-2 border-foreground border-2 flex items-center justify-center text-[10px] font-bold text-foreground"
               style={{ backgroundColor: p.user_color, zIndex: 10 - i }}
               title={p.user_name}
             >
               {p.user_name.charAt(0).toUpperCase()}
               {p.user_id === currentUserId && (
-                <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-green-500 border border-gray-900" />
+                <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-green-500 border border-foreground border-2" />
               )}
             </div>
           ))}
           {participants.length > 6 && (
-            <div className="w-7 h-7 rounded-full border-2 border-gray-900 bg-gray-700 flex items-center justify-center text-[10px] text-gray-300">
+            <div className="w-7 h-7 rounded-full border-2 border-foreground border-2 bg-gray-700 flex items-center justify-center text-[10px] text-muted-foreground">
               +{participants.length - 6}
             </div>
           )}
@@ -41,7 +41,7 @@ export default function PresenceBar({
         {/* Count */}
         <div className="flex items-center gap-1.5">
           <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-          <span className="text-xs text-gray-400">
+          <span className="text-xs text-muted-foreground">
             {participants.length}{" "}
             {participants.length === 1 ? "person" : "people"} viewing
           </span>
@@ -50,7 +50,7 @@ export default function PresenceBar({
 
       {/* Room Code */}
       <div className="flex items-center gap-2">
-        <span className="text-[10px] text-gray-600">Room</span>
+        <span className="text-[10px] text-muted-foreground">Room</span>
         <span className="text-xs font-mono font-bold text-blue-400">
           {roomCode}
         </span>

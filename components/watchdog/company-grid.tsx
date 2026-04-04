@@ -33,7 +33,7 @@ export default function CompanyGrid({
             placeholder="Search companies..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-9 bg-gray-900/50 border-gray-800"
+            className="pl-9 bg-background border-2 border-foreground bg-popover/50 border-foreground border-2"
           />
         </div>
         <SectorFilter selected={sector} onChange={setSector} />

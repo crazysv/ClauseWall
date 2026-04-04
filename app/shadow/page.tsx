@@ -74,7 +74,7 @@ export default function ShadowLandingPage() {
         {/* Header */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-3 mb-4">
-            <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20">
+            <div className="p-3 rounded-none bg-amber-500/10 border border-amber-500/20">
               <FileSearch className="h-8 w-8 text-amber-500" />
             </div>
             <h1 className="text-3xl sm:text-4xl font-bold">
@@ -97,12 +97,12 @@ export default function ShadowLandingPage() {
                   <Upload className="h-8 w-8 text-blue-400" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">New Contract</h3>
-                <p className="text-sm text-white/50 mb-6">
+                <p className="text-sm text-foreground mb-6">
                   Upload a new formal contract first, then you can add your
                   evidence of promises.
                 </p>
                 <Link href="/upload" className="w-full">
-                  <Button className="w-full bg-blue-600 hover:bg-blue-700 gap-2 shadow-lg shadow-blue-500/20">
+                  <Button className="w-full bg-blue-600 hover:bg-blue-700 gap-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none shadow-blue-500/20">
                     <Upload className="w-4 h-4" />
                     Analyze New Contract
                   </Button>
@@ -118,36 +118,36 @@ export default function ShadowLandingPage() {
                 <h3 className="text-xl font-semibold mb-1">
                   Select from Vault
                 </h3>
-                <p className="text-sm text-white/50 mb-6">
+                <p className="text-sm text-foreground mb-6">
                   Select a previously analyzed contract to check shadow
                   agreements.
                 </p>
 
                 {/* Search */}
                 <div className="relative flex-1 mb-4">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground" />
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search contracts..."
-                    className="w-full pl-9 pr-3 py-2.5 rounded-lg bg-white/[0.03] border border-white/10 text-sm focus:outline-none focus:border-amber-500/30 transition-colors"
+                    className="w-full pl-9 pr-3 py-2.5 rounded-none bg-white/[0.03] border border-foreground border-2 text-sm focus:outline-none focus:border-amber-500/30 transition-colors"
                   />
                 </div>
 
                 {/* List */}
                 {loading ? (
-                  <div className="flex flex-col items-center justify-center py-12 text-white/40">
+                  <div className="flex flex-col items-center justify-center py-12 text-foreground">
                     <Loader2 className="w-8 h-8 animate-spin mb-4 text-amber-500/50" />
                     <p className="text-sm">Loading contracts...</p>
                   </div>
                 ) : documents.length === 0 ? (
-                  <div className="text-center py-12 text-white/40">
+                  <div className="text-center py-12 text-foreground">
                     <FileText className="w-10 h-10 mx-auto mb-3 opacity-20" />
                     <p className="text-sm">No analyzed contracts found.</p>
                   </div>
                 ) : filtered.length === 0 ? (
-                  <div className="text-center py-12 text-white/40">
+                  <div className="text-center py-12 text-foreground">
                     <p className="text-sm">No contracts match your search.</p>
                   </div>
                 ) : (
@@ -166,22 +166,22 @@ export default function ShadowLandingPage() {
                             <Link href={`/shadow/${doc.id}`}>
                               <Card className="card-impact border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] bg-background hover:translate-y-1 hover:shadow-none transition-all group cursor-pointer mb-2">
                                 <CardContent className="p-4 flex items-center gap-4">
-                                  <div className="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center flex-shrink-0">
+                                  <div className="w-10 h-10 rounded-none bg-amber-500/10 flex items-center justify-center flex-shrink-0">
                                     <FileText className="w-5 h-5 text-amber-500/70" />
                                   </div>
                                   <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-medium text-white/90 truncate group-hover:text-amber-400 transition-colors">
+                                    <p className="text-sm font-medium text-foreground truncate group-hover:text-amber-400 transition-colors">
                                       {doc.original_filename ||
                                         "Unnamed Document"}
                                     </p>
                                     <div className="flex items-center gap-2 mt-1">
-                                      <span className="text-[10px] text-white/40 capitalize bg-white/5 px-2 py-0.5 rounded-full">
+                                      <span className="text-[10px] text-foreground capitalize bg-muted px-2 py-0.5 rounded-full">
                                         {(
                                           doc.document_type || "unknown"
                                         ).replace(/_/g, " ")}
                                       </span>
                                       {doc.entity_name && (
-                                        <span className="text-[10px] text-white/40 truncate">
+                                        <span className="text-[10px] text-foreground truncate">
                                           {doc.entity_name}
                                         </span>
                                       )}
@@ -194,7 +194,7 @@ export default function ShadowLandingPage() {
                                     >
                                       Risk: {doc.overall_risk_score}/100
                                     </Badge>
-                                    <ChevronRight className="w-4 h-4 text-white/20 group-hover:text-amber-400 group-hover:translate-x-1 transition-all" />
+                                    <ChevronRight className="w-4 h-4 text-foreground group-hover:text-amber-400 group-hover:translate-x-1 transition-all" />
                                   </div>
                                 </CardContent>
                               </Card>

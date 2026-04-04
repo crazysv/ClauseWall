@@ -110,7 +110,7 @@ export default function AuthorityDetail({
       </div>
 
       {/* Address & Info */}
-      <Card className="border-white/10 bg-white/[0.02]">
+      <Card className="border-foreground border-2 bg-white/[0.02]">
         <CardContent className="p-4 space-y-3">
           {authority.physical_address && (
             <div className="flex items-start gap-2">
@@ -152,7 +152,7 @@ export default function AuthorityDetail({
             </div>
           )}
           {authority.notes && (
-            <p className="text-xs text-muted-foreground border-t border-white/5 pt-2 mt-2">
+            <p className="text-xs text-muted-foreground border-t border-foreground border-2 pt-2 mt-2">
               {authority.notes}
             </p>
           )}

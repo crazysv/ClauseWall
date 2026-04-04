@@ -414,7 +414,7 @@ export default function ClauseAutopsyModal({
                     </p>
                     {/* Scanning line */}
                     <motion.div
-                      className="absolute left-0 right-0 h-10 bg-gradient-to-b from-transparent via-foreground to-transparent pointer-events-none opacity-20"
+                      className="absolute left-0 right-0 h-10 bg-background from-transparent via-foreground to-transparent pointer-events-none opacity-20"
                       initial={{ top: "-2.5rem" }}
                       animate={{ top: "100%" }}
                       transition={{
@@ -451,7 +451,7 @@ export default function ClauseAutopsyModal({
                   <p className="text-red-400">{error}</p>
                   <button
                     onClick={fetchAutopsy}
-                    className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-gray-300 hover:bg-white/10 transition-colors"
+                    className="px-4 py-2 rounded-none bg-muted border border-foreground border-2 text-sm text-muted-foreground hover:bg-muted transition-colors"
                   >
                     Try Again
                   </button>
@@ -489,13 +489,7 @@ export default function ClauseAutopsyModal({
                           return (
                             <span
                               key={i}
-                              className={`
-                                relative inline cursor-pointer rounded-none px-1 py-0.5 
-                                border-b-4 transition-all duration-200 uppercase tracking-wider font-bold
-                                ${config.bg} ${config.borderBottom}
-                                ${isActive ? `ring-2 ${config.border} shadow-none ${config.bg}` : ""}
-                                hover:opacity-80
-                              `}
+                              className={`relative inline cursor-pointer rounded-none px-1 py-0.5 border-b-4 transition-all duration-200 uppercase tracking-wider font-bold ${config.bg} ${config.borderBottom} ${isActive ? `ring-2 ${config.border} shadow-none ${config.bg}` : ""} hover:opacity-80`}
                               onClick={() =>
                                 scrollToViolation(seg.violation_index!)
                               }
@@ -521,7 +515,7 @@ export default function ClauseAutopsyModal({
                         >
                           {getSeverityConfig(result.most_severe).label}
                         </Badge>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-muted-foreground">
                           ⚖️ {result.total_violations} violation
                           {result.total_violations !== 1 ? "s" : ""} found in
                           this clause
@@ -539,7 +533,7 @@ export default function ClauseAutopsyModal({
                   {/* ── Violation Detail Cards ── */}
                   {result.violations.length > 0 && (
                     <div>
-                      <p className="text-xs font-medium text-gray-500 mb-3 uppercase tracking-wider">
+                      <p className="text-xs font-medium text-muted-foreground mb-3 uppercase tracking-wider">
                         Violation Details
                       </p>
                       <div className="space-y-3">
@@ -558,11 +552,7 @@ export default function ClauseAutopsyModal({
                               initial={{ opacity: 0, y: 10 }}
                               animate={{ opacity: 1, y: 0 }}
                               transition={{ delay: i * 0.08 }}
-                              className={`
-                                rounded-xl border overflow-hidden transition-all duration-200
-                                ${config.cardBg} ${config.cardBorder}
-                                ${isActive ? `ring-1 ${config.border}` : ""}
-                              `}
+                              className={`rounded-none border overflow-hidden transition-all duration-200 ${config.cardBg} ${config.cardBorder} ${isActive ? `ring-1 ${config.border}` : ""}`}
                             >
                               {/* Violation Header */}
                               <button
@@ -613,7 +603,7 @@ export default function ClauseAutopsyModal({
                                     transition={{ duration: 0.2 }}
                                     className="overflow-hidden"
                                   >
-                                    <div className="px-4 pb-4 pt-0 space-y-3 border-t border-white/5">
+                                    <div className="px-4 pb-4 pt-0 space-y-3 border-t border-foreground border-2">
                                       <div className="pt-3">
                                         {/* Explanation */}
                                         <div className="mb-3">

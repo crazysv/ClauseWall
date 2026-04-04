@@ -118,7 +118,7 @@ export function NotificationBell() {
               : {}
           }
         >
-          <Bell className="w-5 h-5 text-black dark:text-white stroke-[3px] group-hover:-translate-y-0.5 transition-transform" />
+          <Bell className="w-5 h-5 text-black dark:text-foreground stroke-[3px] group-hover:-translate-y-0.5 transition-transform" />
         </motion.div>
 
         {/* Unread badge */}
@@ -126,7 +126,7 @@ export function NotificationBell() {
           <motion.span
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            className="absolute -top-1 -right-1 w-5 h-5 border-2 border-black bg-red-500 text-[10px] text-white font-black flex items-center justify-center shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
+            className="absolute -top-1 -right-1 w-5 h-5 border-2 border-black bg-red-500 text-[10px] text-foreground font-black flex items-center justify-center shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
           >
             {unreadCount > 9 ? "9+" : unreadCount}
           </motion.span>
@@ -180,9 +180,7 @@ export function NotificationBell() {
                       router.push(`/timebomb/${n.deadline_id}`);
                       setIsOpen(false);
                     }}
-                    className={`w-full flex items-start gap-4 p-4 text-left hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors border-b-2 border-black/10 dark:border-white/10 last:border-b-0 border-dashed ${
-                      !n.read ? "bg-orange-50 dark:bg-orange-900/10" : ""
-                    }`}
+                    className={`w-full flex items-start gap-4 p-4 text-left hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors border-b-2 border-black/10 dark:border-foreground border-2 last:border-b-0 border-dashed ${!n.read ? "bg-orange-50 dark:bg-orange-900/10" : ""}`}
                   >
                     <div className="mt-1 border-2 border-black bg-white dark:bg-black p-1 shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] flex-shrink-0">
                       {getIcon(n.days_before)}

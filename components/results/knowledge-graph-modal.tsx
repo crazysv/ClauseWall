@@ -172,22 +172,14 @@ export default function KnowledgeGraphModal({
           <div className="flex border-2 border-foreground bg-background">
             <button
               onClick={() => setViewMode("details")}
-              className={`flex items-center gap-1.5 px-3 py-2 text-xs font-black uppercase tracking-wider transition-colors ${
-                viewMode === "details"
-                  ? "bg-foreground text-background"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
+              className={`flex items-center gap-1.5 px-3 py-2 text-xs font-black uppercase tracking-wider transition-colors ${viewMode === "details" ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"}`}
             >
               <FileText className="h-3.5 w-3.5" />
               Details
             </button>
             <button
               onClick={() => setViewMode("graph")}
-              className={`flex items-center gap-1.5 px-3 py-2 text-xs font-black uppercase tracking-wider transition-colors ${
-                viewMode === "graph"
-                  ? "bg-foreground text-background"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
+              className={`flex items-center gap-1.5 px-3 py-2 text-xs font-black uppercase tracking-wider transition-colors ${viewMode === "graph" ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"}`}
             >
               <Network className="h-3.5 w-3.5" />
               Graph
@@ -219,22 +211,22 @@ export default function KnowledgeGraphModal({
             </div>
           ) : !hasData ? (
             <div className="flex flex-col items-center justify-center py-20">
-              <Network className="h-8 w-8 text-gray-600 mb-3" />
+              <Network className="h-8 w-8 text-muted-foreground mb-3" />
               <p className="text-sm text-muted-foreground">
                 No knowledge graph data available for this clause type yet.
               </p>
-              <p className="text-xs text-gray-600 mt-1">
+              <p className="text-xs text-muted-foreground mt-1">
                 The graph database is being expanded.
               </p>
             </div>
           ) : viewMode === "graph" ? (
             /* ═══ D3 GRAPH VIEW ═══ */
-            <div className="relative w-full aspect-[3/2] bg-black/40 rounded-xl overflow-hidden border border-white/5">
+            <div className="relative w-full aspect-[3/2] bg-black/40 rounded-none overflow-hidden border border-foreground border-2">
               {graphData && graphData.nodes.length > 0 ? (
                 <GraphCanvas data={graphData} highlightType={clauseType} />
               ) : (
                 <div className="flex items-center justify-center h-full">
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-muted-foreground">
                     No graph visualization available
                   </p>
                 </div>

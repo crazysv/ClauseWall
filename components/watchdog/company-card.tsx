@@ -52,11 +52,11 @@ export default function CompanyCard({
     : "No changes yet";
 
   return (
-    <Card className="bg-background/50 border-gray-800 hover:border-blue-500/20 transition-all group">
+    <Card className="bg-background/50 border-foreground border-2 hover:border-blue-500/20 transition-all group">
       <CardContent className="p-5">
         <div className="flex items-start justify-between gap-3 mb-3">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="h-10 w-10 rounded-lg bg-muted flex items-center justify-center text-lg flex-shrink-0">
+            <div className="h-10 w-10 rounded-none bg-muted flex items-center justify-center text-lg flex-shrink-0">
               {SECTOR_ICONS[company.sector] || "📋"}
             </div>
             <div className="min-w-0">
@@ -91,7 +91,7 @@ export default function CompanyCard({
         {/* Pro-company vs pro-consumer bar */}
         {company.total_changes > 0 && (
           <div className="mb-3">
-            <div className="flex gap-1 h-1.5 rounded-full overflow-hidden bg-gray-800">
+            <div className="flex gap-1 h-1.5 rounded-full overflow-hidden bg-background border-2 border-foreground card-impact">
               {company.pro_company_changes > 0 && (
                 <div
                   className="bg-red-500 rounded-full"

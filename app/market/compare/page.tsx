@@ -85,7 +85,7 @@ export default function ComparePage() {
         </motion.div>
 
         {/* Input */}
-        <Card className="bg-background/50 border-gray-800 mb-6">
+        <Card className="bg-background/50 border-foreground border-2 mb-6">
           <CardContent className="p-5">
             <label className="text-xs text-foreground/40 mb-2 block">
               Document ID
@@ -96,12 +96,12 @@ export default function ComparePage() {
                 value={documentId}
                 onChange={(e) => setDocumentId(e.target.value)}
                 placeholder="Paste your document ID here..."
-                className="flex-1 bg-white/[0.03] border border-foreground border-2 rounded-lg px-4 py-2.5 text-sm text-foreground placeholder-white/20 focus:outline-none focus:border-cyan-500/30"
+                className="flex-1 bg-white/[0.03] border border-foreground border-2 rounded-none px-4 py-2.5 text-sm text-foreground placeholder-white/20 focus:outline-none focus:border-cyan-500/30"
               />
               <button
                 onClick={runComparison}
                 disabled={loading || !documentId.trim()}
-                className="px-5 py-2.5 rounded-lg bg-cyan-500/15 text-cyan-400 hover:bg-cyan-500/25 transition-colors text-sm font-medium disabled:opacity-50 flex items-center gap-2"
+                className="px-5 py-2.5 rounded-none bg-cyan-500/15 text-cyan-400 hover:bg-cyan-500/25 transition-colors text-sm font-medium disabled:opacity-50 flex items-center gap-2"
               >
                 {loading ? (
                   <Loader2 className="h-4 w-4 animate-spin" />

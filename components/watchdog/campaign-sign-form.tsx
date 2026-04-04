@@ -63,7 +63,7 @@ export default function CampaignSignForm({
   }
 
   return (
-    <Card className="bg-gray-900/50 border-gray-800">
+    <Card className="bg-background border-2 border-foreground card-impact/50 border-foreground border-2">
       <CardHeader className="pb-3">
         <CardTitle className="text-base">✍️ Sign this Campaign</CardTitle>
       </CardHeader>
@@ -72,14 +72,14 @@ export default function CampaignSignForm({
           placeholder="Your display name *"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="bg-gray-900/50 border-gray-800"
+          className="bg-background border-2 border-foreground card-impact/50 border-foreground border-2"
         />
         <Input
           placeholder="Email (optional — for updates)"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="bg-gray-900/50 border-gray-800"
+          className="bg-background border-2 border-foreground card-impact/50 border-foreground border-2"
         />
         <Button
           onClick={handleSign}

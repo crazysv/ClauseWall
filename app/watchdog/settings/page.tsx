@@ -99,7 +99,7 @@ export default function WatchdogSettingsPage() {
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-3xl">
         <div className="flex items-center gap-3 mb-6">
-          <div className="h-10 w-10 rounded-xl bg-gray-800 flex items-center justify-center">
+          <div className="h-10 w-10 rounded-none bg-background border-2 border-foreground card-impact flex items-center justify-center">
             <Settings className="h-5 w-5 text-muted-foreground" />
           </div>
           <div>
@@ -111,7 +111,7 @@ export default function WatchdogSettingsPage() {
         </div>
 
         {watchlist.length === 0 ? (
-          <Card className="bg-gray-900/50 border-gray-800">
+          <Card className="bg-background border-2 border-foreground card-impact/50 border-foreground border-2">
             <CardContent className="p-8 text-center">
               <Shield className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
               <p className="text-muted-foreground mb-2">
@@ -132,7 +132,10 @@ export default function WatchdogSettingsPage() {
         ) : (
           <div className="space-y-4">
             {watchlist.map((entry) => (
-              <Card key={entry.id} className="bg-gray-900/50 border-gray-800">
+              <Card
+                key={entry.id}
+                className="bg-background border-2 border-foreground card-impact/50 border-foreground border-2"
+              >
                 <CardHeader className="pb-3">
                   <CardTitle className="text-base flex items-center justify-between">
                     <a
@@ -165,7 +168,7 @@ export default function WatchdogSettingsPage() {
                             e.target.checked,
                           )
                         }
-                        className="rounded border-gray-700 bg-gray-800"
+                        className="rounded border-foreground border-2 bg-background border-2 border-foreground card-impact"
                       />
                       <span className="text-sm">In-App</span>
                     </label>
@@ -180,7 +183,7 @@ export default function WatchdogSettingsPage() {
                             e.target.checked,
                           )
                         }
-                        className="rounded border-gray-700 bg-gray-800"
+                        className="rounded border-foreground border-2 bg-background border-2 border-foreground card-impact"
                       />
                       <span className="text-sm">Email</span>
                     </label>
@@ -195,7 +198,7 @@ export default function WatchdogSettingsPage() {
                             e.target.checked,
                           )
                         }
-                        className="rounded border-gray-700 bg-gray-800"
+                        className="rounded border-foreground border-2 bg-background border-2 border-foreground card-impact"
                       />
                       <span className="text-sm">Telegram</span>
                     </label>
@@ -209,7 +212,7 @@ export default function WatchdogSettingsPage() {
                           e.target.value,
                         )
                       }
-                      className="text-sm bg-gray-800 border border-gray-700 rounded px-2 py-1"
+                      className="text-sm bg-background border-2 border-foreground card-impact border border-foreground border-2 rounded px-2 py-1"
                     >
                       <option value="all_changes">All changes</option>
                       <option value="major_and_critical">

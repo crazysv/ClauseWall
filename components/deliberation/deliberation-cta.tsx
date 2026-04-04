@@ -56,38 +56,38 @@ export default function DeliberationCTA({
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mt-4 p-4 rounded-xl bg-gradient-to-r from-amber-500/10 via-orange-500/8 to-amber-500/10 border border-amber-500/20"
+        className="mt-4 p-4 rounded-none bg-background border border-amber-500/20"
       >
         <div className="flex items-center gap-3 mb-3">
-          <div className="p-2 rounded-lg bg-amber-500/15">
+          <div className="p-2 rounded-none bg-amber-500/15">
             <Loader2 className="h-5 w-5 text-amber-400 animate-spin" />
           </div>
           <div>
             <p className="text-sm font-semibold text-amber-300">
               Deliberation in Progress...
             </p>
-            <p className="text-xs text-gray-400 mt-0.5">
+            <p className="text-xs text-muted-foreground mt-0.5">
               {progress?.message || "Agents are deliberating..."}
             </p>
           </div>
         </div>
 
         {agent && (
-          <p className="text-xs text-white/50 mb-2 ml-[52px]">
+          <p className="text-xs text-foreground mb-2 ml-[52px]">
             {agent.icon} {agent.name} is {agent.action}...
           </p>
         )}
 
         {/* Progress Bar */}
         <div className="ml-[52px]">
-          <div className="h-1.5 rounded-full bg-white/10 overflow-hidden mb-1">
+          <div className="h-1.5 rounded-full bg-muted overflow-hidden mb-1">
             <motion.div
               className="h-full bg-amber-500 rounded-full"
               animate={{ width: `${percent}%` }}
               transition={{ duration: 0.4 }}
             />
           </div>
-          <div className="flex justify-between text-[10px] text-white/30">
+          <div className="flex justify-between text-[10px] text-foreground">
             <span>
               Clause {progress?.currentClause || 0} of{" "}
               {progress?.totalClauses || "?"}
@@ -110,19 +110,19 @@ export default function DeliberationCTA({
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.15 }}
-        className="mt-4 p-4 rounded-xl border border-amber-500/20 bg-amber-500/[0.03] hover:bg-amber-500/[0.06] transition-all cursor-pointer group"
+        className="mt-4 p-4 rounded-none border border-amber-500/20 bg-amber-500/[0.03] hover:bg-amber-500/[0.06] transition-all cursor-pointer group"
         onClick={onView}
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-amber-500/10 group-hover:bg-amber-500/20 transition-colors">
+            <div className="p-2 rounded-none bg-amber-500/10 group-hover:bg-amber-500/20 transition-colors">
               <Swords className="h-5 w-5 text-amber-400" />
             </div>
             <div>
               <h4 className="text-sm font-semibold text-amber-300">
                 ⚔️ AI Debate Complete
               </h4>
-              <p className="text-xs text-gray-400 mt-0.5">
+              <p className="text-xs text-muted-foreground mt-0.5">
                 3 agents debated {summary.totalClauses} clauses —{" "}
                 {summary.fairCount > 0 && `${summary.fairCount}✅ `}
                 {summary.partiallyFairCount > 0 &&
@@ -149,20 +149,20 @@ export default function DeliberationCTA({
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: 0.15 }}
-      className="mt-4 p-4 rounded-xl bg-gradient-to-r from-amber-500/8 via-orange-500/5 to-amber-500/8 border border-amber-500/15 hover:border-amber-500/30 hover:from-amber-500/12 hover:to-amber-500/12 transition-all cursor-pointer group"
+      className="mt-4 p-4 rounded-none bg-background border border-amber-500/15 hover:border-amber-500/30 hover: hover: transition-all cursor-pointer group"
       onClick={onRun}
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-amber-500/10 group-hover:bg-amber-500/20 transition-colors">
+          <div className="p-2.5 rounded-none bg-amber-500/10 group-hover:bg-amber-500/20 transition-colors">
             <Swords className="h-6 w-6 text-amber-400" />
           </div>
           <div>
             <p className="font-semibold text-amber-300">⚔️ Run AI Debate</p>
-            <p className="text-xs text-white/40">
+            <p className="text-xs text-foreground">
               Three AI agents argue whether each clause is fair
             </p>
-            <p className="text-sm text-gray-400 mt-0.5">
+            <p className="text-sm text-muted-foreground mt-0.5">
               Three AI agents — a corporate lawyer, a consumer rights advocate,
               and a retired judge — will debate every clause in this contract.
             </p>

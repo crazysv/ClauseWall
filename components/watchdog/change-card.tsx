@@ -49,7 +49,7 @@ export default function ChangeCard({
 
   return (
     <Card
-      className={`bg-gray-900/50 border-gray-800 hover:border-white/10 transition-all overflow-hidden`}
+      className={`bg-background border-2 border-foreground card-impact/50 border-foreground border-2 hover:border-foreground border-2 transition-all overflow-hidden`}
     >
       {highestSeverity === "critical" && <div className="h-0.5 bg-red-500" />}
       {highestSeverity === "major" && <div className="h-0.5 bg-amber-500" />}

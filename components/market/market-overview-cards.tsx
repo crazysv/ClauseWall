@@ -84,16 +84,18 @@ export default function MarketOverviewCards({
             transition={{ delay: index * 0.05 }}
           >
             <Card
-              className={`bg-gradient-to-br ${card.bgColor} ${card.borderColor} h-full`}
+              className={`bg-background ${card.bgColor} ${card.borderColor} h-full`}
             >
               <CardContent className="p-4 flex flex-col items-center text-center">
-                <div className={`p-2 rounded-lg bg-white/5 mb-2`}>
+                <div className={`p-2 rounded-none bg-muted mb-2`}>
                   <Icon className={`h-5 w-5 ${card.color}`} />
                 </div>
-                <p className="text-2xl font-bold text-white">
+                <p className="text-2xl font-bold text-foreground">
                   {value.toLocaleString()}
                 </p>
-                <p className="text-[10px] text-white/40 mt-0.5">{card.label}</p>
+                <p className="text-[10px] text-foreground mt-0.5">
+                  {card.label}
+                </p>
               </CardContent>
             </Card>
           </motion.div>

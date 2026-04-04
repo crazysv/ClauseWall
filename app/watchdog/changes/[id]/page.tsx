@@ -58,7 +58,10 @@ export default async function ChangeDetailPage({
             {company.name} — ToS Change Analysis
           </h1>
           <div className="flex items-center gap-3 flex-wrap">
-            <Badge variant="outline" className="border-white/10 text-xs">
+            <Badge
+              variant="outline"
+              className="border-foreground border-2 text-xs"
+            >
               {change.tos_type.toUpperCase()}
             </Badge>
             <span className="text-sm text-muted-foreground">
@@ -74,7 +77,7 @@ export default async function ChangeDetailPage({
 
         {/* Summary */}
         {change.summary && (
-          <Card className="bg-gray-900/50 border-gray-800 mb-6">
+          <Card className="bg-background border-2 border-foreground card-impact/50 border-foreground border-2 mb-6">
             <CardContent className="p-5">
               <p className="text-sm leading-relaxed">{change.summary}</p>
             </CardContent>
@@ -105,7 +108,10 @@ export default async function ChangeDetailPage({
               color: "text-blue-400",
             },
           ].map((stat) => (
-            <Card key={stat.label} className="bg-gray-900/50 border-gray-800">
+            <Card
+              key={stat.label}
+              className="bg-background border-2 border-foreground card-impact/50 border-foreground border-2"
+            >
               <CardContent className="p-3 text-center">
                 <p className={`text-xl font-bold ${stat.color}`}>
                   {stat.value}
@@ -131,7 +137,7 @@ export default async function ChangeDetailPage({
               {legalityIssues.map((issue, i) => (
                 <div
                   key={i}
-                  className="flex items-start gap-3 p-3 bg-red-500/5 rounded-lg border border-red-500/10"
+                  className="flex items-start gap-3 p-3 bg-red-500/5 rounded-none border border-red-500/10"
                 >
                   <AlertTriangle className="h-4 w-4 text-red-400 flex-shrink-0 mt-0.5" />
                   <div>

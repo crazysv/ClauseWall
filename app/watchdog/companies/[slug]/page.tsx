@@ -111,13 +111,13 @@ export default async function CompanyDetailPage({
 
         {/* Stats row */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <Card className="bg-background/50 border-gray-800">
+          <Card className="bg-background/50 border-foreground border-2">
             <CardContent className="p-4 text-center">
               <p className="text-2xl font-bold">{typedCompany.total_changes}</p>
               <p className="text-xs text-muted-foreground">Total Changes</p>
             </CardContent>
           </Card>
-          <Card className="bg-background/50 border-gray-800">
+          <Card className="bg-background/50 border-foreground border-2">
             <CardContent className="p-4 text-center">
               <p className="text-2xl font-bold text-red-400">
                 {typedCompany.pro_company_changes}
@@ -125,7 +125,7 @@ export default async function CompanyDetailPage({
               <p className="text-xs text-muted-foreground">Pro-Company</p>
             </CardContent>
           </Card>
-          <Card className="bg-background/50 border-gray-800">
+          <Card className="bg-background/50 border-foreground border-2">
             <CardContent className="p-4 text-center">
               <p className="text-2xl font-bold text-green-400">
                 {typedCompany.pro_consumer_changes}
@@ -133,7 +133,7 @@ export default async function CompanyDetailPage({
               <p className="text-xs text-muted-foreground">Pro-Consumer</p>
             </CardContent>
           </Card>
-          <Card className="bg-background/50 border-gray-800">
+          <Card className="bg-background/50 border-foreground border-2">
             <CardContent className="p-4 text-center">
               <TrendIndicator trend={typedCompany.score_trend} />
               <p className="text-xs text-muted-foreground mt-1">Trend</p>
@@ -142,7 +142,7 @@ export default async function CompanyDetailPage({
         </div>
 
         {/* Monitored URLs */}
-        <Card className="bg-background/50 border-gray-800 mb-8">
+        <Card className="bg-background/50 border-foreground border-2 mb-8">
           <CardHeader className="pb-3">
             <CardTitle className="text-base">📄 Monitored Documents</CardTitle>
           </CardHeader>
@@ -151,7 +151,7 @@ export default async function CompanyDetailPage({
               {tosUrls.map((tos, i) => (
                 <div
                   key={i}
-                  className="flex items-center justify-between py-2 border-b border-gray-800 last:border-0"
+                  className="flex items-center justify-between py-2 border-b border-foreground border-2 last:border-0"
                 >
                   <div>
                     <span className="text-sm font-medium">{tos.label}</span>

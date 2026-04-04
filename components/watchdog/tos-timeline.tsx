@@ -16,7 +16,7 @@ export default function TosTimeline({ changes }: { changes: TosChange[] }) {
   return (
     <div className="relative">
       {/* Vertical line */}
-      <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-800" />
+      <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-background border-2 border-foreground card-impact" />
 
       <div className="space-y-6">
         {changes.map((change, index) => {

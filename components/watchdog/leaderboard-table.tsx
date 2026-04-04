@@ -78,7 +78,7 @@ export default function LeaderboardTable({
     <div className="overflow-x-auto">
       <table className="w-full">
         <thead>
-          <tr className="border-b border-gray-800">
+          <tr className="border-b border-foreground border-2">
             <th className="text-left py-3 px-4 w-12">
               <span className="text-xs font-semibold text-muted-foreground">
                 #
@@ -114,7 +114,7 @@ export default function LeaderboardTable({
             return (
               <tr
                 key={company.id}
-                className="border-b border-gray-800/50 hover:bg-white/[0.02] transition-colors"
+                className="border-b border-foreground border-2/50 hover:bg-white/[0.02] transition-colors"
               >
                 <td className="py-3 px-4 text-center">
                   {medal ? (

@@ -137,12 +137,12 @@ export default function MismatchCard({ mismatch, index }: MismatchCardProps) {
           </div>
 
           <div className="flex items-center justify-center">
-            <span className="text-sm text-white font-black uppercase tracking-widest bg-black px-3 py-1 border-2 border-black">
+            <span className="text-sm text-foreground font-black uppercase tracking-widest bg-black px-3 py-1 border-2 border-black">
               ⚡ VS
             </span>
           </div>
 
-          <div className="p-4 bg-gray-800 border-4 border-black text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="p-4 bg-background border-2 border-foreground bg-popover border-4 border-black text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <p className="text-xs text-black bg-white inline-block px-1 border-2 border-black font-black uppercase tracking-widest mb-2">
               📄 Contract
             </p>

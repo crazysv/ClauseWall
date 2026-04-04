@@ -115,7 +115,7 @@ export default function DocumentDeliberation({
           <span>⚔️</span>
           Adversarial Deliberation Results
         </h3>
-        <p className="text-xs text-white/40">
+        <p className="text-xs text-foreground">
           {summary.totalClauses} clauses debated by 3 AI agents
         </p>
       </div>
@@ -133,22 +133,22 @@ export default function DocumentDeliberation({
         ].map((item) => (
           <div
             key={item.label}
-            className={`p-3 rounded-lg border text-center ${item.bg} ${item.border}`}
+            className={`p-3 rounded-none border text-center ${item.bg} ${item.border}`}
           >
             <p className={`text-xl font-bold ${item.text}`}>
               {item.count}
               {item.emoji}
             </p>
-            <p className="text-[10px] text-white/40">{item.label}</p>
+            <p className="text-[10px] text-foreground">{item.label}</p>
           </div>
         ))}
       </div>
 
       {/* Stats Row */}
-      <div className="flex flex-wrap gap-4 text-xs text-white/50">
+      <div className="flex flex-wrap gap-4 text-xs text-foreground">
         <span>
           Avg confidence:{" "}
-          <strong className="text-white/80">
+          <strong className="text-foreground">
             {Math.round(summary.averageConfidence * 100)}%
           </strong>
         </span>
@@ -165,7 +165,7 @@ export default function DocumentDeliberation({
       {/* Filter + Sort Controls */}
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-1.5">
-          <Filter className="h-3 w-3 text-white/30" />
+          <Filter className="h-3 w-3 text-foreground" />
           {(
             [
               { value: "all", label: "All" },
@@ -178,11 +178,7 @@ export default function DocumentDeliberation({
             <button
               key={f.value}
               onClick={() => setFilter(f.value)}
-              className={`text-[10px] px-2 py-1 rounded-md border transition-colors ${
-                filter === f.value
-                  ? "bg-white/10 border-white/20 text-white"
-                  : "bg-white/[0.02] border-white/5 text-white/40 hover:text-white/60"
-              }`}
+              className={`text-[10px] px-2 py-1 rounded-none border transition-colors ${filter === f.value ? "bg-muted border-foreground border-2 text-foreground" : "bg-white/[0.02] border-foreground border-2 text-foreground hover:text-foreground"}`}
             >
               {f.label}
             </button>
@@ -193,7 +189,7 @@ export default function DocumentDeliberation({
           onClick={() =>
             setSortBy((s) => (s === "order" ? "severity" : "order"))
           }
-          className="flex items-center gap-1 text-[10px] text-white/40 hover:text-white/60 transition-colors ml-auto"
+          className="flex items-center gap-1 text-[10px] text-foreground hover:text-foreground transition-colors ml-auto"
         >
           <ArrowUpDown className="h-3 w-3" />
           {sortBy === "order" ? "By order" : "By severity"}
@@ -213,7 +209,7 @@ export default function DocumentDeliberation({
           return (
             <div
               key={delib.id}
-              className="rounded-lg border border-white/8 overflow-hidden"
+              className="rounded-none border border-foreground border-2 overflow-hidden"
             >
               {/* Clause Header (clickable) */}
               <button
@@ -221,10 +217,10 @@ export default function DocumentDeliberation({
                 className="w-full flex items-center justify-between p-3 hover:bg-white/[0.02] transition-colors text-left"
               >
                 <div className="flex items-center gap-2 min-w-0">
-                  <span className="text-xs text-white/40 font-mono shrink-0">
+                  <span className="text-xs text-foreground font-mono shrink-0">
                     #{clauseNum}
                   </span>
-                  <span className="text-xs text-white/60 truncate">
+                  <span className="text-xs text-foreground truncate">
                     {previewText}
                     {delib.clauseText.length > 50 ? "..." : ""}
                   </span>
@@ -234,9 +230,7 @@ export default function DocumentDeliberation({
                     {v.emoji} {v.label.toUpperCase()}
                   </span>
                   <ChevronDown
-                    className={`h-3.5 w-3.5 text-white/30 transition-transform ${
-                      isExpanded ? "rotate-180" : ""
-                    }`}
+                    className={`h-3.5 w-3.5 text-foreground transition-transform ${isExpanded ? "rotate-180" : ""}`}
                   />
                 </div>
               </button>
@@ -251,10 +245,10 @@ export default function DocumentDeliberation({
                     transition={{ duration: 0.25 }}
                     className="overflow-hidden"
                   >
-                    <div className="p-3 pt-0 border-t border-white/5">
+                    <div className="p-3 pt-0 border-t border-foreground border-2">
                       {/* Clause text */}
-                      <div className="p-2.5 rounded-md bg-white/[0.03] border border-white/5 mb-3 mt-2">
-                        <p className="text-xs text-white/70 leading-relaxed">
+                      <div className="p-2.5 rounded-none bg-white/[0.03] border border-foreground border-2 mb-3 mt-2">
+                        <p className="text-xs text-foreground leading-relaxed">
                           &ldquo;{delib.clauseText}&rdquo;
                         </p>
                       </div>
@@ -283,7 +277,7 @@ export default function DocumentDeliberation({
         })}
 
         {filteredDeliberations.length === 0 && (
-          <div className="text-center py-8 text-xs text-white/30">
+          <div className="text-center py-8 text-xs text-foreground">
             No {filter !== "all" ? filter.replace("_", " ") : ""} clauses found.
             <button
               onClick={() => setFilter("all")}
@@ -296,7 +290,7 @@ export default function DocumentDeliberation({
       </div>
 
       {/* Footer */}
-      <div className="text-[10px] text-white/30 pt-3 border-t border-white/5">
+      <div className="text-[10px] text-foreground pt-3 border-t border-foreground border-2">
         Total deliberation time: {(result.totalDuration / 1000).toFixed(1)}s ·
         Completed at {new Date(result.completedAt).toLocaleString()}
       </div>

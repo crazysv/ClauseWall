@@ -286,7 +286,7 @@ export default function ClauseRewriteModal({
                   <p className="text-red-400">{error}</p>
                   <button
                     onClick={fetchRewrite}
-                    className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-gray-300 hover:bg-white/10 transition-colors"
+                    className="px-4 py-2 rounded-none bg-muted border border-foreground border-2 text-sm text-muted-foreground hover:bg-muted transition-colors"
                   >
                     Try Again
                   </button>
@@ -510,7 +510,7 @@ export default function ClauseRewriteModal({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 0.4 }}
                     transition={{ delay: 1.2 }}
-                    className="text-[10px] text-center text-muted-foreground/50 pt-2 border-t border-gray-800"
+                    className="text-[10px] text-center text-muted-foreground/50 pt-2 border-t border-foreground border-2"
                   >
                     AI-generated rewrite for reference. Have a legal
                     professional review before using in official agreements.

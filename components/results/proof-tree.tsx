@@ -205,7 +205,7 @@ function TreeNodeCard({
     >
       {/* Connecting line from parent */}
       {depth > 0 && (
-        <div className="absolute -top-3 left-5 h-3 w-px bg-white/10" />
+        <div className="absolute -top-3 left-5 h-3 w-px bg-muted" />
       )}
 
       {/* Node card */}
@@ -226,11 +226,7 @@ function TreeNodeCard({
           }
         }}
         aria-label={`${node.type} node: ${node.label}. Status: ${node.status}`}
-        className={`w-full text-left p-3 border-2 card-impact transition-all ${colors.bg} ${colors.border} ${
-          isActive
-            ? "border-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] -translate-y-[1px]"
-            : "hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-[1px]"
-        }`}
+        className={`w-full text-left p-3 border-2 card-impact transition-all ${colors.bg} ${colors.border} ${isActive ? "border-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] -translate-y-[1px]" : "hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-[1px]"}`}
       >
         <div className="flex items-start justify-between gap-2">
           <div className="flex items-start gap-2 min-w-0">
@@ -520,11 +516,7 @@ export default function ProofTreeView({
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: i * 0.05 }}
-            className={`p-3 card-impact border-2 text-sm font-bold leading-relaxed ${
-              activeNodeId && i === getActiveStepIndex(proofTree, activeNodeId)
-                ? "border-foreground bg-foreground text-background"
-                : "bg-muted border-foreground text-muted-foreground"
-            }`}
+            className={`p-3 card-impact border-2 text-sm font-bold leading-relaxed ${activeNodeId && i === getActiveStepIndex(proofTree, activeNodeId) ? "border-foreground bg-foreground text-background" : "bg-muted border-foreground text-muted-foreground"}`}
           >
             {step}
           </motion.div>

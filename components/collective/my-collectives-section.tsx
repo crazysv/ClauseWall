@@ -44,7 +44,7 @@ export default function MyCollectivesSection() {
       transition={{ delay: 0.3 }}
     >
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+        <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
           <Users className="h-4 w-4 text-amber-400" />
           Your Collectives
         </h2>
@@ -73,10 +73,10 @@ export default function MyCollectivesSection() {
                 <CardContent className="p-4">
                   <div className="flex items-start justify-between mb-2">
                     <div>
-                      <p className="text-sm font-medium text-white truncate">
+                      <p className="text-sm font-medium text-foreground truncate">
                         {collective.entity_name}
                       </p>
-                      <p className="text-[10px] text-white/30">
+                      <p className="text-[10px] text-foreground">
                         {collective.entity_type} • {membership.anonymous_id}
                       </p>
                     </div>
@@ -93,10 +93,10 @@ export default function MyCollectivesSection() {
                   />
 
                   <div className="flex items-center justify-between mt-2">
-                    <span className="text-[10px] text-white/20">
+                    <span className="text-[10px] text-foreground">
                       {collective.member_count} members
                     </span>
-                    <div className="flex items-center gap-1 text-[10px] text-white/20">
+                    <div className="flex items-center gap-1 text-[10px] text-foreground">
                       <Shield className="h-3 w-3" />
                       Anonymous
                     </div>

@@ -203,7 +203,7 @@ export default function ProgressTrackerPanel({
 
         {/* Win/Loss bar */}
         {score.total_clauses > 0 && (
-          <div className="mt-6 h-4 border-2 border-black rounded-sm bg-gray-200 overflow-hidden flex shadow-[inset_0px_2px_4px_rgba(0,0,0,0.1)]">
+          <div className="mt-6 h-4 border-2 border-black rounded-none bg-gray-200 overflow-hidden flex shadow-[inset_0px_2px_4px_rgba(0,0,0,0.1)]">
             {score.won > 0 && (
               <div
                 className="h-full bg-green-500 transition-all border-r-2 border-black last:border-r-0"
@@ -278,7 +278,7 @@ export default function ProgressTrackerPanel({
             <button
               onClick={handleAddClause}
               disabled={!newClauseSummary.trim()}
-              className="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-black uppercase tracking-widest border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50 transition-all active:translate-y-1 active:shadow-none"
+              className="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 text-foreground text-sm font-black uppercase tracking-widest border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50 transition-all active:translate-y-1 active:shadow-none"
               style={{ minHeight: "44px" }}
             >
               Add Clause
@@ -359,9 +359,7 @@ export default function ProgressTrackerPanel({
                         onClick={() =>
                           handleStatusChange(clause.id, action.status)
                         }
-                        className={`flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider border-2 border-black bg-white hover:bg-gray-100 transition-colors shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] active:translate-y-px active:shadow-none ${
-                          STATUS_CONFIG[action.status].color
-                        }`}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider border-2 border-black bg-white hover:bg-gray-100 transition-colors shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] active:translate-y-px active:shadow-none ${STATUS_CONFIG[action.status].color}`}
                         style={{ minHeight: "32px" }}
                       >
                         {action.icon}
@@ -389,7 +387,7 @@ export default function ProgressTrackerPanel({
         <button
           onClick={handleAddNote}
           disabled={!noteText.trim()}
-          className="absolute right-3 top-1/2 -translate-y-1/2 p-2 bg-black text-white hover:bg-gray-800 disabled:opacity-20 transition-colors border-2 border-transparent active:scale-95"
+          className="absolute right-3 top-1/2 -translate-y-1/2 p-2 bg-black text-foreground hover:bg-background border-2 border-foreground card-impact disabled:opacity-20 transition-colors border-2 border-transparent active:scale-95"
         >
           <ArrowRight className="w-5 h-5" />
         </button>

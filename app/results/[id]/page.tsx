@@ -582,13 +582,13 @@ export default function ResultsPage() {
         <Skeleton className="h-4 w-96 mb-8" />
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
           {[1, 2, 3, 4].map((i) => (
-            <Skeleton key={i} className="h-24 rounded-xl" />
+            <Skeleton key={i} className="h-24 rounded-none" />
           ))}
         </div>
-        <Skeleton className="h-32 rounded-xl mb-6" />
+        <Skeleton className="h-32 rounded-none mb-6" />
         <div className="space-y-3">
           {[1, 2, 3].map((i) => (
-            <Skeleton key={i} className="h-20 rounded-xl" />
+            <Skeleton key={i} className="h-20 rounded-none" />
           ))}
         </div>
       </div>
@@ -853,7 +853,7 @@ export default function ResultsPage() {
           )}
 
           {/* ═══ ANALYSIS DETAILS — Collapsible ═══ */}
-          <div className="rounded-xl border border-white/10 bg-white/[0.02] overflow-hidden mb-8">
+          <div className="rounded-none border border-foreground border-2 bg-white/[0.02] overflow-hidden mb-8">
             <button
               onClick={() => setAnalysisDetailsOpen(!analysisDetailsOpen)}
               className="w-full flex items-center justify-between p-4 hover:bg-white/[0.02] transition-colors"
@@ -864,14 +864,14 @@ export default function ResultsPage() {
               }
             >
               <div className="flex items-center gap-3">
-                <BarChart3 className="w-4 h-4 text-white/50" />
-                <span className="text-sm font-medium text-white/80">
+                <BarChart3 className="w-4 h-4 text-foreground" />
+                <span className="text-sm font-medium text-foreground">
                   Analysis Details
                 </span>
               </div>
 
               {!analysisDetailsOpen && (
-                <div className="flex items-center gap-4 text-xs text-white/40">
+                <div className="flex items-center gap-4 text-xs text-foreground">
                   <span>
                     {clauses.length} clauses •{" "}
                     {verificationStats.verification_rate}% verified
@@ -880,9 +880,7 @@ export default function ResultsPage() {
               )}
 
               <ChevronDown
-                className={`w-4 h-4 text-white/40 transition-transform duration-200 ${
-                  analysisDetailsOpen ? "rotate-180" : ""
-                }`}
+                className={`w-4 h-4 text-foreground transition-transform duration-200 ${analysisDetailsOpen ? "rotate-180" : ""}`}
               />
             </button>
 
@@ -1025,11 +1023,7 @@ export default function ResultsPage() {
                   <button
                     key={filter.value}
                     onClick={() => setFilterRisk(filter.value)}
-                    className={`px-4 py-2 rounded-none text-xs font-bold uppercase tracking-wider border-2 transition-all ${
-                      filterRisk === filter.value
-                        ? "bg-foreground border-foreground text-background"
-                        : "bg-background border-border text-muted-foreground hover:border-foreground hover:text-foreground"
-                    }`}
+                    className={`px-4 py-2 rounded-none text-xs font-bold uppercase tracking-wider border-2 transition-all ${filterRisk === filter.value ? "bg-foreground border-foreground text-background" : "bg-background border-border text-muted-foreground hover:border-foreground hover:text-foreground"}`}
                   >
                     <span
                       className={
@@ -1048,7 +1042,7 @@ export default function ResultsPage() {
 
                 <button
                   onClick={() => setSortByRisk(!sortByRisk)}
-                  className="text-xs text-white/40 hover:text-white/60 transition-colors"
+                  className="text-xs text-foreground hover:text-foreground transition-colors"
                   aria-label="Toggle sort order"
                 >
                   {sortByRisk ? "↕ Sort by order" : "↕ Sort by risk"}
@@ -1058,13 +1052,13 @@ export default function ResultsPage() {
 
                 <button
                   onClick={expandAll}
-                  className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
+                  className="text-xs text-muted-foreground hover:text-muted-foreground transition-colors"
                 >
                   Expand All
                 </button>
                 <button
                   onClick={collapseAll}
-                  className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
+                  className="text-xs text-muted-foreground hover:text-muted-foreground transition-colors"
                 >
                   Collapse All
                 </button>
@@ -1073,7 +1067,7 @@ export default function ResultsPage() {
 
             {/* Sort indicator */}
             {sortByRisk && (
-              <p className="text-xs text-white/30 mb-2">
+              <p className="text-xs text-foreground mb-2">
                 Sorted by risk level — most critical first
               </p>
             )}
@@ -1114,7 +1108,7 @@ export default function ResultsPage() {
 
             {/* No results for filter */}
             {filteredClauses.length === 0 && (
-              <div className="text-center py-12 text-gray-500">
+              <div className="text-center py-12 text-muted-foreground">
                 <p>No {filterRisk} clauses found.</p>
                 <button
                   onClick={() => setFilterRisk("all")}
@@ -1162,11 +1156,11 @@ export default function ResultsPage() {
 
               <div id="ruin-calculator-cta">
                 <Link href={`/ruin-calculator/${documentId}`}>
-                  <Card className="card-impact cursor-pointer hover:shadow-lg transition-all border-red-600 bg-red-50 dark:bg-red-950 h-full">
+                  <Card className="card-impact cursor-pointer hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all border-red-600 bg-red-50 dark:bg-red-950 h-full">
                     <CardContent className="p-5">
                       <div className="flex items-center gap-4">
                         <div className="p-3 bg-red-600 border-2 border-black dark:border-white">
-                          <BarChart3 className="w-6 h-6 text-white" />
+                          <BarChart3 className="w-6 h-6 text-foreground" />
                         </div>
                         <div className="flex-1">
                           <h4 className="text-sm font-black uppercase text-red-900 dark:text-red-100">
@@ -1217,11 +1211,11 @@ export default function ResultsPage() {
 
               <div id="vault-cta">
                 <Link href="/vault">
-                  <Card className="card-impact cursor-pointer hover:shadow-lg transition-all border-indigo-600 bg-indigo-50 dark:bg-indigo-950 h-full">
+                  <Card className="card-impact cursor-pointer hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all border-indigo-600 bg-indigo-50 dark:bg-indigo-950 h-full">
                     <CardContent className="p-5">
                       <div className="flex items-center gap-4">
                         <div className="p-3 bg-indigo-600 border-2 border-black dark:border-white">
-                          <FileStack className="w-6 h-6 text-white" />
+                          <FileStack className="w-6 h-6 text-foreground" />
                         </div>
                         <div className="flex-1">
                           <h4 className="text-sm font-black uppercase text-indigo-900 dark:text-indigo-100">
@@ -1408,7 +1402,7 @@ export default function ResultsPage() {
             open={showDeliberationView}
             onOpenChange={setShowDeliberationView}
           >
-            <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto bg-gray-950 border-white/10">
+            <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto bg-background border-2 border-foreground card-impact border-foreground border-2">
               <DocumentDeliberation
                 result={deliberationResult}
                 onClauseClick={(index) => {

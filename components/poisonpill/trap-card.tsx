@@ -81,9 +81,7 @@ export function TrapCard({ trap, isExpanded, onToggle }: Props) {
 
   return (
     <div
-      className={`relative overflow-hidden rounded-none border-2 border-foreground bg-background transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none ${
-        style.glow ? style.glow : ""
-      }`}
+      className={`relative overflow-hidden rounded-none border-2 border-foreground bg-background transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none ${style.glow ? style.glow : ""}`}
     >
       {/* Severity bar */}
       <div className={`absolute left-0 top-0 bottom-0 w-1 ${style.bar}`} />
@@ -94,7 +92,7 @@ export function TrapCard({ trap, isExpanded, onToggle }: Props) {
         className="w-full text-left p-4 pl-5 flex items-center gap-3 hover:bg-white/[0.02] transition-colors"
       >
         <div
-          className={`p-2 rounded-lg ${style.badge.split(" ").slice(0, 1).join(" ")}`}
+          className={`p-2 rounded-none ${style.badge.split(" ").slice(0, 1).join(" ")}`}
         >
           <span className={style.badge.split(" ").slice(1, 2).join(" ")}>
             {icon}
@@ -103,7 +101,7 @@ export function TrapCard({ trap, isExpanded, onToggle }: Props) {
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <h3 className="text-sm font-semibold text-white truncate">
+            <h3 className="text-sm font-semibold text-foreground truncate">
               {trap.trap_name}
             </h3>
             <span
@@ -112,7 +110,7 @@ export function TrapCard({ trap, isExpanded, onToggle }: Props) {
               {trap.severity}
             </span>
           </div>
-          <p className="text-xs text-white/40 mt-0.5 line-clamp-1">
+          <p className="text-xs text-foreground mt-0.5 line-clamp-1">
             {trap.title}
           </p>
         </div>
@@ -123,7 +121,7 @@ export function TrapCard({ trap, isExpanded, onToggle }: Props) {
             <p className="text-xs font-semibold text-orange-400">
               {trap.risk_multiplier}x
             </p>
-            <p className="text-[9px] text-white/25">amplification</p>
+            <p className="text-[9px] text-foreground">amplification</p>
           </div>
 
           {/* Financial worst case */}
@@ -132,18 +130,16 @@ export function TrapCard({ trap, isExpanded, onToggle }: Props) {
               <p className="text-xs font-semibold text-red-400">
                 ₹{trap.financial_worst_case.toLocaleString("en-IN")}
               </p>
-              <p className="text-[9px] text-white/25">at risk</p>
+              <p className="text-[9px] text-foreground">at risk</p>
             </div>
           )}
 
-          <div className="flex items-center gap-1.5 text-white/20">
+          <div className="flex items-center gap-1.5 text-foreground">
             <span className="text-[10px]">
               {trap.mechanisms.length} clauses
             </span>
             <ChevronDown
-              className={`w-4 h-4 transition-transform ${
-                isExpanded ? "rotate-180" : ""
-              }`}
+              className={`w-4 h-4 transition-transform ${isExpanded ? "rotate-180" : ""}`}
             />
           </div>
         </div>
@@ -159,11 +155,11 @@ export function TrapCard({ trap, isExpanded, onToggle }: Props) {
             transition={{ duration: 0.25 }}
             className="overflow-hidden"
           >
-            <div className="px-5 pb-5 space-y-5 border-t border-white/5 pt-4">
+            <div className="px-5 pb-5 space-y-5 border-t border-foreground border-2 pt-4">
               {/* Risk Comparison */}
-              <div className="flex items-center gap-4 p-3 bg-white/[0.02] rounded-lg">
+              <div className="flex items-center gap-4 p-3 bg-white/[0.02] rounded-none">
                 <div className="text-center flex-1">
-                  <p className="text-[10px] text-white/30 mb-0.5">
+                  <p className="text-[10px] text-foreground mb-0.5">
                     Individual Risk
                   </p>
                   <p className="text-lg font-bold text-yellow-400">
@@ -176,7 +172,7 @@ export function TrapCard({ trap, isExpanded, onToggle }: Props) {
                   </p>
                 </div>
                 <div className="text-center flex-1">
-                  <p className="text-[10px] text-white/30 mb-0.5">
+                  <p className="text-[10px] text-foreground mb-0.5">
                     Combined Risk
                   </p>
                   <p className="text-lg font-bold text-red-400">
@@ -187,11 +183,11 @@ export function TrapCard({ trap, isExpanded, onToggle }: Props) {
 
               {/* How This Trap Works */}
               <div>
-                <h4 className="text-xs font-semibold text-white/60 mb-2 flex items-center gap-1.5">
+                <h4 className="text-xs font-semibold text-foreground mb-2 flex items-center gap-1.5">
                   <AlertTriangle className="w-3.5 h-3.5 text-orange-400" />
                   How This Trap Works
                 </h4>
-                <p className="text-xs text-white/40 mb-3">
+                <p className="text-xs text-foreground mb-3">
                   {trap.how_it_works}
                 </p>
                 <TrapMechanismFlow
@@ -202,10 +198,10 @@ export function TrapCard({ trap, isExpanded, onToggle }: Props) {
 
               {/* Real World Impact */}
               <div>
-                <h4 className="text-xs font-semibold text-white/60 mb-1.5">
+                <h4 className="text-xs font-semibold text-foreground mb-1.5">
                   Real World Impact
                 </h4>
-                <p className="text-xs text-white/40">
+                <p className="text-xs text-foreground">
                   {trap.real_world_impact}
                 </p>
                 {trap.financial_explanation && (
@@ -222,13 +218,10 @@ export function TrapCard({ trap, isExpanded, onToggle }: Props) {
 
               {/* Escape Options */}
               <div>
-                <h4 className="text-xs font-semibold text-white/60 mb-1.5 flex items-center gap-2">
+                <h4 className="text-xs font-semibold text-foreground mb-1.5 flex items-center gap-2">
                   How to Escape
                   <span
-                    className={`text-[9px] px-1.5 py-0.5 rounded-full ${
-                      ESCAPE_COLORS[trap.escape_difficulty] ||
-                      "text-white/30 bg-white/5"
-                    }`}
+                    className={`text-[9px] px-1.5 py-0.5 rounded-full ${ESCAPE_COLORS[trap.escape_difficulty] || "text-foreground bg-muted"}`}
                   >
                     {trap.escape_difficulty.replace(/_/g, " ")}
                   </span>
@@ -236,14 +229,17 @@ export function TrapCard({ trap, isExpanded, onToggle }: Props) {
                 {trap.escape_options.length > 0 ? (
                   <ul className="space-y-1">
                     {trap.escape_options.map((opt, i) => (
-                      <li key={i} className="text-xs text-white/40 flex gap-2">
+                      <li
+                        key={i}
+                        className="text-xs text-foreground flex gap-2"
+                      >
                         <span className="text-green-400 flex-shrink-0">→</span>
                         {opt}
                       </li>
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-xs text-white/25 italic">
+                  <p className="text-xs text-foreground italic">
                     No known escape routes.
                   </p>
                 )}
@@ -263,12 +259,12 @@ export function TrapCard({ trap, isExpanded, onToggle }: Props) {
               </div>
 
               {/* Negotiation */}
-              <div className="p-3 bg-green-500/5 border border-green-500/10 rounded-lg">
+              <div className="p-3 bg-green-500/5 border border-green-500/10 rounded-none">
                 <h4 className="text-xs font-semibold text-green-400 mb-1 flex items-center gap-1.5">
                   <Target className="w-3.5 h-3.5" />
                   Break This Trap
                 </h4>
-                <p className="text-xs text-white/50">
+                <p className="text-xs text-foreground">
                   <span className="text-green-400 font-medium">
                     Target Clause {trap.which_clause_to_target}
                   </span>
@@ -277,13 +273,7 @@ export function TrapCard({ trap, isExpanded, onToggle }: Props) {
                 </p>
                 <div className="mt-1.5">
                   <span
-                    className={`text-[9px] px-1.5 py-0.5 rounded-full ${
-                      trap.negotiation_priority === "must_change"
-                        ? "bg-red-500/10 text-red-300"
-                        : trap.negotiation_priority === "should_change"
-                          ? "bg-yellow-500/10 text-yellow-300"
-                          : "bg-green-500/10 text-green-300"
-                    }`}
+                    className={`text-[9px] px-1.5 py-0.5 rounded-full ${trap.negotiation_priority === "must_change" ? "bg-red-500/10 text-red-300" : trap.negotiation_priority === "should_change" ? "bg-yellow-500/10 text-yellow-300" : "bg-green-500/10 text-green-300"}`}
                   >
                     {trap.negotiation_priority.replace(/_/g, " ")}
                   </span>

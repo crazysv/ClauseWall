@@ -73,7 +73,7 @@ export default function RiskClauseRanking({ rankings, documentId }: Props) {
                   {clause.riskLevel}
                 </span>
               </div>
-              <p className="text-xs font-bold uppercase tracking-widest text-black/60 line-clamp-1 mb-3 bg-white/50 p-2 border-2 border-black border-dashed">
+              <p className="text-xs font-bold uppercase tracking-widest text-black/60 line-clamp-1 mb-3 bg-muted p-2 border-2 border-black border-dashed">
                 {clause.originalText}
               </p>
               <div className="flex flex-wrap items-center gap-4 text-xs font-bold uppercase tracking-widest text-black/70">
@@ -89,7 +89,7 @@ export default function RiskClauseRanking({ rankings, documentId }: Props) {
                     {formatINRCompact(clause.worstCaseCost)}
                   </strong>
                 </span>
-                <span className="bg-black text-white px-2 py-1">
+                <span className="bg-black text-foreground px-2 py-1">
                   P(trigger): {Math.round(clause.triggerProbability)}%
                 </span>
               </div>
@@ -97,7 +97,7 @@ export default function RiskClauseRanking({ rankings, documentId }: Props) {
             <div className="flex-shrink-0 w-full sm:w-auto mt-2 sm:mt-0">
               <Link
                 href={`/negotiate/${documentId}`}
-                className="block text-center text-xs font-black uppercase tracking-widest text-white bg-black hover:bg-blue-600 px-4 py-3 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-y-0.5 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all w-full sm:w-auto min-w-[120px]"
+                className="block text-center text-xs font-black uppercase tracking-widest text-foreground bg-black hover:bg-blue-600 px-4 py-3 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-y-0.5 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all w-full sm:w-auto min-w-[120px]"
               >
                 Negotiate
               </Link>

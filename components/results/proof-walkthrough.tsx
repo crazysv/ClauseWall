@@ -217,15 +217,7 @@ export default function ProofWalkthrough({
               }}
               role="button"
               tabIndex={0}
-              className={`w-full text-left p-4 card-impact border-2 transition-all ${colors.bg} ${colors.border} ${
-                isActive
-                  ? "border-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] -translate-y-[1px]"
-                  : isCompleted
-                    ? "opacity-80"
-                    : isUpcoming
-                      ? "opacity-40"
-                      : ""
-              } hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-[1px] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-foreground`}
+              className={`w-full text-left p-4 card-impact border-2 transition-all ${colors.bg} ${colors.border} ${isActive ? "border-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] -translate-y-[1px]" : isCompleted ? "opacity-80" : isUpcoming ? "opacity-40" : ""} hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-[1px] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-foreground`}
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-start gap-3 min-w-0">
@@ -272,7 +264,7 @@ export default function ProofWalkthrough({
                       e.stopPropagation();
                       toggleExpand(index);
                     }}
-                    className="text-gray-600 hover:text-gray-400 flex-shrink-0 p-1 rounded hover:bg-white/5 transition-colors"
+                    className="text-muted-foreground hover:text-muted-foreground flex-shrink-0 p-1 rounded hover:bg-muted transition-colors"
                   >
                     {isExpanded ? (
                       <ChevronUp className="h-4 w-4" />

@@ -79,12 +79,12 @@ export function ReminderSettings({ onSaved }: ReminderSettingsProps) {
 
   if (loading) {
     return (
-      <div className="rounded-xl border border-white/10 bg-white/[0.02] p-5">
+      <div className="rounded-none border border-foreground border-2 bg-white/[0.02] p-5">
         <div className="animate-pulse space-y-4">
-          <div className="h-5 w-40 bg-white/5 rounded" />
-          <div className="h-10 bg-white/5 rounded" />
-          <div className="h-10 bg-white/5 rounded" />
-          <div className="h-10 bg-white/5 rounded" />
+          <div className="h-5 w-40 bg-muted rounded" />
+          <div className="h-10 bg-muted rounded" />
+          <div className="h-10 bg-muted rounded" />
+          <div className="h-10 bg-muted rounded" />
         </div>
       </div>
     );
@@ -186,7 +186,7 @@ export function ReminderSettings({ onSaved }: ReminderSettingsProps) {
             type="time"
             value={settings.reminder_time}
             onChange={(e) => updateSetting("reminder_time", e.target.value)}
-            className="px-4 py-2 border-4 border-black bg-white dark:bg-black text-black dark:text-white font-black uppercase tracking-widest shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:-translate-y-1 focus:shadow-none transition-all"
+            className="px-4 py-2 border-4 border-black bg-white dark:bg-black text-black dark:text-foreground font-black uppercase tracking-widest shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:-translate-y-1 focus:shadow-none transition-all"
           />
         </div>
       </div>
@@ -225,7 +225,7 @@ function ToggleRow({
   disabled?: boolean;
 }) {
   return (
-    <div className="flex items-center justify-between gap-4 py-4 border-b-2 border-black/10 dark:border-white/10 last:border-0 border-dashed">
+    <div className="flex items-center justify-between gap-4 py-4 border-b-2 border-black/10 dark:border-foreground border-2 last:border-0 border-dashed">
       <div className="flex items-start gap-4">
         <div className="mt-1">{icon}</div>
         <div>
@@ -240,19 +240,13 @@ function ToggleRow({
       <button
         onClick={() => onToggle(!enabled)}
         disabled={disabled}
-        className={`relative w-14 h-8 border-4 transition-all ${
-          enabled
-            ? "bg-orange-500 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-            : "bg-gray-200 dark:bg-zinc-800 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-        } ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:-translate-y-1 hover:shadow-none"}`}
+        className={`relative w-14 h-8 border-4 transition-all ${enabled ? "bg-orange-500 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]" : "bg-gray-200 dark:bg-zinc-800 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"} ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:-translate-y-1 hover:shadow-none"}`}
         role="switch"
         aria-checked={enabled}
         aria-label={`Toggle ${label}`}
       >
         <span
-          className={`absolute top-0.5 w-5 h-5 border-2 border-black bg-white transition-transform ${
-            enabled ? "translate-x-[22px]" : "translate-x-[2px]"
-          }`}
+          className={`absolute top-0.5 w-5 h-5 border-2 border-black bg-white transition-transform ${enabled ? "translate-x-[22px]" : "translate-x-[2px]"}`}
         />
       </button>
     </div>

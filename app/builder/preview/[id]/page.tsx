@@ -150,10 +150,10 @@ export default function ContractPreviewPage() {
   // Loading State
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+      <div className="min-h-screen bg-background border-2 border-foreground bg-popover flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="w-8 h-8 animate-spin text-emerald-400 mx-auto mb-4" />
-          <p className="text-gray-400">Loading your contract...</p>
+          <p className="text-muted-foreground">Loading your contract...</p>
         </div>
       </div>
     );
@@ -162,18 +162,18 @@ export default function ContractPreviewPage() {
   // Not Found
   if (!contract) {
     return (
-      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+      <div className="min-h-screen bg-background border-2 border-foreground bg-popover flex items-center justify-center">
         <div className="text-center max-w-md">
           <AlertCircle className="w-12 h-12 text-red-400 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-white mb-2">
+          <h2 className="text-xl font-semibold text-foreground mb-2">
             Contract Not Found
           </h2>
-          <p className="text-gray-400 mb-6">
+          <p className="text-muted-foreground mb-6">
             This contract may have expired or the link is invalid.
           </p>
           <button
             onClick={() => router.push("/builder")}
-            className="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-medium transition-colors"
+            className="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-foreground rounded-none font-medium transition-colors"
           >
             Create New Contract
           </button>
@@ -283,21 +283,13 @@ export default function ContractPreviewPage() {
         <div className="flex gap-4 mb-8 print:hidden">
           <button
             onClick={() => setViewMode("clauses")}
-            className={`px-6 py-3 border-4 border-black text-sm font-black uppercase tracking-widest transition-all ${
-              viewMode === "clauses"
-                ? "bg-black text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-                : "bg-white dark:bg-zinc-900 text-foreground shadow-none hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-            }`}
+            className={`px-6 py-3 border-4 border-black text-sm font-black uppercase tracking-widest transition-all ${viewMode === "clauses" ? "bg-black text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]" : "bg-white dark:bg-zinc-900 text-foreground shadow-none hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"}`}
           >
             CLAUSE-BY-CLAUSE VIEW
           </button>
           <button
             onClick={() => setViewMode("full")}
-            className={`px-6 py-3 border-4 border-black text-sm font-black uppercase tracking-widest transition-all ${
-              viewMode === "full"
-                ? "bg-black text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-                : "bg-white dark:bg-zinc-900 text-foreground shadow-none hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-            }`}
+            className={`px-6 py-3 border-4 border-black text-sm font-black uppercase tracking-widest transition-all ${viewMode === "full" ? "bg-black text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]" : "bg-white dark:bg-zinc-900 text-foreground shadow-none hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"}`}
           >
             FULL DOCUMENT VIEW
           </button>
@@ -310,13 +302,13 @@ export default function ContractPreviewPage() {
             <div className="flex justify-end gap-3 mb-4 print:hidden">
               <button
                 onClick={expandAll}
-                className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
+                className="text-xs text-muted-foreground hover:text-muted-foreground transition-colors"
               >
                 Expand All
               </button>
               <button
                 onClick={collapseAll}
-                className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
+                className="text-xs text-muted-foreground hover:text-muted-foreground transition-colors"
               >
                 Collapse All
               </button>
@@ -355,9 +347,9 @@ export default function ContractPreviewPage() {
                           </span>
                         )}
                         {isExpanded ? (
-                          <ChevronUp className="w-6 h-6 stroke-[3px] text-black dark:text-white" />
+                          <ChevronUp className="w-6 h-6 stroke-[3px] text-black dark:text-foreground" />
                         ) : (
-                          <ChevronDown className="w-6 h-6 stroke-[3px] text-black dark:text-white" />
+                          <ChevronDown className="w-6 h-6 stroke-[3px] text-black dark:text-foreground" />
                         )}
                       </div>
                     </button>

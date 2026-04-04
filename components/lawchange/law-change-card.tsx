@@ -61,7 +61,7 @@ export default function LawChangeCard({ change, compact }: Props) {
   });
 
   return (
-    <Card className="bg-white/[0.02] border-white/5 hover:border-indigo-500/20 transition-all">
+    <Card className="bg-white/[0.02] border-foreground border-2 hover:border-indigo-500/20 transition-all">
       <CardContent className="p-4">
         {/* Header */}
         <button
@@ -71,7 +71,7 @@ export default function LawChangeCard({ change, compact }: Props) {
           <div className="flex items-start gap-3">
             <span className="text-lg flex-shrink-0 mt-0.5">{icon}</span>
             <div className="flex-1 min-w-0">
-              <h3 className="text-sm font-medium text-white/90 leading-snug">
+              <h3 className="text-sm font-medium text-foreground leading-snug">
                 {change.title}
               </h3>
 
@@ -82,19 +82,19 @@ export default function LawChangeCard({ change, compact }: Props) {
                 >
                   {typeLabel}
                 </Badge>
-                <span className="text-[10px] text-white/25 flex items-center gap-1">
+                <span className="text-[10px] text-foreground flex items-center gap-1">
                   <Calendar className="h-3 w-3" />
                   {dateStr}
                 </span>
                 {change.source && (
-                  <span className="text-[10px] text-white/20">
+                  <span className="text-[10px] text-foreground">
                     {change.source.replace(/_/g, " ")}
                   </span>
                 )}
               </div>
 
               {!compact && (
-                <p className="text-xs text-white/40 mt-2 line-clamp-2">
+                <p className="text-xs text-foreground mt-2 line-clamp-2">
                   {change.summary}
                 </p>
               )}
@@ -105,13 +105,13 @@ export default function LawChangeCard({ change, compact }: Props) {
                   {change.affected_clause_types.slice(0, 4).map((ct) => (
                     <span
                       key={ct}
-                      className="text-[9px] px-1.5 py-0.5 rounded bg-white/[0.04] text-white/25"
+                      className="text-[9px] px-1.5 py-0.5 rounded bg-white/[0.04] text-foreground"
                     >
                       {ct.replace(/_/g, " ")}
                     </span>
                   ))}
                   {change.affected_clause_types.length > 4 && (
-                    <span className="text-[9px] text-white/20">
+                    <span className="text-[9px] text-foreground">
                       +{change.affected_clause_types.length - 4}
                     </span>
                   )}
@@ -120,9 +120,7 @@ export default function LawChangeCard({ change, compact }: Props) {
             </div>
 
             <ChevronDown
-              className={`h-4 w-4 text-white/20 flex-shrink-0 transition-transform ${
-                expanded ? "rotate-180" : ""
-              }`}
+              className={`h-4 w-4 text-foreground flex-shrink-0 transition-transform ${expanded ? "rotate-180" : ""}`}
             />
           </div>
         </button>
@@ -137,27 +135,27 @@ export default function LawChangeCard({ change, compact }: Props) {
               transition={{ duration: 0.2 }}
               className="overflow-hidden"
             >
-              <div className="mt-4 pt-4 border-t border-white/5 space-y-3">
-                <p className="text-xs text-white/50 leading-relaxed">
+              <div className="mt-4 pt-4 border-t border-foreground border-2 space-y-3">
+                <p className="text-xs text-foreground leading-relaxed">
                   {change.summary}
                 </p>
 
                 {change.court_name && (
-                  <div className="flex items-center gap-2 text-xs text-white/30">
+                  <div className="flex items-center gap-2 text-xs text-foreground">
                     <Building2 className="h-3 w-3" />
                     <span>{change.court_name}</span>
                   </div>
                 )}
 
                 {change.case_number && (
-                  <div className="flex items-center gap-2 text-xs text-white/30">
+                  <div className="flex items-center gap-2 text-xs text-foreground">
                     <FileText className="h-3 w-3" />
                     <span>{change.case_number}</span>
                   </div>
                 )}
 
                 {change.act_name && (
-                  <div className="flex items-center gap-2 text-xs text-white/30">
+                  <div className="flex items-center gap-2 text-xs text-foreground">
                     <Scale className="h-3 w-3" />
                     <span>{change.act_name}</span>
                   </div>
@@ -166,10 +164,7 @@ export default function LawChangeCard({ change, compact }: Props) {
                 <div className="flex items-center gap-2">
                   {change.classification_confidence && (
                     <Badge
-                      className={`text-[10px] ${
-                        CONFIDENCE_COLORS[change.classification_confidence] ||
-                        ""
-                      }`}
+                      className={`text-[10px] ${CONFIDENCE_COLORS[change.classification_confidence] || ""}`}
                     >
                       {change.classification_confidence} confidence
                     </Badge>

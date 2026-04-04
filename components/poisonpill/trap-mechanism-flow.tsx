@@ -79,12 +79,12 @@ export function TrapMechanismFlow({ mechanisms, connections }: Props) {
               </div>
 
               {/* Content */}
-              <div className="flex-1 bg-white/[0.02] border border-white/5 rounded-lg p-3">
+              <div className="flex-1 bg-white/[0.02] border border-foreground border-2 rounded-none p-3">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-semibold text-white/70">
+                  <span className="text-xs font-semibold text-foreground">
                     Clause {mech.clause_number}
                   </span>
-                  <span className="text-[10px] text-white/25 capitalize">
+                  <span className="text-[10px] text-foreground capitalize">
                     {mech.clause_type.replace(/_/g, " ")}
                   </span>
                   <span
@@ -95,17 +95,17 @@ export function TrapMechanismFlow({ mechanisms, connections }: Props) {
                 </div>
 
                 {mech.clause_text_snippet && (
-                  <p className="text-[11px] text-white/30 mb-1.5 line-clamp-2 italic">
+                  <p className="text-[11px] text-foreground mb-1.5 line-clamp-2 italic">
                     &ldquo;{mech.clause_text_snippet}&rdquo;
                   </p>
                 )}
 
-                <p className="text-xs text-white/50">
-                  <span className="text-white/25">Role: </span>
+                <p className="text-xs text-foreground">
+                  <span className="text-foreground">Role: </span>
                   {mech.role_in_trap}
                 </p>
-                <p className="text-xs text-white/40 mt-0.5">
-                  <span className="text-white/25">Contribution: </span>
+                <p className="text-xs text-foreground mt-0.5">
+                  <span className="text-foreground">Contribution: </span>
                   {mech.contribution_to_trap}
                 </p>
               </div>
@@ -114,12 +114,9 @@ export function TrapMechanismFlow({ mechanisms, connections }: Props) {
             {/* Connection Arrow */}
             {connection && (
               <div className="flex items-center ml-3.5 my-1">
-                <div className="w-px h-4 bg-white/10 ml-[10px]" />
+                <div className="w-px h-4 bg-muted ml-[10px]" />
                 <span
-                  className={`text-[9px] ml-3 ${
-                    CONNECTION_COLORS[connection.connection_type] ||
-                    "text-white/30"
-                  }`}
+                  className={`text-[9px] ml-3 ${CONNECTION_COLORS[connection.connection_type] || "text-foreground"}`}
                 >
                   ↓ {connection.connection_type.replace(/_/g, " ")}
                 </span>

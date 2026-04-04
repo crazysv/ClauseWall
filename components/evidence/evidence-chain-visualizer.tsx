@@ -39,8 +39,8 @@ export function EvidenceChainVisualizer({ links }: { links: ChainLink[] }) {
                   >
                     #{link.sequence_number}
                   </span>
-                  <Hash className="h-4 w-4 text-black dark:text-white stroke-[3px]" />
-                  <span className="text-sm font-bold font-mono text-black dark:text-white truncate bg-white/50 dark:bg-black/50 px-2 py-0.5 border-2 border-black">
+                  <Hash className="h-4 w-4 text-black dark:text-foreground stroke-[3px]" />
+                  <span className="text-sm font-bold font-mono text-black dark:text-foreground truncate bg-muted dark:bg-black/50 px-2 py-0.5 border-2 border-black">
                     {link.content_hash.substring(0, 16)}...
                   </span>
                 </div>
@@ -51,10 +51,10 @@ export function EvidenceChainVisualizer({ links }: { links: ChainLink[] }) {
                 </span>
               </div>
               <div className="flex items-center gap-2 mt-4 pt-3 border-t-2 border-black border-dashed">
-                <span className="text-xs font-black uppercase tracking-widest text-black/70 dark:text-white/70">
+                <span className="text-xs font-black uppercase tracking-widest text-black/70 dark:text-foreground">
                   CHAIN:
                 </span>
-                <span className="text-xs font-bold font-mono text-black dark:text-white truncate">
+                <span className="text-xs font-bold font-mono text-black dark:text-foreground truncate">
                   {link.chain_hash.substring(0, 32)}...
                 </span>
               </div>

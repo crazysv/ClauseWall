@@ -11,7 +11,7 @@ interface Props {
 
 export default function FeeBreakdown({ result, claimAmount }: Props) {
   return (
-    <Card className="border-white/10 bg-white/[0.02]">
+    <Card className="border-foreground border-2 bg-white/[0.02]">
       <CardContent className="p-4">
         <div className="flex items-center gap-2 mb-3">
           <Wallet className="h-4 w-4 text-amber-400" />
@@ -36,7 +36,7 @@ export default function FeeBreakdown({ result, claimAmount }: Props) {
               </span>
             </div>
           ))}
-          <div className="border-t border-white/10 pt-2 flex justify-between text-sm font-semibold">
+          <div className="border-t border-foreground border-2 pt-2 flex justify-between text-sm font-semibold">
             <span>Total</span>
             <span
               className={result.fee === 0 ? "text-green-400" : "text-amber-400"}
@@ -58,7 +58,7 @@ export default function FeeBreakdown({ result, claimAmount }: Props) {
               {result.payment_methods.map((m, i) => (
                 <span
                   key={i}
-                  className="text-[10px] px-1.5 py-0.5 rounded bg-white/5 text-muted-foreground"
+                  className="text-[10px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground"
                 >
                   {m}
                 </span>
@@ -69,7 +69,7 @@ export default function FeeBreakdown({ result, claimAmount }: Props) {
 
         {/* Fee Waiver */}
         {result.waiver_available && (
-          <div className="flex items-start gap-2 p-2 rounded-lg bg-green-500/5 border border-green-500/10">
+          <div className="flex items-start gap-2 p-2 rounded-none bg-green-500/5 border border-green-500/10">
             <AlertCircle className="h-3.5 w-3.5 text-green-400 mt-0.5 flex-shrink-0" />
             <p className="text-xs text-green-300/70">
               {result.waiver_conditions}

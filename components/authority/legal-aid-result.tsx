@@ -44,7 +44,10 @@ export default function LegalAidResultView({ result }: Props) {
           </h4>
           <div className="space-y-2">
             {result.providers.slice(0, 6).map((p, i) => (
-              <Card key={i} className="border-white/10 bg-white/[0.02]">
+              <Card
+                key={i}
+                className="border-foreground border-2 bg-white/[0.02]"
+              >
                 <CardContent className="p-3 flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium">{p.name}</p>
@@ -58,7 +61,7 @@ export default function LegalAidResultView({ result }: Props) {
                     p.phone_numbers[0] !== "[VERIFY]" && (
                       <a
                         href={`tel:${p.phone_numbers[0]}`}
-                        className="p-2 rounded-lg bg-green-500/15 text-green-400 hover:bg-green-500/25"
+                        className="p-2 rounded-none bg-green-500/15 text-green-400 hover:bg-green-500/25"
                       >
                         <Phone className="h-4 w-4" />
                       </a>
@@ -78,7 +81,7 @@ export default function LegalAidResultView({ result }: Props) {
             <a
               key={i}
               href={`tel:${h.number}`}
-              className="flex items-center gap-2 p-2.5 rounded-lg bg-white/[0.02] border border-white/10 hover:border-green-500/30 transition"
+              className="flex items-center gap-2 p-2.5 rounded-none bg-white/[0.02] border border-foreground border-2 hover:border-green-500/30 transition"
             >
               <Phone className="h-3.5 w-3.5 text-green-400" />
               <div>

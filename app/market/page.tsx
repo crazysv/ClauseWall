@@ -131,7 +131,7 @@ export default function MarketDashboardPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
               {/* Left: Heat Map (2 cols) */}
               <div className="lg:col-span-2">
-                <Card className="bg-background/50 border-gray-800">
+                <Card className="bg-background/50 border-foreground border-2">
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-2">
@@ -161,7 +161,7 @@ export default function MarketDashboardPage() {
               {/* Right: Key Benchmarks + Quick Actions */}
               <div className="space-y-4">
                 {/* Key Benchmarks from Seed Data */}
-                <Card className="bg-background/50 border-gray-800">
+                <Card className="bg-background/50 border-foreground border-2">
                   <CardContent className="p-5">
                     <div className="flex items-center gap-2 mb-3">
                       <Database className="h-4 w-4 text-amber-400" />
@@ -199,7 +199,7 @@ export default function MarketDashboardPage() {
                     </div>
                     <Link
                       href="/market/benchmarks"
-                      className="flex items-center justify-center gap-1 mt-3 py-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.06] transition-colors text-xs text-foreground/50 hover:text-foreground/70"
+                      className="flex items-center justify-center gap-1 mt-3 py-2 rounded-none bg-white/[0.03] hover:bg-white/[0.06] transition-colors text-xs text-foreground/50 hover:text-foreground/70"
                     >
                       View All Benchmarks <ArrowRight className="h-3 w-3" />
                     </Link>
@@ -238,7 +238,7 @@ export default function MarketDashboardPage() {
                       <Link
                         key={link.href}
                         href={link.href}
-                        className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] hover:bg-white/[0.05] transition-colors border border-foreground border-2 group"
+                        className="flex items-center justify-between p-2.5 rounded-none bg-white/[0.02] hover:bg-white/[0.05] transition-colors border border-foreground border-2 group"
                       >
                         <div>
                           <p className="text-xs font-medium text-foreground">

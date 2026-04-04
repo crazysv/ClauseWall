@@ -225,14 +225,14 @@ export default function AudioCompanionPanel({
         {/* Status text */}
         <div className="text-center">
           {!isRecording && !error && (
-            <p className="text-sm text-white/40">Tap to start listening</p>
+            <p className="text-sm text-foreground">Tap to start listening</p>
           )}
           {isRecording && !isPaused && (
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
               <p className="text-sm text-red-400">Listening...</p>
               {isProcessing && (
-                <Loader2 className="w-3 h-3 text-white/40 animate-spin" />
+                <Loader2 className="w-3 h-3 text-foreground animate-spin" />
               )}
             </div>
           )}
@@ -259,13 +259,7 @@ export default function AudioCompanionPanel({
             e.preventDefault();
             if (isRecording) togglePause();
           }}
-          className={`w-20 h-20 rounded-full flex items-center justify-center transition-all shadow-lg ${
-            isRecording
-              ? isPaused
-                ? "bg-orange-500/20 border-2 border-orange-500/40 text-orange-400"
-                : "bg-red-500/20 border-2 border-red-500/40 text-red-400 animate-pulse"
-              : "bg-green-500/10 border-2 border-green-500/30 text-green-400 hover:bg-green-500/20"
-          }`}
+          className={`w-20 h-20 rounded-full flex items-center justify-center transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none ${isRecording ? (isPaused ? "bg-orange-500/20 border-2 border-orange-500/40 text-orange-400" : "bg-red-500/20 border-2 border-red-500/40 text-red-400 animate-pulse") : "bg-green-500/10 border-2 border-green-500/30 text-green-400 hover:bg-green-500/20"}`}
           style={{ minWidth: "80px", minHeight: "80px" }}
         >
           {isRecording ? (
@@ -276,7 +270,7 @@ export default function AudioCompanionPanel({
         </button>
 
         {isRecording && (
-          <p className="text-[10px] text-white/20">Long press to pause</p>
+          <p className="text-[10px] text-foreground">Long press to pause</p>
         )}
       </div>
 
@@ -285,7 +279,7 @@ export default function AudioCompanionPanel({
         <select
           value={language}
           onChange={(e) => setLanguage(e.target.value)}
-          className="text-xs bg-white/[0.03] border border-white/10 rounded-lg px-2 py-1.5 text-white/60 focus:outline-none"
+          className="text-xs bg-white/[0.03] border border-foreground border-2 rounded-none px-2 py-1.5 text-foreground focus:outline-none"
           style={{ fontSize: "16px" }}
         >
           <option value="en">English</option>
@@ -301,7 +295,7 @@ export default function AudioCompanionPanel({
 
         <button
           onClick={() => setShowSettings(!showSettings)}
-          className="p-2 rounded-lg text-white/30 hover:text-white/60 hover:bg-white/5 transition-colors"
+          className="p-2 rounded-none text-foreground hover:text-foreground hover:bg-muted transition-colors"
         >
           <Settings className="w-4 h-4" />
         </button>
@@ -309,13 +303,13 @@ export default function AudioCompanionPanel({
 
       {/* Settings Panel */}
       {showSettings && (
-        <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4 space-y-3 animate-in fade-in duration-200">
+        <div className="rounded-none border border-foreground border-2 bg-white/[0.02] p-4 space-y-3 animate-in fade-in duration-200">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-white/50">Chunk Duration</span>
+            <span className="text-xs text-foreground">Chunk Duration</span>
             <select
               value={chunkDuration}
               onChange={(e) => setChunkDuration(Number(e.target.value))}
-              className="text-xs bg-white/[0.03] border border-white/10 rounded px-2 py-1 text-white/60"
+              className="text-xs bg-white/[0.03] border border-foreground border-2 rounded px-2 py-1 text-foreground"
               style={{ fontSize: "16px" }}
             >
               <option value={5000}>5 seconds</option>
@@ -324,17 +318,15 @@ export default function AudioCompanionPanel({
             </select>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-xs text-white/50">Auto-whisper counters</span>
+            <span className="text-xs text-foreground">
+              Auto-whisper counters
+            </span>
             <button
               onClick={() => setAutoWhisper(!autoWhisper)}
-              className={`w-10 h-5 rounded-full transition-colors ${
-                autoWhisper ? "bg-green-500" : "bg-white/10"
-              }`}
+              className={`w-10 h-5 rounded-full transition-colors ${autoWhisper ? "bg-green-500" : "bg-muted"}`}
             >
               <div
-                className={`w-4 h-4 rounded-full bg-white shadow transition-transform ${
-                  autoWhisper ? "translate-x-5" : "translate-x-0.5"
-                }`}
+                className={`w-4 h-4 rounded-full bg-white shadow transition-transform ${autoWhisper ? "translate-x-5" : "translate-x-0.5"}`}
               />
             </button>
           </div>
@@ -344,11 +336,11 @@ export default function AudioCompanionPanel({
       {/* Live Transcript */}
       {transcript.length > 0 && (
         <div className="space-y-1">
-          <p className="text-xs text-white/20 font-medium px-1">Transcript</p>
-          <div className="max-h-60 overflow-y-auto rounded-xl border border-white/5 bg-white/[0.01] p-3 space-y-2 scroll-smooth">
+          <p className="text-xs text-foreground font-medium px-1">Transcript</p>
+          <div className="max-h-60 overflow-y-auto rounded-none border border-foreground border-2 bg-white/[0.01] p-3 space-y-2 scroll-smooth">
             {transcript.map((chunk) => (
-              <div key={chunk.id} className="text-sm text-white/70">
-                <span className="text-[10px] text-white/20 font-mono mr-2">
+              <div key={chunk.id} className="text-sm text-foreground">
+                <span className="text-[10px] text-foreground font-mono mr-2">
                   {new Date(chunk.timestamp).toLocaleTimeString([], {
                     hour: "2-digit",
                     minute: "2-digit",
@@ -363,7 +355,7 @@ export default function AudioCompanionPanel({
       )}
 
       {/* Privacy Notice */}
-      <p className="text-[10px] text-white/15 text-center px-4">
+      <p className="text-[10px] text-foreground text-center px-4">
         🔒 Audio is transcribed in real-time and never stored on our servers
       </p>
     </div>

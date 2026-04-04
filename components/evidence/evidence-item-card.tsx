@@ -89,7 +89,7 @@ export function EvidenceItemCard({
       {/* Footer */}
       <div className="flex items-center gap-3 mt-4 flex-wrap pt-4 border-t-2 border-black border-dashed">
         <span
-          className="text-xs font-bold font-mono text-muted-foreground truncate max-w-[150px] bg-white/50 dark:bg-black/50 px-2 py-0.5 border-2 border-black"
+          className="text-xs font-bold font-mono text-muted-foreground truncate max-w-[150px] bg-muted dark:bg-black/50 px-2 py-0.5 border-2 border-black"
           title={item.content_hash}
         >
           HASH: {item.content_hash.substring(0, 12)}...

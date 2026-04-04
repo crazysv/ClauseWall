@@ -92,7 +92,7 @@ export default function SessionSetup({
       <div className="w-full max-w-md space-y-4">
         {/* Document Type */}
         <div className="space-y-2">
-          <label className="text-xs text-white/40 font-medium block px-1">
+          <label className="text-xs text-foreground font-medium block px-1">
             Contract Type
           </label>
           <div className="grid grid-cols-2 gap-2">
@@ -100,11 +100,7 @@ export default function SessionSetup({
               <button
                 key={type.value}
                 onClick={() => setDocumentType(type.value)}
-                className={`flex items-center gap-2 px-3 py-3 rounded-xl border transition-all text-left ${
-                  documentType === type.value
-                    ? "border-emerald-500/40 bg-emerald-500/10 text-white"
-                    : "border-white/5 bg-white/[0.02] text-white/50 hover:bg-white/[0.04]"
-                }`}
+                className={`flex items-center gap-2 px-3 py-3 rounded-none border transition-all text-left ${documentType === type.value ? "border-emerald-500/40 bg-emerald-500/10 text-foreground" : "border-foreground border-2 bg-white/[0.02] text-foreground hover:bg-white/[0.04]"}`}
                 style={{ minHeight: "48px" }}
               >
                 <span className="text-lg">{type.icon}</span>
@@ -116,13 +112,13 @@ export default function SessionSetup({
 
         {/* Jurisdiction */}
         <div className="space-y-2">
-          <label className="text-xs text-white/40 font-medium block px-1">
+          <label className="text-xs text-foreground font-medium block px-1">
             State / Jurisdiction
           </label>
           <select
             value={jurisdiction}
             onChange={(e) => setJurisdiction(e.target.value)}
-            className="w-full px-4 py-3 text-sm bg-white/[0.03] border border-white/10 rounded-xl text-white focus:outline-none focus:border-emerald-500/40 appearance-none cursor-pointer"
+            className="w-full px-4 py-3 text-sm bg-white/[0.03] border border-foreground border-2 rounded-none text-foreground focus:outline-none focus:border-emerald-500/40 appearance-none cursor-pointer"
             style={{ fontSize: "16px" }}
           >
             <option value="">Select state...</option>
@@ -136,15 +132,15 @@ export default function SessionSetup({
 
         {/* Entity Name */}
         <div className="space-y-2">
-          <label className="text-xs text-white/40 font-medium block px-1">
+          <label className="text-xs text-foreground font-medium block px-1">
             Who are you negotiating with?{" "}
-            <span className="text-white/20">(optional)</span>
+            <span className="text-foreground">(optional)</span>
           </label>
           <input
             placeholder="e.g., Landlord Name, Company Name"
             value={entityName}
             onChange={(e) => setEntityName(e.target.value)}
-            className="w-full px-4 py-3 text-sm bg-white/[0.03] border border-white/10 rounded-xl text-white placeholder:text-white/20 focus:outline-none focus:border-emerald-500/40"
+            className="w-full px-4 py-3 text-sm bg-white/[0.03] border border-foreground border-2 rounded-none text-foreground placeholder:text-foreground focus:outline-none focus:border-emerald-500/40"
             style={{ fontSize: "16px" }}
           />
         </div>
@@ -164,7 +160,7 @@ export default function SessionSetup({
       {/* Resume Previous Sessions */}
       {existingSessions.length > 0 && (
         <div className="w-full max-w-md mt-8">
-          <p className="text-xs text-white/20 font-medium px-1 mb-2">
+          <p className="text-xs text-foreground font-medium px-1 mb-2">
             Recent Sessions
           </p>
           <div className="space-y-2">
@@ -176,11 +172,11 @@ export default function SessionSetup({
                 <button
                   key={s.id}
                   onClick={() => handleResume(s.id)}
-                  className="w-full flex items-center justify-between px-4 py-3 rounded-xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] text-left transition-colors"
+                  className="w-full flex items-center justify-between px-4 py-3 rounded-none border border-foreground border-2 bg-white/[0.01] hover:bg-white/[0.03] text-left transition-colors"
                 >
                   <div>
-                    <p className="text-sm text-white/60">{s.entity_name}</p>
-                    <div className="flex items-center gap-2 text-[10px] text-white/20">
+                    <p className="text-sm text-foreground">{s.entity_name}</p>
+                    <div className="flex items-center gap-2 text-[10px] text-foreground">
                       <Clock className="w-3 h-3" />
                       <span>{Math.round(hoursSince)}h ago</span>
                       <span>·</span>
@@ -189,7 +185,7 @@ export default function SessionSetup({
                       <span>{s.overall_score.win_percentage}% win rate</span>
                     </div>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-white/20" />
+                  <ChevronRight className="w-4 h-4 text-foreground" />
                 </button>
               );
             })}

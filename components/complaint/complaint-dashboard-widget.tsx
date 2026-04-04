@@ -125,7 +125,7 @@ export default function ComplaintDashboardWidget({
                     </p>
                   </div>
                   <span
-                    className={`text-xs font-black uppercase tracking-widest px-2 py-1 border-2 border-black ${statusColors[filing.status] || "text-gray-600 bg-gray-100 dark:bg-gray-800"}`}
+                    className={`text-xs font-black uppercase tracking-widest px-2 py-1 border-2 border-black ${statusColors[filing.status] || "text-muted-foreground bg-gray-100 dark:bg-background border-2 border-foreground card-impact"}`}
                   >
                     {filing.status.replace(/_/g, " ")}
                   </span>

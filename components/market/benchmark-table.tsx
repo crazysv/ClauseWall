@@ -49,14 +49,14 @@ export default function BenchmarkTable({ benchmarks }: BenchmarkTableProps) {
   ];
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-white/5">
+    <div className="overflow-x-auto rounded-none border border-foreground border-2">
       <table className="w-full text-sm">
         <thead>
           <tr className="bg-white/[0.03]">
             {columns.map((col) => (
               <th
                 key={col.key}
-                className={`px-4 py-3 text-xs font-medium text-white/40 cursor-pointer hover:text-white/60 transition-colors ${col.align || "text-left"}`}
+                className={`px-4 py-3 text-xs font-medium text-foreground cursor-pointer hover:text-foreground transition-colors ${col.align || "text-left"}`}
                 onClick={() => toggleSort(col.key)}
               >
                 <span className="inline-flex items-center gap-1">
@@ -65,7 +65,7 @@ export default function BenchmarkTable({ benchmarks }: BenchmarkTableProps) {
                 </span>
               </th>
             ))}
-            <th className="px-4 py-3 text-xs font-medium text-white/40 text-right">
+            <th className="px-4 py-3 text-xs font-medium text-foreground text-right">
               P25–P75
             </th>
             <th className="w-8" />
@@ -84,34 +84,36 @@ export default function BenchmarkTable({ benchmarks }: BenchmarkTableProps) {
                 key={bm.id}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="border-t border-white/5 hover:bg-white/[0.02] cursor-pointer"
+                className="border-t border-foreground border-2 hover:bg-white/[0.02] cursor-pointer"
                 onClick={() => setExpandedRow(isExpanded ? null : bm.id)}
               >
-                <td className="px-4 py-3 text-white/80 font-medium">{label}</td>
-                <td className="px-4 py-3 text-white/50 capitalize">
+                <td className="px-4 py-3 text-foreground font-medium">
+                  {label}
+                </td>
+                <td className="px-4 py-3 text-foreground capitalize">
                   {bm.scope_value?.replace(/_/g, " ") || "—"}
                 </td>
-                <td className="px-4 py-3 text-right text-white/50">
+                <td className="px-4 py-3 text-right text-foreground">
                   {bm.sample_count}
                 </td>
-                <td className="px-4 py-3 text-right text-white font-medium">
+                <td className="px-4 py-3 text-right text-foreground font-medium">
                   {bm.median_value !== null
                     ? `${bm.median_value} ${unit}`
                     : "—"}
                 </td>
-                <td className="px-4 py-3 text-right text-white/60">
+                <td className="px-4 py-3 text-right text-foreground">
                   {bm.mean_value !== null ? `${bm.mean_value} ${unit}` : "—"}
                 </td>
-                <td className="px-4 py-3 text-right text-white/40 text-xs">
+                <td className="px-4 py-3 text-right text-foreground text-xs">
                   {bm.p25_value !== null && bm.p75_value !== null
                     ? `${bm.p25_value}–${bm.p75_value} ${unit}`
                     : "—"}
                 </td>
                 <td className="px-2 py-3">
                   {isExpanded ? (
-                    <ChevronUp className="h-3.5 w-3.5 text-white/20" />
+                    <ChevronUp className="h-3.5 w-3.5 text-foreground" />
                   ) : (
-                    <ChevronDown className="h-3.5 w-3.5 text-white/20" />
+                    <ChevronDown className="h-3.5 w-3.5 text-foreground" />
                   )}
                 </td>
               </motion.tr>
@@ -120,7 +122,7 @@ export default function BenchmarkTable({ benchmarks }: BenchmarkTableProps) {
         </tbody>
       </table>
       {sorted.length === 0 && (
-        <div className="text-center py-12 text-white/30 text-sm">
+        <div className="text-center py-12 text-foreground text-sm">
           No benchmarks match your filters
         </div>
       )}

@@ -187,7 +187,7 @@ export default function CameraScannerPanel({
   return (
     <div className="space-y-4">
       {/* Camera Viewfinder */}
-      <div className="relative rounded-2xl overflow-hidden bg-black/50 border border-white/10">
+      <div className="relative rounded-none overflow-hidden bg-black/50 border border-foreground border-2">
         <video
           ref={videoRef}
           autoPlay
@@ -199,13 +199,13 @@ export default function CameraScannerPanel({
         {/* Camera Off State */}
         {!cameraActive && (
           <div className="w-full aspect-[4/3] flex flex-col items-center justify-center gap-3 p-6">
-            <Camera className="w-12 h-12 text-white/10" />
-            <p className="text-sm text-white/30 text-center">
+            <Camera className="w-12 h-12 text-foreground" />
+            <p className="text-sm text-foreground text-center">
               Point your camera at the contract to scan for risky clauses
             </p>
             <button
               onClick={startCamera}
-              className="px-6 py-3 rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white font-medium transition-colors flex items-center gap-2"
+              className="px-6 py-3 rounded-none bg-cyan-600 hover:bg-cyan-700 text-foreground font-medium transition-colors flex items-center gap-2"
               style={{ minHeight: "48px" }}
             >
               <Camera className="w-5 h-5" />
@@ -219,11 +219,11 @@ export default function CameraScannerPanel({
 
         {/* Camera Controls Overlay */}
         {cameraActive && (
-          <div className="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
+          <div className="absolute bottom-0 inset-x-0 p-3 bg-background from-black/80 to-transparent">
             <div className="flex items-center justify-between gap-2">
               <button
                 onClick={stopCamera}
-                className="p-2.5 rounded-xl bg-white/10 text-white/60 hover:text-white transition-colors"
+                className="p-2.5 rounded-none bg-muted text-foreground hover:text-foreground transition-colors"
                 style={{ minWidth: "44px", minHeight: "44px" }}
               >
                 <CameraOff className="w-5 h-5" />
@@ -232,7 +232,7 @@ export default function CameraScannerPanel({
               <button
                 onClick={handleScan}
                 disabled={scanning}
-                className="flex-1 py-3 rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white font-medium transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+                className="flex-1 py-3 rounded-none bg-cyan-600 hover:bg-cyan-700 text-foreground font-medium transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
                 style={{ minHeight: "48px" }}
               >
                 {scanning ? (
@@ -254,18 +254,14 @@ export default function CameraScannerPanel({
                   className="sr-only"
                 />
                 <div
-                  className={`w-8 h-4 rounded-full transition-colors ${
-                    autoScan ? "bg-cyan-500" : "bg-white/10"
-                  }`}
+                  className={`w-8 h-4 rounded-full transition-colors ${autoScan ? "bg-cyan-500" : "bg-muted"}`}
                 >
                   <div
-                    className={`w-3.5 h-3.5 rounded-full bg-white shadow transition-transform ${
-                      autoScan ? "translate-x-[18px]" : "translate-x-0.5"
-                    }`}
+                    className={`w-3.5 h-3.5 rounded-full bg-white shadow transition-transform ${autoScan ? "translate-x-[18px]" : "translate-x-0.5"}`}
                     style={{ marginTop: "1px" }}
                   />
                 </div>
-                <span className="text-[10px] text-white/40">Auto</span>
+                <span className="text-[10px] text-foreground">Auto</span>
               </label>
             </div>
           </div>
@@ -274,7 +270,7 @@ export default function CameraScannerPanel({
 
       {/* Error Display */}
       {error && cameraActive && (
-        <div className="rounded-xl border border-red-500/20 bg-red-500/5 p-3 flex items-center gap-2">
+        <div className="rounded-none border border-red-500/20 bg-red-500/5 p-3 flex items-center gap-2">
           <AlertTriangle className="w-4 h-4 text-red-400 flex-shrink-0" />
           <p className="text-xs text-red-400">{error}</p>
           <button
@@ -289,7 +285,7 @@ export default function CameraScannerPanel({
       {/* Results */}
       {clauses.length > 0 && (
         <div className="space-y-2">
-          <p className="text-xs text-white/30 font-medium px-1">
+          <p className="text-xs text-foreground font-medium px-1">
             {clauses.length} clause{clauses.length !== 1 ? "s" : ""} detected
           </p>
           {clauses.map((clause, idx) => {
@@ -299,7 +295,7 @@ export default function CameraScannerPanel({
             return (
               <div
                 key={idx}
-                className={`rounded-xl border ${colors.border} ${colors.bg} p-4 space-y-2`}
+                className={`rounded-none border ${colors.border} ${colors.bg} p-4 space-y-2`}
               >
                 <div className="flex items-start gap-2">
                   <span className="mt-0.5 flex-shrink-0">{icon}</span>
@@ -311,12 +307,12 @@ export default function CameraScannerPanel({
                         {clause.risk_level}
                       </span>
                       {clause.clause_type && (
-                        <span className="text-[10px] text-white/30 bg-white/5 px-1.5 py-0.5 rounded">
+                        <span className="text-[10px] text-foreground bg-muted px-1.5 py-0.5 rounded">
                           {clause.clause_type.replace(/_/g, " ")}
                         </span>
                       )}
                     </div>
-                    <p className="text-sm text-white/70 leading-relaxed line-clamp-3">
+                    <p className="text-sm text-foreground leading-relaxed line-clamp-3">
                       {clause.text}
                     </p>
                     {clause.risk_reason &&
@@ -336,7 +332,7 @@ export default function CameraScannerPanel({
       )}
 
       {/* Privacy Notice */}
-      <p className="text-[10px] text-white/15 text-center px-4">
+      <p className="text-[10px] text-foreground text-center px-4">
         🔒 Camera frames are processed in real-time and never stored
       </p>
     </div>

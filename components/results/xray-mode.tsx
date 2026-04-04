@@ -256,7 +256,7 @@ function OverlayContent({
                 {riskCounts.warning} Warning
               </span>
             )}
-            <span className="text-xs text-gray-600">
+            <span className="text-xs text-muted-foreground">
               {matchedCount}/{filteredClauses.length} matched
             </span>
           </div>
@@ -264,7 +264,7 @@ function OverlayContent({
 
         <div className="flex items-center gap-1.5">
           {dangerSegments.length > 0 && (
-            <div className="hidden sm:flex items-center gap-1 border-r border-gray-700 pr-2 mr-1">
+            <div className="hidden sm:flex items-center gap-1 border-r border-foreground border-2 pr-2 mr-1">
               <Button
                 variant="ghost"
                 size="icon"
@@ -273,7 +273,7 @@ function OverlayContent({
               >
                 <ChevronUp className="h-3.5 w-3.5" />
               </Button>
-              <span className="text-[11px] text-gray-400 w-8 text-center">
+              <span className="text-[11px] text-muted-foreground w-8 text-center">
                 {currentDangerIndex + 1}/{dangerSegments.length}
               </span>
               <Button
@@ -290,7 +290,7 @@ function OverlayContent({
           <Button
             variant="ghost"
             size="sm"
-            className="gap-1.5 text-xs text-gray-400 h-8 px-2"
+            className="gap-1.5 text-xs text-muted-foreground h-8 px-2"
             onClick={() => setShowSafe(!showSafe)}
           >
             {showSafe ? (
@@ -303,7 +303,7 @@ function OverlayContent({
             </span>
           </Button>
 
-          <div className="flex items-center gap-0.5 border-l border-gray-700 pl-1.5 ml-1">
+          <div className="flex items-center gap-0.5 border-l border-foreground border-2 pl-1.5 ml-1">
             <Button
               variant="ghost"
               size="icon"
@@ -312,7 +312,7 @@ function OverlayContent({
             >
               <ZoomOut className="h-3.5 w-3.5" />
             </Button>
-            <span className="text-[11px] text-gray-400 w-10 text-center">
+            <span className="text-[11px] text-muted-foreground w-10 text-center">
               {Math.round(zoom * 100)}%
             </span>
             <Button
@@ -395,7 +395,7 @@ function OverlayContent({
                     duration: 0.6,
                     delay: Math.min(index * 0.05, 2),
                   }}
-                  className="relative inline rounded-sm px-0.5 cursor-pointer transition-all duration-200 hover:brightness-125"
+                  className="relative inline rounded-none px-0.5 cursor-pointer transition-all duration-200 hover:brightness-125"
                   style={{
                     borderBottom: `2px solid ${style.border}`,
                     textDecorationColor: style.border,
@@ -419,7 +419,7 @@ function OverlayContent({
             })}
           </div>
 
-          <div className="px-8 py-4 border-t border-gray-800/60 flex items-center justify-between text-[11px] text-gray-600">
+          <div className="px-8 py-4 border-t border-foreground border-2/60 flex items-center justify-between text-[11px] text-muted-foreground">
             <span>
               🛡️ Analyzed by ClauseWall • {matchedCount} clauses highlighted
             </span>
