@@ -41,96 +41,92 @@ export default function StressTestBuilder({
   };
 
   return (
-    <Card className="bg-gray-900/50 border-gray-800">
-      <CardContent className="p-4">
-        <h4 className="text-sm font-semibold mb-3 flex items-center gap-2">
-          🎯 Custom Scenario Builder
-        </h4>
+    <div className="card-impact p-6 bg-white border-4 border-black">
+      <h4 className="text-lg font-black uppercase tracking-tight mb-6 flex items-center gap-2 text-black">
+        <span className="p-1 bg-black text-white">🎯</span> Custom Scenario Builder
+      </h4>
 
-        {/* Event selector */}
-        <div className="flex flex-wrap gap-2 mb-3">
-          <select
-            value={selectedType}
-            onChange={(e) => setSelectedType(e.target.value as LifeEventType)}
-            className="flex-1 min-w-[140px] px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-white focus:outline-none focus:ring-1 focus:ring-white/20"
-          >
-            {EVENT_OPTIONS.map((opt) => (
-              <option key={opt.type} value={opt.type}>
-                {opt.icon} {LIFE_EVENT_LABELS[opt.type]}
-              </option>
-            ))}
-          </select>
+      {/* Event selector */}
+      <div className="flex flex-wrap gap-4 mb-6">
+        <select
+          value={selectedType}
+          onChange={(e) => setSelectedType(e.target.value as LifeEventType)}
+          className="flex-1 min-w-[200px] px-4 py-3 border-4 border-black rounded-none text-sm font-bold uppercase tracking-widest text-black focus:outline-none focus:ring-0 focus:border-red-600 transition-colors"
+        >
+          {EVENT_OPTIONS.map((opt) => (
+            <option key={opt.type} value={opt.type}>
+              {opt.icon} {LIFE_EVENT_LABELS[opt.type]}
+            </option>
+          ))}
+        </select>
 
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-white/40">Month</span>
-            <input
-              type="number"
-              value={selectedMonth}
-              min={1}
-              max={contractMonths}
-              onChange={(e) =>
-                setSelectedMonth(
-                  Math.min(contractMonths, Math.max(1, parseInt(e.target.value) || 1))
-                )
-              }
-              className="w-16 px-2 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-white text-center focus:outline-none focus:ring-1 focus:ring-white/20"
-            />
-          </div>
-
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={addEvent}
-            className="gap-1"
-          >
-            <Plus className="h-3 w-3" />
-            Add
-          </Button>
+        <div className="flex items-center gap-3">
+          <span className="text-xs font-black uppercase tracking-widest text-black/50">Month</span>
+          <input
+            type="number"
+            value={selectedMonth}
+            min={1}
+            max={contractMonths}
+            onChange={(e) =>
+              setSelectedMonth(
+                Math.min(contractMonths, Math.max(1, parseInt(e.target.value) || 1))
+              )
+            }
+            className="w-20 px-3 py-3 border-4 border-black rounded-none text-sm font-bold text-center text-black focus:outline-none focus:ring-0 focus:border-red-600 transition-colors"
+          />
         </div>
 
-        {/* Selected events */}
-        {events.length > 0 && (
-          <div className="space-y-1.5 mb-3">
-            {events.map((event, i) => {
-              const opt = EVENT_OPTIONS.find((o) => o.type === event.type);
-              return (
-                <div
-                  key={i}
-                  className="flex items-center justify-between px-3 py-2 rounded-lg bg-white/[0.03] border border-white/5"
-                >
-                  <span className="text-sm text-white/70">
-                    {opt?.icon} {LIFE_EVENT_LABELS[event.type]} in month{" "}
-                    {event.month}
-                  </span>
-                  <button
-                    onClick={() => removeEvent(i)}
-                    className="text-white/30 hover:text-red-400 transition-colors"
-                  >
-                    <X className="h-3.5 w-3.5" />
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-        )}
-
-        {/* Run button */}
         <Button
-          onClick={() => onRun(events)}
-          disabled={events.length === 0 || isLoading}
-          className="w-full gap-2"
-          size="sm"
+          variant="outline"
+          onClick={addEvent}
+          className="h-[52px] rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-wider gap-2 px-6"
         >
-          {isLoading ? (
-            <>
-              <Loader2 className="h-3 w-3 animate-spin" />
-              Running...
-            </>
-          ) : (
-            `Run Custom Test (${events.length} events)`
-          )}
+          <Plus className="h-4 w-4" />
+          Add
         </Button>
-      </CardContent>
-    </Card>
+      </div>
+
+      {/* Selected events */}
+      {events.length > 0 && (
+        <div className="space-y-2 mb-6">
+          {events.map((event, i) => {
+            const opt = EVENT_OPTIONS.find((o) => o.type === event.type);
+            return (
+              <div
+                key={i}
+                className="flex items-center justify-between px-4 py-3 border-2 border-black bg-gray-50"
+              >
+                <span className="text-sm font-bold uppercase tracking-widest text-black">
+                  {opt?.icon} {LIFE_EVENT_LABELS[event.type]} in month{" "}
+                  {event.month}
+                </span>
+                <button
+                  onClick={() => removeEvent(i)}
+                  className="p-1 hover:bg-black hover:text-white border-2 border-transparent hover:border-black transition-colors"
+                >
+                  <X className="h-4 w-4 text-black hover:text-white" />
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Run button */}
+      <Button
+        onClick={() => onRun(events)}
+        disabled={events.length === 0 || isLoading}
+        className="w-full h-[52px] rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-wider gap-2"
+      >
+        {isLoading ? (
+          <>
+            <Loader2 className="h-5 w-5 animate-spin" />
+            Running...
+          </>
+        ) : (
+          `Run Custom Test (${events.length} events)`
+        )}
+      </Button>
+    </div>
   );
 }

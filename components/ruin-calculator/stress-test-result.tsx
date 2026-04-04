@@ -14,13 +14,11 @@ interface Props {
 export default function StressTestResultView({ result }: Props) {
   if (result.triggeredClauses.length === 0) {
     return (
-      <Card className="bg-green-500/5 border-green-500/20">
-        <CardContent className="p-4 text-center">
-          <p className="text-sm text-green-400">
-            ✅ No clauses triggered by this scenario. Your contract handles this well!
-          </p>
-        </CardContent>
-      </Card>
+      <div className="card-impact p-6 bg-green-50 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center">
+        <p className="text-sm font-black uppercase tracking-widest text-green-700">
+          ✅ No clauses triggered by this scenario. Your contract handles this well!
+        </p>
+      </div>
     );
   }
 
@@ -28,102 +26,98 @@ export default function StressTestResultView({ result }: Props) {
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
+      className="card-impact p-6 bg-white border-4 border-black border-t-0 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
     >
-      <Card className="bg-gray-900/50 border-gray-800">
-        <CardContent className="p-4">
-          {/* Header */}
-          <div className="flex items-center gap-2 mb-4">
-            <span className="text-lg">{result.scenario.icon}</span>
-            <h4 className="text-sm font-semibold">{result.scenario.label}</h4>
-            <Badge className="bg-red-500/15 text-red-400 border-red-500/30 text-xs ml-auto">
-              {formatINR(result.totalCurrentCost)}
-            </Badge>
-          </div>
+      <div className="relative">
+        {/* Header */}
+        <div className="flex items-center gap-3 mb-6 pb-4 border-b-4 border-black">
+          <span className="text-2xl p-2 bg-black">{result.scenario.icon}</span>
+          <h4 className="text-xl font-black uppercase tracking-tight text-black">{result.scenario.label}</h4>
+          <span className="ml-auto inline-block bg-red-600 text-white font-black uppercase tracking-widest px-4 py-2 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] shadow-black">
+            {formatINR(result.totalCurrentCost)}
+          </span>
+        </div>
 
-          {/* Cost breakdown table */}
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-white/5">
-                  <th className="text-left py-2 text-xs text-white/40 font-medium">
-                    Clause Triggered
-                  </th>
-                  <th className="text-right py-2 text-xs text-white/40 font-medium">
-                    This Cost
-                  </th>
-                  <th className="text-right py-2 text-xs text-white/40 font-medium">
-                    Fair Cost
-                  </th>
-                  <th className="text-right py-2 text-xs text-white/40 font-medium">
-                    Premium
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {result.triggeredClauses.map((tc, i) => (
-                  <tr
-                    key={i}
-                    className="border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors"
-                  >
-                    <td className="py-2.5">
-                      <div className="flex items-center gap-2">
-                        <Badge
-                          variant="outline"
-                          className="text-[10px] border-white/10 text-white/40"
-                        >
-                          #{tc.clauseNumber}
-                        </Badge>
-                        <span className="text-xs text-white/70">
-                          {tc.clauseType.replace(/_/g, " ")}
-                        </span>
-                        <span className="text-[10px] text-white/20">
-                          ({LIFE_EVENT_LABELS[tc.triggerEvent] || tc.triggerEvent})
-                        </span>
-                      </div>
-                    </td>
-                    <td className="py-2.5 text-right text-xs text-red-400 font-medium">
-                      {formatINR(tc.currentCost)}
-                    </td>
-                    <td className="py-2.5 text-right text-xs text-green-400/70">
-                      {formatINR(tc.fairCost)}
-                    </td>
-                    <td className="py-2.5 text-right text-xs text-orange-400 font-medium">
-                      {formatINR(tc.predatoryPremium)}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-              <tfoot>
-                <tr className="border-t border-white/10">
-                  <td className="py-3 text-xs font-bold text-white/80">
-                    TOTAL
+        {/* Cost breakdown table */}
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b-4 border-black">
+                <th className="text-left py-3 text-xs font-black text-black uppercase tracking-widest">
+                  Clause Triggered
+                </th>
+                <th className="text-right py-3 text-xs font-black text-black uppercase tracking-widest">
+                  This Cost
+                </th>
+                <th className="text-right py-3 text-xs font-black text-black uppercase tracking-widest">
+                  Fair Cost
+                </th>
+                <th className="text-right py-3 text-xs font-black text-black uppercase tracking-widest">
+                  Premium
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {result.triggeredClauses.map((tc, i) => (
+                <tr
+                  key={i}
+                  className="border-b-2 border-gray-200 hover:bg-gray-50 transition-colors"
+                >
+                  <td className="py-4">
+                    <div className="flex items-center gap-3">
+                      <span className="font-black font-mono text-sm bg-black text-white px-2 py-1">
+                        #{tc.clauseNumber}
+                      </span>
+                      <span className="text-sm font-bold uppercase tracking-widest text-black">
+                        {tc.clauseType.replace(/_/g, " ")}
+                      </span>
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-black/50 bg-gray-200 px-2 py-1">
+                        ({LIFE_EVENT_LABELS[tc.triggerEvent] || tc.triggerEvent})
+                      </span>
+                    </div>
                   </td>
-                  <td className="py-3 text-right text-sm font-bold text-red-400">
-                    {formatINR(result.totalCurrentCost)}
+                  <td className="py-4 text-right text-sm font-black text-red-600">
+                    {formatINR(tc.currentCost)}
                   </td>
-                  <td className="py-3 text-right text-sm font-bold text-green-400/70">
-                    {formatINR(result.totalFairCost)}
+                  <td className="py-4 text-right text-sm font-bold text-green-600">
+                    {formatINR(tc.fairCost)}
                   </td>
-                  <td className="py-3 text-right text-sm font-bold text-orange-400">
-                    {formatINR(result.totalPredatoryPremium)}
+                  <td className="py-4 text-right text-sm font-black text-orange-600">
+                    {formatINR(tc.predatoryPremium)}
                   </td>
                 </tr>
-              </tfoot>
-            </table>
-          </div>
+              ))}
+            </tbody>
+            <tfoot>
+              <tr className="border-t-4 border-black bg-gray-50">
+                <td className="py-4 px-2 text-sm font-black uppercase tracking-widest text-black">
+                  TOTAL
+                </td>
+                <td className="py-4 px-2 text-right text-lg font-black text-red-600">
+                  {formatINR(result.totalCurrentCost)}
+                </td>
+                <td className="py-4 px-2 text-right text-lg font-black text-green-600">
+                  {formatINR(result.totalFairCost)}
+                </td>
+                <td className="py-4 px-2 text-right text-lg font-black text-orange-600">
+                  {formatINR(result.totalPredatoryPremium)}
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
 
-          {/* Predatory premium callout */}
-          {result.totalPredatoryPremium > 0 && (
-            <div className="mt-3 p-3 rounded-lg bg-red-500/5 border border-red-500/15">
-              <p className="text-xs text-red-400">
-                🔴 Predatory clauses add{" "}
-                <strong>{formatINR(result.totalPredatoryPremium)}</strong> of
-                unnecessary risk in this scenario
-              </p>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+        {/* Predatory premium callout */}
+        {result.totalPredatoryPremium > 0 && (
+          <div className="mt-6 p-4 bg-red-100 border-4 border-red-600 shadow-[4px_4px_0px_0px_var(--tw-shadow-color)] shadow-red-600">
+            <p className="text-sm font-black uppercase tracking-widest text-red-900">
+              🔴 Predatory clauses add{" "}
+              <strong className="text-red-700">{formatINR(result.totalPredatoryPremium)}</strong> of
+              unnecessary risk in this scenario
+            </p>
+          </div>
+        )}
+      </div>
     </motion.div>
   );
 }

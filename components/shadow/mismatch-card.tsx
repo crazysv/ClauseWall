@@ -11,10 +11,10 @@ interface MismatchCardProps {
 }
 
 const SEVERITY_STYLES: Record<MismatchSeverity, { border: string; badge: string; bg: string; label: string }> = {
-  critical: { border: "border-l-red-500", badge: "bg-red-500/15 text-red-400", bg: "bg-red-500/5", label: "CRITICAL" },
-  major: { border: "border-l-orange-500", badge: "bg-orange-500/15 text-orange-400", bg: "bg-orange-500/5", label: "MAJOR" },
-  minor: { border: "border-l-yellow-500", badge: "bg-yellow-500/15 text-yellow-400", bg: "bg-yellow-500/5", label: "MINOR" },
-  info: { border: "border-l-blue-500", badge: "bg-blue-500/15 text-blue-400", bg: "bg-blue-500/5", label: "INFO" },
+  critical: { border: "border-red-600", badge: "bg-red-600 text-white", bg: "bg-red-100", label: "CRITICAL" },
+  major: { border: "border-orange-500", badge: "bg-orange-500 text-white", bg: "bg-orange-100", label: "MAJOR" },
+  minor: { border: "border-yellow-500", badge: "bg-yellow-400 text-black", bg: "bg-yellow-100", label: "MINOR" },
+  info: { border: "border-blue-500", badge: "bg-blue-600 text-white", bg: "bg-blue-100", label: "INFO" },
 };
 
 const TYPE_LABELS: Record<MismatchType, string> = {
@@ -28,11 +28,11 @@ const TYPE_LABELS: Record<MismatchType, string> = {
 };
 
 const ENFORCEABILITY_LABELS: Record<string, { label: string; color: string }> = {
-  strongly_enforceable: { label: "Strongly Enforceable", color: "text-green-400" },
-  moderately_enforceable: { label: "Moderately Enforceable", color: "text-yellow-400" },
-  weakly_enforceable: { label: "Weakly Enforceable", color: "text-orange-400" },
-  not_enforceable: { label: "Not Enforceable", color: "text-red-400" },
-  needs_legal_review: { label: "Needs Legal Review", color: "text-blue-400" },
+  strongly_enforceable: { label: "Strongly Enforceable", color: "text-green-700 bg-green-200 border-green-600" },
+  moderately_enforceable: { label: "Moderately Enforceable", color: "text-yellow-700 bg-yellow-200 border-yellow-600" },
+  weakly_enforceable: { label: "Weakly Enforceable", color: "text-orange-700 bg-orange-200 border-orange-600" },
+  not_enforceable: { label: "Not Enforceable", color: "text-red-700 bg-red-200 border-red-600" },
+  needs_legal_review: { label: "Needs Legal Review", color: "text-blue-700 bg-blue-200 border-blue-600" },
 };
 
 export default function MismatchCard({ mismatch, index }: MismatchCardProps) {
@@ -45,43 +45,46 @@ export default function MismatchCard({ mismatch, index }: MismatchCardProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
-      className={`rounded-xl border-l-4 ${severity.border} border border-white/5 bg-white/[0.02] overflow-hidden`}
+      className={`border-4 border-black ${severity.bg} shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all overflow-hidden flex flex-col`}
     >
       {/* Header */}
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full p-4 text-left hover:bg-white/[0.02] transition-colors"
+        className="w-full p-4 text-left border-l-8 transition-colors flex-1"
+        style={{ borderLeftColor: severity.border.replace('border-', '') }}
       >
-        <div className="flex items-center gap-2 flex-wrap mb-3">
-          <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${severity.badge}`}>
+        <div className="flex items-center gap-3 flex-wrap mb-4">
+          <span className={`px-2 py-1 text-xs font-black uppercase tracking-widest border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${severity.badge}`}>
             {severity.label}
           </span>
-          <span className="px-2 py-0.5 rounded text-[10px] bg-white/5 text-white/50">
+          <span className="px-2 py-1 text-xs font-black uppercase tracking-widest bg-white border-2 border-black text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
             {TYPE_LABELS[mismatch.mismatch_type] || mismatch.mismatch_type}
           </span>
           {mismatch.clause_number && (
-            <span className="px-2 py-0.5 rounded text-[10px] bg-white/5 text-white/50">
+            <span className="px-2 py-1 text-xs font-black uppercase tracking-widest bg-gray-200 border-2 border-black text-black">
               Clause {mismatch.clause_number}
             </span>
           )}
-          <ChevronDown className={`w-4 h-4 text-white/30 ml-auto transition-transform ${expanded ? "rotate-180" : ""}`} />
+          <div className="ml-auto bg-white border-2 border-black p-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+            <ChevronDown className={`w-5 h-5 text-black transition-transform ${expanded ? "rotate-180" : ""}`} />
+          </div>
         </div>
 
         {/* Promise vs Contract */}
-        <div className="space-y-2">
-          <div className="p-3 rounded-lg bg-amber-500/5 border border-amber-500/10">
-            <p className="text-[10px] text-amber-400/70 font-medium uppercase mb-1">💬 Promise</p>
-            <p className="text-sm text-amber-200/90">&ldquo;{mismatch.promise_says}&rdquo;</p>
-            <p className="text-xs text-white/30 mt-1">— {mismatch.promise.promised_by}{mismatch.promise.date ? `, ${mismatch.promise.date}` : ""}</p>
+        <div className="space-y-4">
+          <div className="p-4 bg-white border-4 border-black border-dashed shadow-[inset_4px_4px_0px_0px_rgba(0,0,0,0.05)]">
+            <p className="text-xs text-black font-black uppercase tracking-widest mb-2 bg-yellow-200 inline-block px-1 border-2 border-black">💬 Promise</p>
+            <p className="text-base font-bold text-black leading-snug">&ldquo;{mismatch.promise_says}&rdquo;</p>
+            <p className="text-xs font-black uppercase tracking-widest text-black/60 mt-3">— {mismatch.promise.promised_by}{mismatch.promise.date ? `, ${mismatch.promise.date}` : ""}</p>
           </div>
 
           <div className="flex items-center justify-center">
-            <span className="text-xs text-white/20 font-bold">⚡ vs</span>
+            <span className="text-sm text-white font-black uppercase tracking-widest bg-black px-3 py-1 border-2 border-black">⚡ VS</span>
           </div>
 
-          <div className="p-3 rounded-lg bg-slate-500/5 border border-slate-500/10">
-            <p className="text-[10px] text-slate-400/70 font-medium uppercase mb-1">📄 Contract</p>
-            <p className="text-sm text-slate-200/90">&ldquo;{mismatch.contract_says}&rdquo;</p>
+          <div className="p-4 bg-gray-800 border-4 border-black text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs text-black bg-white inline-block px-1 border-2 border-black font-black uppercase tracking-widest mb-2">📄 Contract</p>
+            <p className="text-base font-bold leading-snug">&ldquo;{mismatch.contract_says}&rdquo;</p>
           </div>
         </div>
       </button>
@@ -91,23 +94,23 @@ export default function MismatchCard({ mismatch, index }: MismatchCardProps) {
         <motion.div
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: "auto" }}
-          className="px-4 pb-4 space-y-3 border-t border-white/5"
+          className="px-4 pb-4 space-y-4 border-t-4 border-black bg-white pt-4"
         >
           {/* Explanation */}
-          <div className="pt-3">
-            <p className="text-xs text-white/40 flex items-center gap-1 mb-1">
-              <AlertTriangle className="w-3 h-3" /> What this means
+          <div className="p-4 bg-gray-100 border-4 border-black">
+            <p className="text-xs text-black font-black uppercase tracking-widest flex items-center gap-2 mb-2">
+              <AlertTriangle className="w-4 h-4" /> What this means
             </p>
-            <p className="text-sm text-white/70">{mismatch.explanation}</p>
+            <p className="text-sm font-bold text-black/80">{mismatch.explanation}</p>
           </div>
 
           {/* Financial Impact */}
           {(mismatch.financial_impact || mismatch.financial_description) && (
-            <div className="p-3 rounded-lg bg-red-500/5 border border-red-500/10">
-              <p className="text-xs text-red-400/70 flex items-center gap-1 mb-1">
-                <DollarSign className="w-3 h-3" /> Financial Impact
+            <div className="p-4 bg-red-100 border-4 border-red-600 shadow-[4px_4px_0px_0px_rgba(220,38,38,1)]">
+              <p className="text-xs text-red-900 font-black uppercase tracking-widest flex items-center gap-2 mb-2">
+                <DollarSign className="w-4 h-4" /> Financial Impact
               </p>
-              <p className="text-sm text-red-300">
+              <p className="text-sm font-bold text-red-800">
                 {mismatch.financial_impact ? `₹${mismatch.financial_impact.toLocaleString("en-IN")}` : ""}
                 {mismatch.financial_description && ` — ${mismatch.financial_description}`}
               </p>
@@ -116,20 +119,22 @@ export default function MismatchCard({ mismatch, index }: MismatchCardProps) {
 
           {/* Legal Status */}
           {mismatch.legal_significance && (
-            <div className="p-3 rounded-lg bg-blue-500/5 border border-blue-500/10">
-              <p className="text-xs text-blue-400/70 flex items-center gap-1 mb-1">
-                <Scale className="w-3 h-3" /> Legal Status: <span className={enforceability.color}>{enforceability.label}</span>
-              </p>
+            <div className="p-4 bg-blue-50 border-4 border-blue-600 shadow-[4px_4px_0px_0px_rgba(37,99,235,1)]">
+              <div className="flex flex-wrap items-center gap-2 mb-3 border-b-2 border-blue-600 pb-2">
+                <Scale className="w-4 h-4 text-blue-900" /> 
+                <span className="text-xs text-blue-900 font-black uppercase tracking-widest">Legal Status:</span>
+                <span className={`px-2 py-1 text-xs font-black uppercase tracking-widest border-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)] ${enforceability.color}`}>{enforceability.label}</span>
+              </div>
               {mismatch.legal_significance.reasoning && (
-                <p className="text-xs text-white/50 mt-1">{mismatch.legal_significance.reasoning}</p>
+                <p className="text-sm font-bold text-blue-900 mb-2">{mismatch.legal_significance.reasoning}</p>
               )}
               {mismatch.legal_significance.evidence_strength && (
-                <p className="text-xs text-white/40 mt-1">{mismatch.legal_significance.evidence_strength}</p>
+                <p className="text-xs font-black uppercase tracking-widest text-blue-800 bg-blue-200 inline-block px-2 py-1 border-2 border-blue-400 mb-2">{mismatch.legal_significance.evidence_strength}</p>
               )}
               {mismatch.legal_significance.applicable_laws.length > 0 && (
-                <div className="mt-2 flex flex-wrap gap-1">
+                <div className="mt-2 flex flex-wrap gap-2">
                   {mismatch.legal_significance.applicable_laws.map((law, i) => (
-                    <span key={i} className="px-1.5 py-0.5 rounded text-[9px] bg-blue-500/10 text-blue-300">
+                    <span key={i} className="px-2 py-1 border-2 border-blue-900 text-xs font-black uppercase tracking-widest bg-white text-blue-900">
                       {law.act} {law.section}
                     </span>
                   ))}
@@ -140,11 +145,11 @@ export default function MismatchCard({ mismatch, index }: MismatchCardProps) {
 
           {/* Recommendation */}
           {mismatch.recommendation && (
-            <div className="p-3 rounded-lg bg-green-500/5 border border-green-500/10">
-              <p className="text-xs text-green-400/70 flex items-center gap-1 mb-1">
-                <Lightbulb className="w-3 h-3" /> What to do
+            <div className="p-4 bg-green-100 border-4 border-green-600 shadow-[4px_4px_0px_0px_rgba(22,163,74,1)]">
+              <p className="text-xs text-green-900 font-black uppercase tracking-widest flex items-center gap-2 mb-2">
+                <Lightbulb className="w-4 h-4" /> What to do
               </p>
-              <p className="text-sm text-green-200/80">{mismatch.recommendation}</p>
+              <p className="text-sm font-bold text-green-900">{mismatch.recommendation}</p>
             </div>
           )}
         </motion.div>

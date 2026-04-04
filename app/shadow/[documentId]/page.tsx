@@ -138,51 +138,45 @@ export default function ShadowPage() {
   }
 
   return (
-    <div className="relative min-h-screen">
-      {/* Background */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-amber-500/3 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-orange-500/3 rounded-full blur-3xl" />
-      </div>
-
-      <div className="relative px-4 sm:px-6 lg:px-8 py-8 max-w-5xl mx-auto">
+    <div className="relative min-h-screen bg-white text-black">
+      <div className="relative px-4 sm:px-6 lg:px-8 py-8 max-w-6xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-3">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 pb-4 border-b-4 border-black gap-4">
+          <div className="flex items-center gap-4">
             <Link href={`/results/${documentId}`}>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <ArrowLeft className="w-4 h-4" />
+              <Button variant="outline" size="icon" className="h-12 w-12 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all rounded-none">
+                <ArrowLeft className="w-6 h-6 text-black" />
               </Button>
             </Link>
             <div>
-              <h1 className="text-xl sm:text-2xl font-bold flex items-center gap-2">
-                <FileSearch className="w-6 h-6 text-amber-400" />
+              <h1 className="text-2xl sm:text-4xl font-black uppercase tracking-tight flex items-center gap-3">
+                <span className="bg-black text-white p-2 border-2 border-black">
+                  <FileSearch className="w-8 h-8" />
+                </span>
                 Shadow Agreement Detector
               </h1>
-              <p className="text-sm text-muted-foreground mt-0.5">
+              <p className="text-sm font-bold uppercase tracking-widest text-black/60 mt-2 bg-gray-100 inline-block px-2 py-1">
                 Compare verbal promises against your contract
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
             {analysis && (
               <>
                 <Button
                   variant="outline"
-                  size="sm"
                   onClick={() => { setViewMode("upload"); }}
-                  className="gap-2 text-xs"
+                  className="h-12 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-widest rounded-none text-xs gap-2"
                 >
                   Re-Analyze
                 </Button>
                 <Button
-                  variant="outline"
-                  size="sm"
+                  variant="default"
                   onClick={handleDownloadReport}
-                  className="gap-2 text-xs"
+                  className="h-12 bg-black text-white border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,0.5)] transition-all font-black uppercase tracking-widest rounded-none text-xs gap-2"
                 >
-                  <Download className="w-3 h-3" />
+                  <Download className="w-4 h-4" />
                   PDF Report
                 </Button>
               </>
@@ -209,20 +203,19 @@ export default function ShadowPage() {
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center"
+                  className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
                 >
-                  <div className="bg-gray-950 rounded-2xl border border-white/10 p-8 max-w-sm w-full mx-4 text-center space-y-4">
-                    <div className="relative mx-auto w-16 h-16">
-                      <Loader2 className="w-16 h-16 text-amber-400 animate-spin" />
-                      <div className="absolute inset-0 w-16 h-16 bg-amber-500/15 blur-xl rounded-full animate-pulse" />
+                  <div className="bg-white border-8 border-black shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] p-8 sm:p-12 max-w-lg w-full text-center space-y-6">
+                    <div className="relative mx-auto w-20 h-20">
+                      <Loader2 className="w-20 h-20 text-black animate-spin" />
                     </div>
-                    <h3 className="text-lg font-semibold">Analyzing Evidence...</h3>
-                    <div className="space-y-1 text-sm text-white/50">
-                      <p>📝 Extracting promises from evidence</p>
-                      <p>🔍 Cross-referencing against contract</p>
-                      <p>⚖️ Checking legal enforceability</p>
+                    <h3 className="text-2xl font-black uppercase tracking-widest text-black border-b-4 border-black pb-4">Analyzing Evidence</h3>
+                    <div className="space-y-3 text-sm font-bold uppercase tracking-widest text-black/70 text-left bg-gray-100 p-4 border-4 border-black">
+                      <p>📝 Extracting promises from evidence...</p>
+                      <p>🔍 Cross-referencing against contract...</p>
+                      <p>⚖️ Checking legal enforceability...</p>
                     </div>
-                    <p className="text-xs text-white/30">This may take 30-90 seconds</p>
+                    <p className="text-xs font-black text-black bg-yellow-200 py-2 border-2 border-black uppercase">Takes 30-90 seconds</p>
                   </div>
                 </motion.div>
               )}
@@ -236,19 +229,21 @@ export default function ShadowPage() {
               className="space-y-8"
             >
               {/* Trust Score + Summary */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="flex justify-center">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="flex justify-center border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white p-6">
                   <TrustScoreGauge
                     score={analysis.overall_trust_score}
                     totalPromises={analysis.total_promises_found}
                     totalMismatches={analysis.total_mismatches}
                   />
                 </div>
-                <ShadowSummaryCard analysis={analysis} />
+                <div className="border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white p-0">
+                  <ShadowSummaryCard analysis={analysis} />
+                </div>
               </div>
 
               {/* Tab Navigation */}
-              <div className="flex gap-1 bg-white/[0.02] rounded-lg p-1 border border-white/5">
+              <div className="flex flex-wrap sm:flex-nowrap gap-2 bg-gray-100 border-4 border-black p-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                 {([
                   { key: "mismatches" as const, label: `Mismatches (${analysis.mismatches.length})` },
                   { key: "timeline" as const, label: `Timeline (${analysis.promises.length})` },
@@ -257,10 +252,10 @@ export default function ShadowPage() {
                   <button
                     key={tab.key}
                     onClick={() => setActiveTab(tab.key)}
-                    className={`flex-1 py-2 px-3 rounded text-sm transition-colors ${
+                    className={`flex-1 py-3 px-4 text-xs sm:text-sm font-black uppercase tracking-widest transition-all border-4 border-transparent ${
                       activeTab === tab.key
-                        ? "bg-white/10 text-white font-medium"
-                        : "text-white/40 hover:text-white/60"
+                        ? "bg-black text-white border-black shadow-[inset_4px_4px_0px_0px_rgba(255,255,255,0.2)]"
+                        : "text-black hover:bg-gray-300 hover:border-black"
                     }`}
                   >
                     {tab.label}
@@ -277,21 +272,27 @@ export default function ShadowPage() {
                   exit={{ opacity: 0, y: -10 }}
                 >
                   {activeTab === "mismatches" && (
-                    <MismatchList mismatches={analysis.mismatches} />
+                     <div className="card-impact p-6 bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+                       <MismatchList mismatches={analysis.mismatches} />
+                     </div>
                   )}
                   {activeTab === "timeline" && (
-                    <PromiseTimeline promises={analysis.promises} />
+                     <div className="card-impact p-6 bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+                       <PromiseTimeline promises={analysis.promises} />
+                     </div>
                   )}
                   {activeTab === "table" && (
-                    <ComparisonTable mismatches={analysis.mismatches} />
+                    <div className="card-impact p-6 bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+                      <ComparisonTable mismatches={analysis.mismatches} />
+                    </div>
                   )}
                 </motion.div>
               </AnimatePresence>
 
               {/* Legal Notice */}
-              <div className="p-4 rounded-xl bg-blue-500/5 border border-blue-500/10 text-xs text-blue-300/60">
-                <p className="font-medium text-blue-300/80 mb-1">⚖️ Legal Note</p>
-                <p>
+              <div className="p-6 bg-blue-100 border-4 border-blue-600 shadow-[6px_6px_0px_0px_rgba(37,99,235,1)]">
+                <p className="font-black uppercase tracking-widest text-blue-900 mb-3 text-lg border-b-4 border-blue-600 pb-2 inline-block">⚖️ Legal Note</p>
+                <p className="text-sm font-bold uppercase tracking-widest text-blue-800 leading-relaxed">
                   Under Section 92 of the Indian Evidence Act, oral agreements that contradict written contracts are generally not admissible. However, provisos 1-3 allow evidence of fraud, misrepresentation, or separate oral agreements on matters not covered by the written document. WhatsApp and email evidence may be admissible under Section 65B of the IT Act, 2000 with a proper certificate.
                 </p>
               </div>

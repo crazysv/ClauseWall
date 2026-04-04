@@ -39,10 +39,10 @@ export default function MismatchList({ mismatches }: MismatchListProps) {
 
   if (mismatches.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-12 text-center">
-        <PartyPopper className="w-12 h-12 text-green-400 mb-3" />
-        <h3 className="text-lg font-semibold text-green-300">No mismatches found!</h3>
-        <p className="text-sm text-white/40 mt-1 max-w-sm">
+      <div className="flex flex-col items-center justify-center p-8 text-center bg-green-50 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <PartyPopper className="w-16 h-16 text-green-600 mb-4" />
+        <h3 className="text-xl font-black uppercase tracking-widest text-black mb-2">No mismatches found!</h3>
+        <p className="text-sm font-bold uppercase tracking-widest text-black/60 max-w-sm">
           The promises match the contract. Your agreement appears trustworthy. 🎉
         </p>
       </div>
@@ -50,54 +50,56 @@ export default function MismatchList({ mismatches }: MismatchListProps) {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {/* Filters */}
-      <div className="flex flex-wrap items-center gap-2">
-        <div className="flex items-center gap-1 text-xs text-white/40">
-          <Filter className="w-3 h-3" />
+      <div className="flex flex-wrap items-center gap-3 bg-gray-100 p-3 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <div className="flex items-center gap-2 text-sm font-black uppercase tracking-widest text-black pr-2">
+          <Filter className="w-4 h-4" />
           Severity:
         </div>
         {(["all", "critical", "major", "minor", "info"] as const).map(sev => (
           <button
             key={sev}
             onClick={() => setFilterSeverity(sev)}
-            className={`px-2 py-1 rounded text-xs transition-colors ${
+            className={`px-3 py-2 text-xs font-black uppercase tracking-widest transition-all border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-y-0.5 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] ${
               filterSeverity === sev
-                ? "bg-white/10 text-white"
-                : "text-white/40 hover:text-white/60 hover:bg-white/5"
+                ? "bg-black text-white"
+                : "bg-white text-black hover:bg-gray-200"
             }`}
           >
-            {sev === "all" ? "All" : sev.charAt(0).toUpperCase() + sev.slice(1)}
+            {sev === "all" ? "All" : sev}
             {sev !== "all" && (
-              <span className="ml-1 text-white/20">
-                ({mismatches.filter(m => m.severity === sev).length})
+              <span className={`ml-2 px-1 ${filterSeverity === sev ? "bg-white text-black" : "bg-black text-white"}`}>
+                {mismatches.filter(m => m.severity === sev).length}
               </span>
             )}
           </button>
         ))}
 
-        <div className="w-px h-4 bg-white/10 mx-1 hidden sm:block" />
+        <div className="w-1 h-8 bg-black mx-2 hidden sm:block" />
 
         <button
           onClick={() => setSortBy(sortBy === "severity" ? "financial" : "severity")}
-          className="flex items-center gap-1 px-2 py-1 rounded text-xs text-white/40 hover:text-white/60 hover:bg-white/5"
+          className="flex items-center gap-2 px-3 py-2 text-xs font-black uppercase tracking-widest transition-all border-2 border-black bg-yellow-200 text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-y-0.5 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] ml-auto"
         >
-          <ArrowUpDown className="w-3 h-3" />
+          <ArrowUpDown className="w-4 h-4" />
           {sortBy === "severity" ? "By Severity" : "By Impact"}
         </button>
       </div>
 
       {/* Mismatch Cards */}
-      <div className="space-y-3">
+      <div className="space-y-4">
         {filtered.map((mismatch, i) => (
           <MismatchCard key={mismatch.id} mismatch={mismatch} index={i} />
         ))}
       </div>
 
       {filtered.length === 0 && mismatches.length > 0 && (
-        <p className="text-center text-sm text-white/30 py-6">
-          No mismatches match the selected filter.
-        </p>
+        <div className="p-4 bg-gray-100 border-4 border-black border-dashed text-center">
+          <p className="text-sm font-black uppercase tracking-widest text-black/50">
+            No mismatches match the selected filter.
+          </p>
+        </div>
       )}
     </div>
   );

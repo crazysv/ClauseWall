@@ -51,25 +51,29 @@ export default function MonteCarloChart({ histogram, percentiles }: Props) {
         <BarChart data={chartData} margin={{ top: 20, right: 10, bottom: 10, left: 10 }}>
           <XAxis
             dataKey="range"
-            tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 10 }}
-            axisLine={{ stroke: "rgba(255,255,255,0.1)" }}
+            tick={{ fill: "#000000", fontSize: 10, fontWeight: 900 }}
+            axisLine={{ stroke: "#000000", strokeWidth: 4 }}
             tickLine={false}
             interval="preserveStartEnd"
           />
           <YAxis
-            tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 10 }}
+            tick={{ fill: "#000000", fontSize: 10, fontWeight: 900 }}
             axisLine={false}
             tickLine={false}
             tickFormatter={(v: number) => `${v}%`}
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: "rgba(17,17,17,0.95)",
-              border: "1px solid rgba(255,255,255,0.1)",
-              borderRadius: "12px",
+              backgroundColor: "#ffffff",
+              border: "4px solid #000000",
+              borderRadius: "0px",
               padding: "12px",
+              boxShadow: "4px 4px 0px 0px rgba(0,0,0,1)",
+              color: "#000000",
+              fontWeight: 900,
             }}
-            labelStyle={{ color: "rgba(255,255,255,0.7)", fontSize: 12 }}
+            itemStyle={{ color: "#000000" }}
+            labelStyle={{ color: "#000000", fontSize: 12, fontWeight: 900, textTransform: "uppercase" }}
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             formatter={(value: any, _name: any, props: any) => [
               `${value}% of scenarios (${props.payload.count} runs)`,
@@ -87,29 +91,31 @@ export default function MonteCarloChart({ histogram, percentiles }: Props) {
                 x={chartData[binIndex]?.range}
                 stroke={pl.color}
                 strokeDasharray="4 4"
-                strokeWidth={2}
+                strokeWidth={4}
                 label={{
                   value: pl.label,
                   position: "top",
                   fill: pl.color,
-                  fontSize: 11,
-                  fontWeight: 600,
+                  fontSize: 12,
+                  fontWeight: 900,
                 }}
               />
             );
           })}
-          <Bar dataKey="percentage" radius={[4, 4, 0, 0]} maxBarSize={20}>
+          <Bar dataKey="percentage" radius={[0, 0, 0, 0]} maxBarSize={20}>
             {chartData.map((entry) => (
               <Cell
                 key={entry.index}
                 fill={getHistogramBarColor(entry.index, chartData.length)}
-                fillOpacity={0.8}
+                fillOpacity={1}
+                stroke="#000000"
+                strokeWidth={2}
               />
             ))}
           </Bar>
         </BarChart>
       </ResponsiveContainer>
-      <div className="flex items-center justify-center gap-4 mt-2 text-[10px] text-white/40">
+      <div className="flex items-center justify-center gap-4 mt-6 text-xs font-bold uppercase tracking-widest text-black/50">
         <span>X: Total cost over contract period</span>
         <span>Y: % of scenarios</span>
       </div>

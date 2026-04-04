@@ -7,10 +7,10 @@ interface ComparisonTableProps {
 }
 
 const SEVERITY_DOT: Record<MismatchSeverity, string> = {
-  critical: "bg-red-500",
-  major: "bg-orange-500",
-  minor: "bg-yellow-500",
-  info: "bg-blue-500",
+  critical: "bg-red-600 border-red-900 border-2",
+  major: "bg-orange-500 border-orange-900 border-2",
+  minor: "bg-yellow-400 border-yellow-900 border-2",
+  info: "bg-blue-500 border-blue-900 border-2",
 };
 
 const TYPE_LABELS: Record<string, string> = {
@@ -27,49 +27,49 @@ export default function ComparisonTable({ mismatches }: ComparisonTableProps) {
   if (mismatches.length === 0) return null;
 
   return (
-    <div className="space-y-3">
-      <h3 className="text-sm font-medium text-white/60">
-        📊 Promise vs. Contract — Side by Side
+    <div className="space-y-4">
+      <h3 className="text-xl font-black uppercase tracking-widest text-black border-b-4 border-black pb-2">
+        📊 Promise vs. Contract
       </h3>
 
-      <div className="overflow-x-auto rounded-xl border border-white/5">
+      <div className="overflow-x-auto border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-white">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-white/5 bg-white/[0.02]">
-              <th className="py-2 px-3 text-left text-xs font-medium text-white/40 w-8">#</th>
-              <th className="py-2 px-3 text-left text-xs font-medium text-amber-400/60">💬 Promise</th>
-              <th className="py-2 px-3 text-left text-xs font-medium text-slate-400/60">📄 Contract</th>
-              <th className="py-2 px-3 text-left text-xs font-medium text-white/40">Status</th>
-              <th className="py-2 px-3 text-left text-xs font-medium text-white/40">Clause</th>
+            <tr className="border-b-4 border-black bg-gray-100">
+              <th className="py-3 px-4 text-left text-xs font-black uppercase tracking-widest text-black w-8 border-r-4 border-black">#</th>
+              <th className="py-3 px-4 text-left text-xs font-black uppercase tracking-widest text-black border-r-4 border-black bg-yellow-200">💬 Promise</th>
+              <th className="py-3 px-4 text-left text-xs font-black uppercase tracking-widest text-white border-r-4 border-black bg-black">📄 Contract</th>
+              <th className="py-3 px-4 text-left text-xs font-black uppercase tracking-widest text-black border-r-4 border-black">Status</th>
+              <th className="py-3 px-4 text-left text-xs font-black uppercase tracking-widest text-black">Clause</th>
             </tr>
           </thead>
           <tbody>
             {mismatches.map((m, i) => (
-              <tr key={m.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
-                <td className="py-3 px-3 text-xs text-white/30 align-top">{i + 1}</td>
-                <td className="py-3 px-3 align-top max-w-[200px]">
-                  <p className="text-sm text-amber-200/80 leading-relaxed line-clamp-3">
+              <tr key={m.id} className="border-b-4 border-black last:border-b-0 hover:bg-gray-50 transition-colors">
+                <td className="py-4 px-4 text-sm font-black text-black align-top border-r-4 border-black">{i + 1}</td>
+                <td className="py-4 px-4 align-top max-w-[250px] border-r-4 border-black bg-yellow-50">
+                  <p className="text-sm font-bold text-black leading-relaxed line-clamp-4">
                     {m.promise_says}
                   </p>
-                  <p className="text-[10px] text-white/20 mt-1">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mt-2 bg-yellow-200 inline-block px-1 border-2 border-black">
                     — {m.promise.promised_by}{m.promise.date ? `, ${m.promise.date}` : ""}
                   </p>
                 </td>
-                <td className="py-3 px-3 align-top max-w-[200px]">
-                  <p className="text-sm text-slate-300/70 leading-relaxed line-clamp-3">
+                <td className="py-4 px-4 align-top max-w-[250px] border-r-4 border-black bg-gray-50">
+                  <p className="text-sm font-bold text-black leading-relaxed line-clamp-4">
                     {m.contract_says}
                   </p>
                 </td>
-                <td className="py-3 px-3 align-top">
-                  <div className="flex items-center gap-1.5">
-                    <div className={`w-2 h-2 rounded-full flex-shrink-0 ${SEVERITY_DOT[m.severity]}`} />
-                    <span className="text-xs text-white/50 whitespace-nowrap">
+                <td className="py-4 px-4 align-top border-r-4 border-black">
+                  <div className="flex items-center gap-2">
+                    <div className={`w-3 h-3 flex-shrink-0 ${SEVERITY_DOT[m.severity]}`} />
+                    <span className="text-xs font-black uppercase tracking-widest text-black whitespace-nowrap">
                       {TYPE_LABELS[m.mismatch_type] || m.mismatch_type}
                     </span>
                   </div>
                 </td>
-                <td className="py-3 px-3 align-top">
-                  <span className="text-xs text-white/30">
+                <td className="py-4 px-4 align-top">
+                  <span className="text-xs font-black uppercase tracking-widest text-black bg-gray-200 px-2 py-1 border-2 border-black">
                     {m.clause_number ? `#${m.clause_number}` : "—"}
                   </span>
                 </td>

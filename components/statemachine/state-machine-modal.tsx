@@ -24,10 +24,10 @@ interface StateMachineModalProps {
 // ============================================
 
 const SAFETY_CONFIG: Record<SafetyLevel, { color: string; bg: string; border: string; label: string }> = {
-  safe: { color: "text-green-400", bg: "bg-green-500/10", border: "border-green-500/20", label: "Safe" },
-  moderate: { color: "text-amber-400", bg: "bg-amber-500/10", border: "border-amber-500/20", label: "Moderate Risk" },
-  dangerous: { color: "text-red-400", bg: "bg-red-500/10", border: "border-red-500/20", label: "Dangerous" },
-  critical: { color: "text-red-500", bg: "bg-red-500/15", border: "border-red-500/30", label: "Critical" },
+  safe: { color: "text-green-900", bg: "bg-green-100", border: "border-green-800", label: "Safe" },
+  moderate: { color: "text-amber-900", bg: "bg-amber-100", border: "border-amber-800", label: "Moderate Risk" },
+  dangerous: { color: "text-red-900", bg: "bg-red-200", border: "border-red-900", label: "Dangerous" },
+  critical: { color: "text-red-900", bg: "bg-red-400", border: "border-red-900", label: "Critical" },
 };
 
 // ============================================
@@ -94,7 +94,7 @@ export default function StateMachineModal({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4"
+        className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-2 sm:p-4"
         onClick={onClose}
       >
         <motion.div
@@ -102,16 +102,16 @@ export default function StateMachineModal({
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
           transition={{ duration: 0.2 }}
-          className="bg-gray-950 border border-white/10 rounded-2xl w-full max-w-7xl h-[95vh] flex flex-col overflow-hidden"
+          className="bg-white border-4 border-black shadow-[12px_12px_0_0_rgba(0,0,0,1)] w-full max-w-7xl h-[95vh] flex flex-col overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
           {/* ── HEADER ── */}
-          <div className="flex items-center justify-between px-4 sm:px-6 py-3 border-b border-white/5 flex-shrink-0">
-            <div className="flex items-center gap-3">
-              <span className="text-lg">🔄</span>
+          <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b-4 border-black bg-gray-100 flex-shrink-0">
+            <div className="flex items-center gap-4">
+              <span className="text-3xl bg-white border-2 border-black p-1">🔄</span>
               <div>
-                <h2 className="font-semibold text-sm sm:text-base">Trap Detector</h2>
-                <p className="text-xs text-gray-400">
+                <h2 className="font-black text-lg uppercase tracking-widest text-black">Trap Detector</h2>
+                <p className="text-xs font-bold text-black/60 uppercase tracking-widest mt-1">
                   {sm.metadata.totalStates} states · {sm.metadata.totalTransitions} transitions · {report.trapAnalysis.length} traps
                 </p>
               </div>
@@ -122,51 +122,51 @@ export default function StateMachineModal({
                 <button
                   key={m}
                   onClick={() => { setGraphMode(m); if (m !== "path") setSelectedPath(null); }}
-                  className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                  className={`px-3 py-2 text-xs font-black uppercase tracking-widest border-2 transition-all ${
                     graphMode === m
-                      ? "bg-blue-500/20 text-blue-300 border border-blue-500/30"
-                      : "bg-white/[0.03] text-gray-400 border border-white/5 hover:text-gray-200"
+                      ? "bg-black text-white border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)] translate-y-0.5 shadow-none"
+                      : "bg-white text-black border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:translate-y-0.5 hover:shadow-none"
                   }`}
                 >
                   {m === "explore" ? "Explore" : m === "simulate" ? "Simulate" : "Paths"}
                 </button>
               ))}
-              <button onClick={onClose} className="p-1.5 hover:bg-white/10 rounded-lg transition-colors ml-2">
-                <X className="h-4 w-4" />
+              <button onClick={onClose} className="p-2 bg-white text-black border-2 border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:translate-y-0.5 hover:shadow-none transition-all ml-2">
+                <X className="h-5 w-5" />
               </button>
             </div>
           </div>
 
           {/* ── GRAPH AREA ── */}
-          <div className="flex-1 min-h-0 relative" style={{ maxHeight: "55%" }}>
+          <div className="flex-1 min-h-0 relative bg-gray-50 border-b-4 border-black" style={{ maxHeight: "55%" }}>
             <StateGraph
               stateMachine={sm}
               report={report}
               mode={graphMode}
               selectedPath={selectedPath || undefined}
-              className="h-full"
+              className="h-full border-0 !rounded-none"
             />
           </div>
 
           {/* ── TABS ── */}
-          <div className="border-t border-white/5 flex-shrink-0">
-            <div className="flex gap-0 overflow-x-auto border-b border-white/5">
+          <div className="flex-shrink-0 bg-white">
+            <div className="flex gap-0 overflow-x-auto border-b-4 border-black bg-gray-100">
               {TABS.map((tab) => {
                 const Icon = tab.icon;
                 return (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center gap-1.5 px-3 sm:px-4 py-2.5 text-xs font-medium whitespace-nowrap transition-all border-b-2 ${
+                    className={`flex items-center gap-2 px-5 py-3 text-xs font-black uppercase tracking-widest whitespace-nowrap transition-all border-r-4 border-black border-b-4 -mb-1 ${
                       activeTab === tab.id
-                        ? "border-blue-400 text-blue-300"
-                        : "border-transparent text-gray-500 hover:text-gray-300"
+                        ? "bg-white text-black border-b-white"
+                        : "bg-gray-100 text-black/60 border-b-transparent hover:bg-gray-200"
                     }`}
                   >
-                    <Icon className="h-3.5 w-3.5" />
+                    <Icon className="h-4 w-4" />
                     {tab.label}
                     {tab.id === "traps" && report.trapAnalysis.length > 0 && (
-                      <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-red-500/20 text-red-400">
+                      <span className="px-2 py-0.5 text-[10px] bg-red-500 text-white border-2 border-black ml-1">
                         {report.trapAnalysis.length}
                       </span>
                     )}
@@ -176,38 +176,38 @@ export default function StateMachineModal({
             </div>
 
             {/* ── TAB CONTENT ── */}
-            <div className="overflow-y-auto p-4 sm:p-6" style={{ maxHeight: "40vh" }}>
+            <div className="overflow-y-auto p-4 sm:p-6 bg-white" style={{ maxHeight: "40vh" }}>
               {/* OVERVIEW */}
               {activeTab === "overview" && (
-                <div className="space-y-4">
-                  <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full ${safety.bg} ${safety.border} border`}>
-                    <Shield className={`h-4 w-4 ${safety.color}`} />
-                    <span className={`text-sm font-semibold ${safety.color}`}>{safety.label}</span>
+                <div className="space-y-6">
+                  <div className={`inline-flex items-center gap-2 px-4 py-2 border-4 shadow-[4px_4px_0_0_rgba(0,0,0,1)] ${safety.bg} ${safety.border}`}>
+                    <Shield className={`h-5 w-5 ${safety.color}`} />
+                    <span className={`text-sm font-black uppercase tracking-widest ${safety.color}`}>{safety.label}</span>
                   </div>
 
-                  <p className="text-sm text-gray-300 leading-relaxed">{report.summary}</p>
+                  <p className="text-sm font-bold text-black leading-relaxed bg-gray-100 p-4 border-4 border-black">{report.summary}</p>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     {[
-                      { label: "States", value: sm.metadata.totalStates, color: "text-blue-400" },
-                      { label: "Transitions", value: sm.metadata.totalTransitions, color: "text-cyan-400" },
-                      { label: "Traps", value: report.trapAnalysis.length, color: report.trapAnalysis.length > 0 ? "text-red-400" : "text-green-400" },
-                      { label: "Confidence", value: `${Math.round(sm.metadata.confidence * 100)}%`, color: "text-gray-300" },
+                      { label: "States", value: sm.metadata.totalStates, color: "text-blue-900", bg: "bg-blue-100", border: "border-blue-900" },
+                      { label: "Transitions", value: sm.metadata.totalTransitions, color: "text-cyan-900", bg: "bg-cyan-100", border: "border-cyan-900" },
+                      { label: "Traps", value: report.trapAnalysis.length, color: report.trapAnalysis.length > 0 ? "text-red-900" : "text-green-900", bg: report.trapAnalysis.length > 0 ? "bg-red-100" : "bg-green-100", border: report.trapAnalysis.length > 0 ? "border-red-900" : "border-green-800" },
+                      { label: "Confidence", value: `${Math.round(sm.metadata.confidence * 100)}%`, color: "text-gray-900", bg: "bg-gray-100", border: "border-gray-900" },
                     ].map((stat) => (
-                      <div key={stat.label} className="p-3 rounded-lg bg-white/[0.02] border border-white/5 text-center">
-                        <p className={`text-xl font-bold ${stat.color}`}>{stat.value}</p>
-                        <p className="text-[10px] text-gray-500 mt-0.5">{stat.label}</p>
+                      <div key={stat.label} className={`p-4 border-4 shadow-[4px_4px_0_0_rgba(0,0,0,1)] ${stat.bg} ${stat.border}`}>
+                        <p className={`text-2xl font-black ${stat.color}`}>{stat.value}</p>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mt-1">{stat.label}</p>
                       </div>
                     ))}
                   </div>
 
                   {report.recommendations.length > 0 && (
-                    <div>
-                      <h4 className="text-xs font-semibold text-gray-300 mb-2">Recommendations</h4>
-                      <ul className="space-y-1.5">
+                    <div className="pt-4 border-t-4 border-black border-dashed">
+                      <h4 className="text-xs font-black uppercase tracking-widest text-black mb-3">Recommendations</h4>
+                      <ul className="space-y-2">
                         {report.recommendations.map((rec, i) => (
-                          <li key={i} className="text-xs text-gray-400 flex gap-2">
-                            <span className="text-amber-400 flex-shrink-0">•</span>
+                          <li key={i} className="text-sm font-bold text-black flex gap-3 bg-yellow-50 p-3 border-2 border-black">
+                            <span className="text-xl flex-shrink-0">💡</span>
                             <span>{rec}</span>
                           </li>
                         ))}
@@ -219,12 +219,12 @@ export default function StateMachineModal({
 
               {/* TRAP STATES */}
               {activeTab === "traps" && (
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {report.trapAnalysis.length === 0 ? (
-                    <div className="text-center py-8">
-                      <span className="text-3xl">✅</span>
-                      <p className="text-sm text-green-400 mt-2 font-medium">No trap states detected</p>
-                      <p className="text-xs text-gray-500 mt-1">This contract has safe exits from every state.</p>
+                    <div className="text-center py-10 bg-green-50 border-4 border-green-800 shadow-[6px_6px_0_0_rgba(22,101,52,1)]">
+                      <span className="text-5xl">✅</span>
+                      <p className="text-lg text-green-900 mt-4 font-black uppercase tracking-widest">No trap states detected</p>
+                      <p className="text-sm font-bold text-green-800 mt-2">This contract has safe exits from every state.</p>
                     </div>
                   ) : (
                     report.trapAnalysis.map((trap) => (
@@ -245,13 +245,13 @@ export default function StateMachineModal({
 
               {/* PATHS */}
               {activeTab === "paths" && (
-                <div className="space-y-4">
+                <div className="space-y-6">
                   {selectablePaths.length === 0 ? (
-                    <p className="text-sm text-gray-500 text-center py-8">No paths available to visualize.</p>
+                    <p className="text-sm font-bold text-black/60 text-center py-8 border-4 border-black border-dashed">No paths available to visualize.</p>
                   ) : (
                     <>
                       <select
-                        className="w-full bg-gray-900 border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200"
+                        className="w-full bg-white border-4 border-black p-3 text-sm font-black uppercase tracking-widest text-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] focus:outline-none appearance-none cursor-pointer"
                         value={selectedPath ? selectablePaths.findIndex((sp) => sp.path === selectedPath) : ""}
                         onChange={(e) => {
                           const idx = parseInt(e.target.value);
@@ -261,50 +261,63 @@ export default function StateMachineModal({
                           }
                         }}
                       >
-                        <option value="">Select a path to visualize...</option>
+                        <option value="">-- SELECT A PATH TO VISUALIZE --</option>
                         {selectablePaths.map((sp, i) => (
                           <option key={i} value={i}>{sp.label}</option>
                         ))}
                       </select>
 
                       {selectedPath && (
-                        <div className="p-4 rounded-lg bg-white/[0.02] border border-white/5 space-y-3">
-                          <div className="flex flex-wrap gap-1 items-center">
+                        <div className="p-5 bg-gray-100 border-4 border-black shadow-[6px_6px_0_0_rgba(0,0,0,1)] space-y-4">
+                          <div className="flex flex-wrap gap-2 items-center">
                             {selectedPath.states.map((sid, i) => {
                               const st = sm.states.find((s) => s.id === sid);
                               if (!st) return null;
                               return (
-                                <span key={`${sid}-${i}`} className="flex items-center gap-1">
-                                  {i > 0 && <span className="text-gray-600 text-xs">→</span>}
-                                  <span className="text-xs px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-gray-300">
+                                <span key={`${sid}-${i}`} className="flex items-center gap-2">
+                                  {i > 0 && <span className="text-black font-black">→</span>}
+                                  <span className="text-xs font-black uppercase tracking-widest px-2 py-1 bg-white border-2 border-black text-black shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
                                     {st.name}
                                   </span>
                                 </span>
                               );
                             })}
                           </div>
-                          {selectedPath.totalDuration && (
-                            <p className="text-xs text-gray-400">⏱ Duration: {selectedPath.totalDuration.value} {selectedPath.totalDuration.unit}</p>
-                          )}
-                          {selectedPath.totalFinancialImpact && (
-                            <p className="text-xs text-amber-400">💰 Financial: {selectedPath.totalFinancialImpact}</p>
-                          )}
-                          <p className="text-xs text-gray-400">📊 Probability: {selectedPath.probability}</p>
+                          
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t-2 border-black border-dashed">
+                            {selectedPath.totalDuration && (
+                              <div className="bg-white border-2 border-black p-2">
+                                <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-1">Duration</p>
+                                <p className="text-xs font-bold text-black">{selectedPath.totalDuration.value} {selectedPath.totalDuration.unit}</p>
+                              </div>
+                            )}
+                            {selectedPath.totalFinancialImpact && (
+                              <div className="bg-red-50 border-2 border-red-900 p-2">
+                                <p className="text-[10px] font-black uppercase tracking-widest text-red-900/60 mb-1">Financial Impact</p>
+                                <p className="text-xs font-bold text-red-900">{selectedPath.totalFinancialImpact}</p>
+                              </div>
+                            )}
+                            <div className="bg-white border-2 border-black p-2">
+                              <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-1">Probability</p>
+                              <p className="text-xs font-bold text-black">{selectedPath.probability}</p>
+                            </div>
+                          </div>
                         </div>
                       )}
 
                       {/* Asymmetries */}
                       {report.pathAnalysis.asymmetries.length > 0 && (
-                        <div className="mt-4">
-                          <h4 className="text-xs font-semibold text-gray-300 mb-2">⚖️ Power Asymmetries</h4>
-                          <div className="space-y-2">
+                        <div className="mt-6 pt-6 border-t-4 border-black border-dashed">
+                          <h4 className="text-sm font-black uppercase tracking-widest text-black mb-4">⚖️ Power Asymmetries</h4>
+                          <div className="space-y-3">
                             {report.pathAnalysis.asymmetries.map((a, i) => (
-                              <div key={i} className={`text-xs p-2 rounded-lg border ${
-                                a.severity === "high" ? "bg-red-500/5 border-red-500/20 text-red-300" :
-                                a.severity === "medium" ? "bg-amber-500/5 border-amber-500/20 text-amber-300" :
-                                "bg-gray-500/5 border-gray-500/20 text-gray-300"
+                              <div key={i} className={`text-sm font-bold p-4 border-4 shadow-[4px_4px_0_0_rgba(0,0,0,1)] ${
+                                a.severity === "high" ? "bg-red-100 border-red-900 text-red-900" :
+                                a.severity === "medium" ? "bg-yellow-100 border-yellow-600 text-yellow-900" :
+                                "bg-gray-100 border-gray-500 text-black"
                               }`}>
-                                {a.description} (favors {a.favoredParty})
+                                <span className="font-black uppercase tracking-widest block mb-1">Favors {a.favoredParty}</span>
+                                {a.description}
                               </div>
                             ))}
                           </div>
@@ -319,7 +332,7 @@ export default function StateMachineModal({
               {activeTab === "timeline" && (
                 <div>
                   {report.timelineEvents.length === 0 ? (
-                    <p className="text-sm text-gray-500 text-center py-8">No timeline data available.</p>
+                    <p className="text-sm font-bold text-black/60 text-center py-8 border-4 border-black border-dashed">No timeline data available.</p>
                   ) : (
                     <TimelineSlider
                       events={report.timelineEvents}
@@ -332,27 +345,27 @@ export default function StateMachineModal({
 
               {/* RAW DATA */}
               {activeTab === "data" && (
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <p className="text-xs text-gray-400">State machine JSON data</p>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between bg-gray-100 border-4 border-black p-3">
+                    <p className="text-xs font-black uppercase tracking-widest text-black">State machine JSON data</p>
                     <button
                       onClick={() => {
                         navigator.clipboard.writeText(JSON.stringify(report, null, 2));
                       }}
-                      className="text-xs text-blue-400 hover:text-blue-300 transition-colors"
+                      className="text-xs font-black uppercase tracking-widest text-black bg-white border-2 border-black px-3 py-1 shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:translate-y-0.5 hover:shadow-none transition-all"
                     >
                       Copy to clipboard
                     </button>
                   </div>
                   <button
                     onClick={() => setDataExpanded(!dataExpanded)}
-                    className="flex items-center gap-2 text-xs text-gray-400 hover:text-gray-200"
+                    className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-black border-2 border-black p-2 w-full justify-center hover:bg-black hover:text-white transition-colors"
                   >
-                    <ChevronDown className={`h-3 w-3 transition-transform ${dataExpanded ? "rotate-180" : ""}`} />
+                    <ChevronDown className={`h-4 w-4 transition-transform ${dataExpanded ? "rotate-180" : ""}`} />
                     {dataExpanded ? "Collapse" : "Expand"} JSON
                   </button>
                   {dataExpanded && (
-                    <pre className="text-[10px] text-gray-400 bg-black/40 p-4 rounded-lg overflow-auto max-h-[50vh] border border-white/5">
+                    <pre className="text-xs font-mono text-black bg-gray-50 p-4 border-4 border-black overflow-auto max-h-[50vh] shadow-[inset_4px_4px_0_0_rgba(0,0,0,0.05)]">
                       {JSON.stringify(report, null, 2)}
                     </pre>
                   )}

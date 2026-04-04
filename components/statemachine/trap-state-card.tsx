@@ -19,9 +19,9 @@ interface TrapStateCardProps {
 }
 
 const SEVERITY_STYLES: Record<TrapSeverity, { badge: string; border: string }> = {
-  critical: { badge: "bg-red-500/20 text-red-400 border-red-500/30", border: "border-l-red-500" },
-  high: { badge: "bg-orange-500/20 text-orange-400 border-orange-500/30", border: "border-l-orange-500" },
-  medium: { badge: "bg-amber-500/20 text-amber-400 border-amber-500/30", border: "border-l-amber-400" },
+  critical: { badge: "bg-red-200 text-red-900 border-red-900 border-2", border: "border-l-red-900 border-l-[8px]" },
+  high: { badge: "bg-orange-200 text-orange-900 border-orange-900 border-2", border: "border-l-orange-900 border-l-[8px]" },
+  medium: { badge: "bg-amber-200 text-amber-900 border-amber-900 border-2", border: "border-l-amber-500 border-l-[8px]" },
 };
 
 export default function TrapStateCard({ trap, stateMachine, onHighlightPath, documentId }: TrapStateCardProps) {
@@ -39,18 +39,15 @@ export default function TrapStateCard({ trap, stateMachine, onHighlightPath, doc
           return (
             <span key={`${sid}-${i}`} className="flex items-center gap-1">
               {i > 0 && (
-                <svg width="16" height="10" className="flex-shrink-0">
-                  <line x1="0" y1="5" x2="16" y2="5" stroke="#475569" strokeWidth="1.5" />
-                  <polygon points="12,2 16,5 12,8" fill="#475569" />
-                </svg>
+                <span className="font-black text-black">→</span>
               )}
-              <span className={`flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded-full border ${
+              <span className={`flex items-center gap-2 text-xs font-black uppercase tracking-widest px-2 py-1 border-2 ${
                 isTrap
-                  ? "bg-red-500/15 border-red-500/30 text-red-300"
-                  : "bg-white/5 border-white/10 text-gray-300"
+                  ? "bg-red-100 border-red-900 text-red-900"
+                  : "bg-gray-100 border-black text-black"
               }`}>
                 <span
-                  className="w-2 h-2 rounded-full flex-shrink-0"
+                  className="w-2.5 h-2.5 flex-shrink-0 border border-black"
                   style={{
                     backgroundColor: isTrap ? "#ef4444" :
                       st.type === "terminal_safe" ? "#22c55e" :
@@ -74,30 +71,30 @@ export default function TrapStateCard({ trap, stateMachine, onHighlightPath, doc
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`rounded-lg bg-red-500/[0.03] border border-white/5 border-l-4 ${style.border} overflow-hidden`}
+      className={`bg-white border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] ${style.border}`}
     >
-      <div className="p-4">
+      <div className="p-5">
         {/* Header */}
-        <div className="flex items-start justify-between gap-2 mb-2">
-          <div className="flex items-center gap-2">
-            <span className="text-base">💀</span>
-            <h4 className="font-semibold text-sm">TRAP: {trap.stateName}</h4>
+        <div className="flex items-start justify-between gap-4 mb-4">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl bg-red-100 border-2 border-red-900 p-1">💀</span>
+            <h4 className="font-black text-lg uppercase tracking-widest text-black">TRAP: {trap.stateName}</h4>
           </div>
-          <span className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold uppercase ${style.badge}`}>
+          <span className={`text-xs px-2 py-1 font-black uppercase tracking-widest ${style.badge}`}>
             {trap.severity}
           </span>
         </div>
 
         {/* Trap type */}
-        <p className="text-xs text-gray-400 mb-2">
-          <span className="font-medium text-gray-300">TYPE:</span>{" "}
-          {trap.trapType.replace(/_/g, " ")} — {trap.description.substring(0, 120)}{trap.description.length > 120 ? "…" : ""}
+        <p className="text-sm font-bold text-black bg-gray-100 border-4 border-black p-3 mb-4 leading-relaxed">
+          <span className="font-black uppercase tracking-widest border-b-2 border-black">TYPE: {trap.trapType.replace(/_/g, " ")}</span><br/>
+          {trap.description.substring(0, 120)}{trap.description.length > 120 ? "…" : ""}
         </p>
 
         {/* Path leading here */}
         {trap.pathsLeadingHere.length > 0 && (
-          <div className="mb-2">
-            <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">
+          <div className="mb-4 bg-gray-50 border-2 border-black p-3 shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
+            <p className="text-xs text-black font-black uppercase tracking-widest mb-1">
               How you get trapped:
             </p>
             {renderInlinePath(trap.pathsLeadingHere[0])}
@@ -105,7 +102,7 @@ export default function TrapStateCard({ trap, stateMachine, onHighlightPath, doc
         )}
 
         {/* Financial impact */}
-        <div className="flex items-center gap-1.5 text-xs text-amber-400 mb-2">
+        <div className="flex items-center gap-2 text-sm font-black uppercase tracking-widest text-red-900 bg-red-100 border-2 border-red-900 px-3 py-2 mb-4 shadow-[2px_2px_0_0_rgba(127,29,29,1)] inline-flex">
           <span>💰</span>
           <span>Financial Impact: {trap.financialImpact}</span>
         </div>
@@ -113,9 +110,9 @@ export default function TrapStateCard({ trap, stateMachine, onHighlightPath, doc
         {/* Expand/collapse */}
         <button
           onClick={() => setExpanded(!expanded)}
-          className="flex items-center gap-1 text-[11px] text-gray-500 hover:text-gray-300 transition-colors"
+          className="flex items-center justify-center gap-2 text-xs font-black uppercase tracking-widest text-black border-2 border-black p-2 w-full hover:bg-black hover:text-white transition-colors"
         >
-          <ChevronDown className={`h-3 w-3 transition-transform ${expanded ? "rotate-180" : ""}`} />
+          <ChevronDown className={`h-4 w-4 transition-transform ${expanded ? "rotate-180" : ""}`} />
           {expanded ? "Less details" : "More details"}
         </button>
 
@@ -124,47 +121,47 @@ export default function TrapStateCard({ trap, stateMachine, onHighlightPath, doc
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="mt-3 space-y-3"
+            className="mt-4 space-y-4 pt-4 border-t-2 border-black border-dashed"
           >
             {/* Fair alternative */}
-            <div className="p-2.5 rounded-lg bg-green-500/5 border border-green-500/10">
-              <p className="text-[10px] text-green-400 font-semibold uppercase tracking-wider mb-1">
+            <div className="p-3 bg-green-100 border-4 border-green-800 shadow-[4px_4px_0_0_rgba(22,101,52,1)]">
+              <p className="text-xs text-green-900 font-black uppercase tracking-widest mb-1 border-b-2 border-green-800 pb-1">
                 Fair Alternative:
               </p>
-              <p className="text-xs text-green-300">{trap.fairAlternative}</p>
+              <p className="text-sm font-bold text-green-900 pt-1">{trap.fairAlternative}</p>
             </div>
 
             {/* Legal issue */}
             {trap.legalIssue && (
-              <div className="flex items-start gap-1.5 text-xs">
-                <span className="flex-shrink-0">⚖️</span>
-                <p className="text-gray-300">{trap.legalIssue}</p>
+              <div className="flex items-start gap-2 text-sm bg-blue-100 p-3 border-4 border-blue-900 shadow-[4px_4px_0_0_rgba(30,58,138,1)]">
+                <span className="flex-shrink-0 text-xl">⚖️</span>
+                <p className="font-bold text-blue-900">{trap.legalIssue}</p>
               </div>
             )}
 
             {/* Related clauses */}
             {trap.relatedClauses.length > 0 && (
-              <p className="text-xs text-gray-400">
-                <span className="text-gray-500">Related clauses:</span> {trap.relatedClauses.join(", ")}
+              <p className="text-sm font-bold text-black border-2 border-black p-2 bg-gray-100">
+                <span className="font-black uppercase tracking-widest">Related clauses:</span> {trap.relatedClauses.join(", ")}
               </p>
             )}
 
             {/* Escape paths */}
             {hasEscapes ? (
-              <div>
-                <p className="text-[10px] text-blue-400 font-semibold uppercase tracking-wider mb-1">
+              <div className="border-4 border-blue-900 p-3 shadow-[4px_4px_0_0_rgba(30,58,138,1)]">
+                <p className="text-xs text-blue-900 font-black uppercase tracking-widest mb-2 border-b-2 border-blue-900 pb-1">
                   Escape paths:
                 </p>
                 {trap.outgoingPaths.slice(0, 2).map((path, i) => (
-                  <div key={i}>
+                  <div key={i} className="bg-white p-2 border-2 border-blue-900 mb-2 last:mb-0">
                     {renderInlinePath(path)}
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="flex items-center gap-1.5 p-2 rounded-lg bg-red-500/10 border border-red-500/15">
-                <AlertTriangle className="h-3.5 w-3.5 text-red-400 flex-shrink-0" />
-                <p className="text-xs text-red-300">No escape paths — this is an absolute trap</p>
+              <div className="flex items-center gap-2 p-3 bg-red-100 border-4 border-red-900 shadow-[4px_4px_0_0_rgba(127,29,29,1)]">
+                <AlertTriangle className="h-5 w-5 text-red-900 flex-shrink-0" />
+                <p className="text-sm font-black uppercase tracking-widest text-red-900">No escape paths — absolute trap</p>
               </div>
             )}
           </motion.div>
@@ -172,11 +169,11 @@ export default function TrapStateCard({ trap, stateMachine, onHighlightPath, doc
       </div>
 
       {/* Actions */}
-      <div className="flex items-center gap-2 px-4 py-2.5 bg-white/[0.02] border-t border-white/5">
+      <div className="flex flex-wrap items-center gap-2 px-5 py-3 bg-gray-100 border-t-4 border-black">
         {trap.pathsLeadingHere.length > 0 && onHighlightPath && (
           <button
             onClick={() => onHighlightPath(trap.pathsLeadingHere[0])}
-            className="text-[11px] text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1"
+            className="text-[11px] font-black uppercase tracking-widest text-black bg-white border-2 border-black px-2 py-1 shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:translate-y-0.5 hover:shadow-none transition-all flex items-center gap-1"
           >
             <ExternalLink className="h-3 w-3" />
             Highlight on Graph
@@ -188,14 +185,14 @@ export default function TrapStateCard({ trap, stateMachine, onHighlightPath, doc
           <>
             <Link
               href={`/escape/${documentId}`}
-              className="inline-flex items-center gap-1.5 text-[11px] text-emerald-400/70 hover:text-emerald-400 transition-colors"
+              className="inline-flex items-center gap-1.5 text-[11px] font-black uppercase tracking-widest text-emerald-900 bg-emerald-100 border-2 border-emerald-900 px-2 py-1 shadow-[2px_2px_0_0_rgba(6,78,59,1)] hover:translate-y-0.5 hover:shadow-none transition-all"
             >
               <DoorOpen className="w-3 h-3" />
               Get escape plan →
             </Link>
             <Link
               href={`/negotiate/${documentId}`}
-              className="inline-flex items-center gap-1.5 text-[11px] text-blue-400/70 hover:text-blue-400 transition-colors"
+              className="inline-flex items-center gap-1.5 text-[11px] font-black uppercase tracking-widest text-blue-900 bg-blue-100 border-2 border-blue-900 px-2 py-1 shadow-[2px_2px_0_0_rgba(30,58,138,1)] hover:translate-y-0.5 hover:shadow-none transition-all"
             >
               <MessageSquare className="w-3 h-3" />
               Negotiate →

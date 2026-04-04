@@ -20,7 +20,7 @@ export default function StressTestGrid({
   onRunTest,
 }: Props) {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {scenarios.map((scenario, i) => {
         const result = results.get(scenario.id);
         const isLoading = loadingId === scenario.id;
@@ -31,43 +31,41 @@ export default function StressTestGrid({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.05 }}
+            className="flex flex-col h-full"
           >
-            <Card
-              className={`bg-gray-900/50 border-gray-800 hover:border-gray-700 transition-all h-full ${
-                result ? "border-l-4 border-l-red-500/50" : ""
+            <div
+              className={`flex-1 flex flex-col p-5 bg-white border-4 border-black transition-all ${
+                result ? "border-l-8 border-l-red-500 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]" : "shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               }`}
             >
-              <CardContent className="p-4 flex flex-col h-full">
-                <div className="text-2xl mb-2">{scenario.icon}</div>
-                <h4 className="text-sm font-semibold mb-1 flex-1">
-                  {scenario.label}
-                </h4>
-                <p className="text-[10px] text-white/30 mb-3 line-clamp-2">
-                  {scenario.cascadeDescription}
-                </p>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="w-full text-xs gap-1.5"
-                  onClick={() => onRunTest(scenario.id)}
-                  disabled={isLoading}
-                >
-                  {isLoading ? (
-                    <>
-                      <Loader2 className="h-3 w-3 animate-spin" />
-                      Running...
-                    </>
-                  ) : result ? (
-                    "Re-run ▶"
-                  ) : (
-                    <>
-                      <Play className="h-3 w-3" />
-                      Run
-                    </>
-                  )}
-                </Button>
-              </CardContent>
-            </Card>
+              <div className="text-3xl mb-3">{scenario.icon}</div>
+              <h4 className="text-sm font-black uppercase tracking-widest text-black mb-2">
+                {scenario.label}
+              </h4>
+              <p className="text-xs font-bold text-black/60 mb-5 flex-1 leading-snug">
+                {scenario.cascadeDescription}
+              </p>
+              <Button
+                variant="outline"
+                className="w-full h-[40px] rounded-none border-4 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-y-0.5 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-wider text-[10px] gap-2"
+                onClick={() => onRunTest(scenario.id)}
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                    Running...
+                  </>
+                ) : result ? (
+                  "Re-run ▶"
+                ) : (
+                  <>
+                    <Play className="h-3 w-3" />
+                    Run
+                  </>
+                )}
+              </Button>
+            </div>
           </motion.div>
         );
       })}

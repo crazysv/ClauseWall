@@ -28,43 +28,37 @@ export default function RiskAdjustedHero({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-gray-900/80 via-gray-900/60 to-gray-900/80 backdrop-blur-xl p-6 sm:p-8"
+      className="relative card-impact-emphasis bg-[#ffff00] p-6 sm:p-10 border-4 border-black shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
     >
-      {/* Background glow */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-red-500/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-500/5 rounded-full blur-3xl" />
-      </div>
-
       <div className="relative">
         {/* Header */}
-        <div className="mb-6">
-          <h2 className="text-xl sm:text-2xl font-bold mb-1">
-            📊 Financial Risk Analysis
+        <div className="mb-8 border-b-4 border-black pb-4">
+          <h2 className="text-2xl sm:text-4xl font-black uppercase tracking-tight text-black mb-2 flex items-center gap-3">
+            <span className="bg-black text-white p-2 text-xl inline-block">📊</span> Financial Risk Analysis
           </h2>
-          <p className="text-sm text-white/40">
+          <p className="text-sm font-bold uppercase tracking-widest text-black/70">
             {documentName} • {documentType} • {jurisdiction}
           </p>
         </div>
 
         {/* Cost comparison */}
-        <div className="grid grid-cols-1 sm:grid-cols-[1fr,auto,1fr] gap-4 sm:gap-6 items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-[1fr,auto,1fr] gap-4 sm:gap-8 items-center">
           {/* Advertised cost */}
-          <div className="p-5 rounded-xl bg-white/[0.03] border border-white/10">
-            <p className="text-xs text-white/40 uppercase tracking-wider mb-2 font-medium">
+          <div className="p-6 border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-sm font-black text-black uppercase tracking-widest mb-4">
               Advertised Cost
             </p>
             <motion.p
-              className="text-3xl sm:text-4xl font-bold text-white"
+              className="text-4xl sm:text-5xl font-black text-black"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
             >
               {formatINR(riskAdjusted.baseMonthlyCost)}
             </motion.p>
-            <p className="text-sm text-white/30 mt-1">/month</p>
-            <p className="text-xs text-white/20 mt-2">
-              (what they tell you)
+            <p className="text-sm font-bold uppercase tracking-widest text-black/50 mt-2">/month</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-black/40 mt-3 bg-gray-200 inline-block px-2 py-1">
+              (What they tell you)
             </p>
           </div>
 
@@ -74,27 +68,29 @@ export default function RiskAdjustedHero({
               initial={{ x: -10, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.5 }}
+              className="bg-black p-3 rounded-full"
             >
-              <ArrowRight className="w-8 h-8 text-red-400" />
+              <ArrowRight className="w-8 h-8 text-white" />
             </motion.div>
           </div>
 
           {/* Real cost */}
-          <div className="p-5 rounded-xl bg-red-500/5 border border-red-500/20">
-            <p className="text-xs text-red-400/70 uppercase tracking-wider mb-2 font-medium">
+          <div className="p-6 border-4 border-black bg-red-500 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-white">
+            <p className="text-sm font-black uppercase tracking-widest mb-4 text-white">
               Real Cost (Risk-Adjusted)
             </p>
             <motion.p
-              className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent"
+              className="text-4xl sm:text-6xl font-black text-white tracking-tighter"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6 }}
+              style={{ WebkitTextStroke: "2px black" }}
             >
               {formatINR(riskAdjusted.adjustedMonthlyCost)}
             </motion.p>
-            <p className="text-sm text-red-400/60 mt-1">/month</p>
+            <p className="text-sm font-bold uppercase tracking-widest text-white/80 mt-2">/month</p>
             <motion.p
-              className="text-sm text-red-400 font-semibold mt-2"
+              className="text-sm font-black uppercase tracking-widest text-black bg-white inline-block px-3 py-1 border-2 border-black mt-4 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8 }}
@@ -106,7 +102,7 @@ export default function RiskAdjustedHero({
 
         {/* Footer */}
         <motion.p
-          className="text-xs text-white/25 mt-6 text-center"
+          className="text-xs font-bold uppercase tracking-widest text-black/50 mt-8 text-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}

@@ -18,7 +18,7 @@ const DISPLAY_PERCENTILES = [
 
 export default function PercentileCards({ percentiles }: Props) {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
       {DISPLAY_PERCENTILES.map((p, i) => {
         const color = getPercentileColor(p.percentile);
         const value = percentiles[p.key];
@@ -30,28 +30,22 @@ export default function PercentileCards({ percentiles }: Props) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
           >
-            <Card className={`${color.bg} ${color.border} border`}>
-              <CardContent className="p-4 text-center">
-                <p className="text-xs text-white/50 mb-1 font-medium uppercase tracking-wider">
-                  {p.label}
-                </p>
-                <motion.p
-                  className={`text-2xl font-bold ${color.text}`}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: i * 0.1 + 0.3 }}
-                >
-                  {formatINRCompact(value)}
-                </motion.p>
-                <p className="text-[10px] text-white/30 mt-1">
-                  {getPercentileLabel(p.percentile)}
-                </p>
-                <div
-                  className="w-3 h-3 rounded-full mx-auto mt-2"
-                  style={{ backgroundColor: color.fill }}
-                />
-              </CardContent>
-            </Card>
+            <div className={`p-4 text-center border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all`} style={{ borderTopWidth: "8px", borderTopColor: color.fill }}>
+              <p className="text-xs text-black font-black uppercase tracking-widest mb-2">
+                {p.label}
+              </p>
+              <motion.p
+                className={`text-3xl font-black text-black`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: i * 0.1 + 0.3 }}
+              >
+                {formatINRCompact(value)}
+              </motion.p>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-black/50 mt-3 bg-gray-100 py-1 inline-block px-2">
+                {getPercentileLabel(p.percentile)}
+              </p>
+            </div>
           </motion.div>
         );
       })}

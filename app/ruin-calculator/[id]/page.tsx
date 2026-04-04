@@ -210,26 +210,25 @@ export default function RuinCalculatorPage() {
   // ═══════════════════════════════════════════
   if (loading) {
     return (
-      <div className="min-h-screen bg-background p-4 sm:p-8 max-w-5xl mx-auto">
-        <Skeleton className="h-6 w-48 mb-4" />
-        <Skeleton className="h-4 w-96 mb-8" />
+      <div className="min-h-screen bg-background p-4 sm:p-8 max-w-7xl mx-auto py-10 md:py-16">
+        <Skeleton className="h-10 w-64 mb-6 border-4 border-black" />
+        <Skeleton className="h-6 w-96 mb-8 border-2 border-black" />
         <div className="space-y-6">
-          <Skeleton className="h-48 rounded-2xl" />
-          <Skeleton className="h-80 rounded-xl" />
-          <div className="grid grid-cols-4 gap-3">
+          <Skeleton className="h-48 rounded-none border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]" />
+          <Skeleton className="h-80 rounded-none border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]" />
+          <div className="grid grid-cols-4 gap-4">
             {[1, 2, 3, 4].map((i) => (
-              <Skeleton key={i} className="h-24 rounded-xl" />
+              <Skeleton key={i} className="h-24 rounded-none border-4 border-black" />
             ))}
           </div>
         </div>
         <div className="flex flex-col items-center justify-center mt-12 gap-4">
-          <div className="relative">
-            <Loader2 className="h-12 w-12 text-cyan-500 animate-spin" />
-            <div className="absolute inset-0 h-12 w-12 bg-cyan-500/20 blur-xl rounded-full animate-pulse" />
+          <div className="relative p-6 border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+            <Loader2 className="h-12 w-12 text-black animate-spin" />
           </div>
-          <div className="text-center">
-            <p className="text-lg font-semibold">Running Monte Carlo Simulation</p>
-            <p className="text-sm text-white/40 mt-1">
+          <div className="text-center mt-4">
+            <p className="text-xl font-black uppercase tracking-tight">Running Monte Carlo Simulation</p>
+            <p className="text-sm font-bold text-gray-600 uppercase tracking-widest mt-2">
               10,000 scenarios × 36 months — pure computation, no AI
             </p>
           </div>
@@ -243,15 +242,17 @@ export default function RuinCalculatorPage() {
   // ═══════════════════════════════════════════
   if (error || !analysis) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4 px-4">
-        <XCircle className="h-12 w-12 text-red-500" />
-        <p className="text-red-400 text-center">{error || "Something went wrong"}</p>
-        <div className="flex gap-3">
-          <Button onClick={fetchAnalysis} variant="outline">
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 px-4">
+        <div className="border-4 border-black p-6 bg-red-100 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <XCircle className="h-16 w-16 text-red-600 mx-auto mb-4" />
+          <p className="text-red-900 text-center font-black uppercase text-xl">{error || "Something went wrong"}</p>
+        </div>
+        <div className="flex gap-4">
+          <Button onClick={fetchAnalysis} className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-wider">
             Try Again
           </Button>
           <Link href={`/results/${documentId}`}>
-            <Button variant="outline">Back to Results</Button>
+            <Button variant="outline" className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-wider">Back to Results</Button>
           </Link>
         </div>
       </div>
@@ -259,20 +260,14 @@ export default function RuinCalculatorPage() {
   }
 
   return (
-    <div className="relative px-4 sm:px-6 lg:px-8 py-8 pb-24 sm:pb-8">
-      {/* Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-red-500/5 rounded-full blur-3xl" />
-      </div>
-
-      <div className="relative mx-auto max-w-5xl">
+    <div className="min-h-screen bg-background">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-10 md:py-16">
         {/* Back Button */}
         <button
           onClick={() => router.push(`/results/${documentId}`)}
-          className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors mb-6"
+          className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors mb-8"
         >
-          <ArrowLeft className="h-4 w-4" />
+          <ArrowLeft className="h-5 w-5" />
           Back to Results
         </button>
 
@@ -290,12 +285,12 @@ export default function RuinCalculatorPage() {
           />
 
           {/* Config toggle */}
-          <div className="mt-4 flex justify-center">
+          <div className="mt-8 flex justify-center">
             <button
               onClick={() => setConfigOpen(!configOpen)}
-              className="text-xs text-white/30 hover:text-white/50 transition-colors"
+              className="text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors border-2 border-black px-4 py-2"
             >
-              {configOpen ? "Hide settings ▲" : "Adjust monthly cost / income ▼"}
+              {configOpen ? "Hide Settings ▲" : "Adjust Monthly Cost / Income ▼"}
             </button>
           </div>
 
@@ -307,32 +302,32 @@ export default function RuinCalculatorPage() {
                 exit={{ height: 0, opacity: 0 }}
                 className="overflow-hidden"
               >
-                <div className="flex flex-wrap gap-4 mt-4 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                <div className="flex flex-wrap gap-4 mt-6 p-6 card-impact bg-muted/30">
                   <div className="flex-1 min-w-[180px]">
-                    <label className="text-xs text-white/40 block mb-1">
+                    <label className="text-xs font-black uppercase tracking-widest block mb-2">
                       Monthly Cost (₹)
                     </label>
                     <input
                       type="number"
                       value={baseMonthlyCost}
                       onChange={(e) => setBaseMonthlyCost(parseInt(e.target.value) || 0)}
-                      className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-white focus:outline-none focus:ring-1 focus:ring-white/20"
+                      className="w-full px-4 py-3 border-4 border-black rounded-none font-bold focus:outline-none focus:ring-0 focus:border-red-600 transition-colors"
                     />
                   </div>
                   <div className="flex-1 min-w-[180px]">
-                    <label className="text-xs text-white/40 block mb-1">
+                    <label className="text-xs font-black uppercase tracking-widest block mb-2">
                       Monthly Income (₹)
                     </label>
                     <input
                       type="number"
                       value={monthlyIncome}
                       onChange={(e) => setMonthlyIncome(parseInt(e.target.value) || 0)}
-                      className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-white focus:outline-none focus:ring-1 focus:ring-white/20"
+                      className="w-full px-4 py-3 border-4 border-black rounded-none font-bold focus:outline-none focus:ring-0 focus:border-green-600 transition-colors"
                     />
                   </div>
                   <div className="flex items-end">
-                    <Button size="sm" onClick={fetchAnalysis} className="gap-2">
-                      <BarChart3 className="h-3 w-3" />
+                    <Button onClick={fetchAnalysis} className="h-[52px] px-8 rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-wider gap-2">
+                      <BarChart3 className="h-4 w-4" />
                       Re-run
                     </Button>
                   </div>
@@ -345,39 +340,41 @@ export default function RuinCalculatorPage() {
         {/* ═══════════════════════════════════════════
             SECTION 2: Monte Carlo Distribution
             ═══════════════════════════════════════════ */}
-        <section className="mb-10">
-          <Card className="bg-gray-900/50 border-gray-800">
-            <CardContent className="p-6">
-              <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-                <BarChart3 className="h-5 w-5 text-cyan-400" />
-                Probability of Financial Loss
-              </h3>
+        <section className="mb-12">
+          <div className="card-impact p-6">
+            <h3 className="text-2xl font-black uppercase tracking-tight mb-8 flex items-center gap-3">
+              <span className="p-2 border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <BarChart3 className="h-6 w-6 text-black" />
+              </span>
+              Probability of Financial Loss
+            </h3>
 
-              <MonteCarloChart
-                histogram={analysis.simulation.histogram}
+            <MonteCarloChart
+              histogram={analysis.simulation.histogram}
+              percentiles={analysis.simulation.percentiles}
+            />
+
+            <div className="mt-8">
+              <PercentileCards percentiles={analysis.simulation.percentiles} />
+            </div>
+
+            <div className="mt-8">
+              <ProbabilityCallouts
+                statistics={analysis.simulation.statistics}
                 percentiles={analysis.simulation.percentiles}
               />
-
-              <div className="mt-6">
-                <PercentileCards percentiles={analysis.simulation.percentiles} />
-              </div>
-
-              <div className="mt-6">
-                <ProbabilityCallouts
-                  statistics={analysis.simulation.statistics}
-                  percentiles={analysis.simulation.percentiles}
-                />
-              </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </section>
 
         {/* ═══════════════════════════════════════════
             SECTION 3: Stress Test Scenarios
             ═══════════════════════════════════════════ */}
-        <section className="mb-10">
-          <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-            <AlertTriangle className="h-5 w-5 text-orange-400" />
+        <section className="mb-12">
+          <h3 className="text-2xl font-black uppercase tracking-tight mb-8 flex items-center gap-3">
+            <span className="p-2 border-4 border-black bg-orange-400 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              <AlertTriangle className="h-6 w-6 text-black" />
+            </span>
             What-If Stress Tests
           </h3>
 
@@ -388,7 +385,7 @@ export default function RuinCalculatorPage() {
             onRunTest={handleRunTest}
           />
 
-          <div className="mt-4">
+          <div className="mt-8">
             <StressTestBuilder
               onRun={runCustomStressTest}
               isLoading={stressLoading === "custom"}
@@ -403,7 +400,7 @@ export default function RuinCalculatorPage() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="mt-4"
+                className="mt-8"
               >
                 <StressTestResultView result={activeStressResult} />
               </motion.div>
@@ -414,57 +411,59 @@ export default function RuinCalculatorPage() {
         {/* ═══════════════════════════════════════════
             SECTION 4: Fair Contract Comparison
             ═══════════════════════════════════════════ */}
-        <section className="mb-10">
-          <Card className="bg-gray-900/50 border-gray-800">
-            <CardContent className="p-6">
-              <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-                <Shield className="h-5 w-5 text-green-400" />
-                Your Contract vs Fair Market Contract
-              </h3>
+        <section className="mb-12">
+          <div className="card-impact p-6">
+            <h3 className="text-2xl font-black uppercase tracking-tight mb-4 flex items-center gap-3">
+              <span className="p-2 border-4 border-black bg-green-400 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <Shield className="h-6 w-6 text-black" />
+              </span>
+              Your Contract vs Fair Market Contract
+            </h3>
 
-              <p className="text-xs text-white/40 mb-4">
-                Expected loss at 90th percentile (reasonable worst case):
-              </p>
+            <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-8">
+              Expected loss at 90th percentile (reasonable worst case):
+            </p>
 
-              <FairComparisonBar comparison={analysis.fairComparison} />
+            <FairComparisonBar comparison={analysis.fairComparison} />
 
-              <div className="mt-6">
-                <FairComparisonTable
-                  comparison={analysis.fairComparison}
-                  documentId={documentId}
-                />
-              </div>
-            </CardContent>
-          </Card>
+            <div className="mt-10">
+              <FairComparisonTable
+                comparison={analysis.fairComparison}
+                documentId={documentId}
+              />
+            </div>
+          </div>
         </section>
 
         {/* ═══════════════════════════════════════════
             SECTION 5: Insurance Gap
             ═══════════════════════════════════════════ */}
         {insuranceGap && (
-          <section className="mb-10">
-            <Card className="bg-gray-900/50 border-gray-800">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5 text-yellow-400" />
-                  Insurance Gap Analysis
-                </h3>
+          <section className="mb-12">
+            <div className="card-impact p-6 bg-amber-50">
+              <h3 className="text-2xl font-black uppercase tracking-tight mb-8 flex items-center gap-3">
+                <span className="p-2 border-4 border-black bg-amber-400 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                  <TrendingUp className="h-6 w-6 text-black" />
+                </span>
+                Insurance Gap Analysis
+              </h3>
 
-                <InsuranceGapMeter
-                  gap={insuranceGap}
-                  onCoverageChange={handleCoverageChange}
-                />
-              </CardContent>
-            </Card>
+              <InsuranceGapMeter
+                gap={insuranceGap}
+                onCoverageChange={handleCoverageChange}
+              />
+            </div>
           </section>
         )}
 
         {/* ═══════════════════════════════════════════
             SECTION 6: Risk Clause Ranking
             ═══════════════════════════════════════════ */}
-        <section className="mb-10">
-          <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-            <Target className="h-5 w-5 text-red-400" />
+        <section className="mb-12">
+          <h3 className="text-2xl font-black uppercase tracking-tight mb-8 flex items-center gap-3">
+            <span className="p-2 border-4 border-black bg-red-400 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              <Target className="h-6 w-6 text-black" />
+            </span>
             Clauses Ranked by Financial Risk
           </h3>
 
@@ -477,26 +476,26 @@ export default function RuinCalculatorPage() {
         {/* ═══════════════════════════════════════════
             FOOTER
             ═══════════════════════════════════════════ */}
-        <div className="border-t border-white/5 pt-6 text-center space-y-3">
-          <div className="flex flex-wrap justify-center gap-3">
+        <div className="border-t-4 border-black pt-8 text-center space-y-6">
+          <div className="flex flex-wrap justify-center gap-4">
             <Link href={`/negotiate/${documentId}`}>
-              <Button variant="outline" size="sm" className="gap-2 text-xs">
+              <Button variant="outline" className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-wider">
                 📝 Negotiate Clauses
               </Button>
             </Link>
             <Link href={`/escape/${documentId}`}>
-              <Button variant="outline" size="sm" className="gap-2 text-xs">
+              <Button variant="outline" className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-wider">
                 🚪 Escape Plan
               </Button>
             </Link>
             <Link href={`/letter/${documentId}`}>
-              <Button variant="outline" size="sm" className="gap-2 text-xs">
+              <Button variant="outline" className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-wider">
                 📄 Legal Notice
               </Button>
             </Link>
           </div>
 
-          <p className="text-[10px] text-white/15">
+          <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground max-w-xl mx-auto">
             Generated by ClauseWall — Actuarial risk simulation for Indian contracts.
             This is illustrative analysis, not financial advice.
           </p>

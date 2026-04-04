@@ -72,47 +72,47 @@ export default function StateMachinePage({
 
   if (loading || !params) {
     return (
-      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
-        <Loader2 className="h-6 w-6 animate-spin text-blue-400" />
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <Loader2 className="h-10 w-10 animate-spin text-black" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-950">
+    <div className="min-h-screen bg-white font-sans text-black">
       {/* Header */}
-      <div className="border-b border-white/5 px-4 sm:px-6 py-3">
-        <div className="max-w-7xl mx-auto flex items-center gap-3">
+      <div className="border-b-4 border-black px-4 sm:px-6 py-4 bg-yellow-400">
+        <div className="max-w-7xl mx-auto flex items-center gap-4">
           <Link
             href={`/results/${params.id}`}
-            className="p-1.5 hover:bg-white/5 rounded-lg transition-colors"
+            className="p-2 bg-white border-2 border-black hover:translate-y-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all"
           >
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="h-5 w-5 text-black" />
           </Link>
           <div>
-            <h1 className="font-semibold text-sm sm:text-base">Trap Detector</h1>
-            <p className="text-xs text-gray-500">ClauseWall</p>
+            <h1 className="font-black text-xl uppercase tracking-widest text-black">Trap Detector</h1>
+            <p className="text-sm font-bold uppercase tracking-widest text-black/70 mt-1">ClauseWall State Machine</p>
           </div>
         </div>
       </div>
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
         {error && !report && (
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center py-16"
+            className="max-w-md mx-auto text-center border-4 border-black p-8 bg-gray-50 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] mt-12"
           >
-            <p className="text-gray-400 mb-4">{error}</p>
+            <p className="text-black font-bold uppercase tracking-widest mb-6">{error}</p>
             <button
               onClick={handleExtract}
               disabled={extracting}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 flex items-center gap-2 mx-auto"
+              className="px-6 py-3 bg-black text-white hover:bg-gray-800 text-sm font-black uppercase tracking-widest transition-all disabled:opacity-50 flex items-center justify-center gap-2 mx-auto border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] w-full"
             >
               {extracting ? (
                 <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <Loader2 className="h-5 w-5 animate-spin" />
                   Extracting...
                 </>
               ) : (
@@ -123,22 +123,24 @@ export default function StateMachinePage({
         )}
 
         {report && (
-          <div className="space-y-6">
+          <div className="space-y-12">
             {/* Full-height graph */}
-            <StateGraph
-              stateMachine={report.stateMachine}
-              report={report}
-              mode="explore"
-              className="h-[500px] sm:h-[600px]"
-            />
+            <div className="border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white p-2">
+              <StateGraph
+                stateMachine={report.stateMachine}
+                report={report}
+                mode="explore"
+                className="h-[500px] sm:h-[600px]"
+              />
+            </div>
 
             {/* Report card */}
             <ReportCard report={report} onExplore={() => {}} documentId={params.id} />
 
             {/* Trap state cards */}
             {report.trapAnalysis.length > 0 && (
-              <div className="space-y-3">
-                <h2 className="text-sm font-semibold text-gray-300">
+              <div className="space-y-4">
+                <h2 className="text-xl font-black uppercase tracking-widest text-black border-b-4 border-black pb-2">
                   🪤 Trap States ({report.trapAnalysis.length})
                 </h2>
                 {report.trapAnalysis.map((trap) => (
@@ -154,12 +156,12 @@ export default function StateMachinePage({
 
             {/* Recommendations */}
             {report.recommendations.length > 0 && (
-              <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-                <h2 className="text-sm font-semibold text-gray-300 mb-3">📋 Recommendations</h2>
-                <ul className="space-y-2">
+              <div className="p-6 bg-blue-100 border-4 border-blue-600 shadow-[6px_6px_0px_0px_rgba(37,99,235,1)]">
+                <h2 className="text-lg font-black uppercase tracking-widest text-blue-900 border-b-4 border-blue-600 pb-2 mb-4 inline-block">📋 Recommendations</h2>
+                <ul className="space-y-3">
                   {report.recommendations.map((rec, i) => (
-                    <li key={i} className="text-xs text-gray-400 flex gap-2">
-                      <span className="text-amber-400 flex-shrink-0">{i + 1}.</span>
+                    <li key={i} className="text-sm font-bold text-blue-900 flex gap-3">
+                      <span className="font-black text-white bg-blue-600 px-2 border-2 border-blue-900 shrink-0">{i + 1}</span>
                       <span>{rec}</span>
                     </li>
                   ))}
@@ -168,7 +170,9 @@ export default function StateMachinePage({
             )}
 
             {/* Related Actions */}
-            <RelatedActions documentId={params.id} currentPage="statemachine" />
+            <div className="pt-8 border-t-4 border-black">
+              <RelatedActions documentId={params.id} currentPage="statemachine" />
+            </div>
           </div>
         )}
       </div>

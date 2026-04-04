@@ -38,15 +38,15 @@ const PAD = 80;
 // ============================================
 
 const STATE_COLORS: Record<StateType, { fill: string; stroke: string }> = {
-  initial:          { fill: "#1e293b", stroke: "#64748b" },
-  normal:           { fill: "#022c22", stroke: "#10b981" },
-  restricted:       { fill: "#451a03", stroke: "#f59e0b" },
-  dangerous:        { fill: "#431407", stroke: "#f97316" },
-  trap:             { fill: "#450a0a", stroke: "#ef4444" },
-  absorbing_trap:   { fill: "#450a0a", stroke: "#dc2626" },
-  terminal_safe:    { fill: "#052e16", stroke: "#22c55e" },
-  terminal_warning: { fill: "#451a03", stroke: "#eab308" },
-  terminal_loss:    { fill: "#450a0a", stroke: "#ef4444" },
+  initial:          { fill: "#000000", stroke: "#eab308" }, // black filled, yellow stroke
+  normal:           { fill: "#ffffff", stroke: "#000000" }, // white filled
+  restricted:       { fill: "#000000", stroke: "#000000" },
+  dangerous:        { fill: "#facc15", stroke: "#000000" }, // yellow filled
+  trap:             { fill: "#ef4444", stroke: "#000000" }, // red filled
+  absorbing_trap:   { fill: "#b91c1c", stroke: "#000000" }, // dark red
+  terminal_safe:    { fill: "#22c55e", stroke: "#000000" }, // green
+  terminal_warning: { fill: "#f59e0b", stroke: "#000000" },
+  terminal_loss:    { fill: "#ef4444", stroke: "#000000" },
 };
 
 const STATE_ICONS: Record<StateType, string> = {
@@ -196,7 +196,7 @@ function MobileListView({
   }, [stateMachine.states, positions]);
 
   return (
-    <div className="space-y-2 p-4">
+    <div className="space-y-4 p-4">
       {sortedStates.map((state, idx) => {
         const colors = STATE_COLORS[state.type];
         const icon = STATE_ICONS[state.type];
@@ -207,38 +207,38 @@ function MobileListView({
           <div key={state.id}>
             <button
               onClick={() => onStateClick?.(state)}
-              className={`w-full text-left p-3 rounded-lg border transition-all hover:scale-[1.01] ${
-                isTrap ? "border-red-500/50 bg-red-500/5" : "border-white/10 bg-white/[0.02]"
+              className={`w-full text-left p-4 border-4 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] ${
+                isTrap ? "border-red-600 bg-red-100" : "border-black bg-white"
               }`}
-              style={{ borderLeftWidth: 4, borderLeftColor: colors.stroke }}
+              style={{ borderLeftWidth: 8, borderLeftColor: colors.stroke !== "#000000" && colors.fill === "#000000" ? colors.stroke : colors.stroke === "#000000" && colors.fill !== "#ffffff" ? colors.fill : colors.stroke }}
             >
-              <div className="flex items-center gap-2">
-                <span className="text-sm">{icon}</span>
-                <span className="font-medium text-sm">{state.name}</span>
+              <div className="flex items-center gap-3">
+                <span className="text-lg bg-gray-100 border-2 border-black p-1">{icon}</span>
+                <span className="font-black uppercase tracking-widest text-black/90">{state.name}</span>
                 <span
-                  className="text-[10px] px-1.5 py-0.5 rounded-full ml-auto"
-                  style={{ backgroundColor: colors.fill, color: colors.stroke, border: `1px solid ${colors.stroke}40` }}
+                  className="text-[10px] font-black uppercase tracking-widest px-2 py-1 ml-auto"
+                  style={{ backgroundColor: colors.fill, color: colors.fill === "#ffffff" ? "#000000" : "#ffffff", border: `2px solid ${colors.stroke}` }}
                 >
                   {state.type.replace(/_/g, " ")}
                 </span>
               </div>
-              <p className="text-xs text-gray-400 mt-1 line-clamp-2">{state.description}</p>
+              <p className="text-xs font-bold text-black/70 mt-3 line-clamp-2">{state.description}</p>
               {state.financialImpact.amount && (
-                <p className="text-xs text-amber-400 mt-1">💰 {state.financialImpact.amount}</p>
+                <p className="text-xs font-black uppercase tracking-widest text-red-700 mt-2 bg-red-100 inline-block px-1 border-2 border-red-700">💰 {state.financialImpact.amount}</p>
               )}
             </button>
 
             {/* Show outgoing transitions */}
             {outgoing.length > 0 && idx < sortedStates.length - 1 && (
-              <div className="pl-6 py-1">
+              <div className="pl-8 py-3 space-y-1">
                 {outgoing.slice(0, 2).map((t) => (
-                  <div key={t.id} className="flex items-center gap-2 text-[11px] text-gray-500">
-                    <span className="text-gray-600">↓</span>
+                  <div key={t.id} className="flex items-center gap-2 text-xs font-bold text-black/60 uppercase tracking-widest">
+                    <span className="text-black font-black">↓</span>
                     <span className="truncate">{t.trigger}</span>
                   </div>
                 ))}
                 {outgoing.length > 2 && (
-                  <span className="text-[10px] text-gray-600">+{outgoing.length - 2} more</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-black/50">+{outgoing.length - 2} more</span>
                 )}
               </div>
             )}
@@ -279,66 +279,67 @@ function DetailPanel({
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: 20 }}
-        className="absolute right-0 top-0 bottom-0 w-[300px] bg-gray-900/95 backdrop-blur-xl border-l border-white/10 overflow-y-auto z-20"
+        className="absolute right-0 top-0 bottom-0 w-[300px] sm:w-[350px] bg-white border-l-4 border-black overflow-y-auto z-20 shadow-[-8px_0_0_0_rgba(0,0,0,1)]"
       >
-        <div className="p-4">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <span className="text-lg">{STATE_ICONS[state.type]}</span>
-              <h3 className="font-semibold text-sm">{state.name}</h3>
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-6 pb-4 border-b-4 border-black">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">{STATE_ICONS[state.type]}</span>
+              <h3 className="font-black uppercase tracking-widest text-black">{state.name}</h3>
             </div>
-            <button onClick={onClose} className="p-1 hover:bg-white/10 rounded">
-              <X className="h-4 w-4" />
+            <button onClick={onClose} className="p-2 border-2 border-black hover:bg-gray-200 hover:translate-y-0.5 shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:shadow-none transition-all">
+              <X className="h-5 w-5 text-black" />
             </button>
           </div>
 
           <span
-            className="text-[10px] px-2 py-0.5 rounded-full"
-            style={{ backgroundColor: colors.fill, color: colors.stroke, border: `1px solid ${colors.stroke}40` }}
+            className="text-[10px] font-black uppercase tracking-widest px-3 py-1"
+            style={{ backgroundColor: colors.fill, color: colors.fill === "#ffffff" ? "#000000" : "#ffffff", border: `2px solid ${colors.stroke}` }}
           >
             {state.type.replace(/_/g, " ")}
           </span>
 
-          <p className="text-sm text-gray-300 mt-3">{state.description}</p>
+          <p className="text-sm font-bold text-black mt-5 leading-relaxed bg-gray-100 p-4 border-4 border-black">{state.description}</p>
 
           {state.duration && (
-            <div className="mt-3 p-2 rounded-lg bg-white/[0.03] border border-white/5">
-              <p className="text-xs text-gray-400">Duration</p>
-              <p className="text-sm font-medium">{state.duration.value} {state.duration.unit}{state.duration.isFixed ? " (fixed)" : ""}</p>
+            <div className="mt-5 p-3 border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
+              <p className="text-[10px] font-black uppercase tracking-widest text-black/60">Duration</p>
+              <p className="text-sm font-black text-black">{state.duration.value} {state.duration.unit}{state.duration.isFixed ? " (fixed)" : ""}</p>
             </div>
           )}
 
           {state.financialImpact.type !== "none" && (
-            <div className="mt-2 p-2 rounded-lg bg-white/[0.03] border border-white/5">
-              <p className="text-xs text-gray-400">Financial Impact</p>
-              <p className="text-sm font-medium text-amber-400">{state.financialImpact.amount || state.financialImpact.type}</p>
+            <div className="mt-4 p-3 bg-red-100 border-4 border-red-900 shadow-[4px_4px_0_0_rgba(127,29,29,1)]">
+              <p className="text-[10px] font-black uppercase tracking-widest text-red-900">Financial Impact</p>
+              <p className="text-sm font-black text-red-900">{state.financialImpact.amount || state.financialImpact.type}</p>
             </div>
           )}
 
           {state.legalIssues && state.legalIssues.length > 0 && (
-            <div className="mt-3">
-              <p className="text-xs text-gray-400 mb-1">Legal Issues</p>
+            <div className="mt-5">
+              <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-2">Legal Issues</p>
               {state.legalIssues.map((issue, i) => (
-                <p key={i} className="text-xs text-red-400 mt-0.5">⚖️ {issue}</p>
+                <p key={i} className="text-xs font-bold text-black bg-blue-100 border-2 border-blue-900 px-2 py-1 mb-2 shadow-[2px_2px_0_0_rgba(30,58,138,1)]">⚖️ {issue}</p>
               ))}
             </div>
           )}
 
           {trap && (
-            <div className="mt-3 p-2 rounded-lg bg-red-500/10 border border-red-500/20">
-              <p className="text-xs font-medium text-red-400 mb-1">🪤 Trap State — {trap.severity.toUpperCase()}</p>
-              <p className="text-xs text-red-300">{trap.description.substring(0, 150)}</p>
+            <div className="mt-5 p-4 bg-yellow-400 border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
+              <p className="text-xs font-black uppercase tracking-widest text-black mb-2">🪤 Trap State — {trap.severity.toUpperCase()}</p>
+              <p className="text-xs font-bold text-black leading-relaxed">{trap.description.substring(0, 150)}</p>
             </div>
           )}
 
           {incoming.length > 0 && (
-            <div className="mt-3">
-              <p className="text-xs text-gray-400 mb-1">Incoming ({incoming.length})</p>
+            <div className="mt-5 border-t-4 border-black pt-5">
+              <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-2">Incoming ({incoming.length})</p>
               {incoming.slice(0, 5).map((t) => {
                 const from = stateMachine.states.find((s) => s.id === t.fromStateId);
                 return (
-                  <p key={t.id} className="text-xs text-gray-300 mt-0.5">
-                    ← {from?.name || "Unknown"}: {truncate(t.trigger, 40)}
+                  <p key={t.id} className="text-xs font-bold text-black mt-2 bg-gray-50 border-2 border-black p-2">
+                    <span className="font-black text-black">← {from?.name || "Unknown"}</span><br/>
+                    <span className="text-black/60 uppercase text-[10px]">{truncate(t.trigger, 40)}</span>
                   </p>
                 );
               })}
@@ -346,13 +347,14 @@ function DetailPanel({
           )}
 
           {outgoing.length > 0 && (
-            <div className="mt-3">
-              <p className="text-xs text-gray-400 mb-1">Outgoing ({outgoing.length})</p>
+            <div className="mt-5 border-t-4 border-black pt-5">
+              <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-2">Outgoing ({outgoing.length})</p>
               {outgoing.slice(0, 5).map((t) => {
                 const to = stateMachine.states.find((s) => s.id === t.toStateId);
                 return (
-                  <p key={t.id} className="text-xs text-gray-300 mt-0.5">
-                    → {to?.name || "Unknown"}: {truncate(t.trigger, 40)}
+                  <p key={t.id} className="text-xs font-bold text-black mt-2 bg-gray-50 border-2 border-black p-2">
+                    <span className="font-black text-black">→ {to?.name || "Unknown"}</span><br/>
+                    <span className="text-black/60 uppercase text-[10px]">{truncate(t.trigger, 40)}</span>
                   </p>
                 );
               })}
@@ -360,9 +362,13 @@ function DetailPanel({
           )}
 
           {state.clauseReferences && state.clauseReferences.length > 0 && (
-            <div className="mt-3">
-              <p className="text-xs text-gray-400">Referenced Clauses</p>
-              <p className="text-xs text-blue-400">{state.clauseReferences.join(", ")}</p>
+            <div className="mt-5 border-t-4 border-black pt-5">
+              <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-2">Referenced Clauses</p>
+              <div className="flex flex-wrap gap-2">
+                {state.clauseReferences.map(ref => (
+                  <span key={ref} className="text-xs font-black bg-white border-2 border-black px-2 py-1 shadow-[2px_2px_0_0_rgba(0,0,0,1)]">{ref}</span>
+                ))}
+              </div>
             </div>
           )}
         </div>
@@ -376,64 +382,65 @@ function DetailPanel({
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: 20 }}
-        className="absolute right-0 top-0 bottom-0 w-[300px] bg-gray-900/95 backdrop-blur-xl border-l border-white/10 overflow-y-auto z-20"
+        className="absolute right-0 top-0 bottom-0 w-[300px] sm:w-[350px] bg-white border-l-4 border-black overflow-y-auto z-20 shadow-[-8px_0_0_0_rgba(0,0,0,1)]"
       >
-        <div className="p-4">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-sm">Transition Details</h3>
-            <button onClick={onClose} className="p-1 hover:bg-white/10 rounded">
-              <X className="h-4 w-4" />
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-6 pb-4 border-b-4 border-black">
+            <h3 className="font-black uppercase tracking-widest text-black">Transition Details</h3>
+            <button onClick={onClose} className="p-2 border-2 border-black hover:bg-gray-200 hover:translate-y-0.5 shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:shadow-none transition-all">
+              <X className="h-5 w-5 text-black" />
             </button>
           </div>
 
-          <p className="text-sm text-gray-300">{transition.trigger}</p>
+          <p className="text-sm font-bold text-black bg-gray-100 p-4 border-4 border-black mb-6 leading-relaxed">{transition.trigger}</p>
 
-          <div className="grid grid-cols-2 gap-2 mt-3">
-            <div className="p-2 rounded-lg bg-white/[0.03] border border-white/5">
-              <p className="text-[10px] text-gray-500">Type</p>
-              <p className="text-xs">{transition.triggerType.replace(/_/g, " ")}</p>
+          <div className="grid grid-cols-2 gap-3 mt-3">
+            <div className="p-3 bg-white border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
+              <p className="text-[10px] font-black uppercase tracking-widest text-black/60">Type</p>
+              <p className="text-xs font-black text-black">{transition.triggerType.replace(/_/g, " ")}</p>
             </div>
-            <div className="p-2 rounded-lg bg-white/[0.03] border border-white/5">
-              <p className="text-[10px] text-gray-500">Party</p>
-              <p className="text-xs">{transition.party}</p>
+            <div className="p-3 bg-white border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
+              <p className="text-[10px] font-black uppercase tracking-widest text-black/60">Party</p>
+              <p className="text-xs font-black text-black">{transition.party}</p>
             </div>
-            <div className="p-2 rounded-lg bg-white/[0.03] border border-white/5">
-              <p className="text-[10px] text-gray-500">Voluntary</p>
-              <p className="text-xs">{transition.isVoluntary ? "Yes" : "No"}</p>
+            <div className="p-3 bg-white border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
+              <p className="text-[10px] font-black uppercase tracking-widest text-black/60">Voluntary</p>
+              <p className="text-xs font-black text-black">{transition.isVoluntary ? "Yes" : "No"}</p>
             </div>
-            <div className="p-2 rounded-lg bg-white/[0.03] border border-white/5">
-              <p className="text-[10px] text-gray-500">Reversible</p>
-              <p className="text-xs">{transition.isReversible ? "Yes" : "No"}</p>
+            <div className="p-3 bg-white border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
+              <p className="text-[10px] font-black uppercase tracking-widest text-black/60">Reversible</p>
+              <p className="text-xs font-black text-black">{transition.isReversible ? "Yes" : "No"}</p>
             </div>
           </div>
 
           {transition.condition && (
-            <div className="mt-3">
-              <p className="text-xs text-gray-400">Condition</p>
-              <p className="text-xs text-amber-300 mt-0.5">{transition.condition}</p>
+            <div className="mt-6 pt-5 border-t-4 border-black">
+              <p className="text-[10px] font-black uppercase tracking-widest text-black/60">Condition</p>
+              <p className="text-xs font-bold text-black mt-2 bg-yellow-100 border-2 border-yellow-600 p-2 shadow-[2px_2px_0_0_rgba(202,138,4,1)]">{transition.condition}</p>
             </div>
           )}
 
           {transition.financialConsequence && (
-            <div className="mt-3 p-2 rounded-lg bg-amber-500/10 border border-amber-500/20">
-              <p className="text-xs text-amber-400">💰 {transition.financialConsequence}</p>
+            <div className="mt-5 p-3 bg-red-100 border-4 border-red-900 shadow-[4px_4px_0_0_rgba(127,29,29,1)]">
+              <p className="text-[10px] font-black uppercase tracking-widest text-red-900 mb-1">Financial Impact</p>
+              <p className="text-xs font-black text-red-900">💰 {transition.financialConsequence}</p>
             </div>
           )}
 
           {transition.clauseReference && (
-            <div className="mt-3">
-              <p className="text-xs text-gray-400">Clause Reference</p>
-              <p className="text-xs text-blue-400">{transition.clauseReference}</p>
+            <div className="mt-5 border-t-4 border-black pt-5">
+              <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-2">Clause Reference</p>
+              <span className="text-xs font-black bg-white border-2 border-black px-2 py-1 shadow-[2px_2px_0_0_rgba(0,0,0,1)]">{transition.clauseReference}</span>
             </div>
           )}
 
-          <div className="mt-3">
-            <p className="text-xs text-gray-400">Probability</p>
-            <span className={`text-xs px-2 py-0.5 rounded-full ${
-              transition.probability === "certain" ? "bg-green-500/20 text-green-400" :
-              transition.probability === "likely" ? "bg-blue-500/20 text-blue-400" :
-              transition.probability === "possible" ? "bg-amber-500/20 text-amber-400" :
-              "bg-gray-500/20 text-gray-400"
+          <div className="mt-5 border-t-4 border-black pt-5">
+            <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-2">Probability</p>
+            <span className={`text-xs font-black uppercase tracking-widest px-3 py-1 border-2 border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)] inline-block ${
+              transition.probability === "certain" ? "bg-green-400 text-black" :
+              transition.probability === "likely" ? "bg-blue-400 text-black" :
+              transition.probability === "possible" ? "bg-yellow-400 text-black" :
+              "bg-gray-200 text-black"
             }`}>
               {transition.probability}
             </span>
@@ -606,11 +613,11 @@ export default function StateGraph({
   if (viewMode === "list") {
     return (
       <div className={`relative ${className}`}>
-        <div className="flex items-center justify-between px-4 py-2 bg-gray-900/50 border-b border-white/5">
-          <span className="text-xs text-gray-400">{stateMachine.metadata.totalStates} states</span>
+        <div className="flex items-center justify-between px-6 py-4 bg-gray-100 border-4 border-black mb-4">
+          <span className="text-xs font-black uppercase tracking-widest text-black/60">{stateMachine.metadata.totalStates} states</span>
           <button
             onClick={() => setViewMode("graph")}
-            className="text-xs text-blue-400 hover:text-blue-300"
+            className="text-xs font-black uppercase tracking-widest text-black hover:text-blue-700 bg-white border-2 border-black px-3 py-1 shadow-[2px_2px_0_0_rgba(0,0,0,1)] transition-all hover:translate-y-0.5 hover:shadow-none"
           >
             Switch to Graph View
           </button>
@@ -625,21 +632,21 @@ export default function StateGraph({
   }
 
   return (
-    <div className={`relative overflow-hidden bg-gray-950/50 rounded-xl border border-white/5 ${className}`}>
+    <div className={`relative overflow-hidden bg-gray-100 border-4 border-black shadow-[inset_6px_6px_0_0_rgba(0,0,0,0.1)] ${className}`}>
       {/* TOOLBAR */}
-      <div className="absolute top-3 left-3 z-10 flex gap-1.5">
-        <button onClick={() => handleZoom(0.15)} className="p-1.5 bg-gray-800/90 hover:bg-gray-700 rounded-lg border border-white/10 transition-colors">
-          <ZoomIn className="h-3.5 w-3.5" />
+      <div className="absolute top-4 left-4 z-10 flex gap-2">
+        <button onClick={() => handleZoom(0.15)} className="p-2 bg-white hover:bg-yellow-400 border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none transition-all text-black">
+          <ZoomIn className="h-5 w-5" />
         </button>
-        <button onClick={() => handleZoom(-0.15)} className="p-1.5 bg-gray-800/90 hover:bg-gray-700 rounded-lg border border-white/10 transition-colors">
-          <ZoomOut className="h-3.5 w-3.5" />
+        <button onClick={() => handleZoom(-0.15)} className="p-2 bg-white hover:bg-yellow-400 border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none transition-all text-black">
+          <ZoomOut className="h-5 w-5" />
         </button>
-        <button onClick={handleFit} className="p-1.5 bg-gray-800/90 hover:bg-gray-700 rounded-lg border border-white/10 transition-colors">
-          <Maximize2 className="h-3.5 w-3.5" />
+        <button onClick={handleFit} className="p-2 bg-white hover:bg-yellow-400 border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none transition-all text-black">
+          <Maximize2 className="h-5 w-5" />
         </button>
         <button
           onClick={() => setViewMode("list")}
-          className="px-2 py-1.5 text-[10px] bg-gray-800/90 hover:bg-gray-700 rounded-lg border border-white/10 transition-colors"
+          className="px-4 py-2 text-xs font-black uppercase tracking-widest text-black bg-white hover:bg-yellow-400 border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none transition-all"
         >
           List
         </button>
@@ -647,12 +654,12 @@ export default function StateGraph({
 
       {/* SIMULATE CONTROLS */}
       {mode === "simulate" && (
-        <div className="absolute top-3 right-3 z-10 flex gap-1.5">
-          <button onClick={handleSimUndo} disabled={simulateHistory.length === 0} className="p-1.5 bg-gray-800/90 hover:bg-gray-700 rounded-lg border border-white/10 disabled:opacity-30 transition-colors">
-            <Undo2 className="h-3.5 w-3.5" />
+        <div className="absolute top-4 right-4 z-10 flex gap-2">
+          <button onClick={handleSimUndo} disabled={simulateHistory.length === 0} className="p-2 bg-white text-black hover:bg-yellow-400 disabled:bg-gray-200 disabled:text-gray-500 border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] disabled:shadow-none disabled:translate-y-1 hover:translate-y-1 hover:shadow-none transition-all">
+            <Undo2 className="h-5 w-5" />
           </button>
-          <button onClick={handleSimReset} className="p-1.5 bg-gray-800/90 hover:bg-gray-700 rounded-lg border border-white/10 transition-colors">
-            <RotateCcw className="h-3.5 w-3.5" />
+          <button onClick={handleSimReset} className="p-2 bg-white text-black hover:bg-yellow-400 hover:text-black border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none transition-all">
+            <RotateCcw className="h-5 w-5" />
           </button>
         </div>
       )}
@@ -808,35 +815,43 @@ export default function StateGraph({
                 animate={{ opacity, scale: 1 }}
                 transition={{ delay: (pos.layer * 0.08) + (pos.indexInLayer * 0.04), duration: 0.3 }}
               >
-                {/* Trap pulse */}
+                {/* Shadow */}
+                <rect
+                  x={pos.x + 8}
+                  y={pos.y + 8}
+                  width={NODE_W}
+                  height={NODE_H}
+                  rx={0}
+                  fill="black"
+                  className="pointer-events-none"
+                />
+
+                {/* Trap pulse background */}
                 {isTrap && (
                   <rect
                     x={pos.x - 6}
                     y={pos.y - 6}
                     width={NODE_W + 12}
                     height={NODE_H + 12}
-                    rx={16}
                     fill="none"
-                    stroke={colors.stroke}
-                    strokeWidth={1}
+                    stroke={colors.fill}
+                    strokeWidth={4}
                     opacity={0.3}
-                    className="animate-trap-pulse"
+                    className="animate-pulse pointer-events-none"
                   />
                 )}
 
-                {/* Simulate active glow */}
+                {/* Simulate active border */}
                 {isSimActive && (
                   <rect
-                    x={pos.x - 4}
-                    y={pos.y - 4}
-                    width={NODE_W + 8}
-                    height={NODE_H + 8}
-                    rx={15}
+                    x={pos.x - 6}
+                    y={pos.y - 6}
+                    width={NODE_W + 12}
+                    height={NODE_H + 12}
                     fill="none"
-                    stroke="#3b82f6"
-                    strokeWidth={2}
-                    opacity={0.6}
-                    className="animate-pulse"
+                    stroke="#2563eb"
+                    strokeWidth={6}
+                    className="animate-pulse pointer-events-none"
                   />
                 )}
 
@@ -846,12 +861,11 @@ export default function StateGraph({
                   y={pos.y}
                   width={NODE_W}
                   height={NODE_H}
-                  rx={12}
+                  rx={0}
                   fill={colors.fill}
-                  stroke={colors.stroke}
-                  strokeWidth={isSelected ? 3 : 2}
+                  stroke={colors.stroke === "#000000" && colors.fill === "#000000" ? "#ffffff" : colors.stroke}
+                  strokeWidth={isSelected ? 6 : 4}
                   className="cursor-pointer transition-all duration-200"
-                  filter={isSelected ? "drop-shadow(0 0 8px rgba(255,255,255,0.15))" : undefined}
                   onMouseEnter={() => setHoveredStateId(state.id)}
                   onMouseLeave={() => setHoveredStateId(null)}
                   onClick={(e) => {
@@ -866,11 +880,23 @@ export default function StateGraph({
                   }}
                 />
 
-                {/* Type icon */}
+                {/* Type icon box */}
+                <rect
+                  x={pos.x}
+                  y={pos.y}
+                  width={NODE_H}
+                  height={NODE_H}
+                  fill="white"
+                  stroke={colors.stroke === "#000000" && colors.fill === "#000000" ? "#ffffff" : colors.stroke}
+                  strokeWidth={4}
+                  className="pointer-events-none"
+                />
+                
                 <text
-                  x={pos.x + 12}
-                  y={pos.y + 20}
-                  fontSize={14}
+                  x={pos.x + NODE_H / 2}
+                  y={pos.y + NODE_H / 2 + 8}
+                  textAnchor="middle"
+                  fontSize={24}
                   className="pointer-events-none select-none"
                 >
                   {icon}
@@ -878,61 +904,60 @@ export default function StateGraph({
 
                 {/* State name */}
                 <text
-                  x={pos.x + NODE_W / 2}
-                  y={pos.y + (subtitle ? 35 : 42)}
+                  x={pos.x + NODE_H + (NODE_W - NODE_H) / 2}
+                  y={pos.y + (subtitle ? 35 : 45)}
                   textAnchor="middle"
-                  fontSize={12}
-                  fontWeight={600}
-                  fill="white"
-                  className="pointer-events-none select-none"
+                  fontSize={14}
+                  fontFamily="sans-serif"
+                  fontWeight={900}
+                  fill={colors.fill === "#ffffff" ? "#000000" : "#ffffff"}
+                  className="uppercase tracking-wider pointer-events-none select-none"
                 >
-                  {truncate(state.name, 22)}
+                  {truncate(state.name, 12)}
                 </text>
 
                 {/* Subtitle */}
                 {subtitle && (
                   <text
-                    x={pos.x + NODE_W / 2}
-                    y={pos.y + 52}
+                    x={pos.x + NODE_H + (NODE_W - NODE_H) / 2}
+                    y={pos.y + 55}
                     textAnchor="middle"
-                    fontSize={10}
-                    fill="rgba(255,255,255,0.5)"
-                    className="pointer-events-none select-none"
+                    fontSize={11}
+                    fontWeight={700}
+                    fill={colors.fill === "#ffffff" ? "rgba(0,0,0,0.6)" : "rgba(255,255,255,0.7)"}
+                    className="pointer-events-none select-none uppercase tracking-widest"
                   >
-                    {truncate(subtitle, 28)}
+                    {truncate(subtitle, 15)}
                   </text>
                 )}
 
                 {/* Sim active label */}
                 {isSimActive && (
-                  <text
-                    x={pos.x + NODE_W / 2}
-                    y={pos.y - 10}
-                    textAnchor="middle"
-                    fontSize={9}
-                    fontWeight={700}
-                    fill="#3b82f6"
-                    className="pointer-events-none"
-                  >
-                    YOU ARE HERE
-                  </text>
+                  <g className="pointer-events-none">
+                    <rect 
+                      x={pos.x + NODE_W / 2 - 45} 
+                      y={pos.y - 25} 
+                      width={90} 
+                      height={20} 
+                      fill="#2563eb" 
+                      stroke="#000000" 
+                      strokeWidth={2} 
+                    />
+                    <text
+                      x={pos.x + NODE_W / 2}
+                      y={pos.y - 12}
+                      textAnchor="middle"
+                      fontSize={10}
+                      fontWeight={900}
+                      fill="white"
+                      className="uppercase tracking-widest"
+                    >
+                      YOU ARE HERE
+                    </text>
+                  </g>
                 )}
 
-                {/* Selection ring */}
-                {isSelected && (
-                  <rect
-                    x={pos.x - 3}
-                    y={pos.y - 3}
-                    width={NODE_W + 6}
-                    height={NODE_H + 6}
-                    rx={14}
-                    fill="none"
-                    stroke="#60a5fa"
-                    strokeWidth={1.5}
-                    strokeDasharray="4,3"
-                    className="pointer-events-none"
-                  />
-                )}
+                {/* Selection ring removed since thick border is used */}
               </motion.g>
             );
           })}
@@ -957,22 +982,24 @@ export default function StateGraph({
 
       {/* Simulate breadcrumbs */}
       {mode === "simulate" && simulateHistory.length > 0 && (
-        <div className="absolute bottom-3 left-3 right-3 z-10">
-          <div className="flex items-center gap-1 px-3 py-2 bg-gray-800/90 rounded-lg border border-white/10 overflow-x-auto">
-            <span className="text-[10px] text-gray-400 flex-shrink-0">Path:</span>
+        <div className="absolute bottom-4 left-4 right-4 z-10 flex flex-wrap">
+          <div className="flex items-center gap-2 p-3 bg-white border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] overflow-x-auto max-w-full">
+            <span className="text-xs font-black uppercase tracking-widest text-black flex-shrink-0 bg-yellow-400 px-2 py-1 border-2 border-black">Path</span>
+            <div className="flex items-center gap-2">
             {[...simulateHistory, simulateCurrentId].map((sid, i) => {
               const st = stateMachine.states.find((s) => s.id === sid);
               return (
-                <span key={`${sid}-${i}`} className="flex items-center gap-1 flex-shrink-0">
-                  {i > 0 && <span className="text-gray-600 text-[10px]">→</span>}
-                  <span className={`text-[10px] px-1.5 py-0.5 rounded ${
-                    sid === simulateCurrentId ? "bg-blue-500/20 text-blue-300" : "text-gray-400"
+                <span key={`${sid}-${i}`} className="flex items-center gap-2 flex-shrink-0">
+                  {i > 0 && <span className="text-black font-black">→</span>}
+                  <span className={`text-xs font-bold uppercase tracking-widest px-2 py-1 border-2 border-black ${
+                    sid === simulateCurrentId ? "bg-blue-200 text-blue-900" : "bg-gray-100 text-gray-800"
                   }`}>
                     {st?.name || sid}
                   </span>
                 </span>
               );
             })}
+            </div>
           </div>
         </div>
       )}
