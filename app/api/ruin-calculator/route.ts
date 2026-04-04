@@ -4,16 +4,32 @@ import { runMonteCarloSimulation } from "@/lib/simulation/monte-carlo-engine";
 import { buildFairComparison } from "@/lib/simulation/fair-comparison-engine";
 import { analyzeInsuranceGap } from "@/lib/simulation/insurance-gap-analyzer";
 import { calculateRiskAdjustedCost } from "@/lib/simulation/risk-adjusted-calculator";
-import { PRESET_SCENARIOS, runStressTest } from "@/lib/simulation/stress-test-engine";
-import type { FinancialRuinAnalysis, RuinCalculatorRequest } from "@/lib/simulation/types";
+import {
+  PRESET_SCENARIOS,
+  runStressTest,
+} from "@/lib/simulation/stress-test-engine";
+import type {
+  FinancialRuinAnalysis,
+  RuinCalculatorRequest,
+} from "@/lib/simulation/types";
 
 export async function POST(request: NextRequest) {
   try {
     const body: RuinCalculatorRequest = await request.json();
-    const { documentId, baseMonthlyCost, monthlyIncome, iterations, months, insuranceCoverage } = body;
+    const {
+      documentId,
+      baseMonthlyCost,
+      monthlyIncome,
+      iterations,
+      months,
+      insuranceCoverage,
+    } = body;
 
     if (!documentId) {
-      return NextResponse.json({ error: "Missing documentId" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing documentId" },
+        { status: 400 },
+      );
     }
 
     const supabase = await createClient();
@@ -26,7 +42,10 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (docError || !doc) {
-      return NextResponse.json({ error: "Document not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Document not found" },
+        { status: 404 },
+      );
     }
 
     // Fetch clauses
@@ -39,12 +58,14 @@ export async function POST(request: NextRequest) {
     if (clauseError || !clauses || clauses.length === 0) {
       return NextResponse.json(
         { error: "No clauses found. Run analysis first." },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     // Fetch fair baseline rules
-    const clauseTypes = [...new Set(clauses.map((c: { clause_type: string }) => c.clause_type))];
+    const clauseTypes = [
+      ...new Set(clauses.map((c: { clause_type: string }) => c.clause_type)),
+    ];
     const { data: rules } = await supabase
       .from("structured_rules")
       .select("*")
@@ -64,7 +85,11 @@ export async function POST(request: NextRequest) {
     if (months) configOverrides.months = Math.min(months, 120);
 
     // Run Monte Carlo simulation
-    const simulation = runMonteCarloSimulation(clauses, fairRules, configOverrides);
+    const simulation = runMonteCarloSimulation(
+      clauses,
+      fairRules,
+      configOverrides,
+    );
 
     // Build fair comparison
     const fairComparison = buildFairComparison(simulation);
@@ -75,18 +100,18 @@ export async function POST(request: NextRequest) {
     const riskAdjusted = calculateRiskAdjustedCost(
       base,
       simulation.statistics.mean,
-      contractMonths
+      contractMonths,
     );
 
     // Insurance gap
     const insuranceGap = analyzeInsuranceGap(
       simulation.percentiles,
-      insuranceCoverage || 0
+      insuranceCoverage || 0,
     );
 
     // Run all preset stress tests
     const stressTests = PRESET_SCENARIOS.map((scenario) =>
-      runStressTest(scenario, clauses, fairRules, configOverrides)
+      runStressTest(scenario, clauses, fairRules, configOverrides),
     );
 
     const result: FinancialRuinAnalysis = {
@@ -121,7 +146,7 @@ export async function POST(request: NextRequest) {
     console.error("[ClauseWall] Ruin calculator API error:", error);
     return NextResponse.json(
       { error: "Failed to run financial simulation. Please try again." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

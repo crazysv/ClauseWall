@@ -10,7 +10,11 @@ interface AudioPlayerInlineProps {
   size?: "sm" | "md";
 }
 
-export function AudioPlayerInline({ text, language, size = "sm" }: AudioPlayerInlineProps) {
+export function AudioPlayerInline({
+  text,
+  language,
+  size = "sm",
+}: AudioPlayerInlineProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const config = LANGUAGE_CONFIGS[language];
 
@@ -65,8 +69,13 @@ export function AudioPlayerInline({ text, language, size = "sm" }: AudioPlayerIn
           padding: 4px;
         }
         @keyframes bhasha-pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.5; }
+          0%,
+          100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.5;
+          }
         }
       `}</style>
     </button>

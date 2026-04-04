@@ -28,7 +28,9 @@ export default function BuilderFormPage() {
   const config = getTemplateConfig(type);
 
   const [jurisdiction, setJurisdiction] = useState("");
-  const [values, setValues] = useState<Record<string, string | number | boolean>>({});
+  const [values, setValues] = useState<
+    Record<string, string | number | boolean>
+  >({});
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationError, setGenerationError] = useState<string | null>(null);
@@ -84,10 +86,16 @@ export default function BuilderFormPage() {
       if (field.validation) {
         const val = Number(values[field.name]);
         if (values[field.name] !== undefined && values[field.name] !== "") {
-          if (field.validation.min !== undefined && val < field.validation.min) {
+          if (
+            field.validation.min !== undefined &&
+            val < field.validation.min
+          ) {
             newErrors[field.name] = `Minimum value is ${field.validation.min}`;
           }
-          if (field.validation.max !== undefined && val > field.validation.max) {
+          if (
+            field.validation.max !== undefined &&
+            val > field.validation.max
+          ) {
             newErrors[field.name] = `Maximum value is ${field.validation.max}`;
           }
         }
@@ -158,7 +166,9 @@ export default function BuilderFormPage() {
       const data = await response.json();
 
       if (!data.success) {
-        setGenerationError(data.error || "Generation failed. Please try again.");
+        setGenerationError(
+          data.error || "Generation failed. Please try again.",
+        );
         return;
       }
 
@@ -174,7 +184,7 @@ export default function BuilderFormPage() {
           template_type: type,
           jurisdiction,
           values,
-        })
+        }),
       );
 
       // Navigate to preview
@@ -185,7 +195,9 @@ export default function BuilderFormPage() {
       }
     } catch (error: any) {
       console.error("Generation error:", error);
-      setGenerationError("Network error. Please check your connection and try again.");
+      setGenerationError(
+        "Network error. Please check your connection and try again.",
+      );
     } finally {
       setIsGenerating(false);
     }
@@ -196,9 +208,7 @@ export default function BuilderFormPage() {
     const error = errors[field.name];
 
     const baseInputClass = `w-full border-4 bg-white dark:bg-zinc-950 px-4 py-3 font-bold placeholder:font-medium transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-foreground placeholder-muted-foreground focus:outline-none focus:translate-x-1 focus:translate-y-1 focus:shadow-none ${
-      error
-        ? "border-red-500"
-        : "border-black"
+      error ? "border-red-500" : "border-black"
     }`;
 
     return (
@@ -238,7 +248,10 @@ export default function BuilderFormPage() {
               type="number"
               value={String(value)}
               onChange={(e) =>
-                updateValue(field.name, e.target.value ? Number(e.target.value) : "")
+                updateValue(
+                  field.name,
+                  e.target.value ? Number(e.target.value) : "",
+                )
               }
               placeholder={field.placeholder}
               min={field.validation?.min}
@@ -251,7 +264,10 @@ export default function BuilderFormPage() {
             type="number"
             value={String(value)}
             onChange={(e) =>
-              updateValue(field.name, e.target.value ? Number(e.target.value) : "")
+              updateValue(
+                field.name,
+                e.target.value ? Number(e.target.value) : "",
+              )
             }
             placeholder={field.placeholder}
             min={field.validation?.min}
@@ -313,9 +329,12 @@ export default function BuilderFormPage() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8 p-6 border-4 border-black bg-blue-100 dark:bg-blue-900/30 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
         >
-          <h1 className="text-3xl font-black uppercase tracking-widest mb-2 text-foreground">{config.name}</h1>
+          <h1 className="text-3xl font-black uppercase tracking-widest mb-2 text-foreground">
+            {config.name}
+          </h1>
           <p className="text-muted-foreground font-bold">
-            Fill in the details below. Every clause will be fair and legally compliant.
+            Fill in the details below. Every clause will be fair and legally
+            compliant.
           </p>
         </motion.div>
 
@@ -324,9 +343,13 @@ export default function BuilderFormPage() {
           <div className="flex justify-between items-end text-sm font-black uppercase tracking-widest text-muted-foreground mb-3">
             <span>
               STEP {currentGroup + 1} OF {groupNames.length}:{" "}
-              <span className="text-foreground border-b-4 border-emerald-500">{groupNames[currentGroup]}</span>
+              <span className="text-foreground border-b-4 border-emerald-500">
+                {groupNames[currentGroup]}
+              </span>
             </span>
-            <span className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-900 dark:text-emerald-100 px-2 border-2 border-black">{Math.round(progress)}%</span>
+            <span className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-900 dark:text-emerald-100 px-2 border-2 border-black">
+              {Math.round(progress)}%
+            </span>
           </div>
           <div className="w-full h-8 border-4 border-black bg-white dark:bg-zinc-900 overflow-hidden shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <motion.div
@@ -343,7 +366,9 @@ export default function BuilderFormPage() {
                 key={name}
                 onClick={() => setCurrentGroup(i)}
                 className={`flex-1 h-3 border-2 border-black transition-colors ${
-                  i <= currentGroup ? "bg-emerald-400" : "bg-white dark:bg-zinc-800"
+                  i <= currentGroup
+                    ? "bg-emerald-400"
+                    : "bg-white dark:bg-zinc-800"
                 }`}
               />
             ))}
@@ -374,9 +399,7 @@ export default function BuilderFormPage() {
                 }
               }}
               className={`w-full border-4 bg-white dark:bg-zinc-950 px-4 py-3 font-bold transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:translate-x-1 focus:translate-y-1 focus:shadow-none ${
-                errors["_jurisdiction"]
-                  ? "border-red-500"
-                  : "border-black"
+                errors["_jurisdiction"] ? "border-red-500" : "border-black"
               }`}
             >
               <option value="">Select your state...</option>
@@ -393,7 +416,8 @@ export default function BuilderFormPage() {
               </p>
             )}
             <p className="text-xs text-gray-500 mt-2">
-              Laws vary by state. This ensures your contract references the correct statutes.
+              Laws vary by state. This ensures your contract references the
+              correct statutes.
             </p>
           </motion.div>
         )}

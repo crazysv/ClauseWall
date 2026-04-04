@@ -10,8 +10,11 @@ export async function POST(request: NextRequest) {
 
     if (!documentId || !fromStateId || !toStateId) {
       return NextResponse.json(
-        { success: false, error: "Missing documentId, fromStateId, or toStateId" },
-        { status: 400 }
+        {
+          success: false,
+          error: "Missing documentId, fromStateId, or toStateId",
+        },
+        { status: 400 },
       );
     }
 
@@ -26,7 +29,7 @@ export async function POST(request: NextRequest) {
     if (docError || !doc || !doc.state_machine_data) {
       return NextResponse.json(
         { success: false, error: "State machine data not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -44,7 +47,7 @@ export async function POST(request: NextRequest) {
     console.error("[ClauseWall] State machine path API error:", error);
     return NextResponse.json(
       { success: false, error: "Path finding failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

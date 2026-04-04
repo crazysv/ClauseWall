@@ -10,7 +10,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, AlertTriangle, Scale } from "lucide-react";
 import ChangeDiffView from "@/components/watchdog/change-diff-view";
 import DirectionBadge from "@/components/watchdog/direction-badge";
-import type { TosChange, SemanticChange, MonitoredCompany, WatchdogLegalityIssue, ChangeDirection } from "@/types";
+import type {
+  TosChange,
+  SemanticChange,
+  MonitoredCompany,
+  WatchdogLegalityIssue,
+  ChangeDirection,
+} from "@/types";
 
 export default async function ChangeDetailPage({
   params,
@@ -31,7 +37,8 @@ export default async function ChangeDetailPage({
   const change = changeData as TosChange & { company: MonitoredCompany };
   const company = change.company;
   const changes = (change.changes || []) as SemanticChange[];
-  const legalityIssues = (change.legality_issues || []) as WatchdogLegalityIssue[];
+  const legalityIssues = (change.legality_issues ||
+    []) as WatchdogLegalityIssue[];
 
   return (
     <div className="min-h-screen bg-background">
@@ -58,7 +65,9 @@ export default async function ChangeDetailPage({
               Detected {new Date(change.detected_at).toLocaleString("en-IN")}
             </span>
             {change.overall_direction && (
-              <DirectionBadge direction={change.overall_direction as ChangeDirection} />
+              <DirectionBadge
+                direction={change.overall_direction as ChangeDirection}
+              />
             )}
           </div>
         </div>
@@ -75,15 +84,35 @@ export default async function ChangeDetailPage({
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
           {[
-            { label: "Total Changes", value: change.total_changes, color: "text-foreground" },
-            { label: "Critical", value: change.critical_count, color: "text-red-400" },
-            { label: "Major", value: change.major_count, color: "text-amber-400" },
-            { label: "Minor / Cosmetic", value: change.minor_count + change.cosmetic_count, color: "text-blue-400" },
+            {
+              label: "Total Changes",
+              value: change.total_changes,
+              color: "text-foreground",
+            },
+            {
+              label: "Critical",
+              value: change.critical_count,
+              color: "text-red-400",
+            },
+            {
+              label: "Major",
+              value: change.major_count,
+              color: "text-amber-400",
+            },
+            {
+              label: "Minor / Cosmetic",
+              value: change.minor_count + change.cosmetic_count,
+              color: "text-blue-400",
+            },
           ].map((stat) => (
             <Card key={stat.label} className="bg-gray-900/50 border-gray-800">
               <CardContent className="p-3 text-center">
-                <p className={`text-xl font-bold ${stat.color}`}>{stat.value}</p>
-                <p className="text-[10px] text-muted-foreground">{stat.label}</p>
+                <p className={`text-xl font-bold ${stat.color}`}>
+                  {stat.value}
+                </p>
+                <p className="text-[10px] text-muted-foreground">
+                  {stat.label}
+                </p>
               </CardContent>
             </Card>
           ))}
@@ -100,7 +129,10 @@ export default async function ChangeDetailPage({
             </CardHeader>
             <CardContent className="space-y-3">
               {legalityIssues.map((issue, i) => (
-                <div key={i} className="flex items-start gap-3 p-3 bg-red-500/5 rounded-lg border border-red-500/10">
+                <div
+                  key={i}
+                  className="flex items-start gap-3 p-3 bg-red-500/5 rounded-lg border border-red-500/10"
+                >
                   <AlertTriangle className="h-4 w-4 text-red-400 flex-shrink-0 mt-0.5" />
                   <div>
                     <p className="text-sm font-medium text-red-300">

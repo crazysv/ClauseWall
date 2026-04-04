@@ -89,7 +89,7 @@ export default function EntityReputation({
       setLoading(true);
       try {
         const res = await fetch(
-          `/api/flag-entity?name=${encodeURIComponent(entityName)}`
+          `/api/flag-entity?name=${encodeURIComponent(entityName)}`,
         );
         const data = await res.json();
         setReputation(data);
@@ -124,9 +124,7 @@ export default function EntityReputation({
           jurisdiction,
           riskScore: overallRiskScore,
           violations:
-            violations.length > 0
-              ? violations
-              : ["Predatory contract terms"],
+            violations.length > 0 ? violations : ["Predatory contract terms"],
         }),
       });
 
@@ -136,12 +134,12 @@ export default function EntityReputation({
         setFlagged(true);
         setShowFlagDialog(false);
         toast.success(
-          `${entityName} has been flagged! Total flags: ${data.totalFlags}`
+          `${entityName} has been flagged! Total flags: ${data.totalFlags}`,
         );
 
         // Refresh reputation
         const repRes = await fetch(
-          `/api/flag-entity?name=${encodeURIComponent(entityName)}`
+          `/api/flag-entity?name=${encodeURIComponent(entityName)}`,
         );
         const repData = await repRes.json();
         setReputation(repData);
@@ -171,8 +169,8 @@ export default function EntityReputation({
                 Entity Not Identified
               </p>
               <p className="text-xs font-medium text-muted-foreground mt-1">
-                Could not extract landlord/company name from this contract.
-                The contract may not contain identifiable party names.
+                Could not extract landlord/company name from this contract. The
+                contract may not contain identifiable party names.
               </p>
             </div>
           </div>
@@ -192,7 +190,8 @@ export default function EntityReputation({
             <Loader2 className="h-5 w-5 text-foreground animate-spin" />
             <p className="text-sm font-bold tracking-wider text-muted-foreground uppercase">
               Checking community reputation for{" "}
-              <span className="text-foreground font-black">{entityName}</span>...
+              <span className="text-foreground font-black">{entityName}</span>
+              ...
             </p>
           </div>
         </CardContent>
@@ -505,7 +504,8 @@ export default function EntityReputation({
                   <p className="text-xs text-yellow-300 flex items-center gap-2">
                     <AlertTriangle className="h-3.5 w-3.5 flex-shrink-0" />
                     <span>
-                      This contract scored <strong>{overallRiskScore}/100</strong> risk. Consider
+                      This contract scored{" "}
+                      <strong>{overallRiskScore}/100</strong> risk. Consider
                       flagging this entity to alert future users.
                     </span>
                   </p>

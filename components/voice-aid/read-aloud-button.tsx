@@ -2,7 +2,10 @@
 
 import { useState, useCallback } from "react";
 import { Volume2, Loader2 } from "lucide-react";
-import { speakWithWebSpeech, isWebSpeechTTSSupported } from "@/lib/voice-aid/tts/web-speech-tts";
+import {
+  speakWithWebSpeech,
+  isWebSpeechTTSSupported,
+} from "@/lib/voice-aid/tts/web-speech-tts";
 import type { SupportedLanguage } from "@/types";
 
 interface Props {
@@ -69,15 +72,12 @@ export default function ReadAloudButton({
         language,
         () => {},
         () => setPlaying(false),
-        () => setPlaying(false)
+        () => setPlaying(false),
       );
     }
   }, [text, language, playing]);
 
-  const sizeClasses =
-    size === "sm"
-      ? "p-1.5 rounded-md"
-      : "p-2 rounded-lg";
+  const sizeClasses = size === "sm" ? "p-1.5 rounded-md" : "p-2 rounded-lg";
 
   const iconSize = size === "sm" ? "h-3.5 w-3.5" : "h-4 w-4";
 
@@ -97,9 +97,7 @@ export default function ReadAloudButton({
         <Volume2 className={iconSize} />
       )}
       {size === "md" && (
-        <span className="text-xs">
-          {playing ? "Playing..." : "Read Aloud"}
-        </span>
+        <span className="text-xs">{playing ? "Playing..." : "Read Aloud"}</span>
       )}
     </button>
   );

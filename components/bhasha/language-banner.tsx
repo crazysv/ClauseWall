@@ -10,11 +10,16 @@ interface LanguageBannerProps {
   onDismiss?: () => void;
 }
 
-export function LanguageBanner({ detectedLanguage, confidence, onDismiss }: LanguageBannerProps) {
+export function LanguageBanner({
+  detectedLanguage,
+  confidence,
+  onDismiss,
+}: LanguageBannerProps) {
   if (detectedLanguage === "en") return null;
 
   const config = LANGUAGE_CONFIGS[detectedLanguage];
-  const confidenceLabel = confidence > 0.9 ? "High" : confidence > 0.7 ? "Medium" : "Low";
+  const confidenceLabel =
+    confidence > 0.9 ? "High" : confidence > 0.7 ? "Medium" : "Low";
 
   return (
     <div className="bhasha-banner">
@@ -23,13 +28,16 @@ export function LanguageBanner({ detectedLanguage, confidence, onDismiss }: Lang
         <div className="bhasha-banner-text">
           <strong>Document detected as {config.name}</strong>
           <span className="bhasha-banner-sub">
-            ({config.nativeName}) • Confidence: {confidenceLabel} ({Math.round(confidence * 100)}%)
+            ({config.nativeName}) • Confidence: {confidenceLabel} (
+            {Math.round(confidence * 100)}%)
           </span>
         </div>
         <LanguageBadge sourceLanguage={detectedLanguage} showAudioAvailable />
       </div>
       {onDismiss && (
-        <button onClick={onDismiss} className="bhasha-banner-dismiss">✕</button>
+        <button onClick={onDismiss} className="bhasha-banner-dismiss">
+          ✕
+        </button>
       )}
 
       <style jsx>{`
@@ -38,15 +46,25 @@ export function LanguageBanner({ detectedLanguage, confidence, onDismiss }: Lang
           align-items: center;
           justify-content: space-between;
           padding: 10px 16px;
-          background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.08));
+          background: linear-gradient(
+            135deg,
+            rgba(99, 102, 241, 0.1),
+            rgba(168, 85, 247, 0.08)
+          );
           border: 1px solid rgba(99, 102, 241, 0.2);
           border-radius: 12px;
           margin-bottom: 16px;
           animation: bhasha-banner-in 0.3s ease;
         }
         @keyframes bhasha-banner-in {
-          from { opacity: 0; transform: translateY(-8px); }
-          to { opacity: 1; transform: translateY(0); }
+          from {
+            opacity: 0;
+            transform: translateY(-8px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
         .bhasha-banner-content {
           display: flex;

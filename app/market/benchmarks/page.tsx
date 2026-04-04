@@ -3,12 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import {
-  Database,
-  ArrowLeft,
-  Loader2,
-  BarChart3,
-} from "lucide-react";
+import { Database, ArrowLeft, Loader2, BarChart3 } from "lucide-react";
 import BenchmarkTable from "@/components/market/benchmark-table";
 import CategoryFilterBar from "@/components/market/category-filter-bar";
 import MarketStatsFooter from "@/components/market/market-stats-footer";
@@ -26,8 +21,14 @@ export default function BenchmarkExplorerPage() {
     if (filterType !== "all") params.set("type", filterType);
     if (filterDocType !== "all") params.set("document_type", filterDocType);
     if (filterScope !== "all") {
-      params.set("scope_type", filterScope === "national" ? "national" : "state");
-      params.set("scope_value", filterScope === "national" ? "all" : filterScope);
+      params.set(
+        "scope_type",
+        filterScope === "national" ? "national" : "state",
+      );
+      params.set(
+        "scope_value",
+        filterScope === "national" ? "all" : filterScope,
+      );
     }
     params.set("limit", "100");
 
@@ -45,8 +46,15 @@ export default function BenchmarkExplorerPage() {
     <div className="min-h-screen bg-black text-white">
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
-        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <Link href="/market" className="text-xs text-white/30 hover:text-white/50 mb-3 flex items-center gap-1">
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-6"
+        >
+          <Link
+            href="/market"
+            className="text-xs text-white/30 hover:text-white/50 mb-3 flex items-center gap-1"
+          >
             <ArrowLeft className="h-3 w-3" /> Back to Market Dashboard
           </Link>
           <div className="flex items-center gap-3">
@@ -56,7 +64,8 @@ export default function BenchmarkExplorerPage() {
             <div>
               <h1 className="text-2xl font-bold">Benchmark Explorer</h1>
               <p className="text-sm text-white/50">
-                Filter and compare market benchmarks by metric, contract type, and region
+                Filter and compare market benchmarks by metric, contract type,
+                and region
               </p>
             </div>
           </div>
@@ -81,15 +90,19 @@ export default function BenchmarkExplorerPage() {
           ) : benchmarks.length === 0 ? (
             <div className="text-center py-16">
               <BarChart3 className="h-10 w-10 text-white/10 mx-auto mb-3" />
-              <p className="text-sm text-white/40">No benchmarks match your filters.</p>
+              <p className="text-sm text-white/40">
+                No benchmarks match your filters.
+              </p>
               <p className="text-xs text-white/20 mt-1">
-                Try broadening your filters or analyze more contracts to build data.
+                Try broadening your filters or analyze more contracts to build
+                data.
               </p>
             </div>
           ) : (
             <>
               <p className="text-xs text-white/30 mb-3">
-                Showing {benchmarks.length} benchmark{benchmarks.length !== 1 ? "s" : ""}
+                Showing {benchmarks.length} benchmark
+                {benchmarks.length !== 1 ? "s" : ""}
               </p>
               <BenchmarkTable benchmarks={benchmarks} />
             </>

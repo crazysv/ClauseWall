@@ -75,9 +75,7 @@ export default function ClauseVote({
             {btn.icon}
             {btn.label}
             {btn.count > 0 && (
-              <span className="ml-0.5 text-[10px] opacity-70">
-                {btn.count}
-              </span>
+              <span className="ml-0.5 text-[10px] opacity-70">{btn.count}</span>
             )}
           </motion.button>
         );

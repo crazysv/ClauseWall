@@ -29,7 +29,9 @@ export default function AmmunitionReportModal({
 }: AmmunitionReportModalProps) {
   const [report, setReport] = useState<AmmunitionReport | null>(null);
   const [loading, setLoading] = useState(false);
-  const [audience, setAudience] = useState<"counterparty" | "consumer_forum" | "lawyer">("counterparty");
+  const [audience, setAudience] = useState<
+    "counterparty" | "consumer_forum" | "lawyer"
+  >("counterparty");
 
   const generateReport = async () => {
     setLoading(true);
@@ -53,9 +55,24 @@ export default function AmmunitionReportModal({
   };
 
   const audienceOptions = [
-    { value: "counterparty", label: "Counterparty", icon: Users, desc: "Polite but firm" },
-    { value: "consumer_forum", label: "Consumer Forum", icon: Gavel, desc: "Legal language" },
-    { value: "lawyer", label: "Lawyer", icon: Briefcase, desc: "Technical brief" },
+    {
+      value: "counterparty",
+      label: "Counterparty",
+      icon: Users,
+      desc: "Polite but firm",
+    },
+    {
+      value: "consumer_forum",
+      label: "Consumer Forum",
+      icon: Gavel,
+      desc: "Legal language",
+    },
+    {
+      value: "lawyer",
+      label: "Lawyer",
+      icon: Briefcase,
+      desc: "Technical brief",
+    },
   ] as const;
 
   if (!isOpen) return null;
@@ -69,34 +86,39 @@ export default function AmmunitionReportModal({
         className="bg-background border-4 border-foreground rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] w-full max-w-2xl max-h-[85vh] overflow-hidden flex flex-col"
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-white/5">
+        <div className="flex items-center justify-between p-5 border-b border-foreground border-2">
           <div className="flex items-center gap-2">
             <div className="p-1.5 rounded-lg bg-cyan-500/10">
               <Zap className="h-5 w-5 text-cyan-400" />
             </div>
             <div>
-              <h2 className="font-semibold text-white">Negotiation Ammunition</h2>
-              <p className="text-xs text-white/40">Data-backed arguments from market benchmarks</p>
+              <h2 className="font-semibold text-foreground">
+                Negotiation Ammunition
+              </h2>
+              <p className="text-xs text-foreground/40">
+                Data-backed arguments from market benchmarks
+              </p>
             </div>
           </div>
-          <button onClick={onClose} className="text-white/30 hover:text-white/60">
+          <button
+            onClick={onClose}
+            className="text-foreground/30 hover:text-foreground/60"
+          >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         {/* Audience Selector */}
-        <div className="p-5 border-b border-white/5">
-          <p className="text-xs text-white/40 mb-2">Generate arguments for:</p>
+        <div className="p-5 border-b border-foreground border-2">
+          <p className="text-xs text-foreground/40 mb-2">
+            Generate arguments for:
+          </p>
           <div className="grid grid-cols-3 gap-2">
             {audienceOptions.map((opt) => (
               <button
                 key={opt.value}
                 onClick={() => setAudience(opt.value)}
-                className={`p-3 rounded-none border-2 text-center transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none ${
-                  audience === opt.value
-                    ? "bg-cyan-100 border-cyan-600 text-cyan-900"
-                    : "bg-muted border-foreground text-foreground"
-                }`}
+                className={`p-3 rounded-none border-2 text-center transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none ${audience === opt.value ? "bg-cyan-100 border-cyan-600 text-cyan-900" : "bg-muted border-foreground text-foreground"}`}
               >
                 <opt.icon className="h-5 w-5 mx-auto mb-1" />
                 <p className="text-xs font-medium">{opt.label}</p>
@@ -110,9 +132,13 @@ export default function AmmunitionReportModal({
             className="w-full mt-3 py-2.5 rounded-lg bg-cyan-500/15 text-cyan-400 hover:bg-cyan-500/25 transition-colors text-sm font-medium disabled:opacity-50 flex items-center justify-center gap-2"
           >
             {loading ? (
-              <><Loader2 className="h-4 w-4 animate-spin" /> Generating...</>
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" /> Generating...
+              </>
             ) : (
-              <><Zap className="h-4 w-4" /> Generate Ammunition Report</>
+              <>
+                <Zap className="h-4 w-4" /> Generate Ammunition Report
+              </>
             )}
           </button>
         </div>
@@ -123,23 +149,24 @@ export default function AmmunitionReportModal({
             <div className="space-y-4">
               {/* Summary */}
               <div className="p-4 rounded-lg bg-cyan-500/5 border border-cyan-500/15">
-                <p className="text-sm text-white/70 leading-relaxed">{report.overall_summary}</p>
+                <p className="text-sm text-foreground/70 leading-relaxed">
+                  {report.overall_summary}
+                </p>
               </div>
 
               {/* Sections */}
               {report.sections.map((section, i) => (
-                <Card key={i} className="card-impact border-2 border-foreground bg-background rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <Card
+                  key={i}
+                  className="card-impact border-2 border-foreground bg-background rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                >
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-2">
-                      <h4 className="text-sm font-semibold text-white">{section.heading}</h4>
+                      <h4 className="text-sm font-semibold text-foreground">
+                        {section.heading}
+                      </h4>
                       <Badge
-                        className={`text-[10px] ${
-                          section.percentile_rank > 75
-                            ? "bg-red-500/15 text-red-400 border-red-500/30"
-                            : section.percentile_rank > 50
-                              ? "bg-yellow-500/15 text-yellow-400 border-yellow-500/30"
-                              : "bg-green-500/15 text-green-400 border-green-500/30"
-                        }`}
+                        className={`text-[10px] ${section.percentile_rank > 75 ? "bg-red-500/15 text-red-400 border-red-500/30" : section.percentile_rank > 50 ? "bg-yellow-500/15 text-yellow-400 border-yellow-500/30" : "bg-green-500/15 text-green-400 border-green-500/30"}`}
                       >
                         P{section.percentile_rank}
                       </Badge>
@@ -147,34 +174,51 @@ export default function AmmunitionReportModal({
 
                     <div className="grid grid-cols-3 gap-2 mb-3">
                       <div className="text-center p-2 rounded bg-white/[0.03]">
-                        <p className="text-sm font-bold text-white">{section.user_value}</p>
-                        <p className="text-[10px] text-white/30">Your Value</p>
+                        <p className="text-sm font-bold text-foreground">
+                          {section.user_value}
+                        </p>
+                        <p className="text-[10px] text-foreground/30">
+                          Your Value
+                        </p>
                       </div>
                       <div className="text-center p-2 rounded bg-white/[0.03]">
-                        <p className="text-sm font-bold text-amber-400">{section.market_median}</p>
-                        <p className="text-[10px] text-white/30">Market Median</p>
+                        <p className="text-sm font-bold text-amber-400">
+                          {section.market_median}
+                        </p>
+                        <p className="text-[10px] text-foreground/30">
+                          Market Median
+                        </p>
                       </div>
                       <div className="text-center p-2 rounded bg-white/[0.03]">
-                        <p className="text-sm font-bold text-white/50">{section.sample_count}</p>
-                        <p className="text-[10px] text-white/30">Sample Size</p>
+                        <p className="text-sm font-bold text-foreground/50">
+                          {section.sample_count}
+                        </p>
+                        <p className="text-[10px] text-foreground/30">
+                          Sample Size
+                        </p>
                       </div>
                     </div>
 
-                    <p className="text-xs text-white/50 leading-relaxed">{section.narrative}</p>
+                    <p className="text-xs text-foreground/50 leading-relaxed">
+                      {section.narrative}
+                    </p>
                   </CardContent>
                 </Card>
               ))}
 
               {report.sections.length === 0 && (
-                <p className="text-center text-white/30 py-8 text-sm">
-                  All terms in this contract are within market norms. No ammunition points found.
+                <p className="text-center text-foreground/30 py-8 text-sm">
+                  All terms in this contract are within market norms. No
+                  ammunition points found.
                 </p>
               )}
             </div>
           ) : !loading ? (
-            <div className="text-center py-12 text-white/20">
+            <div className="text-center py-12 text-foreground/20">
               <BarChart3 className="h-10 w-10 mx-auto mb-3 opacity-30" />
-              <p className="text-sm">Select an audience and generate your report</p>
+              <p className="text-sm">
+                Select an audience and generate your report
+              </p>
             </div>
           ) : null}
         </div>

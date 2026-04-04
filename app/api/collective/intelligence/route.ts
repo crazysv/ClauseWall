@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
     if (!entityName) {
       return NextResponse.json(
         { error: "Entity name required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -24,7 +24,9 @@ export async function GET(request: NextRequest) {
     let userId: string | undefined;
     try {
       const supabase = await createClient();
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       userId = user?.id;
     } catch {
       // Anonymous access allowed
@@ -35,7 +37,7 @@ export async function GET(request: NextRequest) {
       userId,
       undefined,
       jurisdiction,
-      documentType
+      documentType,
     );
 
     if (!intelligence) {
@@ -51,7 +53,7 @@ export async function GET(request: NextRequest) {
     console.error("[ClauseWall] [API] Intelligence error:", error);
     return NextResponse.json(
       { error: "Failed to fetch entity intelligence" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

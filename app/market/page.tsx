@@ -18,8 +18,16 @@ import MarketOverviewCards from "@/components/market/market-overview-cards";
 import TrendInsightCard from "@/components/market/trend-insight-card";
 import MarketEmptyState from "@/components/market/market-empty-state";
 import MarketStatsFooter from "@/components/market/market-stats-footer";
-import type { PlatformStats, GeographicRiskData, TrendInsight } from "@/types/market";
-import { SEED_BENCHMARKS, BENCHMARK_TYPE_LABELS, UNIT_LABELS } from "@/lib/market/constants";
+import type {
+  PlatformStats,
+  GeographicRiskData,
+  TrendInsight,
+} from "@/types/market";
+import {
+  SEED_BENCHMARKS,
+  BENCHMARK_TYPE_LABELS,
+  UNIT_LABELS,
+} from "@/lib/market/constants";
 
 // Heavy map component — lazy loaded
 const IndiaHeatMap = dynamic(
@@ -27,11 +35,11 @@ const IndiaHeatMap = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="h-[400px] flex items-center justify-center bg-white/[0.02] rounded-xl border border-white/5">
+      <div className="h-[400px] flex items-center justify-center bg-white/[0.02] rounded-none border border-foreground border-2">
         <Loader2 className="h-6 w-6 text-cyan-400 animate-spin" />
       </div>
     ),
-  }
+  },
 );
 
 export default function MarketDashboardPage() {
@@ -51,7 +59,9 @@ export default function MarketDashboardPage() {
         const [statsRes, geoRes, trendsRes] = await Promise.all([
           fetch("/api/market/stats").then((r) => r.json()),
           fetch("/api/market/geographic").then((r) => r.json()),
-          fetch("/api/market/trends?significant_only=true&limit=6").then((r) => r.json()),
+          fetch("/api/market/trends?significant_only=true&limit=6").then((r) =>
+            r.json(),
+          ),
         ]);
 
         if (statsRes.success) setStats(statsRes.stats);
@@ -76,7 +86,7 @@ export default function MarketDashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black text-white">
+      <div className="min-h-screen bg-black text-foreground">
         <div className="max-w-6xl mx-auto px-4 py-12">
           <div className="flex items-center justify-center py-24">
             <Loader2 className="h-8 w-8 text-cyan-400 animate-spin" />
@@ -89,7 +99,7 @@ export default function MarketDashboardPage() {
   const hasData = (stats?.total_analyzed || 0) > 0;
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-foreground">
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
         <motion.div
@@ -98,12 +108,12 @@ export default function MarketDashboardPage() {
           className="mb-8"
         >
           <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20">
+            <div className="p-2 rounded-none bg-background /20 /20">
               <BarChart3 className="h-6 w-6 text-cyan-400" />
             </div>
             <div>
               <h1 className="text-2xl font-bold">Market Intelligence</h1>
-              <p className="text-sm text-white/50">
+              <p className="text-sm text-foreground/50">
                 Real-time benchmarks from anonymized contract analysis data
               </p>
             </div>
@@ -121,12 +131,14 @@ export default function MarketDashboardPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
               {/* Left: Heat Map (2 cols) */}
               <div className="lg:col-span-2">
-                <Card className="bg-gray-900/50 border-gray-800">
+                <Card className="bg-background/50 border-gray-800">
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-2">
                         <Map className="h-5 w-5 text-cyan-400" />
-                        <h2 className="font-semibold text-white">Geographic Risk Map</h2>
+                        <h2 className="font-semibold text-foreground">
+                          Geographic Risk Map
+                        </h2>
                       </div>
                       <Link
                         href="/market/heatmap"
@@ -149,32 +161,45 @@ export default function MarketDashboardPage() {
               {/* Right: Key Benchmarks + Quick Actions */}
               <div className="space-y-4">
                 {/* Key Benchmarks from Seed Data */}
-                <Card className="bg-gray-900/50 border-gray-800">
+                <Card className="bg-background/50 border-gray-800">
                   <CardContent className="p-5">
                     <div className="flex items-center gap-2 mb-3">
                       <Database className="h-4 w-4 text-amber-400" />
-                      <h3 className="font-semibold text-white text-sm">Key Benchmarks</h3>
+                      <h3 className="font-semibold text-foreground text-sm">
+                        Key Benchmarks
+                      </h3>
                     </div>
                     <div className="space-y-3">
-                      {Object.entries(SEED_BENCHMARKS).slice(0, 5).map(([type, scopes]) => {
-                        const national = scopes['national'];
-                        if (!national) return null;
-                        const label = BENCHMARK_TYPE_LABELS[type as keyof typeof BENCHMARK_TYPE_LABELS] || type;
-                        const unit = UNIT_LABELS[national.unit] || national.unit;
+                      {Object.entries(SEED_BENCHMARKS)
+                        .slice(0, 5)
+                        .map(([type, scopes]) => {
+                          const national = scopes["national"];
+                          if (!national) return null;
+                          const label =
+                            BENCHMARK_TYPE_LABELS[
+                              type as keyof typeof BENCHMARK_TYPE_LABELS
+                            ] || type;
+                          const unit =
+                            UNIT_LABELS[national.unit] || national.unit;
 
-                        return (
-                          <div key={type} className="flex items-center justify-between py-1.5 border-b border-white/5 last:border-0">
-                            <span className="text-xs text-white/60">{label}</span>
-                            <span className="text-sm font-medium text-white">
-                              {national.median} {unit}
-                            </span>
-                          </div>
-                        );
-                      })}
+                          return (
+                            <div
+                              key={type}
+                              className="flex items-center justify-between py-1.5 border-b border-foreground border-2 last:border-0"
+                            >
+                              <span className="text-xs text-foreground/60">
+                                {label}
+                              </span>
+                              <span className="text-sm font-medium text-foreground">
+                                {national.median} {unit}
+                              </span>
+                            </div>
+                          );
+                        })}
                     </div>
                     <Link
                       href="/market/benchmarks"
-                      className="flex items-center justify-center gap-1 mt-3 py-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.06] transition-colors text-xs text-white/50 hover:text-white/70"
+                      className="flex items-center justify-center gap-1 mt-3 py-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.06] transition-colors text-xs text-foreground/50 hover:text-foreground/70"
                     >
                       View All Benchmarks <ArrowRight className="h-3 w-3" />
                     </Link>
@@ -182,28 +207,48 @@ export default function MarketDashboardPage() {
                 </Card>
 
                 {/* Quick Actions */}
-                <Card className="bg-gradient-to-br from-cyan-500/5 to-purple-500/5 border-cyan-500/10">
+                <Card className="bg-background /5 /5 border-cyan-500/10">
                   <CardContent className="p-5 space-y-2">
-                    <h3 className="text-sm font-semibold text-white mb-2 flex items-center gap-1.5">
+                    <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-1.5">
                       <Sparkles className="h-4 w-4 text-cyan-400" />
                       Explore
                     </h3>
                     {[
-                      { href: "/market/benchmarks", label: "Benchmark Explorer", desc: "Filter & compare by type, city, category" },
-                      { href: "/market/trends", label: "Market Trends", desc: "Time-series trend detection" },
-                      { href: "/market/compare", label: "Compare Your Contract", desc: "Upload & get ammunition report" },
-                      { href: "/market/heatmap", label: "Full-Page Heat Map", desc: "Interactive geographic visualization" },
+                      {
+                        href: "/market/benchmarks",
+                        label: "Benchmark Explorer",
+                        desc: "Filter & compare by type, city, category",
+                      },
+                      {
+                        href: "/market/trends",
+                        label: "Market Trends",
+                        desc: "Time-series trend detection",
+                      },
+                      {
+                        href: "/market/compare",
+                        label: "Compare Your Contract",
+                        desc: "Upload & get ammunition report",
+                      },
+                      {
+                        href: "/market/heatmap",
+                        label: "Full-Page Heat Map",
+                        desc: "Interactive geographic visualization",
+                      },
                     ].map((link) => (
                       <Link
                         key={link.href}
                         href={link.href}
-                        className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] hover:bg-white/[0.05] transition-colors border border-white/5 group"
+                        className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] hover:bg-white/[0.05] transition-colors border border-foreground border-2 group"
                       >
                         <div>
-                          <p className="text-xs font-medium text-white">{link.label}</p>
-                          <p className="text-[10px] text-white/30">{link.desc}</p>
+                          <p className="text-xs font-medium text-foreground">
+                            {link.label}
+                          </p>
+                          <p className="text-[10px] text-foreground/30">
+                            {link.desc}
+                          </p>
                         </div>
-                        <ArrowRight className="h-3.5 w-3.5 text-white/20 group-hover:text-white/50 group-hover:translate-x-0.5 transition-all" />
+                        <ArrowRight className="h-3.5 w-3.5 text-foreground/20 group-hover:text-foreground/50 group-hover:translate-x-0.5 transition-all" />
                       </Link>
                     ))}
                   </CardContent>
@@ -216,11 +261,17 @@ export default function MarketDashboardPage() {
               <div className="mt-8">
                 <div className="flex items-center gap-2 mb-4">
                   <TrendingUp className="h-5 w-5 text-rose-400" />
-                  <h2 className="font-semibold text-white">Trending Insights</h2>
+                  <h2 className="font-semibold text-foreground">
+                    Trending Insights
+                  </h2>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                   {trends.map((insight, i) => (
-                    <TrendInsightCard key={insight.trend.id} insight={insight} index={i} />
+                    <TrendInsightCard
+                      key={insight.trend.id}
+                      insight={insight}
+                      index={i}
+                    />
                   ))}
                 </div>
               </div>
@@ -228,7 +279,9 @@ export default function MarketDashboardPage() {
 
             {/* Footer */}
             <MarketStatsFooter
-              totalContracts={geoData?.total_contracts || stats?.total_analyzed || 0}
+              totalContracts={
+                geoData?.total_contracts || stats?.total_analyzed || 0
+              }
               lastUpdated={geoData?.last_updated || null}
             />
           </>

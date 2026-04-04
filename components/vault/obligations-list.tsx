@@ -12,10 +12,22 @@ interface ObligationsListProps {
 }
 
 const RISK_COLORS: Record<RiskLevel, { color: string; bg: string }> = {
-  illegal: { color: "text-purple-600 dark:text-purple-400", bg: "bg-purple-100 dark:bg-purple-900/30" },
-  dangerous: { color: "text-red-600 dark:text-red-400", bg: "bg-red-100 dark:bg-red-900/30" },
-  warning: { color: "text-yellow-600 dark:text-yellow-400", bg: "bg-yellow-100 dark:bg-yellow-900/30" },
-  safe: { color: "text-green-600 dark:text-green-400", bg: "bg-green-100 dark:bg-green-900/30" },
+  illegal: {
+    color: "text-purple-600 dark:text-purple-400",
+    bg: "bg-purple-100 dark:bg-purple-900/30",
+  },
+  dangerous: {
+    color: "text-red-600 dark:text-red-400",
+    bg: "bg-red-100 dark:bg-red-900/30",
+  },
+  warning: {
+    color: "text-yellow-600 dark:text-yellow-400",
+    bg: "bg-yellow-100 dark:bg-yellow-900/30",
+  },
+  safe: {
+    color: "text-green-600 dark:text-green-400",
+    bg: "bg-green-100 dark:bg-green-900/30",
+  },
 };
 
 const TYPE_LABELS: Record<string, { emoji: string; label: string }> = {
@@ -50,8 +62,10 @@ export default function ObligationsList({ obligations }: ObligationsListProps) {
     all: obligations.length,
     payment: obligations.filter((o) => o.obligation_type === "payment").length,
     action: obligations.filter((o) => o.obligation_type === "action").length,
-    restriction: obligations.filter((o) => o.obligation_type === "restriction").length,
-    deadline: obligations.filter((o) => o.obligation_type === "deadline").length,
+    restriction: obligations.filter((o) => o.obligation_type === "restriction")
+      .length,
+    deadline: obligations.filter((o) => o.obligation_type === "deadline")
+      .length,
   };
 
   if (obligations.length === 0) {
@@ -73,7 +87,13 @@ export default function ObligationsList({ obligations }: ObligationsListProps) {
       {/* Type Filters */}
       <div className="flex gap-3 flex-wrap p-4 border-4 border-black bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         {(
-          ["all", "payment", "action", "restriction", "deadline"] as TypeFilter[]
+          [
+            "all",
+            "payment",
+            "action",
+            "restriction",
+            "deadline",
+          ] as TypeFilter[]
         ).map((f) => {
           const count = counts[f];
           const isActive = typeFilter === f;
@@ -89,8 +109,14 @@ export default function ObligationsList({ obligations }: ObligationsListProps) {
                   : "bg-white text-black border-black dark:bg-zinc-800 dark:text-white"
               }`}
             >
-              {f === "all" ? "ALL" : `${typeInfo?.emoji || ""} ${typeInfo?.label.toUpperCase() || f.toUpperCase()}`}{" "}
-              <span className={isActive ? "opacity-80" : "text-muted-foreground"}>({count})</span>
+              {f === "all"
+                ? "ALL"
+                : `${typeInfo?.emoji || ""} ${typeInfo?.label.toUpperCase() || f.toUpperCase()}`}{" "}
+              <span
+                className={isActive ? "opacity-80" : "text-muted-foreground"}
+              >
+                ({count})
+              </span>
             </button>
           );
         })}
@@ -100,8 +126,10 @@ export default function ObligationsList({ obligations }: ObligationsListProps) {
       <div className="space-y-2">
         {filtered.slice(0, 50).map((obligation, index) => {
           const risk = RISK_COLORS[obligation.risk_level] || RISK_COLORS.safe;
-          const typeInfo = TYPE_LABELS[obligation.obligation_type] || TYPE_LABELS.action;
-          const freq = FREQUENCY_LABELS[obligation.frequency] || obligation.frequency;
+          const typeInfo =
+            TYPE_LABELS[obligation.obligation_type] || TYPE_LABELS.action;
+          const freq =
+            FREQUENCY_LABELS[obligation.frequency] || obligation.frequency;
 
           return (
             <motion.div
@@ -113,17 +141,23 @@ export default function ObligationsList({ obligations }: ObligationsListProps) {
               <Card className="border-4 border-black bg-white dark:bg-zinc-900 rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all mb-4">
                 <CardContent className="p-4 sm:p-6">
                   <div className="flex items-start gap-4">
-                    <span className="text-2xl mt-0.5 p-2 border-4 border-black bg-gray-50 dark:bg-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex-shrink-0">{typeInfo.emoji}</span>
+                    <span className="text-2xl mt-0.5 p-2 border-4 border-black bg-gray-50 dark:bg-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex-shrink-0">
+                      {typeInfo.emoji}
+                    </span>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-3 mb-2 flex-wrap">
-                        <Badge className={`${risk.bg} ${risk.color} text-[10px] border-2 border-black rounded-none shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] font-black uppercase tracking-widest`}>
+                        <Badge
+                          className={`${risk.bg} ${risk.color} text-[10px] border-2 border-black rounded-none shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] font-black uppercase tracking-widest`}
+                        >
                           {obligation.risk_level}
                         </Badge>
                         <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground truncate bg-gray-100 dark:bg-zinc-800 px-2 py-0.5 border-2 border-black">
                           {obligation.document_title}
                         </span>
                       </div>
-                      <p className="text-base font-black uppercase tracking-widest text-foreground">{obligation.title}</p>
+                      <p className="text-base font-black uppercase tracking-widest text-foreground">
+                        {obligation.title}
+                      </p>
                       <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mt-2 line-clamp-2 leading-relaxed">
                         {obligation.description}
                       </p>

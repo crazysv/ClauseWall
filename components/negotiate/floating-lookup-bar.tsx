@@ -10,7 +10,11 @@ interface FloatingLookupBarProps {
   onResult: (result: QuickLookupResult) => void;
 }
 
-export default function FloatingLookupBar({ jurisdiction, documentType, onResult }: FloatingLookupBarProps) {
+export default function FloatingLookupBar({
+  jurisdiction,
+  documentType,
+  onResult,
+}: FloatingLookupBarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
@@ -33,7 +37,11 @@ export default function FloatingLookupBar({ jurisdiction, documentType, onResult
       const response = await fetch("/api/negotiate/live/lookup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: query.trim(), jurisdiction, document_type: documentType }),
+        body: JSON.stringify({
+          query: query.trim(),
+          jurisdiction,
+          document_type: documentType,
+        }),
         signal: AbortSignal.timeout(10000),
       });
 
@@ -73,7 +81,9 @@ export default function FloatingLookupBar({ jurisdiction, documentType, onResult
       {result && (
         <div className="px-4 pt-4 pb-2">
           <div className="border-2 border-black bg-blue-50 p-4 max-h-40 overflow-y-auto">
-            <p className="text-sm font-bold text-black mb-3 leading-relaxed">{result.legal_answer}</p>
+            <p className="text-sm font-bold text-black mb-3 leading-relaxed">
+              {result.legal_answer}
+            </p>
             <div className="flex flex-wrap gap-2 items-center">
               {result.legal_limit && (
                 <span className="text-[10px] font-black uppercase tracking-wider text-black bg-white border-2 border-black px-2 py-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
@@ -111,7 +121,11 @@ export default function FloatingLookupBar({ jurisdiction, documentType, onResult
           className="p-3 bg-blue-500 hover:bg-blue-600 border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] text-white disabled:opacity-50 transition-all active:translate-y-1 active:shadow-none"
           style={{ minWidth: "48px", minHeight: "48px" }}
         >
-          {loading ? <Loader2 className="w-5 h-5 text-white animate-spin" /> : <Send className="w-5 h-5 text-white" />}
+          {loading ? (
+            <Loader2 className="w-5 h-5 text-white animate-spin" />
+          ) : (
+            <Send className="w-5 h-5 text-white" />
+          )}
         </button>
         <button
           onClick={handleClose}

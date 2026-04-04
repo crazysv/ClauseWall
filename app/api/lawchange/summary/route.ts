@@ -30,18 +30,18 @@ export async function GET() {
       .select("*", { count: "exact", head: true });
 
     // Count changes this week
-    const weekAgo = new Date(
-      Date.now() - 7 * 24 * 60 * 60 * 1000
-    ).toISOString().split("T")[0];
+    const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+      .toISOString()
+      .split("T")[0];
     const { count: changesThisWeek } = await admin
       .from("law_changes")
       .select("*", { count: "exact", head: true })
       .gte("date_published", weekAgo);
 
     // Count changes this month
-    const monthAgo = new Date(
-      Date.now() - 30 * 24 * 60 * 60 * 1000
-    ).toISOString().split("T")[0];
+    const monthAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+      .toISOString()
+      .split("T")[0];
     const { count: changesThisMonth } = await admin
       .from("law_changes")
       .select("*", { count: "exact", head: true })
@@ -88,7 +88,7 @@ export async function GET() {
   } catch (error) {
     return NextResponse.json(
       { error: (error as Error).message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

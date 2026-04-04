@@ -76,7 +76,9 @@ export function AudioPlayer({ text, language, title }: AudioPlayerProps) {
         return;
       }
     } catch {
-      console.warn("[ClauseWall] Server TTS failed, using Web Speech API fallback");
+      console.warn(
+        "[ClauseWall] Server TTS failed, using Web Speech API fallback",
+      );
     }
 
     // Fallback: Web Speech API
@@ -107,15 +109,21 @@ export function AudioPlayer({ text, language, title }: AudioPlayerProps) {
   return (
     <div className="bhasha-audio-player">
       <div className="bhasha-audio-header">
-        <button onClick={handlePlay} className="bhasha-audio-btn" disabled={isLoading}>
+        <button
+          onClick={handlePlay}
+          className="bhasha-audio-btn"
+          disabled={isLoading}
+        >
           {isLoading ? "⏳" : isPlaying ? "⏹" : "▶️"}
         </button>
         <div className="bhasha-audio-info">
-          <span className="bhasha-audio-title">{title || `Listen in ${config.nativeName}`}</span>
+          <span className="bhasha-audio-title">
+            {title || `Listen in ${config.nativeName}`}
+          </span>
           <span className="bhasha-audio-lang">🔊 {config.name}</span>
         </div>
         <div className="bhasha-speed-controls">
-          {speeds.map(s => (
+          {speeds.map((s) => (
             <button
               key={s}
               onClick={() => setSpeed(s)}

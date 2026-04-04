@@ -10,7 +10,7 @@ import { ContractTemplateType } from "@/types";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
+  process.env.SUPABASE_SERVICE_ROLE_KEY!,
 );
 
 const VALID_TYPES: ContractTemplateType[] = [
@@ -34,15 +34,18 @@ export async function POST(request: NextRequest) {
     // Validate inputs
     if (!template_type || !jurisdiction || !values) {
       return NextResponse.json(
-        { success: false, error: "Missing required fields: template_type, jurisdiction, values" },
-        { status: 400 }
+        {
+          success: false,
+          error: "Missing required fields: template_type, jurisdiction, values",
+        },
+        { status: 400 },
       );
     }
 
     if (!VALID_TYPES.includes(template_type)) {
       return NextResponse.json(
         { success: false, error: `Invalid template type: ${template_type}` },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -52,7 +55,7 @@ export async function POST(request: NextRequest) {
     if (!result.success) {
       return NextResponse.json(
         { success: false, error: result.error },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -98,7 +101,7 @@ export async function POST(request: NextRequest) {
     console.error("[ClauseWall Builder] API error:", error);
     return NextResponse.json(
       { success: false, error: error.message || "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

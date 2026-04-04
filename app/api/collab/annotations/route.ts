@@ -26,10 +26,21 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { roomId, clauseId, authorId, authorName, authorColor, content, parentId } = body;
+    const {
+      roomId,
+      clauseId,
+      authorId,
+      authorName,
+      authorColor,
+      content,
+      parentId,
+    } = body;
 
     if (!roomId || !clauseId || !authorId || !content) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 },
+      );
     }
 
     const supabase = await createClient();
@@ -53,7 +64,10 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true, annotation: data });
   } catch (error) {
-    return NextResponse.json({ error: "Failed to create annotation" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to create annotation" },
+      { status: 500 },
+    );
   }
 }
 
@@ -63,7 +77,10 @@ export async function DELETE(request: NextRequest) {
   const authorId = searchParams.get("authorId");
 
   if (!id || !authorId) {
-    return NextResponse.json({ error: "id and authorId required" }, { status: 400 });
+    return NextResponse.json(
+      { error: "id and authorId required" },
+      { status: 400 },
+    );
   }
 
   const supabase = await createClient();

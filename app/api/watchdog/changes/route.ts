@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
     console.error("[Watchdog API] Changes feed error:", error);
     return NextResponse.json(
       { error: "Failed to fetch changes" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

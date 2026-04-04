@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     if (!clauses || clauses.length === 0) {
       return NextResponse.json(
         { error: "No clauses provided" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
       documentType,
       jurisdiction,
       entityName,
-      formattedClauses
+      formattedClauses,
     );
 
     return NextResponse.json({ letter });
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     console.error("[ClauseWall] Letter generation error:", error);
     return NextResponse.json(
       { error: (error as Error).message || "Failed to generate letter" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

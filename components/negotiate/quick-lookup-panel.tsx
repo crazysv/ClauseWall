@@ -1,7 +1,16 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Send, Mic, MicOff, Loader2, Database, Sparkles, ChevronDown, ChevronUp } from "lucide-react";
+import {
+  Send,
+  Mic,
+  MicOff,
+  Loader2,
+  Database,
+  Sparkles,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 import type { QuickLookupResult } from "@/types";
 
 const PLACEHOLDER_EXAMPLES = [
@@ -19,12 +28,20 @@ interface QuickLookupPanelProps {
   onResult: (result: QuickLookupResult) => void;
 }
 
-export default function QuickLookupPanel({ jurisdiction, documentType, onResult }: QuickLookupPanelProps) {
+export default function QuickLookupPanel({
+  jurisdiction,
+  documentType,
+  onResult,
+}: QuickLookupPanelProps) {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
-  const [currentResult, setCurrentResult] = useState<QuickLookupResult | null>(null);
+  const [currentResult, setCurrentResult] = useState<QuickLookupResult | null>(
+    null,
+  );
   const [history, setHistory] = useState<QuickLookupResult[]>([]);
-  const [expandedHistoryIndex, setExpandedHistoryIndex] = useState<number | null>(null);
+  const [expandedHistoryIndex, setExpandedHistoryIndex] = useState<
+    number | null
+  >(null);
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const [isListening, setIsListening] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -81,9 +98,12 @@ export default function QuickLookupPanel({ jurisdiction, documentType, onResult 
   };
 
   const handleVoiceInput = () => {
-    if (!("webkitSpeechRecognition" in window || "SpeechRecognition" in window)) return;
+    if (!("webkitSpeechRecognition" in window || "SpeechRecognition" in window))
+      return;
 
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    const SpeechRecognition =
+      (window as any).SpeechRecognition ||
+      (window as any).webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
     recognition.lang = "en-IN";
     recognition.continuous = false;
@@ -127,14 +147,22 @@ export default function QuickLookupPanel({ jurisdiction, documentType, onResult 
             }`}
             disabled={loading}
           >
-            {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+            {isListening ? (
+              <MicOff className="w-5 h-5" />
+            ) : (
+              <Mic className="w-5 h-5" />
+            )}
           </button>
           <button
             onClick={handleSubmit}
             disabled={!query.trim() || loading}
             className="p-2.5 bg-blue-500 hover:bg-blue-600 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all active:translate-y-1 active:shadow-none"
           >
-            {loading ? <Loader2 className="w-5 h-5 text-white animate-spin" /> : <Send className="w-5 h-5 text-white" />}
+            {loading ? (
+              <Loader2 className="w-5 h-5 text-white animate-spin" />
+            ) : (
+              <Send className="w-5 h-5 text-white" />
+            )}
           </button>
         </div>
       </div>
@@ -154,8 +182,12 @@ export default function QuickLookupPanel({ jurisdiction, documentType, onResult 
         <div className="border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-white overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-300">
           {/* Answer */}
           <div className="p-5 lg:p-6 pb-2">
-            <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-3">Answer</p>
-            <p className="text-lg font-bold text-black leading-relaxed">{currentResult.legal_answer}</p>
+            <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-3">
+              Answer
+            </p>
+            <p className="text-lg font-bold text-black leading-relaxed">
+              {currentResult.legal_answer}
+            </p>
           </div>
 
           {/* Legal Limit Badge */}
@@ -170,14 +202,18 @@ export default function QuickLookupPanel({ jurisdiction, documentType, onResult 
           {/* Statute */}
           {currentResult.statute && (
             <div className="px-5 lg:px-6 pb-4">
-              <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">📖 Law: {currentResult.statute}</p>
+              <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                📖 Law: {currentResult.statute}
+              </p>
             </div>
           )}
 
           {/* What to Say */}
           {currentResult.what_to_say && (
             <div className="mx-5 lg:mx-6 mb-5 p-5 bg-green-100 border-2 border-green-900 shadow-[2px_2px_0px_0px_rgba(20,83,45,1)] border-dashed">
-              <p className="text-xs font-black uppercase tracking-wider text-green-900 mb-2">💬 Say This:</p>
+              <p className="text-xs font-black uppercase tracking-wider text-green-900 mb-2">
+                💬 Say This:
+              </p>
               <p className="text-base font-bold text-green-950 leading-relaxed">
                 &ldquo;{currentResult.what_to_say}&rdquo;
               </p>
@@ -191,14 +227,18 @@ export default function QuickLookupPanel({ jurisdiction, documentType, onResult 
                 currentResult.source === "database"
                   ? "bg-green-100 text-green-900 border-green-900 shadow-[2px_2px_0px_0px_rgba(20,83,45,1)]"
                   : currentResult.source === "hybrid"
-                  ? "bg-purple-100 text-purple-900 border-purple-900 shadow-[2px_2px_0px_0px_rgba(88,28,135,1)]"
-                  : "bg-blue-100 text-blue-900 border-blue-900 shadow-[2px_2px_0px_0px_rgba(30,58,138,1)]"
+                    ? "bg-purple-100 text-purple-900 border-purple-900 shadow-[2px_2px_0px_0px_rgba(88,28,135,1)]"
+                    : "bg-blue-100 text-blue-900 border-blue-900 shadow-[2px_2px_0px_0px_rgba(30,58,138,1)]"
               }`}
             >
               {currentResult.source === "database" ? (
-                <><Database className="w-3 h-3" /> Verified from law database</>
+                <>
+                  <Database className="w-3 h-3" /> Verified from law database
+                </>
               ) : (
-                <><Sparkles className="w-3 h-3" /> AI analysis</>
+                <>
+                  <Sparkles className="w-3 h-3" /> AI analysis
+                </>
               )}
             </span>
           </div>
@@ -208,16 +248,24 @@ export default function QuickLookupPanel({ jurisdiction, documentType, onResult 
       {/* History */}
       {history.length > 1 && (
         <div className="space-y-4">
-          <p className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1 mt-8 mb-4">Previous Lookups</p>
+          <p className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1 mt-8 mb-4">
+            Previous Lookups
+          </p>
           {history.slice(1).map((item, idx) => (
             <button
               key={idx}
-              onClick={() => setExpandedHistoryIndex(expandedHistoryIndex === idx ? null : idx)}
+              onClick={() =>
+                setExpandedHistoryIndex(
+                  expandedHistoryIndex === idx ? null : idx,
+                )
+              }
               className="w-full text-left border-2 border-black bg-white p-4 hover:bg-gray-50 transition-all hover:translate-x-1"
             >
               <div className="flex items-center justify-between">
                 <div className="flex-1 min-w-0 pr-4">
-                  <p className="text-sm font-bold text-black truncate">{item.query}</p>
+                  <p className="text-sm font-bold text-black truncate">
+                    {item.query}
+                  </p>
                   {expandedHistoryIndex !== idx && (
                     <p className="text-xs font-medium text-muted-foreground truncate mt-1">
                       {item.legal_answer.substring(0, 80)}...
@@ -232,12 +280,18 @@ export default function QuickLookupPanel({ jurisdiction, documentType, onResult 
               </div>
               {expandedHistoryIndex === idx && (
                 <div className="mt-4 pt-4 border-t-2 border-black space-y-3">
-                  <p className="text-sm font-semibold text-black leading-relaxed">{item.legal_answer}</p>
+                  <p className="text-sm font-semibold text-black leading-relaxed">
+                    {item.legal_answer}
+                  </p>
                   {item.legal_limit && (
-                    <p className="text-xs font-black uppercase tracking-wider text-blue-800">📏 {item.legal_limit}</p>
+                    <p className="text-xs font-black uppercase tracking-wider text-blue-800">
+                      📏 {item.legal_limit}
+                    </p>
                   )}
                   {item.what_to_say && (
-                    <p className="text-xs font-bold uppercase tracking-wider text-green-800">💬 &ldquo;{item.what_to_say}&rdquo;</p>
+                    <p className="text-xs font-bold uppercase tracking-wider text-green-800">
+                      💬 &ldquo;{item.what_to_say}&rdquo;
+                    </p>
                   )}
                 </div>
               )}

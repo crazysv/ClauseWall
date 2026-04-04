@@ -8,7 +8,7 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ documentId: string }> }
+  { params }: { params: Promise<{ documentId: string }> },
 ) {
   try {
     const { documentId } = await params;
@@ -32,7 +32,7 @@ export async function GET(
     if (docError || !doc) {
       return NextResponse.json(
         { error: "Document not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -54,9 +54,8 @@ export async function GET(
       .eq("document_id", documentId);
 
     // Run retroactive analysis
-    const { analyzeRetroactiveImpact } = await import(
-      "@/lib/lawchange/retroactive-analyzer"
-    );
+    const { analyzeRetroactiveImpact } =
+      await import("@/lib/lawchange/retroactive-analyzer");
 
     const signingDate =
       (doc.temporal_data as any)?.signing_date_detected || null;
@@ -70,7 +69,7 @@ export async function GET(
         clause_type: c.clause_type,
         clause_number: c.clause_number,
         original_text: c.original_text,
-      }))
+      })),
     );
 
     // Cache result
@@ -88,7 +87,7 @@ export async function GET(
   } catch (error) {
     return NextResponse.json(
       { error: (error as Error).message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

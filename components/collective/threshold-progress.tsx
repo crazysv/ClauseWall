@@ -18,7 +18,9 @@ export default function ThresholdProgress({ current, threshold }: Props) {
           {current}/{threshold} members
         </span>
         <span className={isReached ? "text-green-400" : "text-amber-400"}>
-          {isReached ? "✓ Threshold reached" : `${threshold - current} more needed`}
+          {isReached
+            ? "✓ Threshold reached"
+            : `${threshold - current} more needed`}
         </span>
       </div>
       <div className="h-2 rounded-full bg-white/5 overflow-hidden">

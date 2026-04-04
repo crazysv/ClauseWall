@@ -60,7 +60,8 @@ export function CalendarExport({
         </div>
         <div className="flex-1">
           <h4 className="text-sm font-black uppercase tracking-widest text-foreground">
-            ADD {deadlineCount} DEADLINE{deadlineCount !== 1 ? "S" : ""} TO CALENDAR
+            ADD {deadlineCount} DEADLINE{deadlineCount !== 1 ? "S" : ""} TO
+            CALENDAR
           </h4>
           <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mt-2 leading-relaxed">
             WORKS WITH GOOGLE CALENDAR, APPLE CALENDAR, AND OUTLOOK.

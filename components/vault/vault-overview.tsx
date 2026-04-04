@@ -2,7 +2,15 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Shield, AlertTriangle, ShieldOff, GitBranch, IndianRupee, ListChecks, Zap } from "lucide-react";
+import {
+  Shield,
+  AlertTriangle,
+  ShieldOff,
+  GitBranch,
+  IndianRupee,
+  ListChecks,
+  Zap,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import type { VaultAnalysisResult } from "@/types";
 import { getVaultSummaryStats } from "@/lib/vault/vault-scorer";
@@ -37,22 +45,29 @@ export default function VaultOverview({ analysis }: VaultOverviewProps) {
     analysis.conflicts.length > 0
       ? "conflicts"
       : analysis.coverage_gaps.length > 0
-      ? "gaps"
-      : analysis.cascading_failures.length > 0
-      ? "cascades"
-      : "conflicts";
+        ? "gaps"
+        : analysis.cascading_failures.length > 0
+          ? "cascades"
+          : "conflicts";
 
   const [activeTab, setActiveTab] = useState<TabId>(defaultTab);
 
   const getTabCount = (tabId: TabId): number => {
     switch (tabId) {
-      case "conflicts": return analysis.conflicts.length;
-      case "gaps": return analysis.coverage_gaps.length;
-      case "cascades": return analysis.cascading_failures.length;
-      case "finances": return analysis.financial_exposure.by_contract.length;
-      case "obligations": return analysis.unified_obligations.length;
-      case "whatif": return analysis.what_if_results.length;
-      default: return 0;
+      case "conflicts":
+        return analysis.conflicts.length;
+      case "gaps":
+        return analysis.coverage_gaps.length;
+      case "cascades":
+        return analysis.cascading_failures.length;
+      case "finances":
+        return analysis.financial_exposure.by_contract.length;
+      case "obligations":
+        return analysis.unified_obligations.length;
+      case "whatif":
+        return analysis.what_if_results.length;
+      default:
+        return 0;
     }
   };
 

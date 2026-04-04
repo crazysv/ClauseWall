@@ -31,7 +31,7 @@ export default function HeartbeatStyle({
     switch (node.riskLevel) {
       case "safe":
         pathParts.push(
-          `Q ${baseX + segW * 0.3} ${centerY - spikeH * 0.4} ${baseX + segW * 0.5} ${centerY}`
+          `Q ${baseX + segW * 0.3} ${centerY - spikeH * 0.4} ${baseX + segW * 0.5} ${centerY}`,
         );
         dots.push({ x: baseX + segW * 0.3, y: centerY - spikeH * 0.4, node });
         break;

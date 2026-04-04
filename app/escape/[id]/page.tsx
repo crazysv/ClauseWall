@@ -40,7 +40,7 @@ import dynamic from "next/dynamic";
 
 const AuthoritySection = dynamic(
   () => import("@/components/authority/authority-section"),
-  { ssr: false }
+  { ssr: false },
 );
 
 const STEP_ICONS: Record<string, React.ReactNode> = {
@@ -51,19 +51,46 @@ const STEP_ICONS: Record<string, React.ReactNode> = {
   refund: <IndianRupee className="h-5 w-5" />,
 };
 
-const STEP_COLORS: Record<string, { bg: string; text: string; border: string }> = {
-  awareness: { bg: "bg-blue-100", text: "text-blue-900", border: "border-black" },
-  notice: { bg: "bg-yellow-100", text: "text-yellow-900", border: "border-black" },
-  negotiate: { bg: "bg-purple-100", text: "text-purple-900", border: "border-black" },
+const STEP_COLORS: Record<
+  string,
+  { bg: string; text: string; border: string }
+> = {
+  awareness: {
+    bg: "bg-blue-100",
+    text: "text-blue-900",
+    border: "border-black",
+  },
+  notice: {
+    bg: "bg-yellow-100",
+    text: "text-yellow-900",
+    border: "border-black",
+  },
+  negotiate: {
+    bg: "bg-purple-100",
+    text: "text-purple-900",
+    border: "border-black",
+  },
   complaint: { bg: "bg-red-100", text: "text-red-900", border: "border-black" },
-  refund: { bg: "bg-green-100", text: "text-green-900", border: "border-black" },
+  refund: {
+    bg: "bg-green-100",
+    text: "text-green-900",
+    border: "border-black",
+  },
 };
 
 const SEVERITY_CONFIG = {
   low: { color: "text-green-700", bg: "bg-green-400", label: "LOW RISK" },
-  medium: { color: "text-yellow-700", bg: "bg-yellow-400", label: "MEDIUM RISK" },
+  medium: {
+    color: "text-yellow-700",
+    bg: "bg-yellow-400",
+    label: "MEDIUM RISK",
+  },
   high: { color: "text-red-700", bg: "bg-red-400", label: "HIGH RISK" },
-  critical: { color: "text-purple-700", bg: "bg-purple-400", label: "CRITICAL" },
+  critical: {
+    color: "text-purple-700",
+    bg: "bg-purple-400",
+    label: "CRITICAL",
+  },
 };
 
 const PROBABILITY_CONFIG = {
@@ -122,7 +149,7 @@ export default function EscapePlanPage() {
       }
       localStorage.setItem(
         `cw_escape_checklist_${documentId}`,
-        JSON.stringify(Array.from(next))
+        JSON.stringify(Array.from(next)),
       );
       return next;
     });
@@ -203,7 +230,9 @@ export default function EscapePlanPage() {
       lines.push(`${i + 1}. Clause #${vc.clause_number} — ${vc.why_void}`);
       lines.push(`   Law: ${vc.law}`);
       if (vc.recoverable_amount > 0) {
-        lines.push(`   Recoverable: ${formatCurrencyFull(vc.recoverable_amount)}`);
+        lines.push(
+          `   Recoverable: ${formatCurrencyFull(vc.recoverable_amount)}`,
+        );
       }
       lines.push("");
     });
@@ -232,7 +261,9 @@ export default function EscapePlanPage() {
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 px-4">
         <Loader2 className="h-16 w-16 text-black animate-spin" />
         <div className="text-center">
-          <h2 className="text-2xl font-black uppercase tracking-tighter text-black mb-2 border-b-4 border-black pb-2">GENERATING ESCAPE PLAN</h2>
+          <h2 className="text-2xl font-black uppercase tracking-tighter text-black mb-2 border-b-4 border-black pb-2">
+            GENERATING ESCAPE PLAN
+          </h2>
           <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground mt-4">
             FINDING LOOPHOLES. CALCULATING RECOVERY.
           </p>
@@ -247,13 +278,23 @@ export default function EscapePlanPage() {
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 px-4">
         <div className="bg-white border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center max-w-md">
           <XCircle className="h-16 w-16 text-red-600 mx-auto mb-4" />
-          <p className="text-2xl font-black text-red-700 uppercase tracking-tighter mb-8">{error || "Something went wrong"}</p>
+          <p className="text-2xl font-black text-red-700 uppercase tracking-tighter mb-8">
+            {error || "Something went wrong"}
+          </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button onClick={fetchEscapePlan} className="border-2 border-black font-black uppercase tracking-wider rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none transition-all">
+            <Button
+              onClick={fetchEscapePlan}
+              className="border-2 border-black font-black uppercase tracking-wider rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none transition-all"
+            >
               TRY AGAIN
             </Button>
             <Link href={`/results/${documentId}`}>
-              <Button variant="outline" className="border-2 border-black font-black uppercase tracking-wider rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none transition-all">BACK TO RESULTS</Button>
+              <Button
+                variant="outline"
+                className="border-2 border-black font-black uppercase tracking-wider rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none transition-all"
+              >
+                BACK TO RESULTS
+              </Button>
             </Link>
           </div>
         </div>
@@ -264,7 +305,8 @@ export default function EscapePlanPage() {
   if (!plan) return null;
 
   const severity = SEVERITY_CONFIG[plan.severity] || SEVERITY_CONFIG.medium;
-  const probability = PROBABILITY_CONFIG[plan.success_probability] || PROBABILITY_CONFIG.medium;
+  const probability =
+    PROBABILITY_CONFIG[plan.success_probability] || PROBABILITY_CONFIG.medium;
 
   return (
     <div className="relative px-4 sm:px-6 lg:px-8 py-8 bg-gray-50 min-h-screen">
@@ -281,16 +323,25 @@ export default function EscapePlanPage() {
         {/* Header */}
         <div className="mb-10">
           <div className="flex flex-wrap items-center gap-2 text-black font-bold uppercase tracking-widest text-xs mb-4">
-            <span className="bg-white border-2 border-black px-2 py-1 flex items-center gap-2"><FileText className="h-3 w-3" /> {document.original_filename || "Contract"}</span>
-            <span className="bg-white border-2 border-black px-2 py-1">{getDocumentTypeLabel(document.document_type)}</span>
-            <span className="bg-white border-2 border-black px-2 py-1">{getStateName(document.jurisdiction)}</span>
+            <span className="bg-white border-2 border-black px-2 py-1 flex items-center gap-2">
+              <FileText className="h-3 w-3" />{" "}
+              {document.original_filename || "Contract"}
+            </span>
+            <span className="bg-white border-2 border-black px-2 py-1">
+              {getDocumentTypeLabel(document.document_type)}
+            </span>
+            <span className="bg-white border-2 border-black px-2 py-1">
+              {getStateName(document.jurisdiction)}
+            </span>
           </div>
           <div className="flex items-center gap-4">
             <div className="h-16 w-16 border-4 border-black bg-orange-400 flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
               <DoorOpen className="h-8 w-8 text-black" />
             </div>
             <div>
-              <h1 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter text-black">ESCAPE PLAN</h1>
+              <h1 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter text-black">
+                ESCAPE PLAN
+              </h1>
               <p className="text-sm font-bold tracking-widest uppercase text-muted-foreground mt-2">
                 ALREADY SIGNED? HERE'S HOW TO BREAK IT.
               </p>
@@ -304,9 +355,11 @@ export default function EscapePlanPage() {
         >
           <CardContent className="p-0">
             {/* Top Verdict Bar */}
-            <div className={`p-6 border-b-4 border-black flex items-center gap-4 ${
-              plan.can_escape ? "bg-green-400" : "bg-red-500"
-            }`}>
+            <div
+              className={`p-6 border-b-4 border-black flex items-center gap-4 ${
+                plan.can_escape ? "bg-green-400" : "bg-red-500"
+              }`}
+            >
               <div className="bg-white border-2 border-black p-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                 {plan.can_escape ? (
                   <CheckCircle2 className="h-8 w-8 text-black" />
@@ -329,7 +382,9 @@ export default function EscapePlanPage() {
               {/* Stats Row */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="p-4 border-2 border-black bg-gray-50 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                  <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-2">RECOVERABLE</p>
+                  <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-2">
+                    RECOVERABLE
+                  </p>
                   <p className="text-2xl font-black text-green-700">
                     {plan.total_recoverable > 0
                       ? formatCurrency(plan.total_recoverable)
@@ -337,20 +392,28 @@ export default function EscapePlanPage() {
                   </p>
                 </div>
                 <div className="p-4 border-2 border-black bg-gray-50 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                  <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-2">VOID CLAUSES</p>
+                  <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-2">
+                    VOID CLAUSES
+                  </p>
                   <p className="text-2xl font-black text-orange-600">
                     {plan.void_clauses.length}
                   </p>
                 </div>
                 <div className="p-4 border-2 border-black bg-gray-50 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                  <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-2">TIMELINE</p>
+                  <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-2">
+                    TIMELINE
+                  </p>
                   <p className="text-xl font-black text-blue-700 uppercase tracking-tight truncate">
                     {plan.estimated_timeline}
                   </p>
                 </div>
                 <div className="p-4 border-2 border-black bg-gray-50 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                  <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-2">SUCCESS RATE</p>
-                  <p className={`text-xl font-black uppercase tracking-widest ${probability.color}`}>
+                  <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-2">
+                    SUCCESS RATE
+                  </p>
+                  <p
+                    className={`text-xl font-black uppercase tracking-widest ${probability.color}`}
+                  >
                     {probability.label}
                   </p>
                 </div>
@@ -400,14 +463,16 @@ export default function EscapePlanPage() {
                       </div>
                       {vc.recoverable_amount > 0 && (
                         <div className="flex-shrink-0 bg-white border-2 border-black p-2 sm:px-4 sm:py-2 text-right sm:text-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] w-full sm:w-auto flex justify-between sm:block">
-                          <p className="text-xs font-black uppercase tracking-widest text-black">RECOVERABLE</p>
+                          <p className="text-xs font-black uppercase tracking-widest text-black">
+                            RECOVERABLE
+                          </p>
                           <p className="text-xl sm:text-lg font-black text-green-700">
                             {formatCurrency(vc.recoverable_amount)}
                           </p>
                         </div>
                       )}
                     </div>
-                    
+
                     <CardContent className="p-6">
                       <div className="p-4 bg-gray-50 border-2 border-black mb-6">
                         <p className="text-sm font-bold text-black italic line-clamp-3">
@@ -517,14 +582,19 @@ export default function EscapePlanPage() {
                         }`}
                       >
                         <div className="flex items-center gap-6">
-                          <div className={`p-4 border-2 border-black bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]`}>
+                          <div
+                            className={`p-4 border-2 border-black bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]`}
+                          >
                             <span className={stepColor.text}>
-                              {STEP_ICONS[step.action_type] || STEP_ICONS.awareness}
+                              {STEP_ICONS[step.action_type] ||
+                                STEP_ICONS.awareness}
                             </span>
                           </div>
                           <div>
                             <div className="flex items-center gap-3">
-                              <span className={`text-lg font-black ${stepColor.text}`}>
+                              <span
+                                className={`text-lg font-black ${stepColor.text}`}
+                              >
                                 STEP {step.step_number}
                               </span>
                               <span className="text-xl font-black text-black uppercase tracking-tight">
@@ -538,11 +608,11 @@ export default function EscapePlanPage() {
                           </div>
                         </div>
                         <div className="border-2 border-black p-2 bg-white">
-                        {isExpanded ? (
-                          <ChevronUp className="h-6 w-6 text-black" />
-                        ) : (
-                          <ChevronDown className="h-6 w-6 text-black" />
-                        )}
+                          {isExpanded ? (
+                            <ChevronUp className="h-6 w-6 text-black" />
+                          ) : (
+                            <ChevronDown className="h-6 w-6 text-black" />
+                          )}
                         </div>
                       </button>
 
@@ -588,46 +658,53 @@ export default function EscapePlanPage() {
                               )}
 
                               {/* Authorities */}
-                              {step.authorities && step.authorities.length > 0 && (
-                                <div className="space-y-4">
-                                  <p className="text-sm font-black text-black uppercase tracking-widest border-b-2 border-black pb-2">
-                                    WHERE TO FILE
-                                  </p>
-                                  {step.authorities.map((auth, ai) => (
-                                    <div
-                                      key={ai}
-                                      className="p-4 bg-gray-50 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-                                    >
-                                      <div className="flex items-start justify-between gap-4 mb-2">
-                                        <p className="text-lg font-black text-black uppercase tracking-tight">
-                                          {auth.name}
+                              {step.authorities &&
+                                step.authorities.length > 0 && (
+                                  <div className="space-y-4">
+                                    <p className="text-sm font-black text-black uppercase tracking-widest border-b-2 border-black pb-2">
+                                      WHERE TO FILE
+                                    </p>
+                                    {step.authorities.map((auth, ai) => (
+                                      <div
+                                        key={ai}
+                                        className="p-4 bg-gray-50 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                                      >
+                                        <div className="flex items-start justify-between gap-4 mb-2">
+                                          <p className="text-lg font-black text-black uppercase tracking-tight">
+                                            {auth.name}
+                                          </p>
+                                          <Badge
+                                            variant="outline"
+                                            className="text-xs font-black uppercase tracking-widest border-2 border-black text-black rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                                          >
+                                            {auth.jurisdiction}
+                                          </Badge>
+                                        </div>
+                                        <p className="text-sm font-bold text-gray-700 mb-4 border-l-4 border-black pl-3">
+                                          FOR: {auth.for}
                                         </p>
-                                        <Badge
-                                          variant="outline"
-                                          className="text-xs font-black uppercase tracking-widest border-2 border-black text-black rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-                                        >
-                                          {auth.jurisdiction}
-                                        </Badge>
+                                        <div className="flex flex-col sm:flex-row gap-4 sm:items-center text-sm font-black uppercase tracking-widest text-black bg-white border-2 border-black p-3">
+                                          <span className="flex items-center gap-2">
+                                            💰 {auth.cost}
+                                          </span>
+                                          <span className="hidden sm:inline">
+                                            •
+                                          </span>
+                                          <span className="flex items-center gap-2">
+                                            ⏰ {auth.timeline}
+                                          </span>
+                                        </div>
+                                        {auth.how_to_file && (
+                                          <p className="text-xs font-bold text-gray-600 mt-4 italic bg-yellow-50 p-3 border-l-4 border-yellow-400">
+                                            {auth.how_to_file}
+                                          </p>
+                                        )}
                                       </div>
-                                      <p className="text-sm font-bold text-gray-700 mb-4 border-l-4 border-black pl-3">
-                                        FOR: {auth.for}
-                                      </p>
-                                      <div className="flex flex-col sm:flex-row gap-4 sm:items-center text-sm font-black uppercase tracking-widest text-black bg-white border-2 border-black p-3">
-                                        <span className="flex items-center gap-2">💰 {auth.cost}</span>
-                                        <span className="hidden sm:inline">•</span>
-                                        <span className="flex items-center gap-2">⏰ {auth.timeline}</span>
-                                      </div>
-                                      {auth.how_to_file && (
-                                        <p className="text-xs font-bold text-gray-600 mt-4 italic bg-yellow-50 p-3 border-l-4 border-yellow-400">
-                                          {auth.how_to_file}
-                                        </p>
-                                      )}
-                                    </div>
-                                  ))}
-                                </div>
-                              )}
+                                    ))}
+                                  </div>
+                                )}
                             </div>
-                           </motion.div>
+                          </motion.div>
                         )}
                       </AnimatePresence>
                     </Card>
@@ -657,7 +734,9 @@ export default function EscapePlanPage() {
                       <p className="text-base font-black uppercase tracking-widest text-black mb-1">
                         {item.label}
                       </p>
-                      <p className="text-sm font-bold text-gray-500">{item.explanation}</p>
+                      <p className="text-sm font-bold text-gray-500">
+                        {item.explanation}
+                      </p>
                     </div>
                     <p className="text-xl font-black text-green-700 flex-shrink-0 sm:ml-4 mt-2 sm:mt-0">
                       {formatCurrencyFull(item.amount)}
@@ -753,20 +832,29 @@ export default function EscapePlanPage() {
             </h2>
             <div className="mb-6">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-black uppercase tracking-widest text-muted-foreground">LIKELIHOOD OF FAVORABLE OUTCOME</span>
-                <span className={`text-sm font-black uppercase tracking-widest ${probability.color}`}>
+                <span className="text-xs font-black uppercase tracking-widest text-muted-foreground">
+                  LIKELIHOOD OF FAVORABLE OUTCOME
+                </span>
+                <span
+                  className={`text-sm font-black uppercase tracking-widest ${probability.color}`}
+                >
                   {probability.label}
                 </span>
               </div>
               <div className="w-full h-8 bg-gray-100 border-2 border-black overflow-hidden relative">
                 <motion.div
-                  className={`h-full border-r-2 border-black ${probability.color.replace('text-', 'bg-').replace('-700', '-400')}`}
+                  className={`h-full border-r-2 border-black ${probability.color.replace("text-", "bg-").replace("-700", "-400")}`}
                   initial={{ width: 0 }}
                   animate={{ width: probability.width }}
                   transition={{ duration: 1, delay: 0.5 }}
                   style={{
-                    background: "repeating-linear-gradient(45deg, rgba(0,0,0,0.1) 0px, rgba(0,0,0,0.1) 10px, transparent 10px, transparent 20px)",
-                    backgroundColor: probability.color.includes('green') ? '#4ade80' : probability.color.includes('yellow') ? '#facc15' : '#f87171' // hacky way, but works
+                    background:
+                      "repeating-linear-gradient(45deg, rgba(0,0,0,0.1) 0px, rgba(0,0,0,0.1) 10px, transparent 10px, transparent 20px)",
+                    backgroundColor: probability.color.includes("green")
+                      ? "#4ade80"
+                      : probability.color.includes("yellow")
+                        ? "#facc15"
+                        : "#f87171", // hacky way, but works
                   }}
                 />
               </div>
@@ -787,8 +875,13 @@ export default function EscapePlanPage() {
               </p>
               <ul className="space-y-3">
                 {plan.warnings.map((w, i) => (
-                  <li key={i} className="text-sm font-bold text-yellow-900 flex items-start gap-3">
-                    <span className="text-yellow-500 text-lg leading-none mt-0.5">•</span>
+                  <li
+                    key={i}
+                    className="text-sm font-bold text-yellow-900 flex items-start gap-3"
+                  >
+                    <span className="text-yellow-500 text-lg leading-none mt-0.5">
+                      •
+                    </span>
                     {w}
                   </li>
                 ))}
@@ -818,7 +911,9 @@ export default function EscapePlanPage() {
             documentType={document.document_type}
             jurisdiction={document.jurisdiction}
             entityName={document.entity_name || ""}
-            clauseTypes={plan.void_clauses.map(vc => vc.why_void).filter(Boolean)}
+            clauseTypes={plan.void_clauses
+              .map((vc) => vc.why_void)
+              .filter(Boolean)}
             preloadedRouting={(document as any).authority_routing || null}
           />
         </div>

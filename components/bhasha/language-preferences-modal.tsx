@@ -9,9 +9,16 @@ interface LanguagePreferencesModalProps {
   onClose: () => void;
 }
 
-export function LanguagePreferencesModal({ isOpen, onClose }: LanguagePreferencesModalProps) {
-  const [inputLang, setInputLang] = useState<SupportedLanguage | "auto">("auto");
-  const [outputLang, setOutputLang] = useState<SupportedLanguage | "auto">("en");
+export function LanguagePreferencesModal({
+  isOpen,
+  onClose,
+}: LanguagePreferencesModalProps) {
+  const [inputLang, setInputLang] = useState<SupportedLanguage | "auto">(
+    "auto",
+  );
+  const [outputLang, setOutputLang] = useState<SupportedLanguage | "auto">(
+    "en",
+  );
   const [enableAudio, setEnableAudio] = useState(false);
   const [enableBilingual, setEnableBilingual] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -19,8 +26,8 @@ export function LanguagePreferencesModal({ isOpen, onClose }: LanguagePreference
   useEffect(() => {
     if (isOpen) {
       fetch("/api/bhasha/preferences")
-        .then(res => res.json())
-        .then(data => {
+        .then((res) => res.json())
+        .then((data) => {
           setInputLang(data.preferred_input_language || "auto");
           setOutputLang(data.preferred_output_language || "en");
           setEnableAudio(data.enable_audio_by_default || false);
@@ -55,23 +62,33 @@ export function LanguagePreferencesModal({ isOpen, onClose }: LanguagePreference
 
   return (
     <div className="bhasha-modal-overlay" onClick={onClose}>
-      <div className="bhasha-modal" onClick={e => e.stopPropagation()}>
+      <div className="bhasha-modal" onClick={(e) => e.stopPropagation()}>
         <div className="bhasha-modal-header">
           <h3>🌐 Language Preferences</h3>
-          <button onClick={onClose} className="bhasha-modal-close">✕</button>
+          <button onClick={onClose} className="bhasha-modal-close">
+            ✕
+          </button>
         </div>
 
         <div className="bhasha-modal-body">
           <div className="bhasha-pref-group">
             <label>Default Input Language</label>
             <p className="bhasha-pref-desc">Language of documents you upload</p>
-            <LanguageSelector value={inputLang} onChange={setInputLang} compact />
+            <LanguageSelector
+              value={inputLang}
+              onChange={setInputLang}
+              compact
+            />
           </div>
 
           <div className="bhasha-pref-group">
             <label>Default Output Language</label>
             <p className="bhasha-pref-desc">Language for analysis results</p>
-            <LanguageSelector value={outputLang} onChange={setOutputLang} compact />
+            <LanguageSelector
+              value={outputLang}
+              onChange={setOutputLang}
+              compact
+            />
           </div>
 
           <div className="bhasha-pref-toggle">
@@ -79,7 +96,7 @@ export function LanguagePreferencesModal({ isOpen, onClose }: LanguagePreference
               <input
                 type="checkbox"
                 checked={enableAudio}
-                onChange={e => setEnableAudio(e.target.checked)}
+                onChange={(e) => setEnableAudio(e.target.checked)}
               />
               Enable audio playback by default
             </label>
@@ -90,7 +107,7 @@ export function LanguagePreferencesModal({ isOpen, onClose }: LanguagePreference
               <input
                 type="checkbox"
                 checked={enableBilingual}
-                onChange={e => setEnableBilingual(e.target.checked)}
+                onChange={(e) => setEnableBilingual(e.target.checked)}
               />
               Show bilingual view by default (for non-English docs)
             </label>
@@ -98,8 +115,14 @@ export function LanguagePreferencesModal({ isOpen, onClose }: LanguagePreference
         </div>
 
         <div className="bhasha-modal-footer">
-          <button onClick={onClose} className="bhasha-btn-cancel">Cancel</button>
-          <button onClick={handleSave} disabled={isSaving} className="bhasha-btn-save">
+          <button onClick={onClose} className="bhasha-btn-cancel">
+            Cancel
+          </button>
+          <button
+            onClick={handleSave}
+            disabled={isSaving}
+            className="bhasha-btn-save"
+          >
             {isSaving ? "Saving..." : "Save Preferences"}
           </button>
         </div>
@@ -117,8 +140,12 @@ export function LanguagePreferencesModal({ isOpen, onClose }: LanguagePreference
             animation: bhasha-fade-in 0.15s ease;
           }
           @keyframes bhasha-fade-in {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+              opacity: 0;
+            }
+            to {
+              opacity: 1;
+            }
           }
           .bhasha-modal {
             width: 90%;
@@ -130,8 +157,14 @@ export function LanguagePreferencesModal({ isOpen, onClose }: LanguagePreference
             animation: bhasha-scale-in 0.2s ease;
           }
           @keyframes bhasha-scale-in {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
+            from {
+              opacity: 0;
+              transform: scale(0.95);
+            }
+            to {
+              opacity: 1;
+              transform: scale(1);
+            }
           }
           .bhasha-modal-header {
             display: flex;

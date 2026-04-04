@@ -3,12 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import {
-  Users,
-  ArrowRight,
-  Shield,
-  Loader2,
-} from "lucide-react";
+import { Users, ArrowRight, Shield, Loader2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import ThresholdProgress from "./threshold-progress";

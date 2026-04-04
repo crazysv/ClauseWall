@@ -111,7 +111,7 @@ export default function WallOfShamePage() {
     entities.length > 0
       ? Math.round(
           entities.reduce((sum, e) => sum + (e.avg_risk_score || 0), 0) /
-            entities.length
+            entities.length,
         )
       : 0;
 
@@ -226,9 +226,7 @@ export default function WallOfShamePage() {
                 <p className="text-2xl font-bold text-purple-400">
                   {avgRiskScore}
                 </p>
-                <p className="text-xs text-muted-foreground">
-                  Avg Risk Score
-                </p>
+                <p className="text-xs text-muted-foreground">Avg Risk Score</p>
               </CardContent>
             </Card>
             <Card className="bg-gray-900/50 border-gray-800">
@@ -355,17 +353,19 @@ export default function WallOfShamePage() {
                           </span>
                         )}
                         {getRiskBadge(entity.avg_risk_score)}
-                        {marketAvgRisk !== null && entity.avg_risk_score > 0 && (
-                          <Badge
-                            className={`text-[10px] ${
-                              entity.avg_risk_score > marketAvgRisk
-                                ? "bg-red-500/10 text-red-300 border-red-500/20"
-                                : "bg-green-500/10 text-green-300 border-green-500/20"
-                            }`}
-                          >
-                            Market avg: {marketAvgRisk} | This entity: {entity.avg_risk_score}
-                          </Badge>
-                        )}
+                        {marketAvgRisk !== null &&
+                          entity.avg_risk_score > 0 && (
+                            <Badge
+                              className={`text-[10px] ${
+                                entity.avg_risk_score > marketAvgRisk
+                                  ? "bg-red-500/10 text-red-300 border-red-500/20"
+                                  : "bg-green-500/10 text-green-300 border-green-500/20"
+                              }`}
+                            >
+                              Market avg: {marketAvgRisk} | This entity:{" "}
+                              {entity.avg_risk_score}
+                            </Badge>
+                          )}
                       </div>
 
                       {/* Common Violations */}
@@ -393,7 +393,8 @@ export default function WallOfShamePage() {
                           <Link href={`/collective`}>
                             <Badge className="bg-amber-500/10 text-amber-400 border-amber-500/20 text-xs gap-1.5 cursor-pointer hover:bg-amber-500/20 transition-colors">
                               <Users className="h-3 w-3" />
-                              Collective Available — Join {entity.total_flags}+ affected people
+                              Collective Available — Join {entity.total_flags}+
+                              affected people
                               <ArrowRight className="h-3 w-3" />
                             </Badge>
                           </Link>
@@ -402,17 +403,29 @@ export default function WallOfShamePage() {
 
                       {/* File Complaint at Authority */}
                       <div className="mt-2">
-                        <Link href={`/authority?entity=${encodeURIComponent(entity.entity_name)}&jurisdiction=${entity.jurisdiction || 'general'}`}>
+                        <Link
+                          href={`/authority?entity=${encodeURIComponent(entity.entity_name)}&jurisdiction=${entity.jurisdiction || "general"}`}
+                        >
                           <Badge className="bg-purple-500/10 text-purple-400 border-purple-500/20 text-xs gap-1.5 cursor-pointer hover:bg-purple-500/20 transition-colors">
                             <Gavel className="h-3 w-3" />
                             File complaint →{" "}
-                            {(entity.entity_type as string) === "landlord" ? "Rent Authority" :
-                             (entity.entity_type as string) === "employer" ? "Labour Court" :
-                             (entity.entity_type as string) === "bank" || (entity.entity_type as string) === "nbfc" ? "RBI Ombudsman" :
-                             (entity.entity_type as string) === "insurance" ? "IRDAI" :
-                             (entity.entity_type as string) === "telecom" ? "TRAI/TDSAT" :
-                             "Consumer Forum"}
-                            {entity.jurisdiction ? ` in ${getStateName(entity.jurisdiction)}` : ""}
+                            {(entity.entity_type as string) === "landlord"
+                              ? "Rent Authority"
+                              : (entity.entity_type as string) === "employer"
+                                ? "Labour Court"
+                                : (entity.entity_type as string) === "bank" ||
+                                    (entity.entity_type as string) === "nbfc"
+                                  ? "RBI Ombudsman"
+                                  : (entity.entity_type as string) ===
+                                      "insurance"
+                                    ? "IRDAI"
+                                    : (entity.entity_type as string) ===
+                                        "telecom"
+                                      ? "TRAI/TDSAT"
+                                      : "Consumer Forum"}
+                            {entity.jurisdiction
+                              ? ` in ${getStateName(entity.jurisdiction)}`
+                              : ""}
                           </Badge>
                         </Link>
                       </div>

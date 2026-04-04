@@ -151,7 +151,6 @@ const ACTION_GROUPS: ActionGroup[] = [
         color: "#8B5CF6",
         bg: "rgba(139, 92, 246, 0.15)",
       },
-
     ],
   },
   {
@@ -275,7 +274,9 @@ export default function FloatingActions({
         break;
 
       case "legal-help":
-        window.document.getElementById("authority-section-cta")?.scrollIntoView({ behavior: "smooth", block: "center" });
+        window.document
+          .getElementById("authority-section-cta")
+          ?.scrollIntoView({ behavior: "smooth", block: "center" });
         setIsOpen(false);
         setExpandedGroup(null);
         break;
@@ -382,32 +383,32 @@ export default function FloatingActions({
                   return (
                     <div key={group.id}>
                       {/* Group Header */}
-                        <button
-                          key={group.id}
-                          onClick={() => toggleGroup(group.id)}
-                          className={`w-full flex items-center justify-between px-3 py-2.5 rounded-none text-muted-foreground hover:text-foreground hover:bg-muted transition-all ${
-                            isExpanded ? "bg-muted" : ""
-                          }`}
-                        >
-                          <div className="flex items-center gap-3">
-                            <div
-                              className="p-1.5 border-2 border-foreground bg-background"
-                            >
-                              <GroupIcon
-                                className="h-4 w-4 text-foreground"
-                              />
-                            </div>
-                            <div className="flex flex-col items-start gap-0">
-                              <span className="text-sm font-black uppercase tracking-wider text-foreground">{group.label}</span>
-                              <p className="text-[10px] text-muted-foreground font-black uppercase tracking-wide">{group.subtitle}</p>
-                            </div>
+                      <button
+                        key={group.id}
+                        onClick={() => toggleGroup(group.id)}
+                        className={`w-full flex items-center justify-between px-3 py-2.5 rounded-none text-muted-foreground hover:text-foreground hover:bg-muted transition-all ${
+                          isExpanded ? "bg-muted" : ""
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="p-1.5 border-2 border-foreground bg-background">
+                            <GroupIcon className="h-4 w-4 text-foreground" />
                           </div>
-                          {isExpanded ? (
-                            <ChevronDown className="h-4 w-4 text-foreground" />
-                          ) : (
-                            <ChevronRight className="h-4 w-4 text-foreground" />
-                          )}
-                        </button>
+                          <div className="flex flex-col items-start gap-0">
+                            <span className="text-sm font-black uppercase tracking-wider text-foreground">
+                              {group.label}
+                            </span>
+                            <p className="text-[10px] text-muted-foreground font-black uppercase tracking-wide">
+                              {group.subtitle}
+                            </p>
+                          </div>
+                        </div>
+                        {isExpanded ? (
+                          <ChevronDown className="h-4 w-4 text-foreground" />
+                        ) : (
+                          <ChevronRight className="h-4 w-4 text-foreground" />
+                        )}
+                      </button>
 
                       {/* Expanded Actions */}
                       <AnimatePresence>
@@ -426,7 +427,7 @@ export default function FloatingActions({
                                   action.id === "pdf" && downloading;
                                 const label = getActionLabel(
                                   action.id,
-                                  action.label
+                                  action.label,
                                 );
 
                                 return (
@@ -436,9 +437,7 @@ export default function FloatingActions({
                                     disabled={isDisabled}
                                     className="w-full flex items-center gap-3 px-3 py-2 rounded-none hover:bg-muted hover:text-foreground transition-all disabled:opacity-50 text-muted-foreground font-bold tracking-wider uppercase border-l-2 border-transparent hover:border-foreground"
                                   >
-                                    <ActionIcon
-                                      className="h-4 w-4 flex-shrink-0"
-                                    />
+                                    <ActionIcon className="h-4 w-4 flex-shrink-0" />
                                     <span className="text-xs whitespace-nowrap">
                                       {label}
                                     </span>
@@ -478,13 +477,17 @@ export default function FloatingActions({
                     >
                       <Flame
                         className={`h-4 w-4 ${
-                          isRoastMode ? "text-orange-600 animate-bounce" : "text-foreground"
+                          isRoastMode
+                            ? "text-orange-600 animate-bounce"
+                            : "text-foreground"
                         }`}
                       />
                     </div>
                     <span
                       className={`text-sm font-black uppercase tracking-wider ${
-                        isRoastMode ? "text-orange-800 dark:text-orange-200" : "text-foreground"
+                        isRoastMode
+                          ? "text-orange-800 dark:text-orange-200"
+                          : "text-foreground"
                       }`}
                     >
                       {roastLoading
@@ -498,7 +501,9 @@ export default function FloatingActions({
                   {/* Toggle Indicator */}
                   <div
                     className={`w-10 h-5 border-2 transition-colors relative ${
-                      isRoastMode ? "bg-orange-500 border-orange-800" : "bg-muted border-foreground"
+                      isRoastMode
+                        ? "bg-orange-500 border-orange-800"
+                        : "bg-muted border-foreground"
                     }`}
                   >
                     <div
@@ -510,7 +515,9 @@ export default function FloatingActions({
                 </button>
 
                 {/* Roast Mode subtitle */}
-                <p className="text-[10px] text-white/20 px-3 pb-1">Fun mode — roasts your contract</p>
+                <p className="text-[10px] text-white/20 px-3 pb-1">
+                  Fun mode — roasts your contract
+                </p>
               </motion.div>
             ) : (
               <motion.button
@@ -527,9 +534,12 @@ export default function FloatingActions({
                 ) : (
                   <Wrench className="h-5 w-5" />
                 )}
-                <span className="text-[10px] font-medium text-white/50">Tools</span>
+                <span className="text-[10px] font-medium text-white/50">
+                  Tools
+                </span>
                 <span className="text-[9px] text-white/30">
-                  ({ACTION_GROUPS.reduce((sum, g) => sum + g.actions.length, 0)})
+                  ({ACTION_GROUPS.reduce((sum, g) => sum + g.actions.length, 0)}
+                  )
                 </span>
               </motion.button>
             )}
@@ -606,7 +616,7 @@ export default function FloatingActions({
                               action.id === "pdf" && downloading;
                             const label = getActionLabel(
                               action.id,
-                              action.label
+                              action.label,
                             );
 
                             return (
@@ -703,7 +713,9 @@ export default function FloatingActions({
                   <Menu className="h-4 w-4" />
                 )}
                 <span className="text-sm font-medium">
-                  {isRoastMode ? "Tools 🔥" : `Tools (${ACTION_GROUPS.reduce((sum, g) => sum + g.actions.length, 0)})`}
+                  {isRoastMode
+                    ? "Tools 🔥"
+                    : `Tools (${ACTION_GROUPS.reduce((sum, g) => sum + g.actions.length, 0)})`}
                 </span>
               </button>
             </motion.div>

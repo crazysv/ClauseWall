@@ -18,7 +18,12 @@ import { Badge } from "@/components/ui/badge";
 import BenchmarkChart from "@/components/market/benchmark-chart";
 import PercentileBadge from "@/components/market/percentile-badge";
 import type { ClauseMarketContext, BenchmarkType } from "@/types/market";
-import { BENCHMARK_TYPE_LABELS, UNIT_LABELS, HIGHER_IS_WORSE, CLAUSE_TO_BENCHMARK } from "@/lib/market/constants";
+import {
+  BENCHMARK_TYPE_LABELS,
+  UNIT_LABELS,
+  HIGHER_IS_WORSE,
+  CLAUSE_TO_BENCHMARK,
+} from "@/lib/market/constants";
 import Link from "next/link";
 
 interface MarketComparisonSectionProps {
@@ -68,11 +73,11 @@ export default function MarketComparisonSection({
 
   if (loading) {
     return (
-      <Card className="bg-gray-900/50 border-gray-800 animate-pulse">
+      <Card className="bg-background/50 border-gray-800 animate-pulse">
         <CardContent className="p-6">
           <div className="flex items-center gap-2 mb-4">
             <BarChart3 className="h-5 w-5 text-cyan-400" />
-            <div className="h-5 w-48 bg-white/5 rounded" />
+            <div className="h-5 w-48 bg-muted rounded" />
           </div>
           <div className="space-y-3">
             {[1, 2, 3].map((i) => (
@@ -88,10 +93,12 @@ export default function MarketComparisonSection({
     return null; // Silently hide if no market data
   }
 
-  const unfavorableCount = comparableItems.filter((c) => !c.comparison!.is_favorable).length;
+  const unfavorableCount = comparableItems.filter(
+    (c) => !c.comparison!.is_favorable,
+  ).length;
 
   return (
-    <Card className="bg-gradient-to-br from-cyan-500/5 to-blue-500/5 border-cyan-500/15">
+    <Card className="bg-background /5 /5 border-cyan-500/15">
       <CardContent className="p-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
@@ -100,9 +107,12 @@ export default function MarketComparisonSection({
               <BarChart3 className="h-5 w-5 text-cyan-400" />
             </div>
             <div>
-              <h3 className="font-semibold text-white">Market Comparison</h3>
-              <p className="text-xs text-white/40">
-                How your contract compares to {comparableItems[0]?.comparison?.scope_used || "the market"}
+              <h3 className="font-semibold text-foreground">
+                Market Comparison
+              </h3>
+              <p className="text-xs text-foreground/40">
+                How your contract compares to{" "}
+                {comparableItems[0]?.comparison?.scope_used || "the market"}
               </p>
             </div>
           </div>
@@ -125,8 +135,7 @@ export default function MarketComparisonSection({
             if (!ctx.comparison || !ctx.benchmark) return null;
 
             const benchmarkType = ctx.benchmark.benchmark_type as BenchmarkType;
-            const label =
-              BENCHMARK_TYPE_LABELS[benchmarkType] || benchmarkType;
+            const label = BENCHMARK_TYPE_LABELS[benchmarkType] || benchmarkType;
             const higherIsWorse = HIGHER_IS_WORSE[benchmarkType] ?? true;
             const percentile = ctx.comparison.percentile_rank;
             const isExpanded = expandedChart === ctx.clause_id;
@@ -145,7 +154,7 @@ export default function MarketComparisonSection({
                   onClick={() =>
                     setExpandedChart(isExpanded ? null : ctx.clause_id)
                   }
-                  className="w-full text-left p-3 rounded-lg bg-white/[0.03] hover:bg-white/[0.05] transition-colors border border-white/5"
+                  className="w-full text-left p-3 rounded-lg bg-white/[0.03] hover:bg-white/[0.05] transition-colors border border-foreground border-2"
                 >
                   <div className="flex items-center justify-between mb-1.5">
                     <div className="flex items-center gap-2">
@@ -156,7 +165,7 @@ export default function MarketComparisonSection({
                       ) : (
                         <Minus className="h-3.5 w-3.5 text-yellow-400" />
                       )}
-                      <span className="text-sm font-medium text-white">
+                      <span className="text-sm font-medium text-foreground">
                         {label}
                       </span>
                       <PercentileBadge
@@ -166,20 +175,20 @@ export default function MarketComparisonSection({
                       />
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-[10px] text-white/30">
+                      <span className="text-[10px] text-foreground/30">
                         {ctx.comparison.chart_data.user_value}{" "}
                         {UNIT_LABELS[ctx.benchmark.value_unit || ""] || ""}
                       </span>
                       {isExpanded ? (
-                        <ChevronUp className="h-3.5 w-3.5 text-white/30" />
+                        <ChevronUp className="h-3.5 w-3.5 text-foreground/30" />
                       ) : (
-                        <ChevronDown className="h-3.5 w-3.5 text-white/30" />
+                        <ChevronDown className="h-3.5 w-3.5 text-foreground/30" />
                       )}
                     </div>
                   </div>
 
                   {/* Percentile Bar */}
-                  <div className="relative h-1.5 bg-white/5 rounded-full overflow-hidden">
+                  <div className="relative h-1.5 bg-muted rounded-full overflow-hidden">
                     <motion.div
                       className={`absolute left-0 top-0 h-full rounded-full ${barColor}`}
                       initial={{ width: 0 }}
@@ -193,39 +202,43 @@ export default function MarketComparisonSection({
                     />
                   </div>
 
-                  <p className="text-[10px] text-white/40 mt-1">
+                  <p className="text-[10px] text-foreground/40 mt-1">
                     {ctx.comparison.narrative}
                   </p>
                 </button>
 
                 {/* Expanded Chart */}
                 <AnimatePresence>
-                  {isExpanded && ctx.comparison.chart_data.distribution.length > 0 && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      className="overflow-hidden"
-                    >
-                      <div className="pt-2 pb-1 px-3">
-                        <BenchmarkChart
-                          distribution={ctx.comparison.chart_data.distribution}
-                          userValue={ctx.comparison.chart_data.user_value}
-                          median={ctx.comparison.chart_data.median}
-                          mean={ctx.comparison.chart_data.mean}
-                          p25={ctx.comparison.chart_data.p25}
-                          p75={ctx.comparison.chart_data.p75}
-                          unit={UNIT_LABELS[ctx.benchmark.value_unit || ""]}
-                          height={180}
-                        />
-                        {ctx.data_quality === "seed" && (
-                          <p className="text-[10px] text-white/20 text-center mt-1">
-                            ⚠ Based on statutory/public reference data, not live analysis
-                          </p>
-                        )}
-                      </div>
-                    </motion.div>
-                  )}
+                  {isExpanded &&
+                    ctx.comparison.chart_data.distribution.length > 0 && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="pt-2 pb-1 px-3">
+                          <BenchmarkChart
+                            distribution={
+                              ctx.comparison.chart_data.distribution
+                            }
+                            userValue={ctx.comparison.chart_data.user_value}
+                            median={ctx.comparison.chart_data.median}
+                            mean={ctx.comparison.chart_data.mean}
+                            p25={ctx.comparison.chart_data.p25}
+                            p75={ctx.comparison.chart_data.p75}
+                            unit={UNIT_LABELS[ctx.benchmark.value_unit || ""]}
+                            height={180}
+                          />
+                          {ctx.data_quality === "seed" && (
+                            <p className="text-[10px] text-foreground/20 text-center mt-1">
+                              ⚠ Based on statutory/public reference data, not
+                              live analysis
+                            </p>
+                          )}
+                        </div>
+                      </motion.div>
+                    )}
                 </AnimatePresence>
               </div>
             );
@@ -233,9 +246,10 @@ export default function MarketComparisonSection({
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between mt-4 pt-3 border-t border-white/5">
-          <p className="text-[10px] text-white/25">
-            Based on anonymized data from {comparableItems[0]?.sample_count || 0}+ contracts
+        <div className="flex items-center justify-between mt-4 pt-3 border-t border-foreground border-2">
+          <p className="text-[10px] text-foreground/25">
+            Based on anonymized data from{" "}
+            {comparableItems[0]?.sample_count || 0}+ contracts
           </p>
           <Link
             href="/market"

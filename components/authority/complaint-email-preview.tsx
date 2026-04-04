@@ -12,7 +12,10 @@ interface Props {
   authorityEmail?: string | null;
 }
 
-export default function ComplaintEmailPreview({ draft, authorityEmail }: Props) {
+export default function ComplaintEmailPreview({
+  draft,
+  authorityEmail,
+}: Props) {
   const [copied, setCopied] = useState(false);
 
   const copyToClipboard = () => {
@@ -23,8 +26,14 @@ export default function ComplaintEmailPreview({ draft, authorityEmail }: Props) 
   };
 
   const openEmail = () => {
-    if (!authorityEmail) { toast.error("No email available for this authority"); return; }
-    const params = new URLSearchParams({ subject: draft.subject, body: draft.body.substring(0, 1500) });
+    if (!authorityEmail) {
+      toast.error("No email available for this authority");
+      return;
+    }
+    const params = new URLSearchParams({
+      subject: draft.subject,
+      body: draft.body.substring(0, 1500),
+    });
     window.open(`mailto:${authorityEmail}?${params.toString()}`, "_self");
   };
 
@@ -36,16 +45,31 @@ export default function ComplaintEmailPreview({ draft, authorityEmail }: Props) 
             <FileText className="h-5 w-5 text-blue-400" />
             <div>
               <h3 className="font-semibold text-sm">Complaint Draft</h3>
-              <p className="text-xs text-muted-foreground">To: {draft.authority_name}</p>
+              <p className="text-xs text-muted-foreground">
+                To: {draft.authority_name}
+              </p>
             </div>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" onClick={copyToClipboard} className="gap-1">
-              {copied ? <CheckCircle2 className="h-3 w-3 text-green-400" /> : <Copy className="h-3 w-3" />}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={copyToClipboard}
+              className="gap-1"
+            >
+              {copied ? (
+                <CheckCircle2 className="h-3 w-3 text-green-400" />
+              ) : (
+                <Copy className="h-3 w-3" />
+              )}
               {copied ? "Copied" : "Copy"}
             </Button>
             {authorityEmail && (
-              <Button size="sm" onClick={openEmail} className="gap-1 bg-blue-600 hover:bg-blue-700">
+              <Button
+                size="sm"
+                onClick={openEmail}
+                className="gap-1 bg-blue-600 hover:bg-blue-700"
+              >
                 <Mail className="h-3 w-3" /> Send Email
               </Button>
             )}
@@ -63,7 +87,9 @@ export default function ComplaintEmailPreview({ draft, authorityEmail }: Props) 
 
         {draft.attachments_needed.length > 0 && (
           <div className="mt-3">
-            <p className="text-xs font-medium text-muted-foreground mb-1">📎 Attach these documents:</p>
+            <p className="text-xs font-medium text-muted-foreground mb-1">
+              📎 Attach these documents:
+            </p>
             <ul className="text-xs text-muted-foreground space-y-0.5">
               {draft.attachments_needed.map((a, i) => (
                 <li key={i} className="flex items-start gap-1">

@@ -13,15 +13,18 @@ export async function POST(request: NextRequest) {
 
     if (!claim_text || !jurisdiction || !document_type) {
       return NextResponse.json(
-        { error: "Missing required fields: claim_text, jurisdiction, document_type" },
-        { status: 400 }
+        {
+          error:
+            "Missing required fields: claim_text, jurisdiction, document_type",
+        },
+        { status: 400 },
       );
     }
 
     if (claim_text.length > 1000) {
       return NextResponse.json(
         { error: "Claim text too long. Maximum 1000 characters." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -32,7 +35,7 @@ export async function POST(request: NextRequest) {
     console.error("[ClauseWall] Bluff check API error:", error);
     return NextResponse.json(
       { error: "Bluff check failed. Please try again." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

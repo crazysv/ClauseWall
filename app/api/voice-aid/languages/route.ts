@@ -3,11 +3,11 @@
 // Returns all supported languages with metadata
 // ============================================
 
-import { NextResponse } from 'next/server';
-import { getAllLanguages } from '@/lib/voice-aid/languages';
+import { NextResponse } from "next/server";
+import { getAllLanguages } from "@/lib/voice-aid/languages";
 
 export async function GET() {
-  const languages = getAllLanguages().map(lang => ({
+  const languages = getAllLanguages().map((lang) => ({
     code: lang.code,
     name: lang.name,
     nativeName: lang.nativeName,

@@ -12,7 +12,10 @@ import {
   Cell,
 } from "recharts";
 import type { HistogramBin, PercentileData } from "@/lib/simulation/types";
-import { formatINRCompact, getHistogramBarColor } from "@/lib/simulation/formatters";
+import {
+  formatINRCompact,
+  getHistogramBarColor,
+} from "@/lib/simulation/formatters";
 
 interface Props {
   histogram: HistogramBin[];
@@ -30,7 +33,7 @@ export default function MonteCarloChart({ histogram, percentiles }: Props) {
         upper: bin.upper,
         index: i,
       })),
-    [histogram]
+    [histogram],
   );
 
   const percentileLines = useMemo(
@@ -40,7 +43,7 @@ export default function MonteCarloChart({ histogram, percentiles }: Props) {
       { value: percentiles.p90, label: "P90", color: "#ef4444" },
       { value: percentiles.p95, label: "P95", color: "#a855f7" },
     ],
-    [percentiles]
+    [percentiles],
   );
 
   if (histogram.length === 0) return null;
@@ -48,7 +51,10 @@ export default function MonteCarloChart({ histogram, percentiles }: Props) {
   return (
     <div className="w-full">
       <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={chartData} margin={{ top: 20, right: 10, bottom: 10, left: 10 }}>
+        <BarChart
+          data={chartData}
+          margin={{ top: 20, right: 10, bottom: 10, left: 10 }}
+        >
           <XAxis
             dataKey="range"
             tick={{ fill: "#000000", fontSize: 10, fontWeight: 900 }}
@@ -73,7 +79,12 @@ export default function MonteCarloChart({ histogram, percentiles }: Props) {
               fontWeight: 900,
             }}
             itemStyle={{ color: "#000000" }}
-            labelStyle={{ color: "#000000", fontSize: 12, fontWeight: 900, textTransform: "uppercase" }}
+            labelStyle={{
+              color: "#000000",
+              fontSize: 12,
+              fontWeight: 900,
+              textTransform: "uppercase",
+            }}
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             formatter={(value: any, _name: any, props: any) => [
               `${value}% of scenarios (${props.payload.count} runs)`,
@@ -82,7 +93,7 @@ export default function MonteCarloChart({ histogram, percentiles }: Props) {
           />
           {percentileLines.map((pl) => {
             const binIndex = chartData.findIndex(
-              (d) => d.lower <= pl.value && d.upper >= pl.value
+              (d) => d.lower <= pl.value && d.upper >= pl.value,
             );
             if (binIndex < 0) return null;
             return (

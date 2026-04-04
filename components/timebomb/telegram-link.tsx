@@ -34,7 +34,7 @@ export function TelegramLink({ onLinked }: TelegramLinkProps) {
   const handleConfirm = () => {
     setConfirmed(true);
     toast.success(
-      "Settings will update on next save. Make sure you sent /link to the bot first!"
+      "Settings will update on next save. Make sure you sent /link to the bot first!",
     );
     onLinked?.();
   };

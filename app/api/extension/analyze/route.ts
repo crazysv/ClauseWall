@@ -93,7 +93,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           error: true,
-          message: "Not enough text content to analyze. Page might not contain legal text.",
+          message:
+            "Not enough text content to analyze. Page might not contain legal text.",
           risk_score: 0,
           risk_level: "safe",
           summary: "Could not analyze — insufficient text content.",
@@ -101,7 +102,7 @@ export async function POST(req: NextRequest) {
           top_issues: [],
           document_id: null,
         },
-        { headers: corsHeaders }
+        { headers: corsHeaders },
       );
     }
 
@@ -128,7 +129,7 @@ Identify the top predatory/concerning clauses. Return JSON only.`;
         temperature: 0.1,
         maxTokens: 4096,
         retries: 2,
-      }
+      },
     );
 
     // Parse response
@@ -174,7 +175,8 @@ Identify the top predatory/concerning clauses. Return JSON only.`;
         .from("documents")
         .insert({
           user_id: null, // Anonymous extension scan
-          original_filename: `${domainName} - ${title || "Terms of Service"}`.substring(0, 200),
+          original_filename:
+            `${domainName} - ${title || "Terms of Service"}`.substring(0, 200),
           document_type: "tos",
           jurisdiction: "IN-OTHER", // Default for web ToS
           raw_text: truncatedText,
@@ -203,7 +205,8 @@ Identify the top predatory/concerning clauses. Return JSON only.`;
             document_id: documentId,
             clause_number: index + 1,
             original_text: issue.text,
-            clause_type: issue.title?.toLowerCase().replace(/\s+/g, "_") || "general",
+            clause_type:
+              issue.title?.toLowerCase().replace(/\s+/g, "_") || "general",
             risk_level: issue.risk_level,
             risk_score: issue.risk_score,
             explanation: issue.explanation,
@@ -220,7 +223,10 @@ Identify the top predatory/concerning clauses. Return JSON only.`;
             .insert(clauseRecords);
 
           if (clauseError) {
-            console.error("[Extension API] Failed to save clauses:", clauseError);
+            console.error(
+              "[Extension API] Failed to save clauses:",
+              clauseError,
+            );
           }
         }
       }
@@ -233,7 +239,8 @@ Identify the top predatory/concerning clauses. Return JSON only.`;
       risk_score: riskScore,
       risk_level: riskLevel,
       summary: analysis.summary || "Analysis complete.",
-      total_clauses_estimated: analysis.total_clauses_estimated || topIssues.length,
+      total_clauses_estimated:
+        analysis.total_clauses_estimated || topIssues.length,
       clause_counts: clauseCounts,
       top_issues: topIssues,
       document_id: documentId,
@@ -256,7 +263,7 @@ Identify the top predatory/concerning clauses. Return JSON only.`;
         top_issues: [],
         document_id: null,
       },
-      { status: 500, headers: corsHeaders }
+      { status: 500, headers: corsHeaders },
     );
   }
 }

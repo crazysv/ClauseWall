@@ -10,10 +10,7 @@ import {
   sendChatAction,
   downloadFile,
 } from "@/lib/bot/telegram-client";
-import {
-  quickAnalyze,
-  quickAnalyzeImage,
-} from "@/lib/bot/quick-analyzer";
+import { quickAnalyze, quickAnalyzeImage } from "@/lib/bot/quick-analyzer";
 import {
   formatTelegramResponse,
   getWelcomeMessageTelegram,
@@ -100,17 +97,29 @@ export async function POST(request: NextRequest) {
       bhashaLanguageState.set(chatId, langCode);
 
       const { LANGUAGE_CONFIGS } = await import("@/lib/bhasha/constants");
-      const config = LANGUAGE_CONFIGS[langCode as keyof typeof LANGUAGE_CONFIGS];
-      const langName = config ? `${config.nativeName} (${config.name})` : langCode;
+      const config =
+        LANGUAGE_CONFIGS[langCode as keyof typeof LANGUAGE_CONFIGS];
+      const langName = config
+        ? `${config.nativeName} (${config.name})`
+        : langCode;
 
       // Answer the callback
-      await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/answerCallbackQuery`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ callback_query_id: callbackQuery.id, text: `✅ ${langName}` }),
-      });
+      await fetch(
+        `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/answerCallbackQuery`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            callback_query_id: callbackQuery.id,
+            text: `✅ ${langName}`,
+          }),
+        },
+      );
 
-      await sendMessage(chatId, `✅ Language set to <b>${langName}</b>\n\nNow send me a contract in ${langName} — I'll analyze it in your language!`);
+      await sendMessage(
+        chatId,
+        `✅ Language set to <b>${langName}</b>\n\nNow send me a contract in ${langName} — I'll analyze it in your language!`,
+      );
     }
     return new Response("OK", { status: 200 });
   }
@@ -128,7 +137,7 @@ export async function POST(request: NextRequest) {
       console.error("[ClauseWall Bot] Error:", error);
       await sendMessage(
         chatId,
-        "❌ Something went wrong while analyzing. Please try again."
+        "❌ Something went wrong while analyzing. Please try again.",
       ).catch(() => {});
     }
   });
@@ -138,11 +147,14 @@ export async function POST(request: NextRequest) {
 
 // ---- IN-MEMORY STATE FOR COMPARE ----
 
-const compareState = new Map<number, {
-  step: "waiting_a" | "waiting_b";
-  textA: string;
-  documentType: string;
-}>();
+const compareState = new Map<
+  number,
+  {
+    step: "waiting_a" | "waiting_b";
+    textA: string;
+    documentType: string;
+  }
+>();
 
 // ---- BHASHA LANGUAGE STATE ----
 
@@ -152,7 +164,7 @@ const bhashaLanguageState = new Map<number, string>();
 
 async function processMessage(
   chatId: number,
-  message: NonNullable<TelegramUpdate["message"]>
+  message: NonNullable<TelegramUpdate["message"]>,
 ) {
   // Check if user is in compare flow
   if (compareState.has(chatId)) {
@@ -160,10 +172,7 @@ async function processMessage(
     return;
   }
 
-  if (
-    message.text?.startsWith("/start") ||
-    message.text?.startsWith("/help")
-  ) {
+  if (message.text?.startsWith("/start") || message.text?.startsWith("/help")) {
     await sendMessage(chatId, getWelcomeMessageTelegram());
     return;
   }
@@ -190,21 +199,24 @@ async function processMessage(
 
   // Voice-Aid: /voice command
   if (message.text?.startsWith("/voice")) {
-    const { handleVoiceCommand } = await import("@/lib/voice-aid/telegram-voice-handler");
+    const { handleVoiceCommand } =
+      await import("@/lib/voice-aid/telegram-voice-handler");
     await handleVoiceCommand(chatId);
     return;
   }
 
   // Voice-Aid: /language command
   if (message.text?.startsWith("/language")) {
-    const { handleLanguageCommand } = await import("@/lib/voice-aid/telegram-voice-handler");
+    const { handleLanguageCommand } =
+      await import("@/lib/voice-aid/telegram-voice-handler");
     await handleLanguageCommand(chatId);
     return;
   }
 
   // Voice-Aid: /lang_xx command
   if (message.text?.match(/^\/lang_[a-z]{2}$/)) {
-    const { handleSetLanguage, isLanguageSetCommand } = await import("@/lib/voice-aid/telegram-voice-handler");
+    const { handleSetLanguage, isLanguageSetCommand } =
+      await import("@/lib/voice-aid/telegram-voice-handler");
     const langCode = isLanguageSetCommand(message.text);
     if (langCode) {
       await handleSetLanguage(chatId, langCode);
@@ -214,8 +226,13 @@ async function processMessage(
 
   // Voice-Aid: Incoming voice message
   if (message.voice) {
-    const { handleVoiceMessage } = await import("@/lib/voice-aid/telegram-voice-handler");
-    await handleVoiceMessage(chatId, message.voice.file_id, message.voice.duration);
+    const { handleVoiceMessage } =
+      await import("@/lib/voice-aid/telegram-voice-handler");
+    await handleVoiceMessage(
+      chatId,
+      message.voice.file_id,
+      message.voice.duration,
+    );
     return;
   }
 
@@ -236,7 +253,7 @@ async function processMessage(
 
   await sendMessage(
     chatId,
-    "📎 Send a <b>PDF</b>, <b>photo</b>, or <b>paste text</b> of a contract to analyze.\n\n🎤 Send a <b>voice message</b> to use Voice Aid.\n💡 Use /compare to compare two contracts."
+    "📎 Send a <b>PDF</b>, <b>photo</b>, or <b>paste text</b> of a contract to analyze.\n\n🎤 Send a <b>voice message</b> to use Voice Aid.\n💡 Use /compare to compare two contracts.",
   );
 }
 
@@ -252,16 +269,16 @@ async function startCompare(chatId: number) {
   await sendMessage(
     chatId,
     `🔍 <b>Contract Comparison Mode</b>\n\n` +
-    `Send me the <b>first contract</b>:\n` +
-    `📄 PDF file\n` +
-    `📝 Paste text\n\n` +
-    `<i>Send /cancel to exit comparison mode</i>`
+      `Send me the <b>first contract</b>:\n` +
+      `📄 PDF file\n` +
+      `📝 Paste text\n\n` +
+      `<i>Send /cancel to exit comparison mode</i>`,
   );
 }
 
 async function handleCompareStep(
   chatId: number,
-  message: NonNullable<TelegramUpdate["message"]>
+  message: NonNullable<TelegramUpdate["message"]>,
 ) {
   // Cancel
   if (message.text?.startsWith("/cancel")) {
@@ -299,7 +316,7 @@ async function handleCompareStep(
   if (!extractedText || extractedText.trim().length < 50) {
     await sendMessage(
       chatId,
-      "⚠️ Couldn't extract enough text. Please send a longer contract or try a different format."
+      "⚠️ Couldn't extract enough text. Please send a longer contract or try a different format.",
     );
     return;
   }
@@ -313,10 +330,10 @@ async function handleCompareStep(
     await sendMessage(
       chatId,
       `✅ <b>Contract A received!</b> (${extractedText.length} chars)\n\n` +
-      `Now send me the <b>second contract</b>:\n` +
-      `📄 PDF file\n` +
-      `📝 Paste text\n\n` +
-      `<i>Send /cancel to exit</i>`
+        `Now send me the <b>second contract</b>:\n` +
+        `📄 PDF file\n` +
+        `📝 Paste text\n\n` +
+        `<i>Send /cancel to exit</i>`,
     );
   } else if (state.step === "waiting_b") {
     // Got contract B — compare!
@@ -326,19 +343,15 @@ async function handleCompareStep(
     await sendMessage(chatId, "🔍 Comparing both contracts...");
 
     try {
-      const { compareContracts, formatComparisonTelegram } = await import(
-        "@/lib/bot/compare-analyzer"
-      );
+      const { compareContracts, formatComparisonTelegram } =
+        await import("@/lib/bot/compare-analyzer");
 
       sendChatAction(chatId);
       const result = await compareContracts(state.textA, extractedText);
       await sendMessage(chatId, formatComparisonTelegram(result));
     } catch (error) {
       console.error("[ClauseWall Bot] Compare failed:", error);
-      await sendMessage(
-        chatId,
-        "❌ Comparison failed. Please try again."
-      );
+      await sendMessage(chatId, "❌ Comparison failed. Please try again.");
     }
   }
 }
@@ -349,7 +362,7 @@ async function saveAndTriggerAnalysis(
   extractedText: string,
   result: QuickAnalysisResult,
   filename: string,
-  chatId: number
+  chatId: number,
 ): Promise<string | null> {
   try {
     console.log("[ClauseWall Bot] saveAndTriggerAnalysis called");
@@ -358,9 +371,14 @@ async function saveAndTriggerAnalysis(
     console.log("[ClauseWall Bot] Chat ID:", chatId);
 
     // Must have enough text for full analysis
-    console.log("[ClauseWall Bot] Checking text length:", extractedText?.length || 0);
+    console.log(
+      "[ClauseWall Bot] Checking text length:",
+      extractedText?.length || 0,
+    );
     if (!extractedText || extractedText.trim().length < 50) {
-      console.log("[ClauseWall Bot] Text too short for full analysis, skipping save");
+      console.log(
+        "[ClauseWall Bot] Text too short for full analysis, skipping save",
+      );
       return null;
     }
 
@@ -432,10 +450,7 @@ async function saveAndTriggerAnalysis(
 
 // ---- SEND RESULTS ----
 
-async function sendResults(
-  chatId: number,
-  result: QuickAnalysisResult
-) {
+async function sendResults(chatId: number, result: QuickAnalysisResult) {
   await sendMessage(chatId, formatTelegramResponse(result));
 }
 
@@ -448,7 +463,7 @@ async function handleDocument(
     file_name?: string;
     mime_type?: string;
     file_size?: number;
-  }
+  },
 ) {
   const mime = doc.mime_type || "";
   const fileName = doc.file_name || "document";
@@ -456,20 +471,23 @@ async function handleDocument(
   if (!mime.includes("pdf") && !mime.includes("text")) {
     await sendMessage(
       chatId,
-      "📎 Unsupported format. Please send a <b>PDF</b> or <b>TXT</b> file."
+      "📎 Unsupported format. Please send a <b>PDF</b> or <b>TXT</b> file.",
     );
     return;
   }
 
   if (doc.file_size && doc.file_size > 5 * 1024 * 1024) {
-    await sendMessage(chatId, "📏 File too large. Please send a file under 5MB.");
+    await sendMessage(
+      chatId,
+      "📏 File too large. Please send a file under 5MB.",
+    );
     return;
   }
 
   sendChatAction(chatId);
   await sendMessage(
     chatId,
-    `📄 Received <b>${escapeHtml(fileName)}</b>\n🔍 Analyzing...`
+    `📄 Received <b>${escapeHtml(fileName)}</b>\n🔍 Analyzing...`,
   );
 
   // Download and extract text
@@ -485,7 +503,7 @@ async function handleDocument(
   if (!text || text.trim().length < 50) {
     await sendMessage(
       chatId,
-      "⚠️ Couldn't extract enough text. Try pasting the contract text directly."
+      "⚠️ Couldn't extract enough text. Try pasting the contract text directly.",
     );
     return;
   }
@@ -505,10 +523,13 @@ async function handleDocument(
 
 async function handlePhoto(
   chatId: number,
-  photos: Array<{ file_id: string; width: number; height: number }>
+  photos: Array<{ file_id: string; width: number; height: number }>,
 ) {
   sendChatAction(chatId);
-  await sendMessage(chatId, "📸 Photo received!\n🔍 Reading text and analyzing...");
+  await sendMessage(
+    chatId,
+    "📸 Photo received!\n🔍 Reading text and analyzing...",
+  );
 
   const photo = photos[photos.length - 1];
 
@@ -524,7 +545,7 @@ async function handlePhoto(
       result.extracted_text || "",
       result,
       "telegram-photo.jpg",
-      chatId
+      chatId,
     );
 
     // Send quick results
@@ -536,7 +557,7 @@ async function handlePhoto(
       "⚠️ Couldn't read the photo clearly. Tips:\n\n" +
         "📸 Make sure text is <b>sharp and well-lit</b>\n" +
         "📄 Or send the contract as a <b>PDF</b> for best results\n" +
-        "📝 Or <b>paste the text</b> directly"
+        "📝 Or <b>paste the text</b> directly",
     );
   }
 }
@@ -547,7 +568,7 @@ async function handleText(chatId: number, text: string) {
   if (text.trim().length < 50) {
     await sendMessage(
       chatId,
-      "📝 Too short to analyze. Please paste the <b>full contract text</b> (at least a few paragraphs)."
+      "📝 Too short to analyze. Please paste the <b>full contract text</b> (at least a few paragraphs).",
     );
     return;
   }
@@ -582,16 +603,14 @@ async function handleLink(chatId: number) {
 
     // Upsert the chat ID into reminder settings
     // We match by telegram_chat_id since the user may not be authenticated via Telegram
-    const { error } = await supabase
-      .from("deadline_reminder_settings")
-      .upsert(
-        {
-          telegram_chat_id: String(chatId),
-          telegram_enabled: true,
-          updated_at: new Date().toISOString(),
-        },
-        { onConflict: "telegram_chat_id" }
-      );
+    const { error } = await supabase.from("deadline_reminder_settings").upsert(
+      {
+        telegram_chat_id: String(chatId),
+        telegram_enabled: true,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: "telegram_chat_id" },
+    );
 
     if (error) {
       // If upsert fails (likely no unique constraint on telegram_chat_id),
@@ -619,13 +638,13 @@ async function handleLink(chatId: number) {
         "3. Enable Telegram reminders in settings",
         "",
         "Use /deadlines to check your upcoming deadlines.",
-      ].join("\n")
+      ].join("\n"),
     );
   } catch (error) {
     console.error("[Bot] Link error:", error);
     await sendMessage(
       chatId,
-      "❌ Failed to link account. Please try again later."
+      "❌ Failed to link account. Please try again later.",
     );
   }
 }
@@ -650,7 +669,7 @@ async function handleDeadlines(chatId: number) {
           "⚠️ <b>Account not linked</b>",
           "",
           "Send /link first to connect your Telegram account to ClauseWall.",
-        ].join("\n")
+        ].join("\n"),
       );
       return;
     }
@@ -671,7 +690,7 @@ async function handleDeadlines(chatId: number) {
           "🎉 <b>No upcoming deadlines!</b>",
           "",
           "You have no active contract deadlines. Upload a contract to ClauseWall and activate the Time Bomb Defuser.",
-        ].join("\n")
+        ].join("\n"),
       );
       return;
     }
@@ -680,7 +699,8 @@ async function handleDeadlines(chatId: number) {
 
     for (const d of deadlines) {
       const daysUntil = Math.ceil(
-        (new Date(d.deadline_date).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+        (new Date(d.deadline_date).getTime() - Date.now()) /
+          (1000 * 60 * 60 * 24),
       );
       const emoji =
         daysUntil <= 3
@@ -694,14 +714,14 @@ async function handleDeadlines(chatId: number) {
       lines.push(
         `${emoji} <b>${escapeHtml(d.title)}</b>`,
         `   ⏰ ${daysUntil <= 0 ? "OVERDUE" : `${daysUntil} days`} • ${new Date(d.deadline_date).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}`,
-        ""
+        "",
       );
     }
 
     lines.push(
       `📊 Total: ${deadlines.length} active deadline${deadlines.length !== 1 ? "s" : ""}`,
       "",
-      "🔗 <a href=\"https://clause-wall.vercel.app/dashboard\">View all on ClauseWall</a>"
+      '🔗 <a href="https://clause-wall.vercel.app/dashboard">View all on ClauseWall</a>',
     );
 
     await sendMessage(chatId, lines.join("\n"));
@@ -709,7 +729,7 @@ async function handleDeadlines(chatId: number) {
     console.error("[Bot] Deadlines error:", error);
     await sendMessage(
       chatId,
-      "❌ Failed to fetch deadlines. Please try again."
+      "❌ Failed to fetch deadlines. Please try again.",
     );
   }
 }

@@ -9,10 +9,18 @@ interface BilingualToggleProps {
   sourceLanguage: SupportedLanguage;
 }
 
-export function BilingualToggle({ mode, onChange, sourceLanguage }: BilingualToggleProps) {
+export function BilingualToggle({
+  mode,
+  onChange,
+  sourceLanguage,
+}: BilingualToggleProps) {
   const config = LANGUAGE_CONFIGS[sourceLanguage];
 
-  const options: { value: "source" | "english" | "both"; label: string; desc: string }[] = [
+  const options: {
+    value: "source" | "english" | "both";
+    label: string;
+    desc: string;
+  }[] = [
     { value: "source", label: config.nativeName, desc: "Original" },
     { value: "english", label: "English", desc: "Translated" },
     { value: "both", label: "Both", desc: "Side by Side" },
@@ -20,7 +28,7 @@ export function BilingualToggle({ mode, onChange, sourceLanguage }: BilingualTog
 
   return (
     <div className="bhasha-bilingual-toggle">
-      {options.map(opt => (
+      {options.map((opt) => (
         <button
           key={opt.value}
           type="button"

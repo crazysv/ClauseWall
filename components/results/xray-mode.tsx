@@ -68,15 +68,20 @@ const RISK_STYLES = {
 
 function useXRayData(doc: Document, clauses: Clause[], showSafe: boolean) {
   const filteredClauses = useMemo(() => {
-    return showSafe
-      ? clauses
-      : clauses.filter((c) => c.risk_level !== "safe");
+    return showSafe ? clauses : clauses.filter((c) => c.risk_level !== "safe");
   }, [clauses, showSafe]);
 
   const segments = useMemo(() => {
     if (!doc.raw_text || !filteredClauses.length) {
       return doc.raw_text
-        ? [{ text: doc.raw_text, type: "normal" as const, startIndex: 0, endIndex: doc.raw_text.length }]
+        ? [
+            {
+              text: doc.raw_text,
+              type: "normal" as const,
+              startIndex: 0,
+              endIndex: doc.raw_text.length,
+            },
+          ]
         : [];
     }
     const matches = findAllClausePositions(doc.raw_text, filteredClauses);
@@ -90,22 +95,32 @@ function useXRayData(doc: Document, clauses: Clause[], showSafe: boolean) {
         ({ segment }) =>
           segment.type === "highlighted" &&
           segment.clause &&
-          (segment.clause.risk_level === "dangerous" || segment.clause.risk_level === "illegal")
+          (segment.clause.risk_level === "dangerous" ||
+            segment.clause.risk_level === "illegal"),
       );
   }, [segments]);
 
-  const riskCounts = useMemo(() => ({
-    illegal: clauses.filter((c) => c.risk_level === "illegal").length,
-    dangerous: clauses.filter((c) => c.risk_level === "dangerous").length,
-    warning: clauses.filter((c) => c.risk_level === "warning").length,
-    safe: clauses.filter((c) => c.risk_level === "safe").length,
-  }), [clauses]);
+  const riskCounts = useMemo(
+    () => ({
+      illegal: clauses.filter((c) => c.risk_level === "illegal").length,
+      dangerous: clauses.filter((c) => c.risk_level === "dangerous").length,
+      warning: clauses.filter((c) => c.risk_level === "warning").length,
+      safe: clauses.filter((c) => c.risk_level === "safe").length,
+    }),
+    [clauses],
+  );
 
   const matchedCount = useMemo(() => {
     return segments.filter((s) => s.type === "highlighted").length;
   }, [segments]);
 
-  return { filteredClauses, segments, dangerSegments, riskCounts, matchedCount };
+  return {
+    filteredClauses,
+    segments,
+    dangerSegments,
+    riskCounts,
+    matchedCount,
+  };
 }
 
 // ============================================
@@ -130,8 +145,13 @@ function OverlayContent({
   const dangerRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const [currentDangerIndex, setCurrentDangerIndex] = useState(0);
 
-  const { filteredClauses, segments, dangerSegments, riskCounts, matchedCount } =
-    useXRayData(doc, clauses, showSafe);
+  const {
+    filteredClauses,
+    segments,
+    dangerSegments,
+    riskCounts,
+    matchedCount,
+  } = useXRayData(doc, clauses, showSafe);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -147,22 +167,31 @@ function OverlayContent({
   // Lock body scroll
   useEffect(() => {
     document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, []);
 
-  const handleMouseEnter = useCallback((clause: Clause, event: React.MouseEvent) => {
-    setHoveredClause(clause);
-    const rect = event.currentTarget.getBoundingClientRect();
-    setTooltipPos({ x: rect.left + rect.width / 2, y: rect.top });
-  }, []);
+  const handleMouseEnter = useCallback(
+    (clause: Clause, event: React.MouseEvent) => {
+      setHoveredClause(clause);
+      const rect = event.currentTarget.getBoundingClientRect();
+      setTooltipPos({ x: rect.left + rect.width / 2, y: rect.top });
+    },
+    [],
+  );
 
   const handleMouseLeave = useCallback(() => setHoveredClause(null), []);
 
   const navigateDanger = (direction: "next" | "prev") => {
     if (!dangerSegments.length) return;
     let newIndex = currentDangerIndex;
-    if (direction === "next") newIndex = (currentDangerIndex + 1) % dangerSegments.length;
-    else newIndex = (currentDangerIndex - 1 + dangerSegments.length) % dangerSegments.length;
+    if (direction === "next")
+      newIndex = (currentDangerIndex + 1) % dangerSegments.length;
+    else
+      newIndex =
+        (currentDangerIndex - 1 + dangerSegments.length) %
+        dangerSegments.length;
     setCurrentDangerIndex(newIndex);
     const ref = dangerRefs.current[newIndex];
     if (ref) ref.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -204,7 +233,9 @@ function OverlayContent({
         <div className="flex items-center gap-3 overflow-x-auto">
           <div className="flex items-center gap-2 flex-shrink-0">
             <Scan className="h-4 w-4 text-foreground" />
-            <span className="font-black text-foreground uppercase tracking-wider text-sm">Deep Scan</span>
+            <span className="font-black text-foreground uppercase tracking-wider text-sm">
+              Deep Scan
+            </span>
           </div>
           <div className="hidden sm:flex items-center gap-3 ml-3">
             {riskCounts.illegal > 0 && (
@@ -225,46 +256,91 @@ function OverlayContent({
                 {riskCounts.warning} Warning
               </span>
             )}
-            <span className="text-xs text-gray-600">{matchedCount}/{filteredClauses.length} matched</span>
+            <span className="text-xs text-gray-600">
+              {matchedCount}/{filteredClauses.length} matched
+            </span>
           </div>
         </div>
 
         <div className="flex items-center gap-1.5">
           {dangerSegments.length > 0 && (
             <div className="hidden sm:flex items-center gap-1 border-r border-gray-700 pr-2 mr-1">
-              <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => navigateDanger("prev")}>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-7 w-7"
+                onClick={() => navigateDanger("prev")}
+              >
                 <ChevronUp className="h-3.5 w-3.5" />
               </Button>
               <span className="text-[11px] text-gray-400 w-8 text-center">
                 {currentDangerIndex + 1}/{dangerSegments.length}
               </span>
-              <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => navigateDanger("next")}>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-7 w-7"
+                onClick={() => navigateDanger("next")}
+              >
                 <ChevronDown className="h-3.5 w-3.5" />
               </Button>
             </div>
           )}
 
-          <Button variant="ghost" size="sm" className="gap-1.5 text-xs text-gray-400 h-8 px-2" onClick={() => setShowSafe(!showSafe)}>
-            {showSafe ? <Eye className="h-3.5 w-3.5" /> : <EyeOff className="h-3.5 w-3.5" />}
-            <span className="hidden sm:inline">{showSafe ? "Hide Safe" : "Show Safe"}</span>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="gap-1.5 text-xs text-gray-400 h-8 px-2"
+            onClick={() => setShowSafe(!showSafe)}
+          >
+            {showSafe ? (
+              <Eye className="h-3.5 w-3.5" />
+            ) : (
+              <EyeOff className="h-3.5 w-3.5" />
+            )}
+            <span className="hidden sm:inline">
+              {showSafe ? "Hide Safe" : "Show Safe"}
+            </span>
           </Button>
 
           <div className="flex items-center gap-0.5 border-l border-gray-700 pl-1.5 ml-1">
-            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setZoom((z) => Math.max(0.5, z - 0.1))}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-7 w-7"
+              onClick={() => setZoom((z) => Math.max(0.5, z - 0.1))}
+            >
               <ZoomOut className="h-3.5 w-3.5" />
             </Button>
-            <span className="text-[11px] text-gray-400 w-10 text-center">{Math.round(zoom * 100)}%</span>
-            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setZoom((z) => Math.min(2, z + 0.1))}>
+            <span className="text-[11px] text-gray-400 w-10 text-center">
+              {Math.round(zoom * 100)}%
+            </span>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-7 w-7"
+              onClick={() => setZoom((z) => Math.min(2, z + 0.1))}
+            >
               <ZoomIn className="h-3.5 w-3.5" />
             </Button>
           </div>
 
-          <Button variant="outline" size="sm" className="gap-1.5 text-xs h-8 px-2.5 ml-1" onClick={handleScreenshot}>
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-1.5 text-xs h-8 px-2.5 ml-1"
+            onClick={handleScreenshot}
+          >
             <Download className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">Screenshot</span>
           </Button>
 
-          <Button variant="ghost" size="icon" className="h-8 w-8 ml-1" onClick={onClose}>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 ml-1"
+            onClick={onClose}
+          >
             <X className="h-4 w-4" />
           </Button>
         </div>
@@ -285,7 +361,8 @@ function OverlayContent({
               </h2>
             </div>
             <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-8">
-              {clauses.length} clauses analyzed • Risk Score: {doc.overall_risk_score}/100 • X-Ray Scan by ClauseWall
+              {clauses.length} clauses analyzed • Risk Score:{" "}
+              {doc.overall_risk_score}/100 • X-Ray Scan by ClauseWall
             </p>
           </div>
 
@@ -297,7 +374,9 @@ function OverlayContent({
 
               const clause = segment.clause!;
               const style = RISK_STYLES[clause.risk_level];
-              const isDanger = clause.risk_level === "dangerous" || clause.risk_level === "illegal";
+              const isDanger =
+                clause.risk_level === "dangerous" ||
+                clause.risk_level === "illegal";
               const thisDangerIdx = isDanger ? dangerRefIdx++ : -1;
 
               return (
@@ -305,21 +384,33 @@ function OverlayContent({
                   key={index}
                   ref={
                     isDanger && thisDangerIdx >= 0
-                      ? (el) => { dangerRefs.current[thisDangerIdx] = el; }
+                      ? (el) => {
+                          dangerRefs.current[thisDangerIdx] = el;
+                        }
                       : undefined
                   }
                   initial={{ backgroundColor: "transparent" }}
                   animate={{ backgroundColor: style.bg, boxShadow: style.glow }}
-                  transition={{ duration: 0.6, delay: Math.min(index * 0.05, 2) }}
+                  transition={{
+                    duration: 0.6,
+                    delay: Math.min(index * 0.05, 2),
+                  }}
                   className="relative inline rounded-sm px-0.5 cursor-pointer transition-all duration-200 hover:brightness-125"
-                  style={{ borderBottom: `2px solid ${style.border}`, textDecorationColor: style.border }}
+                  style={{
+                    borderBottom: `2px solid ${style.border}`,
+                    textDecorationColor: style.border,
+                  }}
                   onMouseEnter={(e) => handleMouseEnter(clause, e)}
                   onMouseLeave={handleMouseLeave}
                 >
                   {segment.text}
                   <span
                     className="ml-1.5 inline-flex items-center gap-0.5 text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-none select-none"
-                    style={{ backgroundColor: style.bg, color: style.border, border: `2px solid ${style.border}` }}
+                    style={{
+                      backgroundColor: style.bg,
+                      color: style.border,
+                      border: `2px solid ${style.border}`,
+                    }}
                   >
                     {style.emoji} {style.label}
                   </span>
@@ -329,7 +420,9 @@ function OverlayContent({
           </div>
 
           <div className="px-8 py-4 border-t border-gray-800/60 flex items-center justify-between text-[11px] text-gray-600">
-            <span>🛡️ Analyzed by ClauseWall • {matchedCount} clauses highlighted</span>
+            <span>
+              🛡️ Analyzed by ClauseWall • {matchedCount} clauses highlighted
+            </span>
             <span>clausewall.com</span>
           </div>
         </div>
@@ -345,8 +438,22 @@ function OverlayContent({
             transition={{ duration: 0.15 }}
             className="fixed z-[60] w-80 card-impact bg-background shadow-none p-4 pointer-events-none"
             style={{
-              left: Math.max(16, Math.min(tooltipPos.x - 160, (typeof window !== "undefined" ? window.innerWidth : 1200) - 340)),
-              top: Math.max(70, Math.min(tooltipPos.y - 170, (typeof window !== "undefined" ? window.innerHeight : 800) - 200)),
+              left: Math.max(
+                16,
+                Math.min(
+                  tooltipPos.x - 160,
+                  (typeof window !== "undefined" ? window.innerWidth : 1200) -
+                    340,
+                ),
+              ),
+              top: Math.max(
+                70,
+                Math.min(
+                  tooltipPos.y - 170,
+                  (typeof window !== "undefined" ? window.innerHeight : 800) -
+                    200,
+                ),
+              ),
             }}
           >
             <div className="flex items-center gap-2 mb-2">
@@ -358,11 +465,16 @@ function OverlayContent({
                   border: `2px solid ${RISK_STYLES[hoveredClause.risk_level].border}`,
                 }}
               >
-                {RISK_STYLES[hoveredClause.risk_level].emoji} {RISK_STYLES[hoveredClause.risk_level].label}
+                {RISK_STYLES[hoveredClause.risk_level].emoji}{" "}
+                {RISK_STYLES[hoveredClause.risk_level].label}
               </span>
-              <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Clause #{hoveredClause.clause_number}</span>
+              <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+                Clause #{hoveredClause.clause_number}
+              </span>
               {hoveredClause.risk_score != null && (
-                <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider ml-auto">Score: {hoveredClause.risk_score}</span>
+                <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider ml-auto">
+                  Score: {hoveredClause.risk_score}
+                </span>
               )}
             </div>
             <p className="text-sm font-bold text-foreground leading-relaxed uppercase tracking-wider">
@@ -378,7 +490,10 @@ function OverlayContent({
             {hoveredClause.red_flags && hoveredClause.red_flags.length > 0 && (
               <div className="mt-2 flex flex-wrap gap-1">
                 {hoveredClause.red_flags.slice(0, 3).map((flag, i) => (
-                  <span key={i} className="text-[9px] px-1.5 py-0.5 bg-red-500/10 text-red-400 rounded border border-red-500/20">
+                  <span
+                    key={i}
+                    className="text-[9px] px-1.5 py-0.5 bg-red-500/10 text-red-400 rounded border border-red-500/20"
+                  >
                     🚩 {flag}
                   </span>
                 ))}
@@ -420,7 +535,10 @@ export default function XRayMode({ document: doc, clauses }: XRayModeProps) {
             <div className="flex-1 min-w-0">
               <h3 className="font-black text-foreground uppercase tracking-wider flex items-center gap-2">
                 X-Ray Mode
-                <Badge variant="outline" className="text-[10px] font-black border-2 border-foreground rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] uppercase bg-background text-foreground tracking-wider">
+                <Badge
+                  variant="outline"
+                  className="text-[10px] font-black border-2 border-foreground rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] uppercase bg-background text-foreground tracking-wider"
+                >
                   NEW
                 </Badge>
               </h3>
@@ -432,7 +550,10 @@ export default function XRayMode({ document: doc, clauses }: XRayModeProps) {
               variant="outline"
               size="sm"
               className="gap-2 flex-shrink-0"
-              onClick={(e) => { e.stopPropagation(); setIsOpen(true); }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsOpen(true);
+              }}
             >
               <Scan className="h-4 w-4" />
               Scan
@@ -444,7 +565,11 @@ export default function XRayMode({ document: doc, clauses }: XRayModeProps) {
       {/* Overlay */}
       <AnimatePresence>
         {isOpen && (
-          <OverlayContent doc={doc} clauses={clauses} onClose={() => setIsOpen(false)} />
+          <OverlayContent
+            doc={doc}
+            clauses={clauses}
+            onClose={() => setIsOpen(false)}
+          />
         )}
       </AnimatePresence>
     </>
@@ -462,7 +587,11 @@ interface XRayOverlayProps {
   onClose: () => void;
 }
 
-export function XRayOverlay({ document: doc, clauses, onClose }: XRayOverlayProps) {
+export function XRayOverlay({
+  document: doc,
+  clauses,
+  onClose,
+}: XRayOverlayProps) {
   if (!doc.raw_text) return null;
 
   return <OverlayContent doc={doc} clauses={clauses} onClose={onClose} />;

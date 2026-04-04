@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import type { StateMachineReport, ContractState, StateTransition } from "@/lib/statemachine/types";
+import type {
+  StateMachineReport,
+  ContractState,
+  StateTransition,
+} from "@/lib/statemachine/types";
 
 export async function POST(request: NextRequest) {
   try {
@@ -10,7 +14,7 @@ export async function POST(request: NextRequest) {
     if (!documentId || !currentStateId) {
       return NextResponse.json(
         { success: false, error: "Missing documentId or currentStateId" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -25,7 +29,7 @@ export async function POST(request: NextRequest) {
     if (docError || !doc || !doc.state_machine_data) {
       return NextResponse.json(
         { success: false, error: "State machine data not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -33,17 +37,19 @@ export async function POST(request: NextRequest) {
     const sm = report.stateMachine;
 
     // Find current state
-    const currentState = sm.states.find((s: ContractState) => s.id === currentStateId);
+    const currentState = sm.states.find(
+      (s: ContractState) => s.id === currentStateId,
+    );
     if (!currentState) {
       return NextResponse.json(
         { success: false, error: "State not found in state machine" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     // Find available transitions from current state
     const availableTransitions = sm.transitions.filter(
-      (t: StateTransition) => t.fromStateId === currentStateId
+      (t: StateTransition) => t.fromStateId === currentStateId,
     );
 
     // Try to match action to a transition
@@ -52,39 +58,47 @@ export async function POST(request: NextRequest) {
 
     if (action) {
       const actionLower = (action as string).toLowerCase();
-      matchedTransition = availableTransitions.find(
-        (t: StateTransition) =>
-          t.trigger.toLowerCase().includes(actionLower) ||
-          actionLower.includes(t.trigger.toLowerCase()) ||
-          t.id === action
-      ) || null;
+      matchedTransition =
+        availableTransitions.find(
+          (t: StateTransition) =>
+            t.trigger.toLowerCase().includes(actionLower) ||
+            actionLower.includes(t.trigger.toLowerCase()) ||
+            t.id === action,
+        ) || null;
 
       if (matchedTransition) {
-        nextState = sm.states.find(
-          (s: ContractState) => s.id === matchedTransition!.toStateId
-        ) || null;
+        nextState =
+          sm.states.find(
+            (s: ContractState) => s.id === matchedTransition!.toStateId,
+          ) || null;
       }
     }
 
     // Generate recommendations
     const recommendations: string[] = [];
     if (currentState.isTrap) {
-      recommendations.push("⚠️ You are in a trap state. Consider seeking legal advice.");
-      const trap = report.trapAnalysis.find((t) => t.stateId === currentStateId);
+      recommendations.push(
+        "⚠️ You are in a trap state. Consider seeking legal advice.",
+      );
+      const trap = report.trapAnalysis.find(
+        (t) => t.stateId === currentStateId,
+      );
       if (trap) {
         recommendations.push(trap.fairAlternative);
       }
     }
 
-    const safeTransitions = availableTransitions.filter((t: StateTransition) => {
-      const target = sm.states.find((s: ContractState) => s.id === t.toStateId);
-      return target && !target.isTrap && target.type !== "terminal_loss";
-    });
+    const safeTransitions = availableTransitions.filter(
+      (t: StateTransition) => {
+        const target = sm.states.find(
+          (s: ContractState) => s.id === t.toStateId,
+        );
+        return target && !target.isTrap && target.type !== "terminal_loss";
+      },
+    );
 
     if (safeTransitions.length > 0) {
-      recommendations.push(
-        `Recommended action: ${safeTransitions[0].trigger}`
-      );
+      recommendations.push(`Recommended action: ${safeTransitions[0].trigger}`);
     }
 
     return NextResponse.json({
@@ -99,7 +113,7 @@ export async function POST(request: NextRequest) {
     console.error("[ClauseWall] State machine simulate API error:", error);
     return NextResponse.json(
       { success: false, error: "Simulation failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

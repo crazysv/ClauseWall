@@ -11,19 +11,23 @@ export async function POST(request: NextRequest) {
     if (!text || !language) {
       return NextResponse.json(
         { error: "text and language are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (!LANGUAGE_CONFIGS[language as SupportedLanguage]) {
       return NextResponse.json(
         { error: "Unsupported language" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // Check cache first
-    const cachedPath = await getCachedAudio(text, language as SupportedLanguage, voice);
+    const cachedPath = await getCachedAudio(
+      text,
+      language as SupportedLanguage,
+      voice,
+    );
     if (cachedPath) {
       return NextResponse.json({
         audio_url: `/api/bhasha/tts/audio?path=${encodeURIComponent(cachedPath)}`,
@@ -33,12 +37,20 @@ export async function POST(request: NextRequest) {
     }
 
     // Generate TTS
-    const result = await generateAudio(text, language as SupportedLanguage, voice);
+    const result = await generateAudio(
+      text,
+      language as SupportedLanguage,
+      voice,
+    );
 
     if (result.audio_buffer) {
       // Cache the audio
       const storagePath = await cacheAudio(
-        text, language as SupportedLanguage, result.audio_buffer, voice, result.duration_seconds
+        text,
+        language as SupportedLanguage,
+        result.audio_buffer,
+        voice,
+        result.duration_seconds,
       );
 
       // Return audio as base64
@@ -62,7 +74,7 @@ export async function POST(request: NextRequest) {
     console.error("[ClauseWall] TTS API error:", error);
     return NextResponse.json(
       { error: "TTS generation failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

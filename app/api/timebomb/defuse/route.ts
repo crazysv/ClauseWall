@@ -26,14 +26,14 @@ export async function POST(request: NextRequest) {
     if (!deadline_id || !action) {
       return NextResponse.json(
         { error: "deadline_id and action are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (action !== "defused" && action !== "action_taken") {
       return NextResponse.json(
         { error: "action must be 'defused' or 'action_taken'" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
     if (error || !deadline) {
       return NextResponse.json(
         { error: "Deadline not found or unauthorized" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
     console.error("[TimeBomb API] Defuse error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

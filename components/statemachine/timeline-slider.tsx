@@ -50,17 +50,20 @@ export default function TimelineSlider({
       setCurrentMonth(clamped);
       onMonthChange?.(clamped);
     },
-    [totalMonths, onMonthChange]
+    [totalMonths, onMonthChange],
   );
 
   const getMonthFromPointer = useCallback(
     (clientX: number) => {
       if (!trackRef.current) return 0;
       const rect = trackRef.current.getBoundingClientRect();
-      const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+      const ratio = Math.max(
+        0,
+        Math.min(1, (clientX - rect.left) / rect.width),
+      );
       return ratio * totalMonths;
     },
-    [totalMonths]
+    [totalMonths],
   );
 
   const handlePointerDown = useCallback(
@@ -69,7 +72,7 @@ export default function TimelineSlider({
       (e.target as HTMLElement).setPointerCapture(e.pointerId);
       handleMonthUpdate(getMonthFromPointer(e.clientX));
     },
-    [getMonthFromPointer, handleMonthUpdate]
+    [getMonthFromPointer, handleMonthUpdate],
   );
 
   const handlePointerMove = useCallback(
@@ -77,28 +80,37 @@ export default function TimelineSlider({
       if (!isDragging) return;
       handleMonthUpdate(getMonthFromPointer(e.clientX));
     },
-    [isDragging, getMonthFromPointer, handleMonthUpdate]
+    [isDragging, getMonthFromPointer, handleMonthUpdate],
   );
 
   const handlePointerUp = useCallback(() => setIsDragging(false), []);
 
   // State segments for colored track
   const segments = useMemo(() => {
-    const segs: Array<{ fromMonth: number; toMonth: number; color: string }> = [];
+    const segs: Array<{ fromMonth: number; toMonth: number; color: string }> =
+      [];
     const sorted = [...events].sort((a, b) => a.month - b.month);
     let prevMonth = 0;
 
     for (const ev of sorted) {
       if (ev.month > prevMonth) {
-        const color = ev.type === "risk" || ev.type === "trap_entry" ? "#ef4444" :
-                      ev.type === "deadline" ? "#f59e0b" : "#10b981";
+        const color =
+          ev.type === "risk" || ev.type === "trap_entry"
+            ? "#ef4444"
+            : ev.type === "deadline"
+              ? "#f59e0b"
+              : "#10b981";
         segs.push({ fromMonth: prevMonth, toMonth: ev.month, color });
       }
       prevMonth = ev.month;
     }
 
     if (prevMonth < totalMonths) {
-      segs.push({ fromMonth: prevMonth, toMonth: totalMonths, color: "#10b981" });
+      segs.push({
+        fromMonth: prevMonth,
+        toMonth: totalMonths,
+        color: "#10b981",
+      });
     }
 
     return segs;
@@ -134,8 +146,12 @@ export default function TimelineSlider({
       {currentState && (
         <div className="flex items-center justify-between p-4 bg-white border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
           <div>
-            <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-1">Month {currentMonth}</p>
-            <p className="text-lg font-black uppercase tracking-widest text-black">{currentState.name}</p>
+            <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-1">
+              Month {currentMonth}
+            </p>
+            <p className="text-lg font-black uppercase tracking-widest text-black">
+              {currentState.name}
+            </p>
           </div>
           <span
             className="text-xs font-black uppercase tracking-widest px-3 py-1 border-2 border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)]"
@@ -219,10 +235,16 @@ export default function TimelineSlider({
               {hoveredEvent === ev && (
                 <div className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 w-48 z-30">
                   <div className="bg-white border-4 border-black p-3 shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
-                    <p className="font-black text-black leading-tight">{ev.event}</p>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mt-1">Month {ev.month}</p>
+                    <p className="font-black text-black leading-tight">
+                      {ev.event}
+                    </p>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mt-1">
+                      Month {ev.month}
+                    </p>
                     {ev.userAction && (
-                      <p className="text-xs font-bold text-blue-800 mt-2 bg-blue-100 p-1 border-2 border-blue-900 border-dashed">📋 {ev.userAction}</p>
+                      <p className="text-xs font-bold text-blue-800 mt-2 bg-blue-100 p-1 border-2 border-blue-900 border-dashed">
+                        📋 {ev.userAction}
+                      </p>
                     )}
                   </div>
                 </div>
@@ -260,14 +282,22 @@ export default function TimelineSlider({
               key={i}
               className="flex items-center gap-3 p-3 bg-white border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]"
             >
-              <span className="text-2xl flex-shrink-0 bg-gray-100 p-1 border-2 border-black">{EVENT_ICONS[ev.type]}</span>
+              <span className="text-2xl flex-shrink-0 bg-gray-100 p-1 border-2 border-black">
+                {EVENT_ICONS[ev.type]}
+              </span>
               <div className="min-w-0">
-                <p className="text-sm font-black uppercase tracking-widest text-black truncate">{ev.event}</p>
+                <p className="text-sm font-black uppercase tracking-widest text-black truncate">
+                  {ev.event}
+                </p>
                 {ev.userAction && (
-                  <p className="text-xs font-bold text-blue-900 mt-1 bg-blue-100 inline-block px-1 border-2 border-blue-900">📋 {ev.userAction}</p>
+                  <p className="text-xs font-bold text-blue-900 mt-1 bg-blue-100 inline-block px-1 border-2 border-blue-900">
+                    📋 {ev.userAction}
+                  </p>
                 )}
               </div>
-              <span className="text-[10px] font-black text-black ml-auto bg-yellow-400 border-2 border-black px-2 py-1 shadow-[2px_2px_0_0_rgba(0,0,0,1)]">M{ev.month}</span>
+              <span className="text-[10px] font-black text-black ml-auto bg-yellow-400 border-2 border-black px-2 py-1 shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
+                M{ev.month}
+              </span>
             </div>
           ))}
         </div>

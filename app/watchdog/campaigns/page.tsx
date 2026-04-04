@@ -10,7 +10,8 @@ import type { OptoutCampaignWithCompany } from "@/types";
 
 export const metadata = {
   title: "Opt-Out Campaigns — Contract Watchdog — ClauseWall",
-  description: "Join collective opt-out campaigns against unfair Terms of Service changes",
+  description:
+    "Join collective opt-out campaigns against unfair Terms of Service changes",
 };
 
 export default async function CampaignsPage() {
@@ -23,7 +24,10 @@ export default async function CampaignsPage() {
 
   const typedCampaigns = (campaigns as OptoutCampaignWithCompany[]) || [];
   const activeCampaigns = typedCampaigns.filter((c) => c.status === "active");
-  const totalSignatories = typedCampaigns.reduce((sum, c) => sum + c.signatory_count, 0);
+  const totalSignatories = typedCampaigns.reduce(
+    (sum, c) => sum + c.signatory_count,
+    0,
+  );
 
   return (
     <div className="min-h-screen bg-background">
@@ -43,7 +47,9 @@ export default async function CampaignsPage() {
         <div className="grid grid-cols-2 gap-4 my-6">
           <Card className="bg-gray-900/50 border-gray-800">
             <CardContent className="p-4 text-center">
-              <p className="text-2xl font-bold text-amber-400">{activeCampaigns.length}</p>
+              <p className="text-2xl font-bold text-amber-400">
+                {activeCampaigns.length}
+              </p>
               <p className="text-xs text-muted-foreground">Active Campaigns</p>
             </CardContent>
           </Card>
@@ -61,7 +67,8 @@ export default async function CampaignsPage() {
             <Shield className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
             <p className="text-muted-foreground">No campaigns yet.</p>
             <p className="text-sm text-muted-foreground mt-1">
-              Campaigns will be created when critical or illegal ToS changes are detected.
+              Campaigns will be created when critical or illegal ToS changes are
+              detected.
             </p>
           </div>
         ) : (

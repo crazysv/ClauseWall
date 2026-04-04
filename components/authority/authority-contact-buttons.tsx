@@ -10,13 +10,47 @@ interface Props {
   compact?: boolean;
 }
 
-export default function AuthorityContactButtons({ links, authorityName, compact = false }: Props) {
+export default function AuthorityContactButtons({
+  links,
+  authorityName,
+  compact = false,
+}: Props) {
   const buttons = [
-    { url: links.tel_url, icon: Phone, label: "Call", color: "bg-green-500/15 text-green-400 hover:bg-green-500/25 border-green-500/20" },
-    { url: links.mailto_url, icon: Mail, label: "Email", color: "bg-blue-500/15 text-blue-400 hover:bg-blue-500/25 border-blue-500/20" },
-    { url: links.efiling_url, icon: FileUp, label: "E-File", color: "bg-purple-500/15 text-purple-400 hover:bg-purple-500/25 border-purple-500/20" },
-    { url: links.maps_url, icon: MapPin, label: "Directions", color: "bg-amber-500/15 text-amber-400 hover:bg-amber-500/25 border-amber-500/20" },
-    { url: links.website_url, icon: Globe, label: "Website", color: "bg-cyan-500/15 text-cyan-400 hover:bg-cyan-500/25 border-cyan-500/20" },
+    {
+      url: links.tel_url,
+      icon: Phone,
+      label: "Call",
+      color:
+        "bg-green-500/15 text-green-400 hover:bg-green-500/25 border-green-500/20",
+    },
+    {
+      url: links.mailto_url,
+      icon: Mail,
+      label: "Email",
+      color:
+        "bg-blue-500/15 text-blue-400 hover:bg-blue-500/25 border-blue-500/20",
+    },
+    {
+      url: links.efiling_url,
+      icon: FileUp,
+      label: "E-File",
+      color:
+        "bg-purple-500/15 text-purple-400 hover:bg-purple-500/25 border-purple-500/20",
+    },
+    {
+      url: links.maps_url,
+      icon: MapPin,
+      label: "Directions",
+      color:
+        "bg-amber-500/15 text-amber-400 hover:bg-amber-500/25 border-amber-500/20",
+    },
+    {
+      url: links.website_url,
+      icon: Globe,
+      label: "Website",
+      color:
+        "bg-cyan-500/15 text-cyan-400 hover:bg-cyan-500/25 border-cyan-500/20",
+    },
   ].filter((b) => b.url);
 
   if (buttons.length === 0) return null;
@@ -29,7 +63,11 @@ export default function AuthorityContactButtons({ links, authorityName, compact 
           <a
             key={btn.label}
             href={btn.url!}
-            target={btn.url!.startsWith("tel:") || btn.url!.startsWith("mailto:") ? "_self" : "_blank"}
+            target={
+              btn.url!.startsWith("tel:") || btn.url!.startsWith("mailto:")
+                ? "_self"
+                : "_blank"
+            }
             rel="noopener noreferrer"
             aria-label={`${btn.label} ${authorityName}`}
           >

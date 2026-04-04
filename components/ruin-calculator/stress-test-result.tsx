@@ -16,7 +16,8 @@ export default function StressTestResultView({ result }: Props) {
     return (
       <div className="card-impact p-6 bg-green-50 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center">
         <p className="text-sm font-black uppercase tracking-widest text-green-700">
-          ✅ No clauses triggered by this scenario. Your contract handles this well!
+          ✅ No clauses triggered by this scenario. Your contract handles this
+          well!
         </p>
       </div>
     );
@@ -32,7 +33,9 @@ export default function StressTestResultView({ result }: Props) {
         {/* Header */}
         <div className="flex items-center gap-3 mb-6 pb-4 border-b-4 border-black">
           <span className="text-2xl p-2 bg-black">{result.scenario.icon}</span>
-          <h4 className="text-xl font-black uppercase tracking-tight text-black">{result.scenario.label}</h4>
+          <h4 className="text-xl font-black uppercase tracking-tight text-black">
+            {result.scenario.label}
+          </h4>
           <span className="ml-auto inline-block bg-red-600 text-white font-black uppercase tracking-widest px-4 py-2 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] shadow-black">
             {formatINR(result.totalCurrentCost)}
           </span>
@@ -72,7 +75,8 @@ export default function StressTestResultView({ result }: Props) {
                         {tc.clauseType.replace(/_/g, " ")}
                       </span>
                       <span className="text-[10px] font-bold uppercase tracking-widest text-black/50 bg-gray-200 px-2 py-1">
-                        ({LIFE_EVENT_LABELS[tc.triggerEvent] || tc.triggerEvent})
+                        ({LIFE_EVENT_LABELS[tc.triggerEvent] || tc.triggerEvent}
+                        )
                       </span>
                     </div>
                   </td>
@@ -112,8 +116,10 @@ export default function StressTestResultView({ result }: Props) {
           <div className="mt-6 p-4 bg-red-100 border-4 border-red-600 shadow-[4px_4px_0px_0px_var(--tw-shadow-color)] shadow-red-600">
             <p className="text-sm font-black uppercase tracking-widest text-red-900">
               🔴 Predatory clauses add{" "}
-              <strong className="text-red-700">{formatINR(result.totalPredatoryPremium)}</strong> of
-              unnecessary risk in this scenario
+              <strong className="text-red-700">
+                {formatINR(result.totalPredatoryPremium)}
+              </strong>{" "}
+              of unnecessary risk in this scenario
             </p>
           </div>
         )}

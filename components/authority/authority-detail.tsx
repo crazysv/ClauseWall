@@ -2,7 +2,17 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Building2, MapPin, Clock, Scale, FileUp, CheckCircle2, Flag, Loader2, ArrowLeft } from "lucide-react";
+import {
+  Building2,
+  MapPin,
+  Clock,
+  Scale,
+  FileUp,
+  CheckCircle2,
+  Flag,
+  Loader2,
+  ArrowLeft,
+} from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import type { LegalAuthority, ConnectivityLinks } from "@/types/authority";
@@ -20,8 +30,13 @@ interface Props {
   authority?: LegalAuthority;
 }
 
-export default function AuthorityDetail({ authorityId, authority: preloaded }: Props) {
-  const [authority, setAuthority] = useState<LegalAuthority | null>(preloaded || null);
+export default function AuthorityDetail({
+  authorityId,
+  authority: preloaded,
+}: Props) {
+  const [authority, setAuthority] = useState<LegalAuthority | null>(
+    preloaded || null,
+  );
   const [loading, setLoading] = useState(!preloaded);
   const [showReport, setShowReport] = useState(false);
 
@@ -30,7 +45,9 @@ export default function AuthorityDetail({ authorityId, authority: preloaded }: P
     setLoading(true);
     fetch(`/api/authority/${authorityId}`)
       .then((r) => r.json())
-      .then((data) => { if (data.success) setAuthority(data.authority); })
+      .then((data) => {
+        if (data.success) setAuthority(data.authority);
+      })
       .catch(() => {})
       .finally(() => setLoading(false));
   }, [authorityId]);
@@ -54,11 +71,16 @@ export default function AuthorityDetail({ authorityId, authority: preloaded }: P
   }
 
   const links = generateConnectivityLinks(authority);
-  const typeLabel = AUTHORITY_TYPE_LABELS[authority.authority_type] || authority.authority_type;
+  const typeLabel =
+    AUTHORITY_TYPE_LABELS[authority.authority_type] || authority.authority_type;
   const feeResult = calculateFilingFee(authority.authority_type, 500000);
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="space-y-6"
+    >
       {/* Header */}
       <div>
         <div className="flex items-center gap-2 mb-1">
@@ -79,7 +101,11 @@ export default function AuthorityDetail({ authorityId, authority: preloaded }: P
 
       {/* Contact Row */}
       <div>
-        <AuthorityHoursBadge workingHours={authority.working_hours} workingDays={authority.working_days} closedOn={authority.closed_on} />
+        <AuthorityHoursBadge
+          workingHours={authority.working_hours}
+          workingDays={authority.working_days}
+          closedOn={authority.closed_on}
+        />
         <AuthorityContactButtons links={links} authorityName={authority.name} />
       </div>
 
@@ -91,7 +117,11 @@ export default function AuthorityDetail({ authorityId, authority: preloaded }: P
               <MapPin className="h-4 w-4 text-blue-400 mt-0.5" />
               <div>
                 <p className="text-sm">{authority.physical_address}</p>
-                {authority.pincode && <p className="text-xs text-muted-foreground">PIN: {authority.pincode}</p>}
+                {authority.pincode && (
+                  <p className="text-xs text-muted-foreground">
+                    PIN: {authority.pincode}
+                  </p>
+                )}
               </div>
             </div>
           )}
@@ -100,19 +130,31 @@ export default function AuthorityDetail({ authorityId, authority: preloaded }: P
               <Clock className="h-4 w-4 text-amber-400 mt-0.5" />
               <div>
                 <p className="text-sm">{authority.working_hours}</p>
-                {authority.working_days && <p className="text-xs text-muted-foreground">{authority.working_days}</p>}
-                {authority.closed_on && <p className="text-xs text-red-400/70">Closed: {authority.closed_on}</p>}
+                {authority.working_days && (
+                  <p className="text-xs text-muted-foreground">
+                    {authority.working_days}
+                  </p>
+                )}
+                {authority.closed_on && (
+                  <p className="text-xs text-red-400/70">
+                    Closed: {authority.closed_on}
+                  </p>
+                )}
               </div>
             </div>
           )}
           {authority.typical_resolution_days && (
             <div className="flex items-start gap-2">
               <Scale className="h-4 w-4 text-green-400 mt-0.5" />
-              <p className="text-sm">Typical resolution: ~{authority.typical_resolution_days} days</p>
+              <p className="text-sm">
+                Typical resolution: ~{authority.typical_resolution_days} days
+              </p>
             </div>
           )}
           {authority.notes && (
-            <p className="text-xs text-muted-foreground border-t border-white/5 pt-2 mt-2">{authority.notes}</p>
+            <p className="text-xs text-muted-foreground border-t border-white/5 pt-2 mt-2">
+              {authority.notes}
+            </p>
           )}
         </CardContent>
       </Card>
@@ -121,7 +163,8 @@ export default function AuthorityDetail({ authorityId, authority: preloaded }: P
       <FeeBreakdown result={feeResult} />
 
       {/* Filing Checklist */}
-      {(authority.filing_process_steps?.length > 0 || authority.required_documents?.length > 0) && (
+      {(authority.filing_process_steps?.length > 0 ||
+        authority.required_documents?.length > 0) && (
         <FilingChecklist
           steps={authority.filing_process_steps || []}
           documents={authority.required_documents || []}
@@ -130,7 +173,12 @@ export default function AuthorityDetail({ authorityId, authority: preloaded }: P
 
       {/* Report Issue */}
       <div className="text-center">
-        <Button variant="ghost" size="sm" onClick={() => setShowReport(true)} className="text-xs text-muted-foreground gap-1">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setShowReport(true)}
+          className="text-xs text-muted-foreground gap-1"
+        >
           <Flag className="h-3 w-3" /> Report incorrect information
         </Button>
       </div>

@@ -4,19 +4,47 @@ import { Badge } from "@/components/ui/badge";
 import type { CompanySector } from "@/types";
 
 const SECTOR_LABELS: Record<string, string> = {
-  ride_hailing: "Ride-hailing", food_delivery: "Food Delivery", ecommerce: "E-commerce",
-  payments: "Payments", social: "Social", streaming: "Streaming", travel: "Travel",
-  banking: "Banking", telecom: "Telecom", edtech: "EdTech", government: "Government", other: "Other",
+  ride_hailing: "Ride-hailing",
+  food_delivery: "Food Delivery",
+  ecommerce: "E-commerce",
+  payments: "Payments",
+  social: "Social",
+  streaming: "Streaming",
+  travel: "Travel",
+  banking: "Banking",
+  telecom: "Telecom",
+  edtech: "EdTech",
+  government: "Government",
+  other: "Other",
 };
 
 const SECTOR_ICONS: Record<string, string> = {
-  ride_hailing: "🚗", food_delivery: "🍔", ecommerce: "🛒", payments: "💳", social: "💬",
-  streaming: "🎬", travel: "✈️", banking: "🏦", telecom: "📱", edtech: "📚", government: "🏛️", other: "📋",
+  ride_hailing: "🚗",
+  food_delivery: "🍔",
+  ecommerce: "🛒",
+  payments: "💳",
+  social: "💬",
+  streaming: "🎬",
+  travel: "✈️",
+  banking: "🏦",
+  telecom: "📱",
+  edtech: "📚",
+  government: "🏛️",
+  other: "📋",
 };
 
 const ALL_SECTORS: CompanySector[] = [
-  "ride_hailing", "food_delivery", "ecommerce", "payments", "social",
-  "streaming", "travel", "banking", "telecom", "edtech", "government",
+  "ride_hailing",
+  "food_delivery",
+  "ecommerce",
+  "payments",
+  "social",
+  "streaming",
+  "travel",
+  "banking",
+  "telecom",
+  "edtech",
+  "government",
 ];
 
 export default function SectorFilter({

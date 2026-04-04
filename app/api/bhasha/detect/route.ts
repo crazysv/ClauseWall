@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
     console.error("[ClauseWall] Language detection API error:", error);
     return NextResponse.json(
       { error: "Language detection failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

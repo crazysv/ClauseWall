@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { GitBranch, ChevronDown, CheckCircle2, AlertTriangle, ShieldCheck } from "lucide-react";
+import {
+  GitBranch,
+  ChevronDown,
+  CheckCircle2,
+  AlertTriangle,
+  ShieldCheck,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import type { CascadingFailure } from "@/types";
@@ -60,7 +66,9 @@ export default function CascadesList({ cascades }: CascadesListProps) {
   return (
     <div className="space-y-3">
       {cascades.map((cascade, index) => {
-        const config = PROBABILITY_CONFIG[cascade.probability] || PROBABILITY_CONFIG.possible;
+        const config =
+          PROBABILITY_CONFIG[cascade.probability] ||
+          PROBABILITY_CONFIG.possible;
         const isExpanded = expandedIds.has(cascade.id);
 
         return (
@@ -77,12 +85,18 @@ export default function CascadesList({ cascades }: CascadesListProps) {
               <CardContent className="p-6">
                 {/* Header */}
                 <div className="flex items-start gap-4">
-                  <div className={`p-3 border-4 border-black bg-white dark:bg-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]`}>
-                    <GitBranch className={`w-5 h-5 ${config.color} stroke-[3px]`} />
+                  <div
+                    className={`p-3 border-4 border-black bg-white dark:bg-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]`}
+                  >
+                    <GitBranch
+                      className={`w-5 h-5 ${config.color} stroke-[3px]`}
+                    />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3 mb-2">
-                      <Badge className={`px-2 py-0.5 border-2 border-black rounded-none ${config.bg} ${config.color} shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] font-black uppercase tracking-widest text-[10px]`}>
+                      <Badge
+                        className={`px-2 py-0.5 border-2 border-black rounded-none ${config.bg} ${config.color} shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] font-black uppercase tracking-widest text-[10px]`}
+                      >
                         {config.label}
                       </Badge>
                       <span className="text-xs font-black uppercase tracking-widest text-muted-foreground">
@@ -99,7 +113,8 @@ export default function CascadesList({ cascades }: CascadesListProps) {
                   <div className="text-right flex-shrink-0 flex flex-col items-end">
                     {cascade.total_financial_impact > 0 && (
                       <p className="text-base font-black tracking-tighter text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-950 px-2 py-1 border-2 border-red-500 mb-2">
-                        ₹{cascade.total_financial_impact.toLocaleString("en-IN")}
+                        ₹
+                        {cascade.total_financial_impact.toLocaleString("en-IN")}
                       </p>
                     )}
                     <ChevronDown
@@ -122,13 +137,12 @@ export default function CascadesList({ cascades }: CascadesListProps) {
                     >
                       <div className="mt-8 space-y-4 pl-6 border-l-4 border-black relative">
                         {cascade.chain.map((step, i) => (
-                          <div
-                            key={i}
-                            className="relative pl-8 pb-4"
-                          >
+                          <div key={i} className="relative pl-8 pb-4">
                             {/* Dot on the line */}
                             <div className="absolute -left-[18px] top-1 w-8 h-8 rounded-none border-4 border-black bg-white dark:bg-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center">
-                              <span className="text-xs font-black">{step.step_number}</span>
+                              <span className="text-xs font-black">
+                                {step.step_number}
+                              </span>
                             </div>
 
                             <div className="border-4 border-black bg-white dark:bg-zinc-900 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
@@ -141,16 +155,22 @@ export default function CascadesList({ cascades }: CascadesListProps) {
                                     {step.what_happens}
                                   </p>
                                   <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mt-3 flex items-center gap-2">
-                                    <span className="p-1 border-2 border-black bg-gray-100 dark:bg-zinc-800">⏱</span>
+                                    <span className="p-1 border-2 border-black bg-gray-100 dark:bg-zinc-800">
+                                      ⏱
+                                    </span>
                                     {step.time_delay}
                                   </p>
                                 </div>
                                 <div className="text-right flex-shrink-0">
-                                  {step.financial_impact != null && step.financial_impact > 0 && (
-                                    <p className="text-sm font-black tracking-tighter text-red-600 dark:text-red-400 mb-2">
-                                      ₹{step.financial_impact.toLocaleString("en-IN")}
-                                    </p>
-                                  )}
+                                  {step.financial_impact != null &&
+                                    step.financial_impact > 0 && (
+                                      <p className="text-sm font-black tracking-tighter text-red-600 dark:text-red-400 mb-2">
+                                        ₹
+                                        {step.financial_impact.toLocaleString(
+                                          "en-IN",
+                                        )}
+                                      </p>
+                                    )}
                                   {step.can_be_prevented && (
                                     <p className="text-xs font-black uppercase tracking-widest text-green-600 dark:text-green-500 bg-green-100 dark:bg-green-950 px-2 py-1 border-2 border-green-500 inline-block">
                                       🛡️ PREVENTABLE
@@ -172,12 +192,18 @@ export default function CascadesList({ cascades }: CascadesListProps) {
                       {cascade.prevention_steps.length > 0 && (
                         <div className="mt-8 border-4 border-black bg-green-50 dark:bg-green-950 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                           <p className="text-xs font-black uppercase tracking-widest text-green-700 dark:text-green-500 mb-4 flex items-center gap-2 border-b-4 border-green-500 pb-2">
-                            <ShieldCheck className="w-5 h-5 stroke-[3px]" /> HOW TO BREAK THIS CHAIN
+                            <ShieldCheck className="w-5 h-5 stroke-[3px]" /> HOW
+                            TO BREAK THIS CHAIN
                           </p>
                           <ul className="space-y-3">
                             {cascade.prevention_steps.map((step, i) => (
-                              <li key={i} className="text-sm font-bold uppercase tracking-widest text-green-900/80 dark:text-green-200 flex items-start gap-3 leading-relaxed">
-                                <span className="text-green-500 font-black shrink-0 mt-0.5">•</span>
+                              <li
+                                key={i}
+                                className="text-sm font-bold uppercase tracking-widest text-green-900/80 dark:text-green-200 flex items-start gap-3 leading-relaxed"
+                              >
+                                <span className="text-green-500 font-black shrink-0 mt-0.5">
+                                  •
+                                </span>
                                 {step}
                               </li>
                             ))}

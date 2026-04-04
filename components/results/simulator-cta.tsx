@@ -8,7 +8,10 @@ interface SimulatorCTAProps {
   overallRiskScore: number;
 }
 
-export default function SimulatorCTA({ documentId, overallRiskScore }: SimulatorCTAProps) {
+export default function SimulatorCTA({
+  documentId,
+  overallRiskScore,
+}: SimulatorCTAProps) {
   if (overallRiskScore < 30) return null;
 
   return (
@@ -24,13 +27,18 @@ export default function SimulatorCTA({ documentId, overallRiskScore }: Simulator
                 See What This Contract Really Costs You
               </p>
               <p className="text-sm font-bold text-muted-foreground mt-0.5">
-                Interactive month-by-month cost simulator with penalty calculator and fair contract comparison.
+                Interactive month-by-month cost simulator with penalty
+                calculator and fair contract comparison.
               </p>
-              <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mt-0.5">Project the financial impact over time</p>
+              <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mt-0.5">
+                Project the financial impact over time
+              </p>
             </div>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0 ml-4">
-            <span className="text-sm font-black uppercase tracking-wider text-blue-600 hidden sm:inline">Simulate</span>
+            <span className="text-sm font-black uppercase tracking-wider text-blue-600 hidden sm:inline">
+              Simulate
+            </span>
             <ArrowRight className="h-5 w-5 text-blue-600 group-hover:translate-x-1 transition-transform" />
           </div>
         </div>

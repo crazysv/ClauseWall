@@ -57,7 +57,9 @@ export default function VaultPage() {
     } catch (err) {
       console.error("[Vault] Analysis failed:", err);
       setError(
-        err instanceof Error ? err.message : "Analysis failed. Please try again."
+        err instanceof Error
+          ? err.message
+          : "Analysis failed. Please try again.",
       );
       setState("error");
       toast.error("Analysis failed. Please try again.");
@@ -86,10 +88,15 @@ export default function VaultPage() {
               <div className="p-2 border-4 border-black bg-white dark:bg-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                 <FileStack className="h-5 w-5 text-black dark:text-white stroke-[3px]" />
               </div>
-              <span className="font-black uppercase tracking-widest text-xs">CROSS-CONTRACT ANALYSIS</span>
+              <span className="font-black uppercase tracking-widest text-xs">
+                CROSS-CONTRACT ANALYSIS
+              </span>
             </div>
             <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-widest text-foreground">
-              CONTRACT <span className="text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-950 px-2 py-1 border-4 border-black shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]">VAULT</span>
+              CONTRACT{" "}
+              <span className="text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-950 px-2 py-1 border-4 border-black shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]">
+                VAULT
+              </span>
             </h1>
             <p className="font-bold uppercase tracking-widest text-muted-foreground mt-4 max-w-2xl text-sm leading-relaxed">
               DETECT CONFLICTS, COVERAGE GAPS, CASCADING FAILURES, AND HIDDEN
@@ -137,7 +144,8 @@ export default function VaultPage() {
                     disabled={selectedIds.length < 2}
                     className="flex items-center gap-3 px-6 py-4 border-4 border-black bg-indigo-500 hover:bg-indigo-600 font-black uppercase tracking-widest text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                   >
-                    ANALYZE {selectedIds.length} CONTRACT{selectedIds.length !== 1 ? "S" : ""}
+                    ANALYZE {selectedIds.length} CONTRACT
+                    {selectedIds.length !== 1 ? "S" : ""}
                     <ArrowRight className="w-5 h-5 stroke-[3px]" />
                   </button>
                 </div>

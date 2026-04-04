@@ -16,7 +16,10 @@ export default function SkylineStyle({
   const maxBH = height - 80;
   const minBH = 25;
   const gap = 3;
-  const bW = Math.min(45, (width - 50 - gap * (nodes.length - 1)) / nodes.length);
+  const bW = Math.min(
+    45,
+    (width - 50 - gap * (nodes.length - 1)) / nodes.length,
+  );
   const totalW = nodes.length * bW + (nodes.length - 1) * gap;
   const startX = (width - totalW) / 2;
 
@@ -67,20 +70,38 @@ export default function SkylineStyle({
       ))}
 
       {/* Ground */}
-      <rect x="0" y={groundY} width={width} height={height - groundY} fill="#0D1117" />
-      <line x1="0" y1={groundY} x2={width} y2={groundY} stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
+      <rect
+        x="0"
+        y={groundY}
+        width={width}
+        height={height - groundY}
+        fill="#0D1117"
+      />
+      <line
+        x1="0"
+        y1={groundY}
+        x2={width}
+        y2={groundY}
+        stroke="rgba(255,255,255,0.08)"
+        strokeWidth="1"
+      />
 
       {/* Buildings */}
       {buildings.map((b, i) => (
         <g key={i}>
           {/* Building glow for dangerous/illegal */}
-          {(b.node.riskLevel === "dangerous" || b.node.riskLevel === "illegal") && (
+          {(b.node.riskLevel === "dangerous" ||
+            b.node.riskLevel === "illegal") && (
             <motion.rect
               x={b.x - 3}
               width={bW + 6}
               rx={3}
               fill={b.node.riskColor}
-              initial={animated ? { y: groundY, height: 0, opacity: 0 } : { y: b.y - 3, height: b.bH + 3, opacity: 0.08 }}
+              initial={
+                animated
+                  ? { y: groundY, height: 0, opacity: 0 }
+                  : { y: b.y - 3, height: b.bH + 3, opacity: 0.08 }
+              }
               animate={{ y: b.y - 3, height: b.bH + 3, opacity: 0.08 }}
               transition={{ delay: i * 0.06, duration: 0.55, ease: "easeOut" }}
             />
@@ -93,7 +114,9 @@ export default function SkylineStyle({
             rx={2}
             fill={b.node.riskColor}
             opacity={b.node.intensity * 0.75}
-            initial={animated ? { y: groundY, height: 0 } : { y: b.y, height: b.bH }}
+            initial={
+              animated ? { y: groundY, height: 0 } : { y: b.y, height: b.bH }
+            }
             animate={{ y: b.y, height: b.bH }}
             transition={{ delay: i * 0.06, duration: 0.55, ease: "easeOut" }}
             onMouseEnter={() => onHover?.(b.node)}
@@ -111,9 +134,14 @@ export default function SkylineStyle({
               height={6}
               fill={w.lit ? "#FBBF24" : "#1F2937"}
               rx={0.5}
-              initial={animated ? { opacity: 0 } : { opacity: w.lit ? 0.5 : 0.15 }}
+              initial={
+                animated ? { opacity: 0 } : { opacity: w.lit ? 0.5 : 0.15 }
+              }
               animate={{ opacity: w.lit ? 0.5 : 0.15 }}
-              transition={{ delay: 0.4 + i * 0.06 + wi * 0.015, duration: 0.25 }}
+              transition={{
+                delay: 0.4 + i * 0.06 + wi * 0.015,
+                duration: 0.25,
+              }}
               style={{ pointerEvents: "none" }}
             />
           ))}

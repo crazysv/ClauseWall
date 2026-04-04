@@ -103,7 +103,7 @@ export function RelatedActions({
   currentPage,
 }: RelatedActionsProps) {
   const actions = ALL_ACTIONS.filter((action) =>
-    action.pages.includes(currentPage)
+    action.pages.includes(currentPage),
   );
 
   if (actions.length === 0) return null;

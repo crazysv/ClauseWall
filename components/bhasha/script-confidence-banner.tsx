@@ -14,7 +14,9 @@ export function ScriptConfidenceBanner({
   if (confidence >= 80 && !isHandwritten) return null;
 
   const isLow = confidence < 60;
-  const borderColor = isLow ? "rgba(239, 68, 68, 0.3)" : "rgba(234, 179, 8, 0.3)";
+  const borderColor = isLow
+    ? "rgba(239, 68, 68, 0.3)"
+    : "rgba(234, 179, 8, 0.3)";
   const bgColor = isLow ? "rgba(239, 68, 68, 0.08)" : "rgba(234, 179, 8, 0.08)";
   const textColor = isLow ? "#fca5a5" : "#fde68a";
 
@@ -34,7 +36,8 @@ export function ScriptConfidenceBanner({
               : "Low OCR confidence detected"}
           </strong>
           <span className="bhasha-confidence-detail">
-            OCR confidence: {Math.round(confidence)}%. Some text may be incorrect.
+            OCR confidence: {Math.round(confidence)}%. Some text may be
+            incorrect.
           </span>
         </div>
         {onReviewClick && (
@@ -52,8 +55,14 @@ export function ScriptConfidenceBanner({
           animation: bhasha-banner-in 0.3s ease;
         }
         @keyframes bhasha-banner-in {
-          from { opacity: 0; transform: translateY(-8px); }
-          to { opacity: 1; transform: translateY(0); }
+          from {
+            opacity: 0;
+            transform: translateY(-8px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
         .bhasha-confidence-content {
           display: flex;

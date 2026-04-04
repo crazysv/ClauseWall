@@ -7,7 +7,11 @@ import { Shield, ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
 import type { CounterpartyType, DisputeType } from "@/types/evidence";
 
-const COUNTERPARTY_TYPES: { value: CounterpartyType; label: string; emoji: string }[] = [
+const COUNTERPARTY_TYPES: {
+  value: CounterpartyType;
+  label: string;
+  emoji: string;
+}[] = [
   { value: "company", label: "Company", emoji: "🏢" },
   { value: "employer", label: "Employer", emoji: "💼" },
   { value: "landlord", label: "Landlord", emoji: "🏠" },
@@ -35,7 +39,13 @@ const DISPUTE_TYPES: { value: DisputeType; label: string }[] = [
 
 export default function NewEvidenceCasePage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-background flex items-center justify-center"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-background flex items-center justify-center">
+          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        </div>
+      }
+    >
       <NewEvidenceCaseForm />
     </Suspense>
   );
@@ -49,7 +59,8 @@ function NewEvidenceCaseForm() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [counterpartyName, setCounterpartyName] = useState("");
-  const [counterpartyType, setCounterpartyType] = useState<CounterpartyType>("company");
+  const [counterpartyType, setCounterpartyType] =
+    useState<CounterpartyType>("company");
   const [disputeType, setDisputeType] = useState<DisputeType>("consumer");
   const [disputeDescription, setDisputeDescription] = useState("");
   const [loading, setLoading] = useState(false);
@@ -98,7 +109,10 @@ function NewEvidenceCaseForm() {
   return (
     <main className="min-h-screen bg-background">
       <div className="max-w-2xl mx-auto px-4 py-8">
-        <Link href="/evidence" className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest text-muted-foreground hover:text-foreground mb-6 border-b-2 border-transparent hover:border-black transition-all">
+        <Link
+          href="/evidence"
+          className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest text-muted-foreground hover:text-foreground mb-6 border-b-2 border-transparent hover:border-black transition-all"
+        >
           <ArrowLeft className="h-4 w-4 stroke-[3px]" />
           BACK TO EVIDENCE CASES
         </Link>
@@ -108,8 +122,12 @@ function NewEvidenceCaseForm() {
             <Shield className="h-8 w-8 text-blue-600 dark:text-blue-400 stroke-[3px]" />
           </div>
           <div>
-            <h1 className="text-3xl font-black uppercase tracking-widest text-foreground">New Evidence Case</h1>
-            <p className="text-sm font-bold tracking-wide text-muted-foreground mt-2">CREATE A NEW EVIDENCE CASE TO START BUILDING YOUR EVIDENCE CHAIN</p>
+            <h1 className="text-3xl font-black uppercase tracking-widest text-foreground">
+              New Evidence Case
+            </h1>
+            <p className="text-sm font-bold tracking-wide text-muted-foreground mt-2">
+              CREATE A NEW EVIDENCE CASE TO START BUILDING YOUR EVIDENCE CHAIN
+            </p>
           </div>
         </div>
 
@@ -122,7 +140,9 @@ function NewEvidenceCaseForm() {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Case Title */}
           <div className="space-y-2">
-            <label className="text-sm font-black uppercase tracking-widest text-foreground">Case Title *</label>
+            <label className="text-sm font-black uppercase tracking-widest text-foreground">
+              Case Title *
+            </label>
             <input
               type="text"
               placeholder="e.g., Defective Product — Amazon Order #123"
@@ -136,7 +156,9 @@ function NewEvidenceCaseForm() {
           {/* Counterparty */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="text-sm font-black uppercase tracking-widest text-foreground">Counterparty Name *</label>
+              <label className="text-sm font-black uppercase tracking-widest text-foreground">
+                Counterparty Name *
+              </label>
               <input
                 type="text"
                 placeholder="e.g., ABC Pvt. Ltd."
@@ -147,14 +169,20 @@ function NewEvidenceCaseForm() {
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-black uppercase tracking-widest text-foreground">Type</label>
+              <label className="text-sm font-black uppercase tracking-widest text-foreground">
+                Type
+              </label>
               <select
                 value={counterpartyType}
-                onChange={(e) => setCounterpartyType(e.target.value as CounterpartyType)}
+                onChange={(e) =>
+                  setCounterpartyType(e.target.value as CounterpartyType)
+                }
                 className="w-full border-4 border-black p-3 bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-bold focus:outline-none focus:translate-x-1 focus:translate-y-1 focus:shadow-none transition-all [&>option]:bg-white dark:[&>option]:bg-zinc-900"
               >
                 {COUNTERPARTY_TYPES.map((t) => (
-                  <option key={t.value} value={t.value}>{t.emoji} {t.label}</option>
+                  <option key={t.value} value={t.value}>
+                    {t.emoji} {t.label}
+                  </option>
                 ))}
               </select>
             </div>
@@ -163,19 +191,25 @@ function NewEvidenceCaseForm() {
           {/* Dispute */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="text-sm font-black uppercase tracking-widest text-foreground">Dispute Type</label>
+              <label className="text-sm font-black uppercase tracking-widest text-foreground">
+                Dispute Type
+              </label>
               <select
                 value={disputeType}
                 onChange={(e) => setDisputeType(e.target.value as DisputeType)}
                 className="w-full border-4 border-black p-3 bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-bold focus:outline-none focus:translate-x-1 focus:translate-y-1 focus:shadow-none transition-all [&>option]:bg-white dark:[&>option]:bg-zinc-900"
               >
                 {DISPUTE_TYPES.map((t) => (
-                  <option key={t.value} value={t.value}>{t.label}</option>
+                  <option key={t.value} value={t.value}>
+                    {t.label}
+                  </option>
                 ))}
               </select>
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-black uppercase tracking-widest text-foreground">Description</label>
+              <label className="text-sm font-black uppercase tracking-widest text-foreground">
+                Description
+              </label>
               <input
                 type="text"
                 placeholder="Brief case description"
@@ -188,7 +222,9 @@ function NewEvidenceCaseForm() {
 
           {/* Dispute Description */}
           <div className="space-y-2">
-            <label className="text-sm font-black uppercase tracking-widest text-foreground">Dispute Details (optional)</label>
+            <label className="text-sm font-black uppercase tracking-widest text-foreground">
+              Dispute Details (optional)
+            </label>
             <textarea
               placeholder="Describe what happened in detail. This helps organize your evidence..."
               value={disputeDescription}
@@ -199,11 +235,21 @@ function NewEvidenceCaseForm() {
           </div>
 
           {/* Submit */}
-          <Button type="submit" disabled={loading} className="w-full btn-impact py-6 mt-8 bg-blue-600 hover:bg-blue-700 text-white">
+          <Button
+            type="submit"
+            disabled={loading}
+            className="w-full btn-impact py-6 mt-8 bg-blue-600 hover:bg-blue-700 text-white"
+          >
             {loading ? (
-              <><Loader2 className="h-6 w-6 mr-3 animate-spin stroke-[3px]" />CREATING...</>
+              <>
+                <Loader2 className="h-6 w-6 mr-3 animate-spin stroke-[3px]" />
+                CREATING...
+              </>
             ) : (
-              <><Shield className="h-6 w-6 mr-3 stroke-[3px]" />CREATE EVIDENCE CASE</>
+              <>
+                <Shield className="h-6 w-6 mr-3 stroke-[3px]" />
+                CREATE EVIDENCE CASE
+              </>
             )}
           </Button>
         </form>

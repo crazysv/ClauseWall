@@ -52,13 +52,17 @@ const LEVELS: PrivacyLevel[] = ["maximum", "balanced", "standard"];
 export default function PrivacyToggle() {
   const { level, setLevel } = usePrivacy();
   const config = PRIVACY_CONFIG[level];
-  const isPrivacyMode = level === 'maximum';
+  const isPrivacyMode = level === "maximum";
 
   return (
-    <Card className={`card-impact border-2 border-foreground transition-all duration-300 ${isPrivacyMode ? 'bg-green-50 shadow-[8px_8px_0px_0px_rgba(22,163,74,1)]' : 'bg-card shadow-[4px_4px_0px_0px_rgba(10,10,10,1)]'}`}>
+    <Card
+      className={`card-impact border-2 border-foreground transition-all duration-300 ${isPrivacyMode ? "bg-green-50 shadow-[8px_8px_0px_0px_rgba(22,163,74,1)]" : "bg-card shadow-[4px_4px_0px_0px_rgba(10,10,10,1)]"}`}
+    >
       <CardContent className="p-4">
         <div className="flex items-center justify-between mb-4">
-          <h3 className={`font-black uppercase tracking-wider ${isPrivacyMode ? 'text-green-800' : 'text-foreground'}`}>
+          <h3
+            className={`font-black uppercase tracking-wider ${isPrivacyMode ? "text-green-800" : "text-foreground"}`}
+          >
             Quantum Privacy Mode
           </h3>
           {isPrivacyMode && (
@@ -68,7 +72,8 @@ export default function PrivacyToggle() {
           )}
         </div>
         <p className="text-sm font-bold text-muted-foreground mb-4">
-          Pre-process sensitive data locally in your browser before sending array references to the server for analysis.
+          Pre-process sensitive data locally in your browser before sending
+          array references to the server for analysis.
         </p>
 
         <div className="flex gap-1 p-1 bg-muted border-2 border-foreground shadow-[inset_0px_0px_0px_2px_rgba(10,10,10,0.05)]">

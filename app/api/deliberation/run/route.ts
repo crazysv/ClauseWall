@@ -6,7 +6,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { deliberateClause, deliberateDocument } from "@/lib/deliberation";
-import type { DeliberationResult, ClauseDeliberation } from "@/lib/deliberation";
+import type {
+  DeliberationResult,
+  ClauseDeliberation,
+} from "@/lib/deliberation";
 
 /**
  * Summarize a proof tree for the Arbiter's context.
@@ -28,7 +31,9 @@ function summarizeProofTree(proofData: unknown): string | undefined {
     if (verdict === "proven_illegal") {
       parts.push("Formally PROVEN ILLEGAL by neurosymbolic reasoning engine.");
     } else if (verdict === "proven_dangerous") {
-      parts.push("Formally PROVEN DANGEROUS by neurosymbolic reasoning engine.");
+      parts.push(
+        "Formally PROVEN DANGEROUS by neurosymbolic reasoning engine.",
+      );
     } else if (verdict === "proven_warning") {
       parts.push("Formal analysis found WARNING-level concerns.");
     } else if (verdict === "proven_safe") {
@@ -54,12 +59,7 @@ function summarizeProofTree(proofData: unknown): string | undefined {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const {
-      documentId,
-      clauseText,
-      documentType,
-      jurisdiction,
-    } = body as {
+    const { documentId, clauseText, documentType, jurisdiction } = body as {
       documentId?: string;
       clauseText?: string;
       documentType?: string;
@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
       if (docError || !doc) {
         return NextResponse.json(
           { success: false, error: "Document not found" },
-          { status: 404 }
+          { status: 404 },
         );
       }
 
@@ -88,15 +88,18 @@ export async function POST(request: NextRequest) {
       const { data: clauseRows } = await supabase
         .from("clauses")
         .select(
-          "id, clause_number, original_text, clause_type, risk_level, explanation, proof_data"
+          "id, clause_number, original_text, clause_type, risk_level, explanation, proof_data",
         )
         .eq("document_id", documentId)
         .order("clause_number", { ascending: true });
 
       if (!clauseRows || clauseRows.length === 0) {
         return NextResponse.json(
-          { success: false, error: "No analyzed clauses found for this document" },
-          { status: 400 }
+          {
+            success: false,
+            error: "No analyzed clauses found for this document",
+          },
+          { status: 400 },
         );
       }
 
@@ -121,10 +124,10 @@ export async function POST(request: NextRequest) {
             ? summarizeProofTree(
                 typeof c.proof_data === "string"
                   ? JSON.parse(c.proof_data)
-                  : c.proof_data
+                  : c.proof_data,
               )
             : undefined,
-        })
+        }),
       );
 
       // Run deliberation
@@ -132,14 +135,16 @@ export async function POST(request: NextRequest) {
         clausesForDeliberation,
         doc.document_type,
         doc.jurisdiction,
-        documentId
+        documentId,
       );
 
       // Store result in documents table
       const supabase2 = await createClient();
       await supabase2
         .from("documents")
-        .update({ deliberation_data: result as unknown as Record<string, unknown> })
+        .update({
+          deliberation_data: result as unknown as Record<string, unknown>,
+        })
         .eq("id", documentId);
 
       return NextResponse.json({ success: true, result });
@@ -149,8 +154,11 @@ export async function POST(request: NextRequest) {
     if (clauseText) {
       if (!documentType || !jurisdiction) {
         return NextResponse.json(
-          { success: false, error: "documentType and jurisdiction are required" },
-          { status: 400 }
+          {
+            success: false,
+            error: "documentType and jurisdiction are required",
+          },
+          { status: 400 },
         );
       }
 
@@ -158,7 +166,7 @@ export async function POST(request: NextRequest) {
         clauseText,
         undefined,
         documentType,
-        jurisdiction
+        jurisdiction,
       );
 
       return NextResponse.json({ success: true, deliberation });
@@ -166,7 +174,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       { success: false, error: "Either documentId or clauseText is required" },
-      { status: 400 }
+      { status: 400 },
     );
   } catch (error) {
     console.error("[ClauseWall] [API] Deliberation run failed:", error);
@@ -175,7 +183,7 @@ export async function POST(request: NextRequest) {
         success: false,
         error: "Deliberation failed. Please try again.",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

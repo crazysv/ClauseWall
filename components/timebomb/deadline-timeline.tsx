@@ -9,7 +9,10 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Filter, ShieldCheck, PartyPopper } from "lucide-react";
 import type { ContractDeadline, TimelineEvent } from "@/types";
-import { buildTimelineEvents, calculateDaysUntil } from "@/lib/timebomb/date-calculator";
+import {
+  buildTimelineEvents,
+  calculateDaysUntil,
+} from "@/lib/timebomb/date-calculator";
 import { DeadlineCard } from "./deadline-card";
 
 interface DeadlineTimelineProps {
@@ -31,7 +34,7 @@ export function DeadlineTimeline({
   const allDefused =
     deadlines.length > 0 &&
     deadlines.every(
-      (d) => d.status === "defused" || d.status === "action_taken"
+      (d) => d.status === "defused" || d.status === "action_taken",
     );
 
   // Filter events
@@ -68,18 +71,17 @@ export function DeadlineTimeline({
       (e) =>
         e.deadline.urgency === "critical" &&
         e.deadline.status !== "defused" &&
-        e.deadline.status !== "action_taken"
+        e.deadline.status !== "action_taken",
     ).length,
     upcoming: events.filter(
       (e) =>
         e.days_from_now >= 0 &&
         e.deadline.status !== "defused" &&
-        e.deadline.status !== "action_taken"
+        e.deadline.status !== "action_taken",
     ).length,
     defused: events.filter(
       (e) =>
-        e.deadline.status === "defused" ||
-        e.deadline.status === "action_taken"
+        e.deadline.status === "defused" || e.deadline.status === "action_taken",
     ).length,
     missed: events.filter((e) => e.deadline.status === "missed").length,
   };
@@ -112,7 +114,8 @@ export function DeadlineTimeline({
           ALL DEADLINES DEFUSED! 🛡️
         </h3>
         <p className="text-green-900 dark:text-green-300 font-bold uppercase tracking-widest max-w-md mx-auto leading-relaxed">
-          YOU&apos;VE ADDRESSED EVERY DEADLINE IN THIS CONTRACT. YOU&apos;RE PROTECTED.
+          YOU&apos;VE ADDRESSED EVERY DEADLINE IN THIS CONTRACT. YOU&apos;RE
+          PROTECTED.
         </p>
       </motion.div>
     );
@@ -145,7 +148,9 @@ export function DeadlineTimeline({
             aria-label={`Filter ${f.label}`}
           >
             {f.label}
-            <span className={`ml-2 px-1.5 py-0.5 border-2 border-black text-[10px] ${filter === f.key ? 'bg-white text-black dark:bg-black dark:text-white' : 'bg-gray-200 text-black dark:bg-zinc-800 dark:text-white'}`}>
+            <span
+              className={`ml-2 px-1.5 py-0.5 border-2 border-black text-[10px] ${filter === f.key ? "bg-white text-black dark:bg-black dark:text-white" : "bg-gray-200 text-black dark:bg-zinc-800 dark:text-white"}`}
+            >
               {counts[f.key]}
             </span>
           </button>
@@ -240,7 +245,10 @@ export function DeadlineTimeline({
                         day: "numeric",
                         month: "short",
                       })}{" "}
-                      • {daysUntil >= 0 ? `${daysUntil}d` : `${Math.abs(daysUntil)}d ago`}
+                      •{" "}
+                      {daysUntil >= 0
+                        ? `${daysUntil}d`
+                        : `${Math.abs(daysUntil)}d ago`}
                     </span>
                   </div>
 

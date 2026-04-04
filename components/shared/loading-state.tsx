@@ -18,9 +18,7 @@ export default function LoadingState({
   return (
     <div className="flex flex-col items-center justify-center gap-4 py-20">
       <div className="relative">
-        <Loader2
-          className={`${sizeClasses[size]} text-primary animate-spin`}
-        />
+        <Loader2 className={`${sizeClasses[size]} text-primary animate-spin`} />
         <div
           className={`absolute inset-0 ${sizeClasses[size]} bg-primary/20 blur-xl rounded-full animate-pulse`}
         />

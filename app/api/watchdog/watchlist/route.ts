@@ -10,7 +10,9 @@ import type { UserWatchlistEntry } from "@/types";
 export async function GET() {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
@@ -29,7 +31,7 @@ export async function GET() {
     console.error("[Watchdog API] Watchlist GET error:", error);
     return NextResponse.json(
       { error: "Failed to fetch watchlist" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -37,17 +39,29 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
 
     const body = await request.json();
-    const { company_id, alert_email, alert_telegram, alert_inapp, sensitivity, telegram_chat_id } = body;
+    const {
+      company_id,
+      alert_email,
+      alert_telegram,
+      alert_inapp,
+      sensitivity,
+      telegram_chat_id,
+    } = body;
 
     if (!company_id) {
-      return NextResponse.json({ error: "company_id required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "company_id required" },
+        { status: 400 },
+      );
     }
 
     const { data, error } = await supabase
@@ -62,7 +76,7 @@ export async function POST(request: NextRequest) {
           sensitivity: sensitivity ?? "major_and_critical",
           telegram_chat_id: telegram_chat_id ?? null,
         },
-        { onConflict: "user_id,company_id" }
+        { onConflict: "user_id,company_id" },
       )
       .select()
       .single();
@@ -74,7 +88,7 @@ export async function POST(request: NextRequest) {
     console.error("[Watchdog API] Watchlist POST error:", error);
     return NextResponse.json(
       { error: "Failed to update watchlist" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -82,7 +96,9 @@ export async function POST(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
@@ -92,7 +108,10 @@ export async function DELETE(request: NextRequest) {
     const companyId = searchParams.get("company_id");
 
     if (!companyId) {
-      return NextResponse.json({ error: "company_id required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "company_id required" },
+        { status: 400 },
+      );
     }
 
     const { error } = await supabase
@@ -108,7 +127,7 @@ export async function DELETE(request: NextRequest) {
     console.error("[Watchdog API] Watchlist DELETE error:", error);
     return NextResponse.json(
       { error: "Failed to remove from watchlist" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

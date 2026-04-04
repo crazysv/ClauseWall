@@ -4,7 +4,11 @@ import { useMemo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dna } from "lucide-react";
-import { clausesToNodes, generateContractId, getDefaultStyle } from "@/lib/dna/utils";
+import {
+  clausesToNodes,
+  generateContractId,
+  getDefaultStyle,
+} from "@/lib/dna/utils";
 import { detectPersonality } from "@/lib/dna/personality";
 import FingerprintStyle from "@/components/results/dna/fingerprint-style";
 import type { Document, Clause } from "@/types";
@@ -15,9 +19,16 @@ interface Props {
   onViewDNA: () => void;
 }
 
-export default function ContractDNAPreview({ document: doc, clauses, onViewDNA }: Props) {
+export default function ContractDNAPreview({
+  document: doc,
+  clauses,
+  onViewDNA,
+}: Props) {
   const nodes = useMemo(() => clausesToNodes(clauses), [clauses]);
-  const personality = useMemo(() => detectPersonality(nodes, doc.overall_risk_score), [nodes, doc.overall_risk_score]);
+  const personality = useMemo(
+    () => detectPersonality(nodes, doc.overall_risk_score),
+    [nodes, doc.overall_risk_score],
+  );
   const contractId = useMemo(() => generateContractId(doc.id), [doc.id]);
 
   if (!clauses.length) return null;
@@ -43,13 +54,19 @@ export default function ContractDNAPreview({ document: doc, clauses, onViewDNA }
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
               <Dna className="h-4 w-4 text-purple-600" />
-              <h3 className="font-black uppercase tracking-wider text-sm text-foreground">Contract Personality</h3>
-              <span className="text-xs text-muted-foreground font-mono">{contractId}</span>
+              <h3 className="font-black uppercase tracking-wider text-sm text-foreground">
+                Contract Personality
+              </h3>
+              <span className="text-xs text-muted-foreground font-mono">
+                {contractId}
+              </span>
             </div>
             <p className="text-lg font-black uppercase tracking-wider text-foreground">
               {personality.emoji} {personality.name}
             </p>
-            <p className="text-xs text-muted-foreground font-bold mt-0.5">{personality.description}</p>
+            <p className="text-xs text-muted-foreground font-bold mt-0.5">
+              {personality.description}
+            </p>
           </div>
 
           {/* CTA */}

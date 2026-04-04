@@ -63,8 +63,9 @@ export default function BuilderPage() {
             </span>
           </h1>
           <p className="text-muted-foreground text-lg font-bold max-w-2xl mx-auto tracking-wide">
-            Don&apos;t just find bad contracts — create good ones. Every clause complies
-            with Indian law and protects <strong>both</strong> parties equally.
+            Don&apos;t just find bad contracts — create good ones. Every clause
+            complies with Indian law and protects <strong>both</strong> parties
+            equally.
           </p>
         </motion.div>
 
@@ -77,14 +78,22 @@ export default function BuilderPage() {
         >
           {[
             { icon: <Scale className="w-4 h-4" />, text: "Legally Compliant" },
-            { icon: <CheckCircle2 className="w-4 h-4" />, text: "Fair to Both Parties" },
-            { icon: <Sparkles className="w-4 h-4" />, text: "State-Specific Laws" },
+            {
+              icon: <CheckCircle2 className="w-4 h-4" />,
+              text: "Fair to Both Parties",
+            },
+            {
+              icon: <Sparkles className="w-4 h-4" />,
+              text: "State-Specific Laws",
+            },
           ].map((feature, i) => (
             <div
               key={i}
               className="flex items-center gap-2 text-sm font-black uppercase tracking-widest text-muted-foreground border-2 border-black px-3 py-1 bg-white dark:bg-zinc-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
             >
-              <span className="text-emerald-600 dark:text-emerald-400">{feature.icon}</span>
+              <span className="text-emerald-600 dark:text-emerald-400">
+                {feature.icon}
+              </span>
               {feature.text}
             </div>
           ))}

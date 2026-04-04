@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
       if (docError || !doc) {
         return NextResponse.json(
           { success: false, error: "Document not found" },
-          { status: 404 }
+          { status: 404 },
         );
       }
 
@@ -44,11 +44,15 @@ export async function POST(request: NextRequest) {
 
       if (clauses) {
         clauseData = clauses.map(
-          (c: { original_text: string; clause_type: string; clause_number: number }) => ({
+          (c: {
+            original_text: string;
+            clause_type: string;
+            clause_number: number;
+          }) => ({
             text: c.original_text,
             type: c.clause_type,
             index: c.clause_number - 1,
-          })
+          }),
         );
       }
     }
@@ -57,14 +61,14 @@ export async function POST(request: NextRequest) {
     if (!rawText || rawText.trim().length < 50) {
       return NextResponse.json(
         { success: false, error: "Contract text too short for analysis" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (!docType) {
       return NextResponse.json(
         { success: false, error: "Missing documentType" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -74,13 +78,17 @@ export async function POST(request: NextRequest) {
       docType,
       docJurisdiction || "general",
       docId,
-      clauseData.length > 0 ? clauseData : undefined
+      clauseData.length > 0 ? clauseData : undefined,
     );
 
     if (!report) {
       return NextResponse.json(
-        { success: false, error: "State machine extraction failed. The contract may be too short or unstructured." },
-        { status: 500 }
+        {
+          success: false,
+          error:
+            "State machine extraction failed. The contract may be too short or unstructured.",
+        },
+        { status: 500 },
       );
     }
 
@@ -97,8 +105,11 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("[ClauseWall] State machine extract API error:", error);
     return NextResponse.json(
-      { success: false, error: "Failed to extract state machine. Please try again." },
-      { status: 500 }
+      {
+        success: false,
+        error: "Failed to extract state machine. Please try again.",
+      },
+      { status: 500 },
     );
   }
 }

@@ -12,26 +12,29 @@ export async function POST(request: NextRequest) {
     if (!audioFile) {
       return NextResponse.json(
         { error: "audio file is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (!LANGUAGE_CONFIGS[language as SupportedLanguage]) {
       return NextResponse.json(
         { error: "Unsupported language" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     const audioBuffer = Buffer.from(await audioFile.arrayBuffer());
-    const result = await transcribeAudio(audioBuffer, language as SupportedLanguage);
+    const result = await transcribeAudio(
+      audioBuffer,
+      language as SupportedLanguage,
+    );
 
     return NextResponse.json(result);
   } catch (error) {
     console.error("[ClauseWall] STT API error:", error);
     return NextResponse.json(
       { error: "Speech-to-text failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

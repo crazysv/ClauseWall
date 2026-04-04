@@ -166,7 +166,9 @@ export default function ProofTreeModal({
               <div className="flex items-center gap-3">
                 <TreePine className="h-5 w-5 text-foreground" />
                 <div>
-                  <h2 className="text-lg font-black uppercase tracking-wider text-foreground">Proof Tree</h2>
+                  <h2 className="text-lg font-black uppercase tracking-wider text-foreground">
+                    Proof Tree
+                  </h2>
                   <p className="text-xs font-bold text-muted-foreground">
                     {proofTree.clauseText.substring(0, 80)}
                     {proofTree.clauseText.length > 80 ? "..." : ""}
@@ -174,13 +176,22 @@ export default function ProofTreeModal({
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <Badge variant="outline" className={`${verdictColor} border-2 border-foreground bg-background text-xs font-black uppercase tracking-wider`}>
+                <Badge
+                  variant="outline"
+                  className={`${verdictColor} border-2 border-foreground bg-background text-xs font-black uppercase tracking-wider`}
+                >
                   {verdictLabel}
                 </Badge>
-                <Badge variant="outline" className="text-xs border-2 border-foreground text-foreground font-black uppercase tracking-wider bg-background">
+                <Badge
+                  variant="outline"
+                  className="text-xs border-2 border-foreground text-foreground font-black uppercase tracking-wider bg-background"
+                >
                   {summary.stepsCount} steps
                 </Badge>
-                <Badge variant="outline" className="text-xs border-2 border-foreground text-foreground font-black uppercase tracking-wider bg-background">
+                <Badge
+                  variant="outline"
+                  className="text-xs border-2 border-foreground text-foreground font-black uppercase tracking-wider bg-background"
+                >
                   {Math.round(summary.confidence * 100)}% conf
                 </Badge>
                 <button
@@ -245,9 +256,13 @@ export default function ProofTreeModal({
                   className={`gap-1 h-8 button text-impact-heading border-foreground ${walkthrough ? "bg-foreground text-background" : "bg-background text-foreground hover:bg-foreground hover:text-background"}`}
                 >
                   {walkthrough ? (
-                    <><Pause className="h-3.5 w-3.5" /> Stop</>
+                    <>
+                      <Pause className="h-3.5 w-3.5" /> Stop
+                    </>
                   ) : (
-                    <><Play className="h-3.5 w-3.5" /> Walk Through</>
+                    <>
+                      <Play className="h-3.5 w-3.5" /> Walk Through
+                    </>
                   )}
                 </Button>
               </div>

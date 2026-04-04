@@ -6,8 +6,11 @@ import { uploadEvidenceFile } from "@/lib/evidence/storage";
 export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
@@ -15,13 +18,23 @@ export async function POST(request: NextRequest) {
     const itemId = formData.get("item_id") as string | null;
 
     if (!file || !caseId || !itemId) {
-      return NextResponse.json({ error: "Missing file, case_id, or item_id" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing file, case_id, or item_id" },
+        { status: 400 },
+      );
     }
 
     // Validate MIME type
-    const dangerousMimes = ["application/x-executable", "application/x-msdownload", "application/x-sh"];
+    const dangerousMimes = [
+      "application/x-executable",
+      "application/x-msdownload",
+      "application/x-sh",
+    ];
     if (dangerousMimes.includes(file.type)) {
-      return NextResponse.json({ error: "File type not allowed" }, { status: 400 });
+      return NextResponse.json(
+        { error: "File type not allowed" },
+        { status: 400 },
+      );
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
@@ -32,7 +45,7 @@ export async function POST(request: NextRequest) {
       itemId,
       buffer,
       file.name,
-      file.type
+      file.type,
     );
 
     if (!result) {

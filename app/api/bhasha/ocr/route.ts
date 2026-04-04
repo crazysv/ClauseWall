@@ -1,25 +1,35 @@
 import { NextRequest, NextResponse } from "next/server";
-import { postProcessOCR, getMultilingualOCRPrompt } from "@/lib/bhasha/ocr-enhancer";
+import {
+  postProcessOCR,
+  getMultilingualOCRPrompt,
+} from "@/lib/bhasha/ocr-enhancer";
 import type { SupportedLanguage } from "@/types/bhasha";
 
 export async function POST(request: NextRequest) {
   try {
-    const { extracted_text, language_hint, is_handwritten } = await request.json();
+    const { extracted_text, language_hint, is_handwritten } =
+      await request.json();
 
     if (!extracted_text) {
-      return NextResponse.json({ error: "extracted_text is required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "extracted_text is required" },
+        { status: 400 },
+      );
     }
 
     // Post-process OCR result with language-aware analysis
     const result = postProcessOCR(
       extracted_text,
-      language_hint as SupportedLanguage | undefined
+      language_hint as SupportedLanguage | undefined,
     );
 
     return NextResponse.json(result);
   } catch (error) {
     console.error("[ClauseWall] OCR enhancement API error:", error);
-    return NextResponse.json({ error: "OCR enhancement failed" }, { status: 500 });
+    return NextResponse.json(
+      { error: "OCR enhancement failed" },
+      { status: 500 },
+    );
   }
 }
 

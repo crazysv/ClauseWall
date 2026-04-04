@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     if (!clauseText || !jurisdiction || !documentType) {
       return NextResponse.json(
         { error: "clauseText, jurisdiction, and documentType are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
     const extractedValues = await extractValues(
       clauseText,
       clauseType || "general",
-      documentType
+      documentType,
     );
 
     // Step 2: Run neurosymbolic analysis
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
       extractedValues,
       jurisdiction,
       documentType,
-      clauseType || extractedValues.clause_type
+      clauseType || extractedValues.clause_type,
     );
 
     if (proofTree) {
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     console.error("[ClauseWall] [API] Reasoning prove failed:", error);
     return NextResponse.json(
       { success: false, error: "Failed to run formal reasoning" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

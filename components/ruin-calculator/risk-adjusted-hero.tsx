@@ -34,7 +34,10 @@ export default function RiskAdjustedHero({
         {/* Header */}
         <div className="mb-8 border-b-4 border-black pb-4">
           <h2 className="text-2xl sm:text-4xl font-black uppercase tracking-tight text-black mb-2 flex items-center gap-3">
-            <span className="bg-black text-white p-2 text-xl inline-block">📊</span> Financial Risk Analysis
+            <span className="bg-black text-white p-2 text-xl inline-block">
+              📊
+            </span>{" "}
+            Financial Risk Analysis
           </h2>
           <p className="text-sm font-bold uppercase tracking-widest text-black/70">
             {documentName} • {documentType} • {jurisdiction}
@@ -56,7 +59,9 @@ export default function RiskAdjustedHero({
             >
               {formatINR(riskAdjusted.baseMonthlyCost)}
             </motion.p>
-            <p className="text-sm font-bold uppercase tracking-widest text-black/50 mt-2">/month</p>
+            <p className="text-sm font-bold uppercase tracking-widest text-black/50 mt-2">
+              /month
+            </p>
             <p className="text-xs font-bold uppercase tracking-widest text-black/40 mt-3 bg-gray-200 inline-block px-2 py-1">
               (What they tell you)
             </p>
@@ -88,7 +93,9 @@ export default function RiskAdjustedHero({
             >
               {formatINR(riskAdjusted.adjustedMonthlyCost)}
             </motion.p>
-            <p className="text-sm font-bold uppercase tracking-widest text-white/80 mt-2">/month</p>
+            <p className="text-sm font-bold uppercase tracking-widest text-white/80 mt-2">
+              /month
+            </p>
             <motion.p
               className="text-sm font-black uppercase tracking-widest text-black bg-white inline-block px-3 py-1 border-2 border-black mt-4 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               initial={{ opacity: 0 }}

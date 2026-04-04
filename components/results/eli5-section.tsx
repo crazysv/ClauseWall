@@ -47,7 +47,7 @@ export default function ELI5Section({
     const checkVoices = () => {
       const voices = speechSynthesis.getVoices();
       const hasHindi = voices.some(
-        (v) => v.lang.startsWith("hi") || v.lang.includes("IN")
+        (v) => v.lang.startsWith("hi") || v.lang.includes("IN"),
       );
       setHindiVoiceAvailable(hasHindi);
     };
@@ -115,7 +115,9 @@ export default function ELI5Section({
 
     // Try to find the best voice
     const voices = speechSynthesis.getVoices();
-    const matchingVoice = voices.find((v) => v.lang.startsWith(lang.split("-")[0]));
+    const matchingVoice = voices.find((v) =>
+      v.lang.startsWith(lang.split("-")[0]),
+    );
     if (matchingVoice) {
       utterance.voice = matchingVoice;
     }
@@ -245,7 +247,10 @@ export default function ELI5Section({
               {/* Hindi */}
               {activeTab === "hindi" && (
                 <div className="p-4">
-                  <p className="text-sm font-bold leading-relaxed text-foreground" dir="auto">
+                  <p
+                    className="text-sm font-bold leading-relaxed text-foreground"
+                    dir="auto"
+                  >
                     {data.hindi}
                   </p>
                   <div className="mt-3 flex items-center gap-2">

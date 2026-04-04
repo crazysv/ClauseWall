@@ -9,7 +9,9 @@ export function Hero() {
         <p className="text-xl md:text-2xl text-muted-foreground font-medium max-w-2xl leading-relaxed mt-6">
           <span className="text-primary">Predatory</span> Clause Detector
         </p>
-        <p className="text-muted-foreground mt-2">Protect yourself from unfair contract terms</p>
+        <p className="text-muted-foreground mt-2">
+          Protect yourself from unfair contract terms
+        </p>
       </div>
     </section>
   );

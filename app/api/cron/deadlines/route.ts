@@ -20,9 +20,8 @@ export async function GET(request: NextRequest) {
     }
 
     // Dynamic import to avoid cold start issues
-    const { checkAndSendReminders } = await import(
-      "@/lib/timebomb/reminder-service"
-    );
+    const { checkAndSendReminders } =
+      await import("@/lib/timebomb/reminder-service");
 
     console.log("[TimeBomb Cron] Starting daily reminder check...");
     const result = await checkAndSendReminders();
@@ -40,7 +39,7 @@ export async function GET(request: NextRequest) {
         message: (error as Error).message,
         timestamp: new Date().toISOString(),
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

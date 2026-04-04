@@ -14,13 +14,14 @@ export async function POST(request: NextRequest) {
     const formData = await request.formData();
     const audioFile = formData.get("audio") as Blob | null;
     const language = (formData.get("language") as string) || "en";
-    const jurisdiction = (formData.get("jurisdiction") as string) || "ALL-INDIA";
+    const jurisdiction =
+      (formData.get("jurisdiction") as string) || "ALL-INDIA";
     const documentType = (formData.get("document_type") as string) || "rental";
 
     if (!audioFile) {
       return NextResponse.json(
         { error: "No audio file provided" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -28,7 +29,7 @@ export async function POST(request: NextRequest) {
     if (audioFile.size > 25 * 1024 * 1024) {
       return NextResponse.json(
         { error: "Audio file too large. Maximum 25MB." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -45,7 +46,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Step 2: Detect pressure tactics
-    const detected_tactics: DetectedTactic[] = detectAllTactics(transcription.text);
+    const detected_tactics: DetectedTactic[] = detectAllTactics(
+      transcription.text,
+    );
 
     // Step 3: If false_legal_claim detected, quick fact check
     const bluff_checks: BluffAnalysis[] = [];
@@ -55,7 +58,7 @@ export async function POST(request: NextRequest) {
           const bluff = await quickFactCheck(
             transcription.text,
             jurisdiction,
-            documentType
+            documentType,
           );
           if (bluff) {
             bluff_checks.push(bluff);
@@ -76,7 +79,7 @@ export async function POST(request: NextRequest) {
     console.error("[ClauseWall] Transcribe API error:", error);
     return NextResponse.json(
       { error: "Transcription failed. Please try again." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -53,15 +53,18 @@ export async function POST(request: NextRequest) {
       docsQuery = docsQuery.in("id", documentIds);
     }
 
-    const { data: docs, error: docsError } = await docsQuery.order("created_at", {
-      ascending: false,
-    });
+    const { data: docs, error: docsError } = await docsQuery.order(
+      "created_at",
+      {
+        ascending: false,
+      },
+    );
 
     if (docsError) {
       console.error("[Vault] Failed to fetch documents:", docsError);
       return NextResponse.json(
         { error: "Failed to fetch documents" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -72,7 +75,7 @@ export async function POST(request: NextRequest) {
             "Need at least 2 analyzed contracts for cross-contract analysis",
           contract_count: docs?.length || 0,
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -103,13 +106,18 @@ export async function POST(request: NextRequest) {
           })),
           power_balance: doc.power_balance || null,
           overall_risk_score: Number(doc.overall_risk_score) || 0,
-          temporal_data: (doc.temporal_data as TemporalExtractionResult) || null,
+          temporal_data:
+            (doc.temporal_data as TemporalExtractionResult) || null,
         };
-      })
+      }),
     );
 
     // Run analyses in parallel with Promise.allSettled for resilience
-    console.log("[Vault] Starting cross-contract analysis for", enrichedDocs.length, "documents");
+    console.log(
+      "[Vault] Starting cross-contract analysis for",
+      enrichedDocs.length,
+      "documents",
+    );
 
     const [conflictsResult, gapsResult, cascadesResult] =
       await Promise.allSettled([
@@ -128,7 +136,10 @@ export async function POST(request: NextRequest) {
 
     // Log any failures
     if (conflictsResult.status === "rejected") {
-      console.error("[Vault] Conflict detection failed:", conflictsResult.reason);
+      console.error(
+        "[Vault] Conflict detection failed:",
+        conflictsResult.reason,
+      );
     }
     if (gapsResult.status === "rejected") {
       console.error("[Vault] Gap analysis failed:", gapsResult.reason);
@@ -149,12 +160,16 @@ export async function POST(request: NextRequest) {
       coverageGaps,
       cascadingFailures,
       financialExposure,
-      enrichedDocs.length
+      enrichedDocs.length,
     );
 
     // Run 3 default what-if scenarios sequentially (to avoid rate limits)
     const whatIfResults: WhatIfResult[] = [];
-    const defaultScenarios = ["job_loss", "hospitalization", "loan_default"] as const;
+    const defaultScenarios = [
+      "job_loss",
+      "hospitalization",
+      "loan_default",
+    ] as const;
 
     for (const scenario of defaultScenarios) {
       try {
@@ -210,7 +225,7 @@ export async function POST(request: NextRequest) {
     console.error("[Vault] Analysis endpoint error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

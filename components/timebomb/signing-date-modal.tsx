@@ -29,7 +29,7 @@ export function SigningDateModal({
   onActivated,
 }: SigningDateModalProps) {
   const [signingDate, setSigningDate] = useState(
-    new Date().toISOString().split("T")[0]
+    new Date().toISOString().split("T")[0],
   );
   const [useToday, setUseToday] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -54,7 +54,9 @@ export function SigningDateModal({
 
       if (!res.ok) {
         if (res.status === 401) {
-          toast.error("Please sign in or create an account to use the Time Bomb Defuser.");
+          toast.error(
+            "Please sign in or create an account to use the Time Bomb Defuser.",
+          );
           router.push("/auth/login");
           onClose();
           setLoading(false);
@@ -69,9 +71,7 @@ export function SigningDateModal({
       if (data.deadlines?.length === 0) {
         toast.info("No temporal deadlines found in this contract.");
       } else {
-        toast.success(
-          `🎯 ${data.deadlines?.length || 0} deadlines activated!`
-        );
+        toast.success(`🎯 ${data.deadlines?.length || 0} deadlines activated!`);
       }
 
       onActivated(data);
@@ -79,7 +79,7 @@ export function SigningDateModal({
     } catch (error) {
       console.error("[TimeBomb] Activation error:", error);
       toast.error(
-        (error as Error).message || "Failed to activate Time Bomb Defuser"
+        (error as Error).message || "Failed to activate Time Bomb Defuser",
       );
     } finally {
       setLoading(false);
@@ -149,7 +149,11 @@ export function SigningDateModal({
                   <input
                     id="signing-date"
                     type="date"
-                    value={useToday ? new Date().toISOString().split("T")[0] : signingDate}
+                    value={
+                      useToday
+                        ? new Date().toISOString().split("T")[0]
+                        : signingDate
+                    }
                     onChange={(e) => {
                       setSigningDate(e.target.value);
                       setUseToday(false);
@@ -162,8 +166,12 @@ export function SigningDateModal({
 
               {/* Use today checkbox */}
               <label className="flex items-center gap-3 cursor-pointer group mt-4">
-                <div className={`w-6 h-6 border-4 flex items-center justify-center transition-all ${useToday ? 'border-orange-500 bg-orange-500 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]' : 'border-black bg-white dark:bg-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]'}`}>
-                  {useToday && <Shield className="w-3 h-3 text-black stroke-[4px]" />}
+                <div
+                  className={`w-6 h-6 border-4 flex items-center justify-center transition-all ${useToday ? "border-orange-500 bg-orange-500 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]" : "border-black bg-white dark:bg-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"}`}
+                >
+                  {useToday && (
+                    <Shield className="w-3 h-3 text-black stroke-[4px]" />
+                  )}
                 </div>
                 <input
                   type="checkbox"

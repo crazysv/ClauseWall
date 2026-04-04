@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
     const organizations = await matchLegalAidOrganizations(
       entityType,
       jurisdiction,
-      documentType
+      documentType,
     );
 
     return NextResponse.json(organizations);
@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
     console.error("[ClauseWall] [API] Legal aid error:", error);
     return NextResponse.json(
       { error: "Failed to match legal aid organizations" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

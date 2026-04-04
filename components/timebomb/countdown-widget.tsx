@@ -34,11 +34,9 @@ export function CountdownWidget({ deadline }: CountdownWidgetProps) {
       return {
         days: Math.floor(Math.abs(diff) / (1000 * 60 * 60 * 24)),
         hours: Math.floor(
-          (Math.abs(diff) % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+          (Math.abs(diff) % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
         ),
-        minutes: Math.floor(
-          (Math.abs(diff) % (1000 * 60 * 60)) / (1000 * 60)
-        ),
+        minutes: Math.floor((Math.abs(diff) % (1000 * 60 * 60)) / (1000 * 60)),
         overdue: true,
       };
     }
@@ -57,14 +55,16 @@ export function CountdownWidget({ deadline }: CountdownWidgetProps) {
     }, 60000); // Update every minute
 
     return () => clearInterval(timer);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deadline.deadline_date]);
 
   const getColor = () => {
     if (timeLeft.overdue) return "text-red-700 dark:text-red-500 font-black";
     if (timeLeft.days < 1) return "text-red-700 dark:text-red-500 font-black";
-    if (timeLeft.days < 7) return "text-orange-700 dark:text-orange-500 font-black";
-    if (timeLeft.days < 30) return "text-amber-700 dark:text-amber-500 font-black";
+    if (timeLeft.days < 7)
+      return "text-orange-700 dark:text-orange-500 font-black";
+    if (timeLeft.days < 30)
+      return "text-amber-700 dark:text-amber-500 font-black";
     return "text-blue-700 dark:text-blue-500 font-black";
   };
 
@@ -90,7 +90,9 @@ export function CountdownWidget({ deadline }: CountdownWidgetProps) {
       </div>
 
       {/* Countdown display */}
-      <div className={`flex items-baseline gap-1 ${getColor()} tabular-nums tracking-tighter`}>
+      <div
+        className={`flex items-baseline gap-1 ${getColor()} tabular-nums tracking-tighter`}
+      >
         {timeLeft.overdue && (
           <motion.span
             animate={{ opacity: [1, 0.4, 1] }}
@@ -109,18 +111,14 @@ export function CountdownWidget({ deadline }: CountdownWidgetProps) {
       </div>
 
       {/* Deadline title */}
-      <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mt-3 truncate">{deadline.title}</p>
+      <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mt-3 truncate">
+        {deadline.title}
+      </p>
     </Link>
   );
 }
 
-function CountdownUnit({
-  value,
-  label,
-}: {
-  value: number;
-  label: string;
-}) {
+function CountdownUnit({ value, label }: { value: number; label: string }) {
   return (
     <div className="flex items-baseline gap-1">
       <AnimatePresence mode="popLayout">
@@ -135,7 +133,9 @@ function CountdownUnit({
           {String(value).padStart(2, "0")}
         </motion.span>
       </AnimatePresence>
-      <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">{label}</span>
+      <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">
+        {label}
+      </span>
     </div>
   );
 }

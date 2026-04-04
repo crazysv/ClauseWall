@@ -96,7 +96,7 @@ export default function DocumentDeliberation({
       items.sort(
         (a, b) =>
           (severityOrder[a.arbiterVerdict.verdict] ?? 2) -
-          (severityOrder[b.arbiterVerdict.verdict] ?? 2)
+          (severityOrder[b.arbiterVerdict.verdict] ?? 2),
       );
     }
 
@@ -124,7 +124,10 @@ export default function DocumentDeliberation({
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
           { count: summary.fairCount, ...verdictConfig.fair },
-          { count: summary.partiallyFairCount, ...verdictConfig.partially_fair },
+          {
+            count: summary.partiallyFairCount,
+            ...verdictConfig.partially_fair,
+          },
           { count: summary.unfairCount, ...verdictConfig.unfair },
           { count: summary.illegalCount, ...verdictConfig.illegal },
         ].map((item) => (
@@ -187,7 +190,9 @@ export default function DocumentDeliberation({
         </div>
 
         <button
-          onClick={() => setSortBy((s) => (s === "order" ? "severity" : "order"))}
+          onClick={() =>
+            setSortBy((s) => (s === "order" ? "severity" : "order"))
+          }
           className="flex items-center gap-1 text-[10px] text-white/40 hover:text-white/60 transition-colors ml-auto"
         >
           <ArrowUpDown className="h-3 w-3" />
@@ -206,7 +211,10 @@ export default function DocumentDeliberation({
           const previewText = delib.clauseText.substring(0, 50);
 
           return (
-            <div key={delib.id} className="rounded-lg border border-white/8 overflow-hidden">
+            <div
+              key={delib.id}
+              className="rounded-lg border border-white/8 overflow-hidden"
+            >
               {/* Clause Header (clickable) */}
               <button
                 onClick={() => toggleClause(i)}
@@ -252,10 +260,7 @@ export default function DocumentDeliberation({
                       </div>
 
                       {/* Full deliberation panel */}
-                      <DeliberationPanel
-                        deliberation={delib}
-                        compact
-                      />
+                      <DeliberationPanel deliberation={delib} compact />
 
                       {/* Jump to clause button */}
                       {onClauseClick && (
@@ -293,8 +298,7 @@ export default function DocumentDeliberation({
       {/* Footer */}
       <div className="text-[10px] text-white/30 pt-3 border-t border-white/5">
         Total deliberation time: {(result.totalDuration / 1000).toFixed(1)}s ·
-        Completed at{" "}
-        {new Date(result.completedAt).toLocaleString()}
+        Completed at {new Date(result.completedAt).toLocaleString()}
       </div>
     </div>
   );

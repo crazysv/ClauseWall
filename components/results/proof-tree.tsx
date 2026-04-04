@@ -24,48 +24,128 @@ import type { ProofNode, ProofTree } from "@/lib/reasoning/types";
 
 function getNodeIcon(type: ProofNode["type"]) {
   switch (type) {
-    case "extraction": return <BarChart3 className="h-3.5 w-3.5" />;
-    case "fact": return <FileText className="h-3.5 w-3.5" />;
-    case "rule": return <Scale className="h-3.5 w-3.5" />;
-    case "condition_check": return <Search className="h-3.5 w-3.5" />;
-    case "comparison": return <Zap className="h-3.5 w-3.5" />;
-    case "inference": return <Link2 className="h-3.5 w-3.5" />;
-    case "conclusion": return <CheckCircle2 className="h-3.5 w-3.5" />;
-    default: return <HelpCircle className="h-3.5 w-3.5" />;
+    case "extraction":
+      return <BarChart3 className="h-3.5 w-3.5" />;
+    case "fact":
+      return <FileText className="h-3.5 w-3.5" />;
+    case "rule":
+      return <Scale className="h-3.5 w-3.5" />;
+    case "condition_check":
+      return <Search className="h-3.5 w-3.5" />;
+    case "comparison":
+      return <Zap className="h-3.5 w-3.5" />;
+    case "inference":
+      return <Link2 className="h-3.5 w-3.5" />;
+    case "conclusion":
+      return <CheckCircle2 className="h-3.5 w-3.5" />;
+    default:
+      return <HelpCircle className="h-3.5 w-3.5" />;
   }
 }
 
 function getStatusIcon(status: ProofNode["status"]) {
   switch (status) {
-    case "proven": return <CheckCircle2 className="h-3 w-3 text-green-400" />;
-    case "failed": return <XCircle className="h-3 w-3 text-red-400" />;
-    case "uncertain": return <AlertTriangle className="h-3 w-3 text-amber-400" />;
-    case "assumed": return <HelpCircle className="h-3 w-3 text-blue-400" />;
+    case "proven":
+      return <CheckCircle2 className="h-3 w-3 text-green-400" />;
+    case "failed":
+      return <XCircle className="h-3 w-3 text-red-400" />;
+    case "uncertain":
+      return <AlertTriangle className="h-3 w-3 text-amber-400" />;
+    case "assumed":
+      return <HelpCircle className="h-3 w-3 text-blue-400" />;
   }
 }
 
-function getNodeColors(node: ProofNode): { bg: string; border: string; text: string; icon: string } {
+function getNodeColors(node: ProofNode): {
+  bg: string;
+  border: string;
+  text: string;
+  icon: string;
+} {
   if (node.type === "conclusion") {
     const risk = node.metadata.riskLevel;
-    if (risk === "illegal") return { bg: "bg-background", border: "border-red-600", text: "text-red-600", icon: "text-red-600" };
-    if (risk === "dangerous") return { bg: "bg-background", border: "border-orange-600", text: "text-orange-600", icon: "text-orange-600" };
-    if (risk === "safe") return { bg: "bg-background", border: "border-green-600", text: "text-green-600", icon: "text-green-600" };
-    return { bg: "bg-background", border: "border-yellow-600", text: "text-yellow-600", icon: "text-yellow-600" };
+    if (risk === "illegal")
+      return {
+        bg: "bg-background",
+        border: "border-red-600",
+        text: "text-red-600",
+        icon: "text-red-600",
+      };
+    if (risk === "dangerous")
+      return {
+        bg: "bg-background",
+        border: "border-orange-600",
+        text: "text-orange-600",
+        icon: "text-orange-600",
+      };
+    if (risk === "safe")
+      return {
+        bg: "bg-background",
+        border: "border-green-600",
+        text: "text-green-600",
+        icon: "text-green-600",
+      };
+    return {
+      bg: "bg-background",
+      border: "border-yellow-600",
+      text: "text-yellow-600",
+      icon: "text-yellow-600",
+    };
   }
 
-  if (node.status === "failed") return { bg: "bg-background", border: "border-red-600", text: "text-red-600", icon: "text-red-600" };
-  if (node.status === "uncertain") return { bg: "bg-background", border: "border-yellow-600 border-dashed", text: "text-yellow-600", icon: "text-yellow-600" };
+  if (node.status === "failed")
+    return {
+      bg: "bg-background",
+      border: "border-red-600",
+      text: "text-red-600",
+      icon: "text-red-600",
+    };
+  if (node.status === "uncertain")
+    return {
+      bg: "bg-background",
+      border: "border-yellow-600 border-dashed",
+      text: "text-yellow-600",
+      icon: "text-yellow-600",
+    };
 
   switch (node.type) {
-    case "rule": return { bg: "bg-muted", border: "border-foreground", text: "text-foreground", icon: "text-foreground" };
+    case "rule":
+      return {
+        bg: "bg-muted",
+        border: "border-foreground",
+        text: "text-foreground",
+        icon: "text-foreground",
+      };
     case "comparison": {
       const passed = node.metadata.comparisonResult;
       return passed
-        ? { bg: "bg-background", border: "border-red-600", text: "text-red-600", icon: "text-red-600" }
-        : { bg: "bg-background", border: "border-green-600", text: "text-green-600", icon: "text-green-600" };
+        ? {
+            bg: "bg-background",
+            border: "border-red-600",
+            text: "text-red-600",
+            icon: "text-red-600",
+          }
+        : {
+            bg: "bg-background",
+            border: "border-green-600",
+            text: "text-green-600",
+            icon: "text-green-600",
+          };
     }
-    case "extraction": return { bg: "bg-background", border: "border-purple-600", text: "text-purple-600", icon: "text-purple-600" };
-    default: return { bg: "bg-muted", border: "border-foreground", text: "text-foreground", icon: "text-muted-foreground" };
+    case "extraction":
+      return {
+        bg: "bg-background",
+        border: "border-purple-600",
+        text: "text-purple-600",
+        icon: "text-purple-600",
+      };
+    default:
+      return {
+        bg: "bg-muted",
+        border: "border-foreground",
+        text: "text-foreground",
+        icon: "text-muted-foreground",
+      };
   }
 }
 
@@ -101,20 +181,26 @@ function TreeNodeCard({
   const colors = getNodeColors(node);
   const hasChildren = node.children.length > 0;
 
-  const prefersReduced = typeof window !== "undefined"
-    ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    : false;
+  const prefersReduced =
+    typeof window !== "undefined"
+      ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      : false;
 
-  const label = node.label.length > 80 ? node.label.substring(0, 77) + "..." : node.label;
-  const conf = node.metadata.confidence !== undefined
-    ? Math.round(node.metadata.confidence * 100)
-    : null;
+  const label =
+    node.label.length > 80 ? node.label.substring(0, 77) + "..." : node.label;
+  const conf =
+    node.metadata.confidence !== undefined
+      ? Math.round(node.metadata.confidence * 100)
+      : null;
 
   return (
     <motion.div
       initial={prefersReduced ? {} : { opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.2, delay: prefersReduced ? 0 : staggerIndex * 0.05 }}
+      transition={{
+        duration: 0.2,
+        delay: prefersReduced ? 0 : staggerIndex * 0.05,
+      }}
       className="relative"
     >
       {/* Connecting line from parent */}
@@ -152,19 +238,26 @@ function TreeNodeCard({
               {getNodeIcon(node.type)}
             </span>
             <div className="min-w-0">
-              <p className={`text-xs font-black leading-snug uppercase tracking-wider ${colors.text}`}>
+              <p
+                className={`text-xs font-black leading-snug uppercase tracking-wider ${colors.text}`}
+              >
                 {label}
               </p>
-              {node.type === "comparison" && node.metadata.leftOperand !== undefined && (
-                <p className="text-[10px] text-muted-foreground font-bold mt-0.5 font-mono">
-                  {String(node.metadata.leftOperand)} {node.metadata.operator} {String(node.metadata.rightOperand)}
-                </p>
-              )}
+              {node.type === "comparison" &&
+                node.metadata.leftOperand !== undefined && (
+                  <p className="text-[10px] text-muted-foreground font-bold mt-0.5 font-mono">
+                    {String(node.metadata.leftOperand)} {node.metadata.operator}{" "}
+                    {String(node.metadata.rightOperand)}
+                  </p>
+                )}
             </div>
           </div>
           <div className="flex items-center gap-1 flex-shrink-0">
             {conf !== null && conf < 100 && (
-              <Badge variant="outline" className="text-[9px] px-1 py-0 border-foreground text-foreground font-black uppercase tracking-wider">
+              <Badge
+                variant="outline"
+                className="text-[9px] px-1 py-0 border-foreground text-foreground font-black uppercase tracking-wider"
+              >
                 {conf}%
               </Badge>
             )}
@@ -185,9 +278,14 @@ function TreeNodeCard({
               className="flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-muted-foreground hover:text-foreground mb-1 ml-3"
             >
               {isChildrenExpanded ? (
-                <><ChevronUp className="h-3 w-3" /> Hide sub-steps</>
+                <>
+                  <ChevronUp className="h-3 w-3" /> Hide sub-steps
+                </>
               ) : (
-                <><ChevronDown className="h-3 w-3" /> Show {node.children.length} sub-steps</>
+                <>
+                  <ChevronDown className="h-3 w-3" /> Show{" "}
+                  {node.children.length} sub-steps
+                </>
               )}
             </button>
           )}
@@ -253,13 +351,18 @@ function NodeDetailPanel({
           </span>
           {getStatusIcon(node.status)}
         </div>
-        <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
+        <button
+          onClick={onClose}
+          className="text-muted-foreground hover:text-foreground"
+        >
           <X className="h-4 w-4" />
         </button>
       </div>
 
       {/* Description */}
-      <p className="text-sm font-bold text-foreground leading-relaxed">{node.description}</p>
+      <p className="text-sm font-bold text-foreground leading-relaxed">
+        {node.description}
+      </p>
 
       {/* Metadata grid */}
       <div className="space-y-2">
@@ -268,12 +371,16 @@ function NodeDetailPanel({
         )}
         {node.metadata.confidence !== undefined && (
           <div>
-            <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-1">Confidence</p>
+            <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-1">
+              Confidence
+            </p>
             <div className="flex items-center gap-2">
               <div className="flex-1 h-3 border-2 border-foreground bg-muted overflow-hidden">
                 <div
                   className="h-full bg-foreground"
-                  style={{ width: `${Math.round(node.metadata.confidence * 100)}%` }}
+                  style={{
+                    width: `${Math.round(node.metadata.confidence * 100)}%`,
+                  }}
                 />
               </div>
               <span className="text-xs font-black text-foreground">
@@ -282,10 +389,14 @@ function NodeDetailPanel({
             </div>
           </div>
         )}
-        {node.metadata.statute && <MetaRow label="Statute" value={node.metadata.statute} />}
+        {node.metadata.statute && (
+          <MetaRow label="Statute" value={node.metadata.statute} />
+        )}
         {node.metadata.statuteText && (
           <div>
-            <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-0.5">Statute Text</p>
+            <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-0.5">
+              Statute Text
+            </p>
             <p className="text-xs font-bold text-foreground italic leading-relaxed">
               &quot;{node.metadata.statuteText}&quot;
             </p>
@@ -293,22 +404,39 @@ function NodeDetailPanel({
         )}
         {node.metadata.leftOperand !== undefined && (
           <div>
-            <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-0.5">Comparison</p>
+            <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-0.5">
+              Comparison
+            </p>
             <p className="text-xs font-bold text-foreground font-mono">
-              {String(node.metadata.leftOperand)} {node.metadata.operator} {String(node.metadata.rightOperand)}
+              {String(node.metadata.leftOperand)} {node.metadata.operator}{" "}
+              {String(node.metadata.rightOperand)}
               {" → "}
-              <span className={node.metadata.comparisonResult ? "text-red-600" : "text-green-600"}>
+              <span
+                className={
+                  node.metadata.comparisonResult
+                    ? "text-red-600"
+                    : "text-green-600"
+                }
+              >
                 {node.metadata.comparisonResult ? "EXCEEDS" : "WITHIN LIMIT"}
               </span>
             </p>
           </div>
         )}
-        {node.metadata.violation && <MetaRow label="Violation" value={node.metadata.violation} />}
-        {node.metadata.remedy && <MetaRow label="Remedy" value={node.metadata.remedy} />}
-        {node.metadata.penalty && <MetaRow label="Penalty" value={node.metadata.penalty} />}
+        {node.metadata.violation && (
+          <MetaRow label="Violation" value={node.metadata.violation} />
+        )}
+        {node.metadata.remedy && (
+          <MetaRow label="Remedy" value={node.metadata.remedy} />
+        )}
+        {node.metadata.penalty && (
+          <MetaRow label="Penalty" value={node.metadata.penalty} />
+        )}
         {node.metadata.originalText && (
           <div>
-            <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-0.5">Source Text</p>
+            <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-0.5">
+              Source Text
+            </p>
             <p className="text-xs font-bold text-foreground italic leading-relaxed">
               &quot;{node.metadata.originalText.substring(0, 200)}
               {node.metadata.originalText.length > 200 ? "..." : ""}&quot;
@@ -333,7 +461,9 @@ function NodeDetailPanel({
 function MetaRow({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-[10px] text-muted-foreground font-black uppercase tracking-wider mb-0.5">{label}</p>
+      <p className="text-[10px] text-muted-foreground font-black uppercase tracking-wider mb-0.5">
+        {label}
+      </p>
       <p className="text-xs font-bold text-foreground">{value}</p>
     </div>
   );
@@ -351,18 +481,24 @@ export default function ProofTreeView({
   const [selectedNode, setSelectedNode] = useState<ProofNode | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleNodeClick = useCallback((node: ProofNode) => {
-    setSelectedNode(node);
-    onNodeClick(node);
-  }, [onNodeClick]);
+  const handleNodeClick = useCallback(
+    (node: ProofNode) => {
+      setSelectedNode(node);
+      onNodeClick(node);
+    },
+    [onNodeClick],
+  );
 
-  const handleChallenge = useCallback((nodeId: string) => {
-    // Trigger challenge — handled by parent modal
-    const event = new CustomEvent("clausewall:challenge-step", {
-      detail: { nodeId, proofTree },
-    });
-    window.dispatchEvent(event);
-  }, [proofTree]);
+  const handleChallenge = useCallback(
+    (nodeId: string) => {
+      // Trigger challenge — handled by parent modal
+      const event = new CustomEvent("clausewall:challenge-step", {
+        detail: { nodeId, proofTree },
+      });
+      window.dispatchEvent(event);
+    },
+    [proofTree],
+  );
 
   // Close detail panel when active node changes externally
   useEffect(() => {
@@ -451,7 +587,7 @@ function getELI5Chain(proofTree: ProofTree): string[] {
       .replace(/COMPARISON:/g, "Comparing:")
       .replace(/CONCLUSION:/g, "Result:")
       .replace(/DERIVATION:/g, "Therefore:")
-      .replace(/CHECK:/g, "Checking:")
+      .replace(/CHECK:/g, "Checking:"),
   );
 }
 

@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     console.error("[Watchdog API] Scrape error:", error);
     return NextResponse.json(
       { error: "Scrape failed", message: (error as Error).message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

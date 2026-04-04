@@ -11,7 +11,8 @@ import AlertPanel from "@/components/watchdog/alert-panel";
 
 export const metadata = {
   title: "Contract Watchdog — ClauseWall",
-  description: "Automated ToS & Privacy Policy change monitoring for Indian companies",
+  description:
+    "Automated ToS & Privacy Policy change monitoring for Indian companies",
 };
 
 export default async function WatchdogPage() {
@@ -19,7 +20,10 @@ export default async function WatchdogPage() {
 
   // Get stats
   const [companiesRes, changesRes] = await Promise.all([
-    supabase.from("monitored_companies").select("id", { count: "exact", head: true }).eq("is_active", true),
+    supabase
+      .from("monitored_companies")
+      .select("id", { count: "exact", head: true })
+      .eq("is_active", true),
     supabase.from("tos_changes").select("id", { count: "exact", head: true }),
   ]);
 
@@ -39,10 +43,34 @@ export default async function WatchdogPage() {
     .eq("status", "active");
 
   const stats = [
-    { label: "Monitored Companies", value: companyCount, icon: Building2, color: "text-blue-400", href: "/watchdog/companies" },
-    { label: "Changes Detected", value: changeCount, icon: Rss, color: "text-purple-400", href: "#feed" },
-    { label: "Critical Changes", value: criticalCount || 0, icon: AlertTriangle, color: "text-red-400", href: "#feed" },
-    { label: "Active Campaigns", value: campaignCount || 0, icon: Shield, color: "text-amber-400", href: "/watchdog/campaigns" },
+    {
+      label: "Monitored Companies",
+      value: companyCount,
+      icon: Building2,
+      color: "text-blue-400",
+      href: "/watchdog/companies",
+    },
+    {
+      label: "Changes Detected",
+      value: changeCount,
+      icon: Rss,
+      color: "text-purple-400",
+      href: "#feed",
+    },
+    {
+      label: "Critical Changes",
+      value: criticalCount || 0,
+      icon: AlertTriangle,
+      color: "text-red-400",
+      href: "#feed",
+    },
+    {
+      label: "Active Campaigns",
+      value: campaignCount || 0,
+      icon: Shield,
+      color: "text-amber-400",
+      href: "/watchdog/campaigns",
+    },
   ];
 
   return (
@@ -51,7 +79,7 @@ export default async function WatchdogPage() {
         {/* Hero */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-3">
-            <div className="h-10 w-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
+            <div className="h-10 w-10 rounded-none bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
               <Shield className="h-5 w-5 text-blue-400" />
             </div>
             <div>
@@ -69,7 +97,7 @@ export default async function WatchdogPage() {
             const Icon = stat.icon;
             return (
               <Link key={stat.label} href={stat.href}>
-                <Card className="bg-gray-900/50 border-gray-800 hover:border-white/10 transition-all">
+                <Card className="bg-background/50 border-gray-800 hover:border-foreground border-2 transition-all">
                   <CardContent className="p-4">
                     <div className="flex items-center gap-3">
                       <div className={`${stat.color}`}>
@@ -77,7 +105,9 @@ export default async function WatchdogPage() {
                       </div>
                       <div>
                         <p className="text-2xl font-bold">{stat.value}</p>
-                        <p className="text-xs text-muted-foreground">{stat.label}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {stat.label}
+                        </p>
                       </div>
                     </div>
                   </CardContent>
@@ -89,13 +119,22 @@ export default async function WatchdogPage() {
 
         {/* Quick nav */}
         <div className="flex flex-wrap gap-3 mb-8">
-          <Link href="/watchdog/companies" className="text-sm bg-gray-900/50 border border-gray-800 rounded-lg px-4 py-2 hover:border-white/10 transition-colors flex items-center gap-2">
+          <Link
+            href="/watchdog/companies"
+            className="text-sm bg-background/50 border border-gray-800 rounded-lg px-4 py-2 hover:border-foreground border-2 transition-colors flex items-center gap-2"
+          >
             <Building2 className="h-4 w-4" /> Browse Companies
           </Link>
-          <Link href="/watchdog/leaderboard" className="text-sm bg-gray-900/50 border border-gray-800 rounded-lg px-4 py-2 hover:border-white/10 transition-colors flex items-center gap-2">
+          <Link
+            href="/watchdog/leaderboard"
+            className="text-sm bg-background/50 border border-gray-800 rounded-lg px-4 py-2 hover:border-foreground border-2 transition-colors flex items-center gap-2"
+          >
             <Trophy className="h-4 w-4" /> ToS Leaderboard
           </Link>
-          <Link href="/watchdog/campaigns" className="text-sm bg-gray-900/50 border border-gray-800 rounded-lg px-4 py-2 hover:border-white/10 transition-colors flex items-center gap-2">
+          <Link
+            href="/watchdog/campaigns"
+            className="text-sm bg-background/50 border border-gray-800 rounded-lg px-4 py-2 hover:border-foreground border-2 transition-colors flex items-center gap-2"
+          >
             <Shield className="h-4 w-4" /> Campaigns
           </Link>
         </div>

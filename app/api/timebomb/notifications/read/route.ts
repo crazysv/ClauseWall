@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
         console.error("[TimeBomb API] Mark all read error:", error);
         return NextResponse.json(
           { error: "Failed to mark notifications as read" },
-          { status: 500 }
+          { status: 500 },
         );
       }
     } else if (notification_ids && notification_ids.length > 0) {
@@ -48,13 +48,13 @@ export async function POST(request: NextRequest) {
         console.error("[TimeBomb API] Mark read error:", error);
         return NextResponse.json(
           { error: "Failed to mark notifications as read" },
-          { status: 500 }
+          { status: 500 },
         );
       }
     } else {
       return NextResponse.json(
         { error: "Provide notification_ids array or all: true" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
     console.error("[TimeBomb API] Read notifications error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

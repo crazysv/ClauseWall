@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     console.error("[ClauseWall] Authority routing failed:", error);
     return NextResponse.json(
       { success: false, error: "Failed to determine jurisdiction" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

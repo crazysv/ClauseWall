@@ -10,7 +10,8 @@ import type { MonitoredCompany } from "@/types";
 
 export const metadata = {
   title: "ToS Fairness Leaderboard — Contract Watchdog — ClauseWall",
-  description: "See which Indian companies have the fairest and worst Terms of Service",
+  description:
+    "See which Indian companies have the fairest and worst Terms of Service",
 };
 
 export default async function LeaderboardPage() {
@@ -24,9 +25,13 @@ export default async function LeaderboardPage() {
 
   const typedCompanies = (companies as MonitoredCompany[]) || [];
   const withScores = typedCompanies.filter((c) => c.current_tos_score !== null);
-  const avgScore = withScores.length > 0
-    ? Math.round(withScores.reduce((sum, c) => sum + (c.current_tos_score || 0), 0) / withScores.length)
-    : 0;
+  const avgScore =
+    withScores.length > 0
+      ? Math.round(
+          withScores.reduce((sum, c) => sum + (c.current_tos_score || 0), 0) /
+            withScores.length,
+        )
+      : 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -73,8 +78,9 @@ export default async function LeaderboardPage() {
         </Card>
 
         <p className="text-[10px] text-muted-foreground text-center mt-6">
-          Scores are calculated based on ToS change history, fairness of terms, data privacy practices, and consumer rights preservation.
-          Lower scores indicate more consumer-hostile terms.
+          Scores are calculated based on ToS change history, fairness of terms,
+          data privacy practices, and consumer rights preservation. Lower scores
+          indicate more consumer-hostile terms.
         </p>
       </div>
     </div>

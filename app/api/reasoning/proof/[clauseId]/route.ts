@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ clauseId: string }> }
+  { params }: { params: Promise<{ clauseId: string }> },
 ) {
   try {
     const { clauseId } = await params;
@@ -11,7 +11,7 @@ export async function GET(
     if (!clauseId) {
       return NextResponse.json(
         { error: "clauseId is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -24,10 +24,7 @@ export async function GET(
       .single();
 
     if (error || !clause) {
-      return NextResponse.json(
-        { error: "Clause not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Clause not found" }, { status: 404 });
     }
 
     const proofData = clause.proof_data;
@@ -41,9 +38,8 @@ export async function GET(
     }
 
     // Parse proof data (stored as JSONB or stringified JSON)
-    const proofTree = typeof proofData === "string"
-      ? JSON.parse(proofData)
-      : proofData;
+    const proofTree =
+      typeof proofData === "string" ? JSON.parse(proofData) : proofData;
 
     return NextResponse.json({
       success: true,
@@ -56,7 +52,7 @@ export async function GET(
     console.error("[ClauseWall] [API] Fetch proof failed:", error);
     return NextResponse.json(
       { success: false, error: "Failed to fetch proof data" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

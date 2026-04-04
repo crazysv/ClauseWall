@@ -46,7 +46,9 @@ function ToneBadge({ tone }: { tone: AgentTone }) {
 
   const c = config[tone];
   return (
-    <span className={`text-[10px] px-2 py-0.5 rounded-full border ${c.className}`}>
+    <span
+      className={`text-[10px] px-2 py-0.5 rounded-full border ${c.className}`}
+    >
       {c.label}
     </span>
   );
@@ -179,7 +181,9 @@ function AgentSection({
       </div>
 
       {/* Argument Text */}
-      <p className={`text-white/90 leading-relaxed mb-3 ${compact ? "text-xs" : "text-sm"}`}>
+      <p
+        className={`text-white/90 leading-relaxed mb-3 ${compact ? "text-xs" : "text-sm"}`}
+      >
         {agent.argument}
       </p>
 
@@ -242,7 +246,9 @@ function VsDivider({ animated }: { animated: boolean }) {
   const divider = (
     <div className="flex items-center gap-3 py-1">
       <div className="flex-1 border-t border-white/10" />
-      <span className="text-sm font-bold text-white/30 select-none">⚡ VS ⚡</span>
+      <span className="text-sm font-bold text-white/30 select-none">
+        ⚡ VS ⚡
+      </span>
       <div className="flex-1 border-t border-white/10" />
     </div>
   );
@@ -279,9 +285,17 @@ function VerdictBadge({
 }) {
   const config: Record<string, { bg: string; label: string; emoji: string }> = {
     fair: { bg: "bg-emerald-500", label: "FAIR", emoji: "✅" },
-    partially_fair: { bg: "bg-amber-500", label: "PARTIALLY FAIR", emoji: "⚠️" },
+    partially_fair: {
+      bg: "bg-amber-500",
+      label: "PARTIALLY FAIR",
+      emoji: "⚠️",
+    },
     unfair: { bg: "bg-red-500", label: "UNFAIR", emoji: "❌" },
-    illegal: { bg: "bg-purple-600 ring-2 ring-purple-400/50", label: "ILLEGAL", emoji: "⛔" },
+    illegal: {
+      bg: "bg-purple-600 ring-2 ring-purple-400/50",
+      label: "ILLEGAL",
+      emoji: "⛔",
+    },
   };
 
   const c = config[verdict] || config.partially_fair;
@@ -381,9 +395,7 @@ function ArbiterSection({
   }
 
   const durationStr =
-    duration >= 1000
-      ? `${(duration / 1000).toFixed(1)}s`
-      : `${duration}ms`;
+    duration >= 1000 ? `${(duration / 1000).toFixed(1)}s` : `${duration}ms`;
 
   const content = (
     <div
@@ -419,14 +431,18 @@ function ArbiterSection({
       {/* Core Reasoning */}
       {verdict.reasoning && (
         <div className="mb-3 text-center">
-          <p className={`text-white/70 italic ${compact ? "text-xs" : "text-sm"}`}>
+          <p
+            className={`text-white/70 italic ${compact ? "text-xs" : "text-sm"}`}
+          >
             &ldquo;{verdict.reasoning}&rdquo;
           </p>
         </div>
       )}
 
       {/* Full Argument */}
-      <p className={`text-white/90 leading-relaxed mb-4 ${compact ? "text-xs" : "text-sm"}`}>
+      <p
+        className={`text-white/90 leading-relaxed mb-4 ${compact ? "text-xs" : "text-sm"}`}
+      >
         {agent.argument}
       </p>
 
@@ -439,7 +455,10 @@ function ArbiterSection({
               ✓ Defense Valid
             </p>
             {verdict.predatorValidPoints.map((p, i) => (
-              <p key={i} className={`text-white/70 ${compact ? "text-[11px]" : "text-xs"}`}>
+              <p
+                key={i}
+                className={`text-white/70 ${compact ? "text-[11px]" : "text-xs"}`}
+              >
                 {p}
               </p>
             ))}
@@ -453,7 +472,10 @@ function ArbiterSection({
               ✗ Defense Weak
             </p>
             {verdict.predatorWeaknesses.map((p, i) => (
-              <p key={i} className={`text-white/70 ${compact ? "text-[11px]" : "text-xs"}`}>
+              <p
+                key={i}
+                className={`text-white/70 ${compact ? "text-[11px]" : "text-xs"}`}
+              >
                 {p}
               </p>
             ))}
@@ -467,7 +489,10 @@ function ArbiterSection({
               ✓ Advocate Valid
             </p>
             {verdict.guardianValidPoints.map((p, i) => (
-              <p key={i} className={`text-white/70 ${compact ? "text-[11px]" : "text-xs"}`}>
+              <p
+                key={i}
+                className={`text-white/70 ${compact ? "text-[11px]" : "text-xs"}`}
+              >
                 {p}
               </p>
             ))}
@@ -481,7 +506,10 @@ function ArbiterSection({
               ✗ Advocate Weak
             </p>
             {verdict.guardianWeaknesses.map((p, i) => (
-              <p key={i} className={`text-white/70 ${compact ? "text-[11px]" : "text-xs"}`}>
+              <p
+                key={i}
+                className={`text-white/70 ${compact ? "text-[11px]" : "text-xs"}`}
+              >
                 {p}
               </p>
             ))}
@@ -496,7 +524,9 @@ function ArbiterSection({
             Suggested Modification
           </p>
           <div className="bg-white/5 border border-white/10 rounded-lg p-3">
-            <p className={`text-white/80 italic ${compact ? "text-xs" : "text-sm"} leading-relaxed`}>
+            <p
+              className={`text-white/80 italic ${compact ? "text-xs" : "text-sm"} leading-relaxed`}
+            >
               &ldquo;{verdict.suggestedModification}&rdquo;
             </p>
           </div>
@@ -513,10 +543,7 @@ function ArbiterSection({
       {/* Confidence + Duration */}
       <div className="flex items-center justify-between">
         <div className="flex-1">
-          <ConfidenceBar
-            confidence={verdict.confidence}
-            color="bg-amber-500"
-          />
+          <ConfidenceBar confidence={verdict.confidence} color="bg-amber-500" />
         </div>
         <span className="text-[10px] text-white/30 ml-4 shrink-0">
           ⏱️ {durationStr}
@@ -617,7 +644,9 @@ export default function DeliberationPanel({
             colorText="text-red-400"
             colorBar="bg-red-500"
             icon="🔴"
-            isLoading={isLoading && (currentAgent === "predator" || !currentAgent)}
+            isLoading={
+              isLoading && (currentAgent === "predator" || !currentAgent)
+            }
             animated={animated}
             animationDelay={0}
             compact={compact}

@@ -13,7 +13,7 @@ export default function MarketEmptyState() {
       className="text-center py-16"
     >
       <div className="relative inline-block mb-6">
-        <div className="p-6 rounded-2xl bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border border-cyan-500/20">
+        <div className="p-6 rounded-none bg-background /10 /10 border border-cyan-500/20">
           <BarChart3 className="h-12 w-12 text-cyan-400" />
         </div>
         <motion.div
@@ -25,25 +25,41 @@ export default function MarketEmptyState() {
         </motion.div>
       </div>
 
-      <h3 className="text-xl font-bold text-white mb-2">
+      <h3 className="text-xl font-bold text-foreground mb-2">
         Market Intelligence Building...
       </h3>
-      <p className="text-sm text-white/50 max-w-md mx-auto mb-6">
-        Analyze more contracts to power the market intelligence engine.
-        Each analysis contributes anonymized data to build comprehensive benchmarks.
+      <p className="text-sm text-foreground/50 max-w-md mx-auto mb-6">
+        Analyze more contracts to power the market intelligence engine. Each
+        analysis contributes anonymized data to build comprehensive benchmarks.
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-lg mx-auto mb-8">
         {[
-          { icon: Upload, label: "Analyze contracts", desc: "Upload to contribute data" },
-          { icon: TrendingUp, label: "Build benchmarks", desc: "Auto-generated from analyses" },
-          { icon: BarChart3, label: "Compare & negotiate", desc: "Data-backed arguments" },
+          {
+            icon: Upload,
+            label: "Analyze contracts",
+            desc: "Upload to contribute data",
+          },
+          {
+            icon: TrendingUp,
+            label: "Build benchmarks",
+            desc: "Auto-generated from analyses",
+          },
+          {
+            icon: BarChart3,
+            label: "Compare & negotiate",
+            desc: "Data-backed arguments",
+          },
         ].map((step, i) => (
-          <Card key={i} className="bg-white/[0.02] border-white/5">
+          <Card key={i} className="bg-white/[0.02] border-foreground border-2">
             <CardContent className="p-3 text-center">
               <step.icon className="h-5 w-5 text-cyan-400 mx-auto mb-1.5" />
-              <p className="text-xs font-medium text-white">{step.label}</p>
-              <p className="text-[10px] text-white/30 mt-0.5">{step.desc}</p>
+              <p className="text-xs font-medium text-foreground">
+                {step.label}
+              </p>
+              <p className="text-[10px] text-foreground/30 mt-0.5">
+                {step.desc}
+              </p>
             </CardContent>
           </Card>
         ))}

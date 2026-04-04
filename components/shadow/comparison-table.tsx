@@ -36,23 +36,39 @@ export default function ComparisonTable({ mismatches }: ComparisonTableProps) {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b-4 border-black bg-gray-100">
-              <th className="py-3 px-4 text-left text-xs font-black uppercase tracking-widest text-black w-8 border-r-4 border-black">#</th>
-              <th className="py-3 px-4 text-left text-xs font-black uppercase tracking-widest text-black border-r-4 border-black bg-yellow-200">💬 Promise</th>
-              <th className="py-3 px-4 text-left text-xs font-black uppercase tracking-widest text-white border-r-4 border-black bg-black">📄 Contract</th>
-              <th className="py-3 px-4 text-left text-xs font-black uppercase tracking-widest text-black border-r-4 border-black">Status</th>
-              <th className="py-3 px-4 text-left text-xs font-black uppercase tracking-widest text-black">Clause</th>
+              <th className="py-3 px-4 text-left text-xs font-black uppercase tracking-widest text-black w-8 border-r-4 border-black">
+                #
+              </th>
+              <th className="py-3 px-4 text-left text-xs font-black uppercase tracking-widest text-black border-r-4 border-black bg-yellow-200">
+                💬 Promise
+              </th>
+              <th className="py-3 px-4 text-left text-xs font-black uppercase tracking-widest text-white border-r-4 border-black bg-black">
+                📄 Contract
+              </th>
+              <th className="py-3 px-4 text-left text-xs font-black uppercase tracking-widest text-black border-r-4 border-black">
+                Status
+              </th>
+              <th className="py-3 px-4 text-left text-xs font-black uppercase tracking-widest text-black">
+                Clause
+              </th>
             </tr>
           </thead>
           <tbody>
             {mismatches.map((m, i) => (
-              <tr key={m.id} className="border-b-4 border-black last:border-b-0 hover:bg-gray-50 transition-colors">
-                <td className="py-4 px-4 text-sm font-black text-black align-top border-r-4 border-black">{i + 1}</td>
+              <tr
+                key={m.id}
+                className="border-b-4 border-black last:border-b-0 hover:bg-gray-50 transition-colors"
+              >
+                <td className="py-4 px-4 text-sm font-black text-black align-top border-r-4 border-black">
+                  {i + 1}
+                </td>
                 <td className="py-4 px-4 align-top max-w-[250px] border-r-4 border-black bg-yellow-50">
                   <p className="text-sm font-bold text-black leading-relaxed line-clamp-4">
                     {m.promise_says}
                   </p>
                   <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mt-2 bg-yellow-200 inline-block px-1 border-2 border-black">
-                    — {m.promise.promised_by}{m.promise.date ? `, ${m.promise.date}` : ""}
+                    — {m.promise.promised_by}
+                    {m.promise.date ? `, ${m.promise.date}` : ""}
                   </p>
                 </td>
                 <td className="py-4 px-4 align-top max-w-[250px] border-r-4 border-black bg-gray-50">
@@ -62,7 +78,9 @@ export default function ComparisonTable({ mismatches }: ComparisonTableProps) {
                 </td>
                 <td className="py-4 px-4 align-top border-r-4 border-black">
                   <div className="flex items-center gap-2">
-                    <div className={`w-3 h-3 flex-shrink-0 ${SEVERITY_DOT[m.severity]}`} />
+                    <div
+                      className={`w-3 h-3 flex-shrink-0 ${SEVERITY_DOT[m.severity]}`}
+                    />
                     <span className="text-xs font-black uppercase tracking-widest text-black whitespace-nowrap">
                       {TYPE_LABELS[m.mismatch_type] || m.mismatch_type}
                     </span>

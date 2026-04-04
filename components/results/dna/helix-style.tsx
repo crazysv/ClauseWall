@@ -13,7 +13,7 @@ export default function HelixStyle({
   if (!nodes.length) return null;
 
   const cy = height / 2;
-  const amplitude = (height / 2) - 50;
+  const amplitude = height / 2 - 50;
   const padding = 50;
   const n = nodes.length;
   const dx = n > 1 ? (width - 2 * padding) / (n - 1) : 0;
@@ -21,9 +21,7 @@ export default function HelixStyle({
 
   // Calculate helix points
   const points = nodes.map((node, i) => {
-    const t = n > 1
-      ? (i / (n - 1)) * Math.PI * 2 * numTurns
-      : 0;
+    const t = n > 1 ? (i / (n - 1)) * Math.PI * 2 * numTurns : 0;
     const x = padding + i * dx;
     const y1 = cy + amplitude * Math.sin(t) * 0.65;
     const y2 = cy + amplitude * Math.sin(t + Math.PI) * 0.65;
@@ -125,7 +123,9 @@ export default function HelixStyle({
               initial={animated ? { opacity: 0 } : { opacity: p.intensity }}
               animate={{ opacity: p.intensity }}
               transition={{ delay: 0.8 + i * 0.07, duration: 0.35 }}
-              filter={p.riskLevel === "illegal" ? "url(#helix-glow)" : undefined}
+              filter={
+                p.riskLevel === "illegal" ? "url(#helix-glow)" : undefined
+              }
               onMouseEnter={() => onHover?.(p)}
               onMouseLeave={() => onHover?.(null)}
               className="cursor-pointer"
@@ -137,7 +137,9 @@ export default function HelixStyle({
               cy={p.y2}
               r={nodeR * 0.7}
               fill={p.color}
-              initial={animated ? { opacity: 0 } : { opacity: p.intensity * 0.6 }}
+              initial={
+                animated ? { opacity: 0 } : { opacity: p.intensity * 0.6 }
+              }
               animate={{ opacity: p.intensity * 0.6 }}
               transition={{ delay: 0.85 + i * 0.07, duration: 0.35 }}
             />

@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
     if (!clauseType) {
       return NextResponse.json(
         { error: "clauseType is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -25,13 +25,17 @@ export async function GET(req: NextRequest) {
 
     // Calculate win rate
     const consumerWinOutcomes = [
-      "tenant_won", "employee_won", "consumer_won", "borrower_won",
+      "tenant_won",
+      "employee_won",
+      "consumer_won",
+      "borrower_won",
     ];
     const totalCases = cases.length;
     const wins = cases.filter((c) =>
-      consumerWinOutcomes.includes(c.outcome || "")
+      consumerWinOutcomes.includes(c.outcome || ""),
     ).length;
-    const winRate = totalCases > 0 ? Math.round((wins / totalCases) * 100) : null;
+    const winRate =
+      totalCases > 0 ? Math.round((wins / totalCases) * 100) : null;
 
     return NextResponse.json({
       success: true,
@@ -70,7 +74,7 @@ export async function GET(req: NextRequest) {
     console.error("[ClauseWall] [API] Graph cases failed:", error);
     return NextResponse.json(
       { error: "Failed to fetch cases and authorities" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

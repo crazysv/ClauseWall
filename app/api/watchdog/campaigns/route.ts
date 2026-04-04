@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
     console.error("[Watchdog API] Campaigns GET error:", error);
     return NextResponse.json(
       { error: "Failed to fetch campaigns" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -28,17 +28,29 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
 
     const body = await request.json();
-    const { company_id, change_id, title, description, legal_basis, company_email } = body;
+    const {
+      company_id,
+      change_id,
+      title,
+      description,
+      legal_basis,
+      company_email,
+    } = body;
 
     if (!company_id || !change_id || !title || !description || !legal_basis) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 },
+      );
     }
 
     const campaign = await createCampaign({
@@ -52,7 +64,10 @@ export async function POST(request: NextRequest) {
     });
 
     if (!campaign) {
-      return NextResponse.json({ error: "Failed to create campaign" }, { status: 500 });
+      return NextResponse.json(
+        { error: "Failed to create campaign" },
+        { status: 500 },
+      );
     }
 
     return NextResponse.json({ campaign });
@@ -60,7 +75,7 @@ export async function POST(request: NextRequest) {
     console.error("[Watchdog API] Campaigns POST error:", error);
     return NextResponse.json(
       { error: "Failed to create campaign" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -1,10 +1,15 @@
 // TextInput component - Text area for direct contract text input
-'use client';
+"use client";
 
 export function TextInput() {
   return (
     <div className="space-y-2">
-      <label htmlFor="contract-text" className="text-sm font-black uppercase tracking-wider text-foreground">Paste Contract Text</label>
+      <label
+        htmlFor="contract-text"
+        className="text-sm font-black uppercase tracking-wider text-foreground"
+      >
+        Paste Contract Text
+      </label>
       <textarea
         id="contract-text"
         placeholder="Paste your contract text here..."

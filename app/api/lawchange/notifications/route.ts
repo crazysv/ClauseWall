@@ -30,7 +30,7 @@ export async function GET() {
     }
 
     const unreadCount = (notifications || []).filter(
-      (n: any) => !n.read
+      (n: any) => !n.read,
     ).length;
 
     return NextResponse.json({
@@ -40,7 +40,7 @@ export async function GET() {
   } catch (error) {
     return NextResponse.json(
       { error: (error as Error).message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

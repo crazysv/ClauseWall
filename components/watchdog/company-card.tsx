@@ -9,14 +9,33 @@ import WatchlistToggle from "./watchlist-toggle";
 import type { MonitoredCompany } from "@/types";
 
 const SECTOR_ICONS: Record<string, string> = {
-  ride_hailing: "🚗", food_delivery: "🍔", ecommerce: "🛒", payments: "💳", social: "💬",
-  streaming: "🎬", travel: "✈️", banking: "🏦", telecom: "📱", edtech: "📚", government: "🏛️", other: "📋",
+  ride_hailing: "🚗",
+  food_delivery: "🍔",
+  ecommerce: "🛒",
+  payments: "💳",
+  social: "💬",
+  streaming: "🎬",
+  travel: "✈️",
+  banking: "🏦",
+  telecom: "📱",
+  edtech: "📚",
+  government: "🏛️",
+  other: "📋",
 };
 
 const SECTOR_LABELS: Record<string, string> = {
-  ride_hailing: "Ride-hailing", food_delivery: "Food Delivery", ecommerce: "E-commerce",
-  payments: "Payments", social: "Social", streaming: "Streaming", travel: "Travel",
-  banking: "Banking", telecom: "Telecom", edtech: "EdTech", government: "Government", other: "Other",
+  ride_hailing: "Ride-hailing",
+  food_delivery: "Food Delivery",
+  ecommerce: "E-commerce",
+  payments: "Payments",
+  social: "Social",
+  streaming: "Streaming",
+  travel: "Travel",
+  banking: "Banking",
+  telecom: "Telecom",
+  edtech: "EdTech",
+  government: "Government",
+  other: "Other",
 };
 
 export default function CompanyCard({
@@ -33,18 +52,24 @@ export default function CompanyCard({
     : "No changes yet";
 
   return (
-    <Card className="bg-gray-900/50 border-gray-800 hover:border-blue-500/20 transition-all group">
+    <Card className="bg-background/50 border-gray-800 hover:border-blue-500/20 transition-all group">
       <CardContent className="p-5">
         <div className="flex items-start justify-between gap-3 mb-3">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="h-10 w-10 rounded-lg bg-white/5 flex items-center justify-center text-lg flex-shrink-0">
+            <div className="h-10 w-10 rounded-lg bg-muted flex items-center justify-center text-lg flex-shrink-0">
               {SECTOR_ICONS[company.sector] || "📋"}
             </div>
             <div className="min-w-0">
-              <Link href={`/watchdog/companies/${company.slug}`} className="hover:text-blue-400 transition-colors">
+              <Link
+                href={`/watchdog/companies/${company.slug}`}
+                className="hover:text-blue-400 transition-colors"
+              >
                 <h3 className="font-semibold truncate">{company.name}</h3>
               </Link>
-              <Badge variant="outline" className="text-[10px] border-white/10 text-muted-foreground">
+              <Badge
+                variant="outline"
+                className="text-[10px] border-foreground border-2 text-muted-foreground"
+              >
                 {SECTOR_LABELS[company.sector] || company.sector}
               </Badge>
             </div>
@@ -70,19 +95,27 @@ export default function CompanyCard({
               {company.pro_company_changes > 0 && (
                 <div
                   className="bg-red-500 rounded-full"
-                  style={{ width: `${(company.pro_company_changes / company.total_changes) * 100}%` }}
+                  style={{
+                    width: `${(company.pro_company_changes / company.total_changes) * 100}%`,
+                  }}
                 />
               )}
               {company.pro_consumer_changes > 0 && (
                 <div
                   className="bg-green-500 rounded-full"
-                  style={{ width: `${(company.pro_consumer_changes / company.total_changes) * 100}%` }}
+                  style={{
+                    width: `${(company.pro_consumer_changes / company.total_changes) * 100}%`,
+                  }}
                 />
               )}
             </div>
             <div className="flex justify-between text-[10px] text-muted-foreground mt-1">
-              <span className="text-red-400">{company.pro_company_changes} pro-company</span>
-              <span className="text-green-400">{company.pro_consumer_changes} pro-consumer</span>
+              <span className="text-red-400">
+                {company.pro_company_changes} pro-company
+              </span>
+              <span className="text-green-400">
+                {company.pro_consumer_changes} pro-consumer
+              </span>
             </div>
           </div>
         )}
@@ -112,5 +145,9 @@ function getTimeAgo(date: Date): string {
   if (diffHours < 24) return `${diffHours}h ago`;
   if (diffDays < 7) return `${diffDays}d ago`;
   if (diffDays < 30) return `${Math.floor(diffDays / 7)}w ago`;
-  return date.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+  return date.toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
 }

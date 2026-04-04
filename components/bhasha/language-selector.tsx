@@ -10,13 +10,22 @@ interface LanguageSelectorProps {
   compact?: boolean;
 }
 
-export function LanguageSelector({ value, onChange, compact = false }: LanguageSelectorProps) {
+export function LanguageSelector({
+  value,
+  onChange,
+  compact = false,
+}: LanguageSelectorProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const allOptions: { code: SupportedLanguage | "auto"; name: string; native: string; char: string }[] = [
+  const allOptions: {
+    code: SupportedLanguage | "auto";
+    name: string;
+    native: string;
+    char: string;
+  }[] = [
     { code: "auto", name: "Auto-Detect", native: "Auto", char: "🔍" },
     { code: "en", name: "English", native: "English", char: "A" },
-    ...INDIAN_LANGUAGES.map(code => ({
+    ...INDIAN_LANGUAGES.map((code) => ({
       code,
       name: LANGUAGE_CONFIGS[code].name,
       native: LANGUAGE_CONFIGS[code].nativeName,
@@ -24,17 +33,19 @@ export function LanguageSelector({ value, onChange, compact = false }: LanguageS
     })),
   ];
 
-  const selected = allOptions.find(o => o.code === value) || allOptions[0];
+  const selected = allOptions.find((o) => o.code === value) || allOptions[0];
 
   if (compact) {
     return (
       <div className="bhasha-selector-compact">
         <select
           value={value}
-          onChange={(e) => onChange(e.target.value as SupportedLanguage | "auto")}
+          onChange={(e) =>
+            onChange(e.target.value as SupportedLanguage | "auto")
+          }
           className="bhasha-select"
         >
-          {allOptions.map(opt => (
+          {allOptions.map((opt) => (
             <option key={opt.code} value={opt.code}>
               {opt.char} {opt.name} ({opt.native})
             </option>
@@ -59,15 +70,27 @@ export function LanguageSelector({ value, onChange, compact = false }: LanguageS
             <span className="bhasha-selector-native">{selected.native}</span>
           )}
         </span>
-        <svg className={`bhasha-chevron ${isExpanded ? "rotated" : ""}`} width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <path d="M4 6L8 10L12 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <svg
+          className={`bhasha-chevron ${isExpanded ? "rotated" : ""}`}
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+        >
+          <path
+            d="M4 6L8 10L12 6"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
       </button>
 
       {/* Language grid */}
       {isExpanded && (
         <div className="bhasha-selector-grid">
-          {allOptions.map(opt => (
+          {allOptions.map((opt) => (
             <button
               key={opt.code}
               type="button"
@@ -157,8 +180,14 @@ export function LanguageSelector({ value, onChange, compact = false }: LanguageS
           animation: bhasha-slide-down 0.2s ease;
         }
         @keyframes bhasha-slide-down {
-          from { opacity: 0; transform: translateY(-8px); }
-          to { opacity: 1; transform: translateY(0); }
+          from {
+            opacity: 0;
+            transform: translateY(-8px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
         .bhasha-lang-option {
           display: flex;

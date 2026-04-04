@@ -64,7 +64,8 @@ export default function PreSendReviewModal({
               Pre-Send Review
             </DialogTitle>
             <DialogDescription className="text-muted-foreground font-bold pt-2">
-              Review your document before sending to ClauseWall cloud for Deep Analysis.
+              Review your document before sending to ClauseWall cloud for Deep
+              Analysis.
             </DialogDescription>
           </DialogHeader>
         </div>
@@ -77,7 +78,7 @@ export default function PreSendReviewModal({
               Privacy Protection Applied
             </span>
           </div>
-          
+
           <div className="grid grid-cols-2 gap-3 text-sm text-foreground font-bold">
             {redactionStats.names > 0 && (
               <span className="flex items-center gap-2 bg-muted p-2 border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(10,10,10,1)]">
@@ -116,7 +117,8 @@ export default function PreSendReviewModal({
         <div className="px-6 pb-6">
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs font-bold text-muted-foreground uppercase">
-              {originalClauseCount} clauses • {(totalBytes / 1024).toFixed(1)} KB
+              {originalClauseCount} clauses • {(totalBytes / 1024).toFixed(1)}{" "}
+              KB
             </p>
           </div>
 
@@ -161,10 +163,18 @@ export default function PreSendReviewModal({
 
         <div className="px-6 pb-6">
           <div className="flex gap-3 justify-end">
-            <Button variant="outline" onClick={onClose} className="font-black uppercase tracking-wider border-2 border-foreground hover:-translate-y-[2px] shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] hover:bg-background">
+            <Button
+              variant="outline"
+              onClick={onClose}
+              className="font-black uppercase tracking-wider border-2 border-foreground hover:-translate-y-[2px] shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] hover:bg-background"
+            >
               Cancel
             </Button>
-            <Button onClick={onApprove} className="gap-2 button text-impact-heading border-2 border-foreground hover:-translate-y-[2px] shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] px-8" variant="default">
+            <Button
+              onClick={onApprove}
+              className="gap-2 button text-impact-heading border-2 border-foreground hover:-translate-y-[2px] shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] px-8"
+              variant="default"
+            >
               <UploadCloud className="h-4 w-4" />
               Send for Deep Analysis
             </Button>

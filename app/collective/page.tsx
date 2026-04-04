@@ -24,7 +24,9 @@ export default function CollectiveHubPage() {
   const [myCollectives, setMyCollectives] = useState<
     { collective: Collective; membership: CollectiveMembership }[]
   >([]);
-  const [trendingCollectives, setTrendingCollectives] = useState<Collective[]>([]);
+  const [trendingCollectives, setTrendingCollectives] = useState<Collective[]>(
+    [],
+  );
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
@@ -50,7 +52,7 @@ export default function CollectiveHubPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-950 pt-24 pb-16 px-4">
+    <div className="min-h-screen bg-background pt-24 pb-16 px-4">
       <div className="max-w-5xl mx-auto">
         {/* Hero */}
         <motion.div
@@ -58,19 +60,19 @@ export default function CollectiveHubPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-500/20 mb-4">
+          <div className="inline-flex items-center justify-center h-14 w-14 rounded-none bg-background /20 /20 mb-4">
             <Users className="h-7 w-7 text-amber-400" />
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">
+          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">
             Collective{" "}
-            <span className="bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
+            <span className="bg-background bg-clip-text text-transparent">
               Bargaining
             </span>
           </h1>
-          <p className="text-white/40 max-w-lg mx-auto text-sm">
-            Stand together against predatory contract practices. When enough people
-            flag the same entity, collectives form automatically — enabling coordinated
-            legal action while keeping everyone anonymous.
+          <p className="text-foreground/40 max-w-lg mx-auto text-sm">
+            Stand together against predatory contract practices. When enough
+            people flag the same entity, collectives form automatically —
+            enabling coordinated legal action while keeping everyone anonymous.
           </p>
         </motion.div>
 
@@ -108,15 +110,18 @@ export default function CollectiveHubPage() {
                 color: "text-red-400",
               },
             ].map((step, i) => (
-              <Card key={i} className="border-white/5 bg-white/[0.02]">
+              <Card
+                key={i}
+                className="border-foreground border-2 bg-white/[0.02]"
+              >
                 <CardContent className="p-4 text-center">
                   <div className={`${step.color} mb-2 flex justify-center`}>
                     {step.icon}
                   </div>
-                  <p className="text-xs font-semibold text-white mb-1">
+                  <p className="text-xs font-semibold text-foreground mb-1">
                     {step.title}
                   </p>
-                  <p className="text-[10px] text-white/30">{step.desc}</p>
+                  <p className="text-[10px] text-foreground/30">{step.desc}</p>
                 </CardContent>
               </Card>
             ))}
@@ -126,7 +131,7 @@ export default function CollectiveHubPage() {
         {/* My Collectives */}
         {loading ? (
           <div className="flex justify-center py-12">
-            <Loader2 className="h-6 w-6 text-white/20 animate-spin" />
+            <Loader2 className="h-6 w-6 text-foreground/20 animate-spin" />
           </div>
         ) : myCollectives.length > 0 ? (
           <motion.div
@@ -135,7 +140,7 @@ export default function CollectiveHubPage() {
             transition={{ delay: 0.2 }}
             className="mb-10"
           >
-            <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
               <Shield className="h-4 w-4 text-green-400" />
               Your Collectives
             </h2>
@@ -147,15 +152,15 @@ export default function CollectiveHubPage() {
                     <CardContent className="p-4">
                       <div className="flex items-start justify-between mb-3">
                         <div>
-                          <p className="text-sm font-semibold text-white group-hover:text-amber-400 transition-colors">
+                          <p className="text-sm font-semibold text-foreground group-hover:text-amber-400 transition-colors">
                             {collective.entity_name}
                           </p>
-                          <p className="text-[10px] text-white/30">
+                          <p className="text-[10px] text-foreground/30">
                             {collective.entity_type} •{" "}
                             {collective.primary_jurisdiction}
                           </p>
                         </div>
-                        <ArrowRight className="h-4 w-4 text-white/10 group-hover:text-amber-400 transition-colors" />
+                        <ArrowRight className="h-4 w-4 text-foreground/10 group-hover:text-amber-400 transition-colors" />
                       </div>
 
                       <ThresholdProgress
@@ -163,13 +168,14 @@ export default function CollectiveHubPage() {
                         threshold={collective.threshold}
                       />
 
-                      <div className="flex items-center justify-between mt-2 text-[10px] text-white/20">
+                      <div className="flex items-center justify-between mt-2 text-[10px] text-foreground/20">
                         <span className="flex items-center gap-1">
                           <Lock className="h-2.5 w-2.5" />
                           {membership.anonymous_id}
                         </span>
                         <span>
-                          {(collective.common_violations || []).length} violations
+                          {(collective.common_violations || []).length}{" "}
+                          violations
                         </span>
                       </div>
                     </CardContent>
@@ -185,13 +191,15 @@ export default function CollectiveHubPage() {
             transition={{ delay: 0.2 }}
             className="text-center py-12 mb-10"
           >
-            <div className="h-16 w-16 rounded-2xl bg-white/[0.03] flex items-center justify-center mx-auto mb-4">
-              <Users className="h-8 w-8 text-white/10" />
+            <div className="h-16 w-16 rounded-none bg-white/[0.03] flex items-center justify-center mx-auto mb-4">
+              <Users className="h-8 w-8 text-foreground/10" />
             </div>
-            <p className="text-sm text-white/30 mb-1">No collectives yet</p>
-            <p className="text-[11px] text-white/20 max-w-sm mx-auto">
-              Upload and analyze contracts to detect predatory entities. When others
-              flag the same entity, you&apos;ll be matched automatically.
+            <p className="text-sm text-foreground/30 mb-1">
+              No collectives yet
+            </p>
+            <p className="text-[11px] text-foreground/20 max-w-sm mx-auto">
+              Upload and analyze contracts to detect predatory entities. When
+              others flag the same entity, you&apos;ll be matched automatically.
             </p>
             <Link
               href="/"
@@ -207,16 +215,16 @@ export default function CollectiveHubPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="rounded-xl bg-green-500/5 border border-green-500/10 p-5 text-center"
+          className="rounded-none bg-green-500/5 border border-green-500/10 p-5 text-center"
         >
           <Shield className="h-5 w-5 text-green-400 mx-auto mb-2" />
           <p className="text-xs font-medium text-green-300 mb-1">
             Privacy First Design
           </p>
           <p className="text-[11px] text-green-400/50 max-w-md mx-auto">
-            All collective interactions use anonymous identities. No member can see
-            another member&apos;s name, email, documents, or personal data. Only
-            aggregate statistics are shared.
+            All collective interactions use anonymous identities. No member can
+            see another member&apos;s name, email, documents, or personal data.
+            Only aggregate statistics are shared.
           </p>
         </motion.div>
       </div>

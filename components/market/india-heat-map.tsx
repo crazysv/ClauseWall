@@ -31,7 +31,9 @@ function IndiaHeatMapComponent({
     x: number;
     y: number;
   } | null>(null);
-  const [selectedState, setSelectedState] = useState<GeographicRiskData | null>(null);
+  const [selectedState, setSelectedState] = useState<GeographicRiskData | null>(
+    null,
+  );
 
   // Build lookup by state name
   const regionMap = useMemo(() => {
@@ -44,7 +46,12 @@ function IndiaHeatMapComponent({
   }, [regions]);
 
   const findRegionData = (geo: any): GeographicRiskData | null => {
-    const name = (geo.properties?.ST_NM || geo.properties?.name || geo.properties?.NAME_1 || "").toLowerCase();
+    const name = (
+      geo.properties?.ST_NM ||
+      geo.properties?.name ||
+      geo.properties?.NAME_1 ||
+      ""
+    ).toLowerCase();
     return regionMap.get(name) || null;
   };
 
@@ -72,7 +79,11 @@ function IndiaHeatMapComponent({
             <Geographies geography={GEO_URL}>
               {({ geographies }: { geographies: any[] }) =>
                 geographies.map((geo) => {
-                  const geoName = geo.properties?.ST_NM || geo.properties?.name || geo.properties?.NAME_1 || "Unknown";
+                  const geoName =
+                    geo.properties?.ST_NM ||
+                    geo.properties?.name ||
+                    geo.properties?.NAME_1 ||
+                    "Unknown";
                   const regionData = findRegionData(geo);
 
                   return (
@@ -96,7 +107,9 @@ function IndiaHeatMapComponent({
                         pressed: { outline: "none" },
                       }}
                       onMouseEnter={(evt) => {
-                        const rect = (evt.target as SVGElement).closest("svg")?.getBoundingClientRect();
+                        const rect = (evt.target as SVGElement)
+                          .closest("svg")
+                          ?.getBoundingClientRect();
                         setTooltip({
                           name: geoName,
                           data: regionData,
@@ -126,25 +139,33 @@ function IndiaHeatMapComponent({
             }}
           >
             <div className="rounded-none bg-background border-2 border-foreground p-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] min-w-[160px]">
-              <p className="text-sm font-black text-foreground uppercase tracking-wider">{tooltip.name}</p>
+              <p className="text-sm font-black text-foreground uppercase tracking-wider">
+                {tooltip.name}
+              </p>
               {tooltip.data ? (
                 <div className="mt-1.5 space-y-1">
                   <div className="flex justify-between text-xs">
                     <span className="text-white/50">Risk Score</span>
                     <span
                       className="font-medium"
-                      style={{ color: getRiskColor(tooltip.data.avg_risk_score) }}
+                      style={{
+                        color: getRiskColor(tooltip.data.avg_risk_score),
+                      }}
                     >
                       {tooltip.data.avg_risk_score}/100
                     </span>
                   </div>
                   <div className="flex justify-between text-xs">
                     <span className="text-white/50">Contracts</span>
-                    <span className="text-white/70">{tooltip.data.total_contracts}</span>
+                    <span className="text-white/70">
+                      {tooltip.data.total_contracts}
+                    </span>
                   </div>
                   <div className="flex justify-between text-xs">
                     <span className="text-white/50">High Risk</span>
-                    <span className="text-red-400">{tooltip.data.high_risk_count}</span>
+                    <span className="text-red-400">
+                      {tooltip.data.high_risk_count}
+                    </span>
                   </div>
                 </div>
               ) : (
@@ -159,19 +180,31 @@ function IndiaHeatMapComponent({
       <div className="flex items-center justify-between mt-3 px-1">
         <div className="flex items-center gap-3 text-[10px] text-white/40">
           <span className="flex items-center gap-1">
-            <span className="w-3 h-3 rounded-sm" style={{ background: "#22c55e" }} />
+            <span
+              className="w-3 h-3 rounded-sm"
+              style={{ background: "#22c55e" }}
+            />
             Low Risk (≤30)
           </span>
           <span className="flex items-center gap-1">
-            <span className="w-3 h-3 rounded-sm" style={{ background: "#f59e0b" }} />
+            <span
+              className="w-3 h-3 rounded-sm"
+              style={{ background: "#f59e0b" }}
+            />
             Medium (31-55)
           </span>
           <span className="flex items-center gap-1">
-            <span className="w-3 h-3 rounded-sm" style={{ background: "#f97316" }} />
+            <span
+              className="w-3 h-3 rounded-sm"
+              style={{ background: "#f97316" }}
+            />
             High (56-75)
           </span>
           <span className="flex items-center gap-1">
-            <span className="w-3 h-3 rounded-sm" style={{ background: "#ef4444" }} />
+            <span
+              className="w-3 h-3 rounded-sm"
+              style={{ background: "#ef4444" }}
+            />
             Critical (76+)
           </span>
         </div>
@@ -192,7 +225,9 @@ function IndiaHeatMapComponent({
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <MapPin className="h-4 w-4 text-cyan-400" />
-                <h4 className="font-semibold text-white">{selectedState.state_name}</h4>
+                <h4 className="font-semibold text-white">
+                  {selectedState.state_name}
+                </h4>
               </div>
               <button
                 onClick={() => setSelectedState(null)}
@@ -213,15 +248,21 @@ function IndiaHeatMapComponent({
                 <p className="text-[10px] text-white/40">Avg Risk Score</p>
               </div>
               <div className="text-center p-2 rounded-lg bg-white/[0.03]">
-                <p className="text-lg font-bold text-white">{selectedState.total_contracts}</p>
+                <p className="text-lg font-bold text-white">
+                  {selectedState.total_contracts}
+                </p>
                 <p className="text-[10px] text-white/40">Contracts</p>
               </div>
               <div className="text-center p-2 rounded-lg bg-white/[0.03]">
-                <p className="text-lg font-bold text-red-400">{selectedState.high_risk_count}</p>
+                <p className="text-lg font-bold text-red-400">
+                  {selectedState.high_risk_count}
+                </p>
                 <p className="text-[10px] text-white/40">High Risk</p>
               </div>
               <div className="text-center p-2 rounded-lg bg-white/[0.03]">
-                <p className="text-lg font-bold text-green-400">{selectedState.low_risk_count}</p>
+                <p className="text-lg font-bold text-green-400">
+                  {selectedState.low_risk_count}
+                </p>
                 <p className="text-[10px] text-white/40">Low Risk</p>
               </div>
             </div>

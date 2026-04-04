@@ -45,7 +45,7 @@ export async function GET() {
     console.error("[TimeBomb API] Reminder settings GET error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -96,7 +96,7 @@ export async function POST(request: NextRequest) {
       console.error("[TimeBomb API] Reminder settings upsert error:", error);
       return NextResponse.json(
         { error: "Failed to save settings" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -105,7 +105,7 @@ export async function POST(request: NextRequest) {
     console.error("[TimeBomb API] Reminder settings POST error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

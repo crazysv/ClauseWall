@@ -69,7 +69,8 @@ export default function MLInstantResult({
         return {
           color: "text-purple-600",
           bg: "bg-background",
-          border: "border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(147,51,234,1)]",
+          border:
+            "border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(147,51,234,1)]",
           icon: <Scale className="h-5 w-5 text-purple-600" />,
           label: "CRITICAL",
         };
@@ -77,7 +78,8 @@ export default function MLInstantResult({
         return {
           color: "text-primary",
           bg: "bg-background",
-          border: "border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(220,38,38,1)]",
+          border:
+            "border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(220,38,38,1)]",
           icon: <XCircle className="h-5 w-5 text-primary" />,
           label: "HIGH RISK",
         };
@@ -85,7 +87,8 @@ export default function MLInstantResult({
         return {
           color: "text-yellow-600",
           bg: "bg-background",
-          border: "border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(202,138,4,1)]",
+          border:
+            "border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(202,138,4,1)]",
           icon: <AlertTriangle className="h-5 w-5 text-yellow-600" />,
           label: "CAUTION",
         };
@@ -93,7 +96,8 @@ export default function MLInstantResult({
         return {
           color: "text-green-600",
           bg: "bg-background",
-          border: "border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(22,163,74,1)]",
+          border:
+            "border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(22,163,74,1)]",
           icon: <CheckCircle2 className="h-5 w-5 text-green-600" />,
           label: "LOW RISK",
         };
@@ -120,9 +124,7 @@ export default function MLInstantResult({
       </div>
 
       {/* Main Score Card */}
-      <Card
-        className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] overflow-hidden"
-      >
+      <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] overflow-hidden">
         <CardContent className="p-0">
           <div className={`${overallConfig.bg} p-6 text-center`}>
             {/* Risk Icon */}
@@ -139,9 +141,7 @@ export default function MLInstantResult({
                 <ShieldAlert className={`h-10 w-10 ${overallConfig.color}`} />
               )}
               {result.overallRisk === "warning" && (
-                <AlertTriangle
-                  className={`h-10 w-10 ${overallConfig.color}`}
-                />
+                <AlertTriangle className={`h-10 w-10 ${overallConfig.color}`} />
               )}
               {result.overallRisk === "safe" && (
                 <ShieldCheck className={`h-10 w-10 ${overallConfig.color}`} />
@@ -150,10 +150,14 @@ export default function MLInstantResult({
 
             {/* Score */}
             <div className="flex items-center justify-center gap-2 mb-1">
-              <span className={`text-6xl font-black tabular-nums ${overallConfig.color}`}>
+              <span
+                className={`text-6xl font-black tabular-nums ${overallConfig.color}`}
+              >
                 {animatedScore}
               </span>
-              <span className="text-3xl font-bold text-muted-foreground">/100</span>
+              <span className="text-3xl font-bold text-muted-foreground">
+                /100
+              </span>
             </div>
 
             <p
@@ -286,9 +290,7 @@ export default function MLInstantResult({
                         transition={{ delay: i * 0.05 }}
                         className="flex items-start gap-3 p-3 bg-muted border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(10,10,10,1)] hover:-translate-y-[1px] transition-transform"
                       >
-                        <div className={`mt-0.5`}>
-                          {config.icon}
-                        </div>
+                        <div className={`mt-0.5`}>{config.icon}</div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-2">
                             <Badge

@@ -8,16 +8,18 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ collectiveId: string }> }
+  { params }: { params: Promise<{ collectiveId: string }> },
 ) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return NextResponse.json(
         { error: "Authentication required" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -33,23 +35,25 @@ export async function GET(
     console.error("[ClauseWall] [API] Get messages error:", error);
     return NextResponse.json(
       { error: "Failed to fetch messages" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: Promise<{ collectiveId: string }> }
+  { params }: { params: Promise<{ collectiveId: string }> },
 ) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return NextResponse.json(
         { error: "Authentication required" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -60,7 +64,7 @@ export async function POST(
     if (!content || content.trim().length === 0) {
       return NextResponse.json(
         { error: "Message content required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -69,13 +73,13 @@ export async function POST(
       user.id,
       content,
       messageType || "discussion",
-      replyTo
+      replyTo,
     );
 
     if (!message) {
       return NextResponse.json(
         { error: "Failed to send message. Ensure you are a member." },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -84,7 +88,7 @@ export async function POST(
     console.error("[ClauseWall] [API] Send message error:", error);
     return NextResponse.json(
       { error: "Failed to send message" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

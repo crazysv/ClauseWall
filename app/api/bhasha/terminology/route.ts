@@ -29,7 +29,10 @@ export async function GET(request: NextRequest) {
 
   if (language) {
     if (!LANGUAGE_CONFIGS[language as SupportedLanguage]) {
-      return NextResponse.json({ error: "Unsupported language" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Unsupported language" },
+        { status: 400 },
+      );
     }
 
     // Lookup specific term
@@ -113,7 +116,10 @@ async function seedTerminology(): Promise<NextResponse> {
         onConflict: "language_code,regional_term",
       });
       if (error) {
-        console.error(`[ClauseWall] Terminology seed batch ${i} failed:`, error);
+        console.error(
+          `[ClauseWall] Terminology seed batch ${i} failed:`,
+          error,
+        );
       } else {
         inserted += batch.length;
       }

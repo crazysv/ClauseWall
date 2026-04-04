@@ -7,12 +7,21 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bell, Check, AlertTriangle, Clock, Info, ExternalLink } from "lucide-react";
+import {
+  Bell,
+  Check,
+  AlertTriangle,
+  Clock,
+  Info,
+  ExternalLink,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import type { DeadlineNotification } from "@/types";
 
 export function NotificationBell() {
-  const [notifications, setNotifications] = useState<DeadlineNotification[]>([]);
+  const [notifications, setNotifications] = useState<DeadlineNotification[]>(
+    [],
+  );
   const [unreadCount, setUnreadCount] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -62,9 +71,7 @@ export function NotificationBell() {
         body: JSON.stringify({ all: true }),
       });
       setUnreadCount(0);
-      setNotifications((prev) =>
-        prev.map((n) => ({ ...n, read: true }))
-      );
+      setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
     } catch {
       // Silently fail
     } finally {
@@ -73,7 +80,8 @@ export function NotificationBell() {
   };
 
   const getIcon = (daysB: number) => {
-    if (daysB <= 3) return <AlertTriangle className="w-3.5 h-3.5 text-red-400" />;
+    if (daysB <= 3)
+      return <AlertTriangle className="w-3.5 h-3.5 text-red-400" />;
     if (daysB <= 14) return <Clock className="w-3.5 h-3.5 text-orange-400" />;
     return <Info className="w-3.5 h-3.5 text-blue-400" />;
   };
@@ -156,7 +164,9 @@ export function NotificationBell() {
             {notifications.length === 0 ? (
               <div className="p-8 text-center border-b-4 border-black last:border-b-0">
                 <Bell className="w-10 h-10 text-muted-foreground mx-auto mb-4 stroke-[1.5px]" />
-                <p className="text-sm font-black uppercase tracking-widest text-foreground">NO NOTIFICATIONS YET</p>
+                <p className="text-sm font-black uppercase tracking-widest text-foreground">
+                  NO NOTIFICATIONS YET
+                </p>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mt-2 leading-relaxed">
                   ACTIVATE TIME BOMB DEFUSER TO GET DEADLINE ALERTS
                 </p>
@@ -174,7 +184,9 @@ export function NotificationBell() {
                       !n.read ? "bg-orange-50 dark:bg-orange-900/10" : ""
                     }`}
                   >
-                    <div className="mt-1 border-2 border-black bg-white dark:bg-black p-1 shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] flex-shrink-0">{getIcon(n.days_before)}</div>
+                    <div className="mt-1 border-2 border-black bg-white dark:bg-black p-1 shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] flex-shrink-0">
+                      {getIcon(n.days_before)}
+                    </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-xs font-black uppercase tracking-widest text-foreground truncate block">
                         DEADLINE REMINDER ({n.days_before}D BEFORE)

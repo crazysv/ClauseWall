@@ -4,7 +4,7 @@ import type { StateMachineReport } from "@/lib/statemachine/types";
 
 export async function GET(
   _request: NextRequest,
-  { params }: { params: Promise<{ documentId: string }> }
+  { params }: { params: Promise<{ documentId: string }> },
 ) {
   try {
     const { documentId } = await params;
@@ -12,7 +12,7 @@ export async function GET(
     if (!documentId) {
       return NextResponse.json(
         { success: false, error: "Missing documentId" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -27,14 +27,17 @@ export async function GET(
     if (docError || !doc) {
       return NextResponse.json(
         { success: false, error: "Document not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     if (!doc.state_machine_data) {
       return NextResponse.json(
-        { success: false, error: "No state machine data available for this document" },
-        { status: 404 }
+        {
+          success: false,
+          error: "No state machine data available for this document",
+        },
+        { status: 404 },
       );
     }
 
@@ -45,7 +48,7 @@ export async function GET(
     console.error("[ClauseWall] State machine GET API error:", error);
     return NextResponse.json(
       { success: false, error: "Failed to fetch state machine data" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

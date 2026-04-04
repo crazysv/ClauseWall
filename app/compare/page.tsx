@@ -44,7 +44,9 @@ export default function ComparePage() {
   const [documentType, setDocumentType] = useState("rental");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<ComparisonResult | null>(null);
-  const [expandedClauses, setExpandedClauses] = useState<Set<number>>(new Set());
+  const [expandedClauses, setExpandedClauses] = useState<Set<number>>(
+    new Set(),
+  );
   const [showShareCard, setShowShareCard] = useState(false);
 
   const onDropA = useCallback((files: File[]) => {
@@ -162,9 +164,12 @@ export default function ComparePage() {
   };
 
   const getScoreBg = (score: number) => {
-    if (score >= 80) return "bg-purple-200 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]";
-    if (score >= 60) return "bg-red-200 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]";
-    if (score >= 30) return "bg-yellow-200 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]";
+    if (score >= 80)
+      return "bg-purple-200 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]";
+    if (score >= 60)
+      return "bg-red-200 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]";
+    if (score >= 30)
+      return "bg-yellow-200 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]";
     return "bg-green-200 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]";
   };
 
@@ -182,7 +187,8 @@ export default function ComparePage() {
             </h1>
           </div>
           <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground w-full max-w-xl mx-auto border-t-2 border-black/10 pt-4">
-            UPLOAD TWO CONTRACTS SIDE-BY-SIDE. WE WILL COMPARE THEM CLAUSE-BY-CLAUSE AND TELL YOU WHICH ONE IS SAFER.
+            UPLOAD TWO CONTRACTS SIDE-BY-SIDE. WE WILL COMPARE THEM
+            CLAUSE-BY-CLAUSE AND TELL YOU WHICH ONE IS SAFER.
           </p>
         </div>
 
@@ -195,12 +201,17 @@ export default function ComparePage() {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-6 pb-4 border-b-4 border-black">
                     <h3 className="text-xl font-black uppercase tracking-tighter flex items-center gap-3">
-                      <span className="bg-black text-white px-2 py-1 border-2 border-black">A</span> CONTRACT A
+                      <span className="bg-black text-white px-2 py-1 border-2 border-black">
+                        A
+                      </span>{" "}
+                      CONTRACT A
                     </h3>
                     <div className="flex bg-gray-100 border-2 border-black p-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                       <button
                         className={`px-4 py-1 text-xs font-black uppercase tracking-widest transition-colors ${
-                          inputModeA === "file" ? "bg-black text-white" : "text-black hover:bg-gray-200"
+                          inputModeA === "file"
+                            ? "bg-black text-white"
+                            : "text-black hover:bg-gray-200"
                         }`}
                         onClick={() => setInputModeA("file")}
                       >
@@ -208,7 +219,9 @@ export default function ComparePage() {
                       </button>
                       <button
                         className={`px-4 py-1 text-xs font-black uppercase tracking-widest transition-colors ${
-                          inputModeA === "text" ? "bg-black text-white" : "text-black hover:bg-gray-200"
+                          inputModeA === "text"
+                            ? "bg-black text-white"
+                            : "text-black hover:bg-gray-200"
                         }`}
                         onClick={() => setInputModeA("text")}
                       >
@@ -224,15 +237,17 @@ export default function ComparePage() {
                         dropzoneA.isDragActive
                           ? "border-blue-700 bg-blue-100"
                           : fileA
-                          ? "border-green-700 bg-green-50 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] border-solid"
-                          : "border-black hover:bg-gray-50 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                            ? "border-green-700 bg-green-50 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] border-solid"
+                            : "border-black hover:bg-gray-50 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                       }`}
                     >
                       <input {...dropzoneA.getInputProps()} />
                       {fileA ? (
                         <div className="flex flex-col items-center gap-3">
                           <FileText className="h-10 w-10 text-green-700" />
-                          <p className="text-base font-black uppercase tracking-tight truncate max-w-[200px]">{fileA.name}</p>
+                          <p className="text-base font-black uppercase tracking-tight truncate max-w-[200px]">
+                            {fileA.name}
+                          </p>
                           <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">
                             CLICK TO CHANGE
                           </p>
@@ -262,12 +277,17 @@ export default function ComparePage() {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-6 pb-4 border-b-4 border-black">
                     <h3 className="text-xl font-black uppercase tracking-tighter flex items-center gap-3">
-                      <span className="bg-black text-white px-2 py-1 border-2 border-black">B</span> CONTRACT B
+                      <span className="bg-black text-white px-2 py-1 border-2 border-black">
+                        B
+                      </span>{" "}
+                      CONTRACT B
                     </h3>
                     <div className="flex bg-gray-100 border-2 border-black p-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                       <button
                         className={`px-4 py-1 text-xs font-black uppercase tracking-widest transition-colors ${
-                          inputModeB === "file" ? "bg-black text-white" : "text-black hover:bg-gray-200"
+                          inputModeB === "file"
+                            ? "bg-black text-white"
+                            : "text-black hover:bg-gray-200"
                         }`}
                         onClick={() => setInputModeB("file")}
                       >
@@ -275,7 +295,9 @@ export default function ComparePage() {
                       </button>
                       <button
                         className={`px-4 py-1 text-xs font-black uppercase tracking-widest transition-colors ${
-                          inputModeB === "text" ? "bg-black text-white" : "text-black hover:bg-gray-200"
+                          inputModeB === "text"
+                            ? "bg-black text-white"
+                            : "text-black hover:bg-gray-200"
                         }`}
                         onClick={() => setInputModeB("text")}
                       >
@@ -291,15 +313,17 @@ export default function ComparePage() {
                         dropzoneB.isDragActive
                           ? "border-blue-700 bg-blue-100"
                           : fileB
-                          ? "border-green-700 bg-green-50 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] border-solid"
-                          : "border-black hover:bg-gray-50 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                            ? "border-green-700 bg-green-50 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] border-solid"
+                            : "border-black hover:bg-gray-50 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                       }`}
                     >
                       <input {...dropzoneB.getInputProps()} />
                       {fileB ? (
                         <div className="flex flex-col items-center gap-3">
                           <FileText className="h-10 w-10 text-green-700" />
-                          <p className="text-base font-black uppercase tracking-tight truncate max-w-[200px]">{fileB.name}</p>
+                          <p className="text-base font-black uppercase tracking-tight truncate max-w-[200px]">
+                            {fileB.name}
+                          </p>
                           <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">
                             CLICK TO CHANGE
                           </p>
@@ -378,8 +402,8 @@ export default function ComparePage() {
                     {result.winner === "A"
                       ? "CONTRACT A IS SAFER"
                       : result.winner === "B"
-                      ? "CONTRACT B IS SAFER"
-                      : "BOTH ARE EQUALLY RISKY"}
+                        ? "CONTRACT B IS SAFER"
+                        : "BOTH ARE EQUALLY RISKY"}
                   </h2>
                   <p className="text-base font-bold text-gray-800 leading-relaxed max-w-2xl mx-auto border-t-2 border-black/10 pt-4">
                     {result.verdict}
@@ -392,13 +416,17 @@ export default function ComparePage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <Card
                 className={`border-4 border-black rounded-none bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] ${
-                  result.winner === "A" ? "ring-4 ring-green-400 ring-offset-4" : ""
+                  result.winner === "A"
+                    ? "ring-4 ring-green-400 ring-offset-4"
+                    : ""
                 }`}
               >
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-6 border-b-4 border-black pb-4">
                     <h3 className="text-xl font-black uppercase tracking-tighter flex items-center gap-2 text-black">
-                      <span className="bg-black text-white px-2 border-2 border-black">A</span>
+                      <span className="bg-black text-white px-2 border-2 border-black">
+                        A
+                      </span>
                       CONTRACT A
                     </h3>
                     {result.winner === "A" && (
@@ -408,14 +436,20 @@ export default function ComparePage() {
                       </Badge>
                     )}
                   </div>
-                  <div className={`text-center p-8 ${getScoreBg(result.score_a)}`}>
-                    <p className={`text-6xl font-black ${getScoreColor(result.score_a)} uppercase tracking-tighter drop-shadow-md`}>
+                  <div
+                    className={`text-center p-8 ${getScoreBg(result.score_a)}`}
+                  >
+                    <p
+                      className={`text-6xl font-black ${getScoreColor(result.score_a)} uppercase tracking-tighter drop-shadow-md`}
+                    >
                       {result.score_a}
                     </p>
                     <p className="text-xs font-black uppercase tracking-widest text-black mt-2">
                       /100 RISK SCORE
                     </p>
-                    <p className={`text-lg font-black uppercase tracking-widest mt-4 bg-white border-2 border-black inline-block px-4 py-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${getScoreColor(result.score_a)}`}>
+                    <p
+                      className={`text-lg font-black uppercase tracking-widest mt-4 bg-white border-2 border-black inline-block px-4 py-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${getScoreColor(result.score_a)}`}
+                    >
                       {result.label_a}
                     </p>
                   </div>
@@ -424,13 +458,17 @@ export default function ComparePage() {
 
               <Card
                 className={`border-4 border-black rounded-none bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] ${
-                  result.winner === "B" ? "ring-4 ring-green-400 ring-offset-4" : ""
+                  result.winner === "B"
+                    ? "ring-4 ring-green-400 ring-offset-4"
+                    : ""
                 }`}
               >
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-6 border-b-4 border-black pb-4">
                     <h3 className="text-xl font-black uppercase tracking-tighter flex items-center gap-2 text-black">
-                      <span className="bg-black text-white px-2 border-2 border-black">B</span>
+                      <span className="bg-black text-white px-2 border-2 border-black">
+                        B
+                      </span>
                       CONTRACT B
                     </h3>
                     {result.winner === "B" && (
@@ -440,14 +478,20 @@ export default function ComparePage() {
                       </Badge>
                     )}
                   </div>
-                  <div className={`text-center p-8 ${getScoreBg(result.score_b)}`}>
-                    <p className={`text-6xl font-black ${getScoreColor(result.score_b)} uppercase tracking-tighter drop-shadow-md`}>
+                  <div
+                    className={`text-center p-8 ${getScoreBg(result.score_b)}`}
+                  >
+                    <p
+                      className={`text-6xl font-black ${getScoreColor(result.score_b)} uppercase tracking-tighter drop-shadow-md`}
+                    >
                       {result.score_b}
                     </p>
                     <p className="text-xs font-black uppercase tracking-widest text-black mt-2">
                       /100 RISK SCORE
                     </p>
-                    <p className={`text-lg font-black uppercase tracking-widest mt-4 bg-white border-2 border-black inline-block px-4 py-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${getScoreColor(result.score_b)}`}>
+                    <p
+                      className={`text-lg font-black uppercase tracking-widest mt-4 bg-white border-2 border-black inline-block px-4 py-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${getScoreColor(result.score_b)}`}
+                    >
                       {result.label_b}
                     </p>
                   </div>
@@ -507,25 +551,29 @@ export default function ComparePage() {
                               comp.winner === "A"
                                 ? "bg-blue-100 text-blue-900"
                                 : comp.winner === "B"
-                                ? "bg-purple-100 text-purple-900"
-                                : "bg-gray-200 text-black"
+                                  ? "bg-purple-100 text-purple-900"
+                                  : "bg-gray-200 text-black"
                             }`}
                           >
                             {comp.winner === "A"
                               ? "A WINS"
                               : comp.winner === "B"
-                              ? "B WINS"
-                              : "TIE"}
+                                ? "B WINS"
+                                : "TIE"}
                           </Badge>
                         </div>
                         <div className="flex flex-col sm:flex-row items-end sm:items-center gap-4">
                           <div className="hidden sm:flex items-center gap-6">
                             <div className="flex items-center gap-2 bg-gray-100 border-2 border-black px-3 py-1">
-                              <span className="text-sm font-black text-black">A:</span>
+                              <span className="text-sm font-black text-black">
+                                A:
+                              </span>
                               {getRiskIcon(comp.contract_a.risk_level)}
                             </div>
                             <div className="flex items-center gap-2 bg-gray-100 border-2 border-black px-3 py-1">
-                              <span className="text-sm font-black text-black">B:</span>
+                              <span className="text-sm font-black text-black">
+                                B:
+                              </span>
                               {getRiskIcon(comp.contract_b.risk_level)}
                             </div>
                           </div>
@@ -544,7 +592,10 @@ export default function ComparePage() {
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                             <div className="p-4 bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                               <p className="text-sm font-black uppercase tracking-widest text-black mb-3 border-b-2 border-black/10 pb-2 flex items-center gap-2">
-                                <span className="bg-black text-white px-1 border-2 border-black">A</span> CONTRACT A
+                                <span className="bg-black text-white px-1 border-2 border-black">
+                                  A
+                                </span>{" "}
+                                CONTRACT A
                               </p>
                               <div className="flex items-center gap-3 mb-3">
                                 <div className="p-1 border-2 border-black">
@@ -552,7 +603,7 @@ export default function ComparePage() {
                                 </div>
                                 <span
                                   className={`text-base font-black uppercase tracking-widest ${getRiskColor(
-                                    comp.contract_a.risk_level
+                                    comp.contract_a.risk_level,
                                   )}`}
                                 >
                                   {comp.contract_a.value}
@@ -564,7 +615,10 @@ export default function ComparePage() {
                             </div>
                             <div className="p-4 bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                               <p className="text-sm font-black uppercase tracking-widest text-black mb-3 border-b-2 border-black/10 pb-2 flex items-center gap-2">
-                                <span className="bg-black text-white px-1 border-2 border-black">B</span> CONTRACT B
+                                <span className="bg-black text-white px-1 border-2 border-black">
+                                  B
+                                </span>{" "}
+                                CONTRACT B
                               </p>
                               <div className="flex items-center gap-3 mb-3">
                                 <div className="p-1 border-2 border-black">
@@ -572,7 +626,7 @@ export default function ComparePage() {
                                 </div>
                                 <span
                                   className={`text-base font-black uppercase tracking-widest ${getRiskColor(
-                                    comp.contract_b.risk_level
+                                    comp.contract_b.risk_level,
                                   )}`}
                                 >
                                   {comp.contract_b.value}
@@ -601,7 +655,9 @@ export default function ComparePage() {
             <Card className="border-4 border-black rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-green-50 mb-12">
               <CardContent className="p-8">
                 <h3 className="text-2xl font-black uppercase tracking-tighter text-black mb-4 flex items-center gap-3">
-                  <span className="bg-yellow-400 border-2 border-black text-black px-2 py-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">💡</span>
+                  <span className="bg-yellow-400 border-2 border-black text-black px-2 py-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                    💡
+                  </span>
                   FINAL RECOMMENDATION
                 </h3>
                 <p className="text-xl font-bold text-black border-l-4 border-black pl-4 py-2 leading-relaxed">

@@ -97,7 +97,7 @@ export async function GET() {
     console.error("[Vault] Latest endpoint error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

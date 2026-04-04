@@ -167,7 +167,8 @@ export default function LawChangeCard({ change, compact }: Props) {
                   {change.classification_confidence && (
                     <Badge
                       className={`text-[10px] ${
-                        CONFIDENCE_COLORS[change.classification_confidence] || ""
+                        CONFIDENCE_COLORS[change.classification_confidence] ||
+                        ""
                       }`}
                     >
                       {change.classification_confidence} confidence

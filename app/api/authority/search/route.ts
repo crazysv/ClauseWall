@@ -21,12 +21,16 @@ export async function GET(request: Request) {
     };
 
     const authorities = await searchAuthorities(query);
-    return NextResponse.json({ success: true, authorities, count: authorities.length });
+    return NextResponse.json({
+      success: true,
+      authorities,
+      count: authorities.length,
+    });
   } catch (error) {
     console.error("[ClauseWall] Authority search failed:", error);
     return NextResponse.json(
       { success: false, error: "Search failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -9,7 +9,7 @@ import { generateICSFile } from "@/lib/timebomb/ics-generator";
 
 export async function GET(
   _request: NextRequest,
-  { params }: { params: Promise<{ documentId: string }> }
+  { params }: { params: Promise<{ documentId: string }> },
 ) {
   try {
     const { documentId } = await params;
@@ -35,14 +35,14 @@ export async function GET(
       console.error("[TimeBomb API] Calendar fetch error:", error);
       return NextResponse.json(
         { error: "Failed to fetch deadlines" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
     if (!deadlines || deadlines.length === 0) {
       return NextResponse.json(
         { error: "No active deadlines found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -70,7 +70,7 @@ export async function GET(
     console.error("[TimeBomb API] Calendar error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

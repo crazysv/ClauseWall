@@ -31,7 +31,9 @@ export default function EntityIntelligenceCard({
   jurisdiction,
   documentType,
 }: Props) {
-  const [intelligence, setIntelligence] = useState<EntityIntelligence | null>(null);
+  const [intelligence, setIntelligence] = useState<EntityIntelligence | null>(
+    null,
+  );
   const [loading, setLoading] = useState(false);
   const [showJoin, setShowJoin] = useState(false);
 
@@ -63,7 +65,8 @@ export default function EntityIntelligenceCard({
 
   if (!entityName || loading || !intelligence) return null;
 
-  const { entity, collective, user_membership, leverage, strength_assessment } = intelligence;
+  const { entity, collective, user_membership, leverage, strength_assessment } =
+    intelligence;
 
   const strengthColors = {
     very_strong: "text-green-400 bg-green-500/10",
@@ -79,9 +82,9 @@ export default function EntityIntelligenceCard({
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
       >
-        <Card className="border-amber-500/20 bg-gradient-to-br from-amber-500/5 via-orange-500/5 to-transparent overflow-hidden">
+        <Card className="border-amber-500/20 bg-background /5 /5 to-transparent overflow-hidden">
           {/* Header stripe */}
-          <div className="h-1 bg-gradient-to-r from-amber-500 via-orange-500 to-red-500" />
+          <div className="h-1 bg-background" />
 
           <CardContent className="p-5">
             {/* Title row */}
@@ -91,15 +94,18 @@ export default function EntityIntelligenceCard({
                   <Users className="h-4 w-4 text-amber-400" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-white">
+                  <h3 className="text-sm font-semibold text-foreground">
                     Community Intelligence
                   </h3>
-                  <p className="text-[10px] text-white/40">
-                    {entity.total_flags} community flags • {entity.total_documents} documents
+                  <p className="text-[10px] text-foreground/40">
+                    {entity.total_flags} community flags •{" "}
+                    {entity.total_documents} documents
                   </p>
                 </div>
               </div>
-              <Badge className={`text-[10px] ${strengthColors[strength_assessment]}`}>
+              <Badge
+                className={`text-[10px] ${strengthColors[strength_assessment]}`}
+              >
                 {strength_assessment.replace("_", " ")}
               </Badge>
             </div>
@@ -107,25 +113,29 @@ export default function EntityIntelligenceCard({
             {/* Stats row */}
             <div className="grid grid-cols-3 gap-3 mb-4">
               <div className="rounded-lg bg-white/[0.03] p-3 text-center">
-                <p className="text-lg font-bold text-amber-400">{entity.total_flags}</p>
-                <p className="text-[10px] text-white/40">Flags</p>
+                <p className="text-lg font-bold text-amber-400">
+                  {entity.total_flags}
+                </p>
+                <p className="text-[10px] text-foreground/40">Flags</p>
               </div>
               <div className="rounded-lg bg-white/[0.03] p-3 text-center">
                 <p className="text-lg font-bold text-orange-400">
                   {entity.common_violations.length}
                 </p>
-                <p className="text-[10px] text-white/40">Violations</p>
+                <p className="text-[10px] text-foreground/40">Violations</p>
               </div>
               <div className="rounded-lg bg-white/[0.03] p-3 text-center">
-                <p className="text-lg font-bold text-red-400">{entity.avg_risk_score}</p>
-                <p className="text-[10px] text-white/40">Avg Risk</p>
+                <p className="text-lg font-bold text-red-400">
+                  {entity.avg_risk_score}
+                </p>
+                <p className="text-[10px] text-foreground/40">Avg Risk</p>
               </div>
             </div>
 
             {/* Common violations */}
             {entity.common_violations.length > 0 && (
               <div className="mb-4">
-                <p className="text-[10px] text-white/30 uppercase tracking-wider mb-2">
+                <p className="text-[10px] text-foreground/30 uppercase tracking-wider mb-2">
                   Most Common Violations
                 </p>
                 <div className="flex flex-wrap gap-1.5">
@@ -143,11 +153,11 @@ export default function EntityIntelligenceCard({
 
             {/* Collective section */}
             {collective ? (
-              <div className="rounded-lg bg-white/[0.02] border border-white/5 p-3 mb-3">
+              <div className="rounded-lg bg-white/[0.02] border border-foreground border-2 p-3 mb-3">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
                     <ShieldAlert className="h-4 w-4 text-amber-400" />
-                    <span className="text-sm font-medium text-white">
+                    <span className="text-sm font-medium text-foreground">
                       Active Collective
                     </span>
                   </div>
@@ -178,11 +188,12 @@ export default function EntityIntelligenceCard({
                 )}
               </div>
             ) : entity.total_flags >= 2 ? (
-              <div className="rounded-lg bg-white/[0.02] border border-white/5 p-3 mb-3">
+              <div className="rounded-lg bg-white/[0.02] border border-foreground border-2 p-3 mb-3">
                 <div className="flex items-center gap-2 mb-2">
                   <AlertCircle className="h-4 w-4 text-orange-400" />
-                  <span className="text-xs text-white/60">
-                    {entity.total_flags} flags recorded — collective forming soon
+                  <span className="text-xs text-foreground/60">
+                    {entity.total_flags} flags recorded — collective forming
+                    soon
                   </span>
                 </div>
               </div>
@@ -193,7 +204,7 @@ export default function EntityIntelligenceCard({
               <div className="flex items-center justify-between rounded-lg bg-white/[0.02] p-3">
                 <div className="flex items-center gap-2">
                   <TrendingUp className="h-4 w-4 text-green-400" />
-                  <span className="text-xs text-white/60">
+                  <span className="text-xs text-foreground/60">
                     Collective action is{" "}
                     <span className="text-green-400 font-medium">
                       {leverage.collective.multiplier}x

@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     if (!document_id || !signing_date) {
       return NextResponse.json(
         { error: "document_id and signing_date are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -42,30 +42,39 @@ export async function POST(request: NextRequest) {
     if (isNaN(signingDate.getTime())) {
       return NextResponse.json(
         { error: "Invalid signing_date format" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // Fetch document
     const { data: doc, error: docError } = await supabase
       .from("documents")
-      .select("id, temporal_data, raw_text, document_type, jurisdiction, entity_name")
+      .select(
+        "id, temporal_data, raw_text, document_type, jurisdiction, entity_name",
+      )
       .eq("id", document_id)
       .single();
 
     if (docError || !doc) {
       return NextResponse.json(
         { error: "Document not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     // Get temporal data — use cached or extract fresh
     let temporalData: TemporalExtractionResult;
 
-    if (doc.temporal_data && (doc.temporal_data as TemporalExtractionResult).deadlines?.length > 0) {
+    if (
+      doc.temporal_data &&
+      (doc.temporal_data as TemporalExtractionResult).deadlines?.length > 0
+    ) {
       temporalData = doc.temporal_data as TemporalExtractionResult;
-      console.log("[TimeBomb API] Using cached temporal data:", temporalData.deadlines.length, "deadlines");
+      console.log(
+        "[TimeBomb API] Using cached temporal data:",
+        temporalData.deadlines.length,
+        "deadlines",
+      );
     } else {
       // Extract on the spot
       console.log("[TimeBomb API] No cached temporal data, extracting...");
@@ -81,7 +90,7 @@ export async function POST(request: NextRequest) {
         doc.raw_text || "",
         doc.document_type || "other",
         doc.jurisdiction || "ALL-INDIA",
-        clauses || []
+        clauses || [],
       );
 
       // Cache the temporal data on the document
@@ -104,7 +113,7 @@ export async function POST(request: NextRequest) {
     // Calculate absolute dates
     const calculatedDeadlines = calculateAbsoluteDates(
       temporalData.deadlines,
-      signingDate
+      signingDate,
     );
 
     // Set document_id and user_id on each deadline
@@ -150,14 +159,14 @@ export async function POST(request: NextRequest) {
           reminder_3d_sent: false,
           reminder_1d_sent: false,
           reminder_today_sent: false,
-        }))
+        })),
       );
 
     if (insertError) {
       console.error("[TimeBomb API] Insert error:", insertError);
       return NextResponse.json(
         { error: "Failed to save deadlines: " + insertError.message },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -173,7 +182,12 @@ export async function POST(request: NextRequest) {
     const timeline = buildTimelineEvents(deadlines);
     const stats = getDeadlineStats(deadlines);
 
-    console.log("[TimeBomb API] Activated:", deadlines.length, "deadlines for document", document_id);
+    console.log(
+      "[TimeBomb API] Activated:",
+      deadlines.length,
+      "deadlines for document",
+      document_id,
+    );
 
     return NextResponse.json({
       deadlines,
@@ -187,7 +201,7 @@ export async function POST(request: NextRequest) {
     console.error("[TimeBomb API] Activate error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

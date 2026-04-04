@@ -127,7 +127,7 @@ function getSeverityConfig(severity: string) {
  */
 function buildSegments(
   originalText: string,
-  violations: AutopsyViolation[]
+  violations: AutopsyViolation[],
 ): DisplaySegment[] {
   const segments: DisplaySegment[] = [];
   const lowerText = originalText.toLowerCase();
@@ -204,7 +204,9 @@ export default function ClauseAutopsyModal({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [activeViolation, setActiveViolation] = useState<number | null>(null);
-  const [expandedViolations, setExpandedViolations] = useState<Set<number>>(new Set());
+  const [expandedViolations, setExpandedViolations] = useState<Set<number>>(
+    new Set(),
+  );
   const [copied, setCopied] = useState(false);
 
   const cache = useRef<Map<string, AutopsyResult>>(new Map());
@@ -267,7 +269,7 @@ export default function ClauseAutopsyModal({
 
       // Auto-expand all violations
       const allIndexes = new Set<number>(
-        (data.violations || []).map((_: unknown, i: number) => i)
+        (data.violations || []).map((_: unknown, i: number) => i),
       );
       setExpandedViolations(allIndexes);
     } catch (err) {
@@ -319,7 +321,7 @@ export default function ClauseAutopsyModal({
 
     result.violations.forEach((v, i) => {
       lines.push(
-        `${CIRCLED_NUMBERS[i] || `(${i + 1})`} ${v.severity.toUpperCase()} — "${v.phrase}"`
+        `${CIRCLED_NUMBERS[i] || `(${i + 1})`} ${v.severity.toUpperCase()} — "${v.phrase}"`,
       );
       lines.push(`   Issue: ${v.issue}`);
       lines.push(`   Why: ${v.explanation}`);
@@ -379,7 +381,9 @@ export default function ClauseAutopsyModal({
                   <Scan className="h-5 w-5 text-foreground" />
                 </div>
                 <div>
-                  <h2 className="font-black text-xl uppercase tracking-wider text-foreground">Clause Breakdown</h2>
+                  <h2 className="font-black text-xl uppercase tracking-wider text-foreground">
+                    Clause Breakdown
+                  </h2>
                   <p className="text-[10px] text-muted-foreground font-black uppercase tracking-wider">
                     Clause #{clause.clause_number} •{" "}
                     {clause.clause_type.replace(/_/g, " ")}

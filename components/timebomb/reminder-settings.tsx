@@ -25,7 +25,7 @@ interface ReminderSettingsProps {
 
 export function ReminderSettings({ onSaved }: ReminderSettingsProps) {
   const [settings, setSettings] = useState<DeadlineReminderSettings | null>(
-    null
+    null,
   );
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -71,7 +71,7 @@ export function ReminderSettings({ onSaved }: ReminderSettingsProps) {
 
   const updateSetting = <K extends keyof DeadlineReminderSettings>(
     key: K,
-    value: DeadlineReminderSettings[K]
+    value: DeadlineReminderSettings[K],
   ) => {
     if (!settings) return;
     setSettings({ ...settings, [key]: value });
@@ -142,16 +142,15 @@ export function ReminderSettings({ onSaved }: ReminderSettingsProps) {
           onToggle={async (v) => {
             if (v) {
               try {
-                const { registerPushNotifications } = await import(
-                  "@/lib/timebomb/push-registration"
-                );
+                const { registerPushNotifications } =
+                  await import("@/lib/timebomb/push-registration");
                 const subscription = await registerPushNotifications();
                 if (subscription) {
                   updateSetting("push_enabled", true);
                   updateSetting("push_subscription", subscription);
                 } else {
                   toast.error(
-                    "Push notifications need permission. Check your browser settings."
+                    "Push notifications need permission. Check your browser settings.",
                   );
                 }
               } catch {
@@ -166,7 +165,9 @@ export function ReminderSettings({ onSaved }: ReminderSettingsProps) {
 
         {/* In-app */}
         <ToggleRow
-          icon={<Bell className="w-5 h-5 text-yellow-600 dark:text-yellow-400 stroke-[3px]" />}
+          icon={
+            <Bell className="w-5 h-5 text-yellow-600 dark:text-yellow-400 stroke-[3px]" />
+          }
           label="IN-APP NOTIFICATIONS"
           description="SHOW ALERTS IN CLAUSEWALL"
           enabled={settings.in_app_enabled}
@@ -177,7 +178,9 @@ export function ReminderSettings({ onSaved }: ReminderSettingsProps) {
         <div className="flex items-center justify-between pt-6 mt-4 border-t-4 border-black">
           <div className="flex items-center gap-3">
             <Clock className="w-5 h-5 text-muted-foreground stroke-[3px]" />
-            <span className="text-xs font-black uppercase tracking-widest text-foreground">PREFERRED TIME</span>
+            <span className="text-xs font-black uppercase tracking-widest text-foreground">
+              PREFERRED TIME
+            </span>
           </div>
           <input
             type="time"
@@ -226,15 +229,21 @@ function ToggleRow({
       <div className="flex items-start gap-4">
         <div className="mt-1">{icon}</div>
         <div>
-          <span className="text-sm font-black uppercase tracking-widest text-foreground block">{label}</span>
-          <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mt-1">{description}</p>
+          <span className="text-sm font-black uppercase tracking-widest text-foreground block">
+            {label}
+          </span>
+          <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mt-1">
+            {description}
+          </p>
         </div>
       </div>
       <button
         onClick={() => onToggle(!enabled)}
         disabled={disabled}
         className={`relative w-14 h-8 border-4 transition-all ${
-          enabled ? "bg-orange-500 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]" : "bg-gray-200 dark:bg-zinc-800 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          enabled
+            ? "bg-orange-500 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            : "bg-gray-200 dark:bg-zinc-800 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
         } ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:-translate-y-1 hover:shadow-none"}`}
         role="switch"
         aria-checked={enabled}

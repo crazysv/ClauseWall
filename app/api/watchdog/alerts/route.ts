@@ -9,7 +9,9 @@ import { createClient } from "@/lib/supabase/server";
 export async function GET() {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
@@ -39,7 +41,7 @@ export async function GET() {
     console.error("[Watchdog API] Alerts GET error:", error);
     return NextResponse.json(
       { error: "Failed to fetch alerts" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -47,7 +49,9 @@ export async function GET() {
 export async function PATCH(request: NextRequest) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
@@ -75,7 +79,7 @@ export async function PATCH(request: NextRequest) {
     console.error("[Watchdog API] Alerts PATCH error:", error);
     return NextResponse.json(
       { error: "Failed to update alerts" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

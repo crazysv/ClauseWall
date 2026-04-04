@@ -27,21 +27,21 @@ export async function POST(request: NextRequest) {
     if (!clauseText) {
       return NextResponse.json(
         { success: false, error: "clauseText is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (!documentType) {
       return NextResponse.json(
         { success: false, error: "documentType is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (!jurisdiction) {
       return NextResponse.json(
         { success: false, error: "jurisdiction is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -52,15 +52,18 @@ export async function POST(request: NextRequest) {
       jurisdiction,
       {
         proofTreeSummary: proofTreeSummary || undefined,
-      }
+      },
     );
 
     return NextResponse.json({ success: true, deliberation });
   } catch (error) {
     console.error("[ClauseWall] [API] Single deliberation failed:", error);
     return NextResponse.json(
-      { success: false, error: "Single clause deliberation failed. Please try again." },
-      { status: 500 }
+      {
+        success: false,
+        error: "Single clause deliberation failed. Please try again.",
+      },
+      { status: 500 },
     );
   }
 }

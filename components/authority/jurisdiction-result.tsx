@@ -1,6 +1,12 @@
 "use client";
 
-import { Scale, AlertTriangle, CheckCircle2, ArrowRight, XCircle } from "lucide-react";
+import {
+  Scale,
+  AlertTriangle,
+  CheckCircle2,
+  ArrowRight,
+  XCircle,
+} from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import type { JurisdictionResult } from "@/types/authority";
 import { DISPUTE_CATEGORY_LABELS } from "@/lib/authority/constants";
@@ -11,7 +17,8 @@ interface Props {
 }
 
 export default function JurisdictionResultView({ result }: Props) {
-  const categoryLabel = DISPUTE_CATEGORY_LABELS[result.dispute_category] || result.dispute_category;
+  const categoryLabel =
+    DISPUTE_CATEGORY_LABELS[result.dispute_category] || result.dispute_category;
 
   return (
     <div className="space-y-6">
@@ -21,8 +28,12 @@ export default function JurisdictionResultView({ result }: Props) {
           <Scale className="h-6 w-6 text-white stroke-[3px]" />
         </div>
         <div>
-          <p className="text-sm font-black uppercase tracking-widest text-blue-900 dark:text-blue-300">Dispute Category</p>
-          <p className="font-bold text-lg text-blue-800 dark:text-blue-100">{categoryLabel}</p>
+          <p className="text-sm font-black uppercase tracking-widest text-blue-900 dark:text-blue-300">
+            Dispute Category
+          </p>
+          <p className="font-bold text-lg text-blue-800 dark:text-blue-100">
+            {categoryLabel}
+          </p>
         </div>
       </div>
 
@@ -30,7 +41,8 @@ export default function JurisdictionResultView({ result }: Props) {
       {result.primary && (
         <div className="pt-4 border-t-4 border-black border-dashed">
           <h3 className="text-lg font-black uppercase tracking-widest text-green-700 dark:text-green-400 mb-4 flex items-center gap-3">
-            <CheckCircle2 className="h-6 w-6 stroke-[3px]" /> RECOMMENDED AUTHORITY
+            <CheckCircle2 className="h-6 w-6 stroke-[3px]" /> RECOMMENDED
+            AUTHORITY
           </h3>
           <AuthorityCard
             authority={result.primary.authority}
@@ -40,8 +52,10 @@ export default function JurisdictionResultView({ result }: Props) {
           />
           {result.primary.applicable_law && (
             <div className="mt-4 px-4 py-3 bg-emerald-100 dark:bg-emerald-900/40 border-4 border-emerald-500 text-sm font-bold text-emerald-900 dark:text-emerald-100 shadow-[2px_2px_0px_0px_rgba(16,185,129,1)]">
-              <span className="uppercase tracking-widest">Applicable Law:</span> {result.primary.applicable_law}
-              {result.primary.applicable_section && ` — ${result.primary.applicable_section}`}
+              <span className="uppercase tracking-widest">Applicable Law:</span>{" "}
+              {result.primary.applicable_law}
+              {result.primary.applicable_section &&
+                ` — ${result.primary.applicable_section}`}
             </div>
           )}
         </div>
@@ -76,12 +90,19 @@ export default function JurisdictionResultView({ result }: Props) {
           </h3>
           <div className="space-y-4">
             {result.not_these.map((nt, i) => (
-              <Card key={i} className="card-impact bg-red-50 dark:bg-red-900/20 border-red-500 rounded-none">
+              <Card
+                key={i}
+                className="card-impact bg-red-50 dark:bg-red-900/20 border-red-500 rounded-none"
+              >
                 <CardContent className="p-4 flex items-start gap-4">
                   <AlertTriangle className="h-6 w-6 text-red-600 dark:text-red-400 mt-1 flex-shrink-0 stroke-[3px]" />
                   <div>
-                    <p className="text-base font-black uppercase tracking-widest text-red-800 dark:text-red-300">{nt.authority_name}</p>
-                    <p className="text-sm font-bold text-red-700/80 dark:text-red-200/80 mt-1">{nt.reason_not_applicable}</p>
+                    <p className="text-base font-black uppercase tracking-widest text-red-800 dark:text-red-300">
+                      {nt.authority_name}
+                    </p>
+                    <p className="text-sm font-bold text-red-700/80 dark:text-red-200/80 mt-1">
+                      {nt.reason_not_applicable}
+                    </p>
                   </div>
                 </CardContent>
               </Card>

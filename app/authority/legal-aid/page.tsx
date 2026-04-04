@@ -3,7 +3,8 @@ import LegalAidChecker from "@/components/authority/legal-aid-checker";
 
 export const metadata: Metadata = {
   title: "Free Legal Aid | ClauseWall",
-  description: "Check if you qualify for free legal aid under LSAA 1987. Find DLSA, Tele-Law, and legal aid clinics near you.",
+  description:
+    "Check if you qualify for free legal aid under LSAA 1987. Find DLSA, Tele-Law, and legal aid clinics near you.",
 };
 
 export default function LegalAidPage() {
@@ -15,8 +16,9 @@ export default function LegalAidPage() {
             💗 Free Legal Aid
           </h1>
           <p className="text-muted-foreground font-medium max-w-2xl mx-auto leading-relaxed">
-            Under the Legal Services Authorities Act 1987, eligible Indians can get FREE legal representation.
-            Check your eligibility and find providers near you.
+            Under the Legal Services Authorities Act 1987, eligible Indians can
+            get FREE legal representation. Check your eligibility and find
+            providers near you.
           </p>
         </div>
         <LegalAidChecker />

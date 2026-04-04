@@ -171,10 +171,7 @@ export default function ClauseRewriteModal({
       `Analyze your contracts free at clausewall.vercel.app`,
     ].join("\n");
 
-    window.open(
-      `https://wa.me/?text=${encodeURIComponent(text)}`,
-      "_blank"
-    );
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
   }, [result, clause]);
 
   if (!isOpen || !clause) return null;
@@ -213,7 +210,9 @@ export default function ClauseRewriteModal({
                   <Pencil className="h-5 w-5 text-foreground" />
                 </div>
                 <div>
-                  <h2 className="font-black text-xl uppercase tracking-wider text-foreground">Clause Rewriter</h2>
+                  <h2 className="font-black text-xl uppercase tracking-wider text-foreground">
+                    Clause Rewriter
+                  </h2>
                   <p className="text-[10px] text-muted-foreground font-black uppercase tracking-wider">
                     Clause #{clause.clause_number} •{" "}
                     {clause.clause_type.replace(/_/g, " ")}
@@ -513,8 +512,8 @@ export default function ClauseRewriteModal({
                     transition={{ delay: 1.2 }}
                     className="text-[10px] text-center text-muted-foreground/50 pt-2 border-t border-gray-800"
                   >
-                    AI-generated rewrite for reference. Have a legal professional
-                    review before using in official agreements.
+                    AI-generated rewrite for reference. Have a legal
+                    professional review before using in official agreements.
                   </motion.p>
                 </>
               )}

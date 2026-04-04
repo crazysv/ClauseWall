@@ -2,9 +2,20 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { AlertTriangle, MapPin, FileText, RefreshCw, X, Loader2 } from "lucide-react";
+import {
+  AlertTriangle,
+  MapPin,
+  FileText,
+  RefreshCw,
+  X,
+  Loader2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getStateName, getDocumentTypeLabel, JURISDICTIONS } from "@/lib/utils/constants";
+import {
+  getStateName,
+  getDocumentTypeLabel,
+  JURISDICTIONS,
+} from "@/lib/utils/constants";
 import { toast } from "sonner";
 
 interface MismatchBannerProps {
@@ -29,65 +40,65 @@ export default function MismatchBanner({
   // ── Normalize jurisdiction for comparison ──
   const normalizeJurisdiction = (value: string | null): string | null => {
     if (!value) return null;
-    
+
     const trimmed = value.trim();
-    
+
     // If it's already a code like "IN-KA", normalize to uppercase
     if (trimmed.toUpperCase().startsWith("IN-")) {
       return trimmed.toUpperCase();
     }
-    
+
     // If it's a name like "Karnataka", find the matching code
     const match = JURISDICTIONS.find(
-      (j) => j.label.toLowerCase() === trimmed.toLowerCase()
+      (j) => j.label.toLowerCase() === trimmed.toLowerCase(),
     );
-    
+
     return match?.value || trimmed.toUpperCase();
   };
 
   // ── Normalize document type for comparison ──
   const normalizeDocType = (value: string | null): string | null => {
     if (!value) return null;
-    
+
     const normalized = value.toLowerCase().trim();
-    
+
     // Map common variations to standard values
     const mappings: Record<string, string> = {
-      "rental": "rental",
+      rental: "rental",
       "leave and license": "rental",
       "leave & license": "rental",
       "rent agreement": "rental",
-      "lease": "rental",
-      "employment": "employment",
+      lease: "rental",
+      employment: "employment",
       "offer letter": "employment",
       "job offer": "employment",
       "appointment letter": "employment",
       "terms of service": "tos",
       "terms and conditions": "tos",
       "privacy policy": "tos",
-      "tos": "tos",
-      "loan": "loan",
+      tos: "tos",
+      loan: "loan",
       "loan agreement": "loan",
       "sanction letter": "loan",
-      "freelance": "freelance",
+      freelance: "freelance",
       "service contract": "freelance",
-      "consulting": "freelance",
+      consulting: "freelance",
       "service agreement": "freelance",
-      "sale": "sale",
+      sale: "sale",
       "sale agreement": "sale",
       "sale deed": "sale",
       "agreement to sell": "sale",
-      "partnership": "partnership",
-      "shareholder": "partnership",
+      partnership: "partnership",
+      shareholder: "partnership",
       "shareholder agreement": "partnership",
       "llp agreement": "partnership",
-      "nda": "nda",
+      nda: "nda",
       "non-disclosure": "nda",
       "non-disclosure agreement": "nda",
-      "confidentiality": "nda",
+      confidentiality: "nda",
       "confidentiality agreement": "nda",
     };
-    
+
     return mappings[normalized] || normalized;
   };
 
@@ -95,18 +106,18 @@ export default function MismatchBanner({
   const normalizedSelected = normalizeJurisdiction(selectedJurisdiction);
   const normalizedDetected = normalizeJurisdiction(detectedJurisdiction);
 
-  const hasJurisdictionMismatch = 
-    normalizedDetected !== null && 
+  const hasJurisdictionMismatch =
+    normalizedDetected !== null &&
     normalizedSelected !== null &&
     normalizedDetected !== normalizedSelected;
 
   const normalizedSelectedDocType = normalizeDocType(selectedDocType);
   const normalizedDetectedDocType = normalizeDocType(detectedDocType);
 
-  const hasDocTypeMismatch = 
-    normalizedDetectedDocType !== null && 
+  const hasDocTypeMismatch =
+    normalizedDetectedDocType !== null &&
     normalizedSelectedDocType !== null &&
-    normalizedDetectedDocType !== normalizedSelectedDocType && 
+    normalizedDetectedDocType !== normalizedSelectedDocType &&
     normalizedDetectedDocType !== "other";
 
   // If no mismatch or dismissed, don't render
@@ -122,8 +133,12 @@ export default function MismatchBanner({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           documentId,
-          newJurisdiction: hasJurisdictionMismatch ? normalizedDetected : selectedJurisdiction,
-          newDocumentType: hasDocTypeMismatch ? normalizedDetectedDocType : selectedDocType,
+          newJurisdiction: hasJurisdictionMismatch
+            ? normalizedDetected
+            : selectedJurisdiction,
+          newDocumentType: hasDocTypeMismatch
+            ? normalizedDetectedDocType
+            : selectedDocType,
         }),
       });
 
@@ -137,7 +152,7 @@ export default function MismatchBanner({
         if (hasDocTypeMismatch && detectedDocType) {
           changes.push(getDocumentTypeLabel(normalizedDetectedDocType!));
         }
-        
+
         toast.success(`Re-analyzing with ${changes.join(" + ")}...`);
         router.push(`/analyze/${documentId}`);
       } else {
@@ -210,7 +225,8 @@ export default function MismatchBanner({
           </div>
 
           <p className="text-xs font-bold text-muted-foreground mb-3">
-            Using incorrect settings may result in wrong legal references and risk scores.
+            Using incorrect settings may result in wrong legal references and
+            risk scores.
           </p>
 
           <div className="flex items-center gap-3 flex-wrap">

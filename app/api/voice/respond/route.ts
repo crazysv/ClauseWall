@@ -8,7 +8,10 @@ export async function POST(request: NextRequest) {
     const { question, documentId, clauseId, language } = body;
 
     if (!question) {
-      return NextResponse.json({ error: "question is required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "question is required" },
+        { status: 400 },
+      );
     }
 
     let context: Record<string, any> = {};
@@ -18,7 +21,9 @@ export async function POST(request: NextRequest) {
 
       const { data: doc } = await supabase
         .from("documents")
-        .select("document_type, jurisdiction, overall_risk_score, total_clauses, entity_name, summary")
+        .select(
+          "document_type, jurisdiction, overall_risk_score, total_clauses, entity_name, summary",
+        )
         .eq("id", documentId)
         .single();
 
@@ -50,6 +55,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true, ...result });
   } catch (error) {
     console.error("[ClauseWall] [API] Voice respond failed:", error);
-    return NextResponse.json({ error: "Failed to process voice query" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to process voice query" },
+      { status: 500 },
+    );
   }
 }

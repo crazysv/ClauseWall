@@ -3,13 +3,13 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  FileSearch, 
-  Upload, 
+import {
+  FileSearch,
+  Upload,
   Search,
   FileText,
   ChevronRight,
-  Loader2
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -82,8 +82,9 @@ export default function ShadowLandingPage() {
             </h1>
           </div>
           <p className="text-muted-foreground max-w-xl mx-auto text-lg">
-            Did the broker promise free parking? Did HR promise a bonus over email? 
-            Check if your informal promises match the final formal contract.
+            Did the broker promise free parking? Did HR promise a bonus over
+            email? Check if your informal promises match the final formal
+            contract.
           </p>
         </div>
 
@@ -97,7 +98,8 @@ export default function ShadowLandingPage() {
                 </div>
                 <h3 className="text-xl font-semibold mb-2">New Contract</h3>
                 <p className="text-sm text-white/50 mb-6">
-                  Upload a new formal contract first, then you can add your evidence of promises.
+                  Upload a new formal contract first, then you can add your
+                  evidence of promises.
                 </p>
                 <Link href="/upload" className="w-full">
                   <Button className="w-full bg-blue-600 hover:bg-blue-700 gap-2 shadow-lg shadow-blue-500/20">
@@ -113,9 +115,12 @@ export default function ShadowLandingPage() {
           <div className="md:col-span-2">
             <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] bg-background h-full">
               <CardContent className="p-6">
-                <h3 className="text-xl font-semibold mb-1">Select from Vault</h3>
+                <h3 className="text-xl font-semibold mb-1">
+                  Select from Vault
+                </h3>
                 <p className="text-sm text-white/50 mb-6">
-                  Select a previously analyzed contract to check shadow agreements.
+                  Select a previously analyzed contract to check shadow
+                  agreements.
                 </p>
 
                 {/* Search */}
@@ -142,7 +147,7 @@ export default function ShadowLandingPage() {
                     <p className="text-sm">No analyzed contracts found.</p>
                   </div>
                 ) : filtered.length === 0 ? (
-                   <div className="text-center py-12 text-white/40">
+                  <div className="text-center py-12 text-white/40">
                     <p className="text-sm">No contracts match your search.</p>
                   </div>
                 ) : (
@@ -166,11 +171,14 @@ export default function ShadowLandingPage() {
                                   </div>
                                   <div className="flex-1 min-w-0">
                                     <p className="text-sm font-medium text-white/90 truncate group-hover:text-amber-400 transition-colors">
-                                      {doc.original_filename || "Unnamed Document"}
+                                      {doc.original_filename ||
+                                        "Unnamed Document"}
                                     </p>
                                     <div className="flex items-center gap-2 mt-1">
                                       <span className="text-[10px] text-white/40 capitalize bg-white/5 px-2 py-0.5 rounded-full">
-                                        {(doc.document_type || "unknown").replace(/_/g, " ")}
+                                        {(
+                                          doc.document_type || "unknown"
+                                        ).replace(/_/g, " ")}
                                       </span>
                                       {doc.entity_name && (
                                         <span className="text-[10px] text-white/40 truncate">
@@ -179,9 +187,11 @@ export default function ShadowLandingPage() {
                                       )}
                                     </div>
                                   </div>
-                                  
+
                                   <div className="flex flex-col items-end gap-2">
-                                    <Badge className={`${riskColor} text-[10px] border-0`}>
+                                    <Badge
+                                      className={`${riskColor} text-[10px] border-0`}
+                                    >
                                       Risk: {doc.overall_risk_score}/100
                                     </Badge>
                                     <ChevronRight className="w-4 h-4 text-white/20 group-hover:text-amber-400 group-hover:translate-x-1 transition-all" />

@@ -23,9 +23,12 @@ interface ContractSelectorProps {
 }
 
 const RISK_COLOR = (score: number) => {
-  if (score >= 75) return "text-red-600 dark:text-red-500 border-red-500 bg-red-100 dark:bg-red-950";
-  if (score >= 50) return "text-orange-600 dark:text-orange-500 border-orange-500 bg-orange-100 dark:bg-orange-950";
-  if (score >= 25) return "text-yellow-600 dark:text-yellow-500 border-yellow-500 bg-yellow-100 dark:bg-yellow-950";
+  if (score >= 75)
+    return "text-red-600 dark:text-red-500 border-red-500 bg-red-100 dark:bg-red-950";
+  if (score >= 50)
+    return "text-orange-600 dark:text-orange-500 border-orange-500 bg-orange-100 dark:bg-orange-950";
+  if (score >= 25)
+    return "text-yellow-600 dark:text-yellow-500 border-yellow-500 bg-yellow-100 dark:bg-yellow-950";
   return "text-green-600 dark:text-green-500 border-green-500 bg-green-100 dark:bg-green-950";
 };
 
@@ -73,7 +76,7 @@ export default function ContractSelector({
   const filtered = documents.filter((d) => {
     if (!searchQuery) return true;
     const q = searchQuery.toLowerCase();
-    
+
     // Safely fallback strings to empty if null to prevent crashes
     const filename = (d.original_filename || "Unnamed Document").toLowerCase();
     const docType = (d.document_type || "unknown").toLowerCase();
@@ -97,8 +100,12 @@ export default function ContractSelector({
     return (
       <div className="text-center py-12 border-4 border-black bg-gray-50 dark:bg-zinc-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
         <FileText className="w-12 h-12 mx-auto mb-4 stroke-[3px] text-muted-foreground" />
-        <p className="text-base font-black uppercase tracking-widest text-foreground">NO ANALYZED CONTRACTS FOUND.</p>
-        <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mt-2">UPLOAD AND ANALYZE CONTRACTS FIRST.</p>
+        <p className="text-base font-black uppercase tracking-widest text-foreground">
+          NO ANALYZED CONTRACTS FOUND.
+        </p>
+        <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mt-2">
+          UPLOAD AND ANALYZE CONTRACTS FIRST.
+        </p>
       </div>
     );
   }
@@ -133,7 +140,10 @@ export default function ContractSelector({
 
       {/* Selection count */}
       <p className="text-xs font-black uppercase tracking-widest text-muted-foreground pt-2">
-        <span className="text-foreground bg-white dark:bg-zinc-900 px-2 py-0.5 border-2 border-black inline-block mr-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">{selectedIds.length}</span> OF {documents.length} SELECTED
+        <span className="text-foreground bg-white dark:bg-zinc-900 px-2 py-0.5 border-2 border-black inline-block mr-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+          {selectedIds.length}
+        </span>{" "}
+        OF {documents.length} SELECTED
         {selectedIds.length < 2 && (
           <span className="text-yellow-600 dark:text-yellow-500 ml-3 inline-block px-2 py-0.5 border-2 border-yellow-500 bg-yellow-100 dark:bg-yellow-950 font-bold">
             (MINIMUM 2 REQUIRED)
@@ -171,7 +181,9 @@ export default function ContractSelector({
                         : "border-black bg-white dark:bg-black"
                     }`}
                   >
-                    {isSelected && <Check className="w-4 h-4 text-white dark:text-black stroke-[4px]" />}
+                    {isSelected && (
+                      <Check className="w-4 h-4 text-white dark:text-black stroke-[4px]" />
+                    )}
                   </div>
 
                   {/* Content */}
@@ -185,14 +197,19 @@ export default function ContractSelector({
                       </span>
                       {doc.entity_name && (
                         <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-1">
-                          <span className="text-black dark:text-white font-black">•</span> {doc.entity_name}
+                          <span className="text-black dark:text-white font-black">
+                            •
+                          </span>{" "}
+                          {doc.entity_name}
                         </span>
                       )}
                     </div>
                   </div>
 
                   {/* Risk Badge */}
-                  <Badge className={`${riskColor} text-[10px] font-black uppercase tracking-widest border-2 rounded-none px-2 py-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]`}>
+                  <Badge
+                    className={`${riskColor} text-[10px] font-black uppercase tracking-widest border-2 rounded-none px-2 py-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]`}
+                  >
                     {doc.overall_risk_score}/100
                   </Badge>
                 </CardContent>

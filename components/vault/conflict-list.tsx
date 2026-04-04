@@ -126,7 +126,11 @@ export default function ConflictList({ conflicts }: ConflictListProps) {
               }`}
             >
               {f === "all" ? "ALL" : f.toUpperCase()}{" "}
-              <span className={isActive ? "opacity-80" : "text-muted-foreground"}>({count})</span>
+              <span
+                className={isActive ? "opacity-80" : "text-muted-foreground"}
+              >
+                ({count})
+              </span>
             </button>
           );
         })}
@@ -153,12 +157,18 @@ export default function ConflictList({ conflicts }: ConflictListProps) {
                 <CardContent className="p-6">
                   {/* Header */}
                   <div className="flex items-start gap-4">
-                    <div className={`p-3 border-4 border-black bg-white dark:bg-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]`}>
-                      <Icon className={`w-5 h-5 ${config.color} stroke-[3px]`} />
+                    <div
+                      className={`p-3 border-4 border-black bg-white dark:bg-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]`}
+                    >
+                      <Icon
+                        className={`w-5 h-5 ${config.color} stroke-[3px]`}
+                      />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-3 mb-2 flex-wrap">
-                        <Badge className={`px-2 py-0.5 border-2 border-black rounded-none shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] ${config.bg} ${config.color} font-black uppercase tracking-widest text-[10px]`}>
+                        <Badge
+                          className={`px-2 py-0.5 border-2 border-black rounded-none shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] ${config.bg} ${config.color} font-black uppercase tracking-widest text-[10px]`}
+                        >
                           {config.label}
                         </Badge>
                         <span className="text-xs font-black uppercase tracking-widest text-muted-foreground bg-white dark:bg-black px-2 py-0.5 border-2 border-black">
@@ -180,7 +190,8 @@ export default function ConflictList({ conflicts }: ConflictListProps) {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
                     <div className="border-4 border-black bg-white dark:bg-zinc-900 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                       <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-3 flex items-center gap-2 border-b-2 border-black pb-2">
-                        <span className="text-black dark:text-white">📄</span> {conflict.document_a_title}
+                        <span className="text-black dark:text-white">📄</span>{" "}
+                        {conflict.document_a_title}
                       </p>
                       <p className="text-sm font-bold uppercase tracking-widest text-foreground leading-relaxed line-clamp-3">
                         {conflict.document_a_clause || "—"}
@@ -188,7 +199,8 @@ export default function ConflictList({ conflicts }: ConflictListProps) {
                     </div>
                     <div className="border-4 border-black bg-white dark:bg-zinc-900 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                       <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-3 flex items-center gap-2 border-b-2 border-black pb-2">
-                        <span className="text-black dark:text-white">📄</span> {conflict.document_b_title}
+                        <span className="text-black dark:text-white">📄</span>{" "}
+                        {conflict.document_b_title}
                       </p>
                       <p className="text-sm font-bold uppercase tracking-widest text-foreground leading-relaxed line-clamp-3">
                         {conflict.document_b_clause || "—"}
@@ -227,7 +239,10 @@ export default function ConflictList({ conflicts }: ConflictListProps) {
                           {/* Legal Citation */}
                           {conflict.legal_citation && (
                             <p className="text-xs font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-                              <span className="p-1 border-2 border-black bg-gray-100 dark:bg-zinc-800">📜</span> {conflict.legal_citation}
+                              <span className="p-1 border-2 border-black bg-gray-100 dark:bg-zinc-800">
+                                📜
+                              </span>{" "}
+                              {conflict.legal_citation}
                             </p>
                           )}
 
@@ -248,7 +263,9 @@ export default function ConflictList({ conflicts }: ConflictListProps) {
                             conflict.financial_risk > 0 && (
                               <p className="text-base font-black uppercase tracking-widest text-red-600 dark:text-red-400 inline-block px-4 py-2 border-4 border-red-500 bg-red-100 dark:bg-red-950 shadow-[4px_4px_0px_0px_rgba(239,68,68,1)]">
                                 💰 FINANCIAL RISK: ₹
-                                {conflict.financial_risk.toLocaleString("en-IN")}
+                                {conflict.financial_risk.toLocaleString(
+                                  "en-IN",
+                                )}
                               </p>
                             )}
                         </div>

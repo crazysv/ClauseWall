@@ -19,7 +19,8 @@ export default function CompanyGrid({
 
   const filtered = companies.filter((c) => {
     if (sector !== "all" && c.sector !== sector) return false;
-    if (search && !c.name.toLowerCase().includes(search.toLowerCase())) return false;
+    if (search && !c.name.toLowerCase().includes(search.toLowerCase()))
+      return false;
     return true;
   });
 
@@ -41,7 +42,13 @@ export default function CompanyGrid({
       {filtered.length === 0 ? (
         <div className="text-center py-12 text-muted-foreground">
           <p>No companies match your filters.</p>
-          <button onClick={() => { setSector("all"); setSearch(""); }} className="text-blue-400 text-sm mt-2 hover:underline">
+          <button
+            onClick={() => {
+              setSector("all");
+              setSearch("");
+            }}
+            className="text-blue-400 text-sm mt-2 hover:underline"
+          >
             Clear filters
           </button>
         </div>

@@ -36,7 +36,8 @@ function getScoreRingColor(score: number): string {
 }
 
 export function TrapSummaryBar({ result }: Props) {
-  const { traps, combined_trap_score, trap_density, most_dangerous_trap } = result;
+  const { traps, combined_trap_score, trap_density, most_dangerous_trap } =
+    result;
 
   // Count by severity
   const severityCounts = traps.reduce(
@@ -44,7 +45,7 @@ export function TrapSummaryBar({ result }: Props) {
       acc[t.severity] = (acc[t.severity] || 0) + 1;
       return acc;
     },
-    {} as Record<string, number>
+    {} as Record<string, number>,
   );
 
   // Average risk amplification
@@ -56,7 +57,8 @@ export function TrapSummaryBar({ result }: Props) {
   // SVG circular gauge
   const radius = 20;
   const circumference = 2 * Math.PI * radius;
-  const dashOffset = circumference - (combined_trap_score / 100) * circumference;
+  const dashOffset =
+    circumference - (combined_trap_score / 100) * circumference;
 
   return (
     <motion.div
@@ -66,7 +68,12 @@ export function TrapSummaryBar({ result }: Props) {
     >
       {/* Combined Trap Score */}
       <div className="bg-white/[0.03] border border-white/5 rounded-xl p-3 flex items-center gap-3">
-        <svg width="50" height="50" viewBox="0 0 50 50" className="flex-shrink-0">
+        <svg
+          width="50"
+          height="50"
+          viewBox="0 0 50 50"
+          className="flex-shrink-0"
+        >
           <circle
             cx="25"
             cy="25"
@@ -98,8 +105,12 @@ export function TrapSummaryBar({ result }: Props) {
           </text>
         </svg>
         <div>
-          <p className="text-[10px] text-white/30 uppercase tracking-wider">Trap Score</p>
-          <p className={`text-xs font-medium ${getScoreColor(combined_trap_score)}`}>
+          <p className="text-[10px] text-white/30 uppercase tracking-wider">
+            Trap Score
+          </p>
+          <p
+            className={`text-xs font-medium ${getScoreColor(combined_trap_score)}`}
+          >
             {getScoreLabel(combined_trap_score)}
           </p>
         </div>
@@ -111,13 +122,15 @@ export function TrapSummaryBar({ result }: Props) {
           By Severity
         </p>
         <div className="space-y-0.5">
-          {(["devastating", "severe", "moderate", "minor"] as TrapSeverity[]).map(
+          {(
+            ["devastating", "severe", "moderate", "minor"] as TrapSeverity[]
+          ).map(
             (sev) =>
               (severityCounts[sev] || 0) > 0 && (
                 <p key={sev} className={`text-xs ${SEVERITY_COLORS[sev]}`}>
                   {severityCounts[sev]} {sev}
                 </p>
-              )
+              ),
           )}
         </div>
       </div>

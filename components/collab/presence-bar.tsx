@@ -42,7 +42,8 @@ export default function PresenceBar({
         <div className="flex items-center gap-1.5">
           <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
           <span className="text-xs text-gray-400">
-            {participants.length} {participants.length === 1 ? "person" : "people"} viewing
+            {participants.length}{" "}
+            {participants.length === 1 ? "person" : "people"} viewing
           </span>
         </div>
       </div>
@@ -50,7 +51,9 @@ export default function PresenceBar({
       {/* Room Code */}
       <div className="flex items-center gap-2">
         <span className="text-[10px] text-gray-600">Room</span>
-        <span className="text-xs font-mono font-bold text-blue-400">{roomCode}</span>
+        <span className="text-xs font-mono font-bold text-blue-400">
+          {roomCode}
+        </span>
       </div>
     </div>
   );

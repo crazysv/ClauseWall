@@ -3,7 +3,11 @@
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import type { PercentileData } from "@/lib/simulation/types";
-import { formatINRCompact, getPercentileLabel, getPercentileColor } from "@/lib/simulation/formatters";
+import {
+  formatINRCompact,
+  getPercentileLabel,
+  getPercentileColor,
+} from "@/lib/simulation/formatters";
 
 interface Props {
   percentiles: PercentileData;
@@ -30,7 +34,10 @@ export default function PercentileCards({ percentiles }: Props) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
           >
-            <div className={`p-4 text-center border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all`} style={{ borderTopWidth: "8px", borderTopColor: color.fill }}>
+            <div
+              className={`p-4 text-center border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all`}
+              style={{ borderTopWidth: "8px", borderTopColor: color.fill }}
+            >
               <p className="text-xs text-black font-black uppercase tracking-widest mb-2">
                 {p.label}
               </p>

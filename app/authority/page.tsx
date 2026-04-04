@@ -4,7 +4,8 @@ import AuthoritySearchBar from "@/components/authority/authority-search-bar";
 
 export const metadata: Metadata = {
   title: "Find Legal Authority | ClauseWall",
-  description: "Find the right legal authority for your dispute. Jurisdiction-aware routing to consumer forums, RERA, labour courts, RBI ombudsman, and more.",
+  description:
+    "Find the right legal authority for your dispute. Jurisdiction-aware routing to consumer forums, RERA, labour courts, RBI ombudsman, and more.",
 };
 
 export default function AuthorityPage() {
@@ -16,14 +17,18 @@ export default function AuthorityPage() {
             ⚖️ Find Your Legal Authority
           </h1>
           <p className="text-muted-foreground font-medium max-w-2xl mx-auto leading-relaxed">
-            Answer a few questions and we&apos;ll tell you exactly where to file your complaint — which authority, which form, what fees, and what documents you need.
+            Answer a few questions and we&apos;ll tell you exactly where to file
+            your complaint — which authority, which form, what fees, and what
+            documents you need.
           </p>
         </div>
 
         <AuthorityFinder />
 
         <div className="mt-16 pt-8 border-t-4 border-black">
-          <h2 className="text-impact-subheading mb-6">🔍 Search Authorities Directly</h2>
+          <h2 className="text-impact-subheading mb-6">
+            🔍 Search Authorities Directly
+          </h2>
           <AuthoritySearchBar />
         </div>
       </div>

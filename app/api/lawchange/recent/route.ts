@@ -17,9 +17,9 @@ export async function GET(request: NextRequest) {
     const type = searchParams.get("type");
     const jurisdiction = searchParams.get("jurisdiction");
 
-    const cutoffDate = new Date(
-      Date.now() - days * 24 * 60 * 60 * 1000
-    ).toISOString().split("T")[0];
+    const cutoffDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000)
+      .toISOString()
+      .split("T")[0];
 
     let query = supabase
       .from("law_changes")
@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     return NextResponse.json(
       { error: (error as Error).message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

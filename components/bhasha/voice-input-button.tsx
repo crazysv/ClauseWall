@@ -10,7 +10,11 @@ interface VoiceInputButtonProps {
   onError?: (error: string) => void;
 }
 
-export function VoiceInputButton({ language, onTranscription, onError }: VoiceInputButtonProps) {
+export function VoiceInputButton({
+  language,
+  onTranscription,
+  onError,
+}: VoiceInputButtonProps) {
   const [isRecording, setIsRecording] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -20,7 +24,9 @@ export function VoiceInputButton({ language, onTranscription, onError }: VoiceIn
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
+      const mediaRecorder = new MediaRecorder(stream, {
+        mimeType: "audio/webm",
+      });
       mediaRecorderRef.current = mediaRecorder;
       chunksRef.current = [];
 
@@ -31,7 +37,7 @@ export function VoiceInputButton({ language, onTranscription, onError }: VoiceIn
       };
 
       mediaRecorder.onstop = async () => {
-        stream.getTracks().forEach(track => track.stop());
+        stream.getTracks().forEach((track) => track.stop());
         const audioBlob = new Blob(chunksRef.current, { type: "audio/webm" });
 
         setIsProcessing(true);
@@ -86,7 +92,11 @@ export function VoiceInputButton({ language, onTranscription, onError }: VoiceIn
     >
       {isProcessing ? "⏳" : isRecording ? "⏹" : "🎤"}
       <span className="bhasha-voice-label">
-        {isProcessing ? "Processing..." : isRecording ? "Listening..." : config.nativeName}
+        {isProcessing
+          ? "Processing..."
+          : isRecording
+            ? "Listening..."
+            : config.nativeName}
       </span>
 
       <style jsx>{`
@@ -121,8 +131,13 @@ export function VoiceInputButton({ language, onTranscription, onError }: VoiceIn
           color: rgba(255, 255, 255, 0.5);
         }
         @keyframes bhasha-record-pulse {
-          0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.3); }
-          50% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+          0%,
+          100% {
+            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.3);
+          }
+          50% {
+            box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
+          }
         }
       `}</style>
     </button>

@@ -4,7 +4,10 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Loader2, Plus, X } from "lucide-react";
-import type { LifeEventType, StressScenarioEvent } from "@/lib/simulation/types";
+import type {
+  LifeEventType,
+  StressScenarioEvent,
+} from "@/lib/simulation/types";
 import { LIFE_EVENT_LABELS } from "@/lib/simulation/stress-test-engine";
 
 interface Props {
@@ -33,7 +36,10 @@ export default function StressTestBuilder({
   const [selectedMonth, setSelectedMonth] = useState(6);
 
   const addEvent = () => {
-    setEvents((prev) => [...prev, { type: selectedType, month: selectedMonth }]);
+    setEvents((prev) => [
+      ...prev,
+      { type: selectedType, month: selectedMonth },
+    ]);
   };
 
   const removeEvent = (index: number) => {
@@ -43,7 +49,8 @@ export default function StressTestBuilder({
   return (
     <div className="card-impact p-6 bg-white border-4 border-black">
       <h4 className="text-lg font-black uppercase tracking-tight mb-6 flex items-center gap-2 text-black">
-        <span className="p-1 bg-black text-white">🎯</span> Custom Scenario Builder
+        <span className="p-1 bg-black text-white">🎯</span> Custom Scenario
+        Builder
       </h4>
 
       {/* Event selector */}
@@ -61,7 +68,9 @@ export default function StressTestBuilder({
         </select>
 
         <div className="flex items-center gap-3">
-          <span className="text-xs font-black uppercase tracking-widest text-black/50">Month</span>
+          <span className="text-xs font-black uppercase tracking-widest text-black/50">
+            Month
+          </span>
           <input
             type="number"
             value={selectedMonth}
@@ -69,7 +78,10 @@ export default function StressTestBuilder({
             max={contractMonths}
             onChange={(e) =>
               setSelectedMonth(
-                Math.min(contractMonths, Math.max(1, parseInt(e.target.value) || 1))
+                Math.min(
+                  contractMonths,
+                  Math.max(1, parseInt(e.target.value) || 1),
+                ),
               )
             }
             className="w-20 px-3 py-3 border-4 border-black rounded-none text-sm font-bold text-center text-black focus:outline-none focus:ring-0 focus:border-red-600 transition-colors"

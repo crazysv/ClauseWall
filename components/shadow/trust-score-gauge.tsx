@@ -8,12 +8,43 @@ interface TrustScoreGaugeProps {
   totalMismatches: number;
 }
 
-export default function TrustScoreGauge({ score, totalPromises, totalMismatches }: TrustScoreGaugeProps) {
+export default function TrustScoreGauge({
+  score,
+  totalPromises,
+  totalMismatches,
+}: TrustScoreGaugeProps) {
   const getColor = (s: number) => {
-    if (s >= 80) return { stroke: "#16a34a", glow: "transparent", label: "PROMISES MOSTLY KEPT", labelColor: "text-green-700 bg-green-100 border-2 border-green-600 block px-2 py-1 mt-2" };
-    if (s >= 50) return { stroke: "#ca8a04", glow: "transparent", label: "SOME PROMISES BROKEN", labelColor: "text-yellow-700 bg-yellow-100 border-2 border-yellow-500 block px-2 py-1 mt-2" };
-    if (s >= 20) return { stroke: "#ea580c", glow: "transparent", label: "MANY PROMISES BROKEN", labelColor: "text-orange-700 bg-orange-100 border-2 border-orange-500 block px-2 py-1 mt-2" };
-    return { stroke: "#dc2626", glow: "transparent", label: "MOST PROMISES CONTRADICTED", labelColor: "text-red-700 bg-red-100 border-2 border-red-600 block px-2 py-1 mt-2" };
+    if (s >= 80)
+      return {
+        stroke: "#16a34a",
+        glow: "transparent",
+        label: "PROMISES MOSTLY KEPT",
+        labelColor:
+          "text-green-700 bg-green-100 border-2 border-green-600 block px-2 py-1 mt-2",
+      };
+    if (s >= 50)
+      return {
+        stroke: "#ca8a04",
+        glow: "transparent",
+        label: "SOME PROMISES BROKEN",
+        labelColor:
+          "text-yellow-700 bg-yellow-100 border-2 border-yellow-500 block px-2 py-1 mt-2",
+      };
+    if (s >= 20)
+      return {
+        stroke: "#ea580c",
+        glow: "transparent",
+        label: "MANY PROMISES BROKEN",
+        labelColor:
+          "text-orange-700 bg-orange-100 border-2 border-orange-500 block px-2 py-1 mt-2",
+      };
+    return {
+      stroke: "#dc2626",
+      glow: "transparent",
+      label: "MOST PROMISES CONTRADICTED",
+      labelColor:
+        "text-red-700 bg-red-100 border-2 border-red-600 block px-2 py-1 mt-2",
+    };
   };
 
   const { stroke, label, labelColor } = getColor(score);
@@ -26,7 +57,10 @@ export default function TrustScoreGauge({ score, totalPromises, totalMismatches 
   return (
     <div className="flex flex-col items-center justify-center p-6 bg-white w-full">
       <div className="relative w-40 h-40">
-        <svg className="w-full h-full -rotate-90 drop-shadow-[4px_4px_0px_rgba(0,0,0,1)]" viewBox="0 0 120 120">
+        <svg
+          className="w-full h-full -rotate-90 drop-shadow-[4px_4px_0px_rgba(0,0,0,1)]"
+          viewBox="0 0 120 120"
+        >
           {/* Background circle */}
           <circle
             cx="60"
@@ -71,14 +105,22 @@ export default function TrustScoreGauge({ score, totalPromises, totalMismatches 
           >
             {score}
           </motion.span>
-          <span className="text-[10px] font-black uppercase tracking-widest text-black/60 bg-gray-200 mt-1 px-1">Trust Score</span>
+          <span className="text-[10px] font-black uppercase tracking-widest text-black/60 bg-gray-200 mt-1 px-1">
+            Trust Score
+          </span>
         </div>
       </div>
 
       <div className="mt-6 text-center w-full">
-        <span className={`text-xs font-black uppercase tracking-widest ${labelColor}`}>{label}</span>
+        <span
+          className={`text-xs font-black uppercase tracking-widest ${labelColor}`}
+        >
+          {label}
+        </span>
         <p className="text-xs font-bold uppercase tracking-widest text-black/60 mt-3 p-2 border-2 border-black border-dashed bg-gray-50">
-          <strong className="text-black">{totalMismatches}</strong> of <strong className="text-black">{totalPromises}</strong> promises don&apos;t match contract
+          <strong className="text-black">{totalMismatches}</strong> of{" "}
+          <strong className="text-black">{totalPromises}</strong> promises
+          don&apos;t match contract
         </p>
       </div>
     </div>

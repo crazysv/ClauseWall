@@ -83,7 +83,8 @@ export function TextCorrectionModal({
           {/* Editable */}
           <div className="flex flex-col overflow-hidden">
             <p className="text-xs font-medium text-gray-500 mb-2">
-              Corrected Text {hasChanges && (
+              Corrected Text{" "}
+              {hasChanges && (
                 <span className="text-indigo-400 ml-1">
                   ({changeCount} change{changeCount !== 1 ? "s" : ""})
                 </span>

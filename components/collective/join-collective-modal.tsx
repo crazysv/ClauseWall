@@ -46,7 +46,7 @@ export default function JoinCollectiveModal({
       }
 
       toast.success(
-        `Joined collective as "${data.anonymous_id}". Your identity is fully anonymous.`
+        `Joined collective as "${data.anonymous_id}". Your identity is fully anonymous.`,
       );
       onJoined();
     } catch (error) {
@@ -110,7 +110,10 @@ export default function JoinCollectiveModal({
                   <ul className="text-[11px] text-green-300/70 space-y-1">
                     <li>• You'll receive a random anonymous identity</li>
                     <li>• No member can see your name, email, or documents</li>
-                    <li>• Only aggregate data is shared (total flags, common violations)</li>
+                    <li>
+                      • Only aggregate data is shared (total flags, common
+                      violations)
+                    </li>
                     <li>• You can leave at any time</li>
                   </ul>
                 </div>
@@ -145,7 +148,9 @@ export default function JoinCollectiveModal({
                 <div className="flex items-center gap-2">
                   <Shield className="h-4 w-4 text-white/30" />
                   <div>
-                    <p className="text-xs text-white">Opt-in for legal action</p>
+                    <p className="text-xs text-white">
+                      Opt-in for legal action
+                    </p>
                     <p className="text-[10px] text-white/30">
                       Be included in collective legal notices (can change later)
                     </p>

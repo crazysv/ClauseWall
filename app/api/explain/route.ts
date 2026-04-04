@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     if (!clauseText && !explanation) {
       return NextResponse.json(
         { error: "Clause text or explanation required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -63,7 +63,7 @@ Generate a simple English (ELI5) and Hindi explanation.`;
         { role: "system", content: EXPLAIN_PROMPT },
         { role: "user", content: userMessage },
       ],
-      { temperature: 0.3, maxTokens: 1024 }
+      { temperature: 0.3, maxTokens: 1024 },
     );
 
     let parsed;
@@ -76,14 +76,15 @@ Generate a simple English (ELI5) and Hindi explanation.`;
     }
 
     return NextResponse.json({
-      simple_english: parsed.simple_english || "Could not generate simple explanation.",
+      simple_english:
+        parsed.simple_english || "Could not generate simple explanation.",
       hindi: parsed.hindi || "सरल व्याख्या उपलब्ध नहीं है।",
     });
   } catch (error) {
     console.error("[ClauseWall] Explain API error:", error);
     return NextResponse.json(
       { error: (error as Error).message || "Explanation failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

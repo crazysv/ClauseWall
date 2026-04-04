@@ -26,11 +26,11 @@ const TYPE_COLORS: Record<string, string> = {
 
 export default function LegalAidCard({ org }: Props) {
   return (
-    <Card className="border-white/5 bg-white/[0.02] hover:bg-white/[0.03] transition-colors">
+    <Card className="border-foreground border-2 bg-white/[0.02] hover:bg-white/[0.03] transition-colors">
       <CardContent className="p-4">
         <div className="flex items-start justify-between gap-3 mb-2">
           <div>
-            <h4 className="text-sm font-medium text-white">{org.name}</h4>
+            <h4 className="text-sm font-medium text-foreground">{org.name}</h4>
             <div className="flex items-center gap-2 mt-1">
               <Badge className={`text-[9px] ${TYPE_COLORS[org.type] || ""}`}>
                 {org.type.replace("_", " ")}
@@ -44,7 +44,7 @@ export default function LegalAidCard({ org }: Props) {
             </div>
           </div>
           {org.coverage && (
-            <span className="text-[10px] text-white/30 flex items-center gap-1">
+            <span className="text-[10px] text-foreground/30 flex items-center gap-1">
               <MapPin className="h-3 w-3" />
               {org.coverage}
             </span>
@@ -52,7 +52,7 @@ export default function LegalAidCard({ org }: Props) {
         </div>
 
         {org.description && (
-          <p className="text-[11px] text-white/40 mb-3 line-clamp-2">
+          <p className="text-[11px] text-foreground/40 mb-3 line-clamp-2">
             {org.description}
           </p>
         )}
@@ -63,13 +63,13 @@ export default function LegalAidCard({ org }: Props) {
             {org.services.slice(0, 4).map((service, i) => (
               <span
                 key={i}
-                className="text-[9px] px-1.5 py-0.5 rounded bg-white/[0.03] text-white/30"
+                className="text-[9px] px-1.5 py-0.5 rounded bg-white/[0.03] text-foreground/30"
               >
                 {service}
               </span>
             ))}
             {org.services.length > 4 && (
-              <span className="text-[9px] text-white/20">
+              <span className="text-[9px] text-foreground/20">
                 +{org.services.length - 4} more
               </span>
             )}
@@ -111,7 +111,7 @@ export default function LegalAidCard({ org }: Props) {
         </div>
 
         {org.eligibility && (
-          <p className="text-[9px] text-white/20 mt-2 italic">
+          <p className="text-[9px] text-foreground/20 mt-2 italic">
             Eligibility: {org.eligibility}
           </p>
         )}

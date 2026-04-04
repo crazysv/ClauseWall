@@ -2,7 +2,16 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Loader2, FileText, Gavel, FileSearch, Newspaper, Building2, Handshake } from "lucide-react";
+import {
+  X,
+  Loader2,
+  FileText,
+  Gavel,
+  FileSearch,
+  Newspaper,
+  Building2,
+  Handshake,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import type { CollectiveActionType } from "@/types";
@@ -62,7 +71,9 @@ export default function ProposeActionModal({
   onClose,
   onProposed,
 }: Props) {
-  const [selectedType, setSelectedType] = useState<CollectiveActionType | null>(null);
+  const [selectedType, setSelectedType] = useState<CollectiveActionType | null>(
+    null,
+  );
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [proposing, setProposing] = useState(false);
@@ -116,11 +127,13 @@ export default function ProposeActionModal({
           exit={{ opacity: 0, scale: 0.95 }}
           className="relative w-full max-w-lg rounded-none bg-background border-4 border-foreground shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden max-h-[90vh] overflow-y-auto"
         >
-          <div className="p-5 border-b border-white/5 flex items-center justify-between">
-            <h3 className="font-semibold text-white">Propose Collective Action</h3>
+          <div className="p-5 border-b border-foreground border-2 flex items-center justify-between">
+            <h3 className="font-semibold text-foreground">
+              Propose Collective Action
+            </h3>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-white/30 hover:text-white/60 hover:bg-white/5"
+              className="p-1.5 rounded-lg text-foreground/30 hover:text-foreground/60 hover:bg-muted"
             >
               <X className="h-4 w-4" />
             </button>
@@ -129,7 +142,7 @@ export default function ProposeActionModal({
           <div className="p-5 space-y-4">
             {/* Action type selection */}
             <div>
-              <label className="text-xs text-white/40 mb-2 block">
+              <label className="text-xs text-foreground/40 mb-2 block">
                 Action Type
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -137,11 +150,7 @@ export default function ProposeActionModal({
                   <button
                     key={at.type}
                     onClick={() => setSelectedType(at.type)}
-                    className={`flex items-start gap-2 p-3 rounded-none border-2 text-left transition-all hover:-translate-y-1 hover:shadow-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${
-                      selectedType === at.type
-                        ? "border-foreground bg-amber-300 text-black"
-                        : "border-foreground bg-muted text-foreground"
-                    }`}
+                    className={`flex items-start gap-2 p-3 rounded-none border-2 text-left transition-all hover:-translate-y-1 hover:shadow-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${selectedType === at.type ? "border-foreground bg-amber-300 text-black" : "border-foreground bg-muted text-foreground"}`}
                   >
                     <span
                       className={
@@ -153,10 +162,12 @@ export default function ProposeActionModal({
                       {at.icon}
                     </span>
                     <div>
-                      <p className="text-[11px] font-medium text-white">
+                      <p className="text-[11px] font-medium text-foreground">
                         {at.label}
                       </p>
-                      <p className="text-[9px] text-white/30">{at.description}</p>
+                      <p className="text-[9px] text-foreground/30">
+                        {at.description}
+                      </p>
                     </div>
                   </button>
                 ))}
@@ -165,7 +176,7 @@ export default function ProposeActionModal({
 
             {/* Title */}
             <div>
-              <label className="text-xs text-white/40 mb-1.5 block">
+              <label className="text-xs text-foreground/40 mb-1.5 block">
                 Title
               </label>
               <input
@@ -173,14 +184,14 @@ export default function ProposeActionModal({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g., Demand refund for delayed possession"
-                className="w-full px-3 py-2 text-xs bg-white/[0.03] border border-white/10 rounded-lg text-white placeholder:text-white/20 focus:outline-none focus:border-amber-500/30"
+                className="w-full px-3 py-2 text-xs bg-white/[0.03] border border-foreground border-2 rounded-lg text-foreground placeholder:text-foreground/20 focus:outline-none focus:border-amber-500/30"
                 maxLength={200}
               />
             </div>
 
             {/* Description */}
             <div>
-              <label className="text-xs text-white/40 mb-1.5 block">
+              <label className="text-xs text-foreground/40 mb-1.5 block">
                 Description (optional)
               </label>
               <textarea
@@ -188,7 +199,7 @@ export default function ProposeActionModal({
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Explain why this action is needed and what you hope to achieve..."
                 rows={3}
-                className="w-full px-3 py-2 text-xs bg-white/[0.03] border border-white/10 rounded-lg text-white placeholder:text-white/20 focus:outline-none focus:border-amber-500/30 resize-none"
+                className="w-full px-3 py-2 text-xs bg-white/[0.03] border border-foreground border-2 rounded-lg text-foreground placeholder:text-foreground/20 focus:outline-none focus:border-amber-500/30 resize-none"
                 maxLength={1000}
               />
             </div>

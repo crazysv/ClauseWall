@@ -14,7 +14,12 @@ import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
 import { generateVideoCard } from "@/lib/utils/video-card";
 import { downloadDataUrl } from "@/lib/utils/share";
-import { getRiskLevel, getStateName, getDocumentTypeLabel, RISK_LABELS } from "@/lib/utils/constants";
+import {
+  getRiskLevel,
+  getStateName,
+  getDocumentTypeLabel,
+  RISK_LABELS,
+} from "@/lib/utils/constants";
 import type { Document, Clause } from "@/types";
 
 interface VideoCardModalProps {
@@ -25,7 +30,13 @@ interface VideoCardModalProps {
   verificationRate: number;
 }
 
-export default function VideoCardModal({ isOpen, onClose, document: doc, clauses, verificationRate }: VideoCardModalProps) {
+export default function VideoCardModal({
+  isOpen,
+  onClose,
+  document: doc,
+  clauses,
+  verificationRate,
+}: VideoCardModalProps) {
   const [generating, setGenerating] = useState(false);
   const [progress, setProgress] = useState(0);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
@@ -33,9 +44,11 @@ export default function VideoCardModal({ isOpen, onClose, document: doc, clauses
   const riskLevel = getRiskLevel(doc.overall_risk_score);
   const riskLabel = RISK_LABELS[riskLevel];
 
-  const topRedFlag = clauses
-    .filter((c) => c.risk_level === "illegal" || c.risk_level === "dangerous")
-    .sort((a, b) => (b.risk_score || 0) - (a.risk_score || 0))[0]?.explanation || null;
+  const topRedFlag =
+    clauses
+      .filter((c) => c.risk_level === "illegal" || c.risk_level === "dangerous")
+      .sort((a, b) => (b.risk_score || 0) - (a.risk_score || 0))[0]
+      ?.explanation || null;
 
   const handleGenerate = async () => {
     setGenerating(true);
@@ -43,18 +56,21 @@ export default function VideoCardModal({ isOpen, onClose, document: doc, clauses
     setVideoUrl(null);
 
     try {
-      const blob = await generateVideoCard({
-        score: doc.overall_risk_score,
-        riskLabel,
-        documentType: getDocumentTypeLabel(doc.document_type),
-        jurisdiction: getStateName(doc.jurisdiction),
-        illegalCount: doc.illegal_count,
-        dangerousCount: doc.dangerous_count,
-        warningCount: doc.warning_count,
-        safeCount: doc.safe_count,
-        topRedFlag,
-        verificationRate,
-      }, setProgress);
+      const blob = await generateVideoCard(
+        {
+          score: doc.overall_risk_score,
+          riskLabel,
+          documentType: getDocumentTypeLabel(doc.document_type),
+          jurisdiction: getStateName(doc.jurisdiction),
+          illegalCount: doc.illegal_count,
+          dangerousCount: doc.dangerous_count,
+          warningCount: doc.warning_count,
+          safeCount: doc.safe_count,
+          topRedFlag,
+          verificationRate,
+        },
+        setProgress,
+      );
 
       const url = URL.createObjectURL(blob);
       setVideoUrl(url);
@@ -103,9 +119,16 @@ export default function VideoCardModal({ isOpen, onClose, document: doc, clauses
           ) : generating ? (
             <div className="w-full max-w-xs space-y-4 text-center py-8">
               <Loader2 className="h-10 w-10 text-foreground animate-spin mx-auto" />
-              <p className="text-sm font-black uppercase tracking-wider text-muted-foreground">Rendering video...</p>
-              <Progress value={progress} className="h-2 border-2 border-foreground bg-muted [&>div]:bg-foreground" />
-              <p className="text-xs font-bold text-muted-foreground">{progress}%</p>
+              <p className="text-sm font-black uppercase tracking-wider text-muted-foreground">
+                Rendering video...
+              </p>
+              <Progress
+                value={progress}
+                className="h-2 border-2 border-foreground bg-muted [&>div]:bg-foreground"
+              />
+              <p className="text-xs font-bold text-muted-foreground">
+                {progress}%
+              </p>
             </div>
           ) : (
             <div
@@ -116,8 +139,12 @@ export default function VideoCardModal({ isOpen, onClose, document: doc, clauses
               <div className="h-16 w-16 border-2 border-foreground bg-background card-impact flex items-center justify-center">
                 <Play className="h-8 w-8 text-foreground ml-1" />
               </div>
-              <p className="text-sm text-foreground font-black uppercase tracking-wider">Click to generate animated video</p>
-              <p className="text-xs text-muted-foreground font-bold">~4 second animation • WebM format</p>
+              <p className="text-sm text-foreground font-black uppercase tracking-wider">
+                Click to generate animated video
+              </p>
+              <p className="text-xs text-muted-foreground font-bold">
+                ~4 second animation • WebM format
+              </p>
             </div>
           )}
         </div>
@@ -126,17 +153,27 @@ export default function VideoCardModal({ isOpen, onClose, document: doc, clauses
         <div className="flex gap-2">
           {videoUrl ? (
             <>
-              <button onClick={handleDownload} className="flex items-center justify-center gap-2 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors flex-1">
+              <button
+                onClick={handleDownload}
+                className="flex items-center justify-center gap-2 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors flex-1"
+              >
                 <Download className="h-4 w-4" />
                 Download Video
               </button>
-              <button onClick={handleGenerate} disabled={generating} className="flex items-center justify-center gap-2 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors">
+              <button
+                onClick={handleGenerate}
+                disabled={generating}
+                className="flex items-center justify-center gap-2 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors"
+              >
                 <Play className="h-4 w-4" />
                 Regenerate
               </button>
             </>
           ) : !generating ? (
-            <button onClick={handleGenerate} className="flex items-center justify-center gap-2 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors w-full">
+            <button
+              onClick={handleGenerate}
+              className="flex items-center justify-center gap-2 button text-impact-heading bg-muted border-foreground text-foreground hover:bg-foreground hover:text-background transition-colors w-full"
+            >
               <Video className="h-4 w-4" />
               Generate Video
             </button>

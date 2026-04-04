@@ -8,7 +8,10 @@ import MicrophoneButton from "./microphone-button";
 import VoiceMessageBubble from "./voice-message-bubble";
 import AudioWaveform from "./audio-waveform";
 import CameraCaptureButton from "./camera-capture-button";
-import { isWebSpeechSupported, createWebSpeechRecognizer } from "@/lib/voice-aid/stt/web-speech";
+import {
+  isWebSpeechSupported,
+  createWebSpeechRecognizer,
+} from "@/lib/voice-aid/stt/web-speech";
 import { speakWithWebSpeech } from "@/lib/voice-aid/tts/web-speech-tts";
 import { getLanguageConfig } from "@/lib/voice-aid/languages";
 import type { SupportedLanguage, VoiceMessage, VoicePageState } from "@/types";
@@ -28,7 +31,9 @@ export default function VoiceInterface() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
-  const webSpeechRef = useRef<ReturnType<typeof createWebSpeechRecognizer> | null>(null);
+  const webSpeechRef = useRef<ReturnType<
+    typeof createWebSpeechRecognizer
+  > | null>(null);
   const ttsCancelRef = useRef<(() => void) | null>(null);
 
   // Auto-scroll to bottom on new messages
@@ -77,7 +82,9 @@ export default function VoiceInterface() {
 
       mediaRecorder.onstop = async () => {
         stream.getTracks().forEach((t) => t.stop());
-        const audioBlob = new Blob(audioChunksRef.current, { type: "audio/webm" });
+        const audioBlob = new Blob(audioChunksRef.current, {
+          type: "audio/webm",
+        });
 
         if (audioBlob.size < 1000) {
           setPartialState({ isListening: false, error: "No speech detected" });
@@ -92,13 +99,19 @@ export default function VoiceInterface() {
       setPartialState({ isListening: true });
     } catch (err: any) {
       if (err.name === "NotAllowedError") {
-        setPartialState({ micPermission: "denied", error: "Microphone access denied" });
+        setPartialState({
+          micPermission: "denied",
+          error: "Microphone access denied",
+        });
       } else {
         // Fallback to Web Speech API
         if (isWebSpeechSupported()) {
           startWebSpeechListening();
         } else {
-          setPartialState({ micPermission: "unsupported", error: "Microphone not available" });
+          setPartialState({
+            micPermission: "unsupported",
+            error: "Microphone not available",
+          });
         }
       }
     }
@@ -115,7 +128,7 @@ export default function VoiceInterface() {
         }
       },
       (error) => setPartialState({ error, isListening: false }),
-      (listening) => setPartialState({ isListening: listening })
+      (listening) => setPartialState({ isListening: listening }),
     );
 
     if (recognizer.isSupported) {
@@ -137,148 +150,164 @@ export default function VoiceInterface() {
   }, []);
 
   // Process recorded audio via API
-  const processAudio = useCallback(async (audioBlob: Blob) => {
-    setPartialState({ isProcessing: true, error: null });
+  const processAudio = useCallback(
+    async (audioBlob: Blob) => {
+      setPartialState({ isProcessing: true, error: null });
 
-    // Add user message placeholder
-    const userMsg: VoiceMessage = {
-      id: `user_${Date.now()}`,
-      session_id: state.session?.id || "",
-      role: "user",
-      text: "🎤 ...",
-      language: state.currentLanguage,
-      audio_url: null,
-      metadata: null,
-      created_at: new Date().toISOString(),
-    };
-    setState((s) => ({ ...s, messages: [...s.messages, userMsg] }));
+      // Add user message placeholder
+      const userMsg: VoiceMessage = {
+        id: `user_${Date.now()}`,
+        session_id: state.session?.id || "",
+        role: "user",
+        text: "🎤 ...",
+        language: state.currentLanguage,
+        audio_url: null,
+        metadata: null,
+        created_at: new Date().toISOString(),
+      };
+      setState((s) => ({ ...s, messages: [...s.messages, userMsg] }));
 
-    try {
-      const formData = new FormData();
-      formData.append("audio", audioBlob, "recording.webm");
-      formData.append("language", state.currentLanguage);
-      formData.append("audio_format", "webm");
-      if (state.session?.id) formData.append("session_id", state.session.id);
+      try {
+        const formData = new FormData();
+        formData.append("audio", audioBlob, "recording.webm");
+        formData.append("language", state.currentLanguage);
+        formData.append("audio_format", "webm");
+        if (state.session?.id) formData.append("session_id", state.session.id);
 
-      const res = await fetch("/api/voice-aid/process", {
-        method: "POST",
-        body: formData,
-      });
+        const res = await fetch("/api/voice-aid/process", {
+          method: "POST",
+          body: formData,
+        });
 
-      const data = await res.json();
+        const data = await res.json();
 
-      if (!data.success) throw new Error(data.error || "Processing failed");
+        if (!data.success) throw new Error(data.error || "Processing failed");
 
-      handleResponse(data, userMsg.id);
-    } catch (error) {
-      console.error("[ClauseWall] Voice process error:", error);
-      setPartialState({
-        isProcessing: false,
-        error: "Processing failed. Try again.",
-      });
-      // Remove placeholder
-      setState((s) => ({
-        ...s,
-        messages: s.messages.filter((m) => m.id !== userMsg.id),
-      }));
-    }
-  }, [state.session, state.currentLanguage]);
+        handleResponse(data, userMsg.id);
+      } catch (error) {
+        console.error("[ClauseWall] Voice process error:", error);
+        setPartialState({
+          isProcessing: false,
+          error: "Processing failed. Try again.",
+        });
+        // Remove placeholder
+        setState((s) => ({
+          ...s,
+          messages: s.messages.filter((m) => m.id !== userMsg.id),
+        }));
+      }
+    },
+    [state.session, state.currentLanguage],
+  );
 
   // Process text input
-  const processText = useCallback(async (text: string) => {
-    setPartialState({ isProcessing: true, error: null });
+  const processText = useCallback(
+    async (text: string) => {
+      setPartialState({ isProcessing: true, error: null });
 
-    const userMsg: VoiceMessage = {
-      id: `user_${Date.now()}`,
-      session_id: state.session?.id || "",
-      role: "user",
-      text,
-      language: state.currentLanguage,
-      audio_url: null,
-      metadata: null,
-      created_at: new Date().toISOString(),
-    };
-    setState((s) => ({ ...s, messages: [...s.messages, userMsg] }));
+      const userMsg: VoiceMessage = {
+        id: `user_${Date.now()}`,
+        session_id: state.session?.id || "",
+        role: "user",
+        text,
+        language: state.currentLanguage,
+        audio_url: null,
+        metadata: null,
+        created_at: new Date().toISOString(),
+      };
+      setState((s) => ({ ...s, messages: [...s.messages, userMsg] }));
 
-    try {
-      const res = await fetch("/api/voice-aid/process", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          text,
-          language: state.currentLanguage,
-          session_id: state.session?.id,
-        }),
-      });
+      try {
+        const res = await fetch("/api/voice-aid/process", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            text,
+            language: state.currentLanguage,
+            session_id: state.session?.id,
+          }),
+        });
 
-      const data = await res.json();
-      if (!data.success) throw new Error(data.error);
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error);
 
-      handleResponse(data, userMsg.id);
-    } catch (error) {
-      console.error("[ClauseWall] Text process error:", error);
-      setPartialState({ isProcessing: false, error: "Processing failed." });
-    }
-  }, [state.session, state.currentLanguage]);
+        handleResponse(data, userMsg.id);
+      } catch (error) {
+        console.error("[ClauseWall] Text process error:", error);
+        setPartialState({ isProcessing: false, error: "Processing failed." });
+      }
+    },
+    [state.session, state.currentLanguage],
+  );
 
   // Handle API response
-  const handleResponse = useCallback((data: any, userMsgId: string) => {
-    // Update user message with transcribed text
-    setState((s) => ({
-      ...s,
-      messages: s.messages.map((m) =>
-        m.id === userMsgId
-          ? { ...m, text: data.text ? `You: ${data.text.substring(0, 20)}...` : m.text }
-          : m
-      ),
-    }));
+  const handleResponse = useCallback(
+    (data: any, userMsgId: string) => {
+      // Update user message with transcribed text
+      setState((s) => ({
+        ...s,
+        messages: s.messages.map((m) =>
+          m.id === userMsgId
+            ? {
+                ...m,
+                text: data.text
+                  ? `You: ${data.text.substring(0, 20)}...`
+                  : m.text,
+              }
+            : m,
+        ),
+      }));
 
-    // Add assistant message
-    const assistantMsg: VoiceMessage = {
-      id: `assistant_${Date.now()}`,
-      session_id: data.session_id || "",
-      role: "assistant",
-      text: data.text,
-      language: data.language || state.currentLanguage,
-      audio_url: null,
-      metadata: null,
-      created_at: new Date().toISOString(),
-    };
-
-    setState((s) => ({
-      ...s,
-      messages: [...s.messages, assistantMsg],
-      session: s.session ? { ...s.session, id: data.session_id } : {
-        id: data.session_id,
-        user_id: null,
-        telegram_chat_id: null,
-        language: s.currentLanguage,
-        status: "active" as const,
-        document_id: data.document_id,
-        context_summary: null,
-        messages: [],
+      // Add assistant message
+      const assistantMsg: VoiceMessage = {
+        id: `assistant_${Date.now()}`,
+        session_id: data.session_id || "",
+        role: "assistant",
+        text: data.text,
+        language: data.language || state.currentLanguage,
+        audio_url: null,
+        metadata: null,
         created_at: new Date().toISOString(),
-        last_message_at: new Date().toISOString(),
-        expires_at: new Date(Date.now() + 30 * 60 * 1000).toISOString(),
-      },
-      isProcessing: false,
-    }));
+      };
 
-    // Play audio response
-    if (data.audio_base64) {
-      playAudioBase64(data.audio_base64);
-    } else {
-      // Fallback: Web Speech TTS
-      const controller = speakWithWebSpeech(
-        data.text,
-        data.language || state.currentLanguage,
-        () => setPartialState({ isSpeaking: true }),
-        () => setPartialState({ isSpeaking: false }),
-        () => setPartialState({ isSpeaking: false })
-      );
-      ttsCancelRef.current = controller.cancel;
-    }
-  }, [state.currentLanguage]);
+      setState((s) => ({
+        ...s,
+        messages: [...s.messages, assistantMsg],
+        session: s.session
+          ? { ...s.session, id: data.session_id }
+          : {
+              id: data.session_id,
+              user_id: null,
+              telegram_chat_id: null,
+              language: s.currentLanguage,
+              status: "active" as const,
+              document_id: data.document_id,
+              context_summary: null,
+              messages: [],
+              created_at: new Date().toISOString(),
+              last_message_at: new Date().toISOString(),
+              expires_at: new Date(Date.now() + 30 * 60 * 1000).toISOString(),
+            },
+        isProcessing: false,
+      }));
+
+      // Play audio response
+      if (data.audio_base64) {
+        playAudioBase64(data.audio_base64);
+      } else {
+        // Fallback: Web Speech TTS
+        const controller = speakWithWebSpeech(
+          data.text,
+          data.language || state.currentLanguage,
+          () => setPartialState({ isSpeaking: true }),
+          () => setPartialState({ isSpeaking: false }),
+          () => setPartialState({ isSpeaking: false }),
+        );
+        ttsCancelRef.current = controller.cancel;
+      }
+    },
+    [state.currentLanguage],
+  );
 
   // Play base64 audio
   const playAudioBase64 = useCallback((base64: string) => {
@@ -307,41 +336,47 @@ export default function VoiceInterface() {
   }, []);
 
   // Handle photo capture
-  const handlePhotoCapture = useCallback(async (photo: Blob) => {
-    setPartialState({ isProcessing: true, error: null });
+  const handlePhotoCapture = useCallback(
+    async (photo: Blob) => {
+      setPartialState({ isProcessing: true, error: null });
 
-    const userMsg: VoiceMessage = {
-      id: `user_${Date.now()}`,
-      session_id: state.session?.id || "",
-      role: "user",
-      text: "📸 Contract photo sent",
-      language: state.currentLanguage,
-      audio_url: null,
-      metadata: { had_photo: true },
-      created_at: new Date().toISOString(),
-    };
-    setState((s) => ({ ...s, messages: [...s.messages, userMsg] }));
+      const userMsg: VoiceMessage = {
+        id: `user_${Date.now()}`,
+        session_id: state.session?.id || "",
+        role: "user",
+        text: "📸 Contract photo sent",
+        language: state.currentLanguage,
+        audio_url: null,
+        metadata: { had_photo: true },
+        created_at: new Date().toISOString(),
+      };
+      setState((s) => ({ ...s, messages: [...s.messages, userMsg] }));
 
-    try {
-      const formData = new FormData();
-      formData.append("photo", photo, "contract.jpg");
-      formData.append("language", state.currentLanguage);
-      if (state.session?.id) formData.append("session_id", state.session.id);
+      try {
+        const formData = new FormData();
+        formData.append("photo", photo, "contract.jpg");
+        formData.append("language", state.currentLanguage);
+        if (state.session?.id) formData.append("session_id", state.session.id);
 
-      const res = await fetch("/api/voice-aid/process", {
-        method: "POST",
-        body: formData,
-      });
+        const res = await fetch("/api/voice-aid/process", {
+          method: "POST",
+          body: formData,
+        });
 
-      const data = await res.json();
-      if (!data.success) throw new Error(data.error);
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error);
 
-      handleResponse(data, userMsg.id);
-    } catch (error) {
-      console.error("[ClauseWall] Photo process error:", error);
-      setPartialState({ isProcessing: false, error: "Photo processing failed." });
-    }
-  }, [state.session, state.currentLanguage]);
+        handleResponse(data, userMsg.id);
+      } catch (error) {
+        console.error("[ClauseWall] Photo process error:", error);
+        setPartialState({
+          isProcessing: false,
+          error: "Photo processing failed.",
+        });
+      }
+    },
+    [state.session, state.currentLanguage],
+  );
 
   // Reset session
   const handleReset = useCallback(() => {
@@ -373,14 +408,14 @@ export default function VoiceInterface() {
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)] max-w-2xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-white/5">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-foreground border-2">
         <LanguageSelector
           current={state.currentLanguage}
           onChange={(lang) => setPartialState({ currentLanguage: lang })}
         />
         <button
           onClick={handleReset}
-          className="p-2 rounded-lg text-white/50 hover:text-white hover:bg-white/5 transition-all"
+          className="p-2 rounded-lg text-foreground/50 hover:text-foreground hover:bg-muted transition-all"
           aria-label="Reset conversation"
           title="New conversation"
         >
@@ -422,7 +457,7 @@ export default function VoiceInterface() {
       </AnimatePresence>
 
       {/* Bottom controls */}
-      <div className="border-t border-white/5 px-4 py-6 flex items-center justify-center gap-6">
+      <div className="border-t border-foreground border-2 px-4 py-6 flex items-center justify-center gap-6">
         <CameraCaptureButton
           onCapture={handlePhotoCapture}
           disabled={state.isProcessing || state.isListening}

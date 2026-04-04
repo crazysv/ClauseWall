@@ -47,7 +47,10 @@ interface SessionSetupProps {
   existingSessions: NegotiationSession[];
 }
 
-export default function SessionSetup({ onSessionStart, existingSessions }: SessionSetupProps) {
+export default function SessionSetup({
+  onSessionStart,
+  existingSessions,
+}: SessionSetupProps) {
   const [documentType, setDocumentType] = useState("");
   const [jurisdiction, setJurisdiction] = useState("");
   const [entityName, setEntityName] = useState("");
@@ -58,7 +61,7 @@ export default function SessionSetup({ onSessionStart, existingSessions }: Sessi
     const session = createSession(
       documentType,
       jurisdiction,
-      entityName.trim() || "Contract Negotiation"
+      entityName.trim() || "Contract Negotiation",
     );
 
     onSessionStart(session);
@@ -76,9 +79,12 @@ export default function SessionSetup({ onSessionStart, existingSessions }: Sessi
         <div className="w-20 h-20 bg-background flex items-center justify-center mx-auto mb-4 border-4 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <Handshake className="w-10 h-10 text-foreground" />
         </div>
-        <h1 className="text-2xl font-black uppercase tracking-wider text-foreground mb-2">Live Negotiation Companion</h1>
+        <h1 className="text-2xl font-black uppercase tracking-wider text-foreground mb-2">
+          Live Negotiation Companion
+        </h1>
         <p className="text-sm font-bold text-muted-foreground max-w-xs mx-auto">
-          Your AI co-pilot for in-person contract negotiations. Instant legal intelligence at your fingertips.
+          Your AI co-pilot for in-person contract negotiations. Instant legal
+          intelligence at your fingertips.
         </p>
       </div>
 
@@ -86,7 +92,9 @@ export default function SessionSetup({ onSessionStart, existingSessions }: Sessi
       <div className="w-full max-w-md space-y-4">
         {/* Document Type */}
         <div className="space-y-2">
-          <label className="text-xs text-white/40 font-medium block px-1">Contract Type</label>
+          <label className="text-xs text-white/40 font-medium block px-1">
+            Contract Type
+          </label>
           <div className="grid grid-cols-2 gap-2">
             {DOCUMENT_TYPES.map((type) => (
               <button
@@ -108,7 +116,9 @@ export default function SessionSetup({ onSessionStart, existingSessions }: Sessi
 
         {/* Jurisdiction */}
         <div className="space-y-2">
-          <label className="text-xs text-white/40 font-medium block px-1">State / Jurisdiction</label>
+          <label className="text-xs text-white/40 font-medium block px-1">
+            State / Jurisdiction
+          </label>
           <select
             value={jurisdiction}
             onChange={(e) => setJurisdiction(e.target.value)}
@@ -127,7 +137,8 @@ export default function SessionSetup({ onSessionStart, existingSessions }: Sessi
         {/* Entity Name */}
         <div className="space-y-2">
           <label className="text-xs text-white/40 font-medium block px-1">
-            Who are you negotiating with? <span className="text-white/20">(optional)</span>
+            Who are you negotiating with?{" "}
+            <span className="text-white/20">(optional)</span>
           </label>
           <input
             placeholder="e.g., Landlord Name, Company Name"
@@ -153,10 +164,14 @@ export default function SessionSetup({ onSessionStart, existingSessions }: Sessi
       {/* Resume Previous Sessions */}
       {existingSessions.length > 0 && (
         <div className="w-full max-w-md mt-8">
-          <p className="text-xs text-white/20 font-medium px-1 mb-2">Recent Sessions</p>
+          <p className="text-xs text-white/20 font-medium px-1 mb-2">
+            Recent Sessions
+          </p>
           <div className="space-y-2">
             {existingSessions.slice(0, 3).map((s) => {
-              const hoursSince = (Date.now() - new Date(s.started_at).getTime()) / (1000 * 60 * 60);
+              const hoursSince =
+                (Date.now() - new Date(s.started_at).getTime()) /
+                (1000 * 60 * 60);
               return (
                 <button
                   key={s.id}

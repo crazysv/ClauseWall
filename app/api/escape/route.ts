@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
     if (!documentId) {
       return NextResponse.json(
         { error: "Missing documentId" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     if (docError || !doc) {
       return NextResponse.json(
         { error: "Document not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -40,14 +40,14 @@ export async function POST(request: NextRequest) {
     if (clauseError || !clauses || clauses.length === 0) {
       return NextResponse.json(
         { error: "No clauses found for this document" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     // Filter to only dangerous and illegal clauses
     const riskyClausesRaw = clauses.filter(
       (c: { risk_level: string }) =>
-        c.risk_level === "dangerous" || c.risk_level === "illegal"
+        c.risk_level === "dangerous" || c.risk_level === "illegal",
     );
 
     if (riskyClausesRaw.length === 0) {
@@ -58,7 +58,12 @@ export async function POST(request: NextRequest) {
           "This contract has no dangerous or illegal clauses. No escape plan is needed — this is a relatively fair contract.",
         void_clauses: [],
         escape_steps: [],
-        recovery: { items: [], interest_rate: "N/A", interest_amount: 0, total: 0 },
+        recovery: {
+          items: [],
+          interest_rate: "N/A",
+          interest_amount: 0,
+          total: 0,
+        },
         total_recoverable: 0,
         estimated_timeline: "N/A",
         success_probability: "low",
@@ -83,15 +88,18 @@ export async function POST(request: NextRequest) {
           `[Clause #${c.clause_number}] (Type: ${c.clause_type}, Risk: ${c.risk_level}, Score: ${c.risk_score}/100)
 Text: "${c.original_text}"
 Analysis: ${c.explanation}
-Legal Citation: ${c.legal_citation || "None"}`
+Legal Citation: ${c.legal_citation || "None"}`,
       )
       .join("\n\n---\n\n");
 
     // Include all clauses summary for context
     const allClausesSummary = clauses
       .map(
-        (c: { clause_number: number; clause_type: string; risk_level: string }) =>
-          `Clause #${c.clause_number}: ${c.clause_type} (${c.risk_level})`
+        (c: {
+          clause_number: number;
+          clause_type: string;
+          risk_level: string;
+        }) => `Clause #${c.clause_number}: ${c.clause_type} (${c.risk_level})`,
       )
       .join("\n");
 
@@ -119,7 +127,7 @@ DANGEROUS & ILLEGAL CLAUSES (analyze these for escape):
 ${clauseContext}`,
         },
       ],
-      { maxTokens: 6000 }
+      { maxTokens: 6000 },
     );
 
     // Parse response
@@ -131,10 +139,13 @@ ${clauseContext}`,
       if (cleaned.endsWith("```")) cleaned = cleaned.slice(0, -3);
       parsed = JSON.parse(cleaned.trim());
     } catch {
-      console.error("[ClauseWall] Escape plan JSON parse failed. Raw:", response);
+      console.error(
+        "[ClauseWall] Escape plan JSON parse failed. Raw:",
+        response,
+      );
       return NextResponse.json(
         { error: "Failed to parse escape plan" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -163,7 +174,9 @@ ${clauseContext}`,
               ? String(v.enforceable_portion)
               : null,
             recoverable_amount: Number(v.recoverable_amount) || 0,
-            recovery_method: String(v.recovery_method || "Legal notice → Court"),
+            recovery_method: String(
+              v.recovery_method || "Legal notice → Court",
+            ),
           }))
         : [],
       escape_steps: Array.isArray(parsed.escape_steps)
@@ -171,9 +184,13 @@ ${clauseContext}`,
             step_number: Number(s.step_number) || 1,
             title: String(s.title || ""),
             description: String(s.description || ""),
-            action_type: ["awareness", "notice", "negotiate", "complaint", "refund"].includes(
-              s.action_type as string
-            )
+            action_type: [
+              "awareness",
+              "notice",
+              "negotiate",
+              "complaint",
+              "refund",
+            ].includes(s.action_type as string)
               ? s.action_type
               : "awareness",
             timeframe: String(s.timeframe || ""),
@@ -208,11 +225,14 @@ ${clauseContext}`,
       },
       total_recoverable: Number(parsed.total_recoverable) || 0,
       estimated_timeline: String(parsed.estimated_timeline || "30-90 days"),
-      success_probability: validProbabilities.includes(parsed.success_probability)
+      success_probability: validProbabilities.includes(
+        parsed.success_probability,
+      )
         ? parsed.success_probability
         : "medium",
       success_explanation: String(
-        parsed.success_explanation || "Based on established Indian legal precedent."
+        parsed.success_explanation ||
+          "Based on established Indian legal precedent.",
       ),
       warnings: Array.isArray(parsed.warnings)
         ? parsed.warnings.map(String)
@@ -234,7 +254,7 @@ ${clauseContext}`,
     console.error("[ClauseWall] Escape plan API error:", error);
     return NextResponse.json(
       { error: "Failed to generate escape plan. Please try again." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -24,10 +24,17 @@ export default function RTIPreview({ rti }: Props) {
             <FileText className="h-5 w-5 text-emerald-400" />
             <div>
               <h3 className="font-semibold text-sm">RTI Application</h3>
-              <p className="text-xs text-muted-foreground">To: {rti.recipient_authority}</p>
+              <p className="text-xs text-muted-foreground">
+                To: {rti.recipient_authority}
+              </p>
             </div>
           </div>
-          <Button variant="outline" size="sm" onClick={copyText} className="gap-1">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={copyText}
+            className="gap-1"
+          >
             <Copy className="h-3 w-3" /> Copy
           </Button>
         </div>

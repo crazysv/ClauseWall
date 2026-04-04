@@ -1,12 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import {
-  Send,
-  Pin,
-  MessageCircle,
-  Loader2,
-} from "lucide-react";
+import { Send, Pin, MessageCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import type { CollectiveMessage } from "@/types";
@@ -31,7 +26,7 @@ export default function CollectiveChat({
     const fetchMessages = async () => {
       try {
         const res = await fetch(
-          `/api/collective/${collectiveId}/messages?limit=50`
+          `/api/collective/${collectiveId}/messages?limit=50`,
         );
         const data = await res.json();
         if (Array.isArray(data)) {
@@ -101,7 +96,7 @@ export default function CollectiveChat({
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader2 className="h-6 w-6 text-white/20 animate-spin" />
+        <Loader2 className="h-6 w-6 text-foreground/20 animate-spin" />
       </div>
     );
   }
@@ -112,9 +107,9 @@ export default function CollectiveChat({
       <div className="flex-1 overflow-y-auto space-y-3 p-3">
         {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center">
-            <MessageCircle className="h-8 w-8 text-white/10 mb-2" />
-            <p className="text-xs text-white/30">No messages yet</p>
-            <p className="text-[10px] text-white/20">
+            <MessageCircle className="h-8 w-8 text-foreground/10 mb-2" />
+            <p className="text-xs text-foreground/30">No messages yet</p>
+            <p className="text-[10px] text-foreground/20">
               Start the conversation — all messages are anonymous
             </p>
           </div>
@@ -128,7 +123,7 @@ export default function CollectiveChat({
               >
                 {/* Avatar */}
                 <div
-                  className="h-7 w-7 rounded-full flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0"
+                  className="h-7 w-7 rounded-full flex items-center justify-center text-[10px] font-bold text-foreground flex-shrink-0"
                   style={{
                     backgroundColor: getAvatarColor(msg.sender_anonymous_id),
                   }}
@@ -138,11 +133,7 @@ export default function CollectiveChat({
 
                 {/* Message */}
                 <div
-                  className={`max-w-[75%] rounded-xl px-3 py-2 ${
-                    isOwn
-                      ? "bg-amber-500/10 border border-amber-500/20"
-                      : "bg-white/[0.03] border border-white/5"
-                  }`}
+                  className={`max-w-[75%] rounded-none px-3 py-2 ${isOwn ? "bg-amber-500/10 border border-amber-500/20" : "bg-white/[0.03] border border-foreground border-2"}`}
                 >
                   <div className="flex items-center gap-2 mb-0.5">
                     <span
@@ -157,10 +148,10 @@ export default function CollectiveChat({
                       <Pin className="h-2.5 w-2.5 text-amber-400" />
                     )}
                   </div>
-                  <p className="text-xs text-white/70 leading-relaxed">
+                  <p className="text-xs text-foreground/70 leading-relaxed">
                     {msg.content}
                   </p>
-                  <p className="text-[9px] text-white/20 mt-1">
+                  <p className="text-[9px] text-foreground/20 mt-1">
                     {new Date(msg.created_at).toLocaleTimeString("en-IN", {
                       hour: "2-digit",
                       minute: "2-digit",
@@ -176,7 +167,7 @@ export default function CollectiveChat({
 
       {/* Input */}
       {userAnonymousId ? (
-        <div className="border-t border-white/5 p-3">
+        <div className="border-t border-foreground border-2 p-3">
           <div className="flex gap-2">
             <input
               type="text"
@@ -184,7 +175,7 @@ export default function CollectiveChat({
               onChange={(e) => setNewMessage(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Type an anonymous message..."
-              className="flex-1 px-3 py-2 text-xs bg-white/[0.03] border border-white/10 rounded-lg text-white placeholder:text-white/20 focus:outline-none focus:border-amber-500/30"
+              className="flex-1 px-3 py-2 text-xs bg-white/[0.03] border border-foreground border-2 rounded-lg text-foreground placeholder:text-foreground/20 focus:outline-none focus:border-amber-500/30"
               maxLength={2000}
             />
             <Button
@@ -200,13 +191,13 @@ export default function CollectiveChat({
               )}
             </Button>
           </div>
-          <p className="text-[9px] text-white/15 mt-1">
+          <p className="text-[9px] text-foreground/15 mt-1">
             Messages are anonymous. PII is automatically stripped.
           </p>
         </div>
       ) : (
-        <div className="border-t border-white/5 p-3 text-center">
-          <p className="text-xs text-white/30">
+        <div className="border-t border-foreground border-2 p-3 text-center">
+          <p className="text-xs text-foreground/30">
             Join the collective to participate in discussions
           </p>
         </div>

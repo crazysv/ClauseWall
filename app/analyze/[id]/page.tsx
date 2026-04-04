@@ -29,8 +29,11 @@ export default function AnalyzePage({ params }: { params: { id: string } }) {
       current++;
       const newProgress = Math.min((current / steps) * 100, 100);
       setProgress(newProgress);
-      
-      const stepIndex = Math.min(Math.floor((current / steps) * STEPS.length), STEPS.length - 1);
+
+      const stepIndex = Math.min(
+        Math.floor((current / steps) * STEPS.length),
+        STEPS.length - 1,
+      );
       setCurrentStep(stepIndex);
 
       if (current >= steps) {
@@ -50,9 +53,14 @@ export default function AnalyzePage({ params }: { params: { id: string } }) {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-12">
       <div className="bg-background border-4 border-foreground shadow-[12px_12px_0px_0px_rgba(10,10,10,1)] p-8 md:p-12 max-w-2xl w-full text-center relative overflow-hidden">
-        
         {/* Animated Background Stripes */}
-        <div className="absolute inset-0 opacity-5 pointer-events-none" style={{ backgroundImage: 'repeating-linear-gradient(45deg, #000 0, #000 2px, transparent 2px, transparent 8px)' }} />
+        <div
+          className="absolute inset-0 opacity-5 pointer-events-none"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(45deg, #000 0, #000 2px, transparent 2px, transparent 8px)",
+          }}
+        />
 
         <div className="relative z-10">
           {/* Document Info */}
@@ -90,7 +98,8 @@ export default function AnalyzePage({ params }: { params: { id: string } }) {
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
               <span className="text-5xl font-black tabular-nums text-foreground tracking-tighter">
-                {Math.round(progress)}<span className="text-2xl">%</span>
+                {Math.round(progress)}
+                <span className="text-2xl">%</span>
               </span>
             </div>
           </div>
@@ -122,8 +131,8 @@ export default function AnalyzePage({ params }: { params: { id: string } }) {
                       isCompleted
                         ? "font-bold text-foreground"
                         : isCurrent
-                        ? "font-black text-foreground underline decoration-primary decoration-2 underline-offset-4"
-                        : "font-bold text-muted-foreground"
+                          ? "font-black text-foreground underline decoration-primary decoration-2 underline-offset-4"
+                          : "font-bold text-muted-foreground"
                     }`}
                   >
                     {step}
@@ -134,7 +143,8 @@ export default function AnalyzePage({ params }: { params: { id: string } }) {
           </div>
 
           <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mt-10">
-            Estimated time remaining: {Math.max(0, Math.ceil((100 - progress) * 0.08))}s
+            Estimated time remaining:{" "}
+            {Math.max(0, Math.ceil((100 - progress) * 0.08))}s
           </p>
           <p className="text-[10px] font-black uppercase bg-primary text-primary-foreground italic mt-4 max-w-md mx-auto inline-block border-2 border-foreground px-3 py-1 shadow-[2px_2px_0px_0px_rgba(10,10,10,1)]">
             Fun fact: 80% of NDAs contain overly broad jurisdiction clauses.

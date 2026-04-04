@@ -23,7 +23,10 @@ interface DeliberationCTAProps {
 // AGENT INFO
 // ============================================
 
-const agentLabels: Record<string, { icon: string; name: string; action: string }> = {
+const agentLabels: Record<
+  string,
+  { icon: string; name: string; action: string }
+> = {
   predator: { icon: "🔴", name: "Defense Counsel", action: "arguing" },
   guardian: { icon: "🟢", name: "Consumer Advocate", action: "arguing" },
   arbiter: { icon: "⚖️", name: "Judicial Arbiter", action: "deliberating" },
@@ -122,7 +125,8 @@ export default function DeliberationCTA({
               <p className="text-xs text-gray-400 mt-0.5">
                 3 agents debated {summary.totalClauses} clauses —{" "}
                 {summary.fairCount > 0 && `${summary.fairCount}✅ `}
-                {summary.partiallyFairCount > 0 && `${summary.partiallyFairCount}⚠️ `}
+                {summary.partiallyFairCount > 0 &&
+                  `${summary.partiallyFairCount}⚠️ `}
                 {summary.unfairCount > 0 && `${summary.unfairCount}❌ `}
                 {summary.illegalCount > 0 && `${summary.illegalCount}⛔`}
               </p>
@@ -154,10 +158,10 @@ export default function DeliberationCTA({
             <Swords className="h-6 w-6 text-amber-400" />
           </div>
           <div>
-            <p className="font-semibold text-amber-300">
-               ⚔️ Run AI Debate
+            <p className="font-semibold text-amber-300">⚔️ Run AI Debate</p>
+            <p className="text-xs text-white/40">
+              Three AI agents argue whether each clause is fair
             </p>
-            <p className="text-xs text-white/40">Three AI agents argue whether each clause is fair</p>
             <p className="text-sm text-gray-400 mt-0.5">
               Three AI agents — a corporate lawyer, a consumer rights advocate,
               and a retired judge — will debate every clause in this contract.

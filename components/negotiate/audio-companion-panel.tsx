@@ -35,7 +35,9 @@ export default function AudioCompanionPanel({
   const [isPaused, setIsPaused] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [transcript, setTranscript] = useState<AudioTranscriptionChunk[]>([]);
-  const [activeTactics, setActiveTactics] = useState<(DetectedTactic & { bluff?: BluffAnalysis | null })[]>([]);
+  const [activeTactics, setActiveTactics] = useState<
+    (DetectedTactic & { bluff?: BluffAnalysis | null })[]
+  >([]);
   const [language, setLanguage] = useState("en");
   const [chunkDuration, setChunkDuration] = useState(7000);
   const [autoWhisper, setAutoWhisper] = useState(false);
@@ -97,16 +99,21 @@ export default function AudioCompanionPanel({
           const updatedSession = {
             ...session,
             transcript_chunks: [...session.transcript_chunks, chunk],
-            bluff_checks: [...session.bluff_checks, ...(data.bluff_checks || [])],
+            bluff_checks: [
+              ...session.bluff_checks,
+              ...(data.bluff_checks || []),
+            ],
           };
           onSessionUpdate(updatedSession);
 
           // Handle detected tactics
           if (data.detected_tactics && data.detected_tactics.length > 0) {
-            const tacticsWithBluff = data.detected_tactics.map((t: DetectedTactic, i: number) => ({
-              ...t,
-              bluff: data.bluff_checks?.[i] || null,
-            }));
+            const tacticsWithBluff = data.detected_tactics.map(
+              (t: DetectedTactic, i: number) => ({
+                ...t,
+                bluff: data.bluff_checks?.[i] || null,
+              }),
+            );
             setActiveTactics((prev) => [...prev, ...tacticsWithBluff]);
 
             // Vibrate on tactic detection
@@ -116,7 +123,9 @@ export default function AudioCompanionPanel({
 
             // Auto-whisper if enabled
             if (autoWhisper && data.detected_tactics[0]?.counter_response) {
-              speakAdvice(data.detected_tactics[0].counter_response, { urgent: true });
+              speakAdvice(data.detected_tactics[0].counter_response, {
+                urgent: true,
+              });
             }
           }
         }
@@ -126,14 +135,23 @@ export default function AudioCompanionPanel({
         setIsProcessing(false);
       }
     },
-    [language, jurisdiction, documentType, session, onSessionUpdate, autoWhisper]
+    [
+      language,
+      jurisdiction,
+      documentType,
+      session,
+      onSessionUpdate,
+      autoWhisper,
+    ],
   );
 
   const startRecording = async () => {
     setError(null);
 
     if (!isMediaRecorderSupported()) {
-      setError("Audio recording is not supported in this browser. Please use Chrome or Edge.");
+      setError(
+        "Audio recording is not supported in this browser. Please use Chrome or Edge.",
+      );
       return;
     }
 
@@ -150,7 +168,9 @@ export default function AudioCompanionPanel({
       setIsPaused(false);
     } catch (err: any) {
       if (err.name === "NotAllowedError") {
-        setError("Microphone permission denied. Please allow microphone access in your browser settings.");
+        setError(
+          "Microphone permission denied. Please allow microphone access in your browser settings.",
+        );
       } else if (err.name === "NotFoundError") {
         setError("No microphone found. Please connect a microphone.");
       } else {
@@ -329,7 +349,10 @@ export default function AudioCompanionPanel({
             {transcript.map((chunk) => (
               <div key={chunk.id} className="text-sm text-white/70">
                 <span className="text-[10px] text-white/20 font-mono mr-2">
-                  {new Date(chunk.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                  {new Date(chunk.timestamp).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
                 </span>
                 {chunk.text}
               </div>

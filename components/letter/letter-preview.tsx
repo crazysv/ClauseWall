@@ -9,7 +9,9 @@ export function LetterPreview({ letter }: { letter: any }) {
       </h3>
       <div className="space-y-6">
         <div className="flex justify-between items-start border-b-2 border-black/5 pb-4">
-          <h4 className="font-bold text-lg text-black">{letter.subject || "Subject: Important Notice"}</h4>
+          <h4 className="font-bold text-lg text-black">
+            {letter.subject || "Subject: Important Notice"}
+          </h4>
           <p className="font-bold uppercase tracking-wider text-xs text-muted-foreground bg-gray-100 px-3 py-1 border-2 border-black">
             Date: {letter.date || new Date().toLocaleDateString()}
           </p>
@@ -19,7 +21,9 @@ export function LetterPreview({ letter }: { letter: any }) {
         </div>
         <div className="pt-4 border-t-2 border-black/10">
           <p className="font-bold text-black">Sincerely,</p>
-          <p className="font-black uppercase tracking-widest text-black mt-2">{letter.signature || "[Your Name]"}</p>
+          <p className="font-black uppercase tracking-widest text-black mt-2">
+            {letter.signature || "[Your Name]"}
+          </p>
         </div>
       </div>
     </div>

@@ -52,9 +52,7 @@ export default function ProofSection({
     ? `https://gateway.pinata.cloud/ipfs/${proofCid}`
     : null;
 
-  const publicIpfsUrl = proofCid
-    ? `https://ipfs.io/ipfs/${proofCid}`
-    : null;
+  const publicIpfsUrl = proofCid ? `https://ipfs.io/ipfs/${proofCid}` : null;
 
   const formattedDate = proofTimestamp
     ? new Date(proofTimestamp).toLocaleDateString("en-IN", {
@@ -117,7 +115,7 @@ export default function ProofSection({
     if (!proofHash) return;
     // Create a file with the raw hash bytes (what was sent to TSA)
     const hashBytes = new Uint8Array(
-      proofHash.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16))
+      proofHash.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16)),
     );
     const blob = new Blob([hashBytes], { type: "application/octet-stream" });
     const link = document.createElement("a");
@@ -144,20 +142,29 @@ export default function ProofSection({
             <h3 className="text-lg font-black uppercase tracking-wider text-foreground flex items-center gap-2">
               <Link2 className="h-5 w-5 text-foreground" />
               Analysis Proof
-              <Badge variant="outline" className="bg-background text-foreground border-2 border-foreground text-[10px] gap-1 font-black uppercase tracking-wider">
+              <Badge
+                variant="outline"
+                className="bg-background text-foreground border-2 border-foreground text-[10px] gap-1 font-black uppercase tracking-wider"
+              >
                 <Lock className="h-3 w-3" />
                 IMMUTABLE
               </Badge>
             </h3>
             <div className="flex gap-1.5">
               {hasTSA && (
-                <Badge variant="outline" className="bg-background text-green-600 border-2 border-green-600 text-[10px] gap-1 font-black uppercase tracking-wider">
+                <Badge
+                  variant="outline"
+                  className="bg-background text-green-600 border-2 border-green-600 text-[10px] gap-1 font-black uppercase tracking-wider"
+                >
                   <ShieldCheck className="h-3 w-3" />
                   TSA VERIFIED
                 </Badge>
               )}
               {hasIPFS && (
-                <Badge variant="outline" className="bg-background text-blue-600 border-2 border-blue-600 text-[10px] gap-1 font-black uppercase tracking-wider">
+                <Badge
+                  variant="outline"
+                  className="bg-background text-blue-600 border-2 border-blue-600 text-[10px] gap-1 font-black uppercase tracking-wider"
+                >
                   <Globe className="h-3 w-3" />
                   IPFS PINNED
                 </Badge>
@@ -211,7 +218,9 @@ export default function ProofSection({
                       <Clock className="h-3.5 w-3.5 text-green-600" />
                       TSA Timestamp
                     </span>
-                    <span className="font-bold text-foreground">{formattedDate}</span>
+                    <span className="font-bold text-foreground">
+                      {formattedDate}
+                    </span>
                   </div>
                 )}
 
@@ -221,7 +230,9 @@ export default function ProofSection({
                       <Hash className="h-3.5 w-3.5 text-green-600" />
                       Serial Number
                     </span>
-                    <code className="text-foreground font-bold font-mono text-xs">#{tsaSerial}</code>
+                    <code className="text-foreground font-bold font-mono text-xs">
+                      #{tsaSerial}
+                    </code>
                   </div>
                 )}
 
@@ -230,7 +241,9 @@ export default function ProofSection({
                     <FileCheck className="h-3.5 w-3.5 text-green-600" />
                     Authority
                   </span>
-                  <span className="font-bold text-foreground">FreeTSA.org (RFC 3161)</span>
+                  <span className="font-bold text-foreground">
+                    FreeTSA.org (RFC 3161)
+                  </span>
                 </div>
               </div>
 
@@ -266,7 +279,9 @@ export default function ProofSection({
                   />
                 </div>
                 <div className="flex-1 text-center sm:text-left">
-                  <p className="text-xs font-black uppercase tracking-wider text-muted-foreground mb-1">IPFS CID</p>
+                  <p className="text-xs font-black uppercase tracking-wider text-muted-foreground mb-1">
+                    IPFS CID
+                  </p>
                   <code className="text-xs font-bold text-blue-600 font-mono break-all">
                     {proofCid!.length > 40
                       ? `${proofCid!.substring(0, 20)}...${proofCid!.substring(proofCid!.length - 15)}`
@@ -324,21 +339,41 @@ export default function ProofSection({
 
           {/* Actions */}
           <div className="flex flex-wrap gap-2">
-            <Button variant="outline" size="sm" onClick={downloadCertificate} className="gap-2 button text-impact-heading bg-background border-foreground text-foreground hover:bg-foreground hover:text-background">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={downloadCertificate}
+              className="gap-2 button text-impact-heading bg-background border-foreground text-foreground hover:bg-foreground hover:text-background"
+            >
               <Download className="h-3.5 w-3.5" />
               Certificate
             </Button>
             {hasTSA && (
               <>
-                <Button variant="outline" size="sm" onClick={downloadTSAToken} className="gap-2 button text-impact-heading bg-background border-foreground text-foreground hover:bg-foreground hover:text-background">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={downloadTSAToken}
+                  className="gap-2 button text-impact-heading bg-background border-foreground text-foreground hover:bg-foreground hover:text-background"
+                >
                   <FileCheck className="h-3.5 w-3.5" />
                   TSA Token (.tsr)
                 </Button>
-                <Button variant="outline" size="sm" onClick={downloadHashFile} className="gap-2 button text-impact-heading bg-background border-foreground text-foreground hover:bg-foreground hover:text-background">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={downloadHashFile}
+                  className="gap-2 button text-impact-heading bg-background border-foreground text-foreground hover:bg-foreground hover:text-background"
+                >
                   <Hash className="h-3.5 w-3.5" />
                   Hash File (.bin)
                 </Button>
-                <Button variant="outline" size="sm" onClick={openFreeTSAVerify} className="gap-2 button text-impact-heading bg-background border-foreground text-foreground hover:bg-foreground hover:text-background">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={openFreeTSAVerify}
+                  className="gap-2 button text-impact-heading bg-background border-foreground text-foreground hover:bg-foreground hover:text-background"
+                >
                   <ExternalLink className="h-3.5 w-3.5" />
                   Verify on FreeTSA
                 </Button>
@@ -358,7 +393,12 @@ export default function ProofSection({
               Copy Hash
             </Button>
             {verifyUrl && (
-              <Button variant="outline" size="sm" className="gap-2 button text-impact-heading bg-background border-foreground text-foreground hover:bg-foreground hover:text-background" asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                className="gap-2 button text-impact-heading bg-background border-foreground text-foreground hover:bg-foreground hover:text-background"
+                asChild
+              >
                 <a href={verifyUrl} target="_blank" rel="noopener noreferrer">
                   <ExternalLink className="h-3.5 w-3.5" />
                   Verify IPFS
@@ -369,10 +409,12 @@ export default function ProofSection({
 
           {/* Legal note */}
           <p className="text-[10px] font-bold text-muted-foreground mt-4 leading-relaxed uppercase tracking-wider">
-            🔒 This proof contains NO personal data or contract text. The SHA-256 hash
-            is deterministic — identical analysis always produces the same hash.
-            {hasTSA && " FreeTSA.org is an independent timestamp authority operating since 2005."}
-            {" "}Admissible as digital evidence under IT Act, 2000 — Section 65B.
+            🔒 This proof contains NO personal data or contract text. The
+            SHA-256 hash is deterministic — identical analysis always produces
+            the same hash.
+            {hasTSA &&
+              " FreeTSA.org is an independent timestamp authority operating since 2005."}{" "}
+            Admissible as digital evidence under IT Act, 2000 — Section 65B.
           </p>
         </CardContent>
       </Card>
@@ -391,7 +433,15 @@ export default function ProofSection({
           }}
         >
           <div style={{ textAlign: "center", marginBottom: 20 }}>
-            <div style={{ fontSize: 12, color: "#06b6d4", fontWeight: 600, letterSpacing: 2, marginBottom: 4 }}>
+            <div
+              style={{
+                fontSize: 12,
+                color: "#06b6d4",
+                fontWeight: 600,
+                letterSpacing: 2,
+                marginBottom: 4,
+              }}
+            >
               ANALYSIS PROOF CERTIFICATE
             </div>
             <div style={{ fontSize: 20, fontWeight: 800, color: "#111827" }}>
@@ -402,41 +452,103 @@ export default function ProofSection({
             </div>
           </div>
 
-          <div style={{ height: 2, background: "linear-gradient(to right, #06b6d4, #8b5cf6)", margin: "0 0 16px 0", borderRadius: 1 }} />
+          <div
+            style={{
+              height: 2,
+              background: "linear-gradient(to right, #06b6d4, #8b5cf6)",
+              margin: "0 0 16px 0",
+              borderRadius: 1,
+            }}
+          />
 
           <div style={{ textAlign: "center", marginBottom: 16 }}>
             <div style={{ fontSize: 42, fontWeight: 800, color: "#111827" }}>
               {overallRiskScore}
-              <span style={{ fontSize: 16, color: "#6b7280", fontWeight: 400 }}>/100</span>
+              <span style={{ fontSize: 16, color: "#6b7280", fontWeight: 400 }}>
+                /100
+              </span>
             </div>
             <div style={{ fontSize: 11, color: "#6b7280" }}>
               Risk Score • {totalClauses} clauses analyzed
             </div>
           </div>
 
-          <div style={{ background: "#f0fdfa", borderRadius: 8, padding: 12, marginBottom: 12, border: "1px solid #99f6e4" }}>
-            <div style={{ fontSize: 9, color: "#0d9488", fontWeight: 600, marginBottom: 6, letterSpacing: 1 }}>
+          <div
+            style={{
+              background: "#f0fdfa",
+              borderRadius: 8,
+              padding: 12,
+              marginBottom: 12,
+              border: "1px solid #99f6e4",
+            }}
+          >
+            <div
+              style={{
+                fontSize: 9,
+                color: "#0d9488",
+                fontWeight: 600,
+                marginBottom: 6,
+                letterSpacing: 1,
+              }}
+            >
               LEGAL PROOF — RFC 3161
             </div>
             <div style={{ fontSize: 10, color: "#374151", lineHeight: 1.8 }}>
-              <div><strong>Hash:</strong> 0x{proofHash.substring(0, 20)}...{proofHash.substring(proofHash.length - 8)}</div>
-              {formattedDate && <div><strong>Timestamp:</strong> {formattedDate}</div>}
-              {tsaSerial && <div><strong>TSA Serial:</strong> #{tsaSerial}</div>}
-              <div><strong>Authority:</strong> FreeTSA.org (Independent)</div>
-              {proofCid && <div><strong>IPFS CID:</strong> {proofCid.substring(0, 24)}...</div>}
+              <div>
+                <strong>Hash:</strong> 0x{proofHash.substring(0, 20)}...
+                {proofHash.substring(proofHash.length - 8)}
+              </div>
+              {formattedDate && (
+                <div>
+                  <strong>Timestamp:</strong> {formattedDate}
+                </div>
+              )}
+              {tsaSerial && (
+                <div>
+                  <strong>TSA Serial:</strong> #{tsaSerial}
+                </div>
+              )}
+              <div>
+                <strong>Authority:</strong> FreeTSA.org (Independent)
+              </div>
+              {proofCid && (
+                <div>
+                  <strong>IPFS CID:</strong> {proofCid.substring(0, 24)}...
+                </div>
+              )}
             </div>
           </div>
 
           {verifyUrl && (
-            <div style={{ display: "flex", justifyContent: "center", marginBottom: 8 }}>
-              <QRCodeSVG value={verifyUrl} size={90} bgColor="#ffffff" fgColor="#111827" level="M" includeMargin />
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginBottom: 8,
+              }}
+            >
+              <QRCodeSVG
+                value={verifyUrl}
+                size={90}
+                bgColor="#ffffff"
+                fgColor="#111827"
+                level="M"
+                includeMargin
+              />
             </div>
           )}
 
           <div style={{ height: 1, background: "#e5e7eb", margin: "12px 0" }} />
-          <div style={{ fontSize: 8, color: "#9ca3af", lineHeight: 1.5, textAlign: "center" }}>
-            Admissible as digital evidence under IT Act, 2000 — Section 65B.
-            No personal data included. Verify at clause-wall.vercel.app
+          <div
+            style={{
+              fontSize: 8,
+              color: "#9ca3af",
+              lineHeight: 1.5,
+              textAlign: "center",
+            }}
+          >
+            Admissible as digital evidence under IT Act, 2000 — Section 65B. No
+            personal data included. Verify at clause-wall.vercel.app
           </div>
         </div>
       </div>

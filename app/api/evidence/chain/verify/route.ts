@@ -7,12 +7,16 @@ import type { EvidenceItem } from "@/types/evidence";
 export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const body = await request.json();
     const { case_id } = body;
-    if (!case_id) return NextResponse.json({ error: "Missing case_id" }, { status: 400 });
+    if (!case_id)
+      return NextResponse.json({ error: "Missing case_id" }, { status: 400 });
 
     const { data: items, error } = await supabase
       .from("evidence_items")
@@ -21,7 +25,8 @@ export async function POST(request: NextRequest) {
       .eq("user_id", user.id)
       .order("sequence_number", { ascending: true });
 
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+    if (error)
+      return NextResponse.json({ error: error.message }, { status: 500 });
 
     const typedItems = (items || []) as EvidenceItem[];
     const verification = verifyChainIntegrity(typedItems);

@@ -9,10 +9,22 @@ import { simulateWhatIf } from "@/lib/vault/whatif-simulator";
 import type { WhatIfScenario, TemporalExtractionResult } from "@/types";
 
 const VALID_SCENARIOS: WhatIfScenario[] = [
-  "job_loss", "city_relocation", "marriage", "divorce", "child_birth",
-  "disability", "hospitalization", "business_start", "property_purchase",
-  "loan_default", "death", "retirement", "company_acquisition",
-  "lawsuit", "natural_disaster", "custom",
+  "job_loss",
+  "city_relocation",
+  "marriage",
+  "divorce",
+  "child_birth",
+  "disability",
+  "hospitalization",
+  "business_start",
+  "property_purchase",
+  "loan_default",
+  "death",
+  "retirement",
+  "company_acquisition",
+  "lawsuit",
+  "natural_disaster",
+  "custom",
 ];
 
 export async function POST(request: NextRequest) {
@@ -23,11 +35,7 @@ export async function POST(request: NextRequest) {
     } = await supabase.auth.getUser();
 
     const body = await request.json();
-    const {
-      scenario,
-      custom_description,
-      document_ids,
-    } = body as {
+    const { scenario, custom_description, document_ids } = body as {
       scenario: WhatIfScenario;
       custom_description?: string;
       document_ids?: string[];
@@ -35,15 +43,18 @@ export async function POST(request: NextRequest) {
 
     if (!scenario || !VALID_SCENARIOS.includes(scenario)) {
       return NextResponse.json(
-        { error: "Invalid scenario. Must be one of: " + VALID_SCENARIOS.join(", ") },
-        { status: 400 }
+        {
+          error:
+            "Invalid scenario. Must be one of: " + VALID_SCENARIOS.join(", "),
+        },
+        { status: 400 },
       );
     }
 
     if (scenario === "custom" && !custom_description) {
       return NextResponse.json(
         { error: "Custom scenario requires a description" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -57,14 +68,17 @@ export async function POST(request: NextRequest) {
       docsQuery = docsQuery.in("id", document_ids);
     }
 
-    const { data: docs, error: docsError } = await docsQuery.order("created_at", {
-      ascending: false,
-    });
+    const { data: docs, error: docsError } = await docsQuery.order(
+      "created_at",
+      {
+        ascending: false,
+      },
+    );
 
     if (docsError || !docs || docs.length === 0) {
       return NextResponse.json(
         { error: "No analyzed contracts found" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -91,14 +105,14 @@ export async function POST(request: NextRequest) {
           })),
           overall_risk_score: Number(doc.overall_risk_score) || 0,
         };
-      })
+      }),
     );
 
     // Run the what-if simulation
     const result = await simulateWhatIf(
       scenario,
       custom_description || null,
-      enrichedDocs
+      enrichedDocs,
     );
 
     // Optionally update the latest vault analysis with the new what-if result
@@ -118,7 +132,7 @@ export async function POST(request: NextRequest) {
 
         // Replace if same scenario exists, otherwise append
         const filteredResults = existingResults.filter(
-          (r: { scenario: string }) => r.scenario !== scenario
+          (r: { scenario: string }) => r.scenario !== scenario,
         );
         filteredResults.push(result);
 
@@ -137,7 +151,7 @@ export async function POST(request: NextRequest) {
     console.error("[Vault] What-if endpoint error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

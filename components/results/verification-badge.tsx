@@ -1,6 +1,12 @@
 "use client";
 
-import { ShieldCheck, ShieldAlert, Bot, ChevronDown, ChevronUp } from "lucide-react";
+import {
+  ShieldCheck,
+  ShieldAlert,
+  Bot,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 
@@ -18,7 +24,9 @@ interface VerificationBadgeProps {
   } | null;
 }
 
-export default function VerificationBadge({ verification }: VerificationBadgeProps) {
+export default function VerificationBadge({
+  verification,
+}: VerificationBadgeProps) {
   const [expanded, setExpanded] = useState(false);
 
   if (!verification) return null;
@@ -88,15 +96,15 @@ export default function VerificationBadge({ verification }: VerificationBadgePro
             Matched Legal Rules
           </p>
           {verification.matched_rules.map((rule, i) => (
-            <div
-              key={i}
-              className="p-3 bg-muted border-2 border-foreground"
-            >
+            <div key={i} className="p-3 bg-muted border-2 border-foreground">
               <div className="flex items-start justify-between gap-2 mb-2">
                 <p className="font-bold text-foreground uppercase">
                   {rule.rule_title}
                 </p>
-                <Badge variant="outline" className="text-[10px] font-black uppercase text-foreground border-2 border-foreground">
+                <Badge
+                  variant="outline"
+                  className="text-[10px] font-black uppercase text-foreground border-2 border-foreground"
+                >
                   {rule.statute_code}
                 </Badge>
               </div>
@@ -105,12 +113,18 @@ export default function VerificationBadge({ verification }: VerificationBadgePro
               </p>
               {rule.what_makes_it_illegal && (
                 <p className="text-sm font-bold text-red-600">
-                  <span className="bg-red-100 dark:bg-red-900 px-1">ILLEGALITY:</span> {rule.what_makes_it_illegal}
+                  <span className="bg-red-100 dark:bg-red-900 px-1">
+                    ILLEGALITY:
+                  </span>{" "}
+                  {rule.what_makes_it_illegal}
                 </p>
               )}
               {rule.max_penalty && (
                 <p className="text-sm font-bold text-yellow-600 mt-2">
-                  <span className="bg-yellow-100 dark:bg-yellow-900 px-1">PENALTY:</span> {rule.max_penalty}
+                  <span className="bg-yellow-100 dark:bg-yellow-900 px-1">
+                    PENALTY:
+                  </span>{" "}
+                  {rule.max_penalty}
                 </p>
               )}
             </div>

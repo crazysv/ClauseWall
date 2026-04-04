@@ -1,12 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Copy,
-  Check,
-  Code2,
-  ExternalLink,
-} from "lucide-react";
+import { Copy, Check, Code2, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -27,18 +22,31 @@ interface EmbedCodeModalProps {
 }
 
 const STYLES: { value: BadgeStyle; label: string; description: string }[] = [
-  { value: "full", label: "Full Badge", description: "280×80px — Name, score, label" },
-  { value: "compact", label: "Compact", description: "160×48px — Score + label" },
+  {
+    value: "full",
+    label: "Full Badge",
+    description: "280×80px — Name, score, label",
+  },
+  {
+    value: "compact",
+    label: "Compact",
+    description: "160×48px — Score + label",
+  },
   { value: "shield", label: "Shield", description: "200×28px — GitHub-style" },
 ];
 
-export default function EmbedCodeModal({ isOpen, onClose, shareId }: EmbedCodeModalProps) {
+export default function EmbedCodeModal({
+  isOpen,
+  onClose,
+  shareId,
+}: EmbedCodeModalProps) {
   const [style, setStyle] = useState<BadgeStyle>("full");
   const [copiedType, setCopiedType] = useState<string | null>(null);
 
-  const baseUrl = typeof window !== "undefined" 
-  ? window.location.origin 
-  : "https://clause-wall.vercel.app";
+  const baseUrl =
+    typeof window !== "undefined"
+      ? window.location.origin
+      : "https://clause-wall.vercel.app";
   const badgeUrl = `${baseUrl}/api/badge/${shareId}?style=${style}`;
   const verifyUrl = `${baseUrl}/verify/${shareId}`;
 
@@ -64,13 +72,16 @@ export default function EmbedCodeModal({ isOpen, onClose, shareId }: EmbedCodeMo
             EMBED BADGE
           </DialogTitle>
           <DialogDescription className="text-muted-foreground font-bold mt-2">
-            Add a ClauseWall verification badge to your website, listing, or portfolio.
+            Add a ClauseWall verification badge to your website, listing, or
+            portfolio.
           </DialogDescription>
         </DialogHeader>
 
         {/* Style Selector */}
         <div className="space-y-4">
-          <p className="text-sm text-foreground font-black uppercase tracking-widest">BADGE STYLE</p>
+          <p className="text-sm text-foreground font-black uppercase tracking-widest">
+            BADGE STYLE
+          </p>
           <div className="flex gap-3">
             {STYLES.map((s) => (
               <button
@@ -82,8 +93,14 @@ export default function EmbedCodeModal({ isOpen, onClose, shareId }: EmbedCodeMo
                     : "bg-white dark:bg-zinc-900 shadow-none hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1"
                 }`}
               >
-                <p className={`text-xs font-black uppercase tracking-widest ${style === s.value ? "text-blue-900 dark:text-blue-100" : "text-foreground"}`}>{s.label}</p>
-                <p className="text-[10px] text-muted-foreground font-bold mt-1 uppercase tracking-wider">{s.description}</p>
+                <p
+                  className={`text-xs font-black uppercase tracking-widest ${style === s.value ? "text-blue-900 dark:text-blue-100" : "text-foreground"}`}
+                >
+                  {s.label}
+                </p>
+                <p className="text-[10px] text-muted-foreground font-bold mt-1 uppercase tracking-wider">
+                  {s.description}
+                </p>
               </button>
             ))}
           </div>
@@ -113,10 +130,18 @@ export default function EmbedCodeModal({ isOpen, onClose, shareId }: EmbedCodeMo
           {/* HTML */}
           <div className="relative group">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-sm text-foreground font-black uppercase tracking-widest">HTML</p>
-              <button onClick={() => handleCopy(htmlCode, "HTML")}
-                className="text-xs text-muted-foreground hover:text-foreground font-bold uppercase tracking-widest flex items-center gap-1 transition-colors">
-                {copiedType === "HTML" ? <Check className="h-4 w-4 text-green-600 stroke-[3px]" /> : <Copy className="h-4 w-4 stroke-[3px]" />}
+              <p className="text-sm text-foreground font-black uppercase tracking-widest">
+                HTML
+              </p>
+              <button
+                onClick={() => handleCopy(htmlCode, "HTML")}
+                className="text-xs text-muted-foreground hover:text-foreground font-bold uppercase tracking-widest flex items-center gap-1 transition-colors"
+              >
+                {copiedType === "HTML" ? (
+                  <Check className="h-4 w-4 text-green-600 stroke-[3px]" />
+                ) : (
+                  <Copy className="h-4 w-4 stroke-[3px]" />
+                )}
                 {copiedType === "HTML" ? "COPIED!" : "COPY"}
               </button>
             </div>
@@ -128,10 +153,18 @@ export default function EmbedCodeModal({ isOpen, onClose, shareId }: EmbedCodeMo
           {/* Markdown */}
           <div className="relative group">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-sm text-foreground font-black uppercase tracking-widest">MARKDOWN</p>
-              <button onClick={() => handleCopy(markdownCode, "Markdown")}
-                className="text-xs text-muted-foreground hover:text-foreground font-bold uppercase tracking-widest flex items-center gap-1 transition-colors">
-                {copiedType === "Markdown" ? <Check className="h-4 w-4 text-green-600 stroke-[3px]" /> : <Copy className="h-4 w-4 stroke-[3px]" />}
+              <p className="text-sm text-foreground font-black uppercase tracking-widest">
+                MARKDOWN
+              </p>
+              <button
+                onClick={() => handleCopy(markdownCode, "Markdown")}
+                className="text-xs text-muted-foreground hover:text-foreground font-bold uppercase tracking-widest flex items-center gap-1 transition-colors"
+              >
+                {copiedType === "Markdown" ? (
+                  <Check className="h-4 w-4 text-green-600 stroke-[3px]" />
+                ) : (
+                  <Copy className="h-4 w-4 stroke-[3px]" />
+                )}
                 {copiedType === "Markdown" ? "COPIED!" : "COPY"}
               </button>
             </div>
@@ -143,10 +176,18 @@ export default function EmbedCodeModal({ isOpen, onClose, shareId }: EmbedCodeMo
           {/* Direct URL */}
           <div className="relative group">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-sm text-foreground font-black uppercase tracking-widest">DIRECT URL</p>
-              <button onClick={() => handleCopy(directUrl, "URL")}
-                className="text-xs text-muted-foreground hover:text-foreground font-bold uppercase tracking-widest flex items-center gap-1 transition-colors">
-                {copiedType === "URL" ? <Check className="h-4 w-4 text-green-600 stroke-[3px]" /> : <Copy className="h-4 w-4 stroke-[3px]" />}
+              <p className="text-sm text-foreground font-black uppercase tracking-widest">
+                DIRECT URL
+              </p>
+              <button
+                onClick={() => handleCopy(directUrl, "URL")}
+                className="text-xs text-muted-foreground hover:text-foreground font-bold uppercase tracking-widest flex items-center gap-1 transition-colors"
+              >
+                {copiedType === "URL" ? (
+                  <Check className="h-4 w-4 text-green-600 stroke-[3px]" />
+                ) : (
+                  <Copy className="h-4 w-4 stroke-[3px]" />
+                )}
                 {copiedType === "URL" ? "COPIED!" : "COPY"}
               </button>
             </div>
@@ -158,7 +199,9 @@ export default function EmbedCodeModal({ isOpen, onClose, shareId }: EmbedCodeMo
 
         {/* Use Cases */}
         <div className="p-4 border-4 border-black bg-yellow-100 dark:bg-yellow-900/30 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mt-4">
-          <p className="text-sm text-yellow-900 dark:text-yellow-100 font-black uppercase tracking-widest mb-3">WHERE TO USE</p>
+          <p className="text-sm text-yellow-900 dark:text-yellow-100 font-black uppercase tracking-widest mb-3">
+            WHERE TO USE
+          </p>
           <div className="grid grid-cols-2 gap-2 text-xs font-bold uppercase tracking-widest text-foreground">
             <div>🏠 PROPERTY LISTINGS</div>
             <div>💼 COMPANY CAREERS PAGE</div>

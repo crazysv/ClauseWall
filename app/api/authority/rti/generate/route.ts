@@ -19,8 +19,11 @@ export async function POST(request: Request) {
 
     if (!applicant_name || !dispute_context) {
       return NextResponse.json(
-        { success: false, error: "Missing required fields: applicant_name, dispute_context" },
-        { status: 400 }
+        {
+          success: false,
+          error: "Missing required fields: applicant_name, dispute_context",
+        },
+        { status: 400 },
       );
     }
 
@@ -30,7 +33,7 @@ export async function POST(request: Request) {
       target_authority || "Concerned Authority",
       target_address || "",
       dispute_context,
-      specific_questions
+      specific_questions,
     );
 
     return NextResponse.json({ success: true, rti });
@@ -38,7 +41,7 @@ export async function POST(request: Request) {
     console.error("[ClauseWall] RTI generation failed:", error);
     return NextResponse.json(
       { success: false, error: "RTI generation failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

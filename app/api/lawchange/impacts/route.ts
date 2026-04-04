@@ -37,7 +37,7 @@ export async function GET() {
     }));
 
     const unacknowledged = formatted.filter(
-      (i: any) => !i.user_acknowledged
+      (i: any) => !i.user_acknowledged,
     ).length;
 
     return NextResponse.json({
@@ -47,7 +47,7 @@ export async function GET() {
   } catch (error) {
     return NextResponse.json(
       { error: (error as Error).message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

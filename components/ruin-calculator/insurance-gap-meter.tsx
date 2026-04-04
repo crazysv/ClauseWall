@@ -13,7 +13,7 @@ interface Props {
 
 export default function InsuranceGapMeter({ gap, onCoverageChange }: Props) {
   const [inputValue, setInputValue] = useState(
-    gap.userCoverage > 0 ? String(gap.userCoverage) : ""
+    gap.userCoverage > 0 ? String(gap.userCoverage) : "",
   );
 
   const handleChange = (value: string) => {
@@ -41,7 +41,9 @@ export default function InsuranceGapMeter({ gap, onCoverageChange }: Props) {
         <div className="w-full h-8 bg-gray-100 border-4 border-black border-dashed overflow-hidden shadow-[inset_4px_4px_0px_0px_rgba(0,0,0,0.1)]">
           <div className="h-full w-full bg-red-500 border-r-4 border-black" />
         </div>
-        <p className="text-xs font-bold uppercase tracking-widest text-black/50 mt-2">100%</p>
+        <p className="text-xs font-bold uppercase tracking-widest text-black/50 mt-2">
+          100%
+        </p>
       </div>
 
       {/* Coverage */}
@@ -80,8 +82,7 @@ export default function InsuranceGapMeter({ gap, onCoverageChange }: Props) {
       {gap.gap > 0 && (
         <div className="card-impact p-4 bg-yellow-100 border-4 border-yellow-500 shadow-[4px_4px_0px_0px_rgba(234,179,8,1)] text-center">
           <p className="text-sm font-black uppercase tracking-widest text-yellow-700">
-            ⚠️ UNCOVERED GAP:{" "}
-            <strong>{formatINRCompact(gap.gap)}</strong>{" "}
+            ⚠️ UNCOVERED GAP: <strong>{formatINRCompact(gap.gap)}</strong>{" "}
             <span className="text-yellow-900 ml-2">
               ({Math.round(gap.gapPercent)}%)
             </span>
@@ -92,7 +93,9 @@ export default function InsuranceGapMeter({ gap, onCoverageChange }: Props) {
       {/* Recommendations */}
       {gap.recommendations.length > 0 && (
         <div className="space-y-3 mt-6 border-t-4 border-black pt-6">
-          <p className="text-xs font-black uppercase tracking-widest text-black">Recommended Policies:</p>
+          <p className="text-xs font-black uppercase tracking-widest text-black">
+            Recommended Policies:
+          </p>
           {gap.recommendations.map((rec, i) => (
             <div
               key={i}
@@ -102,7 +105,9 @@ export default function InsuranceGapMeter({ gap, onCoverageChange }: Props) {
                 <p className="text-sm font-black uppercase tracking-widest text-black">
                   {rec.product}
                 </p>
-                <p className="text-xs font-bold uppercase tracking-widest text-black/60 mt-1">{rec.relevance}</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-black/60 mt-1">
+                  {rec.relevance}
+                </p>
               </div>
               <div className="text-right flex-shrink-0 ml-4 pl-4 border-l-4 border-black">
                 <p className="text-sm font-black text-green-600 bg-green-100 px-2 py-1 mb-1 inline-block border-2 border-green-600">

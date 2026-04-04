@@ -9,16 +9,18 @@ import { createAdminClient } from "@/lib/supabase/admin";
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: Promise<{ collectiveId: string }> }
+  { params }: { params: Promise<{ collectiveId: string }> },
 ) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return NextResponse.json(
         { error: "Authentication required" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -37,7 +39,7 @@ export async function POST(
     if (!membership) {
       return NextResponse.json(
         { error: "You must be a member to generate documents" },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -45,7 +47,7 @@ export async function POST(
     if (!collective) {
       return NextResponse.json(
         { error: "Collective not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -55,14 +57,14 @@ export async function POST(
     if (!actionType) {
       return NextResponse.json(
         { error: "Action type required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     const document = await generateCollectiveDocument(
       collective,
       actionType,
-      additionalContext
+      additionalContext,
     );
 
     return NextResponse.json({
@@ -74,7 +76,7 @@ export async function POST(
     console.error("[ClauseWall] [API] Generate document error:", error);
     return NextResponse.json(
       { error: "Failed to generate document" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

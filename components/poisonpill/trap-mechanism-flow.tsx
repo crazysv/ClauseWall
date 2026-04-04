@@ -8,12 +8,25 @@ interface Props {
   connections: ClauseConnection[];
 }
 
-const RISK_BADGE: Record<string, { bg: string; text: string; label: string }> = {
-  safe: { bg: "bg-green-500/10", text: "text-green-400", label: "Safe" },
-  warning: { bg: "bg-yellow-500/10", text: "text-yellow-400", label: "Warning" },
-  dangerous: { bg: "bg-red-500/10", text: "text-red-400", label: "Dangerous" },
-  illegal: { bg: "bg-purple-500/10", text: "text-purple-400", label: "Illegal" },
-};
+const RISK_BADGE: Record<string, { bg: string; text: string; label: string }> =
+  {
+    safe: { bg: "bg-green-500/10", text: "text-green-400", label: "Safe" },
+    warning: {
+      bg: "bg-yellow-500/10",
+      text: "text-yellow-400",
+      label: "Warning",
+    },
+    dangerous: {
+      bg: "bg-red-500/10",
+      text: "text-red-400",
+      label: "Dangerous",
+    },
+    illegal: {
+      bg: "bg-purple-500/10",
+      text: "text-purple-400",
+      label: "Illegal",
+    },
+  };
 
 const CONNECTION_COLORS: Record<string, string> = {
   enables: "text-blue-400",
@@ -38,12 +51,12 @@ export function TrapMechanismFlow({ mechanisms, connections }: Props) {
           ? connections.find(
               (c) =>
                 c.from_clause_number === mech.clause_number &&
-                c.to_clause_number === nextMech.clause_number
+                c.to_clause_number === nextMech.clause_number,
             ) ||
             connections.find(
               (c) =>
                 c.from_clause_number === nextMech.clause_number &&
-                c.to_clause_number === mech.clause_number
+                c.to_clause_number === mech.clause_number,
             )
           : null;
 
@@ -104,7 +117,8 @@ export function TrapMechanismFlow({ mechanisms, connections }: Props) {
                 <div className="w-px h-4 bg-white/10 ml-[10px]" />
                 <span
                   className={`text-[9px] ml-3 ${
-                    CONNECTION_COLORS[connection.connection_type] || "text-white/30"
+                    CONNECTION_COLORS[connection.connection_type] ||
+                    "text-white/30"
                   }`}
                 >
                   ↓ {connection.connection_type.replace(/_/g, " ")}

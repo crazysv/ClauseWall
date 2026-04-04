@@ -10,7 +10,12 @@ interface BenchmarkTableProps {
   benchmarks: MarketBenchmark[];
 }
 
-type SortKey = "benchmark_type" | "scope_value" | "sample_count" | "median_value" | "mean_value";
+type SortKey =
+  | "benchmark_type"
+  | "scope_value"
+  | "sample_count"
+  | "median_value"
+  | "mean_value";
 
 export default function BenchmarkTable({ benchmarks }: BenchmarkTableProps) {
   const [sortKey, setSortKey] = useState<SortKey>("sample_count");
@@ -21,14 +26,18 @@ export default function BenchmarkTable({ benchmarks }: BenchmarkTableProps) {
     return [...benchmarks].sort((a, b) => {
       const aVal = (a as any)[sortKey] ?? 0;
       const bVal = (b as any)[sortKey] ?? 0;
-      if (typeof aVal === "string") return sortAsc ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+      if (typeof aVal === "string")
+        return sortAsc ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
       return sortAsc ? aVal - bVal : bVal - aVal;
     });
   }, [benchmarks, sortKey, sortAsc]);
 
   const toggleSort = (key: SortKey) => {
     if (sortKey === key) setSortAsc(!sortAsc);
-    else { setSortKey(key); setSortAsc(false); }
+    else {
+      setSortKey(key);
+      setSortAsc(false);
+    }
   };
 
   const columns: { key: SortKey; label: string; align?: string }[] = [
@@ -56,13 +65,17 @@ export default function BenchmarkTable({ benchmarks }: BenchmarkTableProps) {
                 </span>
               </th>
             ))}
-            <th className="px-4 py-3 text-xs font-medium text-white/40 text-right">P25–P75</th>
+            <th className="px-4 py-3 text-xs font-medium text-white/40 text-right">
+              P25–P75
+            </th>
             <th className="w-8" />
           </tr>
         </thead>
         <tbody>
           {sorted.map((bm) => {
-            const label = BENCHMARK_TYPE_LABELS[bm.benchmark_type as BenchmarkType] || bm.benchmark_type;
+            const label =
+              BENCHMARK_TYPE_LABELS[bm.benchmark_type as BenchmarkType] ||
+              bm.benchmark_type;
             const unit = UNIT_LABELS[bm.value_unit || ""] || "";
             const isExpanded = expandedRow === bm.id;
 
@@ -75,10 +88,16 @@ export default function BenchmarkTable({ benchmarks }: BenchmarkTableProps) {
                 onClick={() => setExpandedRow(isExpanded ? null : bm.id)}
               >
                 <td className="px-4 py-3 text-white/80 font-medium">{label}</td>
-                <td className="px-4 py-3 text-white/50 capitalize">{bm.scope_value?.replace(/_/g, " ") || "—"}</td>
-                <td className="px-4 py-3 text-right text-white/50">{bm.sample_count}</td>
+                <td className="px-4 py-3 text-white/50 capitalize">
+                  {bm.scope_value?.replace(/_/g, " ") || "—"}
+                </td>
+                <td className="px-4 py-3 text-right text-white/50">
+                  {bm.sample_count}
+                </td>
                 <td className="px-4 py-3 text-right text-white font-medium">
-                  {bm.median_value !== null ? `${bm.median_value} ${unit}` : "—"}
+                  {bm.median_value !== null
+                    ? `${bm.median_value} ${unit}`
+                    : "—"}
                 </td>
                 <td className="px-4 py-3 text-right text-white/60">
                   {bm.mean_value !== null ? `${bm.mean_value} ${unit}` : "—"}
@@ -89,9 +108,11 @@ export default function BenchmarkTable({ benchmarks }: BenchmarkTableProps) {
                     : "—"}
                 </td>
                 <td className="px-2 py-3">
-                  {isExpanded
-                    ? <ChevronUp className="h-3.5 w-3.5 text-white/20" />
-                    : <ChevronDown className="h-3.5 w-3.5 text-white/20" />}
+                  {isExpanded ? (
+                    <ChevronUp className="h-3.5 w-3.5 text-white/20" />
+                  ) : (
+                    <ChevronDown className="h-3.5 w-3.5 text-white/20" />
+                  )}
                 </td>
               </motion.tr>
             );

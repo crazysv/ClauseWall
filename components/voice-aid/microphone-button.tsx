@@ -47,16 +47,23 @@ export default function MicrophoneButton({
     } else {
       onStartListening();
     }
-  }, [isListening, isProcessing, isSpeaking, disabled, onStartListening, onStopListening]);
+  }, [
+    isListening,
+    isProcessing,
+    isSpeaking,
+    disabled,
+    onStartListening,
+    onStopListening,
+  ]);
 
   // Determine button state
   const buttonColor = isListening
     ? "bg-red-500 shadow-red-500/40"
     : isProcessing
-    ? "bg-amber-500 shadow-amber-500/30"
-    : isSpeaking
-    ? "bg-blue-500 shadow-blue-500/30"
-    : "bg-emerald-500 shadow-emerald-500/30 hover:bg-emerald-400";
+      ? "bg-amber-500 shadow-amber-500/30"
+      : isSpeaking
+        ? "bg-blue-500 shadow-blue-500/30"
+        : "bg-emerald-500 shadow-emerald-500/30 hover:bg-emerald-400";
 
   const pulseRings = isListening ? 3 : isSpeaking ? 2 : 0;
 
@@ -90,16 +97,18 @@ export default function MicrophoneButton({
         disabled={disabled}
         whileTap={{ scale: 0.92 }}
         className={`relative z-10 w-20 h-20 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 ${buttonColor} ${
-          disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer active:scale-95"
+          disabled
+            ? "opacity-50 cursor-not-allowed"
+            : "cursor-pointer active:scale-95"
         }`}
         aria-label={
           isListening
             ? "Stop listening"
             : isProcessing
-            ? "Processing..."
-            : isSpeaking
-            ? "Speaking..."
-            : "Start listening"
+              ? "Processing..."
+              : isSpeaking
+                ? "Speaking..."
+                : "Start listening"
         }
         id="voice-mic-button"
       >
@@ -118,10 +127,10 @@ export default function MicrophoneButton({
           {isListening
             ? "🔴 Listening..."
             : isProcessing
-            ? "⏳ Processing..."
-            : isSpeaking
-            ? "🔊 Speaking..."
-            : "🎤 Tap to speak"}
+              ? "⏳ Processing..."
+              : isSpeaking
+                ? "🔊 Speaking..."
+                : "🎤 Tap to speak"}
         </span>
       </div>
     </div>

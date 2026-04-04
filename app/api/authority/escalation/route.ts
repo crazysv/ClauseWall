@@ -3,22 +3,21 @@
 // ============================================
 
 import { NextResponse } from "next/server";
-import { computeEscalationPath, computeDeadlines } from "@/lib/authority/escalation-engine";
+import {
+  computeEscalationPath,
+  computeDeadlines,
+} from "@/lib/authority/escalation-engine";
 import type { DisputeCategory } from "@/types/authority";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const {
-      dispute_category,
-      document_type,
-      start_date,
-    } = body;
+    const { dispute_category, document_type, start_date } = body;
 
     const path = computeEscalationPath(
       (dispute_category as DisputeCategory) || "consumer",
       document_type || "other",
-      start_date
+      start_date,
     );
 
     const deadlines = start_date
@@ -30,7 +29,7 @@ export async function POST(request: Request) {
     console.error("[ClauseWall] Escalation computation failed:", error);
     return NextResponse.json(
       { success: false, error: "Failed to compute escalation path" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

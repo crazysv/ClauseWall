@@ -3,10 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Swords, ArrowRight, Loader2 } from "lucide-react";
-import type {
-  ClauseDeliberation,
-  AgentRole,
-} from "@/lib/deliberation/types";
+import type { ClauseDeliberation, AgentRole } from "@/lib/deliberation/types";
 
 // ============================================
 // PROPS
@@ -25,9 +22,16 @@ interface DeliberationSummaryProps {
 // VERDICT CONFIG
 // ============================================
 
-const verdictConfig: Record<string, { color: string; emoji: string; label: string }> = {
+const verdictConfig: Record<
+  string,
+  { color: string; emoji: string; label: string }
+> = {
   fair: { color: "text-emerald-400", emoji: "✅", label: "FAIR" },
-  partially_fair: { color: "text-amber-400", emoji: "⚠️", label: "PARTIALLY FAIR" },
+  partially_fair: {
+    color: "text-amber-400",
+    emoji: "⚠️",
+    label: "PARTIALLY FAIR",
+  },
   unfair: { color: "text-red-400", emoji: "❌", label: "UNFAIR" },
   illegal: { color: "text-purple-400", emoji: "⛔", label: "ILLEGAL" },
 };
@@ -53,7 +57,14 @@ export default function DeliberationSummary({
   // ── STATE 3: Loading ──
   if (isLoading) {
     const agent = currentAgent ? agentInfo[currentAgent] : null;
-    const step = currentAgent === "predator" ? 1 : currentAgent === "guardian" ? 2 : currentAgent === "arbiter" ? 3 : 1;
+    const step =
+      currentAgent === "predator"
+        ? 1
+        : currentAgent === "guardian"
+          ? 2
+          : currentAgent === "arbiter"
+            ? 3
+            : 1;
     const percent = Math.round((step / 3) * 100);
 
     return (
@@ -82,18 +93,20 @@ export default function DeliberationSummary({
             transition={{ duration: 0.4 }}
           />
         </div>
-        <p className="text-[10px] text-white/40 mt-1">
-          Step {step} of 3
-        </p>
+        <p className="text-[10px] text-white/40 mt-1">Step {step} of 3</p>
       </motion.div>
     );
   }
 
   // ── STATE 1: Has deliberation data ──
   if (deliberation) {
-    const v = verdictConfig[deliberation.arbiterVerdict.verdict] || verdictConfig.partially_fair;
+    const v =
+      verdictConfig[deliberation.arbiterVerdict.verdict] ||
+      verdictConfig.partially_fair;
     const predConf = Math.round(deliberation.predatorArgument.confidence * 100);
-    const guardConf = Math.round(deliberation.guardianArgument.confidence * 100);
+    const guardConf = Math.round(
+      deliberation.guardianArgument.confidence * 100,
+    );
     const arbConf = Math.round(deliberation.arbiterVerdict.confidence * 100);
 
     return (
@@ -109,9 +122,7 @@ export default function DeliberationSummary({
               <span className={`text-xs font-bold ${v.color}`}>
                 {v.emoji} {v.label}
               </span>
-              <span className="text-[10px] text-white/40">
-                ({arbConf}%)
-              </span>
+              <span className="text-[10px] text-white/40">({arbConf}%)</span>
             </div>
             <span className="text-white/20">|</span>
             <div className="flex items-center gap-2 text-[10px] text-white/50">
@@ -127,47 +138,47 @@ export default function DeliberationSummary({
         </div>
 
         {/* Cross-links for unfavorable verdicts */}
-        {documentId && deliberation && (
-          deliberation.arbiterVerdict.verdict === 'illegal' ||
-          deliberation.arbiterVerdict.verdict === 'unfair'
-        ) && (
-          <div className="flex flex-wrap items-center gap-2 mt-2 pt-2 border-t border-white/5">
-            <span className="text-[10px] text-white/20">Next:</span>
-            {deliberation.arbiterVerdict.verdict === 'illegal' ? (
-              <>
-                <Link
-                  href={`/letter/${documentId}`}
-                  className="text-[10px] text-amber-400/60 hover:text-amber-400 transition-colors"
-                >
-                  Agents agree — Generate legal notice →
-                </Link>
-                <span className="text-white/10">·</span>
-                <Link
-                  href={`/negotiate/${documentId}`}
-                  className="text-[10px] text-emerald-400/60 hover:text-emerald-400 transition-colors"
-                >
-                  Negotiate →
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link
-                  href={`/negotiate/${documentId}`}
-                  className="text-[10px] text-emerald-400/60 hover:text-emerald-400 transition-colors"
-                >
-                  Flagged unfair — Get negotiation script →
-                </Link>
-                <span className="text-white/10">·</span>
-                <Link
-                  href={`/letter/${documentId}`}
-                  className="text-[10px] text-amber-400/60 hover:text-amber-400 transition-colors"
-                >
-                  Legal notice →
-                </Link>
-              </>
-            )}
-          </div>
-        )}
+        {documentId &&
+          deliberation &&
+          (deliberation.arbiterVerdict.verdict === "illegal" ||
+            deliberation.arbiterVerdict.verdict === "unfair") && (
+            <div className="flex flex-wrap items-center gap-2 mt-2 pt-2 border-t border-white/5">
+              <span className="text-[10px] text-white/20">Next:</span>
+              {deliberation.arbiterVerdict.verdict === "illegal" ? (
+                <>
+                  <Link
+                    href={`/letter/${documentId}`}
+                    className="text-[10px] text-amber-400/60 hover:text-amber-400 transition-colors"
+                  >
+                    Agents agree — Generate legal notice →
+                  </Link>
+                  <span className="text-white/10">·</span>
+                  <Link
+                    href={`/negotiate/${documentId}`}
+                    className="text-[10px] text-emerald-400/60 hover:text-emerald-400 transition-colors"
+                  >
+                    Negotiate →
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href={`/negotiate/${documentId}`}
+                    className="text-[10px] text-emerald-400/60 hover:text-emerald-400 transition-colors"
+                  >
+                    Flagged unfair — Get negotiation script →
+                  </Link>
+                  <span className="text-white/10">·</span>
+                  <Link
+                    href={`/letter/${documentId}`}
+                    className="text-[10px] text-amber-400/60 hover:text-amber-400 transition-colors"
+                  >
+                    Legal notice →
+                  </Link>
+                </>
+              )}
+            </div>
+          )}
       </motion.div>
     );
   }

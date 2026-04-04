@@ -11,16 +11,18 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 export default function WatchdogSettingsPage() {
-  const [watchlist, setWatchlist] = useState<Array<{
-    id: string;
-    company_id: string;
-    company?: { name: string; slug: string };
-    alert_email: boolean;
-    alert_telegram: boolean;
-    alert_inapp: boolean;
-    sensitivity: string;
-    telegram_chat_id: string | null;
-  }>>([]);
+  const [watchlist, setWatchlist] = useState<
+    Array<{
+      id: string;
+      company_id: string;
+      company?: { name: string; slug: string };
+      alert_email: boolean;
+      alert_telegram: boolean;
+      alert_inapp: boolean;
+      sensitivity: string;
+      telegram_chat_id: string | null;
+    }>
+  >([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -44,7 +46,7 @@ export default function WatchdogSettingsPage() {
   const updatePreference = async (
     companyId: string,
     field: string,
-    value: boolean | string
+    value: boolean | string,
   ) => {
     try {
       const entry = watchlist.find((w) => w.company_id === companyId);
@@ -60,8 +62,8 @@ export default function WatchdogSettingsPage() {
 
       setWatchlist((prev) =>
         prev.map((w) =>
-          w.company_id === companyId ? { ...w, [field]: value } : w
-        )
+          w.company_id === companyId ? { ...w, [field]: value } : w,
+        ),
       );
       toast.success("Preferences updated");
     } catch {
@@ -71,9 +73,12 @@ export default function WatchdogSettingsPage() {
 
   const removeFromWatchlist = async (companyId: string) => {
     try {
-      const res = await fetch(`/api/watchdog/watchlist?company_id=${companyId}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `/api/watchdog/watchlist?company_id=${companyId}`,
+        {
+          method: "DELETE",
+        },
+      );
       if (!res.ok) throw new Error("Failed");
       setWatchlist((prev) => prev.filter((w) => w.company_id !== companyId));
       toast.success("Removed from watchlist");
@@ -109,9 +114,18 @@ export default function WatchdogSettingsPage() {
           <Card className="bg-gray-900/50 border-gray-800">
             <CardContent className="p-8 text-center">
               <Shield className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
-              <p className="text-muted-foreground mb-2">You're not watching any companies yet.</p>
+              <p className="text-muted-foreground mb-2">
+                You're not watching any companies yet.
+              </p>
               <p className="text-sm text-muted-foreground">
-                Go to the <a href="/watchdog/companies" className="text-blue-400 hover:underline">Companies</a> page to start watching.
+                Go to the{" "}
+                <a
+                  href="/watchdog/companies"
+                  className="text-blue-400 hover:underline"
+                >
+                  Companies
+                </a>{" "}
+                page to start watching.
               </p>
             </CardContent>
           </Card>
@@ -121,7 +135,10 @@ export default function WatchdogSettingsPage() {
               <Card key={entry.id} className="bg-gray-900/50 border-gray-800">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-base flex items-center justify-between">
-                    <a href={`/watchdog/companies/${entry.company?.slug}`} className="hover:text-blue-400 transition-colors">
+                    <a
+                      href={`/watchdog/companies/${entry.company?.slug}`}
+                      className="hover:text-blue-400 transition-colors"
+                    >
                       {entry.company?.name || "Unknown Company"}
                     </a>
                     <Button
@@ -141,7 +158,13 @@ export default function WatchdogSettingsPage() {
                       <input
                         type="checkbox"
                         checked={entry.alert_inapp}
-                        onChange={(e) => updatePreference(entry.company_id, "alert_inapp", e.target.checked)}
+                        onChange={(e) =>
+                          updatePreference(
+                            entry.company_id,
+                            "alert_inapp",
+                            e.target.checked,
+                          )
+                        }
                         className="rounded border-gray-700 bg-gray-800"
                       />
                       <span className="text-sm">In-App</span>
@@ -150,7 +173,13 @@ export default function WatchdogSettingsPage() {
                       <input
                         type="checkbox"
                         checked={entry.alert_email}
-                        onChange={(e) => updatePreference(entry.company_id, "alert_email", e.target.checked)}
+                        onChange={(e) =>
+                          updatePreference(
+                            entry.company_id,
+                            "alert_email",
+                            e.target.checked,
+                          )
+                        }
                         className="rounded border-gray-700 bg-gray-800"
                       />
                       <span className="text-sm">Email</span>
@@ -159,7 +188,13 @@ export default function WatchdogSettingsPage() {
                       <input
                         type="checkbox"
                         checked={entry.alert_telegram}
-                        onChange={(e) => updatePreference(entry.company_id, "alert_telegram", e.target.checked)}
+                        onChange={(e) =>
+                          updatePreference(
+                            entry.company_id,
+                            "alert_telegram",
+                            e.target.checked,
+                          )
+                        }
                         className="rounded border-gray-700 bg-gray-800"
                       />
                       <span className="text-sm">Telegram</span>
@@ -167,11 +202,19 @@ export default function WatchdogSettingsPage() {
                     {/* Sensitivity */}
                     <select
                       value={entry.sensitivity}
-                      onChange={(e) => updatePreference(entry.company_id, "sensitivity", e.target.value)}
+                      onChange={(e) =>
+                        updatePreference(
+                          entry.company_id,
+                          "sensitivity",
+                          e.target.value,
+                        )
+                      }
                       className="text-sm bg-gray-800 border border-gray-700 rounded px-2 py-1"
                     >
                       <option value="all_changes">All changes</option>
-                      <option value="major_and_critical">Major & Critical</option>
+                      <option value="major_and_critical">
+                        Major & Critical
+                      </option>
                       <option value="critical_only">Critical only</option>
                     </select>
                   </div>

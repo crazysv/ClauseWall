@@ -6,23 +6,28 @@ import { Badge } from "@/components/ui/badge";
 import { Users } from "lucide-react";
 import type { OptoutCampaignWithCompany } from "@/types";
 
-export default function CampaignCard({ campaign }: { campaign: OptoutCampaignWithCompany }) {
-  const progress = Math.min(100, (campaign.signatory_count / campaign.target_count) * 100);
+export default function CampaignCard({
+  campaign,
+}: {
+  campaign: OptoutCampaignWithCompany;
+}) {
+  const progress = Math.min(
+    100,
+    (campaign.signatory_count / campaign.target_count) * 100,
+  );
   const companyName = campaign.company?.name || "Unknown";
 
   return (
-    <Card className="bg-gray-900/50 border-gray-800 hover:border-amber-500/20 transition-all">
+    <Card className="bg-background/50 border-gray-800 hover:border-amber-500/20 transition-all">
       <CardContent className="p-5">
         <div className="flex items-start justify-between gap-3 mb-3">
           <div>
             <h3 className="font-semibold mb-1">{campaign.title}</h3>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <span>vs {companyName}</span>
-              <Badge className={`text-[10px] ${
-                campaign.status === "active" ? "bg-green-500/15 text-green-400 border-green-500/30" :
-                campaign.status === "delivered" ? "bg-blue-500/15 text-blue-400 border-blue-500/30" :
-                "bg-gray-500/15 text-gray-400 border-gray-500/30"
-              }`}>
+              <Badge
+                className={`text-[10px] ${campaign.status === "active" ? "bg-green-500/15 text-green-400 border-green-500/30" : campaign.status === "delivered" ? "bg-blue-500/15 text-blue-400 border-blue-500/30" : "bg-gray-500/15 text-gray-400 border-gray-500/30"}`}
+              >
                 {campaign.status}
               </Badge>
             </div>
@@ -32,7 +37,9 @@ export default function CampaignCard({ campaign }: { campaign: OptoutCampaignWit
               <Users className="h-4 w-4" />
               <span className="font-bold">{campaign.signatory_count}</span>
             </div>
-            <p className="text-[10px] text-muted-foreground">of {campaign.target_count}</p>
+            <p className="text-[10px] text-muted-foreground">
+              of {campaign.target_count}
+            </p>
           </div>
         </div>
 
@@ -44,7 +51,7 @@ export default function CampaignCard({ campaign }: { campaign: OptoutCampaignWit
         <div className="mb-3">
           <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full transition-all"
+              className="h-full bg-background rounded-full transition-all"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -54,7 +61,10 @@ export default function CampaignCard({ campaign }: { campaign: OptoutCampaignWit
         </div>
 
         <div className="flex items-center gap-2">
-          <Badge variant="outline" className="text-[10px] border-white/10">
+          <Badge
+            variant="outline"
+            className="text-[10px] border-foreground border-2"
+          >
             ⚖️ {campaign.legal_basis}
           </Badge>
         </div>

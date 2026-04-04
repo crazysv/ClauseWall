@@ -25,14 +25,22 @@ export async function GET(req: NextRequest) {
 
     // Get all nodes, optionally filtered by type
     const validTypes: GraphNodeType[] = [
-      "law", "section", "clause_type", "interpretation",
-      "jurisdiction", "authority", "penalty", "case_ref",
-      "guideline", "regulation", "document_type", "remedy",
+      "law",
+      "section",
+      "clause_type",
+      "interpretation",
+      "jurisdiction",
+      "authority",
+      "penalty",
+      "case_ref",
+      "guideline",
+      "regulation",
+      "document_type",
+      "remedy",
     ];
 
-    const typesToInclude = nodeType && validTypes.includes(nodeType)
-      ? [nodeType]
-      : validTypes;
+    const typesToInclude =
+      nodeType && validTypes.includes(nodeType) ? [nodeType] : validTypes;
 
     const nodes: VisNode[] = [];
     const nodeIds = new Set<string>();
@@ -113,7 +121,7 @@ export async function GET(req: NextRequest) {
     console.error("[ClauseWall] [API] Graph explore failed:", error);
     return NextResponse.json(
       { error: "Failed to load graph explorer data" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

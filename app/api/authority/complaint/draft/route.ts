@@ -9,12 +9,17 @@ import { getAuthorityById } from "@/lib/authority/authority-db";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { authority_id, document_context, complainant_name, complainant_address } = body;
+    const {
+      authority_id,
+      document_context,
+      complainant_name,
+      complainant_address,
+    } = body;
 
     if (!document_context || !complainant_name) {
       return NextResponse.json(
         { success: false, error: "Missing required fields" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -28,7 +33,8 @@ export async function POST(request: Request) {
       authority = {
         id: "unknown",
         name: document_context.authority_name || "Concerned Authority",
-        authority_type: document_context.authority_type || "consumer_forum_district",
+        authority_type:
+          document_context.authority_type || "consumer_forum_district",
         physical_address: document_context.authority_address || null,
         presiding_officer_designation: "The Presiding Officer",
       } as any;
@@ -45,7 +51,7 @@ export async function POST(request: Request) {
         claim_amount: document_context.claim_amount,
       },
       complainant_name,
-      complainant_address || ""
+      complainant_address || "",
     );
 
     return NextResponse.json({ success: true, draft });
@@ -53,7 +59,7 @@ export async function POST(request: Request) {
     console.error("[ClauseWall] Complaint drafting failed:", error);
     return NextResponse.json(
       { success: false, error: "Complaint drafting failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

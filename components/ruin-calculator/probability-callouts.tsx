@@ -1,7 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import type { SimulationStatistics, PercentileData } from "@/lib/simulation/types";
+import type {
+  SimulationStatistics,
+  PercentileData,
+} from "@/lib/simulation/types";
 import { formatINRCompact } from "@/lib/simulation/formatters";
 
 interface Props {
@@ -9,7 +12,10 @@ interface Props {
   percentiles: PercentileData;
 }
 
-export default function ProbabilityCallouts({ statistics, percentiles }: Props) {
+export default function ProbabilityCallouts({
+  statistics,
+  percentiles,
+}: Props) {
   const callouts: {
     icon: string;
     text: string;
@@ -57,8 +63,10 @@ export default function ProbabilityCallouts({ statistics, percentiles }: Props) 
 
   const typeStyles = {
     safe: "bg-green-100 border-green-600 shadow-[4px_4px_0px_0px_var(--tw-shadow-color)] shadow-green-600",
-    warning: "bg-yellow-100 border-yellow-600 shadow-[4px_4px_0px_0px_var(--tw-shadow-color)] shadow-yellow-600",
-    danger: "bg-red-100 border-red-600 shadow-[4px_4px_0px_0px_var(--tw-shadow-color)] shadow-red-600",
+    warning:
+      "bg-yellow-100 border-yellow-600 shadow-[4px_4px_0px_0px_var(--tw-shadow-color)] shadow-yellow-600",
+    danger:
+      "bg-red-100 border-red-600 shadow-[4px_4px_0px_0px_var(--tw-shadow-color)] shadow-red-600",
   };
 
   return (
@@ -71,7 +79,9 @@ export default function ProbabilityCallouts({ statistics, percentiles }: Props) 
           transition={{ delay: i * 0.1 }}
           className={`px-4 py-3 border-4 ${typeStyles[callout.type]} text-black flex items-center justify-start gap-3`}
         >
-          <span className="text-xl bg-white border-2 border-black p-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">{callout.icon}</span>
+          <span className="text-xl bg-white border-2 border-black p-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+            {callout.icon}
+          </span>
           <p className="text-sm font-black uppercase tracking-widest leading-snug">
             {callout.text}
           </p>

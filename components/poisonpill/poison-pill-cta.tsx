@@ -19,9 +19,15 @@ interface Props {
   totalClauses: number;
 }
 
-export function PoisonPillCTA({ documentId, poisonPillData, totalClauses }: Props) {
+export function PoisonPillCTA({
+  documentId,
+  poisonPillData,
+  totalClauses,
+}: Props) {
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<PoisonPillAnalysisResult | null>(poisonPillData);
+  const [data, setData] = useState<PoisonPillAnalysisResult | null>(
+    poisonPillData,
+  );
 
   const runScan = async () => {
     setLoading(true);
@@ -126,10 +132,12 @@ export function PoisonPillCTA({ documentId, poisonPillData, totalClauses }: Prop
               </div>
               <div className="flex-1">
                 <h4 className="text-sm font-semibold text-white">
-                  {data.traps.length} Hidden Trap{data.traps.length > 1 ? "s" : ""} Found
+                  {data.traps.length} Hidden Trap
+                  {data.traps.length > 1 ? "s" : ""} Found
                 </h4>
                 <p className="text-xs text-white/40 mt-0.5">
-                  Score: {data.combined_trap_score}/100 — {data.most_dangerous_trap?.trap_name}
+                  Score: {data.combined_trap_score}/100 —{" "}
+                  {data.most_dangerous_trap?.trap_name}
                 </p>
               </div>
               <ArrowRight className="w-4 h-4 text-white/30 flex-shrink-0" />

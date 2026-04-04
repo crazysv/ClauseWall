@@ -9,7 +9,10 @@ export async function POST(request: NextRequest) {
     const { documentId } = body;
 
     if (!documentId) {
-      return NextResponse.json({ error: "Missing documentId" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing documentId" },
+        { status: 400 },
+      );
     }
 
     const supabase = await createClient();
@@ -21,7 +24,10 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (docError || !doc) {
-      return NextResponse.json({ error: "Document not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Document not found" },
+        { status: 404 },
+      );
     }
 
     const { data: clauses, error: clauseError } = await supabase
@@ -45,7 +51,7 @@ export async function POST(request: NextRequest) {
         }) =>
           `[Clause #${c.clause_number}] (${c.clause_type}, ${c.risk_level})
 Text: "${c.original_text}"
-Analysis: ${c.explanation}`
+Analysis: ${c.explanation}`,
       )
       .join("\n\n---\n\n");
 
@@ -66,7 +72,7 @@ ALL CLAUSES:
 ${clauseContext}`,
         },
       ],
-      { maxTokens: 5000 }
+      { maxTokens: 5000 },
     );
 
     let parsed;
@@ -78,7 +84,10 @@ ${clauseContext}`,
       parsed = JSON.parse(cleaned.trim());
     } catch {
       console.error("[ClauseWall] Simulator JSON parse failed:", response);
-      return NextResponse.json({ error: "Failed to parse simulation" }, { status: 500 });
+      return NextResponse.json(
+        { error: "Failed to parse simulation" },
+        { status: 500 },
+      );
     }
 
     // Sanitize response
@@ -88,14 +97,19 @@ ${clauseContext}`,
     };
 
     const result = {
-      contract_duration_months: sanitizeNum(parsed.contract_duration_months, 11),
+      contract_duration_months: sanitizeNum(
+        parsed.contract_duration_months,
+        11,
+      ),
       document_type: String(parsed.document_type || doc.document_type),
       upfront_costs: Array.isArray(parsed.upfront_costs)
         ? parsed.upfront_costs.map((c: Record<string, unknown>) => ({
             label: String(c.label || ""),
             amount: sanitizeNum(c.amount),
             is_refundable: !!c.is_refundable,
-            refund_conditions: c.refund_conditions ? String(c.refund_conditions) : null,
+            refund_conditions: c.refund_conditions
+              ? String(c.refund_conditions)
+              : null,
             fair_amount: sanitizeNum(c.fair_amount),
             issue: c.issue ? String(c.issue) : null,
           }))
@@ -105,7 +119,9 @@ ${clauseContext}`,
             label: String(c.label || ""),
             amount: sanitizeNum(c.amount),
             escalation_percent: sanitizeNum(c.escalation_percent),
-            escalation_frequency_months: sanitizeNum(c.escalation_frequency_months),
+            escalation_frequency_months: sanitizeNum(
+              c.escalation_frequency_months,
+            ),
             fair_amount: sanitizeNum(c.fair_amount),
           }))
         : [],
@@ -121,8 +137,12 @@ ${clauseContext}`,
       penalties: {
         early_exit_during_lockin: parsed.penalties?.early_exit_during_lockin
           ? {
-              amount: sanitizeNum(parsed.penalties.early_exit_during_lockin.amount),
-              description: String(parsed.penalties.early_exit_during_lockin.description || ""),
+              amount: sanitizeNum(
+                parsed.penalties.early_exit_during_lockin.amount,
+              ),
+              description: String(
+                parsed.penalties.early_exit_during_lockin.description || "",
+              ),
               is_legal: !!parsed.penalties.early_exit_during_lockin.is_legal,
               law: parsed.penalties.early_exit_during_lockin.law
                 ? String(parsed.penalties.early_exit_during_lockin.law)
@@ -131,8 +151,12 @@ ${clauseContext}`,
           : null,
         early_exit_after_lockin: parsed.penalties?.early_exit_after_lockin
           ? {
-              amount: sanitizeNum(parsed.penalties.early_exit_after_lockin.amount),
-              description: String(parsed.penalties.early_exit_after_lockin.description || ""),
+              amount: sanitizeNum(
+                parsed.penalties.early_exit_after_lockin.amount,
+              ),
+              description: String(
+                parsed.penalties.early_exit_after_lockin.description || "",
+              ),
               is_legal: !!parsed.penalties.early_exit_after_lockin.is_legal,
               law: parsed.penalties.early_exit_after_lockin.law
                 ? String(parsed.penalties.early_exit_after_lockin.law)
@@ -142,7 +166,9 @@ ${clauseContext}`,
         late_rent_per_day: parsed.penalties?.late_rent_per_day
           ? {
               amount: sanitizeNum(parsed.penalties.late_rent_per_day.amount),
-              description: String(parsed.penalties.late_rent_per_day.description || ""),
+              description: String(
+                parsed.penalties.late_rent_per_day.description || "",
+              ),
               is_legal: !!parsed.penalties.late_rent_per_day.is_legal,
               law: parsed.penalties.late_rent_per_day.law
                 ? String(parsed.penalties.late_rent_per_day.law)
@@ -160,14 +186,20 @@ ${clauseContext}`,
       notice_period: {
         days: sanitizeNum(parsed.notice_period?.days, 30),
         fair_days: sanitizeNum(parsed.notice_period?.fair_days, 30),
-        issue: parsed.notice_period?.issue ? String(parsed.notice_period.issue) : null,
+        issue: parsed.notice_period?.issue
+          ? String(parsed.notice_period.issue)
+          : null,
       },
       deposit_refund: {
         total_deposit: sanitizeNum(parsed.deposit_refund?.total_deposit),
-        refund_timeline_days: sanitizeNum(parsed.deposit_refund?.refund_timeline_days),
+        refund_timeline_days: sanitizeNum(
+          parsed.deposit_refund?.refund_timeline_days,
+        ),
         conditions: String(parsed.deposit_refund?.conditions || ""),
-        refundable_if_full_term: parsed.deposit_refund?.refundable_if_full_term !== false,
-        refundable_if_early_exit: !!parsed.deposit_refund?.refundable_if_early_exit,
+        refundable_if_full_term:
+          parsed.deposit_refund?.refundable_if_full_term !== false,
+        refundable_if_early_exit:
+          !!parsed.deposit_refund?.refundable_if_early_exit,
         deductions: sanitizeNum(parsed.deposit_refund?.deductions),
       },
       danger_zones: Array.isArray(parsed.danger_zones)
@@ -199,7 +231,7 @@ ${clauseContext}`,
     console.error("[ClauseWall] Simulator API error:", error);
     return NextResponse.json(
       { error: "Failed to generate simulation. Please try again." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

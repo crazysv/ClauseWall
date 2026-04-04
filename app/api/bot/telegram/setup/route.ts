@@ -35,12 +35,13 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json({
-      error: "Use ?action=set to register webhook or ?action=info to check status",
+      error:
+        "Use ?action=set to register webhook or ?action=info to check status",
     });
   } catch (error) {
     return NextResponse.json(
       { error: (error as Error).message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

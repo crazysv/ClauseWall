@@ -1,36 +1,86 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Check, X, HandshakeIcon, Lock, SkipForward, Download, ArrowRight } from "lucide-react";
+import {
+  Plus,
+  Check,
+  X,
+  HandshakeIcon,
+  Lock,
+  SkipForward,
+  Download,
+  ArrowRight,
+} from "lucide-react";
 import {
   addClauseToTracker,
   updateClauseStatus,
   addNote,
   exportSession,
 } from "@/lib/negotiate/session-manager";
-import type {
-  NegotiationSession,
-  NegotiationClauseStatus,
-} from "@/types";
+import type { NegotiationSession, NegotiationClauseStatus } from "@/types";
 
 interface ProgressTrackerPanelProps {
   session: NegotiationSession;
   onSessionUpdate: (session: NegotiationSession) => void;
 }
 
-const STATUS_CONFIG: Record<NegotiationClauseStatus, {
-  label: string; icon: string; color: string; bg: string;
-}> = {
-  pending: { label: "Pending", icon: "⏳", color: "text-gray-600", bg: "bg-gray-200" },
-  negotiating: { label: "Active", icon: "🔄", color: "text-blue-700", bg: "bg-blue-100" },
-  won: { label: "Won", icon: "✅", color: "text-green-700", bg: "bg-green-100" },
-  conceded: { label: "Conceded", icon: "❌", color: "text-red-700", bg: "bg-red-100" },
-  compromised: { label: "Compromise", icon: "🤝", color: "text-yellow-700", bg: "bg-yellow-100" },
-  deadlocked: { label: "Deadlock", icon: "🔒", color: "text-orange-700", bg: "bg-orange-100" },
-  skipped: { label: "Skipped", icon: "⏭️", color: "text-gray-700", bg: "bg-gray-200" },
+const STATUS_CONFIG: Record<
+  NegotiationClauseStatus,
+  {
+    label: string;
+    icon: string;
+    color: string;
+    bg: string;
+  }
+> = {
+  pending: {
+    label: "Pending",
+    icon: "⏳",
+    color: "text-gray-600",
+    bg: "bg-gray-200",
+  },
+  negotiating: {
+    label: "Active",
+    icon: "🔄",
+    color: "text-blue-700",
+    bg: "bg-blue-100",
+  },
+  won: {
+    label: "Won",
+    icon: "✅",
+    color: "text-green-700",
+    bg: "bg-green-100",
+  },
+  conceded: {
+    label: "Conceded",
+    icon: "❌",
+    color: "text-red-700",
+    bg: "bg-red-100",
+  },
+  compromised: {
+    label: "Compromise",
+    icon: "🤝",
+    color: "text-yellow-700",
+    bg: "bg-yellow-100",
+  },
+  deadlocked: {
+    label: "Deadlock",
+    icon: "🔒",
+    color: "text-orange-700",
+    bg: "bg-orange-100",
+  },
+  skipped: {
+    label: "Skipped",
+    icon: "⏭️",
+    color: "text-gray-700",
+    bg: "bg-gray-200",
+  },
 };
 
-export default function ProgressTrackerPanel({ session, onSessionUpdate }: ProgressTrackerPanelProps) {
+export default function ProgressTrackerPanel({
+  session,
+  onSessionUpdate,
+}: ProgressTrackerPanelProps) {
   const [showAddForm, setShowAddForm] = useState(false);
   const [newClauseSummary, setNewClauseSummary] = useState("");
   const [newOriginalTerms, setNewOriginalTerms] = useState("");
@@ -60,7 +110,10 @@ export default function ProgressTrackerPanel({ session, onSessionUpdate }: Progr
     setShowAddForm(false);
   };
 
-  const handleStatusChange = (clauseId: string, status: NegotiationClauseStatus) => {
+  const handleStatusChange = (
+    clauseId: string,
+    status: NegotiationClauseStatus,
+  ) => {
     const updated = updateClauseStatus(session, clauseId, status);
     onSessionUpdate(updated);
   };
@@ -83,12 +136,28 @@ export default function ProgressTrackerPanel({ session, onSessionUpdate }: Progr
     URL.revokeObjectURL(url);
   };
 
-  const statusActions: { status: NegotiationClauseStatus; icon: React.ReactNode; label: string }[] = [
+  const statusActions: {
+    status: NegotiationClauseStatus;
+    icon: React.ReactNode;
+    label: string;
+  }[] = [
     { status: "won", icon: <Check className="w-3.5 h-3.5" />, label: "Won" },
     { status: "conceded", icon: <X className="w-3.5 h-3.5" />, label: "Lost" },
-    { status: "compromised", icon: <HandshakeIcon className="w-3.5 h-3.5" />, label: "Split" },
-    { status: "deadlocked", icon: <Lock className="w-3.5 h-3.5" />, label: "Stuck" },
-    { status: "skipped", icon: <SkipForward className="w-3.5 h-3.5" />, label: "Skip" },
+    {
+      status: "compromised",
+      icon: <HandshakeIcon className="w-3.5 h-3.5" />,
+      label: "Split",
+    },
+    {
+      status: "deadlocked",
+      icon: <Lock className="w-3.5 h-3.5" />,
+      label: "Stuck",
+    },
+    {
+      status: "skipped",
+      icon: <SkipForward className="w-3.5 h-3.5" />,
+      label: "Skip",
+    },
   ];
 
   return (
@@ -100,20 +169,34 @@ export default function ProgressTrackerPanel({ session, onSessionUpdate }: Progr
             {score.win_percentage}
             <span className="text-xl font-bold text-muted-foreground">%</span>
           </p>
-          <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mt-2">Win Rate</p>
+          <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mt-2">
+            Win Rate
+          </p>
         </div>
 
         <div className="grid grid-cols-5 gap-2 text-center">
           {[
             { label: "Won", value: score.won, color: "text-green-700" },
             { label: "Lost", value: score.conceded, color: "text-red-700" },
-            { label: "Split", value: score.compromised, color: "text-yellow-700" },
-            { label: "Stuck", value: score.deadlocked, color: "text-orange-700" },
+            {
+              label: "Split",
+              value: score.compromised,
+              color: "text-yellow-700",
+            },
+            {
+              label: "Stuck",
+              value: score.deadlocked,
+              color: "text-orange-700",
+            },
             { label: "Left", value: score.pending, color: "text-gray-400" },
           ].map((stat) => (
             <div key={stat.label}>
-              <p className={`text-2xl font-black ${stat.color}`}>{stat.value}</p>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mt-1">{stat.label}</p>
+              <p className={`text-2xl font-black ${stat.color}`}>
+                {stat.value}
+              </p>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mt-1">
+                {stat.label}
+              </p>
             </div>
           ))}
         </div>
@@ -130,19 +213,25 @@ export default function ProgressTrackerPanel({ session, onSessionUpdate }: Progr
             {score.compromised > 0 && (
               <div
                 className="h-full bg-yellow-500 transition-all border-r-2 border-black last:border-r-0"
-                style={{ width: `${(score.compromised / score.total_clauses) * 100}%` }}
+                style={{
+                  width: `${(score.compromised / score.total_clauses) * 100}%`,
+                }}
               />
             )}
             {score.conceded > 0 && (
               <div
                 className="h-full bg-red-500 transition-all border-r-2 border-black last:border-r-0"
-                style={{ width: `${(score.conceded / score.total_clauses) * 100}%` }}
+                style={{
+                  width: `${(score.conceded / score.total_clauses) * 100}%`,
+                }}
               />
             )}
             {score.deadlocked > 0 && (
               <div
                 className="h-full bg-orange-500 transition-all border-r-2 border-black last:border-r-0"
-                style={{ width: `${(score.deadlocked / score.total_clauses) * 100}%` }}
+                style={{
+                  width: `${(score.deadlocked / score.total_clauses) * 100}%`,
+                }}
               />
             )}
           </div>
@@ -209,10 +298,12 @@ export default function ProgressTrackerPanel({ session, onSessionUpdate }: Progr
       {session.clauses.length > 0 && (
         <div className="space-y-4">
           <p className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1 mb-3 pt-6 border-t-2 border-black/10">
-            {session.clauses.length} clause{session.clauses.length !== 1 ? "s" : ""} tracked
+            {session.clauses.length} clause
+            {session.clauses.length !== 1 ? "s" : ""} tracked
           </p>
           {session.clauses.map((clause) => {
-            const config = STATUS_CONFIG[clause.status] || STATUS_CONFIG.pending;
+            const config =
+              STATUS_CONFIG[clause.status] || STATUS_CONFIG.pending;
 
             return (
               <div
@@ -222,36 +313,52 @@ export default function ProgressTrackerPanel({ session, onSessionUpdate }: Progr
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-3">
-                      <span className={`text-[10px] px-2 py-1 uppercase tracking-wider font-black border-2 border-black ${config.bg} ${config.color}`}>
+                      <span
+                        className={`text-[10px] px-2 py-1 uppercase tracking-wider font-black border-2 border-black ${config.bg} ${config.color}`}
+                      >
                         {config.icon} {config.label}
                       </span>
                     </div>
-                    <p className="text-base font-black text-black leading-tight mb-2">{clause.clause_summary}</p>
+                    <p className="text-base font-black text-black leading-tight mb-2">
+                      {clause.clause_summary}
+                    </p>
                     {clause.original_terms && (
                       <p className="text-xs font-bold text-red-700 mt-1">
-                        Their terms: <span className="font-medium text-black">{clause.original_terms}</span>
+                        Their terms:{" "}
+                        <span className="font-medium text-black">
+                          {clause.original_terms}
+                        </span>
                       </p>
                     )}
                     {clause.your_ask && (
                       <p className="text-xs font-bold text-blue-700 mt-1">
-                        Your ask: <span className="font-medium text-black">{clause.your_ask}</span>
+                        Your ask:{" "}
+                        <span className="font-medium text-black">
+                          {clause.your_ask}
+                        </span>
                       </p>
                     )}
                     {clause.final_terms && (
                       <p className="text-xs font-bold text-green-700 mt-1">
-                        Final: <span className="font-medium text-black">{clause.final_terms}</span>
+                        Final:{" "}
+                        <span className="font-medium text-black">
+                          {clause.final_terms}
+                        </span>
                       </p>
                     )}
                   </div>
                 </div>
 
                 {/* Status action buttons */}
-                {clause.status === "pending" || clause.status === "negotiating" ? (
+                {clause.status === "pending" ||
+                clause.status === "negotiating" ? (
                   <div className="flex gap-2 flex-wrap pt-2 border-t-2 border-black/5">
                     {statusActions.map((action) => (
                       <button
                         key={action.status}
-                        onClick={() => handleStatusChange(clause.id, action.status)}
+                        onClick={() =>
+                          handleStatusChange(clause.id, action.status)
+                        }
                         className={`flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider border-2 border-black bg-white hover:bg-gray-100 transition-colors shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] active:translate-y-px active:shadow-none ${
                           STATUS_CONFIG[action.status].color
                         }`}
@@ -291,10 +398,17 @@ export default function ProgressTrackerPanel({ session, onSessionUpdate }: Progr
       {/* Notes */}
       {session.notes.length > 0 && (
         <div className="space-y-2">
-          <p className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1 mt-6 mb-2">Notes</p>
+          <p className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1 mt-6 mb-2">
+            Notes
+          </p>
           <div className="max-h-40 overflow-y-auto border-2 border-black bg-gray-50 p-4 space-y-3 shadow-[inset_2px_2px_0px_0px_rgba(0,0,0,0.05)]">
             {session.notes.map((note, idx) => (
-              <p key={idx} className="text-sm font-bold text-black/70 border-b-2 border-black/10 pb-3 last:border-0 last:pb-0">{note}</p>
+              <p
+                key={idx}
+                className="text-sm font-bold text-black/70 border-b-2 border-black/10 pb-3 last:border-0 last:pb-0"
+              >
+                {note}
+              </p>
             ))}
           </div>
         </div>

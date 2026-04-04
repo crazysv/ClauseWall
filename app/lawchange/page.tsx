@@ -5,7 +5,7 @@ import { Scale, Shield } from "lucide-react";
 
 const LawChangeFeed = dynamic(
   () => import("@/components/lawchange/law-change-feed"),
-  { ssr: false }
+  { ssr: false },
 );
 
 export default function LawChangePage() {

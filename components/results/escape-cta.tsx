@@ -9,7 +9,11 @@ interface EscapeCTAProps {
   illegalCount: number;
 }
 
-export default function EscapeCTA({ documentId, dangerousCount, illegalCount }: EscapeCTAProps) {
+export default function EscapeCTA({
+  documentId,
+  dangerousCount,
+  illegalCount,
+}: EscapeCTAProps) {
   const totalRisky = dangerousCount + illegalCount;
 
   // Only show if there are dangerous/illegal clauses
@@ -28,8 +32,9 @@ export default function EscapeCTA({ documentId, dangerousCount, illegalCount }: 
                 Already Signed This Contract?
               </p>
               <p className="text-sm font-bold text-muted-foreground mt-0.5">
-                {totalRisky} clause{totalRisky !== 1 ? "s" : ""} may be void under Indian law.
-                Get your personalized escape plan with recovery amounts.
+                {totalRisky} clause{totalRisky !== 1 ? "s" : ""} may be void
+                under Indian law. Get your personalized escape plan with
+                recovery amounts.
               </p>
             </div>
           </div>

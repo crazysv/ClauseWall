@@ -39,9 +39,12 @@ export default function EvidenceListPage() {
                 <Shield className="h-8 w-8 text-white stroke-[3px]" />
               </div>
               <div>
-                <h1 className="text-3xl font-black uppercase tracking-widest text-foreground">Evidence Chain Builder</h1>
+                <h1 className="text-3xl font-black uppercase tracking-widest text-foreground">
+                  Evidence Chain Builder
+                </h1>
                 <p className="text-sm font-bold text-muted-foreground mt-1 tracking-wide">
-                  Build court-admissible evidence bundles with cryptographic integrity
+                  Build court-admissible evidence bundles with cryptographic
+                  integrity
                 </p>
               </div>
             </div>
@@ -62,9 +65,12 @@ export default function EvidenceListPage() {
         ) : cases.length === 0 ? (
           <div className="text-center py-20 border-4 border-black border-dashed bg-white dark:bg-zinc-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <Shield className="h-16 w-16 mx-auto text-black dark:text-white opacity-20 mb-6 stroke-[3px]" />
-            <h3 className="text-2xl font-black uppercase tracking-widest text-foreground mb-2">No evidence cases yet</h3>
+            <h3 className="text-2xl font-black uppercase tracking-widest text-foreground mb-2">
+              No evidence cases yet
+            </h3>
             <p className="text-sm font-bold text-muted-foreground mb-8">
-              Create your first case to start building court-admissible evidence chains
+              Create your first case to start building court-admissible evidence
+              chains
             </p>
             <Link href="/evidence/new">
               <Button className="btn-impact bg-blue-600 hover:bg-blue-700 text-white px-8 py-6">

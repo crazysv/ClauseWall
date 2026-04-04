@@ -15,7 +15,7 @@ export async function GET(request: Request) {
     if (!authorityType) {
       return NextResponse.json(
         { success: false, error: "authority_type is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -25,7 +25,7 @@ export async function GET(request: Request) {
     console.error("[ClauseWall] Fee calculation failed:", error);
     return NextResponse.json(
       { success: false, error: "Fee calculation failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -29,14 +29,14 @@ export async function POST(req: NextRequest) {
     if (!entityName || !entityName.trim()) {
       return NextResponse.json(
         { error: "Entity name is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (!documentId) {
       return NextResponse.json(
         { error: "Document ID is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
       const newFlagCount = (existing.total_flags || 0) + 1;
       const newAvgScore = Math.round(
         ((existing.avg_risk_score || 0) * existing.total_flags + riskScore) /
-          newFlagCount
+          newFlagCount,
       );
 
       const { error: updateError } = await supabase
@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
         console.error("[FlagEntity] Update error:", updateError);
         return NextResponse.json(
           { error: "Failed to update flag" },
-          { status: 500 }
+          { status: 500 },
         );
       }
 
@@ -106,7 +106,7 @@ export async function POST(req: NextRequest) {
         console.error("[FlagEntity] Insert error:", insertError);
         return NextResponse.json(
           { error: "Failed to flag entity" },
-          { status: 500 }
+          { status: 500 },
         );
       }
 
@@ -124,7 +124,7 @@ export async function POST(req: NextRequest) {
     console.error("[FlagEntity] Error:", error);
     return NextResponse.json(
       { error: error.message || "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -135,7 +135,7 @@ async function saveReport(
   documentId: string,
   clauseId: string | null,
   entityName: string,
-  violations: string[]
+  violations: string[],
 ) {
   try {
     await supabase.from("reports").insert({
@@ -160,7 +160,7 @@ export async function GET(req: NextRequest) {
     if (!entityName) {
       return NextResponse.json(
         { error: "Entity name is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -195,9 +195,7 @@ export async function GET(req: NextRequest) {
 
     const percentile =
       totalEntities && totalEntities > 0
-        ? Math.round(
-            ((entitiesWithFewerFlags || 0) / totalEntities) * 100
-          )
+        ? Math.round(((entitiesWithFewerFlags || 0) / totalEntities) * 100)
         : null;
 
     return NextResponse.json({
@@ -210,7 +208,7 @@ export async function GET(req: NextRequest) {
     console.error("[FlagEntity GET] Error:", error);
     return NextResponse.json(
       { error: error.message || "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

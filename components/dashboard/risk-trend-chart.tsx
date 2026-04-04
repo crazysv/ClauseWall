@@ -28,36 +28,38 @@ function CustomTooltip({ active, payload }: any) {
     score >= 81
       ? "Critical"
       : score >= 51
-      ? "Dangerous"
-      : score >= 21
-      ? "Warning"
-      : "Safe";
+        ? "Dangerous"
+        : score >= 21
+          ? "Warning"
+          : "Safe";
 
   const riskColor =
     score >= 81
       ? "#a855f7"
       : score >= 51
-      ? "#ef4444"
-      : score >= 21
-      ? "#f59e0b"
-      : "#10b981";
+        ? "#ef4444"
+        : score >= 21
+          ? "#f59e0b"
+          : "#10b981";
 
   return (
     <div className="bg-background border-2 border-foreground rounded-none shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] p-3">
-      <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-1">{point.date}</p>
+      <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-1">
+        {point.date}
+      </p>
       <p className="text-sm font-bold text-foreground truncate max-w-[200px]">
         {point.label}
       </p>
       <div className="flex items-center gap-2 mt-2">
         <span
           className="text-lg font-black tracking-tighter"
-          style={{ color: riskColor === '#a855f7' ? '#9333ea' : riskColor }}
+          style={{ color: riskColor === "#a855f7" ? "#9333ea" : riskColor }}
         >
           {score}
         </span>
         <span
           className="text-[10px] font-black uppercase tracking-wider px-1.5 py-0.5 border-2 border-current bg-background"
-          style={{ color: riskColor === '#a855f7' ? '#9333ea' : riskColor }}
+          style={{ color: riskColor === "#a855f7" ? "#9333ea" : riskColor }}
         >
           {riskLabel}
         </span>
@@ -76,7 +78,9 @@ export default function RiskTrendChart({ data }: RiskTrendChartProps) {
       >
         <div className="flex items-center gap-2 mb-4 pb-4 border-b-2 border-foreground">
           <TrendingUp className="w-6 h-6 text-blue-600 bg-blue-100 p-1 border-2 border-blue-600" />
-          <h3 className="text-xl font-black uppercase tracking-wider text-foreground">Risk Trend</h3>
+          <h3 className="text-xl font-black uppercase tracking-wider text-foreground">
+            Risk Trend
+          </h3>
         </div>
         <div className="flex flex-1 flex-col items-center justify-center p-6 text-center border-2 border-dashed border-muted-foreground/30 bg-muted/10 mt-2">
           <Info className="w-8 h-8 text-muted-foreground mb-3" />
@@ -101,7 +105,9 @@ export default function RiskTrendChart({ data }: RiskTrendChartProps) {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-5 gap-3 pb-4 border-b-2 border-foreground">
         <div className="flex items-center gap-2">
           <TrendingUp className="w-6 h-6 text-blue-600 bg-blue-100 p-1 border-2 border-blue-600" />
-          <h3 className="text-xl font-black uppercase tracking-wider text-foreground">Risk Trend</h3>
+          <h3 className="text-xl font-black uppercase tracking-wider text-foreground">
+            Risk Trend
+          </h3>
         </div>
         <div className="flex flex-wrap items-center gap-3 text-[10px] font-black uppercase tracking-wider text-muted-foreground">
           <div className="flex items-center gap-1.5 border-2 border-foreground bg-muted px-2 py-1 shadow-[2px_2px_0px_0px_rgba(10,10,10,1)]">
@@ -120,8 +126,16 @@ export default function RiskTrendChart({ data }: RiskTrendChartProps) {
       </div>
 
       <div className="h-64 min-h-[16rem]">
-        <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
-          <AreaChart data={data} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
+        <ResponsiveContainer
+          width="100%"
+          height="100%"
+          minWidth={0}
+          minHeight={0}
+        >
+          <AreaChart
+            data={data}
+            margin={{ top: 5, right: 10, left: -20, bottom: 5 }}
+          >
             <defs>
               <linearGradient id="riskGradient" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.3} />

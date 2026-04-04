@@ -14,7 +14,7 @@ import {
 
 export async function GET(
   _request: NextRequest,
-  { params }: { params: Promise<{ documentId: string }> }
+  { params }: { params: Promise<{ documentId: string }> },
 ) {
   try {
     const { documentId } = await params;
@@ -39,7 +39,7 @@ export async function GET(
       console.error("[TimeBomb API] Fetch error:", error);
       return NextResponse.json(
         { error: "Failed to fetch deadlines" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -82,7 +82,11 @@ export async function GET(
       for (const u of updates) {
         await supabase
           .from("contract_deadlines")
-          .update({ urgency: u.urgency, status: u.status, updated_at: new Date().toISOString() })
+          .update({
+            urgency: u.urgency,
+            status: u.status,
+            updated_at: new Date().toISOString(),
+          })
           .eq("id", u.id);
       }
     }
@@ -100,7 +104,7 @@ export async function GET(
     console.error("[TimeBomb API] Error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     if (!documentId) {
       return NextResponse.json(
         { error: "Document ID required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     if (error || !clauses) {
       return NextResponse.json(
         { error: "Failed to fetch clauses" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     const matchResults = await matchDocumentClauses(
       clauses as Clause[],
       jurisdiction || "ALL-INDIA",
-      documentType || "rental"
+      documentType || "rental",
     );
 
     // Convert Map to serializable object
@@ -56,13 +56,13 @@ export async function POST(request: NextRequest) {
     // Count verification stats
     const totalClauses = clauses.length;
     const verifiedCount = Array.from(matchResults.values()).filter(
-      (r) => r.confidence === "verified"
+      (r) => r.confidence === "verified",
     ).length;
     const partialCount = Array.from(matchResults.values()).filter(
-      (r) => r.confidence === "partial"
+      (r) => r.confidence === "partial",
     ).length;
     const aiSuggestedCount = Array.from(matchResults.values()).filter(
-      (r) => r.confidence === "ai_suggested"
+      (r) => r.confidence === "ai_suggested",
     ).length;
 
     return NextResponse.json({
@@ -73,15 +73,12 @@ export async function POST(request: NextRequest) {
         partial: partialCount,
         ai_suggested: aiSuggestedCount,
         verification_rate: Math.round(
-          ((verifiedCount + partialCount) / totalClauses) * 100
+          ((verifiedCount + partialCount) / totalClauses) * 100,
         ),
       },
     });
   } catch (error) {
     console.error("[ClauseWall] Verification error:", error);
-    return NextResponse.json(
-      { error: "Verification failed" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Verification failed" }, { status: 500 });
   }
 }

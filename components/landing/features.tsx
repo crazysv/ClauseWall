@@ -15,22 +15,34 @@ export function Features() {
           <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
             <div className="text-primary font-bold">1</div>
           </div>
-          <h3 className="text-xl font-bold text-foreground mt-4">AI Analysis</h3>
-          <p className="text-muted-foreground mt-2 leading-relaxed">Advanced AI detects predatory clauses</p>
+          <h3 className="text-xl font-bold text-foreground mt-4">
+            AI Analysis
+          </h3>
+          <p className="text-muted-foreground mt-2 leading-relaxed">
+            Advanced AI detects predatory clauses
+          </p>
         </div>
         <div className="bg-card rounded-lg border-2 border-border p-8 shadow-sm hover:border-foreground/20 hover:shadow-md transition-all duration-150">
           <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
             <div className="text-primary font-bold">2</div>
           </div>
-          <h3 className="text-xl font-bold text-foreground mt-4">Legal Database</h3>
-          <p className="text-muted-foreground mt-2 leading-relaxed">Comprehensive legal rules database</p>
+          <h3 className="text-xl font-bold text-foreground mt-4">
+            Legal Database
+          </h3>
+          <p className="text-muted-foreground mt-2 leading-relaxed">
+            Comprehensive legal rules database
+          </p>
         </div>
         <div className="bg-card rounded-lg border-2 border-border p-8 shadow-sm hover:border-foreground/20 hover:shadow-md transition-all duration-150">
           <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
             <div className="text-primary font-bold">3</div>
           </div>
-          <h3 className="text-xl font-bold text-foreground mt-4">Risk Scoring</h3>
-          <p className="text-muted-foreground mt-2 leading-relaxed">Clear risk assessment for each clause</p>
+          <h3 className="text-xl font-bold text-foreground mt-4">
+            Risk Scoring
+          </h3>
+          <p className="text-muted-foreground mt-2 leading-relaxed">
+            Clear risk assessment for each clause
+          </p>
         </div>
       </div>
     </section>

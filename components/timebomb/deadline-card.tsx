@@ -61,9 +61,7 @@ export function DeadlineCard({
   const handleDownloadLetter = async () => {
     try {
       setLetterLoading(true);
-      const res = await fetch(
-        `/api/timebomb/action-letter/${deadline.id}`
-      );
+      const res = await fetch(`/api/timebomb/action-letter/${deadline.id}`);
       if (!res.ok) throw new Error("Failed to generate letter");
       const data = await res.json();
 
@@ -196,12 +194,14 @@ export function DeadlineCard({
           </div>
         </div>
 
-        {deadline.financial_impact && deadline.financial_impact > 0 && !isDefused && (
-          <span className="flex items-center gap-1 text-xs font-black uppercase tracking-widest px-2 py-1 border-2 border-red-500 bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-400 flex-shrink-0 shadow-[2px_2px_0px_0px_rgba(239,68,68,1)]">
-            <IndianRupee className="w-3 h-3 stroke-[3px]" />
-            {formatIndianCurrency(deadline.financial_impact)}
-          </span>
-        )}
+        {deadline.financial_impact &&
+          deadline.financial_impact > 0 &&
+          !isDefused && (
+            <span className="flex items-center gap-1 text-xs font-black uppercase tracking-widest px-2 py-1 border-2 border-red-500 bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-400 flex-shrink-0 shadow-[2px_2px_0px_0px_rgba(239,68,68,1)]">
+              <IndianRupee className="w-3 h-3 stroke-[3px]" />
+              {formatIndianCurrency(deadline.financial_impact)}
+            </span>
+          )}
 
         <ChevronDown
           className={`w-4 h-4 text-white/30 transition-transform flex-shrink-0 ${
@@ -222,7 +222,9 @@ export function DeadlineCard({
           >
             <div className="px-5 pb-4 space-y-4 border-t-4 border-black pt-4 ml-3">
               {/* Description */}
-              <p className="text-sm font-medium text-muted-foreground leading-relaxed">{deadline.description}</p>
+              <p className="text-sm font-medium text-muted-foreground leading-relaxed">
+                {deadline.description}
+              </p>
 
               {/* Consequence warning */}
               {deadline.consequence_if_missed && (

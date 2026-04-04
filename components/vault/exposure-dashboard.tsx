@@ -35,11 +35,11 @@ export default function ExposureDashboard({
 }: ExposureDashboardProps) {
   const maxContractExposure = Math.max(
     ...exposure.by_contract.map((c) => c.worst_case_total),
-    1
+    1,
   );
   const maxCategoryTotal = Math.max(
     ...exposure.by_category.map((c) => c.total),
-    1
+    1,
   );
 
   return (
@@ -84,13 +84,21 @@ export default function ExposureDashboard({
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: i * 0.05 }}
             >
-              <Card className={`${stat.bg} border-4 border-black rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all`}>
+              <Card
+                className={`${stat.bg} border-4 border-black rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all`}
+              >
                 <CardContent className="p-6 text-center">
                   <div className="mx-auto w-10 h-10 border-4 border-black bg-white dark:bg-black mb-4 flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                     <Icon className={`w-5 h-5 ${stat.color} stroke-[3px]`} />
                   </div>
-                  <p className={`text-2xl font-black tabular-nums tracking-tighter ${stat.color}`}>{stat.value}</p>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mt-2 border-t-2 border-black pt-2">{stat.label}</p>
+                  <p
+                    className={`text-2xl font-black tabular-nums tracking-tighter ${stat.color}`}
+                  >
+                    {stat.value}
+                  </p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mt-2 border-t-2 border-black pt-2">
+                    {stat.label}
+                  </p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -114,8 +122,12 @@ export default function ExposureDashboard({
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="min-w-0">
-                  <p className="text-sm font-black uppercase tracking-widest text-foreground truncate block">{contract.document_title}</p>
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mt-1 inline-block border-2 border-black bg-white dark:bg-zinc-800 px-2 py-0.5">{contract.document_type.replace(/_/g, " ")}</p>
+                  <p className="text-sm font-black uppercase tracking-widest text-foreground truncate block">
+                    {contract.document_title}
+                  </p>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mt-1 inline-block border-2 border-black bg-white dark:bg-zinc-800 px-2 py-0.5">
+                    {contract.document_type.replace(/_/g, " ")}
+                  </p>
                 </div>
                 <p className="text-lg font-black tabular-nums tracking-tighter flex-shrink-0 ml-4 bg-red-100 dark:bg-red-950 text-red-600 dark:text-red-400 px-3 py-1 border-4 border-red-500 shadow-[2px_2px_0px_0px_rgba(239,68,68,1)]">
                   {formatINR(contract.worst_case_total)}
@@ -128,7 +140,7 @@ export default function ExposureDashboard({
                   <div
                     className="h-full bg-blue-500 border-r-4 border-black last:border-r-0 transition-all duration-500"
                     style={{
-                      width: `${(contract.monthly_obligation * 12 / maxContractExposure) * 100}%`,
+                      width: `${((contract.monthly_obligation * 12) / maxContractExposure) * 100}%`,
                     }}
                     title={`Monthly: ${formatINR(contract.monthly_obligation)}/mo`}
                   />
@@ -188,10 +200,11 @@ export default function ExposureDashboard({
           <div className="space-y-4">
             {exposure.by_category.map((cat, i) => {
               const barColor =
-                CATEGORY_COLORS[cat.category] || "bg-gray-500 border-4 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]";
+                CATEGORY_COLORS[cat.category] ||
+                "bg-gray-500 border-4 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]";
               const barWidth = Math.max(
                 5,
-                (cat.total / maxCategoryTotal) * 100
+                (cat.total / maxCategoryTotal) * 100,
               );
 
               return (

@@ -13,7 +13,11 @@ interface ProofSummaryProps {
   documentId?: string;
 }
 
-export default function ProofSummary({ proofTree, onViewProof, documentId }: ProofSummaryProps) {
+export default function ProofSummary({
+  proofTree,
+  onViewProof,
+  documentId,
+}: ProofSummaryProps) {
   if (!proofTree) {
     // No formal proof — show AI-only badge
     return (
@@ -38,9 +42,16 @@ export default function ProofSummary({ proofTree, onViewProof, documentId }: Pro
 
   const summary = getProofSummary(proofTree);
 
-  const colorMap: Record<string, {
-    bg: string; border: string; text: string; icon: string; badge: string;
-  }> = {
+  const colorMap: Record<
+    string,
+    {
+      bg: string;
+      border: string;
+      text: string;
+      icon: string;
+      badge: string;
+    }
+  > = {
     illegal: {
       bg: "bg-background",
       border: "border-red-600",
@@ -87,10 +98,15 @@ export default function ProofSummary({ proofTree, onViewProof, documentId }: Pro
     >
       <div className="flex items-center gap-2 flex-wrap">
         <Scale className={`h-4 w-4 ${colors.icon}`} />
-        <span className={`text-xs font-black uppercase tracking-wider ${colors.text}`}>
+        <span
+          className={`text-xs font-black uppercase tracking-wider ${colors.text}`}
+        >
           Formally Proven:
         </span>
-        <Badge variant="outline" className={`${colors.badge} border-2 text-[10px] gap-1 font-black uppercase tracking-wider`}>
+        <Badge
+          variant="outline"
+          className={`${colors.badge} border-2 text-[10px] gap-1 font-black uppercase tracking-wider`}
+        >
           <ShieldCheck className="h-3 w-3" />
           {verdictLabel}
         </Badge>
@@ -100,36 +116,42 @@ export default function ProofSummary({ proofTree, onViewProof, documentId }: Pro
         </span>
       </div>
       <div className="flex items-center gap-1">
-        <span className={`text-xs font-black uppercase tracking-wider ${colors.text} opacity-0 group-hover:opacity-100 transition-opacity`}>
+        <span
+          className={`text-xs font-black uppercase tracking-wider ${colors.text} opacity-0 group-hover:opacity-100 transition-opacity`}
+        >
           View Proof Tree
         </span>
-        <ChevronRight className={`h-4 w-4 ${colors.icon} group-hover:translate-x-0.5 transition-transform`} />
+        <ChevronRight
+          className={`h-4 w-4 ${colors.icon} group-hover:translate-x-0.5 transition-transform`}
+        />
       </div>
 
       {/* Cross-links for proven violations */}
-      {documentId && proofTree && (
-        proofTree.verdict === 'proven_illegal' ||
-        proofTree.verdict === 'proven_dangerous'
-      ) && (
-        <div className="flex flex-wrap items-center gap-2 mt-2 pt-2 border-t-2 border-foreground">
-          <span className="text-[10px] font-black uppercase tracking-wider text-muted-foreground">Next:</span>
-          <Link
-            href={`/negotiate/${documentId}`}
-            onClick={(e) => e.stopPropagation()}
-            className="text-[10px] font-black tracking-wider uppercase text-emerald-600 hover:text-emerald-700 transition-colors"
-          >
-            Get negotiation script →
-          </Link>
-          <span className="text-muted-foreground">·</span>
-          <Link
-            href={`/letter/${documentId}`}
-            onClick={(e) => e.stopPropagation()}
-            className="text-[10px] font-black tracking-wider uppercase text-amber-600 hover:text-amber-700 transition-colors"
-          >
-            Generate legal notice →
-          </Link>
-        </div>
-      )}
+      {documentId &&
+        proofTree &&
+        (proofTree.verdict === "proven_illegal" ||
+          proofTree.verdict === "proven_dangerous") && (
+          <div className="flex flex-wrap items-center gap-2 mt-2 pt-2 border-t-2 border-foreground">
+            <span className="text-[10px] font-black uppercase tracking-wider text-muted-foreground">
+              Next:
+            </span>
+            <Link
+              href={`/negotiate/${documentId}`}
+              onClick={(e) => e.stopPropagation()}
+              className="text-[10px] font-black tracking-wider uppercase text-emerald-600 hover:text-emerald-700 transition-colors"
+            >
+              Get negotiation script →
+            </Link>
+            <span className="text-muted-foreground">·</span>
+            <Link
+              href={`/letter/${documentId}`}
+              onClick={(e) => e.stopPropagation()}
+              className="text-[10px] font-black tracking-wider uppercase text-amber-600 hover:text-amber-700 transition-colors"
+            >
+              Generate legal notice →
+            </Link>
+          </div>
+        )}
     </motion.button>
   );
 }

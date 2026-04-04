@@ -52,11 +52,31 @@ const SCENARIO_ICONS: Record<string, typeof Zap> = {
 };
 
 const SEVERITY_CONFIG = {
-  devastating: { color: "text-red-700 dark:text-red-500", bg: "bg-red-100 dark:bg-red-950", border: "border-red-500" },
-  severe: { color: "text-orange-700 dark:text-orange-500", bg: "bg-orange-100 dark:bg-orange-950", border: "border-orange-500" },
-  moderate: { color: "text-yellow-700 dark:text-yellow-500", bg: "bg-yellow-100 dark:bg-yellow-950", border: "border-yellow-500" },
-  manageable: { color: "text-blue-700 dark:text-blue-500", bg: "bg-blue-100 dark:bg-blue-950", border: "border-blue-500" },
-  minimal: { color: "text-green-700 dark:text-green-500", bg: "bg-green-100 dark:bg-green-950", border: "border-green-500" },
+  devastating: {
+    color: "text-red-700 dark:text-red-500",
+    bg: "bg-red-100 dark:bg-red-950",
+    border: "border-red-500",
+  },
+  severe: {
+    color: "text-orange-700 dark:text-orange-500",
+    bg: "bg-orange-100 dark:bg-orange-950",
+    border: "border-orange-500",
+  },
+  moderate: {
+    color: "text-yellow-700 dark:text-yellow-500",
+    bg: "bg-yellow-100 dark:bg-yellow-950",
+    border: "border-yellow-500",
+  },
+  manageable: {
+    color: "text-blue-700 dark:text-blue-500",
+    bg: "bg-blue-100 dark:bg-blue-950",
+    border: "border-blue-500",
+  },
+  minimal: {
+    color: "text-green-700 dark:text-green-500",
+    bg: "bg-green-100 dark:bg-green-950",
+    border: "border-green-500",
+  },
 };
 
 const AVAILABLE_SCENARIOS: { value: WhatIfScenario; label: string }[] = [
@@ -128,7 +148,7 @@ export default function WhatIfPanel({
 
   const existingScenarios = new Set(results.map((r) => r.scenario));
   const unrunScenarios = AVAILABLE_SCENARIOS.filter(
-    (s) => !existingScenarios.has(s.value)
+    (s) => !existingScenarios.has(s.value),
   );
 
   return (
@@ -175,7 +195,9 @@ export default function WhatIfPanel({
           </h4>
 
           {results.map((result, index) => {
-            const config = SEVERITY_CONFIG[result.overall_severity] || SEVERITY_CONFIG.moderate;
+            const config =
+              SEVERITY_CONFIG[result.overall_severity] ||
+              SEVERITY_CONFIG.moderate;
             const Icon = SCENARIO_ICONS[result.scenario] || Zap;
             const isExpanded = expandedScenario === result.scenario;
 
@@ -195,26 +217,36 @@ export default function WhatIfPanel({
                   <CardContent className="p-6">
                     {/* Header */}
                     <div className="flex items-start gap-6 flex-col sm:flex-row">
-                      <div className={`p-4 border-4 border-black bg-white dark:bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex-shrink-0`}>
-                        <Icon className={`w-6 h-6 ${config.color} stroke-[3px]`} />
+                      <div
+                        className={`p-4 border-4 border-black bg-white dark:bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex-shrink-0`}
+                      >
+                        <Icon
+                          className={`w-6 h-6 ${config.color} stroke-[3px]`}
+                        />
                       </div>
                       <div className="flex-1 min-w-0">
                         <h5 className="text-xl font-black uppercase tracking-widest text-foreground block mb-3">
                           {result.scenario_title}
                         </h5>
                         <div className="flex items-center gap-3 flex-wrap">
-                          <Badge className={`px-2 py-1 border-2 border-black rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${config.bg} ${config.color} font-black uppercase tracking-widest text-[10px]`}>
+                          <Badge
+                            className={`px-2 py-1 border-2 border-black rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${config.bg} ${config.color} font-black uppercase tracking-widest text-[10px]`}
+                          >
                             {result.overall_severity}
                           </Badge>
                           <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground bg-white dark:bg-black px-2 py-1 border-2 border-black inline-flex items-center gap-2">
-                            <ShieldCheck className="w-3 h-3" /> PROTECTION {result.protection_score}/100
+                            <ShieldCheck className="w-3 h-3" /> PROTECTION{" "}
+                            {result.protection_score}/100
                           </span>
                         </div>
                       </div>
                       <div className="text-left sm:text-right flex-shrink-0 flex sm:flex-col items-center sm:items-end w-full sm:w-auto mt-4 sm:mt-0 justify-between sm:justify-start">
                         {result.total_financial_impact > 0 && (
                           <p className="text-base font-black tracking-tighter text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-950 px-3 py-2 border-4 border-red-500 shadow-[2px_2px_0px_0px_rgba(239,68,68,1)] sm:mb-4">
-                            ₹{result.total_financial_impact.toLocaleString("en-IN")}
+                            ₹
+                            {result.total_financial_impact.toLocaleString(
+                              "en-IN",
+                            )}
                           </p>
                         )}
                         <ChevronDown
@@ -244,13 +276,18 @@ export default function WhatIfPanel({
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {result.affected_contracts.map((c, i) => {
                                   const impactColors: Record<string, string> = {
-                                    terminated: "text-red-600 dark:text-red-500 bg-red-100 dark:bg-red-950 border-red-500",
-                                    breached: "text-orange-600 dark:text-orange-500 bg-orange-100 dark:bg-orange-950 border-orange-500",
-                                    modified: "text-yellow-600 dark:text-yellow-500 bg-yellow-100 dark:bg-yellow-950 border-yellow-500",
-                                    unaffected: "text-green-600 dark:text-green-500 bg-green-100 dark:bg-green-950 border-green-500",
+                                    terminated:
+                                      "text-red-600 dark:text-red-500 bg-red-100 dark:bg-red-950 border-red-500",
+                                    breached:
+                                      "text-orange-600 dark:text-orange-500 bg-orange-100 dark:bg-orange-950 border-orange-500",
+                                    modified:
+                                      "text-yellow-600 dark:text-yellow-500 bg-yellow-100 dark:bg-yellow-950 border-yellow-500",
+                                    unaffected:
+                                      "text-green-600 dark:text-green-500 bg-green-100 dark:bg-green-950 border-green-500",
                                   };
                                   const impactColor =
-                                    impactColors[c.impact_level] || impactColors.modified;
+                                    impactColors[c.impact_level] ||
+                                    impactColors.modified;
 
                                   return (
                                     <div
@@ -261,7 +298,9 @@ export default function WhatIfPanel({
                                         <span className="text-sm font-black uppercase tracking-widest text-foreground">
                                           {c.document_title}
                                         </span>
-                                        <Badge className={`${impactColor} text-[10px] border-2 rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] font-black uppercase tracking-widest flex-shrink-0`}>
+                                        <Badge
+                                          className={`${impactColor} text-[10px] border-2 rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] font-black uppercase tracking-widest flex-shrink-0`}
+                                        >
                                           {c.impact_level}
                                         </Badge>
                                       </div>
@@ -278,7 +317,8 @@ export default function WhatIfPanel({
                             {result.immediate_actions.length > 0 && (
                               <div className="border-4 border-black bg-indigo-50 dark:bg-indigo-950 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                                 <p className="text-sm font-black uppercase tracking-widest text-indigo-700 dark:text-indigo-400 mb-4 flex items-center gap-2 border-b-4 border-indigo-500 pb-2">
-                                  <Zap className="w-5 h-5 stroke-[3px]" /> IMMEDIATE ACTIONS
+                                  <Zap className="w-5 h-5 stroke-[3px]" />{" "}
+                                  IMMEDIATE ACTIONS
                                 </p>
                                 <ul className="space-y-3">
                                   {result.immediate_actions.map((a, i) => (
@@ -286,7 +326,9 @@ export default function WhatIfPanel({
                                       key={i}
                                       className="text-xs font-bold uppercase tracking-widest text-indigo-900/80 dark:text-indigo-200/80 flex items-start gap-3 leading-relaxed"
                                     >
-                                      <span className="text-indigo-600 shrink-0 font-black mt-0.5">•</span>
+                                      <span className="text-indigo-600 shrink-0 font-black mt-0.5">
+                                        •
+                                      </span>
                                       <span>{a}</span>
                                     </li>
                                   ))}

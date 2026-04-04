@@ -90,8 +90,12 @@ export default function StateMachinePage({
             <ArrowLeft className="h-5 w-5 text-black" />
           </Link>
           <div>
-            <h1 className="font-black text-xl uppercase tracking-widest text-black">Trap Detector</h1>
-            <p className="text-sm font-bold uppercase tracking-widest text-black/70 mt-1">ClauseWall State Machine</p>
+            <h1 className="font-black text-xl uppercase tracking-widest text-black">
+              Trap Detector
+            </h1>
+            <p className="text-sm font-bold uppercase tracking-widest text-black/70 mt-1">
+              ClauseWall State Machine
+            </p>
           </div>
         </div>
       </div>
@@ -104,7 +108,9 @@ export default function StateMachinePage({
             animate={{ opacity: 1, y: 0 }}
             className="max-w-md mx-auto text-center border-4 border-black p-8 bg-gray-50 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] mt-12"
           >
-            <p className="text-black font-bold uppercase tracking-widest mb-6">{error}</p>
+            <p className="text-black font-bold uppercase tracking-widest mb-6">
+              {error}
+            </p>
             <button
               onClick={handleExtract}
               disabled={extracting}
@@ -135,7 +141,11 @@ export default function StateMachinePage({
             </div>
 
             {/* Report card */}
-            <ReportCard report={report} onExplore={() => {}} documentId={params.id} />
+            <ReportCard
+              report={report}
+              onExplore={() => {}}
+              documentId={params.id}
+            />
 
             {/* Trap state cards */}
             {report.trapAnalysis.length > 0 && (
@@ -157,11 +167,18 @@ export default function StateMachinePage({
             {/* Recommendations */}
             {report.recommendations.length > 0 && (
               <div className="p-6 bg-blue-100 border-4 border-blue-600 shadow-[6px_6px_0px_0px_rgba(37,99,235,1)]">
-                <h2 className="text-lg font-black uppercase tracking-widest text-blue-900 border-b-4 border-blue-600 pb-2 mb-4 inline-block">📋 Recommendations</h2>
+                <h2 className="text-lg font-black uppercase tracking-widest text-blue-900 border-b-4 border-blue-600 pb-2 mb-4 inline-block">
+                  📋 Recommendations
+                </h2>
                 <ul className="space-y-3">
                   {report.recommendations.map((rec, i) => (
-                    <li key={i} className="text-sm font-bold text-blue-900 flex gap-3">
-                      <span className="font-black text-white bg-blue-600 px-2 border-2 border-blue-900 shrink-0">{i + 1}</span>
+                    <li
+                      key={i}
+                      className="text-sm font-bold text-blue-900 flex gap-3"
+                    >
+                      <span className="font-black text-white bg-blue-600 px-2 border-2 border-blue-900 shrink-0">
+                        {i + 1}
+                      </span>
                       <span>{rec}</span>
                     </li>
                   ))}
@@ -171,7 +188,10 @@ export default function StateMachinePage({
 
             {/* Related Actions */}
             <div className="pt-8 border-t-4 border-black">
-              <RelatedActions documentId={params.id} currentPage="statemachine" />
+              <RelatedActions
+                documentId={params.id}
+                currentPage="statemachine"
+              />
             </div>
           </div>
         )}

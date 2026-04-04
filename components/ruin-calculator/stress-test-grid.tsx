@@ -35,7 +35,9 @@ export default function StressTestGrid({
           >
             <div
               className={`flex-1 flex flex-col p-5 bg-white border-4 border-black transition-all ${
-                result ? "border-l-8 border-l-red-500 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]" : "shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                result
+                  ? "border-l-8 border-l-red-500 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                  : "shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               }`}
             >
               <div className="text-3xl mb-3">{scenario.icon}</div>

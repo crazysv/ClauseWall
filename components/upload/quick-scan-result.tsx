@@ -116,7 +116,7 @@ export default function QuickScanResult({
       const { data, error } = await supabase
         .from("documents")
         .select(
-          "analysis_status, analysis_progress, analysis_step, clauses_analyzed, total_clauses, overall_risk_score"
+          "analysis_status, analysis_progress, analysis_step, clauses_analyzed, total_clauses, overall_risk_score",
         )
         .eq("id", documentId)
         .single();
@@ -158,7 +158,8 @@ export default function QuickScanResult({
       return {
         color: "text-purple-600",
         bg: "bg-purple-500/10",
-        border: "card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)]",
+        border:
+          "card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)]",
         label: "CRITICAL RISK",
         sublabel: "Do NOT sign this contract",
         icon: <Scale className="h-12 w-12 text-purple-600" />,
@@ -168,7 +169,8 @@ export default function QuickScanResult({
       return {
         color: "text-red-600",
         bg: "bg-red-500/10",
-        border: "card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)]",
+        border:
+          "card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)]",
         label: "HIGH RISK",
         sublabel: "Significant issues found",
         icon: <XCircle className="h-12 w-12 text-red-600" />,
@@ -178,7 +180,8 @@ export default function QuickScanResult({
       return {
         color: "text-yellow-600",
         bg: "bg-yellow-500/10",
-        border: "card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)]",
+        border:
+          "card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)]",
         label: "MEDIUM RISK",
         sublabel: "Some concerns to review",
         icon: <AlertTriangle className="h-12 w-12 text-yellow-600" />,
@@ -187,7 +190,8 @@ export default function QuickScanResult({
     return {
       color: "text-green-600",
       bg: "bg-green-500/10",
-      border: "card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)]",
+      border:
+        "card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)]",
       label: "LOW RISK",
       sublabel: "Looks mostly fair",
       icon: <CheckCircle2 className="h-12 w-12 text-green-600" />,
@@ -223,8 +227,7 @@ export default function QuickScanResult({
 
   const getStepIcon = (step: string) => {
     if (step.includes("Extracting")) return <FileText className="h-4 w-4" />;
-    if (step.includes("Analyzing clause"))
-      return <Brain className="h-4 w-4" />;
+    if (step.includes("Analyzing clause")) return <Brain className="h-4 w-4" />;
     if (step.includes("Saving")) return <Database className="h-4 w-4" />;
     if (step.includes("community")) return <Database className="h-4 w-4" />;
     if (step.includes("Calculating")) return <Scale className="h-4 w-4" />;
@@ -238,28 +241,32 @@ export default function QuickScanResult({
         return {
           color: "text-purple-600",
           bg: "bg-background",
-          border: "border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(147,51,234,1)]",
+          border:
+            "border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(147,51,234,1)]",
           label: "CRITICAL",
         };
       case "dangerous":
         return {
           color: "text-primary",
           bg: "bg-background",
-          border: "border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(220,38,38,1)]",
+          border:
+            "border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(220,38,38,1)]",
           label: "HIGH RISK",
         };
       case "warning":
         return {
           color: "text-yellow-600",
           bg: "bg-background",
-          border: "border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(202,138,4,1)]",
+          border:
+            "border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(202,138,4,1)]",
           label: "CAUTION",
         };
       default:
         return {
           color: "text-green-600",
           bg: "bg-background",
-          border: "border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(22,163,74,1)]",
+          border:
+            "border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(22,163,74,1)]",
           label: "LOW RISK",
         };
     }
@@ -276,18 +283,15 @@ export default function QuickScanResult({
 
   // ML clauses that are NOT safe — for preliminary display
   const preliminaryFlags =
-    mlResult?.clauseResults
-      .filter((c) => c.riskLevel !== "safe")
-      .slice(0, 5) ?? [];
+    mlResult?.clauseResults.filter((c) => c.riskLevel !== "safe").slice(0, 5) ??
+    [];
 
   return (
     <div className="space-y-6">
       {/* ============================================ */}
       {/* 1. TRAFFIC LIGHT BANNER                      */}
       {/* ============================================ */}
-      <Card
-        className={`${traffic.border} overflow-hidden`}
-      >
+      <Card className={`${traffic.border} overflow-hidden`}>
         <CardContent className="p-0">
           <div className={`${traffic.bg} p-8 text-center`}>
             {/* Preliminary badge — ML only mode */}
@@ -312,12 +316,18 @@ export default function QuickScanResult({
               </h2>
               <span className="text-3xl">{traffic.emoji}</span>
             </div>
-            <p className="text-base font-semibold text-foreground text-lg">{traffic.sublabel}</p>
+            <p className="text-base font-semibold text-foreground text-lg">
+              {traffic.sublabel}
+            </p>
             <div className="mt-4 flex items-center justify-center gap-2">
-              <span className={`text-6xl font-black tabular-nums ${traffic.color}`}>
+              <span
+                className={`text-6xl font-black tabular-nums ${traffic.color}`}
+              >
                 {animatedScore}
               </span>
-              <span className="text-3xl font-bold text-muted-foreground">/100</span>
+              <span className="text-3xl font-bold text-muted-foreground">
+                /100
+              </span>
             </div>
             <div className="mt-2 flex items-center justify-center gap-3 text-sm text-muted-foreground">
               <span>📄 {displayDocType}</span>
@@ -635,11 +645,7 @@ export default function QuickScanResult({
       {documentId && (
         <Card
           className={`card-impact border-2 border-foreground transition-all duration-500 hover:-translate-y-[2px] shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] ${
-            isCompleted
-              ? "bg-green-100"
-              : isFailed
-                ? "bg-red-100"
-                : "bg-muted"
+            isCompleted ? "bg-green-100" : isFailed ? "bg-red-100" : "bg-muted"
           }`}
         >
           <CardContent className="p-6">
@@ -835,11 +841,7 @@ export default function QuickScanResult({
                     The detailed analysis encountered an error. The scan results
                     above are still valid.
                   </p>
-                  <Button
-                    variant="outline"
-                    onClick={onReset}
-                    className="gap-2"
-                  >
+                  <Button variant="outline" onClick={onReset} className="gap-2">
                     <Upload className="h-4 w-4" />
                     Try Again
                   </Button>

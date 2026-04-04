@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
       if (!file) {
         return NextResponse.json(
           { error: "No file provided" },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     if (!text || text.trim().length < 50) {
       return NextResponse.json(
         { error: "Text too short. Minimum 50 characters required." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
     console.error("[ClauseWall] Quick scan error:", error);
     return NextResponse.json(
       { error: (error as Error).message || "Quick scan failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

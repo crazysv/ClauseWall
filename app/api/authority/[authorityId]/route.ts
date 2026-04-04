@@ -9,7 +9,7 @@ import { computeEscalationPath } from "@/lib/authority/escalation-engine";
 
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ authorityId: string }> }
+  { params }: { params: Promise<{ authorityId: string }> },
 ) {
   try {
     const { authorityId } = await params;
@@ -18,7 +18,7 @@ export async function GET(
     if (!authority) {
       return NextResponse.json(
         { success: false, error: "Authority not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -33,7 +33,7 @@ export async function GET(
     console.error("[ClauseWall] Authority detail failed:", error);
     return NextResponse.json(
       { success: false, error: "Failed to fetch authority" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

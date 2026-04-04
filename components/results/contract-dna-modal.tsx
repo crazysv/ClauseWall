@@ -32,7 +32,12 @@ interface Props {
   clauses: Clause[];
 }
 
-export default function ContractDNAModal({ isOpen, onClose, contractDoc, clauses }: Props) {
+export default function ContractDNAModal({
+  isOpen,
+  onClose,
+  contractDoc,
+  clauses,
+}: Props) {
   const defaultStyle = getDefaultStyle(contractDoc.document_type);
   const [style, setStyle] = useState<DNAStyle>(defaultStyle);
   const [hoveredNode, setHoveredNode] = useState<DNANode | null>(null);
@@ -42,9 +47,12 @@ export default function ContractDNAModal({ isOpen, onClose, contractDoc, clauses
   const nodes = useMemo(() => clausesToNodes(clauses), [clauses]);
   const personality = useMemo(
     () => detectPersonality(nodes, contractDoc.overall_risk_score),
-    [nodes, contractDoc.overall_risk_score]
+    [nodes, contractDoc.overall_risk_score],
   );
-  const contractId = useMemo(() => generateContractId(contractDoc.id), [contractDoc.id]);
+  const contractId = useMemo(
+    () => generateContractId(contractDoc.id),
+    [contractDoc.id],
+  );
   const uniqueColor = useMemo(() => generateUniqueHex(clauses), [clauses]);
 
   const handleHover = useCallback((node: DNANode | null) => {
@@ -115,7 +123,11 @@ export default function ContractDNAModal({ isOpen, onClose, contractDoc, clauses
       ctx.fillText(`${personality.emoji} ${personality.name}`, 50, 700);
       ctx.font = "16px system-ui, sans-serif";
       ctx.fillStyle = "#94A3B8";
-      ctx.fillText(`${contractId} • Contract Personality • clausewall.com`, 50, 730);
+      ctx.fillText(
+        `${contractId} • Contract Personality • clausewall.com`,
+        50,
+        730,
+      );
 
       // Color swatch
       ctx.fillStyle = uniqueColor;
@@ -131,7 +143,9 @@ export default function ContractDNAModal({ isOpen, onClose, contractDoc, clauses
       a.click();
       toast.success("PNG downloaded!");
     };
-    img.src = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgData)));
+    img.src =
+      "data:image/svg+xml;base64," +
+      btoa(unescape(encodeURIComponent(svgData)));
   };
 
   const handleCopyId = () => {
@@ -142,28 +156,30 @@ export default function ContractDNAModal({ isOpen, onClose, contractDoc, clauses
   };
 
   return (
-  <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-    <DialogContent className="max-w-3xl bg-background card-impact border-2 border-foreground p-0 gap-0 overflow-hidden shadow-none rounded-none">
-      {/* Accessible title (visually hidden) */}
-      <VisuallyHidden>
-        <DialogTitle>Contract Personality Visualization</DialogTitle>
-      </VisuallyHidden>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="max-w-3xl bg-background card-impact border-2 border-foreground p-0 gap-0 overflow-hidden shadow-none rounded-none">
+        {/* Accessible title (visually hidden) */}
+        <VisuallyHidden>
+          <DialogTitle>Contract Personality Visualization</DialogTitle>
+        </VisuallyHidden>
 
-      {/* Header */}
-    <div className="flex items-center gap-3 p-5 border-b-2 border-foreground bg-muted">
-        <div
+        {/* Header */}
+        <div className="flex items-center gap-3 p-5 border-b-2 border-foreground bg-muted">
+          <div
             className="w-8 h-8 rounded-none border-2 border-foreground"
             style={{
-                background: `linear-gradient(135deg, ${personality.gradient[0]}, ${personality.gradient[1]})`,
+              background: `linear-gradient(135deg, ${personality.gradient[0]}, ${personality.gradient[1]})`,
             }}
-        />
-        <div>
-            <h2 className="font-black text-xl text-foreground uppercase tracking-wider">Contract Personality</h2>
+          />
+          <div>
+            <h2 className="font-black text-xl text-foreground uppercase tracking-wider">
+              Contract Personality
+            </h2>
             <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mt-1">
-                {personality.emoji} {personality.name} — {personality.description}
+              {personality.emoji} {personality.name} — {personality.description}
             </p>
+          </div>
         </div>
-    </div>
 
         {/* Style Selector */}
         <div className="flex items-center gap-2 px-5 pt-4 pb-2 bg-background overflow-x-auto border-b-2 border-foreground">
@@ -228,7 +244,9 @@ export default function ContractDNAModal({ isOpen, onClose, contractDoc, clauses
                     >
                       {hoveredNode.riskLevel}
                     </span>
-                    <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{hoveredNode.clauseType}</span>
+                    <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                      {hoveredNode.clauseType}
+                    </span>
                   </div>
                   <p className="text-foreground font-bold text-xs uppercase tracking-wider leading-relaxed">
                     {hoveredNode.explanation.slice(0, 140)}
@@ -250,18 +268,25 @@ export default function ContractDNAModal({ isOpen, onClose, contractDoc, clauses
                 className="flex items-center gap-1.5 px-2.5 py-1 bg-muted border-2 border-foreground text-xs font-black uppercase tracking-wider text-foreground hover:bg-foreground hover:text-background transition-colors"
               >
                 {contractId}
-                {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+                {copied ? (
+                  <Check className="h-3 w-3" />
+                ) : (
+                  <Copy className="h-3 w-3" />
+                )}
               </button>
               <div className="flex items-center gap-1.5">
                 <div
                   className="w-4 h-4 border-2 border-foreground"
                   style={{ backgroundColor: uniqueColor }}
                 />
-                <span className="text-xs font-bold font-mono text-muted-foreground uppercase">{uniqueColor}</span>
+                <span className="text-xs font-bold font-mono text-muted-foreground uppercase">
+                  {uniqueColor}
+                </span>
               </div>
             </div>
             <span className="text-xs font-black uppercase tracking-wider text-muted-foreground">
-              {nodes.length} clauses • Score {contractDoc.overall_risk_score}/100
+              {nodes.length} clauses • Score {contractDoc.overall_risk_score}
+              /100
             </span>
           </div>
 

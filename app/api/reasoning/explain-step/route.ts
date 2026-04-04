@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import type { ProofNode, ProofTree } from "@/lib/reasoning/types";
-import { formatELI5, formatProfessional } from "@/lib/reasoning/proof-formatter";
+import {
+  formatELI5,
+  formatProfessional,
+} from "@/lib/reasoning/proof-formatter";
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,7 +17,7 @@ export async function POST(request: NextRequest) {
     if (!proofNodeId || !proofTree) {
       return NextResponse.json(
         { error: "proofNodeId and proofTree are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -24,12 +27,16 @@ export async function POST(request: NextRequest) {
     if (!node) {
       return NextResponse.json(
         { error: "Proof node not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     // Generate explanation based on node type and mode
-    const explanation = generateExplanation(node, proofTree, mode || "standard");
+    const explanation = generateExplanation(
+      node,
+      proofTree,
+      mode || "standard",
+    );
 
     return NextResponse.json({
       success: true,
@@ -39,7 +46,7 @@ export async function POST(request: NextRequest) {
     console.error("[ClauseWall] [API] Explain step failed:", error);
     return NextResponse.json(
       { success: false, error: "Failed to explain proof step" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -58,7 +65,7 @@ function findNodeById(node: ProofNode, id: string): ProofNode | null {
 function generateExplanation(
   node: ProofNode,
   proofTree: ProofTree,
-  mode: string
+  mode: string,
 ): {
   title: string;
   description: string;
@@ -92,9 +99,13 @@ function generateExplanation(
   switch (node.type) {
     case "extraction":
       details.push(`Value: ${node.metadata.extractedValue}`);
-      details.push(`Confidence: ${Math.round((node.metadata.confidence ?? 0) * 100)}%`);
+      details.push(
+        `Confidence: ${Math.round((node.metadata.confidence ?? 0) * 100)}%`,
+      );
       if (node.metadata.originalText) {
-        details.push(`Source text: "${node.metadata.originalText.substring(0, 200)}"`);
+        details.push(
+          `Source text: "${node.metadata.originalText.substring(0, 200)}"`,
+        );
       }
       break;
 
@@ -113,7 +124,9 @@ function generateExplanation(
       details.push(`Left operand: ${node.metadata.leftOperand}`);
       details.push(`Operator: ${node.metadata.operator}`);
       details.push(`Right operand: ${node.metadata.rightOperand}`);
-      details.push(`Result: ${node.metadata.comparisonResult ? "TRUE (threshold breached)" : "FALSE (within limits)"}`);
+      details.push(
+        `Result: ${node.metadata.comparisonResult ? "TRUE (threshold breached)" : "FALSE (within limits)"}`,
+      );
       break;
 
     case "conclusion":
@@ -143,7 +156,7 @@ function generateExplanation(
 }
 
 function cleanMetadata(
-  metadata: ProofNode["metadata"]
+  metadata: ProofNode["metadata"],
 ): Record<string, string | number | boolean | undefined> {
   const clean: Record<string, string | number | boolean | undefined> = {};
   for (const [key, value] of Object.entries(metadata)) {

@@ -12,14 +12,20 @@ import {
   Info,
 } from "lucide-react";
 import type { Document, PortfolioStats, InsightItem } from "@/types";
-import { getDocTypeBreakdown, getJurisdictionBreakdown } from "@/lib/stats/portfolio-stats";
+import {
+  getDocTypeBreakdown,
+  getJurisdictionBreakdown,
+} from "@/lib/stats/portfolio-stats";
 
 interface InsightsSectionProps {
   stats: PortfolioStats;
   documents: Document[];
 }
 
-function generateInsights(stats: PortfolioStats, documents: Document[]): InsightItem[] {
+function generateInsights(
+  stats: PortfolioStats,
+  documents: Document[],
+): InsightItem[] {
   const insights: InsightItem[] = [];
 
   // 1. Risk Trend Insight
@@ -56,7 +62,9 @@ function generateInsights(stats: PortfolioStats, documents: Document[]): Insight
   const typeBreakdown = getDocTypeBreakdown(documents);
   if (typeBreakdown.length > 0) {
     const mostCommon = typeBreakdown[0];
-    const riskiest = [...typeBreakdown].sort((a, b) => b.avgRisk - a.avgRisk)[0];
+    const riskiest = [...typeBreakdown].sort(
+      (a, b) => b.avgRisk - a.avgRisk,
+    )[0];
 
     const typeLabels: Record<string, string> = {
       rental: "Rental",
@@ -90,8 +98,9 @@ function generateInsights(stats: PortfolioStats, documents: Document[]): Insight
   // 3. Clause Insight
   if (stats.totalClauses > 0) {
     const riskyPercent = Math.round(
-      ((stats.dangerousClausesCount + stats.illegalClausesCount) / stats.totalClauses) *
-        100
+      ((stats.dangerousClausesCount + stats.illegalClausesCount) /
+        stats.totalClauses) *
+        100,
     );
 
     if (riskyPercent > 30) {
@@ -157,7 +166,10 @@ const ICON_MAP: Record<string, React.ReactNode> = {
   map: <MapPin className="w-4 h-4" />,
 };
 
-const TYPE_STYLES: Record<string, { bg: string; border: string; iconColor: string }> = {
+const TYPE_STYLES: Record<
+  string,
+  { bg: string; border: string; iconColor: string }
+> = {
   positive: {
     bg: "bg-green-100",
     border: "border-green-600 shadow-[4px_4px_0px_0px_rgba(22,163,74,1)]",
@@ -180,7 +192,10 @@ const TYPE_STYLES: Record<string, { bg: string; border: string; iconColor: strin
   },
 };
 
-export default function InsightsSection({ stats, documents }: InsightsSectionProps) {
+export default function InsightsSection({
+  stats,
+  documents,
+}: InsightsSectionProps) {
   const insights = generateInsights(stats, documents);
 
   if (insights.length === 0) return null;
@@ -194,7 +209,9 @@ export default function InsightsSection({ stats, documents }: InsightsSectionPro
     >
       <div className="flex items-center gap-2 mb-5 pb-4 border-b-2 border-foreground">
         <Lightbulb className="w-6 h-6 text-purple-600 fill-purple-100" />
-        <h3 className="text-xl font-black uppercase tracking-wider text-foreground">Smart Insights</h3>
+        <h3 className="text-xl font-black uppercase tracking-wider text-foreground">
+          Smart Insights
+        </h3>
       </div>
 
       <div className="space-y-4 flex-1">

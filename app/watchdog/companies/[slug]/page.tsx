@@ -13,14 +13,33 @@ import WatchlistToggle from "@/components/watchdog/watchlist-toggle";
 import type { MonitoredCompany, TosChange } from "@/types";
 
 const SECTOR_LABELS: Record<string, string> = {
-  ride_hailing: "Ride-hailing", food_delivery: "Food Delivery", ecommerce: "E-commerce",
-  payments: "Payments", social: "Social", streaming: "Streaming", travel: "Travel",
-  banking: "Banking", telecom: "Telecom", edtech: "EdTech", government: "Government", other: "Other",
+  ride_hailing: "Ride-hailing",
+  food_delivery: "Food Delivery",
+  ecommerce: "E-commerce",
+  payments: "Payments",
+  social: "Social",
+  streaming: "Streaming",
+  travel: "Travel",
+  banking: "Banking",
+  telecom: "Telecom",
+  edtech: "EdTech",
+  government: "Government",
+  other: "Other",
 };
 
 const SECTOR_ICONS: Record<string, string> = {
-  ride_hailing: "🚗", food_delivery: "🍔", ecommerce: "🛒", payments: "💳", social: "💬",
-  streaming: "🎬", travel: "✈️", banking: "🏦", telecom: "📱", edtech: "📚", government: "🏛️", other: "📋",
+  ride_hailing: "🚗",
+  food_delivery: "🍔",
+  ecommerce: "🛒",
+  payments: "💳",
+  social: "💬",
+  streaming: "🎬",
+  travel: "✈️",
+  banking: "🏦",
+  telecom: "📱",
+  edtech: "📚",
+  government: "🏛️",
+  other: "📋",
 };
 
 export default async function CompanyDetailPage({
@@ -49,7 +68,11 @@ export default async function CompanyDetailPage({
     .order("detected_at", { ascending: false })
     .limit(50);
 
-  const tosUrls = typedCompany.tos_urls as Array<{ label: string; url: string; type: string }>;
+  const tosUrls = typedCompany.tos_urls as Array<{
+    label: string;
+    url: string;
+    type: string;
+  }>;
 
   return (
     <div className="min-h-screen bg-background">
@@ -57,13 +80,16 @@ export default async function CompanyDetailPage({
         {/* Header */}
         <div className="flex items-start justify-between gap-4 mb-8">
           <div className="flex items-center gap-4">
-            <div className="h-14 w-14 rounded-xl bg-white/5 flex items-center justify-center text-2xl">
+            <div className="h-14 w-14 rounded-none bg-muted flex items-center justify-center text-2xl">
               {SECTOR_ICONS[typedCompany.sector] || "📋"}
             </div>
             <div>
               <h1 className="text-2xl font-bold mb-1">{typedCompany.name}</h1>
               <div className="flex items-center gap-2 flex-wrap">
-                <Badge variant="outline" className="border-white/10 text-xs">
+                <Badge
+                  variant="outline"
+                  className="border-foreground border-2 text-xs"
+                >
                   {SECTOR_LABELS[typedCompany.sector] || typedCompany.sector}
                 </Badge>
                 <a
@@ -85,25 +111,29 @@ export default async function CompanyDetailPage({
 
         {/* Stats row */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <Card className="bg-gray-900/50 border-gray-800">
+          <Card className="bg-background/50 border-gray-800">
             <CardContent className="p-4 text-center">
               <p className="text-2xl font-bold">{typedCompany.total_changes}</p>
               <p className="text-xs text-muted-foreground">Total Changes</p>
             </CardContent>
           </Card>
-          <Card className="bg-gray-900/50 border-gray-800">
+          <Card className="bg-background/50 border-gray-800">
             <CardContent className="p-4 text-center">
-              <p className="text-2xl font-bold text-red-400">{typedCompany.pro_company_changes}</p>
+              <p className="text-2xl font-bold text-red-400">
+                {typedCompany.pro_company_changes}
+              </p>
               <p className="text-xs text-muted-foreground">Pro-Company</p>
             </CardContent>
           </Card>
-          <Card className="bg-gray-900/50 border-gray-800">
+          <Card className="bg-background/50 border-gray-800">
             <CardContent className="p-4 text-center">
-              <p className="text-2xl font-bold text-green-400">{typedCompany.pro_consumer_changes}</p>
+              <p className="text-2xl font-bold text-green-400">
+                {typedCompany.pro_consumer_changes}
+              </p>
               <p className="text-xs text-muted-foreground">Pro-Consumer</p>
             </CardContent>
           </Card>
-          <Card className="bg-gray-900/50 border-gray-800">
+          <Card className="bg-background/50 border-gray-800">
             <CardContent className="p-4 text-center">
               <TrendIndicator trend={typedCompany.score_trend} />
               <p className="text-xs text-muted-foreground mt-1">Trend</p>
@@ -112,17 +142,23 @@ export default async function CompanyDetailPage({
         </div>
 
         {/* Monitored URLs */}
-        <Card className="bg-gray-900/50 border-gray-800 mb-8">
+        <Card className="bg-background/50 border-gray-800 mb-8">
           <CardHeader className="pb-3">
             <CardTitle className="text-base">📄 Monitored Documents</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
               {tosUrls.map((tos, i) => (
-                <div key={i} className="flex items-center justify-between py-2 border-b border-gray-800 last:border-0">
+                <div
+                  key={i}
+                  className="flex items-center justify-between py-2 border-b border-gray-800 last:border-0"
+                >
                   <div>
                     <span className="text-sm font-medium">{tos.label}</span>
-                    <Badge variant="outline" className="ml-2 text-[10px] border-white/10">
+                    <Badge
+                      variant="outline"
+                      className="ml-2 text-[10px] border-foreground border-2"
+                    >
                       {tos.type}
                     </Badge>
                   </div>
@@ -139,7 +175,8 @@ export default async function CompanyDetailPage({
             </div>
             {typedCompany.last_scraped_at && (
               <p className="text-[10px] text-muted-foreground mt-3">
-                Last scraped: {new Date(typedCompany.last_scraped_at).toLocaleString("en-IN")}
+                Last scraped:{" "}
+                {new Date(typedCompany.last_scraped_at).toLocaleString("en-IN")}
               </p>
             )}
           </CardContent>

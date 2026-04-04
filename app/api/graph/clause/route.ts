@@ -16,11 +16,15 @@ export async function GET(req: NextRequest) {
     if (!clauseType || !jurisdiction) {
       return NextResponse.json(
         { error: "clauseType and jurisdiction are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    const context = await getClauseContext(clauseType, jurisdiction, documentType);
+    const context = await getClauseContext(
+      clauseType,
+      jurisdiction,
+      documentType,
+    );
 
     return NextResponse.json({
       success: true,
@@ -32,7 +36,7 @@ export async function GET(req: NextRequest) {
     console.error("[ClauseWall] [API] Graph clause query failed:", error);
     return NextResponse.json(
       { error: "Failed to query knowledge graph" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

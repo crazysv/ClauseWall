@@ -25,7 +25,10 @@ interface PowerBalanceMeterProps {
 // CATEGORY ICON MAP
 // ============================================
 
-const CATEGORY_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
+const CATEGORY_ICONS: Record<
+  string,
+  React.ComponentType<{ className?: string }>
+> = {
   termination: DoorOpen,
   financial: Wallet,
   penalties: AlertTriangle,
@@ -160,7 +163,9 @@ function PowerBar({
   height?: string;
 }) {
   return (
-    <div className={`${height} border-2 border-foreground bg-muted overflow-hidden flex`}>
+    <div
+      className={`${height} border-2 border-foreground bg-muted overflow-hidden flex`}
+    >
       <motion.div
         className="bg-red-600 border-r-2 border-foreground"
         initial={{ width: "50%" }}
@@ -207,7 +212,9 @@ function CategoryRow({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Icon className="h-4 w-4 text-foreground" />
-          <span className="text-sm font-black uppercase tracking-wider text-foreground">{category.name}</span>
+          <span className="text-sm font-black uppercase tracking-wider text-foreground">
+            {category.name}
+          </span>
         </div>
         <span
           className={`text-[10px] px-2 py-0.5 border-2 font-black uppercase tracking-wider ${severity.className}`}
@@ -259,16 +266,8 @@ export default function PowerBalanceMeter({
 
   const verdictStyle = getVerdictStyle(powerBalance.verdict);
 
-  const overallACount = useCountUp(
-    powerBalance.overall_party_a,
-    isInView,
-    0.3
-  );
-  const overallBCount = useCountUp(
-    powerBalance.overall_party_b,
-    isInView,
-    0.3
-  );
+  const overallACount = useCountUp(powerBalance.overall_party_a, isInView, 0.3);
+  const overallBCount = useCountUp(powerBalance.overall_party_b, isInView, 0.3);
 
   const entityLabel = powerBalance.party_a_name || "Entity";
   const userLabel = powerBalance.party_b_name || "You";
@@ -279,7 +278,9 @@ export default function PowerBalanceMeter({
         {/* Header */}
         <div className="flex items-center gap-2">
           <Scale className="h-5 w-5 text-foreground" />
-          <h3 className="font-black uppercase tracking-wider text-lg lg:text-xl">Power Balance</h3>
+          <h3 className="font-black uppercase tracking-wider text-lg lg:text-xl">
+            Power Balance
+          </h3>
         </div>
 
         {/* ═══════ OVERALL SECTION ═══════ */}
@@ -301,14 +302,14 @@ export default function PowerBalanceMeter({
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={
-                isInView
-                  ? { opacity: 1, scale: 1 }
-                  : { opacity: 0, scale: 0.8 }
+                isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }
               }
               transition={{ duration: 0.5, delay: 1.5 }}
               className="text-center px-3"
             >
-              <span className="text-xs font-black uppercase tracking-wider text-muted-foreground">vs</span>
+              <span className="text-xs font-black uppercase tracking-wider text-muted-foreground">
+                vs
+              </span>
             </motion.div>
 
             <div className="text-right">
@@ -352,7 +353,9 @@ export default function PowerBalanceMeter({
           transition={{ duration: 0.6, delay: 1.6 }}
           className={`p-4 card-impact ${verdictStyle.bg}`}
         >
-          <p className={`text-lg font-black uppercase tracking-wider ${verdictStyle.color} mb-1`}>
+          <p
+            className={`text-lg font-black uppercase tracking-wider ${verdictStyle.color} mb-1`}
+          >
             {powerBalance.verdict}
           </p>
           <p className="text-sm font-bold text-foreground leading-relaxed">
@@ -416,7 +419,8 @@ export default function PowerBalanceMeter({
           transition={{ delay: 3 }}
           className="text-[10px] font-bold text-center text-muted-foreground uppercase tracking-wider pt-2 border-t-2 border-foreground"
         >
-          A fair contract distributes power equally (50/50). Imbalance above 65/35 is concerning.
+          A fair contract distributes power equally (50/50). Imbalance above
+          65/35 is concerning.
         </motion.p>
       </CardContent>
     </Card>

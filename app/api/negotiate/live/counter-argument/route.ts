@@ -13,8 +13,11 @@ export async function POST(request: NextRequest) {
 
     if (!situation || !jurisdiction || !document_type) {
       return NextResponse.json(
-        { error: "Missing required fields: situation, jurisdiction, document_type" },
-        { status: 400 }
+        {
+          error:
+            "Missing required fields: situation, jurisdiction, document_type",
+        },
+        { status: 400 },
       );
     }
 
@@ -51,25 +54,30 @@ Generate a ${effectiveTone} counter-argument that:
         temperature: 0.3,
         maxTokens: 512,
         retries: 2,
-      }
+      },
     );
 
     const parsed = JSON.parse(response);
 
     return NextResponse.json({
-      counter_argument: parsed.counter_argument || "I'd like to discuss this point further before we proceed.",
+      counter_argument:
+        parsed.counter_argument ||
+        "I'd like to discuss this point further before we proceed.",
       legal_basis: parsed.legal_basis || null,
-      confidence_tip: parsed.confidence_tip || "Stay calm and focused on the facts.",
+      confidence_tip:
+        parsed.confidence_tip || "Stay calm and focused on the facts.",
     });
   } catch (error: any) {
     console.error("[ClauseWall] Counter-argument API error:", error);
     return NextResponse.json(
       {
-        counter_argument: "I appreciate your position, but I'd like to review this point more carefully before agreeing.",
+        counter_argument:
+          "I appreciate your position, but I'd like to review this point more carefully before agreeing.",
         legal_basis: null,
-        confidence_tip: "Take your time. You have the right to fully understand what you're signing.",
+        confidence_tip:
+          "Take your time. You have the right to fully understand what you're signing.",
       },
-      { status: 200 } // Return a usable fallback even on error
+      { status: 200 }, // Return a usable fallback even on error
     );
   }
 }

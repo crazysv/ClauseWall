@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
       } else {
         return NextResponse.json(
           { error: "Contract A is required" },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
       } else {
         return NextResponse.json(
           { error: "Contract B is required" },
-          { status: 400 }
+          { status: 400 },
         );
       }
     } else {
@@ -68,14 +68,14 @@ export async function POST(request: NextRequest) {
     if (!textA || textA.trim().length < 50) {
       return NextResponse.json(
         { error: "Contract A text is too short (minimum 50 characters)" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (!textB || textB.trim().length < 50) {
       return NextResponse.json(
         { error: "Contract B text is too short (minimum 50 characters)" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
     console.error("[ClauseWall] Compare API error:", error);
     return NextResponse.json(
       { error: (error as Error).message || "Comparison failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

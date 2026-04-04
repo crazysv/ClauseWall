@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     if (!documentId) {
       return NextResponse.json(
         { error: "Document ID is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -42,14 +42,14 @@ export async function POST(req: NextRequest) {
     if (docError || !doc) {
       return NextResponse.json(
         { error: "Document not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     if (doc.analysis_status !== "completed") {
       return NextResponse.json(
         { error: "Analysis must be completed before generating badge" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
       if (attempts >= 5) {
         return NextResponse.json(
           { error: "Failed to generate unique ID. Try again." },
-          { status: 500 }
+          { status: 500 },
         );
       }
     }
@@ -98,7 +98,7 @@ export async function POST(req: NextRequest) {
       console.error("QR generation update error:", updateError);
       return NextResponse.json(
         { error: "Failed to generate badge" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -112,7 +112,7 @@ export async function POST(req: NextRequest) {
     console.error("QR generation error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

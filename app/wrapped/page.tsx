@@ -112,12 +112,12 @@ export default function WrappedPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center px-4 py-8">
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-8">
       {/* Back */}
       <div className="w-full max-w-md mb-4">
         <Link
           href="/dashboard"
-          className="flex items-center gap-2 text-gray-500 hover:text-white text-sm transition-colors"
+          className="flex items-center gap-2 text-gray-500 hover:text-foreground text-sm transition-colors"
         >
           <ChevronLeft className="h-4 w-4" />
           Back to Dashboard
@@ -125,10 +125,7 @@ export default function WrappedPage() {
       </div>
 
       {/* Slide Viewer */}
-      <div
-        className="relative w-full max-w-md"
-        style={{ aspectRatio: "9/16" }}
-      >
+      <div className="relative w-full max-w-md" style={{ aspectRatio: "9/16" }}>
         <AnimatePresence mode="wait">
           <motion.div
             key={current}
@@ -139,7 +136,7 @@ export default function WrappedPage() {
             className="absolute inset-0"
           >
             <div
-              className="w-full h-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl"
+              className="w-full h-full rounded-none overflow-hidden border border-foreground border-2 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-foreground"
               style={{ background: slides[current].bg }}
             >
               <div className="w-full h-full flex flex-col items-center justify-center px-10 text-center">
@@ -153,7 +150,7 @@ export default function WrappedPage() {
         {current > 0 && (
           <button
             onClick={prev}
-            className="absolute left-2 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-black/50 flex items-center justify-center text-white hover:bg-black/70 transition-colors z-10"
+            className="absolute left-2 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-black/50 flex items-center justify-center text-foreground hover:bg-black/70 transition-colors z-10"
           >
             <ArrowLeft className="h-5 w-5" />
           </button>
@@ -161,7 +158,7 @@ export default function WrappedPage() {
         {current < totalSlides - 1 && (
           <button
             onClick={next}
-            className="absolute right-2 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-black/50 flex items-center justify-center text-white hover:bg-black/70 transition-colors z-10"
+            className="absolute right-2 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-black/50 flex items-center justify-center text-foreground hover:bg-black/70 transition-colors z-10"
           >
             <ArrowRight className="h-5 w-5" />
           </button>
@@ -181,9 +178,7 @@ export default function WrappedPage() {
           <button
             key={i}
             onClick={() => setCurrent(i)}
-            className={`h-2 rounded-full transition-all ${
-              i === current ? "w-6 bg-blue-500" : "w-2 bg-white/20"
-            }`}
+            className={`h-2 rounded-full transition-all ${i === current ? "w-6 bg-blue-500" : "w-2 bg-muted"}`}
           />
         ))}
       </div>
@@ -313,10 +308,10 @@ function buildSlides(data: WrappedData): SlideConfig[] {
     content: (
       <>
         <div className="text-6xl mb-6">🛡️</div>
-        <h1 className="text-3xl font-bold text-white mb-2">
+        <h1 className="text-3xl font-bold text-foreground mb-2">
           YOUR {data.period}
         </h1>
-        <h2 className="text-4xl font-extrabold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+        <h2 className="text-4xl font-extrabold bg-background bg-clip-text text-transparent">
           CONTRACT WRAPPED
         </h2>
         <p className="text-gray-500 text-xs mt-4">
@@ -361,7 +356,7 @@ function buildSlides(data: WrappedData): SlideConfig[] {
         <p className="text-sm text-green-400 font-bold tracking-widest mb-4">
           📊 THIS YEAR YOU SCANNED
         </p>
-        <h1 className="text-8xl font-black text-white mb-2">
+        <h1 className="text-8xl font-black text-foreground mb-2">
           {data.totalContracts}
         </h1>
         <h2 className="text-2xl font-bold text-green-400">CONTRACTS</h2>
@@ -416,25 +411,19 @@ function buildSlides(data: WrappedData): SlideConfig[] {
         <p className="text-sm text-red-400 font-bold tracking-widest mb-4">
           🚩 YOU FOUND
         </p>
-        <h1 className="text-8xl font-black text-white mb-2">{totalFlags}</h1>
+        <h1 className="text-8xl font-black text-foreground mb-2">
+          {totalFlags}
+        </h1>
         <h2 className="text-2xl font-bold text-red-400">RED FLAGS</h2>
         <div className="mt-4 space-y-1 text-sm">
           {data.illegalFound > 0 && (
-            <p className="text-purple-400">
-              ⛔ {data.illegalFound} Illegal
-            </p>
+            <p className="text-purple-400">⛔ {data.illegalFound} Illegal</p>
           )}
-          <p className="text-red-400">
-            🔴 {data.dangerousFound} Dangerous
-          </p>
-          <p className="text-yellow-400">
-            ⚠️ {data.warningFound} Warning
-          </p>
+          <p className="text-red-400">🔴 {data.dangerousFound} Dangerous</p>
+          <p className="text-yellow-400">⚠️ {data.warningFound} Warning</p>
         </div>
         {illegalComment && (
-          <p className="text-gray-400 text-xs mt-4 italic">
-            {illegalComment}
-          </p>
+          <p className="text-gray-400 text-xs mt-4 italic">{illegalComment}</p>
         )}
       </>
     ),
@@ -458,9 +447,7 @@ function buildSlides(data: WrappedData): SlideConfig[] {
           RED FLAGS
         </div>
         {data.illegalFound > 0 && (
-          <div
-            style={{ fontSize: 22, color: "#c084fc", marginTop: 20 }}
-          >
+          <div style={{ fontSize: 22, color: "#c084fc", marginTop: 20 }}>
             ⛔ {data.illegalFound} Illegal
           </div>
         )}
@@ -505,7 +492,7 @@ function buildSlides(data: WrappedData): SlideConfig[] {
         <p className="text-sm text-green-400 font-bold tracking-widest mb-4">
           💰 YOU SAVED AN ESTIMATED
         </p>
-        <h1 className="text-7xl font-black text-white mb-2">
+        <h1 className="text-7xl font-black text-foreground mb-2">
           {savingsLabel}
         </h1>
         <p className="text-gray-400 text-sm mt-2">
@@ -514,9 +501,7 @@ function buildSlides(data: WrappedData): SlideConfig[] {
         <p className="text-2xl mt-6">
           {data.estimatedSavings >= 100000 ? "🎉" : "🏖️"}
         </p>
-        <p className="text-gray-500 text-xs mt-2 italic">
-          {savingsComparison}
-        </p>
+        <p className="text-gray-500 text-xs mt-2 italic">{savingsComparison}</p>
       </>
     ),
     exportContent: (
@@ -561,7 +546,7 @@ function buildSlides(data: WrappedData): SlideConfig[] {
   if (data.riskiestContract) {
     const riskyComment = getRiskiestComment(
       data.riskiestContract.type,
-      data.riskiestContract.jurisdiction
+      data.riskiestContract.jurisdiction,
     );
 
     slides.push({
@@ -571,7 +556,7 @@ function buildSlides(data: WrappedData): SlideConfig[] {
           <p className="text-sm text-purple-400 font-bold tracking-widest mb-4">
             😱 YOUR RISKIEST CONTRACT
           </p>
-          <h1 className="text-3xl font-black text-white mb-2 leading-tight">
+          <h1 className="text-3xl font-black text-foreground mb-2 leading-tight">
             {data.riskiestContract.name}
           </h1>
           <p className="text-7xl font-black text-purple-400 my-4">
@@ -603,9 +588,7 @@ function buildSlides(data: WrappedData): SlideConfig[] {
           >
             {data.riskiestContract.name}
           </div>
-          <div
-            style={{ fontSize: 100, fontWeight: 900, color: "#c084fc" }}
-          >
+          <div style={{ fontSize: 100, fontWeight: 900, color: "#c084fc" }}>
             {data.riskiestContract.score}/100
           </div>
           <div
@@ -634,7 +617,7 @@ function buildSlides(data: WrappedData): SlideConfig[] {
           <p className="text-sm text-green-400 font-bold tracking-widest mb-4">
             😌 YOUR SAFEST CONTRACT
           </p>
-          <h1 className="text-3xl font-black text-white mb-2 leading-tight">
+          <h1 className="text-3xl font-black text-foreground mb-2 leading-tight">
             {data.safestContract.name}
           </h1>
           <p className="text-7xl font-black text-green-400 my-4">
@@ -668,9 +651,7 @@ function buildSlides(data: WrappedData): SlideConfig[] {
           >
             {data.safestContract.name}
           </div>
-          <div
-            style={{ fontSize: 100, fontWeight: 900, color: "#4ade80" }}
-          >
+          <div style={{ fontSize: 100, fontWeight: 900, color: "#4ade80" }}>
             {data.safestContract.score}/100
           </div>
           <div
@@ -699,7 +680,7 @@ function buildSlides(data: WrappedData): SlideConfig[] {
           <p className="text-sm text-orange-400 font-bold tracking-widest mb-4">
             🔄 YOUR MOST COMMON RED FLAG
           </p>
-          <h1 className="text-3xl font-black text-white mb-2 uppercase">
+          <h1 className="text-3xl font-black text-foreground mb-2 uppercase">
             {data.mostCommonRedFlag.label}
           </h1>
           <p className="text-5xl font-black text-orange-400 my-4">
@@ -738,9 +719,7 @@ function buildSlides(data: WrappedData): SlideConfig[] {
           >
             {data.mostCommonRedFlag.label}
           </div>
-          <div
-            style={{ fontSize: 80, fontWeight: 900, color: "#fb923c" }}
-          >
+          <div style={{ fontSize: 80, fontWeight: 900, color: "#fb923c" }}>
             {data.mostCommonRedFlag.count}×
           </div>
           <div style={{ fontSize: 20, color: "#94a3b8", marginTop: 16 }}>
@@ -772,7 +751,7 @@ function buildSlides(data: WrappedData): SlideConfig[] {
           🧬 YOUR CONTRACT PERSONALITY
         </p>
         <div className="text-7xl mb-4">{data.personalityType.icon}</div>
-        <h1 className="text-3xl font-black text-white mb-2">
+        <h1 className="text-3xl font-black text-foreground mb-2">
           {data.personalityType.name}
         </h1>
         <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
@@ -780,8 +759,8 @@ function buildSlides(data: WrappedData): SlideConfig[] {
         </p>
         <div className="mt-6 space-y-1 text-xs text-gray-500">
           <p>
-            Mostly scanned: {data.topDocumentTypeLabel} ({data.topDocumentTypeCount}
-            )
+            Mostly scanned: {data.topDocumentTypeLabel} (
+            {data.topDocumentTypeCount})
           </p>
           <p>Top location: {data.topJurisdictionName}</p>
         </div>
@@ -841,7 +820,7 @@ function buildSlides(data: WrappedData): SlideConfig[] {
           🎖️ YOUR BADGE
         </p>
         <div className="text-7xl mb-4">{data.badge.icon}</div>
-        <h1 className="text-3xl font-black text-white mb-2">
+        <h1 className="text-3xl font-black text-foreground mb-2">
           {data.badge.name}
         </h1>
         <p className="text-gray-400 text-sm">{data.badge.description}</p>
@@ -871,9 +850,7 @@ function buildSlides(data: WrappedData): SlideConfig[] {
         >
           🎖️ YOUR BADGE
         </div>
-        <div style={{ fontSize: 100, marginBottom: 16 }}>
-          {data.badge.icon}
-        </div>
+        <div style={{ fontSize: 100, marginBottom: 16 }}>{data.badge.icon}</div>
         <div
           style={{
             fontSize: 48,
@@ -911,24 +888,20 @@ function buildSlides(data: WrappedData): SlideConfig[] {
     content: (
       <>
         <div className="text-5xl mb-6">🛡️</div>
-        <h1 className="text-3xl font-bold text-white mb-2">ClauseWall</h1>
+        <h1 className="text-3xl font-bold text-foreground mb-2">ClauseWall</h1>
         <p className="text-gray-500 text-sm mb-6">
           India&apos;s AI Contract Analyzer 🇮🇳
         </p>
-        <p className="text-xl text-white font-bold mb-2">
+        <p className="text-xl text-foreground font-bold mb-2">
           Keep protecting yourself in {year + 1}.
         </p>
-        <p className="text-gray-400 text-sm mb-6">
-          Never sign blind again.
-        </p>
+        <p className="text-gray-400 text-sm mb-6">Never sign blind again.</p>
         <div className="px-6 py-3 rounded-full bg-blue-500/10 border border-blue-500/20">
           <p className="text-blue-400 font-semibold text-sm">
             Scan your next contract free →
           </p>
         </div>
-        <p className="text-gray-600 text-xs mt-6">
-          clausewall.vercel.app
-        </p>
+        <p className="text-gray-600 text-xs mt-6">clausewall.vercel.app</p>
       </>
     ),
     exportContent: (
@@ -944,9 +917,7 @@ function buildSlides(data: WrappedData): SlideConfig[] {
         >
           ClauseWall
         </div>
-        <div
-          style={{ fontSize: 22, color: "#94a3b8", marginBottom: 30 }}
-        >
+        <div style={{ fontSize: 22, color: "#94a3b8", marginBottom: 30 }}>
           India&apos;s AI Contract Analyzer 🇮🇳
         </div>
         <div
@@ -962,9 +933,7 @@ function buildSlides(data: WrappedData): SlideConfig[] {
         <div style={{ fontSize: 22, color: "#94a3b8", marginBottom: 30 }}>
           Never sign blind again.
         </div>
-        <div
-          style={{ fontSize: 24, color: "#60a5fa", fontWeight: 600 }}
-        >
+        <div style={{ fontSize: 24, color: "#60a5fa", fontWeight: 600 }}>
           Scan your contract free →
         </div>
         <div style={{ fontSize: 18, color: "#64748b", marginTop: 30 }}>

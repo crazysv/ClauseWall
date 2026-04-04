@@ -37,7 +37,7 @@ export default function CommunityInsight({
 
   // Parse community match if it's a JSON string
   let match: CommunityMatch | null = null;
-  
+
   if (communityMatch) {
     if (typeof communityMatch === "string") {
       try {

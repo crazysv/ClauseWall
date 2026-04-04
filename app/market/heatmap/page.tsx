@@ -17,7 +17,7 @@ const IndiaHeatMap = dynamic(
         <Loader2 className="h-8 w-8 text-cyan-400 animate-spin" />
       </div>
     ),
-  }
+  },
 );
 
 export default function HeatMapExplorerPage() {
@@ -55,7 +55,10 @@ export default function HeatMapExplorerPage() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-6"
         >
-          <Link href="/market" className="text-xs text-white/30 hover:text-white/50 mb-3 flex items-center gap-1">
+          <Link
+            href="/market"
+            className="text-xs text-white/30 hover:text-white/50 mb-3 flex items-center gap-1"
+          >
             <ArrowLeft className="h-3 w-3" /> Back to Market Dashboard
           </Link>
           <div className="flex items-center gap-3">

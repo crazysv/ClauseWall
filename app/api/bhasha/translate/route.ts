@@ -10,31 +10,30 @@ export async function POST(request: NextRequest) {
     if (!text || !source_language || !target_language) {
       return NextResponse.json(
         { error: "text, source_language, and target_language are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // Validate languages
-    if (!LANGUAGE_CONFIGS[source_language as SupportedLanguage] ||
-        !LANGUAGE_CONFIGS[target_language as SupportedLanguage]) {
+    if (
+      !LANGUAGE_CONFIGS[source_language as SupportedLanguage] ||
+      !LANGUAGE_CONFIGS[target_language as SupportedLanguage]
+    ) {
       return NextResponse.json(
         { error: "Unsupported language code" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     const result = await translateText(
       text,
       source_language as SupportedLanguage,
-      target_language as SupportedLanguage
+      target_language as SupportedLanguage,
     );
 
     return NextResponse.json(result);
   } catch (error) {
     console.error("[ClauseWall] Translation API error:", error);
-    return NextResponse.json(
-      { error: "Translation failed" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Translation failed" }, { status: 500 });
   }
 }

@@ -7,7 +7,10 @@ interface AudioWaveformProps {
   isRecording: boolean;
 }
 
-export default function AudioWaveform({ stream, isRecording }: AudioWaveformProps) {
+export default function AudioWaveform({
+  stream,
+  isRecording,
+}: AudioWaveformProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
@@ -81,7 +84,9 @@ export default function AudioWaveform({ stream, isRecording }: AudioWaveformProp
     return () => {
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
       if (contextRef.current) {
-        try { contextRef.current.close(); } catch { }
+        try {
+          contextRef.current.close();
+        } catch {}
       }
     };
   }, [stream, isRecording]);

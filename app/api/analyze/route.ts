@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
       if (!file) {
         return NextResponse.json(
           { error: "No file provided" },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
       } else {
         return NextResponse.json(
           { error: "Unsupported file type. Please upload PDF or TXT." },
-          { status: 400 }
+          { status: 400 },
         );
       }
     } else {
@@ -63,21 +63,21 @@ export async function POST(request: NextRequest) {
           error:
             "Document text is too short. Please provide a complete contract (minimum 50 characters).",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (!documentType) {
       return NextResponse.json(
         { error: "Please select a document type" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (!jurisdiction) {
       return NextResponse.json(
         { error: "Please select your state" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
       console.error("[ClauseWall] Failed to create document:", insertError);
       return NextResponse.json(
         { error: "Failed to save document. Please try again." },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -108,9 +108,11 @@ export async function POST(request: NextRequest) {
     // ---- START ANALYSIS ----
     // Note: In production, you'd use a queue (like Inngest, QStash, etc.)
     // For hackathon, we run it inline but don't wait for completion
-    
+
     // Analysis will be triggered separately via /api/bot/trigger-analysis
-    console.log(`[ClauseWall] Document created: ${document.id}, waiting for trigger`);
+    console.log(
+      `[ClauseWall] Document created: ${document.id}, waiting for trigger`,
+    );
 
     // Return immediately with document ID
     return NextResponse.json({
@@ -126,7 +128,7 @@ export async function POST(request: NextRequest) {
           (error as Error).message ||
           "An unexpected error occurred. Please try again.",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

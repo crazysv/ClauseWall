@@ -21,7 +21,10 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import type { ClauseGraphContext, GraphVisualizationData } from "@/lib/graph/types";
+import type {
+  ClauseGraphContext,
+  GraphVisualizationData,
+} from "@/lib/graph/types";
 import GraphCanvas from "@/components/graph/graph-canvas";
 
 interface KnowledgeGraphModalProps {
@@ -53,7 +56,9 @@ export default function KnowledgeGraphModal({
   riskLevel,
 }: KnowledgeGraphModalProps) {
   const [context, setContext] = useState<ClauseGraphContext | null>(null);
-  const [graphData, setGraphData] = useState<GraphVisualizationData | null>(null);
+  const [graphData, setGraphData] = useState<GraphVisualizationData | null>(
+    null,
+  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("details");
@@ -77,10 +82,10 @@ export default function KnowledgeGraphModal({
     try {
       const [contextRes, graphRes] = await Promise.all([
         fetch(
-          `/api/graph/clause?clauseType=${encodeURIComponent(clauseType)}&jurisdiction=${encodeURIComponent(jurisdiction)}`
+          `/api/graph/clause?clauseType=${encodeURIComponent(clauseType)}&jurisdiction=${encodeURIComponent(jurisdiction)}`,
         ),
         fetch(
-          `/api/graph/traverse?clauseType=${encodeURIComponent(clauseType)}&jurisdiction=${encodeURIComponent(jurisdiction)}&maxDepth=3`
+          `/api/graph/traverse?clauseType=${encodeURIComponent(clauseType)}&jurisdiction=${encodeURIComponent(jurisdiction)}&maxDepth=3`,
         ),
       ]);
 
@@ -128,7 +133,12 @@ export default function KnowledgeGraphModal({
       mixed: { label: "Mixed", color: "text-yellow-400" },
       settled: { label: "Settled", color: "text-blue-400" },
     };
-    return map[outcome || ""] || { label: outcome || "Unknown", color: "text-gray-400" };
+    return (
+      map[outcome || ""] || {
+        label: outcome || "Unknown",
+        color: "text-gray-400",
+      }
+    );
   };
 
   const formattedClauseType = clauseType
@@ -149,7 +159,9 @@ export default function KnowledgeGraphModal({
               <Network className="h-4 w-4 text-foreground" />
             </div>
             <div>
-              <h2 className="font-black text-xl uppercase tracking-wider text-foreground">Legal Web</h2>
+              <h2 className="font-black text-xl uppercase tracking-wider text-foreground">
+                Legal Web
+              </h2>
               <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground">
                 {formattedClauseType} • {jurisdiction}
               </p>
@@ -188,13 +200,20 @@ export default function KnowledgeGraphModal({
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20">
               <Loader2 className="h-8 w-8 text-cyan-400 animate-spin mb-3" />
-              <p className="text-sm text-muted-foreground">Loading legal web data...</p>
+              <p className="text-sm text-muted-foreground">
+                Loading legal web data...
+              </p>
             </div>
           ) : error ? (
             <div className="flex flex-col items-center justify-center py-20">
               <AlertTriangle className="h-8 w-8 text-yellow-400 mb-3" />
               <p className="text-sm text-muted-foreground">{error}</p>
-              <Button variant="outline" size="sm" className="mt-3" onClick={fetchData}>
+              <Button
+                variant="outline"
+                size="sm"
+                className="mt-3"
+                onClick={fetchData}
+              >
                 Try Again
               </Button>
             </div>
@@ -204,7 +223,9 @@ export default function KnowledgeGraphModal({
               <p className="text-sm text-muted-foreground">
                 No knowledge graph data available for this clause type yet.
               </p>
-              <p className="text-xs text-gray-600 mt-1">The graph database is being expanded.</p>
+              <p className="text-xs text-gray-600 mt-1">
+                The graph database is being expanded.
+              </p>
             </div>
           ) : viewMode === "graph" ? (
             /* ═══ D3 GRAPH VIEW ═══ */
@@ -213,11 +234,13 @@ export default function KnowledgeGraphModal({
                 <GraphCanvas data={graphData} highlightType={clauseType} />
               ) : (
                 <div className="flex items-center justify-center h-full">
-                    <p className="text-sm text-gray-500">No graph visualization available</p>
-                  </div>
-                )}
-              </div>
-            ) : (
+                  <p className="text-sm text-gray-500">
+                    No graph visualization available
+                  </p>
+                </div>
+              )}
+            </div>
+          ) : (
             /* ═══ DETAILS VIEW ═══ */
             <div className="space-y-4">
               {/* Stats Bar */}
@@ -226,26 +249,41 @@ export default function KnowledgeGraphModal({
                   {context.win_rate !== null && (
                     <div className="p-3 card-impact bg-green-50 border-2 border-green-600 text-center">
                       <Trophy className="h-4 w-4 text-green-600 mx-auto mb-1" />
-                      <p className="text-lg font-black text-green-800">{context.win_rate}%</p>
-                      <p className="text-[10px] font-black tracking-wider uppercase text-green-900/60">Win Rate</p>
+                      <p className="text-lg font-black text-green-800">
+                        {context.win_rate}%
+                      </p>
+                      <p className="text-[10px] font-black tracking-wider uppercase text-green-900/60">
+                        Win Rate
+                      </p>
                     </div>
                   )}
                   <div className="p-3 card-impact bg-blue-50 border-2 border-blue-600 text-center">
                     <Landmark className="h-4 w-4 text-blue-600 mx-auto mb-1" />
-                    <p className="text-lg font-black text-blue-800">{context.total_related_cases}</p>
-                    <p className="text-[10px] font-black tracking-wider uppercase text-blue-900/60">Court Cases</p>
+                    <p className="text-lg font-black text-blue-800">
+                      {context.total_related_cases}
+                    </p>
+                    <p className="text-[10px] font-black tracking-wider uppercase text-blue-900/60">
+                      Court Cases
+                    </p>
                   </div>
                   <div className="p-3 card-impact bg-purple-50 border-2 border-purple-600 text-center">
                     <Scale className="h-4 w-4 text-purple-600 mx-auto mb-1" />
                     <p className="text-lg font-black text-purple-800">
-                      {(context.supporting_laws?.length || 0) + (context.primary_law ? 1 : 0)}
+                      {(context.supporting_laws?.length || 0) +
+                        (context.primary_law ? 1 : 0)}
                     </p>
-                    <p className="text-[10px] font-black tracking-wider uppercase text-purple-900/60">Laws</p>
+                    <p className="text-[10px] font-black tracking-wider uppercase text-purple-900/60">
+                      Laws
+                    </p>
                   </div>
                   <div className="p-3 card-impact bg-yellow-50 border-2 border-yellow-600 text-center">
                     <Building2 className="h-4 w-4 text-yellow-600 mx-auto mb-1" />
-                    <p className="text-lg font-black text-yellow-800">{context.authorities.length}</p>
-                    <p className="text-[10px] font-black tracking-wider uppercase text-yellow-900/60">Authorities</p>
+                    <p className="text-lg font-black text-yellow-800">
+                      {context.authorities.length}
+                    </p>
+                    <p className="text-[10px] font-black tracking-wider uppercase text-yellow-900/60">
+                      Authorities
+                    </p>
                   </div>
                 </div>
               )}
@@ -268,7 +306,9 @@ export default function KnowledgeGraphModal({
                           {context.primary_law.name}
                         </span>
                       </div>
-                      <p className="text-xs font-bold text-blue-800/80">{context.primary_law.section}</p>
+                      <p className="text-xs font-bold text-blue-800/80">
+                        {context.primary_law.section}
+                      </p>
                       {context.primary_law.description && (
                         <p className="text-xs font-bold text-blue-800 leading-relaxed mt-1.5">
                           {context.primary_law.description}
@@ -278,7 +318,9 @@ export default function KnowledgeGraphModal({
 
                     {context.supporting_laws.length > 0 && (
                       <div>
-                        <p className="text-xs font-black uppercase tracking-wider text-muted-foreground mb-2">Supporting Laws</p>
+                        <p className="text-xs font-black uppercase tracking-wider text-muted-foreground mb-2">
+                          Supporting Laws
+                        </p>
                         {context.supporting_laws.map((law, i) => (
                           <div
                             key={i}
@@ -289,7 +331,9 @@ export default function KnowledgeGraphModal({
                               <p className="text-xs font-black text-foreground">
                                 {law.name} — {law.section}
                               </p>
-                              <p className="text-[10px] font-bold text-muted-foreground">{law.relationship}</p>
+                              <p className="text-[10px] font-bold text-muted-foreground">
+                                {law.relationship}
+                              </p>
                             </div>
                           </div>
                         ))}
@@ -332,11 +376,15 @@ export default function KnowledgeGraphModal({
                               {c.year}
                             </span>
                           </div>
-                          <p className="text-xs font-bold text-green-800/80 mb-1.5">{c.court}</p>
-                          <p className="text-xs font-bold text-green-900 leading-relaxed">{c.key_ruling}</p>
+                          <p className="text-xs font-bold text-green-800/80 mb-1.5">
+                            {c.court}
+                          </p>
+                          <p className="text-xs font-bold text-green-900 leading-relaxed">
+                            {c.key_ruling}
+                          </p>
                           <div className="mt-2">
                             <Badge
-                              className={`text-[10px] font-black uppercase tracking-wider ${outcome.color.replace('400','800')} border-2 ${outcome.color.replace('text-','border-').replace('400','600')} bg-transparent rounded-none`}
+                              className={`text-[10px] font-black uppercase tracking-wider ${outcome.color.replace("400", "800")} border-2 ${outcome.color.replace("text-", "border-").replace("400", "600")} bg-transparent rounded-none`}
                             >
                               {outcome.label}
                             </Badge>
@@ -364,18 +412,28 @@ export default function KnowledgeGraphModal({
                         key={i}
                         className="p-3 border-2 border-yellow-600 bg-yellow-50 card-impact"
                       >
-                        <p className="text-sm font-black uppercase tracking-wider text-yellow-900 mb-1">{auth.name}</p>
+                        <p className="text-sm font-black uppercase tracking-wider text-yellow-900 mb-1">
+                          {auth.name}
+                        </p>
                         <div className="grid grid-cols-2 gap-2 text-xs">
                           {auth.filing_fee && (
                             <div>
-                              <span className="font-bold text-yellow-800/80">Filing Fee:</span>{" "}
-                              <span className="font-bold text-yellow-900">{auth.filing_fee}</span>
+                              <span className="font-bold text-yellow-800/80">
+                                Filing Fee:
+                              </span>{" "}
+                              <span className="font-bold text-yellow-900">
+                                {auth.filing_fee}
+                              </span>
                             </div>
                           )}
                           {auth.timeline && (
                             <div>
-                              <span className="font-bold text-yellow-800/80">Timeline:</span>{" "}
-                              <span className="font-bold text-yellow-900">{auth.timeline}</span>
+                              <span className="font-bold text-yellow-800/80">
+                                Timeline:
+                              </span>{" "}
+                              <span className="font-bold text-yellow-900">
+                                {auth.timeline}
+                              </span>
                             </div>
                           )}
                         </div>
@@ -406,7 +464,9 @@ export default function KnowledgeGraphModal({
                         key={i}
                         className="p-3 border-2 border-orange-600 bg-orange-50 card-impact"
                       >
-                        <p className="text-sm font-bold text-orange-900 leading-relaxed">{p.description}</p>
+                        <p className="text-sm font-bold text-orange-900 leading-relaxed">
+                          {p.description}
+                        </p>
                         {p.law_reference && (
                           <p className="text-[10px] font-black uppercase tracking-wider text-orange-800/70 mt-1">
                             Ref: {p.law_reference}
@@ -434,7 +494,9 @@ export default function KnowledgeGraphModal({
                         key={i}
                         className="p-3 border-2 border-purple-600 bg-purple-50 card-impact"
                       >
-                        <p className="text-sm font-bold text-purple-900 leading-relaxed">{interp.text}</p>
+                        <p className="text-sm font-bold text-purple-900 leading-relaxed">
+                          {interp.text}
+                        </p>
                         <p className="text-[10px] font-black uppercase tracking-wider text-purple-800/70 mt-1">
                           Source: {interp.source}
                         </p>
@@ -460,7 +522,9 @@ export default function KnowledgeGraphModal({
                         key={i}
                         className="p-3 border-2 border-emerald-600 bg-emerald-50 card-impact"
                       >
-                        <p className="text-sm font-bold text-emerald-900 leading-relaxed">{r.description}</p>
+                        <p className="text-sm font-bold text-emerald-900 leading-relaxed">
+                          {r.description}
+                        </p>
                         {r.authority && (
                           <p className="text-[10px] font-black uppercase tracking-wider text-emerald-800/70 mt-1">
                             Via: {r.authority}
@@ -478,9 +542,12 @@ export default function KnowledgeGraphModal({
         {/* Footer */}
         <div className="p-4 border-t-2 border-foreground bg-muted">
           <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground text-center">
-            🕸️ ClauseWall Legal Knowledge Graph • {context?.total_related_cases || 0} cases •{" "}
-            {context?.win_rate !== null ? `${context?.win_rate}% win rate` : "No case data"} •
-            Data verified from Indian legal databases
+            🕸️ ClauseWall Legal Knowledge Graph •{" "}
+            {context?.total_related_cases || 0} cases •{" "}
+            {context?.win_rate !== null
+              ? `${context?.win_rate}% win rate`
+              : "No case data"}{" "}
+            • Data verified from Indian legal databases
           </p>
         </div>
       </DialogContent>
@@ -528,8 +595,13 @@ function CollapsibleSection({
       >
         <div className="flex items-center gap-2">
           {icon}
-          <span className="text-sm font-black uppercase tracking-wider text-foreground">{title}</span>
-          <Badge variant="outline" className="text-[10px] uppercase font-black tracking-wider border-2 border-foreground bg-background text-foreground rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+          <span className="text-sm font-black uppercase tracking-wider text-foreground">
+            {title}
+          </span>
+          <Badge
+            variant="outline"
+            className="text-[10px] uppercase font-black tracking-wider border-2 border-foreground bg-background text-foreground rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          >
             {count}
           </Badge>
         </div>

@@ -26,23 +26,28 @@ export default function TosTimeline({ changes }: { changes: TosChange[] }) {
           return (
             <div key={change.id} className="relative pl-10">
               {/* Dot on timeline */}
-              <div className={`absolute left-2.5 top-1.5 w-3 h-3 rounded-full border-2 ${
-                change.critical_count > 0
-                  ? "bg-red-500 border-red-500"
-                  : change.major_count > 0
-                  ? "bg-amber-500 border-amber-500"
-                  : "bg-blue-500 border-blue-500"
-              }`} />
+              <div
+                className={`absolute left-2.5 top-1.5 w-3 h-3 rounded-full border-2 ${change.critical_count > 0 ? "bg-red-500 border-red-500" : change.major_count > 0 ? "bg-amber-500 border-amber-500" : "bg-blue-500 border-blue-500"}`}
+              />
 
               <div className="flex items-center gap-2 mb-2 flex-wrap">
                 <span className="text-sm font-medium">
-                  {date.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+                  {date.toLocaleDateString("en-IN", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })}
                 </span>
-                <Badge variant="outline" className="text-[10px] border-white/10">
-                  {change.tos_type.toUpperCase()} v{change.change_number || index + 1}
+                <Badge
+                  variant="outline"
+                  className="text-[10px] border-foreground border-2"
+                >
+                  {change.tos_type.toUpperCase()} v
+                  {change.change_number || index + 1}
                 </Badge>
                 <span className="text-xs text-muted-foreground">
-                  {change.total_changes} change{change.total_changes !== 1 ? "s" : ""}
+                  {change.total_changes} change
+                  {change.total_changes !== 1 ? "s" : ""}
                 </span>
                 {change.critical_count > 0 && (
                   <Badge className="bg-red-500/15 text-red-400 border-red-500/30 text-[10px]">
@@ -59,11 +64,22 @@ export default function TosTimeline({ changes }: { changes: TosChange[] }) {
               {/* Change items */}
               <div className="space-y-1 mb-2">
                 {semanticChanges.slice(0, 3).map((sc, i) => {
-                  const emoji = sc.severity === "critical" ? "🔴" : sc.severity === "major" ? "🟡" : sc.severity === "minor" ? "🔵" : "⚪";
+                  const emoji =
+                    sc.severity === "critical"
+                      ? "🔴"
+                      : sc.severity === "major"
+                        ? "🟡"
+                        : sc.severity === "minor"
+                          ? "🔵"
+                          : "⚪";
                   return (
                     <div key={i} className="flex items-start gap-2 text-sm">
-                      <span className="flex-shrink-0 text-xs mt-0.5">{emoji}</span>
-                      <span className="text-muted-foreground">{sc.user_impact_summary}</span>
+                      <span className="flex-shrink-0 text-xs mt-0.5">
+                        {emoji}
+                      </span>
+                      <span className="text-muted-foreground">
+                        {sc.user_impact_summary}
+                      </span>
                     </div>
                   );
                 })}

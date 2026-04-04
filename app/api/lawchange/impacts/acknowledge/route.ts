@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
     } else {
       return NextResponse.json(
         { error: "Provide impact_ids array or all: true" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     return NextResponse.json(
       { error: (error as Error).message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

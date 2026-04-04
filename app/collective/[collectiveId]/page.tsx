@@ -21,7 +21,9 @@ export default function CollectiveDetailPage() {
   const collectiveId = params?.collectiveId as string;
 
   const [collective, setCollective] = useState<Collective | null>(null);
-  const [membership, setMembership] = useState<CollectiveMembership | null>(null);
+  const [membership, setMembership] = useState<CollectiveMembership | null>(
+    null,
+  );
   const [leverage, setLeverage] = useState<LeverageCalculation | null>(null);
   const [legalAid, setLegalAid] = useState<LegalAidOrganization[]>([]);
   const [loading, setLoading] = useState(true);
@@ -51,13 +53,14 @@ export default function CollectiveDetailPage() {
             const intData: EntityIntelligence = await intRes.json();
             if (intData.user_membership) setMembership(intData.user_membership);
             if (intData.leverage) setLeverage(intData.leverage);
-            if (intData.matching_legal_aid) setLegalAid(intData.matching_legal_aid);
+            if (intData.matching_legal_aid)
+              setLegalAid(intData.matching_legal_aid);
           }
         }
 
         // Fetch legal aid
         const legalRes = await fetch(
-          `/api/collective/legal-aid?entityType=${collectiveData.entity_type}&jurisdiction=${collectiveData.primary_jurisdiction}`
+          `/api/collective/legal-aid?entityType=${collectiveData.entity_type}&jurisdiction=${collectiveData.primary_jurisdiction}`,
         );
         if (legalRes.ok) {
           const legalData = await legalRes.json();
@@ -131,7 +134,8 @@ export default function CollectiveDetailPage() {
                     Join this collective
                   </p>
                   <p className="text-[10px] text-white/30">
-                    {collective.member_count} members already joined — completely anonymous
+                    {collective.member_count} members already joined —
+                    completely anonymous
                   </p>
                 </div>
               </div>

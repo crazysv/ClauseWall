@@ -38,12 +38,14 @@ export default function ClauseMarketBadge({
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            clauses: [{
-              clause_id: clauseId,
-              value: extractedValue,
-              unit: extractedUnit || "unknown",
-              clause_type: clauseType,
-            }],
+            clauses: [
+              {
+                clause_id: clauseId,
+                value: extractedValue,
+                unit: extractedUnit || "unknown",
+                clause_type: clauseType,
+              },
+            ],
             document_type: documentType,
             jurisdiction,
           }),
@@ -61,7 +63,15 @@ export default function ClauseMarketBadge({
     };
 
     fetchComparison();
-  }, [clauseId, clauseType, extractedValue, extractedUnit, documentType, jurisdiction, benchmarkType]);
+  }, [
+    clauseId,
+    clauseType,
+    extractedValue,
+    extractedUnit,
+    documentType,
+    jurisdiction,
+    benchmarkType,
+  ]);
 
   if (!benchmarkType || !extractedValue || loading) return null;
   if (!comparison) return null;
@@ -77,12 +87,20 @@ export default function ClauseMarketBadge({
   let label;
 
   if (isFavorable) {
-    icon = higherIsWorse ? <TrendingDown className="h-3 w-3" /> : <TrendingUp className="h-3 w-3" />;
+    icon = higherIsWorse ? (
+      <TrendingDown className="h-3 w-3" />
+    ) : (
+      <TrendingUp className="h-3 w-3" />
+    );
     colorClass = "text-green-400";
     bgClass = "bg-green-500/15 border-green-500/30";
     label = percentile <= 25 ? "Below Market" : "Market OK";
   } else if (percentile >= 75) {
-    icon = higherIsWorse ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />;
+    icon = higherIsWorse ? (
+      <TrendingUp className="h-3 w-3" />
+    ) : (
+      <TrendingDown className="h-3 w-3" />
+    );
     colorClass = "text-red-400";
     bgClass = "bg-red-500/15 border-red-500/30";
     label = "Above Market";
@@ -96,7 +114,10 @@ export default function ClauseMarketBadge({
   return (
     <Badge
       className={`${bgClass} ${colorClass} text-[10px] px-1.5 gap-1 cursor-help`}
-      title={comparison.narrative || `${percentile}th percentile - ${comparison.scope_used}`}
+      title={
+        comparison.narrative ||
+        `${percentile}th percentile - ${comparison.scope_used}`
+      }
     >
       {icon}
       <span className="flex items-center gap-0.5">

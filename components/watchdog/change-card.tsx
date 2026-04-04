@@ -4,16 +4,43 @@ import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import DirectionBadge from "./direction-badge";
-import type { TosChangeWithCompany, SemanticChange, ChangeSeverity } from "@/types";
+import type {
+  TosChangeWithCompany,
+  SemanticChange,
+  ChangeSeverity,
+} from "@/types";
 
-const severityConfig: Record<string, { color: string; emoji: string; label: string }> = {
-  critical: { color: "bg-red-500/15 text-red-400 border-red-500/30", emoji: "🔴", label: "CRITICAL" },
-  major: { color: "bg-amber-500/15 text-amber-400 border-amber-500/30", emoji: "🟡", label: "MAJOR" },
-  minor: { color: "bg-blue-500/15 text-blue-400 border-blue-500/30", emoji: "🔵", label: "MINOR" },
-  cosmetic: { color: "bg-gray-500/15 text-gray-400 border-gray-500/30", emoji: "⚪", label: "COSMETIC" },
+const severityConfig: Record<
+  string,
+  { color: string; emoji: string; label: string }
+> = {
+  critical: {
+    color: "bg-red-500/15 text-red-400 border-red-500/30",
+    emoji: "🔴",
+    label: "CRITICAL",
+  },
+  major: {
+    color: "bg-amber-500/15 text-amber-400 border-amber-500/30",
+    emoji: "🟡",
+    label: "MAJOR",
+  },
+  minor: {
+    color: "bg-blue-500/15 text-blue-400 border-blue-500/30",
+    emoji: "🔵",
+    label: "MINOR",
+  },
+  cosmetic: {
+    color: "bg-gray-500/15 text-gray-400 border-gray-500/30",
+    emoji: "⚪",
+    label: "COSMETIC",
+  },
 };
 
-export default function ChangeCard({ change }: { change: TosChangeWithCompany }) {
+export default function ChangeCard({
+  change,
+}: {
+  change: TosChangeWithCompany;
+}) {
   const changes = (change.changes || []) as SemanticChange[];
   const highestSeverity = getHighestSeverity(changes);
   const config = severityConfig[highestSeverity] || severityConfig.minor;
@@ -21,7 +48,9 @@ export default function ChangeCard({ change }: { change: TosChangeWithCompany })
   const timeAgo = getTimeAgo(new Date(change.detected_at));
 
   return (
-    <Card className={`bg-gray-900/50 border-gray-800 hover:border-white/10 transition-all overflow-hidden`}>
+    <Card
+      className={`bg-gray-900/50 border-gray-800 hover:border-white/10 transition-all overflow-hidden`}
+    >
       {highestSeverity === "critical" && <div className="h-0.5 bg-red-500" />}
       {highestSeverity === "major" && <div className="h-0.5 bg-amber-500" />}
 
@@ -35,12 +64,17 @@ export default function ChangeCard({ change }: { change: TosChangeWithCompany })
             <span className="text-sm text-muted-foreground">· {timeAgo}</span>
           </div>
           {change.overall_direction && (
-            <DirectionBadge direction={change.overall_direction as import("@/types").ChangeDirection} />
+            <DirectionBadge
+              direction={
+                change.overall_direction as import("@/types").ChangeDirection
+              }
+            />
           )}
         </div>
 
         <p className="text-sm text-muted-foreground mb-3">
-          {change.summary || `${changes.length} change${changes.length !== 1 ? "s" : ""} detected`}
+          {change.summary ||
+            `${changes.length} change${changes.length !== 1 ? "s" : ""} detected`}
         </p>
 
         {/* Top changes preview */}
@@ -50,7 +84,9 @@ export default function ChangeCard({ change }: { change: TosChangeWithCompany })
             return (
               <div key={i} className="flex items-start gap-2 text-sm">
                 <span className="flex-shrink-0">{cConfig.emoji}</span>
-                <span className="text-muted-foreground">{c.user_impact_summary}</span>
+                <span className="text-muted-foreground">
+                  {c.user_impact_summary}
+                </span>
               </div>
             );
           })}
@@ -68,11 +104,12 @@ export default function ChangeCard({ change }: { change: TosChangeWithCompany })
               View Full Analysis →
             </button>
           </Link>
-          {change.legality_issues && (change.legality_issues as unknown[]).length > 0 && (
-            <Badge className="bg-red-500/10 text-red-400 border-red-500/20 text-[10px]">
-              ⚖️ Legal Issues Found
-            </Badge>
-          )}
+          {change.legality_issues &&
+            (change.legality_issues as unknown[]).length > 0 && (
+              <Badge className="bg-red-500/10 text-red-400 border-red-500/20 text-[10px]">
+                ⚖️ Legal Issues Found
+              </Badge>
+            )}
         </div>
       </CardContent>
     </Card>

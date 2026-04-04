@@ -49,7 +49,7 @@ export default function FingerprintStyle({
                 <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
-          ) : null
+          ) : null,
         )}
       </defs>
 
@@ -63,12 +63,17 @@ export default function FingerprintStyle({
           strokeLinecap="round"
           opacity={arc.node.intensity}
           filter={
-            arc.node.riskLevel === "illegal" || arc.node.riskLevel === "dangerous"
+            arc.node.riskLevel === "illegal" ||
+            arc.node.riskLevel === "dangerous"
               ? `url(#glow-fp-${i})`
               : undefined
           }
           initial={animated ? { pathLength: 0, opacity: 0 } : undefined}
-          animate={animated ? { pathLength: 1, opacity: arc.node.intensity } : undefined}
+          animate={
+            animated
+              ? { pathLength: 1, opacity: arc.node.intensity }
+              : undefined
+          }
           transition={{ delay: i * 0.07, duration: 0.5, ease: "easeOut" }}
           onMouseEnter={() => onHover?.(arc.node)}
           onMouseLeave={() => onHover?.(null)}

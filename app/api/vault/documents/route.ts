@@ -17,17 +17,21 @@ export async function GET() {
       .from("documents")
       .select(
         "id, original_filename, document_type, jurisdiction, entity_name, overall_risk_score, total_clauses, analysis_status, created_at",
-        { count: "exact" }
+        { count: "exact" },
       )
       .eq("analysis_status", "completed");
 
-    const { data: documents, error, count } = await query.order("created_at", { ascending: false });
+    const {
+      data: documents,
+      error,
+      count,
+    } = await query.order("created_at", { ascending: false });
 
     if (error) {
       console.error("[Vault] Fetch documents error:", error);
       return NextResponse.json(
         { error: "Failed to fetch documents" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -39,7 +43,7 @@ export async function GET() {
     console.error("[Vault] Documents endpoint error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

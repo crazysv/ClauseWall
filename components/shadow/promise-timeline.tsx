@@ -1,7 +1,15 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Clock, MessageSquare, Mail, Mic, Camera, PenTool, FileText } from "lucide-react";
+import {
+  Clock,
+  MessageSquare,
+  Mail,
+  Mic,
+  Camera,
+  PenTool,
+  FileText,
+} from "lucide-react";
 import type { ExtractedPromise } from "@/types";
 
 interface PromiseTimelineProps {
@@ -48,8 +56,11 @@ export default function PromiseTimeline({ promises }: PromiseTimelineProps) {
 
         <div className="space-y-6">
           {sorted.map((promise, i) => {
-            const Icon = SOURCE_ICONS[promise.evidence_source_id?.split("_")[0] || ""] || FileText;
-            const confidenceClass = CONFIDENCE_COLORS[promise.confidence] || CONFIDENCE_COLORS.medium;
+            const Icon =
+              SOURCE_ICONS[promise.evidence_source_id?.split("_")[0] || ""] ||
+              FileText;
+            const confidenceClass =
+              CONFIDENCE_COLORS[promise.confidence] || CONFIDENCE_COLORS.medium;
 
             return (
               <motion.div
@@ -62,23 +73,34 @@ export default function PromiseTimeline({ promises }: PromiseTimelineProps) {
                 {/* Timeline dot */}
                 <div className="absolute -left-7 top-4 w-5 h-5 border-4 border-black bg-yellow-400 hidden sm:block" />
 
-                <div className={`p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${confidenceClass}`}>
+                <div
+                  className={`p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${confidenceClass}`}
+                >
                   <div className="flex flex-wrap items-center gap-2 mb-3">
                     {promise.date && (
-                      <span className="text-xs font-black uppercase tracking-widest bg-white border-2 border-black px-2 py-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">{promise.date}</span>
+                      <span className="text-xs font-black uppercase tracking-widest bg-white border-2 border-black px-2 py-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                        {promise.date}
+                      </span>
                     )}
                     <span className="text-xs font-black uppercase tracking-widest bg-black text-white px-2 py-1 border-2 border-black">
                       {promise.category.replace(/_/g, " ")}
                     </span>
-                    <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-1 border-2 border-black bg-white ${
-                      promise.confidence === "high" ? "text-green-700" :
-                      promise.confidence === "medium" ? "text-yellow-700" : "text-gray-700"
-                    }`}>
+                    <span
+                      className={`text-[10px] font-black uppercase tracking-widest px-2 py-1 border-2 border-black bg-white ${
+                        promise.confidence === "high"
+                          ? "text-green-700"
+                          : promise.confidence === "medium"
+                            ? "text-yellow-700"
+                            : "text-gray-700"
+                      }`}
+                    >
                       {promise.confidence}
                     </span>
                   </div>
 
-                  <p className="text-base font-bold text-black border-l-4 border-black pl-3 mb-2">&ldquo;{promise.promise_text}&rdquo;</p>
+                  <p className="text-base font-bold text-black border-l-4 border-black pl-3 mb-2">
+                    &ldquo;{promise.promise_text}&rdquo;
+                  </p>
 
                   <p className="text-xs font-bold uppercase tracking-widest text-black/70">
                     — {promise.promised_by}

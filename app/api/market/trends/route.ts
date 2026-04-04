@@ -1,13 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getRecentTrends, getTrendDataPoints } from '@/lib/market/trends';
+import { NextRequest, NextResponse } from "next/server";
+import { getRecentTrends, getTrendDataPoints } from "@/lib/market/trends";
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const benchmarkId = searchParams.get('benchmark_id');
-    const significantOnly = searchParams.get('significant_only') === 'true';
-    const alertsOnly = searchParams.get('alerts_only') === 'true';
-    const limit = parseInt(searchParams.get('limit') || '20');
+    const benchmarkId = searchParams.get("benchmark_id");
+    const significantOnly = searchParams.get("significant_only") === "true";
+    const alertsOnly = searchParams.get("alerts_only") === "true";
+    const limit = parseInt(searchParams.get("limit") || "20");
 
     // If benchmark_id provided, return data points for charting
     if (benchmarkId) {
@@ -17,7 +17,10 @@ export async function GET(request: NextRequest) {
         data_points: dataPoints,
         benchmark_id: benchmarkId,
       });
-      response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+      response.headers.set(
+        "Cache-Control",
+        "public, s-maxage=3600, stale-while-revalidate=86400",
+      );
       return response;
     }
 
@@ -34,14 +37,17 @@ export async function GET(request: NextRequest) {
       count: trends.length,
     });
 
-    response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+    response.headers.set(
+      "Cache-Control",
+      "public, s-maxage=3600, stale-while-revalidate=86400",
+    );
 
     return response;
   } catch (error) {
-    console.error('[API] Trends error:', error);
+    console.error("[API] Trends error:", error);
     return NextResponse.json(
-      { success: false, error: 'Failed to fetch trends' },
-      { status: 500 }
+      { success: false, error: "Failed to fetch trends" },
+      { status: 500 },
     );
   }
 }

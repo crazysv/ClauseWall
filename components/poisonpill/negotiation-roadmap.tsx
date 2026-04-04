@@ -24,7 +24,9 @@ export function NegotiationRoadmap({ roadmap, traps }: Props) {
     return (
       <Card className="bg-white/[0.02] border-white/10">
         <CardContent className="p-8 text-center">
-          <p className="text-xs text-white/30">No negotiation targets identified.</p>
+          <p className="text-xs text-white/30">
+            No negotiation targets identified.
+          </p>
         </CardContent>
       </Card>
     );
@@ -34,7 +36,9 @@ export function NegotiationRoadmap({ roadmap, traps }: Props) {
   const uniqueTrapsBreakable = new Set(roadmap.flatMap((t) => t.traps_broken));
   const totalTraps = traps.length;
   const breakablePercent =
-    totalTraps > 0 ? Math.round((uniqueTrapsBreakable.size / totalTraps) * 100) : 0;
+    totalTraps > 0
+      ? Math.round((uniqueTrapsBreakable.size / totalTraps) * 100)
+      : 0;
 
   return (
     <div className="space-y-3">
@@ -47,8 +51,9 @@ export function NegotiationRoadmap({ roadmap, traps }: Props) {
             </div>
             <div className="flex-1">
               <p className="text-sm font-semibold text-white">
-                Negotiate {roadmap.length} clause{roadmap.length !== 1 ? "s" : ""} to
-                neutralize {uniqueTrapsBreakable.size} of {totalTraps} trap
+                Negotiate {roadmap.length} clause
+                {roadmap.length !== 1 ? "s" : ""} to neutralize{" "}
+                {uniqueTrapsBreakable.size} of {totalTraps} trap
                 {totalTraps !== 1 ? "s" : ""}
               </p>
             </div>
@@ -71,10 +76,11 @@ export function NegotiationRoadmap({ roadmap, traps }: Props) {
 
       {/* Negotiation Targets */}
       {roadmap.map((target, idx) => {
-        const diffStyle = DIFFICULTY_STYLES[target.difficulty] || DIFFICULTY_STYLES.medium;
+        const diffStyle =
+          DIFFICULTY_STYLES[target.difficulty] || DIFFICULTY_STYLES.medium;
         const isExpanded = expandedIdx === idx;
         const brokenTraps = traps.filter((t) =>
-          target.traps_broken.includes(t.id)
+          target.traps_broken.includes(t.id),
         );
 
         return (
@@ -86,9 +92,7 @@ export function NegotiationRoadmap({ roadmap, traps }: Props) {
           >
             <div className="bg-white/[0.02] border border-white/5 rounded-xl overflow-hidden">
               <button
-                onClick={() =>
-                  setExpandedIdx(isExpanded ? null : idx)
-                }
+                onClick={() => setExpandedIdx(isExpanded ? null : idx)}
                 className="w-full text-left p-4 flex items-center gap-3 hover:bg-white/[0.02] transition-colors"
               >
                 {/* Priority Number */}

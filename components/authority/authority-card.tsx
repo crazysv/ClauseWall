@@ -1,7 +1,15 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Building2, MapPin, Scale, ExternalLink, CheckCircle2, AlertCircle, Clock } from "lucide-react";
+import {
+  Building2,
+  MapPin,
+  Scale,
+  ExternalLink,
+  CheckCircle2,
+  AlertCircle,
+  Clock,
+} from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import type { LegalAuthority } from "@/types/authority";
 import { AUTHORITY_TYPE_LABELS } from "@/lib/authority/constants";
@@ -21,7 +29,8 @@ interface Props {
 
 const CONFIDENCE_COLORS = {
   high: "border-green-600 bg-green-50 dark:bg-green-900/20 shadow-[4px_4px_0px_0px_rgba(22,163,74,1)]",
-  medium: "border-amber-500 bg-amber-50 dark:bg-amber-900/20 shadow-[4px_4px_0px_0px_rgba(245,158,11,1)]",
+  medium:
+    "border-amber-500 bg-amber-50 dark:bg-amber-900/20 shadow-[4px_4px_0px_0px_rgba(245,158,11,1)]",
   low: "border-gray-500 bg-gray-50 dark:bg-gray-900/20 shadow-[4px_4px_0px_0px_rgba(107,114,128,1)]",
 };
 
@@ -35,13 +44,20 @@ export default function AuthorityCard({
   compact = false,
 }: Props) {
   const links = generateConnectivityLinks(authority);
-  const typeLabel = AUTHORITY_TYPE_LABELS[authority.authority_type] || authority.authority_type;
+  const typeLabel =
+    AUTHORITY_TYPE_LABELS[authority.authority_type] || authority.authority_type;
 
   return (
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: (priority || 1) * 0.1 }}>
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: (priority || 1) * 0.1 }}
+    >
       <Card
         className={`border-4 rounded-none transition-all ${
-          confidence ? CONFIDENCE_COLORS[confidence] : "border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-white dark:bg-zinc-900"
+          confidence
+            ? CONFIDENCE_COLORS[confidence]
+            : "border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-white dark:bg-zinc-900"
         } ${onClick ? "cursor-pointer hover:-translate-y-1 hover:shadow-none" : ""}`}
         onClick={onClick}
       >
@@ -66,10 +82,14 @@ export default function AuthorityCard({
                   </span>
                 )}
               </div>
-              <h3 className={`font-black uppercase tracking-widest ${compact ? "text-base" : "text-xl"}`}>
+              <h3
+                className={`font-black uppercase tracking-widest ${compact ? "text-base" : "text-xl"}`}
+              >
                 {authority.short_name || authority.name}
               </h3>
-              <p className="text-sm font-bold text-muted-foreground mt-1">{typeLabel}</p>
+              <p className="text-sm font-bold text-muted-foreground mt-1">
+                {typeLabel}
+              </p>
             </div>
 
             {confidence && (
@@ -91,7 +111,9 @@ export default function AuthorityCard({
               <div className="absolute -top-3 -left-3 bg-blue-500 p-1 border-2 border-black">
                 <Scale className="h-4 w-4 text-white stroke-[3px]" />
               </div>
-              <p className="text-sm font-bold text-blue-900 dark:text-blue-100 leading-relaxed ml-2">{reasoning}</p>
+              <p className="text-sm font-bold text-blue-900 dark:text-blue-100 leading-relaxed ml-2">
+                {reasoning}
+              </p>
             </div>
           )}
 
@@ -104,11 +126,14 @@ export default function AuthorityCard({
             )}
             {authority.typical_resolution_days && (
               <span className="flex items-center gap-1">
-                <Clock className="h-4 w-4 stroke-[3px]" /> ~{authority.typical_resolution_days}d resolution
+                <Clock className="h-4 w-4 stroke-[3px]" /> ~
+                {authority.typical_resolution_days}d resolution
               </span>
             )}
             {authority.filing_fee_structure?.base_fee === 0 && (
-              <span className="text-green-600 dark:text-green-400 border-2 border-green-500 px-2 uppercase tracking-widest">FREE Filing</span>
+              <span className="text-green-600 dark:text-green-400 border-2 border-green-500 px-2 uppercase tracking-widest">
+                FREE Filing
+              </span>
             )}
           </div>
 
@@ -124,7 +149,11 @@ export default function AuthorityCard({
 
           {/* Contact Buttons */}
           {showContactButtons && (
-            <AuthorityContactButtons links={links} authorityName={authority.name} compact={compact} />
+            <AuthorityContactButtons
+              links={links}
+              authorityName={authority.name}
+              compact={compact}
+            />
           )}
         </CardContent>
       </Card>

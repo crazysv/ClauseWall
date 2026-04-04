@@ -8,7 +8,7 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ analysisId: string }> }
+  { params }: { params: Promise<{ analysisId: string }> },
 ) {
   try {
     const supabase = await createClient();
@@ -21,7 +21,7 @@ export async function GET(
     if (!analysisId) {
       return NextResponse.json(
         { error: "Analysis ID is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -35,7 +35,7 @@ export async function GET(
     if (error || !analysis) {
       return NextResponse.json(
         { error: "Analysis not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -57,7 +57,7 @@ export async function GET(
     console.error("[Vault] Fetch analysis error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

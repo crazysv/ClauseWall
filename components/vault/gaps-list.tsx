@@ -68,7 +68,9 @@ export default function GapsList({ gaps }: GapsListProps) {
     );
   }
 
-  const essentialCount = gaps.filter((g) => g.importance === "essential").length;
+  const essentialCount = gaps.filter(
+    (g) => g.importance === "essential",
+  ).length;
 
   return (
     <div className="space-y-4">
@@ -80,10 +82,12 @@ export default function GapsList({ gaps }: GapsListProps) {
           </div>
           <div>
             <p className="text-base font-black uppercase tracking-widest text-red-600 dark:text-red-400 mb-2">
-              {essentialCount} ESSENTIAL PROTECTION{essentialCount > 1 ? "S" : ""} MISSING
+              {essentialCount} ESSENTIAL PROTECTION
+              {essentialCount > 1 ? "S" : ""} MISSING
             </p>
             <p className="text-xs font-bold uppercase tracking-widest text-red-900/60 dark:text-red-200/60">
-              THESE GAPS EXPOSE YOU TO SIGNIFICANT FINANCIAL OR LEGAL RISK. ADDRESS THEM AS A PRIORITY.
+              THESE GAPS EXPOSE YOU TO SIGNIFICANT FINANCIAL OR LEGAL RISK.
+              ADDRESS THEM AS A PRIORITY.
             </p>
           </div>
         </div>
@@ -102,7 +106,9 @@ export default function GapsList({ gaps }: GapsListProps) {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.05 }}
             >
-              <Card className={`border-4 border-black rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${config.bg} hover:-translate-y-1 hover:shadow-none transition-all`}>
+              <Card
+                className={`border-4 border-black rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${config.bg} hover:-translate-y-1 hover:shadow-none transition-all`}
+              >
                 <CardContent className="p-6">
                   <div className="flex items-start gap-4 flex-col sm:flex-row">
                     <div className="p-4 border-4 border-black bg-white dark:bg-black text-3xl shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] sm:mb-0 mb-2">
@@ -110,7 +116,9 @@ export default function GapsList({ gaps }: GapsListProps) {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-3 mb-2 flex-wrap">
-                        <Badge className={`px-2 py-0.5 border-2 border-black rounded-none shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] ${config.bg} ${config.color} font-black uppercase tracking-widest text-[10px]`}>
+                        <Badge
+                          className={`px-2 py-0.5 border-2 border-black rounded-none shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] ${config.bg} ${config.color} font-black uppercase tracking-widest text-[10px]`}
+                        >
                           {config.label}
                         </Badge>
                         <span className="text-xs font-black uppercase tracking-widest text-muted-foreground bg-white dark:bg-black px-2 py-0.5 border-2 border-black">
@@ -125,11 +133,13 @@ export default function GapsList({ gaps }: GapsListProps) {
                       </p>
 
                       {/* Risk estimate */}
-                      {gap.estimated_annual_risk != null && gap.estimated_annual_risk > 0 && (
-                        <p className="mt-4 text-sm font-black uppercase tracking-widest text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-950 px-3 py-2 border-4 border-red-500 shadow-[2px_2px_0px_0px_rgba(239,68,68,1)] inline-block">
-                          💰 ESTIMATED ANNUAL RISK: ₹{gap.estimated_annual_risk.toLocaleString("en-IN")}
-                        </p>
-                      )}
+                      {gap.estimated_annual_risk != null &&
+                        gap.estimated_annual_risk > 0 && (
+                          <p className="mt-4 text-sm font-black uppercase tracking-widest text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-950 px-3 py-2 border-4 border-red-500 shadow-[2px_2px_0px_0px_rgba(239,68,68,1)] inline-block">
+                            💰 ESTIMATED ANNUAL RISK: ₹
+                            {gap.estimated_annual_risk.toLocaleString("en-IN")}
+                          </p>
+                        )}
 
                       {/* Suggestion */}
                       {gap.suggestion && (

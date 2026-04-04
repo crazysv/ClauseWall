@@ -37,7 +37,13 @@ export default function ConstellationStyle({
     typeGroups[key].push(s);
   });
 
-  const connections: { x1: number; y1: number; x2: number; y2: number; color: string }[] = [];
+  const connections: {
+    x1: number;
+    y1: number;
+    x2: number;
+    y2: number;
+    color: string;
+  }[] = [];
   Object.values(typeGroups).forEach((group) => {
     for (let i = 0; i < group.length - 1; i++) {
       connections.push({
@@ -52,8 +58,8 @@ export default function ConstellationStyle({
 
   // Deterministic background stars
   const bgStars = Array.from({ length: 60 }, (_, i) => ({
-    x: ((i * 137.508) % width),
-    y: ((i * 73.137) % height),
+    x: (i * 137.508) % width,
+    y: (i * 73.137) % height,
     r: 0.4 + (i % 3) * 0.4,
     opacity: 0.08 + (i % 5) * 0.04,
   }));
@@ -62,7 +68,14 @@ export default function ConstellationStyle({
     <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-full">
       {/* Background stars */}
       {bgStars.map((s, i) => (
-        <circle key={`bg-${i}`} cx={s.x} cy={s.y} r={s.r} fill="white" opacity={s.opacity} />
+        <circle
+          key={`bg-${i}`}
+          cx={s.x}
+          cy={s.y}
+          r={s.r}
+          fill="white"
+          opacity={s.opacity}
+        />
       ))}
 
       {/* Connections */}

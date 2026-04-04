@@ -55,7 +55,10 @@ export default function AlertPanel() {
   }
 
   const severityEmoji: Record<string, string> = {
-    critical: "🔴", major: "🟡", minor: "🔵", cosmetic: "⚪",
+    critical: "🔴",
+    major: "🟡",
+    minor: "🔵",
+    cosmetic: "⚪",
   };
 
   return (
@@ -72,7 +75,12 @@ export default function AlertPanel() {
             )}
           </CardTitle>
           {unreadCount > 0 && (
-            <Button variant="ghost" size="sm" onClick={markAllRead} className="text-xs gap-1">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={markAllRead}
+              className="text-xs gap-1"
+            >
               <CheckCheck className="h-3 w-3" /> Mark all read
             </Button>
           )}
@@ -89,7 +97,9 @@ export default function AlertPanel() {
               key={alert.id}
               href={`/watchdog/changes/${alert.change_id}`}
               className={`block p-3 rounded-lg transition-colors ${
-                alert.is_read ? "bg-gray-900/30" : "bg-blue-500/5 border border-blue-500/10"
+                alert.is_read
+                  ? "bg-gray-900/30"
+                  : "bg-blue-500/5 border border-blue-500/10"
               } hover:bg-white/5`}
             >
               <div className="flex items-start gap-2">
@@ -97,14 +107,21 @@ export default function AlertPanel() {
                   {severityEmoji[alert.severity] || "📋"}
                 </span>
                 <div className="min-w-0">
-                  <p className={`text-sm font-medium truncate ${alert.is_read ? "text-muted-foreground" : ""}`}>
+                  <p
+                    className={`text-sm font-medium truncate ${alert.is_read ? "text-muted-foreground" : ""}`}
+                  >
                     {alert.title}
                   </p>
                   <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5">
                     {alert.body}
                   </p>
                   <p className="text-[10px] text-muted-foreground mt-1">
-                    {new Date(alert.sent_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}
+                    {new Date(alert.sent_at).toLocaleDateString("en-IN", {
+                      day: "numeric",
+                      month: "short",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
                   </p>
                 </div>
               </div>

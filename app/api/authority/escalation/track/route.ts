@@ -48,7 +48,7 @@ export async function POST(request: Request) {
     console.error("[ClauseWall] Escalation tracking failed:", error);
     return NextResponse.json(
       { success: false, error: "Tracking update failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

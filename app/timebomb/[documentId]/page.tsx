@@ -70,8 +70,8 @@ export default function TimebombPage() {
   const handleDefuse = (deadlineId: string) => {
     setDeadlines((prev) =>
       prev.map((d) =>
-        d.id === deadlineId ? { ...d, status: "defused" as const } : d
-      )
+        d.id === deadlineId ? { ...d, status: "defused" as const } : d,
+      ),
     );
     // Recalculate stats
     setTimeout(fetchDeadlines, 500);
@@ -81,7 +81,7 @@ export default function TimebombPage() {
     (d) =>
       d.status !== "defused" &&
       d.status !== "action_taken" &&
-      d.status !== "expired"
+      d.status !== "expired",
   );
 
   const nextCritical = stats?.next_critical || null;
@@ -96,7 +96,9 @@ export default function TimebombPage() {
           className="flex flex-col items-center gap-4"
         >
           <Loader2 className="w-10 h-10 text-orange-500 animate-spin" />
-          <p className="text-muted-foreground font-black uppercase tracking-widest">LOADING DEFUSER...</p>
+          <p className="text-muted-foreground font-black uppercase tracking-widest">
+            LOADING DEFUSER...
+          </p>
         </motion.div>
       </div>
     );
@@ -121,7 +123,8 @@ export default function TimebombPage() {
                 TIME BOMB DEFUSER
               </h1>
               <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mt-1">
-                {deadlines.length} DEADLINE{deadlines.length !== 1 ? "S" : ""} TRACKED
+                {deadlines.length} DEADLINE{deadlines.length !== 1 ? "S" : ""}{" "}
+                TRACKED
               </p>
             </div>
           </div>
@@ -219,7 +222,7 @@ export default function TimebombPage() {
           setStats(data.stats as DeadlineStats);
           if (data.temporal_risk) {
             setTemporalRisk(
-              data.temporal_risk as "low" | "medium" | "high" | "extreme"
+              data.temporal_risk as "low" | "medium" | "high" | "extreme",
             );
           }
         }}

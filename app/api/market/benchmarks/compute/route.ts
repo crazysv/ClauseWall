@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { recomputeAllBenchmarks } from '@/lib/market/aggregator';
-import { detectTrends } from '@/lib/market/trends';
+import { NextRequest, NextResponse } from "next/server";
+import { recomputeAllBenchmarks } from "@/lib/market/aggregator";
+import { detectTrends } from "@/lib/market/trends";
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,12 +8,16 @@ export async function POST(request: NextRequest) {
     const adminKey = body.admin_key;
 
     // Simple admin key check
-    const expectedKey = process.env.MARKET_ADMIN_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const expectedKey =
+      process.env.MARKET_ADMIN_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
     if (!adminKey || adminKey !== expectedKey) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json(
+        { success: false, error: "Unauthorized" },
+        { status: 401 },
+      );
     }
 
-    console.log('[Market] Admin triggered full recomputation');
+    console.log("[Market] Admin triggered full recomputation");
 
     // Step 1: Full recomputation
     const result = await recomputeAllBenchmarks();
@@ -25,7 +29,7 @@ export async function POST(request: NextRequest) {
         const trends = await detectTrends();
         trendsDetected = trends.length;
       } catch (err) {
-        console.error('[Market] Trend detection failed:', err);
+        console.error("[Market] Trend detection failed:", err);
       }
     }
 
@@ -35,10 +39,10 @@ export async function POST(request: NextRequest) {
       trends_detected: trendsDetected,
     });
   } catch (error) {
-    console.error('[API] Benchmark compute error:', error);
+    console.error("[API] Benchmark compute error:", error);
     return NextResponse.json(
-      { success: false, error: 'Computation failed' },
-      { status: 500 }
+      { success: false, error: "Computation failed" },
+      { status: 500 },
     );
   }
 }

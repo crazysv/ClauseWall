@@ -159,7 +159,9 @@ export default function LetterPage() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6">
         <Loader2 className="h-16 w-16 text-black animate-spin" />
-        <p className="text-sm font-black uppercase tracking-widest text-muted-foreground">Loading document...</p>
+        <p className="text-sm font-black uppercase tracking-widest text-muted-foreground">
+          Loading document...
+        </p>
       </div>
     );
   }
@@ -170,7 +172,9 @@ export default function LetterPage() {
         <AlertTriangle className="h-16 w-16 text-red-600" />
         <p className="text-2xl font-black text-red-700">Document not found</p>
         <Link href="/upload">
-          <Button className="border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-bold uppercase hover:translate-y-1 hover:shadow-none transition-all rounded-none">UPLOAD NEW DOCUMENT</Button>
+          <Button className="border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-bold uppercase hover:translate-y-1 hover:shadow-none transition-all rounded-none">
+            UPLOAD NEW DOCUMENT
+          </Button>
         </Link>
       </div>
     );
@@ -178,13 +182,13 @@ export default function LetterPage() {
 
   // Count problematic clauses
   const illegalCount = clauses.filter((c) => c.risk_level === "illegal").length;
-  const dangerousCount = clauses.filter((c) => c.risk_level === "dangerous").length;
+  const dangerousCount = clauses.filter(
+    (c) => c.risk_level === "dangerous",
+  ).length;
   const warningCount = clauses.filter((c) => c.risk_level === "warning").length;
 
   return (
     <div className="relative px-4 sm:px-6 lg:px-8 py-8">
-
-
       <div className="relative mx-auto max-w-4xl">
         {/* Back Link */}
         <Link
@@ -202,9 +206,12 @@ export default function LetterPage() {
               <Scale className="h-7 w-7 text-blue-900" />
             </div>
             <div>
-              <h1 className="text-3xl sm:text-4xl font-black text-black uppercase tracking-tighter">Legal Notice Generator</h1>
+              <h1 className="text-3xl sm:text-4xl font-black text-black uppercase tracking-tighter">
+                Legal Notice Generator
+              </h1>
               <p className="text-muted-foreground font-bold uppercase tracking-widest mt-2">
-                {document.original_filename} • {getDocumentTypeLabel(document.document_type)} •{" "}
+                {document.original_filename} •{" "}
+                {getDocumentTypeLabel(document.document_type)} •{" "}
                 {getStateName(document.jurisdiction)}
               </p>
             </div>
@@ -214,19 +221,33 @@ export default function LetterPage() {
         {/* Problematic Clauses Summary */}
         <Card className="border-2 border-black rounded-none bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] mb-10">
           <CardContent className="p-8">
-            <h3 className="text-lg font-black uppercase tracking-widest text-black mb-6 border-b-2 border-black/10 pb-4">Problematic Clauses Found</h3>
+            <h3 className="text-lg font-black uppercase tracking-widest text-black mb-6 border-b-2 border-black/10 pb-4">
+              Problematic Clauses Found
+            </h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
               <div className="border-2 border-purple-900 bg-purple-100 p-4 shadow-[4px_4px_0px_0px_rgba(88,28,135,1)] text-center">
-                <p className="text-4xl font-black text-purple-900 mb-1">{illegalCount}</p>
-                <p className="text-[10px] font-black uppercase tracking-widest text-purple-900">Illegal</p>
+                <p className="text-4xl font-black text-purple-900 mb-1">
+                  {illegalCount}
+                </p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-purple-900">
+                  Illegal
+                </p>
               </div>
               <div className="border-2 border-red-900 bg-red-100 p-4 shadow-[4px_4px_0px_0px_rgba(127,29,29,1)] text-center">
-                <p className="text-4xl font-black text-red-900 mb-1">{dangerousCount}</p>
-                <p className="text-[10px] font-black uppercase tracking-widest text-red-900">Dangerous</p>
+                <p className="text-4xl font-black text-red-900 mb-1">
+                  {dangerousCount}
+                </p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-red-900">
+                  Dangerous
+                </p>
               </div>
               <div className="border-2 border-yellow-900 bg-yellow-100 p-4 shadow-[4px_4px_0px_0px_rgba(113,63,18,1)] text-center">
-                <p className="text-4xl font-black text-yellow-900 mb-1">{warningCount}</p>
-                <p className="text-[10px] font-black uppercase tracking-widest text-yellow-900">Warning</p>
+                <p className="text-4xl font-black text-yellow-900 mb-1">
+                  {warningCount}
+                </p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-yellow-900">
+                  Warning
+                </p>
               </div>
             </div>
 
@@ -246,8 +267,8 @@ export default function LetterPage() {
                         clause.risk_level === "illegal"
                           ? "bg-purple-100 border-purple-900 text-purple-900"
                           : clause.risk_level === "dangerous"
-                          ? "bg-red-100 border-red-900 text-red-900"
-                          : "bg-yellow-100 border-yellow-900 text-yellow-900"
+                            ? "bg-red-100 border-red-900 text-red-900"
+                            : "bg-yellow-100 border-yellow-900 text-yellow-900"
                       }`}
                     >
                       {clause.risk_level}
@@ -301,7 +322,9 @@ export default function LetterPage() {
               {/* Letter Header */}
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
                 <div>
-                  <h3 className="font-black text-2xl uppercase tracking-tight text-black">{letter.subject}</h3>
+                  <h3 className="font-black text-2xl uppercase tracking-tight text-black">
+                    {letter.subject}
+                  </h3>
                   <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mt-2">
                     Generated under Indian law
                   </p>
@@ -314,7 +337,9 @@ export default function LetterPage() {
                     disabled={generating}
                     className="border-2 border-black font-bold uppercase tracking-wider shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none transition-all gap-2 rounded-none"
                   >
-                    <RefreshCw className={`h-4 w-4 ${generating ? "animate-spin" : ""}`} />
+                    <RefreshCw
+                      className={`h-4 w-4 ${generating ? "animate-spin" : ""}`}
+                    />
                     REGENERATE
                   </Button>
                 </div>
@@ -329,24 +354,25 @@ export default function LetterPage() {
               />
 
               {/* Legal References */}
-              {letter.legal_references && letter.legal_references.length > 0 && (
-                <div className="mt-6 p-6 bg-blue-50 border-2 border-blue-900 border-dashed">
-                  <p className="text-xs font-black uppercase tracking-widest text-blue-900 mb-4">
-                    LAWS & SECTIONS REFERENCED:
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {letter.legal_references.map((ref, i) => (
-                      <Badge
-                        key={i}
-                        variant="outline"
-                        className="rounded-none border-2 border-blue-900 bg-white text-blue-900 font-bold uppercase shadow-[2px_2px_0px_0px_rgba(30,58,138,1)]"
-                      >
-                        {ref}
-                      </Badge>
-                    ))}
+              {letter.legal_references &&
+                letter.legal_references.length > 0 && (
+                  <div className="mt-6 p-6 bg-blue-50 border-2 border-blue-900 border-dashed">
+                    <p className="text-xs font-black uppercase tracking-widest text-blue-900 mb-4">
+                      LAWS & SECTIONS REFERENCED:
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {letter.legal_references.map((ref, i) => (
+                        <Badge
+                          key={i}
+                          variant="outline"
+                          className="rounded-none border-2 border-blue-900 bg-white text-blue-900 font-bold uppercase shadow-[2px_2px_0px_0px_rgba(30,58,138,1)]"
+                        >
+                          {ref}
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
               {/* Agencies */}
               {letter.agencies && letter.agencies.length > 0 && (
@@ -367,7 +393,10 @@ export default function LetterPage() {
 
               {/* Action Buttons */}
               <div className="flex flex-wrap gap-4 mt-8 pt-6 border-t-2 border-black/10">
-                <Button onClick={copyToClipboard} className="border-2 border-black font-black uppercase tracking-wider shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none transition-all gap-2 rounded-none px-6">
+                <Button
+                  onClick={copyToClipboard}
+                  className="border-2 border-black font-black uppercase tracking-wider shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none transition-all gap-2 rounded-none px-6"
+                >
                   {copied ? (
                     <>
                       <CheckCircle2 className="h-4 w-4" />
@@ -380,11 +409,19 @@ export default function LetterPage() {
                     </>
                   )}
                 </Button>
-                <Button variant="outline" onClick={downloadLetter} className="border-2 border-black font-black uppercase tracking-wider shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none transition-all gap-2 rounded-none px-6">
+                <Button
+                  variant="outline"
+                  onClick={downloadLetter}
+                  className="border-2 border-black font-black uppercase tracking-wider shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none transition-all gap-2 rounded-none px-6"
+                >
                   <Download className="h-4 w-4" />
                   DOWNLOAD AS TXT
                 </Button>
-                <Button variant="outline" className="border-2 border-black font-black uppercase tracking-wider gap-2 rounded-none px-6 disabled:opacity-50" disabled>
+                <Button
+                  variant="outline"
+                  className="border-2 border-black font-black uppercase tracking-wider gap-2 rounded-none px-6 disabled:opacity-50"
+                  disabled
+                >
                   <Send className="h-4 w-4" />
                   EMAIL (SOON)
                 </Button>
@@ -398,12 +435,15 @@ export default function LetterPage() {
           <div className="flex flex-col sm:flex-row items-start gap-4">
             <AlertTriangle className="text-yellow-700 h-8 w-8 flex-shrink-0" />
             <div className="text-yellow-900">
-              <p className="font-black uppercase tracking-widest text-base mb-2">IMPORTANT DISCLAIMER</p>
+              <p className="font-black uppercase tracking-widest text-base mb-2">
+                IMPORTANT DISCLAIMER
+              </p>
               <p className="font-bold leading-relaxed">
-                This legal notice is auto-generated for informational purposes only. It is NOT
-                a substitute for professional legal advice. We recommend consulting with a
-                qualified lawyer before sending any legal notice. ClauseWall is not responsible
-                for any consequences arising from the use of this generated content.
+                This legal notice is auto-generated for informational purposes
+                only. It is NOT a substitute for professional legal advice. We
+                recommend consulting with a qualified lawyer before sending any
+                legal notice. ClauseWall is not responsible for any consequences
+                arising from the use of this generated content.
               </p>
             </div>
           </div>
@@ -415,25 +455,35 @@ export default function LetterPage() {
             <CardContent className="p-8">
               <div className="flex items-center gap-4 mb-6 pb-4 border-b-2 border-black/10">
                 <Building2 className="h-6 w-6 text-black" />
-                <h3 className="font-black uppercase tracking-widest text-lg">HAVE YOU SENT THE NOTICE?</h3>
+                <h3 className="font-black uppercase tracking-widest text-lg">
+                  HAVE YOU SENT THE NOTICE?
+                </h3>
               </div>
 
               {/* Mini Escalation Preview */}
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
                 <div className="border-2 border-black bg-green-300 px-4 py-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-black" />
-                  <span className="text-xs font-black uppercase tracking-wider text-black">Step 1: Legal Notice</span>
+                  <span className="text-xs font-black uppercase tracking-wider text-black">
+                    Step 1: Legal Notice
+                  </span>
                 </div>
                 <ArrowRight className="h-5 w-5 text-black hidden sm:block" />
-                <Link href="/authority" className="border-2 border-black bg-white hover:bg-gray-100 flex items-center gap-2 px-4 py-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:-translate-y-1">
+                <Link
+                  href="/authority"
+                  className="border-2 border-black bg-white hover:bg-gray-100 flex items-center gap-2 px-4 py-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:-translate-y-1"
+                >
                   <Building2 className="h-4 w-4 text-black" />
-                  <span className="text-xs font-black uppercase tracking-wider text-black">Step 2: File at Authority →</span>
+                  <span className="text-xs font-black uppercase tracking-wider text-black">
+                    Step 2: File at Authority →
+                  </span>
                 </Link>
               </div>
 
               <p className="text-sm font-bold text-muted-foreground leading-relaxed">
-                Under Indian consumer law, if the opposing party does not respond to your legal notice
-                within 15 days, you can escalate by filing a formal complaint at the appropriate forum.
+                Under Indian consumer law, if the opposing party does not
+                respond to your legal notice within 15 days, you can escalate by
+                filing a formal complaint at the appropriate forum.
               </p>
             </CardContent>
           </Card>

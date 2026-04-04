@@ -46,7 +46,8 @@ export default function NegotiationCompanion() {
   useEffect(() => {
     const latest = loadLatestSession();
     if (latest) {
-      const hoursSince = (Date.now() - new Date(latest.started_at).getTime()) / (1000 * 60 * 60);
+      const hoursSince =
+        (Date.now() - new Date(latest.started_at).getTime()) / (1000 * 60 * 60);
       if (hoursSince < 4) {
         setSession(latest);
         setShowSetup(false);
@@ -100,7 +101,8 @@ export default function NegotiationCompanion() {
     const h = Math.floor(seconds / 3600);
     const m = Math.floor((seconds % 3600) / 60);
     const s = seconds % 60;
-    if (h > 0) return `${h}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+    if (h > 0)
+      return `${h}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
     return `${m}:${String(s).padStart(2, "0")}`;
   };
 
@@ -132,7 +134,7 @@ export default function NegotiationCompanion() {
       };
       handleSessionUpdate(updated);
     },
-    [session, handleSessionUpdate]
+    [session, handleSessionUpdate],
   );
 
   // Show setup if no active session
@@ -148,7 +150,10 @@ export default function NegotiationCompanion() {
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col" style={{ paddingBottom: "80px" }}>
+    <div
+      className="min-h-screen bg-background flex flex-col"
+      style={{ paddingBottom: "80px" }}
+    >
       {/* Top Bar */}
       <div className="sticky top-0 z-40 bg-white border-b-2 border-black px-4 py-3">
         <div className="flex items-center justify-between max-w-2xl mx-auto">
@@ -193,7 +198,9 @@ export default function NegotiationCompanion() {
               <span className="text-lg leading-none">{mode.icon}</span>
               <span
                 className={`text-[10px] font-black uppercase tracking-wider ${
-                  activeMode === mode.id ? "text-black" : "text-muted-foreground"
+                  activeMode === mode.id
+                    ? "text-black"
+                    : "text-muted-foreground"
                 }`}
               >
                 {mode.label}

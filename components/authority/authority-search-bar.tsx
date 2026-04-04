@@ -19,7 +19,9 @@ export default function AuthoritySearchBar({ onSelect }: Props) {
     if (!query.trim()) return;
     setLoading(true);
     try {
-      const res = await fetch(`/api/authority/search?q=${encodeURIComponent(query)}&limit=10`);
+      const res = await fetch(
+        `/api/authority/search?q=${encodeURIComponent(query)}&limit=10`,
+      );
       const data = await res.json();
       if (data.success) setResults(data.authorities);
     } catch {
@@ -43,8 +45,17 @@ export default function AuthoritySearchBar({ onSelect }: Props) {
             className="w-full pl-12 pr-4 py-3 border-4 border-black bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-bold focus:outline-none focus:translate-x-1 focus:translate-y-1 focus:shadow-none transition-all placeholder:font-medium"
           />
         </div>
-        <Button onClick={handleSearch} disabled={loading} size="default" className="btn-impact btn-impact-primary h-auto py-3 px-8">
-          {loading ? <Loader2 className="h-5 w-5 animate-spin mr-2" /> : <Search className="h-5 w-5 mr-2 stroke-[3px]" />}
+        <Button
+          onClick={handleSearch}
+          disabled={loading}
+          size="default"
+          className="btn-impact btn-impact-primary h-auto py-3 px-8"
+        >
+          {loading ? (
+            <Loader2 className="h-5 w-5 animate-spin mr-2" />
+          ) : (
+            <Search className="h-5 w-5 mr-2 stroke-[3px]" />
+          )}
           SEARCH
         </Button>
       </div>

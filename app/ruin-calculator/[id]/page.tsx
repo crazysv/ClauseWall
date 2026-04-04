@@ -57,12 +57,17 @@ export default function RuinCalculatorPage() {
   const [monthlyIncome, setMonthlyIncome] = useState(60000);
 
   // Stress test state
-  const [stressResults, setStressResults] = useState<Map<string, StressTestResult>>(new Map());
+  const [stressResults, setStressResults] = useState<
+    Map<string, StressTestResult>
+  >(new Map());
   const [stressLoading, setStressLoading] = useState<string | null>(null);
-  const [activeStressResult, setActiveStressResult] = useState<StressTestResult | null>(null);
+  const [activeStressResult, setActiveStressResult] =
+    useState<StressTestResult | null>(null);
 
   // Insurance gap
-  const [insuranceGap, setInsuranceGap] = useState<InsuranceGapResult | null>(null);
+  const [insuranceGap, setInsuranceGap] = useState<InsuranceGapResult | null>(
+    null,
+  );
 
   // Fetch simulation
   const fetchAnalysis = useCallback(async () => {
@@ -145,7 +150,7 @@ export default function RuinCalculatorPage() {
         setStressLoading(null);
       }
     },
-    [documentId, baseMonthlyCost, monthlyIncome]
+    [documentId, baseMonthlyCost, monthlyIncome],
   );
 
   // Run custom stress test
@@ -180,7 +185,7 @@ export default function RuinCalculatorPage() {
         setStressLoading(null);
       }
     },
-    [documentId, baseMonthlyCost, monthlyIncome]
+    [documentId, baseMonthlyCost, monthlyIncome],
   );
 
   // Handle scenario click — show existing result or run new
@@ -192,17 +197,20 @@ export default function RuinCalculatorPage() {
       }
       runStressTest(scenarioId);
     },
-    [stressResults, runStressTest]
+    [stressResults, runStressTest],
   );
 
   // Handle insurance coverage change
   const handleCoverageChange = useCallback(
     (coverage: number) => {
       if (!analysis) return;
-      const newGap = analyzeInsuranceGap(analysis.simulation.percentiles, coverage);
+      const newGap = analyzeInsuranceGap(
+        analysis.simulation.percentiles,
+        coverage,
+      );
       setInsuranceGap(newGap);
     },
-    [analysis]
+    [analysis],
   );
 
   // ═══════════════════════════════════════════
@@ -218,7 +226,10 @@ export default function RuinCalculatorPage() {
           <Skeleton className="h-80 rounded-none border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]" />
           <div className="grid grid-cols-4 gap-4">
             {[1, 2, 3, 4].map((i) => (
-              <Skeleton key={i} className="h-24 rounded-none border-4 border-black" />
+              <Skeleton
+                key={i}
+                className="h-24 rounded-none border-4 border-black"
+              />
             ))}
           </div>
         </div>
@@ -227,7 +238,9 @@ export default function RuinCalculatorPage() {
             <Loader2 className="h-12 w-12 text-black animate-spin" />
           </div>
           <div className="text-center mt-4">
-            <p className="text-xl font-black uppercase tracking-tight">Running Monte Carlo Simulation</p>
+            <p className="text-xl font-black uppercase tracking-tight">
+              Running Monte Carlo Simulation
+            </p>
             <p className="text-sm font-bold text-gray-600 uppercase tracking-widest mt-2">
               10,000 scenarios × 36 months — pure computation, no AI
             </p>
@@ -245,14 +258,24 @@ export default function RuinCalculatorPage() {
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 px-4">
         <div className="border-4 border-black p-6 bg-red-100 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
           <XCircle className="h-16 w-16 text-red-600 mx-auto mb-4" />
-          <p className="text-red-900 text-center font-black uppercase text-xl">{error || "Something went wrong"}</p>
+          <p className="text-red-900 text-center font-black uppercase text-xl">
+            {error || "Something went wrong"}
+          </p>
         </div>
         <div className="flex gap-4">
-          <Button onClick={fetchAnalysis} className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-wider">
+          <Button
+            onClick={fetchAnalysis}
+            className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-wider"
+          >
             Try Again
           </Button>
           <Link href={`/results/${documentId}`}>
-            <Button variant="outline" className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-wider">Back to Results</Button>
+            <Button
+              variant="outline"
+              className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-wider"
+            >
+              Back to Results
+            </Button>
           </Link>
         </div>
       </div>
@@ -290,7 +313,9 @@ export default function RuinCalculatorPage() {
               onClick={() => setConfigOpen(!configOpen)}
               className="text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors border-2 border-black px-4 py-2"
             >
-              {configOpen ? "Hide Settings ▲" : "Adjust Monthly Cost / Income ▼"}
+              {configOpen
+                ? "Hide Settings ▲"
+                : "Adjust Monthly Cost / Income ▼"}
             </button>
           </div>
 
@@ -310,7 +335,9 @@ export default function RuinCalculatorPage() {
                     <input
                       type="number"
                       value={baseMonthlyCost}
-                      onChange={(e) => setBaseMonthlyCost(parseInt(e.target.value) || 0)}
+                      onChange={(e) =>
+                        setBaseMonthlyCost(parseInt(e.target.value) || 0)
+                      }
                       className="w-full px-4 py-3 border-4 border-black rounded-none font-bold focus:outline-none focus:ring-0 focus:border-red-600 transition-colors"
                     />
                   </div>
@@ -321,12 +348,17 @@ export default function RuinCalculatorPage() {
                     <input
                       type="number"
                       value={monthlyIncome}
-                      onChange={(e) => setMonthlyIncome(parseInt(e.target.value) || 0)}
+                      onChange={(e) =>
+                        setMonthlyIncome(parseInt(e.target.value) || 0)
+                      }
                       className="w-full px-4 py-3 border-4 border-black rounded-none font-bold focus:outline-none focus:ring-0 focus:border-green-600 transition-colors"
                     />
                   </div>
                   <div className="flex items-end">
-                    <Button onClick={fetchAnalysis} className="h-[52px] px-8 rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-wider gap-2">
+                    <Button
+                      onClick={fetchAnalysis}
+                      className="h-[52px] px-8 rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-wider gap-2"
+                    >
                       <BarChart3 className="h-4 w-4" />
                       Re-run
                     </Button>
@@ -479,25 +511,34 @@ export default function RuinCalculatorPage() {
         <div className="border-t-4 border-black pt-8 text-center space-y-6">
           <div className="flex flex-wrap justify-center gap-4">
             <Link href={`/negotiate/${documentId}`}>
-              <Button variant="outline" className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-wider">
+              <Button
+                variant="outline"
+                className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-wider"
+              >
                 📝 Negotiate Clauses
               </Button>
             </Link>
             <Link href={`/escape/${documentId}`}>
-              <Button variant="outline" className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-wider">
+              <Button
+                variant="outline"
+                className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-wider"
+              >
                 🚪 Escape Plan
               </Button>
             </Link>
             <Link href={`/letter/${documentId}`}>
-              <Button variant="outline" className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-wider">
+              <Button
+                variant="outline"
+                className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-wider"
+              >
                 📄 Legal Notice
               </Button>
             </Link>
           </div>
 
           <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground max-w-xl mx-auto">
-            Generated by ClauseWall — Actuarial risk simulation for Indian contracts.
-            This is illustrative analysis, not financial advice.
+            Generated by ClauseWall — Actuarial risk simulation for Indian
+            contracts. This is illustrative analysis, not financial advice.
           </p>
         </div>
       </div>

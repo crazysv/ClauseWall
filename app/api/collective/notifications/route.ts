@@ -9,12 +9,14 @@ import { createClient } from "@/lib/supabase/server";
 export async function GET(request: NextRequest) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return NextResponse.json(
         { error: "Authentication required" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -52,7 +54,7 @@ export async function GET(request: NextRequest) {
     console.error("[ClauseWall] [API] Notifications error:", error);
     return NextResponse.json(
       { error: "Failed to fetch notifications" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -61,12 +63,14 @@ export async function GET(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return NextResponse.json(
         { error: "Authentication required" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -95,7 +99,7 @@ export async function PATCH(request: NextRequest) {
     console.error("[ClauseWall] [API] Mark read error:", error);
     return NextResponse.json(
       { error: "Failed to update notifications" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

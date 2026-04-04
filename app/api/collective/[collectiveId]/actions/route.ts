@@ -9,7 +9,7 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function GET(
   _request: NextRequest,
-  { params }: { params: Promise<{ collectiveId: string }> }
+  { params }: { params: Promise<{ collectiveId: string }> },
 ) {
   try {
     const { collectiveId } = await params;
@@ -28,23 +28,25 @@ export async function GET(
     console.error("[ClauseWall] [API] Get actions error:", error);
     return NextResponse.json(
       { error: "Failed to fetch actions" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: Promise<{ collectiveId: string }> }
+  { params }: { params: Promise<{ collectiveId: string }> },
 ) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return NextResponse.json(
         { error: "Authentication required" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -55,7 +57,7 @@ export async function POST(
     if (!actionType || !title) {
       return NextResponse.json(
         { error: "Action type and title required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -64,13 +66,13 @@ export async function POST(
       user.id,
       actionType,
       title,
-      description || ""
+      description || "",
     );
 
     if (!action) {
       return NextResponse.json(
         { error: "Failed to propose action. Ensure you are a member." },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -79,7 +81,7 @@ export async function POST(
     console.error("[ClauseWall] [API] Propose action error:", error);
     return NextResponse.json(
       { error: "Failed to propose action" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -1,7 +1,14 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Send, Loader2, AlertTriangle, CheckCircle2, HelpCircle, XCircle } from "lucide-react";
+import {
+  Send,
+  Loader2,
+  AlertTriangle,
+  CheckCircle2,
+  HelpCircle,
+  XCircle,
+} from "lucide-react";
 import type { BluffAnalysis, BluffCheckResult } from "@/types";
 
 interface BluffDetectorPanelProps {
@@ -9,28 +16,50 @@ interface BluffDetectorPanelProps {
   documentType: string;
 }
 
-const RESULT_STYLES: Record<BluffCheckResult, {
-  bg: string; border: string; text: string; icon: React.ReactNode; label: string;
-}> = {
+const RESULT_STYLES: Record<
+  BluffCheckResult,
+  {
+    bg: string;
+    border: string;
+    text: string;
+    icon: React.ReactNode;
+    label: string;
+  }
+> = {
   false_claim: {
-    bg: "bg-red-500/5", border: "border-red-500/20", text: "text-red-400",
-    icon: <XCircle className="w-5 h-5 text-red-400" />, label: "FALSE CLAIM",
+    bg: "bg-red-500/5",
+    border: "border-red-500/20",
+    text: "text-red-400",
+    icon: <XCircle className="w-5 h-5 text-red-400" />,
+    label: "FALSE CLAIM",
   },
   true_claim: {
-    bg: "bg-green-500/5", border: "border-green-500/20", text: "text-green-400",
-    icon: <CheckCircle2 className="w-5 h-5 text-green-400" />, label: "VERIFIED TRUE",
+    bg: "bg-green-500/5",
+    border: "border-green-500/20",
+    text: "text-green-400",
+    icon: <CheckCircle2 className="w-5 h-5 text-green-400" />,
+    label: "VERIFIED TRUE",
   },
   partially_true: {
-    bg: "bg-yellow-500/5", border: "border-yellow-500/20", text: "text-yellow-400",
-    icon: <AlertTriangle className="w-5 h-5 text-yellow-400" />, label: "PARTIALLY TRUE",
+    bg: "bg-yellow-500/5",
+    border: "border-yellow-500/20",
+    text: "text-yellow-400",
+    icon: <AlertTriangle className="w-5 h-5 text-yellow-400" />,
+    label: "PARTIALLY TRUE",
   },
   misleading: {
-    bg: "bg-orange-500/5", border: "border-orange-500/20", text: "text-orange-400",
-    icon: <AlertTriangle className="w-5 h-5 text-orange-400" />, label: "MISLEADING",
+    bg: "bg-orange-500/5",
+    border: "border-orange-500/20",
+    text: "text-orange-400",
+    icon: <AlertTriangle className="w-5 h-5 text-orange-400" />,
+    label: "MISLEADING",
   },
   unverifiable: {
-    bg: "bg-gray-500/5", border: "border-gray-500/20", text: "text-gray-400",
-    icon: <HelpCircle className="w-5 h-5 text-gray-400" />, label: "UNVERIFIABLE",
+    bg: "bg-gray-500/5",
+    border: "border-gray-500/20",
+    text: "text-gray-400",
+    icon: <HelpCircle className="w-5 h-5 text-gray-400" />,
+    label: "UNVERIFIABLE",
   },
 };
 
@@ -42,7 +71,10 @@ const EXAMPLE_CLAIMS = [
   "Broker says 2 months brokerage is the rule",
 ];
 
-export default function BluffDetectorPanel({ jurisdiction, documentType }: BluffDetectorPanelProps) {
+export default function BluffDetectorPanel({
+  jurisdiction,
+  documentType,
+}: BluffDetectorPanelProps) {
   const [claim, setClaim] = useState("");
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<BluffAnalysis[]>([]);
@@ -91,7 +123,8 @@ export default function BluffDetectorPanel({ jurisdiction, documentType }: Bluff
       {/* Header */}
       <div className="text-center py-2">
         <p className="text-sm text-white/40">
-          Type what they&apos;re claiming and we&apos;ll check it against the law
+          Type what they&apos;re claiming and we&apos;ll check it against the
+          law
         </p>
       </div>
 
@@ -118,7 +151,11 @@ export default function BluffDetectorPanel({ jurisdiction, documentType }: Bluff
           disabled={!claim.trim() || loading}
           className="absolute right-3 bottom-3 p-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all"
         >
-          {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
+          {loading ? (
+            <Loader2 className="w-5 h-5 animate-spin" />
+          ) : (
+            <Send className="w-5 h-5" />
+          )}
         </button>
       </div>
 
@@ -134,7 +171,8 @@ export default function BluffDetectorPanel({ jurisdiction, documentType }: Bluff
 
       {/* Results */}
       {results.map((result, idx) => {
-        const style = RESULT_STYLES[result.result] || RESULT_STYLES.unverifiable;
+        const style =
+          RESULT_STYLES[result.result] || RESULT_STYLES.unverifiable;
 
         return (
           <div
@@ -144,7 +182,9 @@ export default function BluffDetectorPanel({ jurisdiction, documentType }: Bluff
             {/* Header badge */}
             <div className={`flex items-center gap-2 px-5 pt-4 pb-2`}>
               {style.icon}
-              <span className={`text-sm font-bold ${style.text}`}>{style.label}</span>
+              <span className={`text-sm font-bold ${style.text}`}>
+                {style.label}
+              </span>
               <span className="ml-auto text-[10px] text-white/20">
                 {result.confidence} confidence
               </span>
@@ -153,13 +193,19 @@ export default function BluffDetectorPanel({ jurisdiction, documentType }: Bluff
             {/* Their claim */}
             <div className="px-5 pb-3">
               <p className="text-xs text-white/30 mb-0.5">They claimed:</p>
-              <p className="text-sm text-white/60 italic">&ldquo;{result.claim_text}&rdquo;</p>
+              <p className="text-sm text-white/60 italic">
+                &ldquo;{result.claim_text}&rdquo;
+              </p>
             </div>
 
             {/* Actual position */}
             <div className="px-5 pb-3">
-              <p className="text-xs text-white/30 mb-0.5">Actual legal position:</p>
-              <p className="text-sm text-white/80 leading-relaxed">{result.actual_legal_position}</p>
+              <p className="text-xs text-white/30 mb-0.5">
+                Actual legal position:
+              </p>
+              <p className="text-sm text-white/80 leading-relaxed">
+                {result.actual_legal_position}
+              </p>
             </div>
 
             {/* Legal limit & their value comparison */}
@@ -168,13 +214,19 @@ export default function BluffDetectorPanel({ jurisdiction, documentType }: Bluff
                 {result.legal_limit && (
                   <div className="rounded-lg bg-white/[0.03] p-2.5 text-center">
                     <p className="text-[10px] text-white/30">Legal Limit</p>
-                    <p className="text-sm font-medium text-green-400">{result.legal_limit}</p>
+                    <p className="text-sm font-medium text-green-400">
+                      {result.legal_limit}
+                    </p>
                   </div>
                 )}
                 {result.their_claim_value && (
                   <div className="rounded-lg bg-white/[0.03] p-2.5 text-center">
-                    <p className="text-[10px] text-white/30">They&apos;re Asking</p>
-                    <p className={`text-sm font-medium ${result.result === "false_claim" ? "text-red-400" : "text-white/60"}`}>
+                    <p className="text-[10px] text-white/30">
+                      They&apos;re Asking
+                    </p>
+                    <p
+                      className={`text-sm font-medium ${result.result === "false_claim" ? "text-red-400" : "text-white/60"}`}
+                    >
                       {result.their_claim_value}
                     </p>
                   </div>
@@ -185,7 +237,9 @@ export default function BluffDetectorPanel({ jurisdiction, documentType }: Bluff
             {/* Difference */}
             {result.difference && (
               <div className="px-5 pb-3">
-                <p className={`text-xs ${style.text} font-medium`}>📊 {result.difference}</p>
+                <p className={`text-xs ${style.text} font-medium`}>
+                  📊 {result.difference}
+                </p>
               </div>
             )}
 
@@ -193,7 +247,8 @@ export default function BluffDetectorPanel({ jurisdiction, documentType }: Bluff
             {result.statute_name && (
               <div className="px-5 pb-3">
                 <p className="text-[10px] text-white/20">
-                  📖 {result.statute_name} {result.statute_code ? `(${result.statute_code})` : ""}
+                  📖 {result.statute_name}{" "}
+                  {result.statute_code ? `(${result.statute_code})` : ""}
                 </p>
               </div>
             )}
@@ -201,7 +256,9 @@ export default function BluffDetectorPanel({ jurisdiction, documentType }: Bluff
             {/* What to say */}
             {result.what_to_say && (
               <div className="mx-5 mb-4 p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/10">
-                <p className="text-xs text-emerald-400/70 mb-1 font-medium">💬 Say This:</p>
+                <p className="text-xs text-emerald-400/70 mb-1 font-medium">
+                  💬 Say This:
+                </p>
                 <p className="text-sm text-emerald-300 leading-relaxed">
                   &ldquo;{result.what_to_say}&rdquo;
                 </p>
@@ -217,7 +274,9 @@ export default function BluffDetectorPanel({ jurisdiction, documentType }: Bluff
                     : "bg-blue-500/10 text-blue-400 border border-blue-500/20"
                 }`}
               >
-                {result.source === "database" ? "Verified from law database" : "AI analysis"}
+                {result.source === "database"
+                  ? "Verified from law database"
+                  : "AI analysis"}
               </span>
             </div>
           </div>

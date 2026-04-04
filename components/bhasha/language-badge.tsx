@@ -39,7 +39,11 @@ export function LanguageBadge({
           align-items: center;
           gap: 4px;
           padding: 2px 8px;
-          background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.15));
+          background: linear-gradient(
+            135deg,
+            rgba(99, 102, 241, 0.2),
+            rgba(168, 85, 247, 0.15)
+          );
           border: 1px solid rgba(99, 102, 241, 0.3);
           border-radius: 20px;
           font-size: 0.7rem;

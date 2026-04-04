@@ -10,17 +10,24 @@ export async function POST(request: NextRequest) {
     if (!clauses || !Array.isArray(clauses) || clauses.length === 0) {
       return NextResponse.json(
         { error: "No clauses provided" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // Build clause list for the prompt
     const clauseList = clauses
       .map(
-        (c: { id: string; clause_number: number; clause_type: string; original_text: string; risk_level: string; explanation: string }) =>
+        (c: {
+          id: string;
+          clause_number: number;
+          clause_type: string;
+          original_text: string;
+          risk_level: string;
+          explanation: string;
+        }) =>
           `[ID: ${c.id}] (Clause #${c.clause_number}, Type: ${c.clause_type}, Risk: ${c.risk_level})
 Text: "${c.original_text}"
-Legal Issue: ${c.explanation}`
+Legal Issue: ${c.explanation}`,
       )
       .join("\n\n---\n\n");
 
@@ -51,7 +58,7 @@ ${clauseList}`,
       console.error("[ClauseWall] Roast JSON parse failed. Raw:", response);
       return NextResponse.json(
         { error: "Failed to parse roast response" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -72,8 +79,10 @@ ${clauseList}`,
   } catch (error) {
     console.error("[ClauseWall] Roast API error:", error);
     return NextResponse.json(
-      { error: "Roast generation failed. The contract was too spicy to handle." },
-      { status: 500 }
+      {
+        error: "Roast generation failed. The contract was too spicy to handle.",
+      },
+      { status: 500 },
     );
   }
 }

@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
     if (!clauseText || !clauseType) {
       return NextResponse.json(
         { error: "Missing clauseText or clauseType" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     console.error("[Community API] Check error:", error);
     return NextResponse.json(
       { error: "Failed to check community database" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

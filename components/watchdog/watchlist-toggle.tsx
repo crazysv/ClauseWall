@@ -21,7 +21,10 @@ export default function WatchlistToggle({
     setLoading(true);
     try {
       if (watching) {
-        const res = await fetch(`/api/watchdog/watchlist?company_id=${companyId}`, { method: "DELETE" });
+        const res = await fetch(
+          `/api/watchdog/watchlist?company_id=${companyId}`,
+          { method: "DELETE" },
+        );
         if (!res.ok) throw new Error("Failed to remove");
         setWatching(false);
         onToggle?.(false);

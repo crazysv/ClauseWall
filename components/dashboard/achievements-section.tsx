@@ -3,13 +3,18 @@
 import { motion } from "framer-motion";
 import { Trophy, Lock } from "lucide-react";
 import type { Achievement } from "@/types";
-import { getUnlockedCount, getTotalAchievements } from "@/lib/stats/achievements";
+import {
+  getUnlockedCount,
+  getTotalAchievements,
+} from "@/lib/stats/achievements";
 
 interface AchievementsSectionProps {
   achievements: Achievement[];
 }
 
-export default function AchievementsSection({ achievements }: AchievementsSectionProps) {
+export default function AchievementsSection({
+  achievements,
+}: AchievementsSectionProps) {
   const unlocked = getUnlockedCount(achievements);
   const total = getTotalAchievements();
 
@@ -24,7 +29,9 @@ export default function AchievementsSection({ achievements }: AchievementsSectio
       <div className="flex items-center justify-between mb-5 pb-4 border-b-2 border-foreground">
         <div className="flex items-center gap-2">
           <Trophy className="w-6 h-6 text-amber-500" />
-          <h3 className="text-xl font-black uppercase tracking-wider text-foreground">Achievements</h3>
+          <h3 className="text-xl font-black uppercase tracking-wider text-foreground">
+            Achievements
+          </h3>
         </div>
         <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground bg-muted px-3 py-1 border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(10,10,10,1)]">
           {unlocked}/{total} unlocked
@@ -71,7 +78,9 @@ export default function AchievementsSection({ achievements }: AchievementsSectio
               {/* Name */}
               <p
                 className={`text-[10px] text-center font-black uppercase tracking-wider leading-tight ${
-                  achievement.unlocked ? "text-amber-900" : "text-muted-foreground"
+                  achievement.unlocked
+                    ? "text-amber-900"
+                    : "text-muted-foreground"
                 }`}
               >
                 {achievement.name}
@@ -95,7 +104,9 @@ export default function AchievementsSection({ achievements }: AchievementsSectio
               <p className="text-xs font-black uppercase text-foreground mb-1 flex items-center gap-1">
                 {achievement.icon} {achievement.name}
               </p>
-              <p className="text-[10px] font-bold text-muted-foreground">{achievement.description}</p>
+              <p className="text-[10px] font-bold text-muted-foreground">
+                {achievement.description}
+              </p>
               {!achievement.unlocked && achievement.target > 1 && (
                 <p className="text-[10px] font-bold text-foreground mt-2 uppercase tracking-wider border-t-2 border-muted pt-1">
                   Progress: {achievement.progress}/{achievement.target}

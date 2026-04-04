@@ -10,10 +10,19 @@ import type { StressTestRequest } from "@/lib/simulation/types";
 export async function POST(request: NextRequest) {
   try {
     const body: StressTestRequest = await request.json();
-    const { documentId, scenarioId, customEvents, baseMonthlyCost, monthlyIncome } = body;
+    const {
+      documentId,
+      scenarioId,
+      customEvents,
+      baseMonthlyCost,
+      monthlyIncome,
+    } = body;
 
     if (!documentId) {
-      return NextResponse.json({ error: "Missing documentId" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing documentId" },
+        { status: 400 },
+      );
     }
 
     const supabase = await createClient();
@@ -26,10 +35,7 @@ export async function POST(request: NextRequest) {
       .order("clause_number");
 
     if (clauseError || !clauses || clauses.length === 0) {
-      return NextResponse.json(
-        { error: "No clauses found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "No clauses found" }, { status: 404 });
     }
 
     // Fetch document for context
@@ -40,7 +46,9 @@ export async function POST(request: NextRequest) {
       .single();
 
     // Fetch fair rules
-    const clauseTypes = [...new Set(clauses.map((c: { clause_type: string }) => c.clause_type))];
+    const clauseTypes = [
+      ...new Set(clauses.map((c: { clause_type: string }) => c.clause_type)),
+    ];
     const { data: rules } = await supabase
       .from("structured_rules")
       .select("*")
@@ -58,13 +66,13 @@ export async function POST(request: NextRequest) {
       if (!scenario) {
         return NextResponse.json(
           { error: `Unknown scenario: ${scenarioId}` },
-          { status: 400 }
+          { status: 400 },
         );
       }
     } else {
       return NextResponse.json(
         { error: "Provide scenarioId or customEvents" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -82,7 +90,7 @@ export async function POST(request: NextRequest) {
     console.error("[ClauseWall] Stress test API error:", error);
     return NextResponse.json(
       { error: "Failed to run stress test" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -8,16 +8,18 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: Promise<{ collectiveId: string }> }
+  { params }: { params: Promise<{ collectiveId: string }> },
 ) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return NextResponse.json(
         { error: "Authentication required" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -27,14 +29,14 @@ export async function POST(
     if (!actionId || !vote) {
       return NextResponse.json(
         { error: "Action ID and vote required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (!["yes", "no", "abstain"].includes(vote)) {
       return NextResponse.json(
         { error: "Vote must be 'yes', 'no', or 'abstain'" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -43,16 +45,13 @@ export async function POST(
     if (!result) {
       return NextResponse.json(
         { error: "Failed to cast vote. Ensure you are a member." },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
     return NextResponse.json({ success: true, result });
   } catch (error) {
     console.error("[ClauseWall] [API] Vote error:", error);
-    return NextResponse.json(
-      { error: "Failed to cast vote" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to cast vote" }, { status: 500 });
   }
 }

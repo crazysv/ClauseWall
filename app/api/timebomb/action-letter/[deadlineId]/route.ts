@@ -9,7 +9,7 @@ import { generateActionTemplate } from "@/lib/timebomb/action-generator";
 
 export async function GET(
   _request: NextRequest,
-  { params }: { params: Promise<{ deadlineId: string }> }
+  { params }: { params: Promise<{ deadlineId: string }> },
 ) {
   try {
     const { deadlineId } = await params;
@@ -33,7 +33,7 @@ export async function GET(
     if (error || !deadline) {
       return NextResponse.json(
         { error: "Deadline not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -62,14 +62,17 @@ export async function GET(
       },
       doc?.created_at
         ? new Date(doc.created_at).toLocaleDateString("en-IN")
-        : "[DATE]"
+        : "[DATE]",
     );
 
     // Cache the generated letter
     if (letter) {
       await supabase
         .from("contract_deadlines")
-        .update({ action_template: letter, updated_at: new Date().toISOString() })
+        .update({
+          action_template: letter,
+          updated_at: new Date().toISOString(),
+        })
         .eq("id", deadlineId);
     }
 
@@ -81,7 +84,7 @@ export async function GET(
     console.error("[TimeBomb API] Action letter error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

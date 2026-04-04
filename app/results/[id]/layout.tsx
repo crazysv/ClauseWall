@@ -24,7 +24,7 @@ export async function generateMetadata({
     const { data: doc } = await supabase
       .from("documents")
       .select(
-        "overall_risk_score, document_type, illegal_count, dangerous_count, total_clauses"
+        "overall_risk_score, document_type, illegal_count, dangerous_count, total_clauses",
       )
       .eq("id", id)
       .single();

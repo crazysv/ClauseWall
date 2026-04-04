@@ -6,7 +6,10 @@ export async function POST(request: NextRequest) {
     const { roomCode } = await request.json();
 
     if (!roomCode) {
-      return NextResponse.json({ error: "roomCode is required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "roomCode is required" },
+        { status: 400 },
+      );
     }
 
     const result = await joinRoom(roomCode);
@@ -14,7 +17,7 @@ export async function POST(request: NextRequest) {
     if (!result) {
       return NextResponse.json(
         { error: "Room not found, expired, or inactive" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 

@@ -7,18 +7,28 @@ import { addEvidenceItem } from "@/lib/evidence/capture";
 export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const body = await request.json();
     const { case_id, cin } = body;
 
-    if (!case_id || !cin) return NextResponse.json({ error: "Missing case_id or cin" }, { status: 400 });
+    if (!case_id || !cin)
+      return NextResponse.json(
+        { error: "Missing case_id or cin" },
+        { status: 400 },
+      );
 
     const companyResult = await fetchCompanyData(cin);
 
     if (!companyResult.data) {
-      return NextResponse.json({ error: companyResult.error || "Failed to fetch company data" }, { status: 404 });
+      return NextResponse.json(
+        { error: companyResult.error || "Failed to fetch company data" },
+        { status: 404 },
+      );
     }
 
     const result = await addEvidenceItem(case_id, user.id, {
@@ -30,13 +40,19 @@ export async function POST(request: NextRequest) {
       source: "mca_fetch",
     });
 
-    return NextResponse.json({
-      item: result.item,
-      company: companyResult.data,
-      source: companyResult.source,
-      partial: !companyResult.success,
-    }, { status: 201 });
+    return NextResponse.json(
+      {
+        item: result.item,
+        company: companyResult.data,
+        source: companyResult.source,
+        partial: !companyResult.success,
+      },
+      { status: 201 },
+    );
   } catch {
-    return NextResponse.json({ error: "Failed to fetch company data" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch company data" },
+      { status: 500 },
+    );
   }
 }

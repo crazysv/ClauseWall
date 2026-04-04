@@ -9,7 +9,12 @@ interface TerminologyTooltipProps {
   children: React.ReactNode;
 }
 
-export function TerminologyTooltip({ term, englishEquivalent, clauseType, children }: TerminologyTooltipProps) {
+export function TerminologyTooltip({
+  term,
+  englishEquivalent,
+  clauseType,
+  children,
+}: TerminologyTooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   return (
@@ -24,9 +29,7 @@ export function TerminologyTooltip({ term, englishEquivalent, clauseType, childr
           <span className="bhasha-term-regional">{term}</span>
           <span className="bhasha-term-arrow">→</span>
           <span className="bhasha-term-english">{englishEquivalent}</span>
-          {clauseType && (
-            <span className="bhasha-term-type">{clauseType}</span>
-          )}
+          {clauseType && <span className="bhasha-term-type">{clauseType}</span>}
         </span>
       )}
 
@@ -57,8 +60,14 @@ export function TerminologyTooltip({ term, englishEquivalent, clauseType, childr
           animation: bhasha-tooltip-in 0.15s ease;
         }
         @keyframes bhasha-tooltip-in {
-          from { opacity: 0; transform: translateX(-50%) translateY(4px); }
-          to { opacity: 1; transform: translateX(-50%) translateY(0); }
+          from {
+            opacity: 0;
+            transform: translateX(-50%) translateY(4px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+          }
         }
         .bhasha-term-regional {
           font-size: 0.8rem;

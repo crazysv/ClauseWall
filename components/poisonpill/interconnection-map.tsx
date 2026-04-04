@@ -61,7 +61,7 @@ export function InterconnectionMap({
     return new Set(
       graph.edges
         .filter((e) => e.trap_id === selectedTrapId)
-        .map((e) => `${e.from_clause}-${e.to_clause}`)
+        .map((e) => `${e.from_clause}-${e.to_clause}`),
     );
   }, [selectedTrapId, graph.edges]);
 
@@ -150,7 +150,7 @@ export function InterconnectionMap({
             {/* Cluster backgrounds */}
             {graph.clusters.map((cluster) => {
               const clusterNodes = graph.nodes.filter((n) =>
-                cluster.clause_numbers.includes(n.clause_number)
+                cluster.clause_numbers.includes(n.clause_number),
               );
               if (clusterNodes.length < 2) return null;
 
@@ -161,8 +161,8 @@ export function InterconnectionMap({
                 positions.reduce((s, p) => s + p.y, 0) / positions.length;
               const maxDist = Math.max(
                 ...positions.map((p) =>
-                  Math.sqrt((p.x - cx) ** 2 + (p.y - cy) ** 2)
-                )
+                  Math.sqrt((p.x - cx) ** 2 + (p.y - cy) ** 2),
+                ),
               );
 
               return (
@@ -182,10 +182,10 @@ export function InterconnectionMap({
             {/* Edges */}
             {graph.edges.map((edge, idx) => {
               const fromNode = graph.nodes.find(
-                (n) => n.clause_number === edge.from_clause
+                (n) => n.clause_number === edge.from_clause,
               );
               const toNode = graph.nodes.find(
-                (n) => n.clause_number === edge.to_clause
+                (n) => n.clause_number === edge.to_clause,
               );
               if (!fromNode || !toNode) return null;
 
@@ -197,8 +197,8 @@ export function InterconnectionMap({
                 edge.strength === "strong"
                   ? 2.5
                   : edge.strength === "moderate"
-                  ? 1.5
-                  : 1;
+                    ? 1.5
+                    : 1;
 
               return (
                 <g key={`edge-${idx}`} opacity={dimmed ? 0.1 : 0.7}>
@@ -334,7 +334,7 @@ export function InterconnectionMap({
         <div className="px-4 py-2 border-t border-white/5 flex flex-wrap gap-3">
           {Object.entries(EDGE_COLORS)
             .filter(([type]) =>
-              graph.edges.some((e) => e.connection_type === type)
+              graph.edges.some((e) => e.connection_type === type),
             )
             .map(([type, color]) => (
               <div key={type} className="flex items-center gap-1">

@@ -62,10 +62,7 @@ export default function DeliberationModal({
             </div>
 
             {/* Full Deliberation Panel */}
-            <DeliberationPanel
-              deliberation={deliberation}
-              animated={true}
-            />
+            <DeliberationPanel deliberation={deliberation} animated={true} />
 
             {/* Summary Stats Footer */}
             <div className="flex flex-wrap items-center gap-4 pt-3 border-t border-white/5">
@@ -77,7 +74,9 @@ export default function DeliberationModal({
                 <span>📊</span>
                 <span className="text-red-400/70">Defense: {predConf}%</span>
                 <span className="text-white/20">|</span>
-                <span className="text-emerald-400/70">Advocate: {guardConf}%</span>
+                <span className="text-emerald-400/70">
+                  Advocate: {guardConf}%
+                </span>
                 <span className="text-white/20">|</span>
                 <span className="text-amber-400/70">Arbiter: {arbConf}%</span>
               </div>

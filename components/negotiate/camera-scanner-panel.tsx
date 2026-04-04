@@ -1,8 +1,21 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Camera, CameraOff, RotateCcw, Loader2, AlertTriangle, CheckCircle2, XCircle } from "lucide-react";
-import { startCameraStream, stopCameraStream, captureFrame, isCameraSupported } from "@/lib/negotiate/camera-processor";
+import {
+  Camera,
+  CameraOff,
+  RotateCcw,
+  Loader2,
+  AlertTriangle,
+  CheckCircle2,
+  XCircle,
+} from "lucide-react";
+import {
+  startCameraStream,
+  stopCameraStream,
+  captureFrame,
+  isCameraSupported,
+} from "@/lib/negotiate/camera-processor";
 import type { CameraClause, RiskLevel } from "@/types";
 
 interface CameraScannerPanelProps {
@@ -10,11 +23,30 @@ interface CameraScannerPanelProps {
   documentType: string;
 }
 
-const RISK_COLORS: Record<RiskLevel, { bg: string; text: string; border: string }> = {
-  safe: { bg: "bg-green-500/5", text: "text-green-400", border: "border-green-500/20" },
-  warning: { bg: "bg-yellow-500/5", text: "text-yellow-400", border: "border-yellow-500/20" },
-  dangerous: { bg: "bg-red-500/5", text: "text-red-400", border: "border-red-500/20" },
-  illegal: { bg: "bg-purple-500/5", text: "text-purple-400", border: "border-purple-500/20" },
+const RISK_COLORS: Record<
+  RiskLevel,
+  { bg: string; text: string; border: string }
+> = {
+  safe: {
+    bg: "bg-green-500/5",
+    text: "text-green-400",
+    border: "border-green-500/20",
+  },
+  warning: {
+    bg: "bg-yellow-500/5",
+    text: "text-yellow-400",
+    border: "border-yellow-500/20",
+  },
+  dangerous: {
+    bg: "bg-red-500/5",
+    text: "text-red-400",
+    border: "border-red-500/20",
+  },
+  illegal: {
+    bg: "bg-purple-500/5",
+    text: "text-purple-400",
+    border: "border-purple-500/20",
+  },
 };
 
 const RISK_ICONS: Record<RiskLevel, React.ReactNode> = {
@@ -24,7 +56,10 @@ const RISK_ICONS: Record<RiskLevel, React.ReactNode> = {
   illegal: <XCircle className="w-4 h-4 text-purple-400" />,
 };
 
-export default function CameraScannerPanel({ jurisdiction, documentType }: CameraScannerPanelProps) {
+export default function CameraScannerPanel({
+  jurisdiction,
+  documentType,
+}: CameraScannerPanelProps) {
   const [cameraActive, setCameraActive] = useState(false);
   const [scanning, setScanning] = useState(false);
   const [clauses, setClauses] = useState<CameraClause[]>([]);
@@ -73,7 +108,9 @@ export default function CameraScannerPanel({ jurisdiction, documentType }: Camer
       setCameraActive(true);
     } catch (err: any) {
       if (err.name === "NotAllowedError") {
-        setError("Camera permission denied. Please allow camera access in your browser settings.");
+        setError(
+          "Camera permission denied. Please allow camera access in your browser settings.",
+        );
       } else if (err.name === "NotFoundError") {
         setError("No camera found on this device.");
       } else {
@@ -134,7 +171,10 @@ export default function CameraScannerPanel({ jurisdiction, documentType }: Camer
         setExtractedText(data.extracted_text);
         setClauses(data.clauses || []);
       } else {
-        setError(data.message || "No text detected. Try adjusting the angle or lighting.");
+        setError(
+          data.message ||
+            "No text detected. Try adjusting the angle or lighting.",
+        );
       }
     } catch (err) {
       console.error("Scan error:", err);
@@ -171,7 +211,9 @@ export default function CameraScannerPanel({ jurisdiction, documentType }: Camer
               <Camera className="w-5 h-5" />
               Start Camera
             </button>
-            {error && <p className="text-xs text-red-400 text-center mt-2">{error}</p>}
+            {error && (
+              <p className="text-xs text-red-400 text-center mt-2">{error}</p>
+            )}
           </div>
         )}
 
@@ -194,9 +236,13 @@ export default function CameraScannerPanel({ jurisdiction, documentType }: Camer
                 style={{ minHeight: "48px" }}
               >
                 {scanning ? (
-                  <><Loader2 className="w-5 h-5 animate-spin" /> Scanning...</>
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" /> Scanning...
+                  </>
                 ) : (
-                  <><Camera className="w-5 h-5" /> Scan</>
+                  <>
+                    <Camera className="w-5 h-5" /> Scan
+                  </>
                 )}
               </button>
 
@@ -259,7 +305,9 @@ export default function CameraScannerPanel({ jurisdiction, documentType }: Camer
                   <span className="mt-0.5 flex-shrink-0">{icon}</span>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className={`text-xs font-medium ${colors.text} uppercase`}>
+                      <span
+                        className={`text-xs font-medium ${colors.text} uppercase`}
+                      >
                         {clause.risk_level}
                       </span>
                       {clause.clause_type && (
@@ -271,11 +319,14 @@ export default function CameraScannerPanel({ jurisdiction, documentType }: Camer
                     <p className="text-sm text-white/70 leading-relaxed line-clamp-3">
                       {clause.text}
                     </p>
-                    {clause.risk_reason && clause.risk_reason !== "No specific risk identified" && (
-                      <p className={`text-xs ${colors.text} mt-1.5 opacity-80`}>
-                        ⚠️ {clause.risk_reason}
-                      </p>
-                    )}
+                    {clause.risk_reason &&
+                      clause.risk_reason !== "No specific risk identified" && (
+                        <p
+                          className={`text-xs ${colors.text} mt-1.5 opacity-80`}
+                        >
+                          ⚠️ {clause.risk_reason}
+                        </p>
+                      )}
                   </div>
                 </div>
               </div>

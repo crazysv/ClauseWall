@@ -45,10 +45,10 @@ interface QRSectionProps {
 
 export default function QRSection({ document: doc }: QRSectionProps) {
   const [shareId, setShareId] = useState<string | null>(
-    doc.public_share_id || null
+    doc.public_share_id || null,
   );
   const [settings, setSettings] = useState<ShareSettings>(
-    doc.share_settings || { ...DEFAULT_SHARE_SETTINGS }
+    doc.share_settings || { ...DEFAULT_SHARE_SETTINGS },
   );
   const [generating, setGenerating] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
@@ -63,7 +63,7 @@ export default function QRSection({ document: doc }: QRSectionProps) {
     : "";
 
   const formattedDate = new Date(
-    doc.qr_generated_at || doc.created_at
+    doc.qr_generated_at || doc.created_at,
   ).toLocaleDateString("en-IN", {
     day: "numeric",
     month: "short",
@@ -236,7 +236,9 @@ export default function QRSection({ document: doc }: QRSectionProps) {
                 <QrCode className="h-7 w-7 text-foreground" />
               </div>
             </div>
-            <h3 className="text-lg font-black uppercase tracking-wider mb-2 text-foreground">Scan Before You Sign</h3>
+            <h3 className="text-lg font-black uppercase tracking-wider mb-2 text-foreground">
+              Scan Before You Sign
+            </h3>
             <p className="text-sm font-bold text-muted-foreground max-w-md mx-auto mb-6">
               Generate a QR verification badge for this contract. Share it with
               the other party to build trust before signing.
@@ -301,8 +303,8 @@ export default function QRSection({ document: doc }: QRSectionProps) {
             <div className="card-impact bg-muted border-2 border-foreground p-3">
               <p className="text-xs font-bold text-foreground">
                 <strong>Always visible:</strong> Verification badge, risk score,
-                clause breakdown counts, document type, jurisdiction, and analysis
-                date.
+                clause breakdown counts, document type, jurisdiction, and
+                analysis date.
               </p>
             </div>
 
@@ -598,9 +600,7 @@ export default function QRSection({ document: doc }: QRSectionProps) {
           </div>
 
           {/* Divider */}
-          <div
-            style={{ height: 1, background: "#e5e7eb", margin: "16px 0" }}
-          />
+          <div style={{ height: 1, background: "#e5e7eb", margin: "16px 0" }} />
 
           {/* Clause Breakdown */}
           <div
@@ -730,10 +730,10 @@ export default function QRSection({ document: doc }: QRSectionProps) {
         </DialogContent>
       </Dialog>
       {/* Embed Code Modal */}
-        <EmbedCodeModal
-          isOpen={showEmbed}
-          onClose={() => setShowEmbed(false)}
-          shareId={shareId!}
+      <EmbedCodeModal
+        isOpen={showEmbed}
+        onClose={() => setShowEmbed(false)}
+        shareId={shareId!}
       />
     </>
   );
@@ -776,7 +776,9 @@ function SettingsToggle({
           <Icon className="h-3.5 w-3.5 text-muted-foreground" />
           {label}
         </p>
-        <p className="text-xs font-bold text-muted-foreground mt-0.5">{description}</p>
+        <p className="text-xs font-bold text-muted-foreground mt-0.5">
+          {description}
+        </p>
       </div>
     </button>
   );

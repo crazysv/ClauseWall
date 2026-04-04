@@ -48,7 +48,7 @@ export default function CollectiveActionCard({
 }: Props) {
   const [voting, setVoting] = useState(false);
   const [voteResult, setVoteResult] = useState<VoteResult | null>(
-    action.vote_result
+    action.vote_result,
   );
 
   const actionInfo = ACTION_LABELS[action.action_type] || {
@@ -81,25 +81,29 @@ export default function CollectiveActionCard({
   const currentVotes = voteResult || action.vote_result;
 
   return (
-    <Card className="border-white/5 bg-white/[0.02] hover:bg-white/[0.03] transition-colors">
+    <Card className="border-foreground border-2 bg-white/[0.02] hover:bg-white/[0.03] transition-colors">
       <CardContent className="p-4">
         <div className="flex items-start justify-between gap-3 mb-3">
           <div className="flex items-start gap-3">
             <span className="text-xl">{actionInfo.emoji}</span>
             <div>
-              <h4 className="text-sm font-medium text-white">{action.title}</h4>
-              <p className="text-[10px] text-white/30 mt-0.5">
+              <h4 className="text-sm font-medium text-foreground">
+                {action.title}
+              </h4>
+              <p className="text-[10px] text-foreground/30 mt-0.5">
                 {actionInfo.label} • Proposed by {action.proposed_by}
               </p>
             </div>
           </div>
-          <Badge className={`text-[10px] ${STATUS_STYLES[action.status] || ""}`}>
+          <Badge
+            className={`text-[10px] ${STATUS_STYLES[action.status] || ""}`}
+          >
             {action.status}
           </Badge>
         </div>
 
         {action.description && (
-          <p className="text-xs text-white/50 mb-3 line-clamp-2">
+          <p className="text-xs text-foreground/50 mb-3 line-clamp-2">
             {action.description}
           </p>
         )}
@@ -111,58 +115,63 @@ export default function CollectiveActionCard({
               <p className="text-sm font-bold text-green-400">
                 {currentVotes.yes_votes}
               </p>
-              <p className="text-[9px] text-white/30">Yes</p>
+              <p className="text-[9px] text-foreground/30">Yes</p>
             </div>
             <div className="rounded-lg bg-red-500/5 p-2 text-center">
               <p className="text-sm font-bold text-red-400">
                 {currentVotes.no_votes}
               </p>
-              <p className="text-[9px] text-white/30">No</p>
+              <p className="text-[9px] text-foreground/30">No</p>
             </div>
             <div className="rounded-lg bg-white/[0.03] p-2 text-center">
-              <p className="text-sm font-bold text-white/40">
+              <p className="text-sm font-bold text-foreground/40">
                 {currentVotes.abstain_votes}
               </p>
-              <p className="text-[9px] text-white/30">Abstain</p>
+              <p className="text-[9px] text-foreground/30">Abstain</p>
             </div>
           </div>
         )}
 
         {/* Voting buttons for members */}
-        {isMember && (action.status === "proposed" || action.status === "voting") && (
-          <div className="flex gap-2">
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => handleVote("yes")}
-              disabled={voting}
-              className="flex-1 text-xs gap-1 border-green-500/20 hover:bg-green-500/10 text-green-400"
-            >
-              {voting ? <Loader2 className="h-3 w-3 animate-spin" /> : <ThumbsUp className="h-3 w-3" />}
-              Yes
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => handleVote("no")}
-              disabled={voting}
-              className="flex-1 text-xs gap-1 border-red-500/20 hover:bg-red-500/10 text-red-400"
-            >
-              <ThumbsDown className="h-3 w-3" />
-              No
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => handleVote("abstain")}
-              disabled={voting}
-              className="flex-1 text-xs gap-1 border-white/10 hover:bg-white/5 text-white/40"
-            >
-              <Minus className="h-3 w-3" />
-              Abstain
-            </Button>
-          </div>
-        )}
+        {isMember &&
+          (action.status === "proposed" || action.status === "voting") && (
+            <div className="flex gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => handleVote("yes")}
+                disabled={voting}
+                className="flex-1 text-xs gap-1 border-green-500/20 hover:bg-green-500/10 text-green-400"
+              >
+                {voting ? (
+                  <Loader2 className="h-3 w-3 animate-spin" />
+                ) : (
+                  <ThumbsUp className="h-3 w-3" />
+                )}
+                Yes
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => handleVote("no")}
+                disabled={voting}
+                className="flex-1 text-xs gap-1 border-red-500/20 hover:bg-red-500/10 text-red-400"
+              >
+                <ThumbsDown className="h-3 w-3" />
+                No
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => handleVote("abstain")}
+                disabled={voting}
+                className="flex-1 text-xs gap-1 border-foreground border-2 hover:bg-muted text-foreground/40"
+              >
+                <Minus className="h-3 w-3" />
+                Abstain
+              </Button>
+            </div>
+          )}
       </CardContent>
     </Card>
   );

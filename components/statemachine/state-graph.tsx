@@ -2,7 +2,15 @@
 
 import { useMemo, useState, useCallback, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ZoomIn, ZoomOut, Maximize2, Play, RotateCcw, Undo2 } from "lucide-react";
+import {
+  X,
+  ZoomIn,
+  ZoomOut,
+  Maximize2,
+  Play,
+  RotateCcw,
+  Undo2,
+} from "lucide-react";
 import type {
   ContractStateMachine,
   ContractState,
@@ -38,15 +46,15 @@ const PAD = 80;
 // ============================================
 
 const STATE_COLORS: Record<StateType, { fill: string; stroke: string }> = {
-  initial:          { fill: "#000000", stroke: "#eab308" }, // black filled, yellow stroke
-  normal:           { fill: "#ffffff", stroke: "#000000" }, // white filled
-  restricted:       { fill: "#000000", stroke: "#000000" },
-  dangerous:        { fill: "#facc15", stroke: "#000000" }, // yellow filled
-  trap:             { fill: "#ef4444", stroke: "#000000" }, // red filled
-  absorbing_trap:   { fill: "#b91c1c", stroke: "#000000" }, // dark red
-  terminal_safe:    { fill: "#22c55e", stroke: "#000000" }, // green
+  initial: { fill: "#000000", stroke: "#eab308" }, // black filled, yellow stroke
+  normal: { fill: "#ffffff", stroke: "#000000" }, // white filled
+  restricted: { fill: "#000000", stroke: "#000000" },
+  dangerous: { fill: "#facc15", stroke: "#000000" }, // yellow filled
+  trap: { fill: "#ef4444", stroke: "#000000" }, // red filled
+  absorbing_trap: { fill: "#b91c1c", stroke: "#000000" }, // dark red
+  terminal_safe: { fill: "#22c55e", stroke: "#000000" }, // green
   terminal_warning: { fill: "#f59e0b", stroke: "#000000" },
-  terminal_loss:    { fill: "#ef4444", stroke: "#000000" },
+  terminal_loss: { fill: "#ef4444", stroke: "#000000" },
 };
 
 const STATE_ICONS: Record<StateType, string> = {
@@ -137,7 +145,7 @@ function getEdgePath(
   from: NodePosition,
   to: NodePosition,
   isSameLayer: boolean,
-  isBackEdge: boolean
+  isBackEdge: boolean,
 ): string {
   const fx = from.x + NODE_W;
   const fy = from.y + NODE_H / 2;
@@ -185,7 +193,10 @@ function MobileListView({
   report: StateMachineReport;
   onStateClick?: (state: ContractState) => void;
 }) {
-  const positions = useMemo(() => calculateLayout(stateMachine), [stateMachine]);
+  const positions = useMemo(
+    () => calculateLayout(stateMachine),
+    [stateMachine],
+  );
   const sortedStates = useMemo(() => {
     return [...stateMachine.states].sort((a, b) => {
       const pa = positions.get(a.id);
@@ -201,7 +212,9 @@ function MobileListView({
         const colors = STATE_COLORS[state.type];
         const icon = STATE_ICONS[state.type];
         const isTrap = report.trapAnalysis.some((t) => t.stateId === state.id);
-        const outgoing = stateMachine.transitions.filter((t) => t.fromStateId === state.id);
+        const outgoing = stateMachine.transitions.filter(
+          (t) => t.fromStateId === state.id,
+        );
 
         return (
           <div key={state.id}>
@@ -210,21 +223,41 @@ function MobileListView({
               className={`w-full text-left p-4 border-4 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] ${
                 isTrap ? "border-red-600 bg-red-100" : "border-black bg-white"
               }`}
-              style={{ borderLeftWidth: 8, borderLeftColor: colors.stroke !== "#000000" && colors.fill === "#000000" ? colors.stroke : colors.stroke === "#000000" && colors.fill !== "#ffffff" ? colors.fill : colors.stroke }}
+              style={{
+                borderLeftWidth: 8,
+                borderLeftColor:
+                  colors.stroke !== "#000000" && colors.fill === "#000000"
+                    ? colors.stroke
+                    : colors.stroke === "#000000" && colors.fill !== "#ffffff"
+                      ? colors.fill
+                      : colors.stroke,
+              }}
             >
               <div className="flex items-center gap-3">
-                <span className="text-lg bg-gray-100 border-2 border-black p-1">{icon}</span>
-                <span className="font-black uppercase tracking-widest text-black/90">{state.name}</span>
+                <span className="text-lg bg-gray-100 border-2 border-black p-1">
+                  {icon}
+                </span>
+                <span className="font-black uppercase tracking-widest text-black/90">
+                  {state.name}
+                </span>
                 <span
                   className="text-[10px] font-black uppercase tracking-widest px-2 py-1 ml-auto"
-                  style={{ backgroundColor: colors.fill, color: colors.fill === "#ffffff" ? "#000000" : "#ffffff", border: `2px solid ${colors.stroke}` }}
+                  style={{
+                    backgroundColor: colors.fill,
+                    color: colors.fill === "#ffffff" ? "#000000" : "#ffffff",
+                    border: `2px solid ${colors.stroke}`,
+                  }}
                 >
                   {state.type.replace(/_/g, " ")}
                 </span>
               </div>
-              <p className="text-xs font-bold text-black/70 mt-3 line-clamp-2">{state.description}</p>
+              <p className="text-xs font-bold text-black/70 mt-3 line-clamp-2">
+                {state.description}
+              </p>
               {state.financialImpact.amount && (
-                <p className="text-xs font-black uppercase tracking-widest text-red-700 mt-2 bg-red-100 inline-block px-1 border-2 border-red-700">💰 {state.financialImpact.amount}</p>
+                <p className="text-xs font-black uppercase tracking-widest text-red-700 mt-2 bg-red-100 inline-block px-1 border-2 border-red-700">
+                  💰 {state.financialImpact.amount}
+                </p>
               )}
             </button>
 
@@ -232,13 +265,18 @@ function MobileListView({
             {outgoing.length > 0 && idx < sortedStates.length - 1 && (
               <div className="pl-8 py-3 space-y-1">
                 {outgoing.slice(0, 2).map((t) => (
-                  <div key={t.id} className="flex items-center gap-2 text-xs font-bold text-black/60 uppercase tracking-widest">
+                  <div
+                    key={t.id}
+                    className="flex items-center gap-2 text-xs font-bold text-black/60 uppercase tracking-widest"
+                  >
                     <span className="text-black font-black">↓</span>
                     <span className="truncate">{t.trigger}</span>
                   </div>
                 ))}
                 {outgoing.length > 2 && (
-                  <span className="text-[10px] font-black uppercase tracking-widest text-black/50">+{outgoing.length - 2} more</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-black/50">
+                    +{outgoing.length - 2} more
+                  </span>
                 )}
               </div>
             )}
@@ -271,8 +309,12 @@ function DetailPanel({
   if (state) {
     const colors = STATE_COLORS[state.type];
     const trap = report.trapAnalysis.find((t) => t.stateId === state.id);
-    const incoming = stateMachine.transitions.filter((t) => t.toStateId === state.id);
-    const outgoing = stateMachine.transitions.filter((t) => t.fromStateId === state.id);
+    const incoming = stateMachine.transitions.filter(
+      (t) => t.toStateId === state.id,
+    );
+    const outgoing = stateMachine.transitions.filter(
+      (t) => t.fromStateId === state.id,
+    );
 
     return (
       <motion.div
@@ -285,61 +327,104 @@ function DetailPanel({
           <div className="flex items-center justify-between mb-6 pb-4 border-b-4 border-black">
             <div className="flex items-center gap-3">
               <span className="text-2xl">{STATE_ICONS[state.type]}</span>
-              <h3 className="font-black uppercase tracking-widest text-black">{state.name}</h3>
+              <h3 className="font-black uppercase tracking-widest text-black">
+                {state.name}
+              </h3>
             </div>
-            <button onClick={onClose} className="p-2 border-2 border-black hover:bg-gray-200 hover:translate-y-0.5 shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:shadow-none transition-all">
+            <button
+              onClick={onClose}
+              className="p-2 border-2 border-black hover:bg-gray-200 hover:translate-y-0.5 shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:shadow-none transition-all"
+            >
               <X className="h-5 w-5 text-black" />
             </button>
           </div>
 
           <span
             className="text-[10px] font-black uppercase tracking-widest px-3 py-1"
-            style={{ backgroundColor: colors.fill, color: colors.fill === "#ffffff" ? "#000000" : "#ffffff", border: `2px solid ${colors.stroke}` }}
+            style={{
+              backgroundColor: colors.fill,
+              color: colors.fill === "#ffffff" ? "#000000" : "#ffffff",
+              border: `2px solid ${colors.stroke}`,
+            }}
           >
             {state.type.replace(/_/g, " ")}
           </span>
 
-          <p className="text-sm font-bold text-black mt-5 leading-relaxed bg-gray-100 p-4 border-4 border-black">{state.description}</p>
+          <p className="text-sm font-bold text-black mt-5 leading-relaxed bg-gray-100 p-4 border-4 border-black">
+            {state.description}
+          </p>
 
           {state.duration && (
             <div className="mt-5 p-3 border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
-              <p className="text-[10px] font-black uppercase tracking-widest text-black/60">Duration</p>
-              <p className="text-sm font-black text-black">{state.duration.value} {state.duration.unit}{state.duration.isFixed ? " (fixed)" : ""}</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-black/60">
+                Duration
+              </p>
+              <p className="text-sm font-black text-black">
+                {state.duration.value} {state.duration.unit}
+                {state.duration.isFixed ? " (fixed)" : ""}
+              </p>
             </div>
           )}
 
           {state.financialImpact.type !== "none" && (
             <div className="mt-4 p-3 bg-red-100 border-4 border-red-900 shadow-[4px_4px_0_0_rgba(127,29,29,1)]">
-              <p className="text-[10px] font-black uppercase tracking-widest text-red-900">Financial Impact</p>
-              <p className="text-sm font-black text-red-900">{state.financialImpact.amount || state.financialImpact.type}</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-red-900">
+                Financial Impact
+              </p>
+              <p className="text-sm font-black text-red-900">
+                {state.financialImpact.amount || state.financialImpact.type}
+              </p>
             </div>
           )}
 
           {state.legalIssues && state.legalIssues.length > 0 && (
             <div className="mt-5">
-              <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-2">Legal Issues</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-2">
+                Legal Issues
+              </p>
               {state.legalIssues.map((issue, i) => (
-                <p key={i} className="text-xs font-bold text-black bg-blue-100 border-2 border-blue-900 px-2 py-1 mb-2 shadow-[2px_2px_0_0_rgba(30,58,138,1)]">⚖️ {issue}</p>
+                <p
+                  key={i}
+                  className="text-xs font-bold text-black bg-blue-100 border-2 border-blue-900 px-2 py-1 mb-2 shadow-[2px_2px_0_0_rgba(30,58,138,1)]"
+                >
+                  ⚖️ {issue}
+                </p>
               ))}
             </div>
           )}
 
           {trap && (
             <div className="mt-5 p-4 bg-yellow-400 border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
-              <p className="text-xs font-black uppercase tracking-widest text-black mb-2">🪤 Trap State — {trap.severity.toUpperCase()}</p>
-              <p className="text-xs font-bold text-black leading-relaxed">{trap.description.substring(0, 150)}</p>
+              <p className="text-xs font-black uppercase tracking-widest text-black mb-2">
+                🪤 Trap State — {trap.severity.toUpperCase()}
+              </p>
+              <p className="text-xs font-bold text-black leading-relaxed">
+                {trap.description.substring(0, 150)}
+              </p>
             </div>
           )}
 
           {incoming.length > 0 && (
             <div className="mt-5 border-t-4 border-black pt-5">
-              <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-2">Incoming ({incoming.length})</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-2">
+                Incoming ({incoming.length})
+              </p>
               {incoming.slice(0, 5).map((t) => {
-                const from = stateMachine.states.find((s) => s.id === t.fromStateId);
+                const from = stateMachine.states.find(
+                  (s) => s.id === t.fromStateId,
+                );
                 return (
-                  <p key={t.id} className="text-xs font-bold text-black mt-2 bg-gray-50 border-2 border-black p-2">
-                    <span className="font-black text-black">← {from?.name || "Unknown"}</span><br/>
-                    <span className="text-black/60 uppercase text-[10px]">{truncate(t.trigger, 40)}</span>
+                  <p
+                    key={t.id}
+                    className="text-xs font-bold text-black mt-2 bg-gray-50 border-2 border-black p-2"
+                  >
+                    <span className="font-black text-black">
+                      ← {from?.name || "Unknown"}
+                    </span>
+                    <br />
+                    <span className="text-black/60 uppercase text-[10px]">
+                      {truncate(t.trigger, 40)}
+                    </span>
                   </p>
                 );
               })}
@@ -348,13 +433,25 @@ function DetailPanel({
 
           {outgoing.length > 0 && (
             <div className="mt-5 border-t-4 border-black pt-5">
-              <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-2">Outgoing ({outgoing.length})</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-2">
+                Outgoing ({outgoing.length})
+              </p>
               {outgoing.slice(0, 5).map((t) => {
-                const to = stateMachine.states.find((s) => s.id === t.toStateId);
+                const to = stateMachine.states.find(
+                  (s) => s.id === t.toStateId,
+                );
                 return (
-                  <p key={t.id} className="text-xs font-bold text-black mt-2 bg-gray-50 border-2 border-black p-2">
-                    <span className="font-black text-black">→ {to?.name || "Unknown"}</span><br/>
-                    <span className="text-black/60 uppercase text-[10px]">{truncate(t.trigger, 40)}</span>
+                  <p
+                    key={t.id}
+                    className="text-xs font-bold text-black mt-2 bg-gray-50 border-2 border-black p-2"
+                  >
+                    <span className="font-black text-black">
+                      → {to?.name || "Unknown"}
+                    </span>
+                    <br />
+                    <span className="text-black/60 uppercase text-[10px]">
+                      {truncate(t.trigger, 40)}
+                    </span>
                   </p>
                 );
               })}
@@ -363,10 +460,17 @@ function DetailPanel({
 
           {state.clauseReferences && state.clauseReferences.length > 0 && (
             <div className="mt-5 border-t-4 border-black pt-5">
-              <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-2">Referenced Clauses</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-2">
+                Referenced Clauses
+              </p>
               <div className="flex flex-wrap gap-2">
-                {state.clauseReferences.map(ref => (
-                  <span key={ref} className="text-xs font-black bg-white border-2 border-black px-2 py-1 shadow-[2px_2px_0_0_rgba(0,0,0,1)]">{ref}</span>
+                {state.clauseReferences.map((ref) => (
+                  <span
+                    key={ref}
+                    className="text-xs font-black bg-white border-2 border-black px-2 py-1 shadow-[2px_2px_0_0_rgba(0,0,0,1)]"
+                  >
+                    {ref}
+                  </span>
                 ))}
               </div>
             </div>
@@ -386,62 +490,104 @@ function DetailPanel({
       >
         <div className="p-6">
           <div className="flex items-center justify-between mb-6 pb-4 border-b-4 border-black">
-            <h3 className="font-black uppercase tracking-widest text-black">Transition Details</h3>
-            <button onClick={onClose} className="p-2 border-2 border-black hover:bg-gray-200 hover:translate-y-0.5 shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:shadow-none transition-all">
+            <h3 className="font-black uppercase tracking-widest text-black">
+              Transition Details
+            </h3>
+            <button
+              onClick={onClose}
+              className="p-2 border-2 border-black hover:bg-gray-200 hover:translate-y-0.5 shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:shadow-none transition-all"
+            >
               <X className="h-5 w-5 text-black" />
             </button>
           </div>
 
-          <p className="text-sm font-bold text-black bg-gray-100 p-4 border-4 border-black mb-6 leading-relaxed">{transition.trigger}</p>
+          <p className="text-sm font-bold text-black bg-gray-100 p-4 border-4 border-black mb-6 leading-relaxed">
+            {transition.trigger}
+          </p>
 
           <div className="grid grid-cols-2 gap-3 mt-3">
             <div className="p-3 bg-white border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
-              <p className="text-[10px] font-black uppercase tracking-widest text-black/60">Type</p>
-              <p className="text-xs font-black text-black">{transition.triggerType.replace(/_/g, " ")}</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-black/60">
+                Type
+              </p>
+              <p className="text-xs font-black text-black">
+                {transition.triggerType.replace(/_/g, " ")}
+              </p>
             </div>
             <div className="p-3 bg-white border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
-              <p className="text-[10px] font-black uppercase tracking-widest text-black/60">Party</p>
-              <p className="text-xs font-black text-black">{transition.party}</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-black/60">
+                Party
+              </p>
+              <p className="text-xs font-black text-black">
+                {transition.party}
+              </p>
             </div>
             <div className="p-3 bg-white border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
-              <p className="text-[10px] font-black uppercase tracking-widest text-black/60">Voluntary</p>
-              <p className="text-xs font-black text-black">{transition.isVoluntary ? "Yes" : "No"}</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-black/60">
+                Voluntary
+              </p>
+              <p className="text-xs font-black text-black">
+                {transition.isVoluntary ? "Yes" : "No"}
+              </p>
             </div>
             <div className="p-3 bg-white border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
-              <p className="text-[10px] font-black uppercase tracking-widest text-black/60">Reversible</p>
-              <p className="text-xs font-black text-black">{transition.isReversible ? "Yes" : "No"}</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-black/60">
+                Reversible
+              </p>
+              <p className="text-xs font-black text-black">
+                {transition.isReversible ? "Yes" : "No"}
+              </p>
             </div>
           </div>
 
           {transition.condition && (
             <div className="mt-6 pt-5 border-t-4 border-black">
-              <p className="text-[10px] font-black uppercase tracking-widest text-black/60">Condition</p>
-              <p className="text-xs font-bold text-black mt-2 bg-yellow-100 border-2 border-yellow-600 p-2 shadow-[2px_2px_0_0_rgba(202,138,4,1)]">{transition.condition}</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-black/60">
+                Condition
+              </p>
+              <p className="text-xs font-bold text-black mt-2 bg-yellow-100 border-2 border-yellow-600 p-2 shadow-[2px_2px_0_0_rgba(202,138,4,1)]">
+                {transition.condition}
+              </p>
             </div>
           )}
 
           {transition.financialConsequence && (
             <div className="mt-5 p-3 bg-red-100 border-4 border-red-900 shadow-[4px_4px_0_0_rgba(127,29,29,1)]">
-              <p className="text-[10px] font-black uppercase tracking-widest text-red-900 mb-1">Financial Impact</p>
-              <p className="text-xs font-black text-red-900">💰 {transition.financialConsequence}</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-red-900 mb-1">
+                Financial Impact
+              </p>
+              <p className="text-xs font-black text-red-900">
+                💰 {transition.financialConsequence}
+              </p>
             </div>
           )}
 
           {transition.clauseReference && (
             <div className="mt-5 border-t-4 border-black pt-5">
-              <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-2">Clause Reference</p>
-              <span className="text-xs font-black bg-white border-2 border-black px-2 py-1 shadow-[2px_2px_0_0_rgba(0,0,0,1)]">{transition.clauseReference}</span>
+              <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-2">
+                Clause Reference
+              </p>
+              <span className="text-xs font-black bg-white border-2 border-black px-2 py-1 shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
+                {transition.clauseReference}
+              </span>
             </div>
           )}
 
           <div className="mt-5 border-t-4 border-black pt-5">
-            <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-2">Probability</p>
-            <span className={`text-xs font-black uppercase tracking-widest px-3 py-1 border-2 border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)] inline-block ${
-              transition.probability === "certain" ? "bg-green-400 text-black" :
-              transition.probability === "likely" ? "bg-blue-400 text-black" :
-              transition.probability === "possible" ? "bg-yellow-400 text-black" :
-              "bg-gray-200 text-black"
-            }`}>
+            <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-2">
+              Probability
+            </p>
+            <span
+              className={`text-xs font-black uppercase tracking-widest px-3 py-1 border-2 border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)] inline-block ${
+                transition.probability === "certain"
+                  ? "bg-green-400 text-black"
+                  : transition.probability === "likely"
+                    ? "bg-blue-400 text-black"
+                    : transition.probability === "possible"
+                      ? "bg-yellow-400 text-black"
+                      : "bg-gray-200 text-black"
+              }`}
+            >
               {transition.probability}
             </span>
           </div>
@@ -467,9 +613,13 @@ export default function StateGraph({
   className = "",
 }: StateGraphProps) {
   const [selectedStateId, setSelectedStateId] = useState<string | null>(null);
-  const [selectedTransitionId, setSelectedTransitionId] = useState<string | null>(null);
+  const [selectedTransitionId, setSelectedTransitionId] = useState<
+    string | null
+  >(null);
   const [hoveredStateId, setHoveredStateId] = useState<string | null>(null);
-  const [simulateCurrentId, setSimulateCurrentId] = useState(stateMachine.initialStateId);
+  const [simulateCurrentId, setSimulateCurrentId] = useState(
+    stateMachine.initialStateId,
+  );
   const [simulateHistory, setSimulateHistory] = useState<string[]>([]);
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
@@ -493,7 +643,10 @@ export default function StateGraph({
   }, [isMobile]);
 
   // Layout
-  const positions = useMemo(() => calculateLayout(stateMachine), [stateMachine]);
+  const positions = useMemo(
+    () => calculateLayout(stateMachine),
+    [stateMachine],
+  );
 
   // Path state IDs set for highlighting
   const pathStateSet = useMemo(() => {
@@ -531,7 +684,7 @@ export default function StateGraph({
       setSelectedTransitionId(null);
       onStateClick?.(state);
     },
-    [mode, onStateClick]
+    [mode, onStateClick],
   );
 
   const handleTransitionClick = useCallback(
@@ -546,7 +699,7 @@ export default function StateGraph({
       setSelectedStateId(null);
       onTransitionClick?.(trans);
     },
-    [mode, simulateCurrentId, onTransitionClick]
+    [mode, simulateCurrentId, onTransitionClick],
   );
 
   const handleSimUndo = useCallback(() => {
@@ -575,9 +728,14 @@ export default function StateGraph({
     (e: React.PointerEvent) => {
       if (e.button !== 0) return;
       setIsPanning(true);
-      panStart.current = { x: e.clientX, y: e.clientY, panX: pan.x, panY: pan.y };
+      panStart.current = {
+        x: e.clientX,
+        y: e.clientY,
+        panX: pan.x,
+        panY: pan.y,
+      };
     },
-    [pan]
+    [pan],
   );
 
   const handlePointerMove = useCallback(
@@ -588,7 +746,7 @@ export default function StateGraph({
         y: panStart.current.panY + (e.clientY - panStart.current.y) / zoom,
       });
     },
-    [isPanning, zoom]
+    [isPanning, zoom],
   );
 
   const handlePointerUp = useCallback(() => setIsPanning(false), []);
@@ -598,7 +756,7 @@ export default function StateGraph({
       e.preventDefault();
       handleZoom(e.deltaY > 0 ? -0.1 : 0.1);
     },
-    [handleZoom]
+    [handleZoom],
   );
 
   // Selected objects for panel
@@ -606,7 +764,8 @@ export default function StateGraph({
     ? stateMachine.states.find((s) => s.id === selectedStateId) || null
     : null;
   const selectedTransition = selectedTransitionId
-    ? stateMachine.transitions.find((t) => t.id === selectedTransitionId) || null
+    ? stateMachine.transitions.find((t) => t.id === selectedTransitionId) ||
+      null
     : null;
 
   // LIST VIEW toggle
@@ -614,7 +773,9 @@ export default function StateGraph({
     return (
       <div className={`relative ${className}`}>
         <div className="flex items-center justify-between px-6 py-4 bg-gray-100 border-4 border-black mb-4">
-          <span className="text-xs font-black uppercase tracking-widest text-black/60">{stateMachine.metadata.totalStates} states</span>
+          <span className="text-xs font-black uppercase tracking-widest text-black/60">
+            {stateMachine.metadata.totalStates} states
+          </span>
           <button
             onClick={() => setViewMode("graph")}
             className="text-xs font-black uppercase tracking-widest text-black hover:text-blue-700 bg-white border-2 border-black px-3 py-1 shadow-[2px_2px_0_0_rgba(0,0,0,1)] transition-all hover:translate-y-0.5 hover:shadow-none"
@@ -632,16 +793,27 @@ export default function StateGraph({
   }
 
   return (
-    <div className={`relative overflow-hidden bg-gray-100 border-4 border-black shadow-[inset_6px_6px_0_0_rgba(0,0,0,0.1)] ${className}`}>
+    <div
+      className={`relative overflow-hidden bg-gray-100 border-4 border-black shadow-[inset_6px_6px_0_0_rgba(0,0,0,0.1)] ${className}`}
+    >
       {/* TOOLBAR */}
       <div className="absolute top-4 left-4 z-10 flex gap-2">
-        <button onClick={() => handleZoom(0.15)} className="p-2 bg-white hover:bg-yellow-400 border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none transition-all text-black">
+        <button
+          onClick={() => handleZoom(0.15)}
+          className="p-2 bg-white hover:bg-yellow-400 border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none transition-all text-black"
+        >
           <ZoomIn className="h-5 w-5" />
         </button>
-        <button onClick={() => handleZoom(-0.15)} className="p-2 bg-white hover:bg-yellow-400 border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none transition-all text-black">
+        <button
+          onClick={() => handleZoom(-0.15)}
+          className="p-2 bg-white hover:bg-yellow-400 border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none transition-all text-black"
+        >
           <ZoomOut className="h-5 w-5" />
         </button>
-        <button onClick={handleFit} className="p-2 bg-white hover:bg-yellow-400 border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none transition-all text-black">
+        <button
+          onClick={handleFit}
+          className="p-2 bg-white hover:bg-yellow-400 border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none transition-all text-black"
+        >
           <Maximize2 className="h-5 w-5" />
         </button>
         <button
@@ -655,10 +827,17 @@ export default function StateGraph({
       {/* SIMULATE CONTROLS */}
       {mode === "simulate" && (
         <div className="absolute top-4 right-4 z-10 flex gap-2">
-          <button onClick={handleSimUndo} disabled={simulateHistory.length === 0} className="p-2 bg-white text-black hover:bg-yellow-400 disabled:bg-gray-200 disabled:text-gray-500 border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] disabled:shadow-none disabled:translate-y-1 hover:translate-y-1 hover:shadow-none transition-all">
+          <button
+            onClick={handleSimUndo}
+            disabled={simulateHistory.length === 0}
+            className="p-2 bg-white text-black hover:bg-yellow-400 disabled:bg-gray-200 disabled:text-gray-500 border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] disabled:shadow-none disabled:translate-y-1 hover:translate-y-1 hover:shadow-none transition-all"
+          >
             <Undo2 className="h-5 w-5" />
           </button>
-          <button onClick={handleSimReset} className="p-2 bg-white text-black hover:bg-yellow-400 hover:text-black border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none transition-all">
+          <button
+            onClick={handleSimReset}
+            className="p-2 bg-white text-black hover:bg-yellow-400 hover:text-black border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none transition-all"
+          >
             <RotateCcw className="h-5 w-5" />
           </button>
         </div>
@@ -669,7 +848,11 @@ export default function StateGraph({
         ref={svgRef}
         viewBox={`0 0 ${svgBounds.width} ${svgBounds.height}`}
         className="w-full"
-        style={{ height: "100%", minHeight: 400, cursor: isPanning ? "grabbing" : "grab" }}
+        style={{
+          height: "100%",
+          minHeight: 400,
+          cursor: isPanning ? "grabbing" : "grab",
+        }}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
@@ -679,13 +862,34 @@ export default function StateGraph({
         aria-label={`Contract state machine graph with ${stateMachine.metadata.totalStates} states`}
       >
         <defs>
-          <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <marker
+            id="arrowhead"
+            markerWidth="10"
+            markerHeight="7"
+            refX="9"
+            refY="3.5"
+            orient="auto"
+          >
             <polygon points="0 0, 10 3.5, 0 7" fill="#64748b" opacity="0.7" />
           </marker>
-          <marker id="arrowhead-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <marker
+            id="arrowhead-red"
+            markerWidth="10"
+            markerHeight="7"
+            refX="9"
+            refY="3.5"
+            orient="auto"
+          >
             <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444" opacity="0.7" />
           </marker>
-          <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <marker
+            id="arrowhead-green"
+            markerWidth="10"
+            markerHeight="7"
+            refX="9"
+            refY="3.5"
+            orient="auto"
+          >
             <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e" opacity="0.7" />
           </marker>
         </defs>
@@ -698,12 +902,23 @@ export default function StateGraph({
             if (!fromPos || !toPos) return null;
 
             const isSameLayer = fromPos.layer === toPos.layer;
-            const isBackEdge = toPos.layer < fromPos.layer || (isSameLayer && trans.toStateId !== trans.fromStateId && fromPos.layer === toPos.layer);
+            const isBackEdge =
+              toPos.layer < fromPos.layer ||
+              (isSameLayer &&
+                trans.toStateId !== trans.fromStateId &&
+                fromPos.layer === toPos.layer);
             const isOnPath = mode === "path" && pathTransSet.has(trans.id);
-            const isHighlighted = trans.id === selectedTransitionId || trans.id === hoveredStateId;
-            const isSimAvailable = mode === "simulate" && trans.fromStateId === simulateCurrentId;
+            const isHighlighted =
+              trans.id === selectedTransitionId || trans.id === hoveredStateId;
+            const isSimAvailable =
+              mode === "simulate" && trans.fromStateId === simulateCurrentId;
 
-            const edgePath = getEdgePath(fromPos, toPos, isSameLayer, isBackEdge);
+            const edgePath = getEdgePath(
+              fromPos,
+              toPos,
+              isSameLayer,
+              isBackEdge,
+            );
             const hasFinancialConsequence = !!trans.financialConsequence;
 
             let strokeColor = "#64748b50";
@@ -720,8 +935,10 @@ export default function StateGraph({
               strokeColor = "#3b82f6";
             }
 
-            const opacity = mode === "path" && !isOnPath ? 0.12 : isHighlighted ? 1 : 0.6;
-            const strokeDash = trans.triggerType === "automatic" ? "6,4" : undefined;
+            const opacity =
+              mode === "path" && !isOnPath ? 0.12 : isHighlighted ? 1 : 0.6;
+            const strokeDash =
+              trans.triggerType === "automatic" ? "6,4" : undefined;
 
             // Midpoint for label
             const midX = (fromPos.x + NODE_W + toPos.x) / 2;
@@ -733,7 +950,9 @@ export default function StateGraph({
                   d={edgePath}
                   fill="none"
                   stroke={strokeColor}
-                  strokeWidth={isOnPath || isHighlighted || isSimAvailable ? 2.5 : 1.5}
+                  strokeWidth={
+                    isOnPath || isHighlighted || isSimAvailable ? 2.5 : 1.5
+                  }
                   strokeDasharray={strokeDash}
                   opacity={opacity}
                   markerEnd={markerEnd}
@@ -798,22 +1017,28 @@ export default function StateGraph({
             const isSelected = state.id === selectedStateId;
             const isHovered = state.id === hoveredStateId;
             const isOnPath = mode === "path" && pathStateSet.has(state.id);
-            const isSimActive = mode === "simulate" && state.id === simulateCurrentId;
+            const isSimActive =
+              mode === "simulate" && state.id === simulateCurrentId;
             const isTrap = state.isTrap;
 
             const opacity = mode === "path" && !isOnPath ? 0.25 : 1;
 
             // Subtitle: duration or financial impact
             let subtitle = "";
-            if (state.duration) subtitle = `${state.duration.value} ${state.duration.unit}`;
-            else if (state.financialImpact.amount) subtitle = state.financialImpact.amount;
+            if (state.duration)
+              subtitle = `${state.duration.value} ${state.duration.unit}`;
+            else if (state.financialImpact.amount)
+              subtitle = state.financialImpact.amount;
 
             return (
               <motion.g
                 key={state.id}
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity, scale: 1 }}
-                transition={{ delay: (pos.layer * 0.08) + (pos.indexInLayer * 0.04), duration: 0.3 }}
+                transition={{
+                  delay: pos.layer * 0.08 + pos.indexInLayer * 0.04,
+                  duration: 0.3,
+                }}
               >
                 {/* Shadow */}
                 <rect
@@ -863,7 +1088,11 @@ export default function StateGraph({
                   height={NODE_H}
                   rx={0}
                   fill={colors.fill}
-                  stroke={colors.stroke === "#000000" && colors.fill === "#000000" ? "#ffffff" : colors.stroke}
+                  stroke={
+                    colors.stroke === "#000000" && colors.fill === "#000000"
+                      ? "#ffffff"
+                      : colors.stroke
+                  }
                   strokeWidth={isSelected ? 6 : 4}
                   className="cursor-pointer transition-all duration-200"
                   onMouseEnter={() => setHoveredStateId(state.id)}
@@ -887,11 +1116,15 @@ export default function StateGraph({
                   width={NODE_H}
                   height={NODE_H}
                   fill="white"
-                  stroke={colors.stroke === "#000000" && colors.fill === "#000000" ? "#ffffff" : colors.stroke}
+                  stroke={
+                    colors.stroke === "#000000" && colors.fill === "#000000"
+                      ? "#ffffff"
+                      : colors.stroke
+                  }
                   strokeWidth={4}
                   className="pointer-events-none"
                 />
-                
+
                 <text
                   x={pos.x + NODE_H / 2}
                   y={pos.y + NODE_H / 2 + 8}
@@ -924,7 +1157,11 @@ export default function StateGraph({
                     textAnchor="middle"
                     fontSize={11}
                     fontWeight={700}
-                    fill={colors.fill === "#ffffff" ? "rgba(0,0,0,0.6)" : "rgba(255,255,255,0.7)"}
+                    fill={
+                      colors.fill === "#ffffff"
+                        ? "rgba(0,0,0,0.6)"
+                        : "rgba(255,255,255,0.7)"
+                    }
                     className="pointer-events-none select-none uppercase tracking-widest"
                   >
                     {truncate(subtitle, 15)}
@@ -934,14 +1171,14 @@ export default function StateGraph({
                 {/* Sim active label */}
                 {isSimActive && (
                   <g className="pointer-events-none">
-                    <rect 
-                      x={pos.x + NODE_W / 2 - 45} 
-                      y={pos.y - 25} 
-                      width={90} 
-                      height={20} 
-                      fill="#2563eb" 
-                      stroke="#000000" 
-                      strokeWidth={2} 
+                    <rect
+                      x={pos.x + NODE_W / 2 - 45}
+                      y={pos.y - 25}
+                      width={90}
+                      height={20}
+                      fill="#2563eb"
+                      stroke="#000000"
+                      strokeWidth={2}
                     />
                     <text
                       x={pos.x + NODE_W / 2}
@@ -984,21 +1221,30 @@ export default function StateGraph({
       {mode === "simulate" && simulateHistory.length > 0 && (
         <div className="absolute bottom-4 left-4 right-4 z-10 flex flex-wrap">
           <div className="flex items-center gap-2 p-3 bg-white border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] overflow-x-auto max-w-full">
-            <span className="text-xs font-black uppercase tracking-widest text-black flex-shrink-0 bg-yellow-400 px-2 py-1 border-2 border-black">Path</span>
+            <span className="text-xs font-black uppercase tracking-widest text-black flex-shrink-0 bg-yellow-400 px-2 py-1 border-2 border-black">
+              Path
+            </span>
             <div className="flex items-center gap-2">
-            {[...simulateHistory, simulateCurrentId].map((sid, i) => {
-              const st = stateMachine.states.find((s) => s.id === sid);
-              return (
-                <span key={`${sid}-${i}`} className="flex items-center gap-2 flex-shrink-0">
-                  {i > 0 && <span className="text-black font-black">→</span>}
-                  <span className={`text-xs font-bold uppercase tracking-widest px-2 py-1 border-2 border-black ${
-                    sid === simulateCurrentId ? "bg-blue-200 text-blue-900" : "bg-gray-100 text-gray-800"
-                  }`}>
-                    {st?.name || sid}
+              {[...simulateHistory, simulateCurrentId].map((sid, i) => {
+                const st = stateMachine.states.find((s) => s.id === sid);
+                return (
+                  <span
+                    key={`${sid}-${i}`}
+                    className="flex items-center gap-2 flex-shrink-0"
+                  >
+                    {i > 0 && <span className="text-black font-black">→</span>}
+                    <span
+                      className={`text-xs font-bold uppercase tracking-widest px-2 py-1 border-2 border-black ${
+                        sid === simulateCurrentId
+                          ? "bg-blue-200 text-blue-900"
+                          : "bg-gray-100 text-gray-800"
+                      }`}
+                    >
+                      {st?.name || sid}
+                    </span>
                   </span>
-                </span>
-              );
-            })}
+                );
+              })}
             </div>
           </div>
         </div>

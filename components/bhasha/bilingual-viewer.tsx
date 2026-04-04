@@ -38,9 +38,7 @@ export function BilingualViewer({
       </div>
       <div className="bhasha-viewer-divider" />
       <div className="bhasha-viewer-pane english">
-        {showLabels && (
-          <span className="bhasha-viewer-label">English</span>
-        )}
+        {showLabels && <span className="bhasha-viewer-label">English</span>}
         <p>{englishText}</p>
       </div>
 

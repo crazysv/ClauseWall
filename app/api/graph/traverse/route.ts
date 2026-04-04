@@ -16,14 +16,14 @@ export async function GET(req: NextRequest) {
     if (!clauseType) {
       return NextResponse.json(
         { error: "clauseType is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     const graphData = await getGraphVisualization(
       clauseType,
       jurisdiction,
-      Math.min(maxDepth, 5)
+      Math.min(maxDepth, 5),
     );
 
     return NextResponse.json({
@@ -39,7 +39,7 @@ export async function GET(req: NextRequest) {
     console.error("[ClauseWall] [API] Graph traverse failed:", error);
     return NextResponse.json(
       { error: "Failed to traverse knowledge graph" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

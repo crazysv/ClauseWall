@@ -8,24 +8,40 @@ import { uploadEvidenceFile } from "@/lib/evidence/storage";
 export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
     const caseId = formData.get("case_id") as string | null;
     const language = (formData.get("language") as string) || "en";
 
-    if (!file || !caseId) return NextResponse.json({ error: "Missing file or case_id" }, { status: 400 });
+    if (!file || !caseId)
+      return NextResponse.json(
+        { error: "Missing file or case_id" },
+        { status: 400 },
+      );
 
     const buffer = Buffer.from(await file.arrayBuffer());
 
     // Transcribe
-    const transcriptionResult = await transcribeAudio(buffer, file.name, { language });
+    const transcriptionResult = await transcribeAudio(buffer, file.name, {
+      language,
+    });
 
     // Upload audio file
     const tempItemId = crypto.randomUUID();
-    const uploadResult = await uploadEvidenceFile(user.id, caseId, tempItemId, buffer, file.name, file.type);
+    const uploadResult = await uploadEvidenceFile(
+      user.id,
+      caseId,
+      tempItemId,
+      buffer,
+      file.name,
+      file.type,
+    );
 
     const duration = transcriptionResult.data?.duration_seconds || 0;
     const durationStr = `${Math.floor(duration / 60)}:${String(Math.floor(duration % 60)).padStart(2, "0")}`;
@@ -45,12 +61,18 @@ export async function POST(request: NextRequest) {
       source: "manual_upload",
     });
 
-    return NextResponse.json({
-      item: result.item,
-      transcription: transcriptionResult,
-      is_duplicate: result.is_duplicate,
-    }, { status: result.is_duplicate ? 409 : 201 });
+    return NextResponse.json(
+      {
+        item: result.item,
+        transcription: transcriptionResult,
+        is_duplicate: result.is_duplicate,
+      },
+      { status: result.is_duplicate ? 409 : 201 },
+    );
   } catch {
-    return NextResponse.json({ error: "Failed to process audio" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to process audio" },
+      { status: 500 },
+    );
   }
 }

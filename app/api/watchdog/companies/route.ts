@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
     console.error("[Watchdog API] Companies GET error:", error);
     return NextResponse.json(
       { error: "Failed to fetch companies" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
     console.error("[Watchdog API] Companies POST error:", error);
     return NextResponse.json(
       { error: "Failed to process request" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

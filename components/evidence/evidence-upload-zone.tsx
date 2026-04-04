@@ -2,7 +2,17 @@
 
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-import { Upload, FileText, MessageSquare, Mail, Mic, Camera, Receipt, Globe, Building2 } from "lucide-react";
+import {
+  Upload,
+  FileText,
+  MessageSquare,
+  Mail,
+  Mic,
+  Camera,
+  Receipt,
+  Globe,
+  Building2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { EvidenceType } from "@/types/evidence";
 
@@ -13,14 +23,62 @@ const CAPTURE_TYPES: Array<{
   accept: string;
   description: string;
 }> = [
-  { type: "document", label: "File", icon: FileText, accept: "*/*", description: "PDF, DOCX, images" },
-  { type: "whatsapp_chat", label: "WhatsApp", icon: MessageSquare, accept: ".txt", description: "Exported chat .txt" },
-  { type: "email", label: "Email", icon: Mail, accept: ".eml", description: ".eml file or paste text" },
-  { type: "audio_recording", label: "Audio", icon: Mic, accept: "audio/*", description: "MP3, WAV, M4A" },
-  { type: "photo", label: "Photo", icon: Camera, accept: "image/*", description: "JPG, PNG evidence" },
-  { type: "payment_receipt", label: "Receipt", icon: Receipt, accept: "image/*,application/pdf", description: "Payment screenshot" },
-  { type: "website_archive", label: "URL", icon: Globe, accept: "", description: "Archive a web page" },
-  { type: "company_data", label: "Company", icon: Building2, accept: "", description: "MCA CIN lookup" },
+  {
+    type: "document",
+    label: "File",
+    icon: FileText,
+    accept: "*/*",
+    description: "PDF, DOCX, images",
+  },
+  {
+    type: "whatsapp_chat",
+    label: "WhatsApp",
+    icon: MessageSquare,
+    accept: ".txt",
+    description: "Exported chat .txt",
+  },
+  {
+    type: "email",
+    label: "Email",
+    icon: Mail,
+    accept: ".eml",
+    description: ".eml file or paste text",
+  },
+  {
+    type: "audio_recording",
+    label: "Audio",
+    icon: Mic,
+    accept: "audio/*",
+    description: "MP3, WAV, M4A",
+  },
+  {
+    type: "photo",
+    label: "Photo",
+    icon: Camera,
+    accept: "image/*",
+    description: "JPG, PNG evidence",
+  },
+  {
+    type: "payment_receipt",
+    label: "Receipt",
+    icon: Receipt,
+    accept: "image/*,application/pdf",
+    description: "Payment screenshot",
+  },
+  {
+    type: "website_archive",
+    label: "URL",
+    icon: Globe,
+    accept: "",
+    description: "Archive a web page",
+  },
+  {
+    type: "company_data",
+    label: "Company",
+    icon: Building2,
+    accept: "",
+    description: "MCA CIN lookup",
+  },
 ];
 
 export function EvidenceUploadZone({
@@ -35,7 +93,8 @@ export function EvidenceUploadZone({
   const [cinInput, setCinInput] = useState("");
 
   const selectedMeta = CAPTURE_TYPES.find((t) => t.type === selectedType);
-  const isUrlType = selectedType === "website_archive" || selectedType === "tos_archive";
+  const isUrlType =
+    selectedType === "website_archive" || selectedType === "tos_archive";
   const isCompanyType = selectedType === "company_data";
 
   const onDrop = useCallback(
@@ -44,7 +103,7 @@ export function EvidenceUploadZone({
         onUpload(selectedType, acceptedFiles);
       }
     },
-    [selectedType, onUpload]
+    [selectedType, onUpload],
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -88,7 +147,9 @@ export function EvidenceUploadZone({
             className="w-full border-4 border-black p-3 bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-bold focus:outline-none focus:translate-x-1 focus:translate-y-1 focus:shadow-none transition-all placeholder:font-medium"
           />
           <Button
-            onClick={() => { if (urlInput) onUpload(selectedType, [], urlInput); }}
+            onClick={() => {
+              if (urlInput) onUpload(selectedType, [], urlInput);
+            }}
             disabled={!urlInput}
             className="btn-impact bg-blue-600 hover:bg-blue-700 text-white"
           >
@@ -106,7 +167,9 @@ export function EvidenceUploadZone({
             className="w-full border-4 border-black p-3 bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-bold focus:outline-none focus:translate-x-1 focus:translate-y-1 focus:shadow-none transition-all placeholder:font-medium font-mono"
           />
           <Button
-            onClick={() => { if (cinInput) onUpload(selectedType, [], cinInput); }}
+            onClick={() => {
+              if (cinInput) onUpload(selectedType, [], cinInput);
+            }}
             disabled={!cinInput}
             className="btn-impact bg-orange-500 hover:bg-orange-600 text-white"
           >
@@ -124,7 +187,9 @@ export function EvidenceUploadZone({
           }`}
         >
           <input {...getInputProps()} />
-          <Upload className={`h-12 w-12 mx-auto mb-4 stroke-[3px] ${isDragActive ? "text-blue-600 dark:text-blue-400 animate-bounce" : "text-black dark:text-white"}`} />
+          <Upload
+            className={`h-12 w-12 mx-auto mb-4 stroke-[3px] ${isDragActive ? "text-blue-600 dark:text-blue-400 animate-bounce" : "text-black dark:text-white"}`}
+          />
           <p className="text-xl font-black uppercase tracking-widest text-foreground">
             {isDragActive ? "DROP FILES HERE..." : "DRAG & DROP FILES HERE"}
           </p>

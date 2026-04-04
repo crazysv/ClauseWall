@@ -16,7 +16,7 @@ export async function POST(request: Request) {
     if (!document_id) {
       return NextResponse.json(
         { error: "document_id is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -30,14 +30,14 @@ export async function POST(request: Request) {
     if (docError || !document) {
       return NextResponse.json(
         { error: "Document not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     if (document.analysis_status !== "completed") {
       return NextResponse.json(
         { error: "Document analysis must be completed first" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -45,7 +45,7 @@ export async function POST(request: Request) {
     const { data: clauses, error: clauseError } = await supabase
       .from("clauses")
       .select(
-        "clause_number, original_text, clause_type, risk_level, risk_score, explanation, legal_citation, extracted_value, extracted_unit"
+        "clause_number, original_text, clause_type, risk_level, risk_score, explanation, legal_citation, extracted_value, extracted_unit",
       )
       .eq("document_id", document_id)
       .order("clause_number", { ascending: true });
@@ -58,7 +58,8 @@ export async function POST(request: Request) {
         trap_density: 0,
         most_dangerous_trap: null,
         most_connected_clause: null,
-        risk_amplification_summary: "Not enough clauses for interconnection analysis.",
+        risk_amplification_summary:
+          "Not enough clauses for interconnection analysis.",
         negotiation_roadmap: [],
       });
     }
@@ -79,7 +80,7 @@ export async function POST(request: Request) {
       })),
       document.document_type || "other",
       document.jurisdiction || "india",
-      document.entity_name || null
+      document.entity_name || null,
     );
 
     // Save new result to document
@@ -93,7 +94,7 @@ export async function POST(request: Request) {
     console.error("[PoisonPill Reanalyze] Error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

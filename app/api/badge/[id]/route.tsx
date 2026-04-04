@@ -13,13 +13,18 @@ export const revalidate = 3600;
 const BADGE_THEMES = {
   safe: { bg: "#064e3b", text: "#4ade80", label: "Verified Safe", icon: "✅" },
   warning: { bg: "#78350f", text: "#facc15", label: "Reviewed", icon: "⚠️" },
-  dangerous: { bg: "#7f1d1d", text: "#f87171", label: "Needs Review", icon: "🔴" },
+  dangerous: {
+    bg: "#7f1d1d",
+    text: "#f87171",
+    label: "Needs Review",
+    icon: "🔴",
+  },
   illegal: { bg: "#3b0764", text: "#c084fc", label: "High Risk", icon: "⛔" },
 };
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const { id } = await params;
@@ -33,7 +38,9 @@ export async function GET(
     // Try to find by public_share_id first
     let { data: doc, error } = await supabase
       .from("documents")
-      .select("overall_risk_score, document_type, public_share_id, verification_tier")
+      .select(
+        "overall_risk_score, document_type, public_share_id, verification_tier",
+      )
       .eq("public_share_id", id)
       .single();
 
@@ -42,10 +49,12 @@ export async function GET(
       console.log("Not found by public_share_id, trying document id..."); // Debug
       const result = await supabase
         .from("documents")
-        .select("overall_risk_score, document_type, public_share_id, verification_tier")
+        .select(
+          "overall_risk_score, document_type, public_share_id, verification_tier",
+        )
         .eq("id", id)
         .single();
-      
+
       doc = result.data;
       error = result.error;
     }
@@ -84,11 +93,14 @@ export async function GET(
   }
 }
 
-function generateShieldBadge(score: number, theme: typeof BADGE_THEMES.safe): string {
+function generateShieldBadge(
+  score: number,
+  theme: typeof BADGE_THEMES.safe,
+): string {
   const width = 220;
   const labelWidth = 90;
   const scoreWidth = width - labelWidth;
-  
+
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="28" viewBox="0 0 ${width} 28">
     <rect rx="6" width="${labelWidth}" height="28" fill="#1e293b"/>
     <rect rx="6" x="${labelWidth}" width="${scoreWidth}" height="28" fill="${theme.bg}"/>
@@ -98,7 +110,10 @@ function generateShieldBadge(score: number, theme: typeof BADGE_THEMES.safe): st
   </svg>`;
 }
 
-function generateCompactBadge(score: number, theme: typeof BADGE_THEMES.safe): string {
+function generateCompactBadge(
+  score: number,
+  theme: typeof BADGE_THEMES.safe,
+): string {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="180" height="56" viewBox="0 0 180 56">
     <rect rx="10" width="180" height="56" fill="#0f172a"/>
     <rect rx="10" width="180" height="56" fill="none" stroke="${theme.text}" stroke-opacity="0.3" stroke-width="1.5"/>
@@ -108,7 +123,11 @@ function generateCompactBadge(score: number, theme: typeof BADGE_THEMES.safe): s
   </svg>`;
 }
 
-function generateFullBadge(score: number, theme: typeof BADGE_THEMES.safe, url: string): string {
+function generateFullBadge(
+  score: number,
+  theme: typeof BADGE_THEMES.safe,
+  url: string,
+): string {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="90" viewBox="0 0 300 90">
     <rect rx="12" width="300" height="90" fill="#0f172a"/>
     <rect rx="12" width="300" height="90" fill="none" stroke="${theme.text}" stroke-opacity="0.2" stroke-width="1.5"/>

@@ -2,12 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import {
-  MessageSquare,
-  FileText,
-  DoorOpen,
-  Search,
-} from "lucide-react";
+import { MessageSquare, FileText, DoorOpen, Search } from "lucide-react";
 
 interface NextStepsProps {
   overallRiskScore: number;
@@ -74,8 +69,7 @@ export function NextSteps({
           </h3>
         </div>
         <p className="text-xs font-bold text-muted-foreground mb-4">
-          Your contract has{" "}
-          {illegalCount > 0 ? `${illegalCount} illegal` : ""}
+          Your contract has {illegalCount > 0 ? `${illegalCount} illegal` : ""}
           {illegalCount > 0 && dangerousCount > 0 ? " and " : ""}
           {dangerousCount > 0 ? `${dangerousCount} dangerous` : ""} clause
           {illegalCount + dangerousCount !== 1 ? "s" : ""}. Here&apos;s what you
@@ -155,10 +149,7 @@ export function NextSteps({
               }}
             />
           )}
-          <SecondaryAction
-            label="Benchmark"
-            href={`/battle/${documentId}`}
-          />
+          <SecondaryAction label="Benchmark" href={`/battle/${documentId}`} />
         </div>
       </motion.div>
     );
@@ -232,10 +223,7 @@ export function NextSteps({
                 ?.scrollIntoView({ behavior: "smooth" });
             }}
           />
-          <SecondaryAction
-            label="Benchmark"
-            href={`/battle/${documentId}`}
-          />
+          <SecondaryAction label="Benchmark" href={`/battle/${documentId}`} />
           <SecondaryAction
             label="Cost Calculator"
             href={`/simulate/${documentId}`}

@@ -28,11 +28,17 @@ export async function POST(request: NextRequest) {
     const { roomId, clauseId, voterId, voterName, vote } = body;
 
     if (!roomId || !clauseId || !voterId || !vote) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 },
+      );
     }
 
     if (!["negotiate", "accept", "reject"].includes(vote)) {
-      return NextResponse.json({ error: "Invalid vote value" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Invalid vote value" },
+        { status: 400 },
+      );
     }
 
     const supabase = await createClient();
@@ -48,7 +54,7 @@ export async function POST(request: NextRequest) {
           voter_name: voterName || "Anonymous",
           vote,
         },
-        { onConflict: "room_id,clause_id,voter_id" }
+        { onConflict: "room_id,clause_id,voter_id" },
       )
       .select()
       .single();

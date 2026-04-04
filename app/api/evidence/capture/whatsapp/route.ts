@@ -7,22 +7,31 @@ import { addEvidenceItem } from "@/lib/evidence/capture";
 export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
     const caseId = formData.get("case_id") as string | null;
 
     if (!file || !caseId) {
-      return NextResponse.json({ error: "Missing file or case_id" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing file or case_id" },
+        { status: 400 },
+      );
     }
 
     const text = await file.text();
     const parsed = parseWhatsAppExport(text);
 
     if (parsed.message_count === 0) {
-      return NextResponse.json({ error: "No messages found in export file" }, { status: 400 });
+      return NextResponse.json(
+        { error: "No messages found in export file" },
+        { status: 400 },
+      );
     }
 
     const result = await addEvidenceItem(caseId, user.id, {
@@ -37,17 +46,23 @@ export async function POST(request: NextRequest) {
       source: "whatsapp_export",
     });
 
-    return NextResponse.json({
-      item: result.item,
-      parsed_summary: {
-        participants: parsed.participants,
-        message_count: parsed.message_count,
-        date_range: parsed.date_range,
-        chat_type: parsed.chat_type,
+    return NextResponse.json(
+      {
+        item: result.item,
+        parsed_summary: {
+          participants: parsed.participants,
+          message_count: parsed.message_count,
+          date_range: parsed.date_range,
+          chat_type: parsed.chat_type,
+        },
+        is_duplicate: result.is_duplicate,
       },
-      is_duplicate: result.is_duplicate,
-    }, { status: result.is_duplicate ? 409 : 201 });
+      { status: result.is_duplicate ? 409 : 201 },
+    );
   } catch {
-    return NextResponse.json({ error: "Failed to parse WhatsApp export" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to parse WhatsApp export" },
+      { status: 500 },
+    );
   }
 }

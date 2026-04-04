@@ -82,7 +82,9 @@ const SEVERITY_CONFIG: Record<
 
 export default function ImpactCard({ impact, onAcknowledge }: Props) {
   const [acknowledged, setAcknowledged] = useState(impact.user_acknowledged);
-  const config = SEVERITY_CONFIG[impact.impact_severity] || SEVERITY_CONFIG.neutral_clarification;
+  const config =
+    SEVERITY_CONFIG[impact.impact_severity] ||
+    SEVERITY_CONFIG.neutral_clarification;
 
   const handleAcknowledge = () => {
     setAcknowledged(true);
@@ -99,9 +101,7 @@ export default function ImpactCard({ impact, onAcknowledge }: Props) {
 
   return (
     <Card
-      className={`relative overflow-hidden border-l-4 ${config.border} ${config.bg} border-white/5 transition-all ${
-        !acknowledged ? "ring-1 ring-indigo-500/20" : "opacity-80"
-      }`}
+      className={`relative overflow-hidden border-l-4 ${config.border} ${config.bg} border-foreground border-2 transition-all ${!acknowledged ? "ring-1 ring-indigo-500/20" : "opacity-80"}`}
     >
       {/* Unacknowledged pulse */}
       {!acknowledged && (
@@ -118,14 +118,16 @@ export default function ImpactCard({ impact, onAcknowledge }: Props) {
         <div className="flex items-start gap-3 mb-3">
           <Scale className={`h-4 w-4 mt-0.5 flex-shrink-0 ${config.color}`} />
           <div className="min-w-0">
-            <h3 className="text-sm font-semibold text-white/90">
+            <h3 className="text-sm font-semibold text-foreground/90">
               {impact.change?.title || "Law Change"}
             </h3>
             <div className="flex items-center gap-2 mt-1">
-              <Badge className={`text-[10px] ${config.color} bg-transparent border border-current/20`}>
+              <Badge
+                className={`text-[10px] ${config.color} bg-transparent border border-current/20`}
+              >
                 {config.label}
               </Badge>
-              <span className="text-[10px] text-white/25 flex items-center gap-1">
+              <span className="text-[10px] text-foreground/25 flex items-center gap-1">
                 <Calendar className="h-3 w-3" />
                 {dateStr}
               </span>
@@ -134,12 +136,13 @@ export default function ImpactCard({ impact, onAcknowledge }: Props) {
         </div>
 
         {/* Clause affected */}
-        <p className="text-xs text-white/30 mb-2">
-          Clause {impact.clause_number || "—"}: {impact.clause_type?.replace(/_/g, " ")}
+        <p className="text-xs text-foreground/30 mb-2">
+          Clause {impact.clause_number || "—"}:{" "}
+          {impact.clause_type?.replace(/_/g, " ")}
         </p>
 
         {/* Impact description */}
-        <p className="text-xs text-white/50 leading-relaxed mb-3">
+        <p className="text-xs text-foreground/50 leading-relaxed mb-3">
           {impact.impact_description}
         </p>
 
@@ -147,11 +150,11 @@ export default function ImpactCard({ impact, onAcknowledge }: Props) {
         {(impact.old_legal_position || impact.new_legal_position) && (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
             {impact.old_legal_position && (
-              <div className="p-2.5 rounded-lg bg-white/[0.02] border border-white/5">
-                <p className="text-[10px] text-white/25 mb-1 uppercase tracking-wider">
+              <div className="p-2.5 rounded-lg bg-white/[0.02] border border-foreground border-2">
+                <p className="text-[10px] text-foreground/25 mb-1 uppercase tracking-wider">
                   Before
                 </p>
-                <p className="text-xs text-white/40 line-clamp-3">
+                <p className="text-xs text-foreground/40 line-clamp-3">
                   {impact.old_legal_position}
                 </p>
               </div>
@@ -196,7 +199,7 @@ export default function ImpactCard({ impact, onAcknowledge }: Props) {
 
         {/* Citation */}
         {impact.new_legal_citation && (
-          <p className="text-[10px] text-white/20 mb-3">
+          <p className="text-[10px] text-foreground/20 mb-3">
             📖 {impact.new_legal_citation}
           </p>
         )}
@@ -215,7 +218,7 @@ export default function ImpactCard({ impact, onAcknowledge }: Props) {
             </Button>
           )}
           {acknowledged && (
-            <span className="text-[10px] text-white/20 flex items-center gap-1">
+            <span className="text-[10px] text-foreground/20 flex items-center gap-1">
               <Check className="h-3 w-3" />
               Acknowledged
             </span>

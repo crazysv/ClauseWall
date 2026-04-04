@@ -17,7 +17,10 @@ interface CityBreakdownChartProps {
   height?: number;
 }
 
-export default function CityBreakdownChart({ data, height = 250 }: CityBreakdownChartProps) {
+export default function CityBreakdownChart({
+  data,
+  height = 250,
+}: CityBreakdownChartProps) {
   const chartData = useMemo(() => {
     return [...data]
       .sort((a, b) => b.total_contracts - a.total_contracts)
@@ -40,7 +43,11 @@ export default function CityBreakdownChart({ data, height = 250 }: CityBreakdown
   return (
     <div style={{ height }}>
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={chartData} layout="vertical" margin={{ top: 5, right: 20, left: 60, bottom: 5 }}>
+        <BarChart
+          data={chartData}
+          layout="vertical"
+          margin={{ top: 5, right: 20, left: 60, bottom: 5 }}
+        >
           <XAxis
             type="number"
             tick={{ fill: "rgba(255,255,255,0.3)", fontSize: 10 }}
@@ -66,12 +73,17 @@ export default function CityBreakdownChart({ data, height = 250 }: CityBreakdown
             formatter={(value?: number) => [`${value ?? 0} contracts`, "Total"]}
             labelFormatter={(label) => {
               const item = chartData.find((d) => d.city === label);
-              return item ? `${item.fullCity} (Risk: ${item.avg_risk_score}/100)` : label;
+              return item
+                ? `${item.fullCity} (Risk: ${item.avg_risk_score}/100)`
+                : label;
             }}
           />
           <Bar dataKey="total_contracts" radius={[0, 4, 4, 0]}>
             {chartData.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={getRiskColor(entry.avg_risk_score)} />
+              <Cell
+                key={`cell-${index}`}
+                fill={getRiskColor(entry.avg_risk_score)}
+              />
             ))}
           </Bar>
         </BarChart>

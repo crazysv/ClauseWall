@@ -57,7 +57,9 @@ export default function UploadPage() {
   const [pastedText, setPastedText] = useState("");
   const [documentType, setDocumentType] = useState("");
   const [jurisdiction, setJurisdiction] = useState("");
-  const [sourceLanguage, setSourceLanguage] = useState<SupportedLanguage | "auto">("auto");
+  const [sourceLanguage, setSourceLanguage] = useState<
+    SupportedLanguage | "auto"
+  >("auto");
   const [activeTab, setActiveTab] = useState("upload");
   const [error, setError] = useState("");
 
@@ -68,10 +70,19 @@ export default function UploadPage() {
   const [mlStatus, setMlStatus] = useState<ModelStatus>("idle");
 
   // Privacy state
-  const { level: privacyLevel, addStep, clearSteps, setBytesSent } = usePrivacy();
-  const [redactionStats, setRedactionStats] = useState<RedactionResult["stats"] | null>(null);
+  const {
+    level: privacyLevel,
+    addStep,
+    clearSteps,
+    setBytesSent,
+  } = usePrivacy();
+  const [redactionStats, setRedactionStats] = useState<
+    RedactionResult["stats"] | null
+  >(null);
   const [showPreSendReview, setShowPreSendReview] = useState(false);
-  const [redactedClausesForReview, setRedactedClausesForReview] = useState<string[]>([]);
+  const [redactedClausesForReview, setRedactedClausesForReview] = useState<
+    string[]
+  >([]);
   const [pendingQuickScanData, setPendingQuickScanData] = useState<{
     file: File | null;
     text: string;
@@ -142,38 +153,37 @@ export default function UploadPage() {
   });
 
   const getClientSideText = async (): Promise<string | null> => {
-  if (activeTab === "paste" && pastedText.trim().length >= 50) {
-    return pastedText;
-  }
-
-  if (activeTab === "upload" && file) {
-    if (file.type === "text/plain") {
-      return await file.text();
+    if (activeTab === "paste" && pastedText.trim().length >= 50) {
+      return pastedText;
     }
 
-    if (file.type === "application/pdf") {
-      try {
-        const { extractTextFromPDFClient } = await import(
-          "@/lib/pdf/client-parser"
-        );
-        const text = await extractTextFromPDFClient(file);
-        if (text) {
-          console.log(
-            `[ClauseWall] PDF parsed client-side: ${text.length} chars`
-          );
-        }
-        return text; // null if parsing failed — ML skipped, quick scan handles it
-      } catch {
-        console.warn("[ClauseWall] Client PDF import failed, skipping ML");
-        return null;
+    if (activeTab === "upload" && file) {
+      if (file.type === "text/plain") {
+        return await file.text();
       }
+
+      if (file.type === "application/pdf") {
+        try {
+          const { extractTextFromPDFClient } =
+            await import("@/lib/pdf/client-parser");
+          const text = await extractTextFromPDFClient(file);
+          if (text) {
+            console.log(
+              `[ClauseWall] PDF parsed client-side: ${text.length} chars`,
+            );
+          }
+          return text; // null if parsing failed — ML skipped, quick scan handles it
+        } catch {
+          console.warn("[ClauseWall] Client PDF import failed, skipping ML");
+          return null;
+        }
+      }
+
+      return null;
     }
 
     return null;
-  }
-
-  return null;
-};
+  };
 
   const runQuickScan = async (inputFile: File | null, inputText: string) => {
     let quickResponse: Response;
@@ -211,7 +221,7 @@ export default function UploadPage() {
 
   const triggerFullAnalysis = async (
     rawText: string,
-    inputFile: File | null
+    inputFile: File | null,
   ) => {
     if (!rawText || rawText.trim().length < 50) return;
 
@@ -272,7 +282,7 @@ export default function UploadPage() {
    * ML instant → Quick Scan enhances → Full Analysis in background
    * All shown on ONE screen
    */
-    const handleAnalyze = async () => {
+  const handleAnalyze = async () => {
     setError("");
     clearSteps();
     setRedactionStats(null);
@@ -298,17 +308,37 @@ export default function UploadPage() {
       let mlRan = false;
 
       // --- STEP 1: Extract text client-side ---
-      addStep({ id: "text_extract", label: "Extracting text from document...", status: "pending", location: "device", timestamp: Date.now() });
+      addStep({
+        id: "text_extract",
+        label: "Extracting text from document...",
+        status: "pending",
+        location: "device",
+        timestamp: Date.now(),
+      });
 
       const clientText = await getClientSideText();
 
-      addStep({ id: "text_extract", label: clientText ? `Text extracted (${clientText.length} chars)` : "Text extraction skipped", status: clientText ? "done" : "error", location: "device", timestamp: Date.now() });
+      addStep({
+        id: "text_extract",
+        label: clientText
+          ? `Text extracted (${clientText.length} chars)`
+          : "Text extraction skipped",
+        status: clientText ? "done" : "error",
+        location: "device",
+        timestamp: Date.now(),
+      });
 
       // --- STEP 2: ML Instant Scan ---
       let mlStartTime = 0;
 
       if (clientText && mlStatus === "ready") {
-        addStep({ id: "ml_classify", label: "Running on-device ML classification...", status: "pending", location: "device", timestamp: Date.now() });
+        addStep({
+          id: "ml_classify",
+          label: "Running on-device ML classification...",
+          status: "pending",
+          location: "device",
+          timestamp: Date.now(),
+        });
 
         mlStartTime = Date.now();
         const mlScanResult = await classifyDocument(clientText);
@@ -319,10 +349,16 @@ export default function UploadPage() {
           mlRan = true;
           window.scrollTo({ top: 0, behavior: "smooth" });
 
-          addStep({ id: "ml_classify", label: `ML classified ${mlScanResult.totalClauses} clauses in ${mlScanResult.inferenceTimeMs.toFixed(0)}ms`, status: "done", location: "device", timestamp: Date.now() });
+          addStep({
+            id: "ml_classify",
+            label: `ML classified ${mlScanResult.totalClauses} clauses in ${mlScanResult.inferenceTimeMs.toFixed(0)}ms`,
+            status: "done",
+            location: "device",
+            timestamp: Date.now(),
+          });
 
           toast.success(
-            `⚡ Instant scan: ${mlScanResult.totalClauses} clauses in ${mlScanResult.inferenceTimeMs.toFixed(0)}ms`
+            `⚡ Instant scan: ${mlScanResult.totalClauses} clauses in ${mlScanResult.inferenceTimeMs.toFixed(0)}ms`,
           );
         }
       }
@@ -330,7 +366,13 @@ export default function UploadPage() {
       // --- MAXIMUM PRIVACY: Stop here ---
       if (privacyLevel === "maximum" && mlRan) {
         setBytesSent(0);
-        addStep({ id: "complete", label: "Analysis complete — zero data sent", status: "done", location: "device", timestamp: Date.now() });
+        addStep({
+          id: "complete",
+          label: "Analysis complete — zero data sent",
+          status: "done",
+          location: "device",
+          timestamp: Date.now(),
+        });
         toast.success("🔒 Maximum privacy: All processing done on-device");
         return;
       }
@@ -342,15 +384,28 @@ export default function UploadPage() {
 
       // --- STEP 3: PII Redaction (Balanced mode) ---
       if (privacyLevel === "balanced" && clientText) {
-        addStep({ id: "pii_redact", label: "Redacting personal information...", status: "pending", location: "device", timestamp: Date.now() });
+        addStep({
+          id: "pii_redact",
+          label: "Redacting personal information...",
+          status: "pending",
+          location: "device",
+          timestamp: Date.now(),
+        });
 
         const clauses = splitIntoClauses(clientText);
         const clauseTexts = clauses.map((c) => c.text);
-        const { redactedClauses: redacted, totalRedactions } = redactClauses(clauseTexts);
+        const { redactedClauses: redacted, totalRedactions } =
+          redactClauses(clauseTexts);
 
         setRedactionStats(totalRedactions);
 
-        addStep({ id: "pii_redact", label: `${totalRedactions.total} PII items redacted`, status: "done", location: "device", timestamp: Date.now() });
+        addStep({
+          id: "pii_redact",
+          label: `${totalRedactions.total} PII items redacted`,
+          status: "done",
+          location: "device",
+          timestamp: Date.now(),
+        });
 
         // Show pre-send review
         if (totalRedactions.total > 0) {
@@ -375,17 +430,29 @@ export default function UploadPage() {
       }
 
       // --- STEP 4: Quick Scan ---
-      addStep({ id: "ai_send", label: "Sending for AI analysis...", status: "pending", location: "server", timestamp: Date.now() });
+      addStep({
+        id: "ai_send",
+        label: "Sending for AI analysis...",
+        status: "pending",
+        location: "server",
+        timestamp: Date.now(),
+      });
 
       const quickData = await runQuickScan(
         activeTab === "upload" ? file : null,
-        pastedText
+        pastedText,
       );
 
       const sentBytes = JSON.stringify(quickData).length;
       setBytesSent(sentBytes);
 
-      addStep({ id: "ai_send", label: `AI analysis complete (${(sentBytes / 1024).toFixed(1)} KB sent)`, status: "done", location: "server", timestamp: Date.now() });
+      addStep({
+        id: "ai_send",
+        label: `AI analysis complete (${(sentBytes / 1024).toFixed(1)} KB sent)`,
+        status: "done",
+        location: "server",
+        timestamp: Date.now(),
+      });
 
       // Ensure ML minimum display time
       if (mlRan && mlStartTime > 0) {
@@ -423,17 +490,29 @@ export default function UploadPage() {
     if (!pendingQuickScanData) return;
 
     try {
-      addStep({ id: "ai_send", label: "Sending anonymized clauses to AI...", status: "pending", location: "server", timestamp: Date.now() });
+      addStep({
+        id: "ai_send",
+        label: "Sending anonymized clauses to AI...",
+        status: "pending",
+        location: "server",
+        timestamp: Date.now(),
+      });
 
       const quickData = await runQuickScan(
         pendingQuickScanData.file,
-        pendingQuickScanData.text
+        pendingQuickScanData.text,
       );
 
       const sentBytes = JSON.stringify(quickData).length;
       setBytesSent(sentBytes);
 
-      addStep({ id: "ai_send", label: `AI analysis complete (${(sentBytes / 1024).toFixed(1)} KB sent)`, status: "done", location: "server", timestamp: Date.now() });
+      addStep({
+        id: "ai_send",
+        label: `AI analysis complete (${(sentBytes / 1024).toFixed(1)} KB sent)`,
+        status: "done",
+        location: "server",
+        timestamp: Date.now(),
+      });
 
       setQuickScanResult(quickData);
 
@@ -499,13 +578,9 @@ export default function UploadPage() {
             <div className="text-center mb-8">
               <h1 className="text-impact-heading text-foreground mb-3">
                 {!quickScanResult && mlResult ? (
-                  <>
-                    ⚡ Instant Analysis
-                  </>
+                  <>⚡ Instant Analysis</>
                 ) : (
-                  <>
-                    🛡️ Contract Analysis
-                  </>
+                  <>🛡️ Contract Analysis</>
                 )}
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground">
@@ -519,8 +594,8 @@ export default function UploadPage() {
                   className="mt-2 border-amber-500/30 text-amber-400 gap-1"
                 >
                   <Cpu className="h-3 w-3" />
-                  Pre-scanned on-device in{" "}
-                  {mlResult.inferenceTimeMs.toFixed(0)}ms
+                  Pre-scanned on-device in {mlResult.inferenceTimeMs.toFixed(0)}
+                  ms
                 </Badge>
               )}
             </div>
@@ -616,9 +691,7 @@ export default function UploadPage() {
                         <input {...getInputProps()} />
                         <Upload
                           className={`w-12 h-12 mx-auto mb-4 transition-colors ${
-                            isDragActive
-                              ? "text-primary"
-                              : "text-foreground"
+                            isDragActive ? "text-primary" : "text-foreground"
                           }`}
                         />
                         {isDragActive ? (
@@ -646,7 +719,9 @@ export default function UploadPage() {
                             <FileText className="h-5 w-5 text-white" />
                           </div>
                           <div>
-                            <p className="text-base font-black uppercase tracking-wider text-foreground">{file.name}</p>
+                            <p className="text-base font-black uppercase tracking-wider text-foreground">
+                              {file.name}
+                            </p>
                             <p className="text-sm font-bold text-muted-foreground">
                               {(file.size / 1024).toFixed(1)} KB
                             </p>
@@ -666,7 +741,9 @@ export default function UploadPage() {
 
                   <TabsContent value="paste" className="mt-6">
                     <div className="space-y-2">
-                      <label className="text-sm font-black uppercase tracking-wider text-foreground">Paste Contract Text</label>
+                      <label className="text-sm font-black uppercase tracking-wider text-foreground">
+                        Paste Contract Text
+                      </label>
                       <Textarea
                         placeholder="Paste your contract text here...
 
@@ -749,7 +826,8 @@ export default function UploadPage() {
                     onChange={setSourceLanguage}
                   />
                   <p className="text-xs text-muted-foreground mt-1">
-                    Auto-detect works for most documents. Select manually for better accuracy.
+                    Auto-detect works for most documents. Select manually for
+                    better accuracy.
                   </p>
                 </div>
 
@@ -833,7 +911,16 @@ export default function UploadPage() {
           }}
           onApprove={handlePreSendApprove}
           redactedClauses={redactedClausesForReview}
-          redactionStats={redactionStats || { total: 0, names: 0, ids: 0, contacts: 0, addresses: 0, financial: 0 }}
+          redactionStats={
+            redactionStats || {
+              total: 0,
+              names: 0,
+              ids: 0,
+              contacts: 0,
+              addresses: 0,
+              financial: 0,
+            }
+          }
           originalClauseCount={redactedClausesForReview.length}
         />
       </div>

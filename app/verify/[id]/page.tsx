@@ -60,7 +60,7 @@ export async function generateMetadata({
   }
 
   const tier = getTierConfig(
-    (doc.verification_tier as VerificationTier) || "needs_work"
+    (doc.verification_tier as VerificationTier) || "needs_work",
   );
 
   return {
@@ -106,7 +106,7 @@ export default async function VerifyPage({
       share_count,
       share_settings,
       created_at
-    `
+    `,
     )
     .eq("public_share_id", shareId)
     .single();
@@ -119,7 +119,7 @@ export default async function VerifyPage({
   await supabase.rpc("increment_share_count", { p_share_id: shareId });
 
   const tier = getTierConfig(
-    (doc.verification_tier as VerificationTier) || "needs_work"
+    (doc.verification_tier as VerificationTier) || "needs_work",
   );
   const settings: ShareSettings = (doc.share_settings as ShareSettings) || {
     show_entity: false,
@@ -128,7 +128,7 @@ export default async function VerifyPage({
   };
 
   const formattedDate = new Date(
-    doc.qr_generated_at || doc.created_at
+    doc.qr_generated_at || doc.created_at,
   ).toLocaleDateString("en-IN", {
     day: "numeric",
     month: "short",
@@ -146,15 +146,16 @@ export default async function VerifyPage({
         {/* Main Card */}
         <div className="bg-white dark:bg-zinc-950 border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all duration-300">
           {/* Top color stripe */}
-          <div className="h-4 border-b-4 border-black" style={{ backgroundColor: tier.color }} />
+          <div
+            className="h-4 border-b-4 border-black"
+            style={{ backgroundColor: tier.color }}
+          />
 
           <div className="p-6 sm:p-8">
             {/* Badge Icon + Label */}
             <div className="text-center mb-8 border-b-4 border-black pb-8 border-dashed">
               <div className="text-6xl mb-4">{tier.icon}</div>
-              <h1
-                className="text-2xl sm:text-3xl font-black uppercase tracking-widest text-black dark:text-white"
-              >
+              <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-widest text-black dark:text-white">
                 <span style={{ color: tier.color }}>{tier.label}</span>
               </h1>
             </div>
@@ -174,7 +175,9 @@ export default async function VerifyPage({
                   >
                     {doc.overall_risk_score}
                   </span>
-                  <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">/100</span>
+                  <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                    /100
+                  </span>
                 </div>
               </div>
             </div>
@@ -206,7 +209,9 @@ export default async function VerifyPage({
               <div className="flex items-center gap-4 text-sm font-bold uppercase tracking-widest">
                 <Calendar className="h-5 w-5 text-black dark:text-white flex-shrink-0 stroke-[3px]" />
                 <span className="text-muted-foreground w-32">VERIFIED</span>
-                <span className="font-black text-foreground">{formattedDate}</span>
+                <span className="font-black text-foreground">
+                  {formattedDate}
+                </span>
               </div>
 
               {/* Entity — only if owner enabled */}
@@ -214,7 +219,9 @@ export default async function VerifyPage({
                 <div className="flex items-center gap-4 text-sm font-bold uppercase tracking-widest">
                   <Building2 className="h-5 w-5 text-black dark:text-white flex-shrink-0 stroke-[3px]" />
                   <span className="text-muted-foreground w-32">ENTITY</span>
-                  <span className="font-black text-foreground">{doc.entity_name}</span>
+                  <span className="font-black text-foreground">
+                    {doc.entity_name}
+                  </span>
                 </div>
               )}
 
@@ -239,14 +246,18 @@ export default async function VerifyPage({
                   <p className="text-xl font-black text-green-800 dark:text-green-300">
                     {doc.safe_count}
                   </p>
-                  <p className="text-xs font-bold uppercase tracking-widest text-green-900 dark:text-green-300 mt-1">SAFE</p>
+                  <p className="text-xs font-bold uppercase tracking-widest text-green-900 dark:text-green-300 mt-1">
+                    SAFE
+                  </p>
                 </div>
                 <div className="text-center p-3 border-4 border-black bg-yellow-100 dark:bg-yellow-900/30 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                   <AlertTriangle className="h-5 w-5 text-yellow-700 dark:text-yellow-400 mx-auto mb-2 stroke-[3px]" />
                   <p className="text-xl font-black text-yellow-800 dark:text-yellow-300">
                     {doc.warning_count}
                   </p>
-                  <p className="text-xs font-bold uppercase tracking-widest text-yellow-900 dark:text-yellow-300 mt-1">WARN</p>
+                  <p className="text-xs font-bold uppercase tracking-widest text-yellow-900 dark:text-yellow-300 mt-1">
+                    WARN
+                  </p>
                 </div>
                 <div className="text-center p-3 border-4 border-black bg-red-100 dark:bg-red-900/30 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                   <XCircle className="h-5 w-5 text-red-700 dark:text-red-400 mx-auto mb-2 stroke-[3px]" />
@@ -262,7 +273,9 @@ export default async function VerifyPage({
                   <p className="text-xl font-black text-purple-800 dark:text-purple-300">
                     {doc.illegal_count}
                   </p>
-                  <p className="text-xs font-bold uppercase tracking-widest text-purple-900 dark:text-purple-300 mt-1">BANNED</p>
+                  <p className="text-xs font-bold uppercase tracking-widest text-purple-900 dark:text-purple-300 mt-1">
+                    BANNED
+                  </p>
                 </div>
               </div>
               <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground text-center mt-4">
@@ -311,12 +324,14 @@ export default async function VerifyPage({
           <div className="px-6 py-6 border-t-4 border-black bg-gray-100 dark:bg-zinc-900">
             <div className="flex items-center justify-center gap-2 mb-3">
               <Shield className="h-5 w-5 text-black dark:text-white stroke-[3px]" />
-              <span className="text-base font-black uppercase tracking-widest">CLAUSEWALL</span>
+              <span className="text-base font-black uppercase tracking-widest">
+                CLAUSEWALL
+              </span>
             </div>
             <p className="text-xs text-center font-bold text-muted-foreground uppercase tracking-widest leading-relaxed">
-              India&apos;s AI Contract Analyzer. This verification is valid as of the
-              date shown. Contract terms may have changed since verification.
-              This is not legal advice.
+              India&apos;s AI Contract Analyzer. This verification is valid as
+              of the date shown. Contract terms may have changed since
+              verification. This is not legal advice.
             </p>
           </div>
         </div>

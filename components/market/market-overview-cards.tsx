@@ -1,7 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FileText, MapPin, Building2, BarChart3, TrendingUp, Database } from "lucide-react";
+import {
+  FileText,
+  MapPin,
+  Building2,
+  BarChart3,
+  TrendingUp,
+  Database,
+} from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import type { PlatformStats } from "@/types/market";
 
@@ -60,7 +67,9 @@ const statCards = [
   },
 ];
 
-export default function MarketOverviewCards({ stats }: MarketOverviewCardsProps) {
+export default function MarketOverviewCards({
+  stats,
+}: MarketOverviewCardsProps) {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
       {statCards.map((card, index) => {
@@ -74,7 +83,9 @@ export default function MarketOverviewCards({ stats }: MarketOverviewCardsProps)
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.05 }}
           >
-            <Card className={`bg-gradient-to-br ${card.bgColor} ${card.borderColor} h-full`}>
+            <Card
+              className={`bg-gradient-to-br ${card.bgColor} ${card.borderColor} h-full`}
+            >
               <CardContent className="p-4 flex flex-col items-center text-center">
                 <div className={`p-2 rounded-lg bg-white/5 mb-2`}>
                   <Icon className={`h-5 w-5 ${card.color}`} />

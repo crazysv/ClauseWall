@@ -52,9 +52,7 @@ export default function HomePage() {
 
           <h1 className="animate-fade-in-up stagger-1 text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-none text-foreground">
             Your Last Line of{" "}
-            <span className="relative text-primary">
-              Defense
-            </span>{" "}
+            <span className="relative text-primary">Defense</span>{" "}
             <br className="hidden sm:block" />
             Before Signing
           </h1>
@@ -63,9 +61,14 @@ export default function HomePage() {
             India&apos;s first AI contract analyzer. ClauseWall finds clauses{" "}
             <span className="text-primary font-bold">designed to trap you</span>
             , cites the{" "}
-            <span className="text-foreground font-bold">exact Indian laws they violate</span>
+            <span className="text-foreground font-bold">
+              exact Indian laws they violate
+            </span>
             , and helps you{" "}
-            <span className="text-green-600 font-bold">negotiate with confidence</span>.
+            <span className="text-green-600 font-bold">
+              negotiate with confidence
+            </span>
+            .
           </p>
 
           <div className="animate-fade-in-up stagger-3 mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -87,19 +90,29 @@ export default function HomePage() {
           <div className="animate-fade-in-up stagger-4 mt-12 flex flex-wrap items-center justify-center gap-6 text-sm font-semibold text-muted-foreground">
             <div className="flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4 text-primary" />
-              <span><span className="text-foreground font-bold">100%</span> Free</span>
+              <span>
+                <span className="text-foreground font-bold">100%</span> Free
+              </span>
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4 text-primary" />
-              <span><span className="text-foreground font-bold">750+</span> Legal Rules</span>
+              <span>
+                <span className="text-foreground font-bold">750+</span> Legal
+                Rules
+              </span>
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4 text-primary" />
-              <span><span className="text-foreground font-bold">Indian</span> Laws</span>
+              <span>
+                <span className="text-foreground font-bold">Indian</span> Laws
+              </span>
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4 text-primary" />
-              <span><span className="text-foreground font-bold">Browser</span> Extension</span>
+              <span>
+                <span className="text-foreground font-bold">Browser</span>{" "}
+                Extension
+              </span>
             </div>
           </div>
         </div>
@@ -117,14 +130,17 @@ export default function HomePage() {
               </div>
               <div className="flex-1 text-center md:text-left">
                 <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
-                  <h3 className="text-xl font-black uppercase tracking-wider text-foreground">Browser Extension</h3>
+                  <h3 className="text-xl font-black uppercase tracking-wider text-foreground">
+                    Browser Extension
+                  </h3>
                   <Badge className="bg-primary text-primary-foreground font-black uppercase tracking-wider border-2 border-primary">
                     NEW
                   </Badge>
                 </div>
                 <p className="text-muted-foreground text-sm font-bold mt-2">
-                  Automatically scan Terms of Service on any website. Visit Spotify, Uber, or any app&apos;s
-                  legal page — ClauseWall highlights dangerous clauses in real-time.
+                  Automatically scan Terms of Service on any website. Visit
+                  Spotify, Uber, or any app&apos;s legal page — ClauseWall
+                  highlights dangerous clauses in real-time.
                 </p>
               </div>
               <div className="flex-shrink-0 mt-4 md:mt-0">
@@ -155,16 +171,28 @@ export default function HomePage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
               <div className="border-2 border-foreground card-impact p-6 text-center bg-background">
-                <div className="text-primary text-5xl font-black tabular-nums">73</div>
-                <div className="text-sm font-black text-muted-foreground uppercase tracking-wider mt-2">Overall Risk Score</div>
+                <div className="text-primary text-5xl font-black tabular-nums">
+                  73
+                </div>
+                <div className="text-sm font-black text-muted-foreground uppercase tracking-wider mt-2">
+                  Overall Risk Score
+                </div>
               </div>
               <div className="border-2 border-foreground card-impact p-6 text-center bg-background">
-                <div className="text-foreground text-5xl font-black tabular-nums">12</div>
-                <div className="text-sm font-black text-muted-foreground uppercase tracking-wider mt-2">Clauses Analyzed</div>
+                <div className="text-foreground text-5xl font-black tabular-nums">
+                  12
+                </div>
+                <div className="text-sm font-black text-muted-foreground uppercase tracking-wider mt-2">
+                  Clauses Analyzed
+                </div>
               </div>
               <div className="border-2 border-foreground card-impact p-6 text-center bg-background">
-                <div className="text-purple-600 text-5xl font-black tabular-nums">3</div>
-                <div className="text-sm font-black text-muted-foreground uppercase tracking-wider mt-2">Illegal Clauses Found</div>
+                <div className="text-purple-600 text-5xl font-black tabular-nums">
+                  3
+                </div>
+                <div className="text-sm font-black text-muted-foreground uppercase tracking-wider mt-2">
+                  Illegal Clauses Found
+                </div>
               </div>
             </div>
 
@@ -174,15 +202,21 @@ export default function HomePage() {
                   <Badge className="bg-purple-600 text-white font-black uppercase tracking-wider border-2 border-purple-600">
                     ⛔ ILLEGAL
                   </Badge>
-                  <span className="text-sm font-black text-foreground uppercase tracking-wider">Score: 92/100</span>
+                  <span className="text-sm font-black text-foreground uppercase tracking-wider">
+                    Score: 92/100
+                  </span>
                 </div>
                 <p className="text-sm text-foreground font-bold italic border-l-2 border-foreground/20 pl-4 py-1">
-                  &quot;The security deposit of 10 months rent shall be forfeited entirely if tenant
-                  terminates before lock-in period...&quot;
+                  &quot;The security deposit of 10 months rent shall be
+                  forfeited entirely if tenant terminates before lock-in
+                  period...&quot;
                 </p>
                 <p className="text-sm font-black text-purple-700 mt-4 uppercase tracking-wider leading-relaxed">
-                  <span className="text-xl inline-block mr-2 relative top-0.5">⚖️</span>
-                  Violates Model Tenancy Act, 2021 — Security deposit cannot exceed 2 months rent for residential property.
+                  <span className="text-xl inline-block mr-2 relative top-0.5">
+                    ⚖️
+                  </span>
+                  Violates Model Tenancy Act, 2021 — Security deposit cannot
+                  exceed 2 months rent for residential property.
                 </p>
               </div>
 
@@ -191,15 +225,20 @@ export default function HomePage() {
                   <Badge className="bg-primary text-primary-foreground font-black uppercase tracking-wider border-2 border-primary">
                     🔴 DANGEROUS
                   </Badge>
-                  <span className="text-sm font-black text-foreground uppercase tracking-wider">Score: 74/100</span>
+                  <span className="text-sm font-black text-foreground uppercase tracking-wider">
+                    Score: 74/100
+                  </span>
                 </div>
                 <p className="text-sm text-foreground font-bold italic border-l-2 border-foreground/20 pl-4 py-1">
-                  &quot;Tenant shall not be entitled to any interest on the security deposit
-                  amount for the entire duration...&quot;
+                  &quot;Tenant shall not be entitled to any interest on the
+                  security deposit amount for the entire duration...&quot;
                 </p>
                 <p className="text-sm font-black text-primary mt-4 uppercase tracking-wider leading-relaxed">
-                  <span className="text-xl inline-block mr-2 relative top-0.5">⚖️</span>
-                  Potential violation of Maharashtra Rent Control Act — Landlord must pay interest on deposit in certain states.
+                  <span className="text-xl inline-block mr-2 relative top-0.5">
+                    ⚖️
+                  </span>
+                  Potential violation of Maharashtra Rent Control Act — Landlord
+                  must pay interest on deposit in certain states.
                 </p>
               </div>
 
@@ -208,11 +247,13 @@ export default function HomePage() {
                   <Badge className="bg-green-600 text-white font-black uppercase tracking-wider border-2 border-green-600">
                     ✅ SAFE
                   </Badge>
-                  <span className="text-sm font-black text-foreground uppercase tracking-wider">Score: 8/100</span>
+                  <span className="text-sm font-black text-foreground uppercase tracking-wider">
+                    Score: 8/100
+                  </span>
                 </div>
                 <p className="text-sm text-foreground font-bold italic border-l-2 border-foreground/20 pl-4 py-1">
-                  &quot;The monthly rent shall be ₹25,000 payable on or before the 5th of each
-                  month via bank transfer...&quot;
+                  &quot;The monthly rent shall be ₹25,000 payable on or before
+                  the 5th of each month via bank transfer...&quot;
                 </p>
                 <p className="text-sm font-black text-green-700 mt-4 uppercase tracking-wider leading-relaxed">
                   Standard rent payment clause. Fair and straightforward.
@@ -224,14 +265,17 @@ export default function HomePage() {
       </section>
 
       {/* Features */}
-      <section id="features" className="bg-muted py-20 md:py-32 px-4 md:px-6 border-t-2 border-border">
+      <section
+        id="features"
+        className="bg-muted py-20 md:py-32 px-4 md:px-6 border-t-2 border-border"
+      >
         <div className="max-w-3xl mx-auto text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
             Not Just Another <span className="text-primary">AI Tool</span>
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground mt-4 max-w-2xl mx-auto font-medium">
-            ChatGPT gives vague advice. ClauseWall gives you exact Indian laws, risk scores,
-            negotiation scripts, and legal notices.
+            ChatGPT gives vague advice. ClauseWall gives you exact Indian laws,
+            risk scores, negotiation scripts, and legal notices.
           </p>
         </div>
 
@@ -243,10 +287,12 @@ export default function HomePage() {
                 <div className="w-12 h-12 border-2 border-foreground bg-muted flex items-center justify-center mb-4 transition-transform group-hover:-translate-y-1">
                   <Scale className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">750+ Legal Rules</h3>
+                <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">
+                  750+ Legal Rules
+                </h3>
                 <p className="text-muted-foreground font-bold leading-relaxed text-sm">
-                  Verified against Indian Contract Act, RERA, Model Tenancy Act, and state-specific
-                  laws. Not AI guesses — real legal database.
+                  Verified against Indian Contract Act, RERA, Model Tenancy Act,
+                  and state-specific laws. Not AI guesses — real legal database.
                 </p>
               </CardContent>
             </Card>
@@ -258,10 +304,12 @@ export default function HomePage() {
                 <div className="w-12 h-12 border-2 border-foreground bg-muted flex items-center justify-center mb-4 transition-transform group-hover:-translate-y-1">
                   <AlertTriangle className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">Clause-by-Clause Scoring</h3>
+                <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">
+                  Clause-by-Clause Scoring
+                </h3>
                 <p className="text-muted-foreground font-bold leading-relaxed text-sm">
-                  Every clause gets a 0-100 risk score with plain English explanation. No legal
-                  jargon. No confusion.
+                  Every clause gets a 0-100 risk score with plain English
+                  explanation. No legal jargon. No confusion.
                 </p>
               </CardContent>
             </Card>
@@ -273,10 +321,12 @@ export default function HomePage() {
                 <div className="w-12 h-12 border-2 border-foreground bg-muted flex items-center justify-center mb-4 transition-transform group-hover:-translate-y-1">
                   <FileText className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">Legal Notice Generator</h3>
+                <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">
+                  Legal Notice Generator
+                </h3>
                 <p className="text-muted-foreground font-bold leading-relaxed text-sm">
-                  Don&apos;t just find problems — fight back. Auto-generate a professional legal
-                  notice citing every violation.
+                  Don&apos;t just find problems — fight back. Auto-generate a
+                  professional legal notice citing every violation.
                 </p>
               </CardContent>
             </Card>
@@ -294,16 +344,21 @@ export default function HomePage() {
                 <div className="w-12 h-12 border-2 border-foreground bg-muted flex items-center justify-center mb-4 transition-transform group-hover:-translate-y-1">
                   <MessageSquare className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">Negotiation Playbook</h3>
+                <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">
+                  Negotiation Playbook
+                </h3>
                 <p className="text-muted-foreground font-bold leading-relaxed text-sm">
-                  Get exact scripts for what to say to your landlord. Counter-responses for every
-                  pushback. Share to WhatsApp.
+                  Get exact scripts for what to say to your landlord.
+                  Counter-responses for every pushback. Share to WhatsApp.
                 </p>
               </CardContent>
             </Card>
           </Link>
 
-          <Card id="extension" className="card-impact border-2 border-foreground p-8 hover:-translate-y-[4px] hover:shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] transition-all duration-150 h-full relative overflow-hidden group">
+          <Card
+            id="extension"
+            className="card-impact border-2 border-foreground p-8 hover:-translate-y-[4px] hover:shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] transition-all duration-150 h-full relative overflow-hidden group"
+          >
             <div className="absolute top-4 right-4">
               <Badge className="bg-foreground text-background font-black uppercase tracking-wider text-[10px] border-2 border-foreground">
                 NEW
@@ -313,10 +368,12 @@ export default function HomePage() {
               <div className="w-12 h-12 border-2 border-foreground bg-muted flex items-center justify-center mb-4 transition-transform group-hover:-translate-y-1">
                 <Chrome className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">Browser Extension</h3>
+              <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">
+                Browser Extension
+              </h3>
               <p className="text-muted-foreground font-bold leading-relaxed text-sm">
-                Auto-scan Terms of Service on any website. Extension highlights dangerous clauses
-                in real-time. Works on Chrome, Brave, Edge.
+                Auto-scan Terms of Service on any website. Extension highlights
+                dangerous clauses in real-time. Works on Chrome, Brave, Edge.
               </p>
             </CardContent>
           </Card>
@@ -331,10 +388,12 @@ export default function HomePage() {
               <div className="w-12 h-12 border-2 border-foreground bg-muted flex items-center justify-center mb-4 transition-transform group-hover:-translate-y-1">
                 <QrCode className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">QR Verification Badge</h3>
+              <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">
+                QR Verification Badge
+              </h3>
               <p className="text-muted-foreground font-bold leading-relaxed text-sm">
-                &quot;Scan Before You Sign&quot; — Generate a QR badge for your contract. Tenant scans,
-                sees verification status. Build trust.
+                &quot;Scan Before You Sign&quot; — Generate a QR badge for your
+                contract. Tenant scans, sees verification status. Build trust.
               </p>
             </CardContent>
           </Card>
@@ -344,10 +403,12 @@ export default function HomePage() {
               <div className="w-12 h-12 border-2 border-foreground bg-muted flex items-center justify-center mb-4 transition-transform group-hover:-translate-y-1">
                 <BookOpen className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">Fair Alternative Suggestions</h3>
+              <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">
+                Fair Alternative Suggestions
+              </h3>
               <p className="text-muted-foreground font-bold leading-relaxed text-sm">
-                For every predatory clause, we show how it SHOULD read. Copy-paste the fair
-                version into your counter-proposal.
+                For every predatory clause, we show how it SHOULD read.
+                Copy-paste the fair version into your counter-proposal.
               </p>
             </CardContent>
           </Card>
@@ -357,10 +418,13 @@ export default function HomePage() {
               <div className="w-12 h-12 border-2 border-foreground bg-muted flex items-center justify-center mb-4 transition-transform group-hover:-translate-y-1">
                 <Users className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">Community Intelligence</h3>
+              <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">
+                Community Intelligence
+              </h3>
               <p className="text-muted-foreground font-bold leading-relaxed text-sm">
-                &quot;This clause pattern has been flagged 47 times in Mumbai.&quot; Learn from
-                others&apos; experiences. Crowdsourced protection.
+                &quot;This clause pattern has been flagged 47 times in
+                Mumbai.&quot; Learn from others&apos; experiences. Crowdsourced
+                protection.
               </p>
             </CardContent>
           </Card>
@@ -371,7 +435,9 @@ export default function HomePage() {
                 <div className="w-12 h-12 border-2 border-foreground bg-muted flex items-center justify-center mb-4 transition-transform group-hover:-translate-y-1">
                   <Blocks className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">Wall of Shame</h3>
+                <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">
+                  Wall of Shame
+                </h3>
                 <p className="text-muted-foreground font-bold leading-relaxed text-sm">
                   &quot;This landlord&apos;s contracts have been flagged 47
                   times.&quot; Check entity reputation before you sign.
@@ -383,7 +449,10 @@ export default function HomePage() {
       </section>
 
       {/* How It Works */}
-      <section id="how-it-works" className="bg-background py-20 md:py-32 px-4 md:px-6 border-t-2 border-border">
+      <section
+        id="how-it-works"
+        className="bg-background py-20 md:py-32 px-4 md:px-6 border-t-2 border-border"
+      >
         <div className="max-w-3xl mx-auto text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
             Three Steps to <span className="text-primary">Protection</span>
@@ -399,10 +468,12 @@ export default function HomePage() {
             <div className="w-12 h-12 border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] bg-primary text-primary-foreground font-black text-lg flex items-center justify-center mb-6 mx-auto md:mx-0 relative z-10 transition-transform group-hover:-translate-y-1">
               1
             </div>
-            <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-3">Upload</h3>
+            <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-3">
+              Upload
+            </h3>
             <p className="text-sm text-muted-foreground font-bold leading-relaxed">
-              Drop your PDF or paste the contract text. Rental agreements, offer letters,
-              loan documents — we handle them all.
+              Drop your PDF or paste the contract text. Rental agreements, offer
+              letters, loan documents — we handle them all.
             </p>
           </div>
 
@@ -411,7 +482,9 @@ export default function HomePage() {
             <div className="w-12 h-12 border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] bg-primary text-primary-foreground font-black text-lg flex items-center justify-center mb-6 mx-auto md:mx-0 relative z-10 transition-transform group-hover:-translate-y-1">
               2
             </div>
-            <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-3">Analyze</h3>
+            <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-3">
+              Analyze
+            </h3>
             <p className="text-sm text-muted-foreground font-bold leading-relaxed">
               Quick scan in 5 seconds. Full verified analysis in 60 seconds.
             </p>
@@ -421,7 +494,9 @@ export default function HomePage() {
             <div className="w-12 h-12 border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] bg-primary text-primary-foreground font-black text-lg flex items-center justify-center mb-6 mx-auto md:mx-0 relative z-10 transition-transform group-hover:-translate-y-1">
               3
             </div>
-            <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-3">Protect</h3>
+            <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-3">
+              Protect
+            </h3>
             <p className="text-sm text-muted-foreground font-bold leading-relaxed">
               Get negotiation scripts, generate legal notices, share QR badge.
             </p>
@@ -434,20 +509,36 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto border-t-2 border-border pt-16 pb-16">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center md:text-left">
             <div>
-              <div className="text-5xl md:text-6xl font-black tabular-nums text-foreground">750+</div>
-              <div className="text-sm font-bold text-muted-foreground uppercase tracking-wider mt-2">Legal Rules</div>
+              <div className="text-5xl md:text-6xl font-black tabular-nums text-foreground">
+                750+
+              </div>
+              <div className="text-sm font-bold text-muted-foreground uppercase tracking-wider mt-2">
+                Legal Rules
+              </div>
             </div>
             <div>
-              <div className="text-5xl md:text-6xl font-black tabular-nums text-foreground">21</div>
-              <div className="text-sm font-bold text-muted-foreground uppercase tracking-wider mt-2">Indian States</div>
+              <div className="text-5xl md:text-6xl font-black tabular-nums text-foreground">
+                21
+              </div>
+              <div className="text-sm font-bold text-muted-foreground uppercase tracking-wider mt-2">
+                Indian States
+              </div>
             </div>
             <div>
-              <div className="text-5xl md:text-6xl font-black tabular-nums text-foreground">10</div>
-              <div className="text-sm font-bold text-muted-foreground uppercase tracking-wider mt-2">Contract Types</div>
+              <div className="text-5xl md:text-6xl font-black tabular-nums text-foreground">
+                10
+              </div>
+              <div className="text-sm font-bold text-muted-foreground uppercase tracking-wider mt-2">
+                Contract Types
+              </div>
             </div>
             <div>
-              <div className="text-5xl md:text-6xl font-black tabular-nums text-foreground">5 sec</div>
-              <div className="text-sm font-bold text-muted-foreground uppercase tracking-wider mt-2">Quick Scan</div>
+              <div className="text-5xl md:text-6xl font-black tabular-nums text-foreground">
+                5 sec
+              </div>
+              <div className="text-sm font-bold text-muted-foreground uppercase tracking-wider mt-2">
+                Quick Scan
+              </div>
             </div>
           </div>
         </div>
@@ -461,8 +552,8 @@ export default function HomePage() {
             <span className="text-primary">Everything</span>
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-xl mx-auto font-medium">
-            Lakhs of Indians sign predatory rental agreements every year. Employment bonds
-            with illegal clauses trap workers. Build your wall.
+            Lakhs of Indians sign predatory rental agreements every year.
+            Employment bonds with illegal clauses trap workers. Build your wall.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link href="/upload">

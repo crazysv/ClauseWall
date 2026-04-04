@@ -20,7 +20,8 @@ export default function FilingChecklist({ steps, documents }: Props) {
     setChecked(next);
   };
 
-  const progress = steps.length > 0 ? Math.round((checked.size / steps.length) * 100) : 0;
+  const progress =
+    steps.length > 0 ? Math.round((checked.size / steps.length) * 100) : 0;
 
   return (
     <Card className="border-white/10 bg-white/[0.02]">
@@ -30,18 +31,25 @@ export default function FilingChecklist({ steps, documents }: Props) {
             <ClipboardList className="h-4 w-4 text-blue-400" />
             <h3 className="text-sm font-semibold">Filing Checklist</h3>
           </div>
-          <span className="text-xs text-muted-foreground">{progress}% complete</span>
+          <span className="text-xs text-muted-foreground">
+            {progress}% complete
+          </span>
         </div>
 
         {/* Progress bar */}
         <div className="h-1.5 bg-white/5 rounded-full mb-4 overflow-hidden">
-          <div className="h-full bg-blue-500 rounded-full transition-all" style={{ width: `${progress}%` }} />
+          <div
+            className="h-full bg-blue-500 rounded-full transition-all"
+            style={{ width: `${progress}%` }}
+          />
         </div>
 
         {/* Steps */}
         {steps.length > 0 && (
           <div className="space-y-1.5 mb-4">
-            <p className="text-xs font-medium text-muted-foreground mb-2">Steps:</p>
+            <p className="text-xs font-medium text-muted-foreground mb-2">
+              Steps:
+            </p>
             {steps.map((step) => (
               <button
                 key={step.step}
@@ -53,9 +61,13 @@ export default function FilingChecklist({ steps, documents }: Props) {
                 ) : (
                   <Circle className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                 )}
-                <span className={`text-xs ${checked.has(step.step) ? "line-through text-muted-foreground" : ""}`}>
+                <span
+                  className={`text-xs ${checked.has(step.step) ? "line-through text-muted-foreground" : ""}`}
+                >
                   {step.description}
-                  {step.required && <span className="text-red-400 ml-1">*</span>}
+                  {step.required && (
+                    <span className="text-red-400 ml-1">*</span>
+                  )}
                 </span>
               </button>
             ))}
@@ -65,10 +77,15 @@ export default function FilingChecklist({ steps, documents }: Props) {
         {/* Required Documents */}
         {documents.length > 0 && (
           <div>
-            <p className="text-xs font-medium text-muted-foreground mb-2">Required Documents:</p>
+            <p className="text-xs font-medium text-muted-foreground mb-2">
+              Required Documents:
+            </p>
             <ul className="space-y-1">
               {documents.map((doc, i) => (
-                <li key={i} className="text-xs text-muted-foreground flex items-start gap-1.5">
+                <li
+                  key={i}
+                  className="text-xs text-muted-foreground flex items-start gap-1.5"
+                >
                   <span className="text-blue-400 mt-0.5">•</span>
                   <span>{doc}</span>
                 </li>

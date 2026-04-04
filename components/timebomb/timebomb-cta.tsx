@@ -7,7 +7,13 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Timer, AlertTriangle, ArrowRight, ShieldCheck, ChevronRight } from "lucide-react";
+import {
+  Timer,
+  AlertTriangle,
+  ArrowRight,
+  ShieldCheck,
+  ChevronRight,
+} from "lucide-react";
 import Link from "next/link";
 import type { TemporalExtractionResult, DeadlineStats } from "@/types";
 import { SigningDateModal } from "./signing-date-modal";
@@ -28,7 +34,9 @@ export function TimebombCTA({
 }: TimebombCTAProps) {
   const [showModal, setShowModal] = useState(false);
   const [activated, setActivated] = useState(hasActivated);
-  const [localStats, setLocalStats] = useState<DeadlineStats | null>(stats || null);
+  const [localStats, setLocalStats] = useState<DeadlineStats | null>(
+    stats || null,
+  );
 
   // Don't render if no temporal data
   if (!temporalData && !activated) return null;
@@ -97,13 +105,15 @@ export function TimebombCTA({
           <div className="flex items-center gap-3 mb-4 border-b-4 border-black/20 pb-4">
             <AlertTriangle className="w-8 h-8 text-black stroke-[3px]" />
             <h3 className="text-xl font-black uppercase tracking-widest text-black">
-              🕐 {deadlineCount} TIME BOMB{deadlineCount !== 1 ? "S" : ""} DETECTED
+              🕐 {deadlineCount} TIME BOMB{deadlineCount !== 1 ? "S" : ""}{" "}
+              DETECTED
             </h3>
           </div>
 
           <p className="text-sm font-bold uppercase tracking-widest text-black/70 mb-6 pr-12 leading-relaxed">
-            WE FOUND {deadlineCount} CRITICAL DEADLINE{deadlineCount !== 1 ? "S" : ""} IN THIS CONTRACT.
-            ACTIVATE THE DEFUSER TO TRACK THEM.
+            WE FOUND {deadlineCount} CRITICAL DEADLINE
+            {deadlineCount !== 1 ? "S" : ""} IN THIS CONTRACT. ACTIVATE THE
+            DEFUSER TO TRACK THEM.
           </p>
 
           <div className="flex items-center justify-between mt-auto">

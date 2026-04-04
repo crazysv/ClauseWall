@@ -83,8 +83,17 @@ interface ClauseCardProps {
   detectedLanguage?: string;
 }
 
-type ActionTab = "legal" | "fair" | "negotiate" | "penalty" | "eli5" | "community" | "deception" | "debate" | null;
-type TabGroup = 'understand' | 'legal' | 'action' | null;
+type ActionTab =
+  | "legal"
+  | "fair"
+  | "negotiate"
+  | "penalty"
+  | "eli5"
+  | "community"
+  | "deception"
+  | "debate"
+  | null;
+type TabGroup = "understand" | "legal" | "action" | null;
 
 export default function ClauseCard({
   clause,
@@ -111,17 +120,24 @@ export default function ClauseCard({
   // Deliberation state
   const [showDeliberationModal, setShowDeliberationModal] = useState(false);
   const [isDeliberating, setIsDeliberating] = useState(false);
-  const [currentDelibAgent, setCurrentDelibAgent] = useState<AgentRole | null>(null);
-  const [localDeliberation, setLocalDeliberation] = useState<ClauseDeliberation | null>(
-    initialDeliberation || null
+  const [currentDelibAgent, setCurrentDelibAgent] = useState<AgentRole | null>(
+    null,
   );
+  const [localDeliberation, setLocalDeliberation] =
+    useState<ClauseDeliberation | null>(initialDeliberation || null);
 
   async function runSingleDeliberation() {
     setIsDeliberating(true);
     setCurrentDelibAgent("predator");
     try {
-      const guardianTimer = setTimeout(() => setCurrentDelibAgent("guardian"), 3000);
-      const arbiterTimer = setTimeout(() => setCurrentDelibAgent("arbiter"), 6000);
+      const guardianTimer = setTimeout(
+        () => setCurrentDelibAgent("guardian"),
+        3000,
+      );
+      const arbiterTimer = setTimeout(
+        () => setCurrentDelibAgent("arbiter"),
+        6000,
+      );
 
       const res = await fetch("/api/deliberation/single", {
         method: "POST",
@@ -153,9 +169,10 @@ export default function ClauseCard({
   let proofTree: ProofTree | null = null;
   try {
     if (clause.proof_data) {
-      proofTree = typeof clause.proof_data === "string"
-        ? JSON.parse(clause.proof_data)
-        : clause.proof_data;
+      proofTree =
+        typeof clause.proof_data === "string"
+          ? JSON.parse(clause.proof_data)
+          : clause.proof_data;
     }
   } catch {
     // Invalid proof data — ignore
@@ -182,25 +199,44 @@ export default function ClauseCard({
   };
 
   // Determine which sub-tabs are visible for each group
-  function getVisibleSubTabs(groupId: TabGroup): { id: string; label: string }[] {
+  function getVisibleSubTabs(
+    groupId: TabGroup,
+  ): { id: string; label: string }[] {
     switch (groupId) {
-      case 'understand':
+      case "understand":
         return [
-          ...(clause.risk_level !== "safe" ? [{ id: 'eli5', label: 'Plain English' }] : []),
-          ...(clause.risk_level !== "safe" ? [{ id: 'deception', label: 'Hidden Traps' }] : []),
+          ...(clause.risk_level !== "safe"
+            ? [{ id: "eli5", label: "Plain English" }]
+            : []),
+          ...(clause.risk_level !== "safe"
+            ? [{ id: "deception", label: "Hidden Traps" }]
+            : []),
         ];
-      case 'legal':
+      case "legal":
         return [
-          ...(clause.legal_citation ? [{ id: 'legal', label: 'Legal Reference' }] : []),
-          ...(clause.fair_alternative ? [{ id: 'fair', label: 'Fair Version' }] : []),
-          ...(clause.penalty_info ? [{ id: 'penalty', label: 'Penalty Info' }] : []),
-          ...((clause.risk_level === "dangerous" || clause.risk_level === "illegal") ? [{ id: 'community', label: 'Community Data' }] : []),
-          ...(proofTree ? [{ id: 'proof', label: 'Legal Proof' }] : []),
+          ...(clause.legal_citation
+            ? [{ id: "legal", label: "Legal Reference" }]
+            : []),
+          ...(clause.fair_alternative
+            ? [{ id: "fair", label: "Fair Version" }]
+            : []),
+          ...(clause.penalty_info
+            ? [{ id: "penalty", label: "Penalty Info" }]
+            : []),
+          ...(clause.risk_level === "dangerous" ||
+          clause.risk_level === "illegal"
+            ? [{ id: "community", label: "Community Data" }]
+            : []),
+          ...(proofTree ? [{ id: "proof", label: "Legal Proof" }] : []),
         ];
-      case 'action':
+      case "action":
         return [
-          ...(clause.risk_level !== "safe" ? [{ id: 'negotiate', label: 'Negotiation Script' }] : []),
-          ...(clause.risk_level !== "safe" ? [{ id: 'debate', label: 'AI Debate' }] : []),
+          ...(clause.risk_level !== "safe"
+            ? [{ id: "negotiate", label: "Negotiation Script" }]
+            : []),
+          ...(clause.risk_level !== "safe"
+            ? [{ id: "debate", label: "AI Debate" }]
+            : []),
         ];
       default:
         return [];
@@ -212,39 +248,54 @@ export default function ClauseCard({
     safe: {
       icon: <CheckCircle2 className="h-5 w-5 text-green-600" />,
       borderClass: "border-l-[6px] border-green-600",
-      badgeClass: "bg-green-50 text-green-800 border-2 border-green-600 font-bold uppercase dark:bg-green-950 dark:text-green-300",
+      badgeClass:
+        "bg-green-50 text-green-800 border-2 border-green-600 font-bold uppercase dark:bg-green-950 dark:text-green-300",
       label: "Safe",
     },
     warning: {
       icon: <AlertTriangle className="h-5 w-5 text-yellow-600" />,
       borderClass: "border-l-[6px] border-yellow-600",
-      badgeClass: "bg-yellow-50 text-yellow-800 border-2 border-yellow-600 font-bold uppercase dark:bg-yellow-950 dark:text-yellow-300",
+      badgeClass:
+        "bg-yellow-50 text-yellow-800 border-2 border-yellow-600 font-bold uppercase dark:bg-yellow-950 dark:text-yellow-300",
       label: "Warning",
     },
     dangerous: {
       icon: <XCircle className="h-5 w-5 text-red-600" />,
       borderClass: "border-l-[6px] border-red-600",
-      badgeClass: "bg-red-50 text-red-800 border-2 border-red-600 font-bold uppercase dark:bg-red-950 dark:text-red-300",
+      badgeClass:
+        "bg-red-50 text-red-800 border-2 border-red-600 font-bold uppercase dark:bg-red-950 dark:text-red-300",
       label: "Dangerous",
     },
     illegal: {
       icon: <Scale className="h-5 w-5 text-purple-600" />,
       borderClass: "border-l-[6px] border-purple-600",
-      badgeClass: "bg-purple-50 text-purple-800 border-2 border-purple-600 font-bold uppercase dark:bg-purple-950 dark:text-purple-300",
+      badgeClass:
+        "bg-purple-50 text-purple-800 border-2 border-purple-600 font-bold uppercase dark:bg-purple-950 dark:text-purple-300",
       label: "Illegal",
     },
   };
 
-  const risk = riskConfig[clause.risk_level as keyof typeof riskConfig] || riskConfig.warning;
+  const risk =
+    riskConfig[clause.risk_level as keyof typeof riskConfig] ||
+    riskConfig.warning;
 
   // Should show roast for this clause?
-  const showRoast = isRoastMode && !!roastText && (clause.risk_level === "dangerous" || clause.risk_level === "illegal");
+  const showRoast =
+    isRoastMode &&
+    !!roastText &&
+    (clause.risk_level === "dangerous" || clause.risk_level === "illegal");
 
   // Verification badge
   const verificationBadge = () => {
-    if (clause.verification_source === "database" && clause.confidence === "verified") {
+    if (
+      clause.verification_source === "database" &&
+      clause.confidence === "verified"
+    ) {
       return (
-        <Badge className="bg-green-500/15 text-green-400 border-green-500/30 text-[10px] px-1.5 gap-1" title="Verified against Indian legal database">
+        <Badge
+          className="bg-green-500/15 text-green-400 border-green-500/30 text-[10px] px-1.5 gap-1"
+          title="Verified against Indian legal database"
+        >
           <ShieldCheck className="h-3 w-3" />
           Verified
         </Badge>
@@ -252,14 +303,20 @@ export default function ClauseCard({
     }
     if (clause.verification_source === "database") {
       return (
-        <Badge className="bg-yellow-500/15 text-yellow-400 border-yellow-500/30 text-[10px] px-1.5 gap-1" title="Partially verified against legal database">
+        <Badge
+          className="bg-yellow-500/15 text-yellow-400 border-yellow-500/30 text-[10px] px-1.5 gap-1"
+          title="Partially verified against legal database"
+        >
           <ShieldAlert className="h-3 w-3" />
           Partial
         </Badge>
       );
     }
     return (
-      <Badge className="bg-blue-500/15 text-blue-400 border-blue-500/30 text-[10px] px-1.5 gap-1" title="AI-based assessment, not formally verified">
+      <Badge
+        className="bg-blue-500/15 text-blue-400 border-blue-500/30 text-[10px] px-1.5 gap-1"
+        title="AI-based assessment, not formally verified"
+      >
         <Bot className="h-3 w-3" />
         AI
       </Badge>
@@ -267,13 +324,22 @@ export default function ClauseCard({
   };
 
   const showAutopsy =
-    (clause.risk_level === "dangerous" || clause.risk_level === "illegal") && !!onAutopsy;
+    (clause.risk_level === "dangerous" || clause.risk_level === "illegal") &&
+    !!onAutopsy;
 
   // Tab group config
   const tabGroups: { id: TabGroup; label: string; icon: React.ReactNode }[] = [
-    { id: 'understand', label: 'Understand', icon: <Lightbulb className="w-4 h-4" /> },
-    { id: 'legal', label: 'Legal', icon: <Scale className="w-4 h-4" /> },
-    { id: 'action', label: 'Take Action', icon: <Target className="w-4 h-4" /> },
+    {
+      id: "understand",
+      label: "Understand",
+      icon: <Lightbulb className="w-4 h-4" />,
+    },
+    { id: "legal", label: "Legal", icon: <Scale className="w-4 h-4" /> },
+    {
+      id: "action",
+      label: "Take Action",
+      icon: <Target className="w-4 h-4" />,
+    },
   ];
 
   return (
@@ -291,8 +357,16 @@ export default function ClauseCard({
           <div className="flex items-center gap-2 mb-2 flex-wrap">
             {risk.icon}
             <Badge className={risk.badgeClass}>{risk.label}</Badge>
-            <span className="text-xs font-black tracking-wider text-muted-foreground uppercase" title="Risk score for this clause (0-100)">Score: {clause.risk_score}/100</span>
-            <Badge variant="outline" className="text-[10px] uppercase font-bold text-muted-foreground border-2 border-muted border-foreground">
+            <span
+              className="text-xs font-black tracking-wider text-muted-foreground uppercase"
+              title="Risk score for this clause (0-100)"
+            >
+              Score: {clause.risk_score}/100
+            </span>
+            <Badge
+              variant="outline"
+              className="text-[10px] uppercase font-bold text-muted-foreground border-2 border-muted border-foreground"
+            >
               {clause.clause_type}
             </Badge>
             {verificationBadge()}
@@ -313,12 +387,26 @@ export default function ClauseCard({
           </div>
           {/* Collapsed preview: show AI explanation instead of raw text */}
           <p className="text-sm font-medium text-foreground/80 line-clamp-2">
-            &quot;{(clause.explanation || clause.original_text || "").substring(0, 120)}
-            {(clause.explanation || clause.original_text || "").length > 120 ? "..." : ""}&quot;
+            &quot;
+            {(clause.explanation || clause.original_text || "").substring(
+              0,
+              120,
+            )}
+            {(clause.explanation || clause.original_text || "").length > 120
+              ? "..."
+              : ""}
+            &quot;
           </p>
         </div>
-        <button className="p-1 ml-2 text-foreground flex-shrink-0" aria-label={isExpanded ? "Collapse clause" : "Expand clause"}>
-          {isExpanded ? <ChevronUp className="h-6 w-6" /> : <ChevronDown className="h-6 w-6" />}
+        <button
+          className="p-1 ml-2 text-foreground flex-shrink-0"
+          aria-label={isExpanded ? "Collapse clause" : "Expand clause"}
+        >
+          {isExpanded ? (
+            <ChevronUp className="h-6 w-6" />
+          ) : (
+            <ChevronDown className="h-6 w-6" />
+          )}
         </button>
       </div>
 
@@ -337,7 +425,9 @@ export default function ClauseCard({
 
               {/* Full Clause Text */}
               <div>
-                <p className="text-xs font-black uppercase tracking-wider text-muted-foreground mb-1.5">Full Clause Text</p>
+                <p className="text-xs font-black uppercase tracking-wider text-muted-foreground mb-1.5">
+                  Full Clause Text
+                </p>
                 <p className="text-sm text-foreground bg-muted p-4 border border-foreground leading-relaxed font-medium">
                   {clause.original_text}
                 </p>
@@ -363,7 +453,8 @@ export default function ClauseCard({
                       </p>
                     </div>
                     <p className="text-[10px] text-muted-foreground mt-2 font-bold uppercase tracking-wider">
-                      ⚠️ Roast mode — entertainment + education. Formal legal analysis is above when roast mode is off.
+                      ⚠️ Roast mode — entertainment + education. Formal legal
+                      analysis is above when roast mode is off.
                     </p>
                   </motion.div>
                 ) : (
@@ -374,8 +465,12 @@ export default function ClauseCard({
                     exit={{ opacity: 0, y: -5 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <p className="text-xs font-black uppercase tracking-wider text-muted-foreground mb-1.5">Analysis</p>
-                    <p className="text-sm text-foreground font-medium leading-relaxed">{clause.explanation}</p>
+                    <p className="text-xs font-black uppercase tracking-wider text-muted-foreground mb-1.5">
+                      Analysis
+                    </p>
+                    <p className="text-sm text-foreground font-medium leading-relaxed">
+                      {clause.explanation}
+                    </p>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -383,10 +478,15 @@ export default function ClauseCard({
               {/* Red Flags */}
               {clause.red_flags && clause.red_flags.length > 0 && (
                 <div>
-                  <p className="text-xs font-medium text-red-400 mb-1.5">🚩 Red Flags</p>
+                  <p className="text-xs font-medium text-red-400 mb-1.5">
+                    🚩 Red Flags
+                  </p>
                   <ul className="space-y-1">
                     {clause.red_flags.map((flag, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm text-red-300">
+                      <li
+                        key={i}
+                        className="flex items-start gap-2 text-sm text-red-300"
+                      >
                         <span className="text-red-500 mt-1 text-xs">•</span>
                         {flag}
                       </li>
@@ -506,48 +606,57 @@ export default function ClauseCard({
                         {activeSubTab && (
                           <div className="pt-3">
                             <AnimatePresence mode="wait">
-                              {activeSubTab === "legal" && clause.legal_citation && (
-                                <motion.div
-                                  key="legal"
-                                  initial={{ opacity: 0, y: -5 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  exit={{ opacity: 0, y: -5 }}
-                                  transition={{ duration: 0.15 }}
-                                  className="p-4 rounded-lg bg-blue-500/5 border border-blue-500/20"
-                                >
-                                  <p className="text-xs font-medium text-blue-400 mb-1.5 flex items-center gap-1.5">
-                                    <Scale className="h-3.5 w-3.5" />
-                                    Legal Reference
-                                  </p>
-                                  <p className="text-sm text-blue-300 leading-relaxed">{clause.legal_citation}</p>
-                                </motion.div>
-                              )}
+                              {activeSubTab === "legal" &&
+                                clause.legal_citation && (
+                                  <motion.div
+                                    key="legal"
+                                    initial={{ opacity: 0, y: -5 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -5 }}
+                                    transition={{ duration: 0.15 }}
+                                    className="p-4 rounded-lg bg-blue-500/5 border border-blue-500/20"
+                                  >
+                                    <p className="text-xs font-medium text-blue-400 mb-1.5 flex items-center gap-1.5">
+                                      <Scale className="h-3.5 w-3.5" />
+                                      Legal Reference
+                                    </p>
+                                    <p className="text-sm text-blue-300 leading-relaxed">
+                                      {clause.legal_citation}
+                                    </p>
+                                  </motion.div>
+                                )}
 
-                              {activeSubTab === "fair" && clause.fair_alternative && (
-                                <motion.div
-                                  key="fair"
-                                  initial={{ opacity: 0, y: -5 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  exit={{ opacity: 0, y: -5 }}
-                                  transition={{ duration: 0.15 }}
-                                  className="p-4 rounded-lg bg-green-500/5 border border-green-500/20"
-                                >
-                                  <p className="text-xs font-medium text-green-400 mb-1.5 flex items-center gap-1.5">
-                                    <CheckCircle2 className="h-3.5 w-3.5" />
-                                    Fair Alternative — What This Clause Should Say
-                                  </p>
-                                  <p className="text-sm text-green-300 leading-relaxed">{clause.fair_alternative}</p>
-                                  {/* Negotiate link for risky clauses */}
-                                  {documentId && clause.risk_level !== 'safe' && (
-                                    <Link
-                                      href={`/negotiate/${documentId}`}
-                                      className="inline-flex items-center gap-1 text-[10px] text-primary/50 hover:text-primary transition-colors mt-3"
-                                    >
-                                      Want help negotiating this? Get scripts →
-                                    </Link>
-                                  )}
-                                </motion.div>
-                              )}
+                              {activeSubTab === "fair" &&
+                                clause.fair_alternative && (
+                                  <motion.div
+                                    key="fair"
+                                    initial={{ opacity: 0, y: -5 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -5 }}
+                                    transition={{ duration: 0.15 }}
+                                    className="p-4 rounded-lg bg-green-500/5 border border-green-500/20"
+                                  >
+                                    <p className="text-xs font-medium text-green-400 mb-1.5 flex items-center gap-1.5">
+                                      <CheckCircle2 className="h-3.5 w-3.5" />
+                                      Fair Alternative — What This Clause Should
+                                      Say
+                                    </p>
+                                    <p className="text-sm text-green-300 leading-relaxed">
+                                      {clause.fair_alternative}
+                                    </p>
+                                    {/* Negotiate link for risky clauses */}
+                                    {documentId &&
+                                      clause.risk_level !== "safe" && (
+                                        <Link
+                                          href={`/negotiate/${documentId}`}
+                                          className="inline-flex items-center gap-1 text-[10px] text-primary/50 hover:text-primary transition-colors mt-3"
+                                        >
+                                          Want help negotiating this? Get
+                                          scripts →
+                                        </Link>
+                                      )}
+                                  </motion.div>
+                                )}
 
                               {activeSubTab === "negotiate" && (
                                 <motion.div
@@ -575,7 +684,9 @@ export default function ClauseCard({
                                         Negotiation Script
                                       </p>
                                       <p className="text-sm text-gray-400">
-                                        A detailed negotiation script with counter-responses is available in the full playbook.
+                                        A detailed negotiation script with
+                                        counter-responses is available in the
+                                        full playbook.
                                       </p>
                                     </div>
                                   )}
@@ -595,44 +706,49 @@ export default function ClauseCard({
                                 </motion.div>
                               )}
 
-                              {activeSubTab === "penalty" && clause.penalty_info && (
-                                <motion.div
-                                  key="penalty"
-                                  initial={{ opacity: 0, y: -5 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  exit={{ opacity: 0, y: -5 }}
-                                  transition={{ duration: 0.15 }}
-                                  className="p-4 rounded-lg bg-orange-500/5 border border-orange-500/20"
-                                >
-                                  <p className="text-xs font-medium text-orange-400 mb-1.5 flex items-center gap-1.5">
-                                    <Gavel className="h-3.5 w-3.5" />
-                                    Penalty for Violation
-                                  </p>
-                                  <p className="text-sm text-orange-300 leading-relaxed">{clause.penalty_info}</p>
-                                </motion.div>
-                              )}
+                              {activeSubTab === "penalty" &&
+                                clause.penalty_info && (
+                                  <motion.div
+                                    key="penalty"
+                                    initial={{ opacity: 0, y: -5 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -5 }}
+                                    transition={{ duration: 0.15 }}
+                                    className="p-4 rounded-lg bg-orange-500/5 border border-orange-500/20"
+                                  >
+                                    <p className="text-xs font-medium text-orange-400 mb-1.5 flex items-center gap-1.5">
+                                      <Gavel className="h-3.5 w-3.5" />
+                                      Penalty for Violation
+                                    </p>
+                                    <p className="text-sm text-orange-300 leading-relaxed">
+                                      {clause.penalty_info}
+                                    </p>
+                                  </motion.div>
+                                )}
 
-                              {activeSubTab === "eli5" && clause.risk_level !== "safe" && (
-                                <motion.div
-                                  key="eli5"
-                                  initial={{ opacity: 0, y: -5 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  exit={{ opacity: 0, y: -5 }}
-                                  transition={{ duration: 0.15 }}
-                                >
-                                  <ELI5Section
-                                    clauseId={clause.id}
-                                    clauseText={clause.original_text}
-                                    explanation={clause.explanation}
-                                    riskLevel={clause.risk_level}
-                                    legalCitation={clause.legal_citation}
-                                    clauseType={clause.clause_type}
-                                  />
-                                </motion.div>
-                              )}
+                              {activeSubTab === "eli5" &&
+                                clause.risk_level !== "safe" && (
+                                  <motion.div
+                                    key="eli5"
+                                    initial={{ opacity: 0, y: -5 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -5 }}
+                                    transition={{ duration: 0.15 }}
+                                  >
+                                    <ELI5Section
+                                      clauseId={clause.id}
+                                      clauseText={clause.original_text}
+                                      explanation={clause.explanation}
+                                      riskLevel={clause.risk_level}
+                                      legalCitation={clause.legal_citation}
+                                      clauseType={clause.clause_type}
+                                    />
+                                  </motion.div>
+                                )}
 
                               {activeSubTab === "community" &&
-                                (clause.risk_level === "dangerous" || clause.risk_level === "illegal") && (
+                                (clause.risk_level === "dangerous" ||
+                                  clause.risk_level === "illegal") && (
                                   <motion.div
                                     key="community"
                                     initial={{ opacity: 0, y: -5 }}
@@ -651,42 +767,48 @@ export default function ClauseCard({
                                   </motion.div>
                                 )}
 
-                              {activeSubTab === "deception" && clause.risk_level !== "safe" && (
-                                <motion.div
-                                  key="deception"
-                                  initial={{ opacity: 0, y: -5 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  exit={{ opacity: 0, y: -5 }}
-                                  transition={{ duration: 0.15 }}
-                                >
-                                  <DeceptionTab
-                                    clauseId={clause.id}
-                                    clauseText={clause.original_text}
-                                    clauseType={clause.clause_type}
-                                    jurisdiction={jurisdiction}
-                                    documentType={documentType}
-                                  />
-                                </motion.div>
-                              )}
+                              {activeSubTab === "deception" &&
+                                clause.risk_level !== "safe" && (
+                                  <motion.div
+                                    key="deception"
+                                    initial={{ opacity: 0, y: -5 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -5 }}
+                                    transition={{ duration: 0.15 }}
+                                  >
+                                    <DeceptionTab
+                                      clauseId={clause.id}
+                                      clauseText={clause.original_text}
+                                      clauseType={clause.clause_type}
+                                      jurisdiction={jurisdiction}
+                                      documentType={documentType}
+                                    />
+                                  </motion.div>
+                                )}
 
-                              {activeSubTab === "debate" && clause.risk_level !== "safe" && (
-                                <motion.div
-                                  key="debate"
-                                  initial={{ opacity: 0, y: -5 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  exit={{ opacity: 0, y: -5 }}
-                                  transition={{ duration: 0.15 }}
-                                >
-                                  <DeliberationSummary
-                                    deliberation={localDeliberation}
-                                    onViewDebate={() => setShowDeliberationModal(true)}
-                                    onTriggerDeliberation={runSingleDeliberation}
-                                    isLoading={isDeliberating}
-                                    currentAgent={currentDelibAgent}
-                                    documentId={documentId}
-                                  />
-                                </motion.div>
-                              )}
+                              {activeSubTab === "debate" &&
+                                clause.risk_level !== "safe" && (
+                                  <motion.div
+                                    key="debate"
+                                    initial={{ opacity: 0, y: -5 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -5 }}
+                                    transition={{ duration: 0.15 }}
+                                  >
+                                    <DeliberationSummary
+                                      deliberation={localDeliberation}
+                                      onViewDebate={() =>
+                                        setShowDeliberationModal(true)
+                                      }
+                                      onTriggerDeliberation={
+                                        runSingleDeliberation
+                                      }
+                                      isLoading={isDeliberating}
+                                      currentAgent={currentDelibAgent}
+                                      documentId={documentId}
+                                    />
+                                  </motion.div>
+                                )}
 
                               {activeSubTab === "proof" && proofTree && (
                                 <motion.div
@@ -702,13 +824,15 @@ export default function ClauseCard({
                                     Legal Proof
                                   </p>
                                   <p className="text-xs text-white/40 mb-3">
-                                    Step-by-step logical proof of this clause&apos;s legality
+                                    Step-by-step logical proof of this
+                                    clause&apos;s legality
                                   </p>
                                   <button
                                     onClick={() => setShowProofModal(true)}
                                     className="flex items-center gap-2 text-sm text-blue-400 hover:text-blue-300 transition-colors"
                                   >
-                                    View Full Proof Tree <ArrowRight className="h-3.5 w-3.5" />
+                                    View Full Proof Tree{" "}
+                                    <ArrowRight className="h-3.5 w-3.5" />
                                   </button>
                                 </motion.div>
                               )}
@@ -756,7 +880,6 @@ export default function ClauseCard({
           onClose={() => setShowDeliberationModal(false)}
         />
       )}
-
     </div>
   );
 }

@@ -26,8 +26,13 @@ interface Props {
 
 type TabView = "traps" | "map" | "roadmap";
 
-export function PoisonPillSection({ documentId, poisonPillData: initialData }: Props) {
-  const [data, setData] = useState<PoisonPillAnalysisResult | null>(initialData);
+export function PoisonPillSection({
+  documentId,
+  poisonPillData: initialData,
+}: Props) {
+  const [data, setData] = useState<PoisonPillAnalysisResult | null>(
+    initialData,
+  );
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<TabView>("traps");
   const [expandedTrapId, setExpandedTrapId] = useState<string | null>(null);
@@ -73,7 +78,9 @@ export function PoisonPillSection({ documentId, poisonPillData: initialData }: P
       <Card className="bg-white/[0.02] border-white/10">
         <CardContent className="p-8 text-center">
           <Loader2 className="w-8 h-8 text-purple-400 animate-spin mx-auto mb-4" />
-          <p className="text-sm text-white/60">Analyzing clause interconnections...</p>
+          <p className="text-sm text-white/60">
+            Analyzing clause interconnections...
+          </p>
           <p className="text-xs text-white/30 mt-1">
             Pre-screening patterns → Deep analysis → Building graph...
           </p>
@@ -85,7 +92,10 @@ export function PoisonPillSection({ documentId, poisonPillData: initialData }: P
   // No data — show CTA
   if (!data) {
     return (
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
         <Card className="bg-gradient-to-br from-purple-500/5 to-pink-500/5 border-purple-500/10">
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
@@ -97,8 +107,8 @@ export function PoisonPillSection({ documentId, poisonPillData: initialData }: P
                   Poison Pill Scanner
                 </h3>
                 <p className="text-xs text-white/40 mt-0.5">
-                  Detect hidden traps — clause combinations that look safe individually
-                  but create devastating effects together.
+                  Detect hidden traps — clause combinations that look safe
+                  individually but create devastating effects together.
                 </p>
               </div>
               <Button
@@ -118,7 +128,10 @@ export function PoisonPillSection({ documentId, poisonPillData: initialData }: P
   // Has data but no traps
   if (data.traps.length === 0) {
     return (
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
         <Card className="bg-white/[0.02] border-white/10">
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
@@ -130,7 +143,8 @@ export function PoisonPillSection({ documentId, poisonPillData: initialData }: P
                   No Hidden Traps Found
                 </h3>
                 <p className="text-xs text-white/40 mt-0.5">
-                  All clause combinations checked — no synergistic risks detected.
+                  All clause combinations checked — no synergistic risks
+                  detected.
                 </p>
               </div>
               <Button
@@ -151,9 +165,21 @@ export function PoisonPillSection({ documentId, poisonPillData: initialData }: P
 
   // Has data with traps — full view
   const tabs: { id: TabView; label: string; icon: React.ReactNode }[] = [
-    { id: "traps", label: "Trap Cards", icon: <ShieldAlert className="w-3.5 h-3.5" /> },
-    { id: "map", label: "Interconnection Map", icon: <Network className="w-3.5 h-3.5" /> },
-    { id: "roadmap", label: "Negotiation Roadmap", icon: <Target className="w-3.5 h-3.5" /> },
+    {
+      id: "traps",
+      label: "Trap Cards",
+      icon: <ShieldAlert className="w-3.5 h-3.5" />,
+    },
+    {
+      id: "map",
+      label: "Interconnection Map",
+      icon: <Network className="w-3.5 h-3.5" />,
+    },
+    {
+      id: "roadmap",
+      label: "Negotiation Roadmap",
+      icon: <Target className="w-3.5 h-3.5" />,
+    },
   ];
 
   return (
@@ -173,7 +199,8 @@ export function PoisonPillSection({ documentId, poisonPillData: initialData }: P
               Poison Pill Interconnection Analysis
             </h2>
             <p className="text-xs text-white/30">
-              {data.traps.length} hidden trap{data.traps.length !== 1 ? "s" : ""} detected
+              {data.traps.length} hidden trap
+              {data.traps.length !== 1 ? "s" : ""} detected
             </p>
           </div>
         </div>
@@ -231,7 +258,7 @@ export function PoisonPillSection({ documentId, poisonPillData: initialData }: P
                   isExpanded={expandedTrapId === trap.id}
                   onToggle={() =>
                     setExpandedTrapId(
-                      expandedTrapId === trap.id ? null : trap.id
+                      expandedTrapId === trap.id ? null : trap.id,
                     )
                   }
                 />

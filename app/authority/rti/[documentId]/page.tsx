@@ -3,7 +3,8 @@ import RTIForm from "@/components/authority/rti-form";
 
 export const metadata: Metadata = {
   title: "RTI for Document | ClauseWall",
-  description: "Generate an RTI application linked to a specific document analysis.",
+  description:
+    "Generate an RTI application linked to a specific document analysis.",
 };
 
 export default async function RTIDocumentPage({
@@ -24,9 +25,7 @@ export default async function RTIDocumentPage({
             Linked to document analysis. Generate a targeted RTI application.
           </p>
         </div>
-        <RTIForm
-          defaultContext={`Document ID: ${documentId}`}
-        />
+        <RTIForm defaultContext={`Document ID: ${documentId}`} />
       </div>
     </main>
   );

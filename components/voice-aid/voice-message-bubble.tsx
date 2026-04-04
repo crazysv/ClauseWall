@@ -26,7 +26,9 @@ export default function VoiceMessageBubble({ message, onPlayAudio }: Props) {
         }`}
       >
         {/* Role indicator */}
-        <div className={`text-[10px] font-semibold mb-1 ${isUser ? "text-blue-200" : "text-emerald-400"}`}>
+        <div
+          className={`text-[10px] font-semibold mb-1 ${isUser ? "text-blue-200" : "text-emerald-400"}`}
+        >
           {isUser ? "🗣️ You" : "⚖️ ClauseWall"}
         </div>
 
@@ -51,7 +53,9 @@ export default function VoiceMessageBubble({ message, onPlayAudio }: Props) {
         )}
 
         {/* Time */}
-        <div className={`text-[10px] mt-1 ${isUser ? "text-blue-200/50" : "text-white/30"}`}>
+        <div
+          className={`text-[10px] mt-1 ${isUser ? "text-blue-200/50" : "text-white/30"}`}
+        >
           {new Date(message.created_at).toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit",

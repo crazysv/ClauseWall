@@ -80,7 +80,9 @@ export default function DeceptionTab({
     return (
       <div className="p-4 card-impact border-2 border-red-600 bg-background flex items-center justify-center gap-3 py-8">
         <Loader2 className="h-5 w-5 text-red-600 animate-spin" />
-        <span className="text-sm font-bold text-red-600">Scanning for hidden deception...</span>
+        <span className="text-sm font-bold text-red-600">
+          Scanning for hidden deception...
+        </span>
       </div>
     );
   }
@@ -90,7 +92,10 @@ export default function DeceptionTab({
       <div className="p-4 card-impact border-2 border-red-600 bg-background">
         <p className="text-sm font-bold text-red-600">{error}</p>
         <button
-          onClick={() => { setError(null); setFetched(false); }}
+          onClick={() => {
+            setError(null);
+            setFetched(false);
+          }}
           className="text-xs font-black uppercase tracking-wider text-red-600 underline mt-2"
         >
           Try again
@@ -103,11 +108,41 @@ export default function DeceptionTab({
 
   // Deception level config
   const levelConfig = {
-    none: { color: "green", label: "Transparent", emoji: "✅", bg: "bg-background", border: "border-green-600" },
-    low: { color: "yellow", label: "Slightly Obscured", emoji: "🔍", bg: "bg-background", border: "border-yellow-600" },
-    medium: { color: "orange", label: "Deliberately Vague", emoji: "⚠️", bg: "bg-background", border: "border-orange-600" },
-    high: { color: "red", label: "Deceptive", emoji: "🎭", bg: "bg-background", border: "border-red-600" },
-    extreme: { color: "purple", label: "Predatory Disguise", emoji: "☠️", bg: "bg-background", border: "border-purple-600" },
+    none: {
+      color: "green",
+      label: "Transparent",
+      emoji: "✅",
+      bg: "bg-background",
+      border: "border-green-600",
+    },
+    low: {
+      color: "yellow",
+      label: "Slightly Obscured",
+      emoji: "🔍",
+      bg: "bg-background",
+      border: "border-yellow-600",
+    },
+    medium: {
+      color: "orange",
+      label: "Deliberately Vague",
+      emoji: "⚠️",
+      bg: "bg-background",
+      border: "border-orange-600",
+    },
+    high: {
+      color: "red",
+      label: "Deceptive",
+      emoji: "🎭",
+      bg: "bg-background",
+      border: "border-red-600",
+    },
+    extreme: {
+      color: "purple",
+      label: "Predatory Disguise",
+      emoji: "☠️",
+      bg: "bg-background",
+      border: "border-purple-600",
+    },
   };
 
   const level = levelConfig[result.deception_level] || levelConfig.medium;
@@ -146,7 +181,9 @@ export default function DeceptionTab({
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <span className="text-lg">{level.emoji}</span>
-            <span className={`text-sm font-black uppercase tracking-wider text-${level.color}-600`}>
+            <span
+              className={`text-sm font-black uppercase tracking-wider text-${level.color}-600`}
+            >
               Deception Level: {level.label}
             </span>
           </div>
@@ -165,20 +202,28 @@ export default function DeceptionTab({
             animate={{ width: `${result.deception_score * 10}%` }}
             transition={{ duration: 0.8, ease: "easeOut" }}
             className={`h-full border-r-2 border-foreground ${
-              result.deception_score <= 2 ? "bg-green-600" :
-              result.deception_score <= 4 ? "bg-yellow-600" :
-              result.deception_score <= 6 ? "bg-orange-600" :
-              result.deception_score <= 8 ? "bg-red-600" :
-              "bg-purple-600"
+              result.deception_score <= 2
+                ? "bg-green-600"
+                : result.deception_score <= 4
+                  ? "bg-yellow-600"
+                  : result.deception_score <= 6
+                    ? "bg-orange-600"
+                    : result.deception_score <= 8
+                      ? "bg-red-600"
+                      : "bg-purple-600"
             }`}
           />
         </div>
 
         {result.risk_amplification > 1 && (
           <p className="text-xs font-bold text-muted-foreground mt-2">
-            ⚡ This clause is <span className={`font-black text-${level.color}-600 uppercase tracking-wider`}>
+            ⚡ This clause is{" "}
+            <span
+              className={`font-black text-${level.color}-600 uppercase tracking-wider`}
+            >
               {result.risk_amplification}x riskier
-            </span> than it appears on surface reading
+            </span>{" "}
+            than it appears on surface reading
           </p>
         )}
       </div>
@@ -189,16 +234,24 @@ export default function DeceptionTab({
           <div className="p-3 card-impact border-2 border-green-600 bg-background">
             <div className="flex items-center gap-1.5 mb-1.5">
               <Eye className="h-3.5 w-3.5 text-green-600" />
-              <span className="text-xs font-black uppercase tracking-wider text-green-600">What It SEEMS to Say</span>
+              <span className="text-xs font-black uppercase tracking-wider text-green-600">
+                What It SEEMS to Say
+              </span>
             </div>
-            <p className="text-xs font-bold text-foreground leading-relaxed">{result.surface_reading}</p>
+            <p className="text-xs font-bold text-foreground leading-relaxed">
+              {result.surface_reading}
+            </p>
           </div>
           <div className="p-3 card-impact border-2 border-red-600 bg-background">
             <div className="flex items-center gap-1.5 mb-1.5">
               <EyeOff className="h-3.5 w-3.5 text-red-600" />
-              <span className="text-xs font-black uppercase tracking-wider text-red-600">What It ACTUALLY Means</span>
+              <span className="text-xs font-black uppercase tracking-wider text-red-600">
+                What It ACTUALLY Means
+              </span>
             </div>
-            <p className="text-xs font-bold text-foreground leading-relaxed">{result.true_reading}</p>
+            <p className="text-xs font-bold text-foreground leading-relaxed">
+              {result.true_reading}
+            </p>
           </div>
         </div>
       )}
@@ -208,7 +261,9 @@ export default function DeceptionTab({
         <div className="p-3 card-impact border-2 border-yellow-600 bg-background">
           <div className="flex items-center gap-1.5 mb-1.5">
             <Quote className="h-3.5 w-3.5 text-yellow-600" />
-            <span className="text-xs font-black uppercase tracking-wider text-yellow-600">Decoded in Plain Language</span>
+            <span className="text-xs font-black uppercase tracking-wider text-yellow-600">
+              Decoded in Plain Language
+            </span>
           </div>
           <p className="text-sm font-bold text-foreground leading-relaxed italic">
             &quot;{result.decoded_meaning}&quot;
@@ -220,7 +275,8 @@ export default function DeceptionTab({
       {result.disguise_techniques.length > 0 && (
         <div>
           <p className="text-xs font-black uppercase tracking-wider text-muted-foreground mb-2 flex items-center gap-1.5">
-            🎭 Disguise Techniques Detected ({result.disguise_techniques.length})
+            🎭 Disguise Techniques Detected ({result.disguise_techniques.length}
+            )
           </p>
           <div className="space-y-2">
             {result.disguise_techniques.map((tech, i) => (
@@ -229,8 +285,12 @@ export default function DeceptionTab({
                 className={`p-3 card-impact border-2 ${severityColor[tech.severity]}`}
               >
                 <div className="flex items-center gap-2 mb-1.5">
-                  {techniqueIcons[tech.technique] || <AlertTriangle className="h-3.5 w-3.5" />}
-                  <span className="text-xs font-black uppercase tracking-wider">{tech.label}</span>
+                  {techniqueIcons[tech.technique] || (
+                    <AlertTriangle className="h-3.5 w-3.5" />
+                  )}
+                  <span className="text-xs font-black uppercase tracking-wider">
+                    {tech.label}
+                  </span>
                   <Badge
                     variant="outline"
                     className={`text-[9px] font-black uppercase tracking-wider border-2 flex items-center h-4 py-0 ${severityColor[tech.severity]}`}
@@ -243,7 +303,9 @@ export default function DeceptionTab({
                     &quot;{tech.phrase}&quot;
                   </p>
                 )}
-                <p className="text-xs font-bold text-muted-foreground leading-relaxed">{tech.explanation}</p>
+                <p className="text-xs font-bold text-muted-foreground leading-relaxed">
+                  {tech.explanation}
+                </p>
               </div>
             ))}
           </div>
@@ -259,7 +321,10 @@ export default function DeceptionTab({
           </p>
           <ul className="space-y-1">
             {result.hidden_powers.map((power, i) => (
-              <li key={i} className="flex items-start gap-2 text-xs font-bold text-foreground">
+              <li
+                key={i}
+                className="flex items-start gap-2 text-xs font-bold text-foreground"
+              >
                 <ArrowRight className="h-3 w-3 mt-0.5 flex-shrink-0 text-red-600" />
                 {power}
               </li>
@@ -271,7 +336,9 @@ export default function DeceptionTab({
       {/* Vague Terms */}
       {result.vague_terms.length > 0 && (
         <div className="flex flex-wrap items-center gap-1.5">
-          <span className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mr-1">Exploitable vague terms:</span>
+          <span className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mr-1">
+            Exploitable vague terms:
+          </span>
           {result.vague_terms.map((term, i) => (
             <Badge
               key={i}
@@ -287,7 +354,9 @@ export default function DeceptionTab({
       {/* One-Sided Triggers */}
       {result.one_sided_triggers.length > 0 && (
         <div className="flex flex-wrap items-center gap-1.5">
-          <span className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mr-1">One-sided power phrases:</span>
+          <span className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mr-1">
+            One-sided power phrases:
+          </span>
           {result.one_sided_triggers.map((trigger, i) => (
             <Badge
               key={i}
@@ -309,7 +378,9 @@ export default function DeceptionTab({
           </p>
           <ul className="space-y-0.5">
             {result.cross_references.map((ref, i) => (
-              <li key={i} className="text-xs font-bold text-foreground">• {ref}</li>
+              <li key={i} className="text-xs font-bold text-foreground">
+                • {ref}
+              </li>
             ))}
           </ul>
         </div>
@@ -318,7 +389,8 @@ export default function DeceptionTab({
       {/* Footer */}
       <div className="pt-1">
         <p className="text-[10px] font-bold text-muted-foreground italic uppercase tracking-wider">
-          🎭 Adversarial analysis — thinks like a predatory drafter to expose hidden tricks.
+          🎭 Adversarial analysis — thinks like a predatory drafter to expose
+          hidden tricks.
         </p>
       </div>
     </motion.div>

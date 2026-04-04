@@ -5,11 +5,14 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { getCompanyBySlug } from "@/lib/watchdog/company-registry";
-import { getCompanyChanges, getSnapshotHistory } from "@/lib/watchdog/snapshot-manager";
+import {
+  getCompanyChanges,
+  getSnapshotHistory,
+} from "@/lib/watchdog/snapshot-manager";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ slug: string }> }
+  { params }: { params: Promise<{ slug: string }> },
 ) {
   try {
     const { slug } = await params;
@@ -29,7 +32,7 @@ export async function GET(
     console.error("[Watchdog API] Company detail error:", error);
     return NextResponse.json(
       { error: "Failed to fetch company details" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
     if (!documentId || !hostName || !sessionId) {
       return NextResponse.json(
         { error: "documentId, hostName, and sessionId are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -16,8 +16,11 @@ export async function POST(request: NextRequest) {
 
     if (!room) {
       return NextResponse.json(
-        { error: "Failed to create room. Document may not exist or analysis not complete." },
-        { status: 400 }
+        {
+          error:
+            "Failed to create room. Document may not exist or analysis not complete.",
+        },
+        { status: 400 },
       );
     }
 
@@ -28,6 +31,9 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error("[ClauseWall] [API] Collab create failed:", error);
-    return NextResponse.json({ error: "Failed to create room" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to create room" },
+      { status: 500 },
+    );
   }
 }

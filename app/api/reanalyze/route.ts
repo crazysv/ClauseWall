@@ -6,20 +6,21 @@ export const maxDuration = 60;
 
 export async function POST(request: NextRequest) {
   try {
-    const { documentId, newJurisdiction, newDocumentType } = await request.json();
+    const { documentId, newJurisdiction, newDocumentType } =
+      await request.json();
 
     if (!documentId) {
-        return NextResponse.json(
+      return NextResponse.json(
         { error: "Missing documentId" },
-        { status: 400 }
-        );
+        { status: 400 },
+      );
     }
 
     if (!newJurisdiction && !newDocumentType) {
-        return NextResponse.json(
+      return NextResponse.json(
         { error: "Missing newJurisdiction or newDocumentType" },
-        { status: 400 }
-    );
+        { status: 400 },
+      );
     }
 
     const supabase = createAdminClient();
@@ -34,7 +35,7 @@ export async function POST(request: NextRequest) {
     if (fetchError || !document) {
       return NextResponse.json(
         { error: "Document not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -48,7 +49,7 @@ export async function POST(request: NextRequest) {
       console.error("[ClauseWall] Failed to delete old clauses:", deleteError);
     }
 
-        // Update document with new settings and reset status
+    // Update document with new settings and reset status
     const { error: updateError } = await supabase
       .from("documents")
       .update({
@@ -70,21 +71,21 @@ export async function POST(request: NextRequest) {
     if (updateError) {
       return NextResponse.json(
         { error: "Failed to update document" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
     console.log(
-      `[ClauseWall] Re-analyzing document ${documentId} with jurisdiction: ${newJurisdiction}`
+      `[ClauseWall] Re-analyzing document ${documentId} with jurisdiction: ${newJurisdiction}`,
     );
 
     // Run analysis (don't await — let it run in background)
     analyzeDocument(
-        documentId,
-        document.raw_text,
-        newDocumentType || document.document_type,
-        newJurisdiction || document.jurisdiction,
-        supabase
+      documentId,
+      document.raw_text,
+      newDocumentType || document.document_type,
+      newJurisdiction || document.jurisdiction,
+      supabase,
     ).catch((err) => {
       console.error("[ClauseWall] Re-analysis failed:", err);
     });
@@ -99,7 +100,7 @@ export async function POST(request: NextRequest) {
     console.error("[ClauseWall] Re-analyze API error:", error);
     return NextResponse.json(
       { error: (error as Error).message || "Re-analysis failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

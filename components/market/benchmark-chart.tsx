@@ -58,7 +58,7 @@ export default function BenchmarkChart({
 
   if (chartData.length === 0) {
     return (
-      <div className="h-[120px] flex items-center justify-center text-sm text-white/30">
+      <div className="h-[120px] flex items-center justify-center text-sm text-foreground/30">
         Not enough data for histogram
       </div>
     );
@@ -67,7 +67,10 @@ export default function BenchmarkChart({
   return (
     <div className="w-full" style={{ height }}>
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={chartData} margin={{ top: 10, right: 10, bottom: 20, left: 0 }}>
+        <BarChart
+          data={chartData}
+          margin={{ top: 10, right: 10, bottom: 20, left: 0 }}
+        >
           <XAxis
             dataKey="name"
             tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 10 }}
@@ -114,14 +117,10 @@ export default function BenchmarkChart({
                 key={`cell-${index}`}
                 fill={
                   entry.isUser
-                    ? "#3b82f6"     // blue for user's bucket
+                    ? "#3b82f6" // blue for user's bucket
                     : "rgba(255,255,255,0.08)"
                 }
-                stroke={
-                  entry.isUser
-                    ? "#60a5fa"
-                    : "rgba(255,255,255,0.05)"
-                }
+                stroke={entry.isUser ? "#60a5fa" : "rgba(255,255,255,0.05)"}
               />
             ))}
           </Bar>
@@ -129,13 +128,13 @@ export default function BenchmarkChart({
       </ResponsiveContainer>
 
       {/* Legend */}
-      <div className="flex items-center justify-center gap-4 text-[10px] text-white/40 -mt-2">
+      <div className="flex items-center justify-center gap-4 text-[10px] text-foreground/40 -mt-2">
         <span className="flex items-center gap-1">
           <span className="w-2.5 h-2.5 rounded-sm bg-blue-500 inline-block" />
           Your value ({userValue} {unit})
         </span>
         <span className="flex items-center gap-1">
-          <span className="w-2.5 h-2.5 rounded-sm bg-white/10 inline-block border border-white/10" />
+          <span className="w-2.5 h-2.5 rounded-sm bg-muted inline-block border border-foreground border-2" />
           Market distribution
         </span>
         <span className="flex items-center gap-1">

@@ -11,11 +11,30 @@ interface Props {
   documentId: string;
 }
 
-const RISK_COLORS: Record<string, { text: string; bg: string; border: string }> = {
-  illegal: { text: "text-purple-900", bg: "bg-purple-200", border: "border-purple-600" },
-  dangerous: { text: "text-red-900", bg: "bg-red-200", border: "border-red-600" },
-  warning: { text: "text-yellow-900", bg: "bg-yellow-200", border: "border-yellow-600" },
-  safe: { text: "text-green-900", bg: "bg-green-200", border: "border-green-600" },
+const RISK_COLORS: Record<
+  string,
+  { text: string; bg: string; border: string }
+> = {
+  illegal: {
+    text: "text-purple-900",
+    bg: "bg-purple-200",
+    border: "border-purple-600",
+  },
+  dangerous: {
+    text: "text-red-900",
+    bg: "bg-red-200",
+    border: "border-red-600",
+  },
+  warning: {
+    text: "text-yellow-900",
+    bg: "bg-yellow-200",
+    border: "border-yellow-600",
+  },
+  safe: {
+    text: "text-green-900",
+    bg: "bg-green-200",
+    border: "border-green-600",
+  },
 };
 
 export default function RiskClauseRanking({ rankings, documentId }: Props) {
@@ -66,7 +85,9 @@ export default function RiskClauseRanking({ rankings, documentId }: Props) {
                 </span>
                 <span>
                   Worst:{" "}
-                  <strong className="font-black text-sm text-black">{formatINRCompact(clause.worstCaseCost)}</strong>
+                  <strong className="font-black text-sm text-black">
+                    {formatINRCompact(clause.worstCaseCost)}
+                  </strong>
                 </span>
                 <span className="bg-black text-white px-2 py-1">
                   P(trigger): {Math.round(clause.triggerProbability)}%

@@ -34,7 +34,9 @@ type TabKey = "affecting" | "all" | "pending";
 export default function LawChangeFeed() {
   const [activeTab, setActiveTab] = useState<TabKey>("affecting");
   const [summary, setSummary] = useState<LawChangeSummary | null>(null);
-  const [impacts, setImpacts] = useState<(LawChangeImpact & { change: LawChange })[]>([]);
+  const [impacts, setImpacts] = useState<
+    (LawChangeImpact & { change: LawChange })[]
+  >([]);
   const [allChanges, setAllChanges] = useState<LawChange[]>([]);
   const [pendingChanges, setPendingChanges] = useState<PendingLawChange[]>([]);
   const [loading, setLoading] = useState(true);
@@ -43,12 +45,13 @@ export default function LawChangeFeed() {
 
   const fetchData = useCallback(async () => {
     try {
-      const [summaryRes, impactsRes, changesRes, pendingRes] = await Promise.all([
-        fetch("/api/lawchange/summary"),
-        fetch("/api/lawchange/impacts"),
-        fetch("/api/lawchange/recent?days=30"),
-        fetch("/api/lawchange/pending"),
-      ]);
+      const [summaryRes, impactsRes, changesRes, pendingRes] =
+        await Promise.all([
+          fetch("/api/lawchange/summary"),
+          fetch("/api/lawchange/impacts"),
+          fetch("/api/lawchange/recent?days=30"),
+          fetch("/api/lawchange/pending"),
+        ]);
 
       if (summaryRes.ok) {
         const data = await summaryRes.json();
@@ -98,9 +101,13 @@ export default function LawChangeFeed() {
         setImpacts((prev) =>
           prev.map((i) =>
             i.id === impactId
-              ? { ...i, user_acknowledged: true, acknowledged_at: new Date().toISOString() }
-              : i
-          )
+              ? {
+                  ...i,
+                  user_acknowledged: true,
+                  acknowledged_at: new Date().toISOString(),
+                }
+              : i,
+          ),
         );
       }
     } catch {
@@ -130,7 +137,7 @@ export default function LawChangeFeed() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <Skeleton className="h-40 rounded-2xl" />
+        <Skeleton className="h-40 rounded-none" />
         <div className="flex gap-2">
           {[1, 2, 3].map((i) => (
             <Skeleton key={i} className="h-10 w-28 rounded-lg" />
@@ -138,7 +145,7 @@ export default function LawChangeFeed() {
         </div>
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
-            <Skeleton key={i} className="h-32 rounded-xl" />
+            <Skeleton key={i} className="h-32 rounded-none" />
           ))}
         </div>
       </div>
@@ -152,25 +159,17 @@ export default function LawChangeFeed() {
 
       {/* Tabs + Refresh */}
       <div className="flex items-center justify-between">
-        <div className="flex gap-1 p-1 rounded-xl bg-white/[0.03] border border-white/5">
+        <div className="flex gap-1 p-1 rounded-none bg-white/[0.03] border border-foreground border-2">
           {tabs.map((tab) => (
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
-              className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-all ${
-                activeTab === tab.key
-                  ? "bg-indigo-500/15 text-indigo-300"
-                  : "text-white/40 hover:text-white/60"
-              }`}
+              className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-all ${activeTab === tab.key ? "bg-indigo-500/15 text-indigo-300" : "text-foreground/40 hover:text-foreground/60"}`}
             >
               {tab.label}
               {tab.count > 0 && (
                 <span
-                  className={`ml-1.5 text-[10px] px-1.5 py-0.5 rounded-full ${
-                    activeTab === tab.key
-                      ? "bg-indigo-500/30 text-indigo-200"
-                      : "bg-white/5 text-white/30"
-                  }`}
+                  className={`ml-1.5 text-[10px] px-1.5 py-0.5 rounded-full ${activeTab === tab.key ? "bg-indigo-500/30 text-indigo-200" : "bg-muted text-foreground/30"}`}
                 >
                   {tab.count}
                 </span>
@@ -184,9 +183,11 @@ export default function LawChangeFeed() {
           size="sm"
           onClick={handleRefresh}
           disabled={refreshing}
-          className="gap-2 text-white/40 hover:text-white/60"
+          className="gap-2 text-foreground/40 hover:text-foreground/60"
         >
-          <RefreshCw className={`h-3.5 w-3.5 ${refreshing ? "animate-spin" : ""}`} />
+          <RefreshCw
+            className={`h-3.5 w-3.5 ${refreshing ? "animate-spin" : ""}`}
+          />
           Refresh
         </Button>
       </div>
@@ -235,23 +236,27 @@ export default function LawChangeFeed() {
           >
             {/* Source filter */}
             <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
-              {["all", "indian_kanoon", "prs_legislative", "egazette", "rbi", "irdai", "trai"].map(
-                (source) => (
-                  <button
-                    key={source}
-                    onClick={() => setFilterSource(source)}
-                    className={`flex-shrink-0 px-3 py-1.5 text-xs rounded-full border transition-colors ${
-                      filterSource === source
-                        ? "bg-indigo-500/15 border-indigo-500/30 text-indigo-300"
-                        : "border-white/10 text-white/30 hover:text-white/50"
-                    }`}
-                  >
-                    {source === "all"
-                      ? "All Sources"
-                      : source.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}
-                  </button>
-                )
-              )}
+              {[
+                "all",
+                "indian_kanoon",
+                "prs_legislative",
+                "egazette",
+                "rbi",
+                "irdai",
+                "trai",
+              ].map((source) => (
+                <button
+                  key={source}
+                  onClick={() => setFilterSource(source)}
+                  className={`flex-shrink-0 px-3 py-1.5 text-xs rounded-full border transition-colors ${filterSource === source ? "bg-indigo-500/15 border-indigo-500/30 text-indigo-300" : "border-foreground border-2 text-foreground/30 hover:text-foreground/50"}`}
+                >
+                  {source === "all"
+                    ? "All Sources"
+                    : source
+                        .replace(/_/g, " ")
+                        .replace(/\b\w/g, (l) => l.toUpperCase())}
+                </button>
+              ))}
             </div>
 
             {filteredChanges.length === 0 ? (
@@ -320,8 +325,8 @@ function EmptyState({
   return (
     <div className="flex flex-col items-center justify-center py-16">
       {icon}
-      <h3 className="text-sm font-medium text-white/50 mt-4">{title}</h3>
-      <p className="text-xs text-white/25 mt-1 max-w-sm text-center">
+      <h3 className="text-sm font-medium text-foreground/50 mt-4">{title}</h3>
+      <p className="text-xs text-foreground/25 mt-1 max-w-sm text-center">
         {description}
       </p>
     </div>

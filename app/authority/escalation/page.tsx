@@ -4,7 +4,8 @@ import AuthorityFinder from "@/components/authority/authority-finder";
 
 export const metadata: Metadata = {
   title: "Escalation Tracker | ClauseWall",
-  description: "Track your dispute escalation — step-by-step guide from legal notice to final appeal.",
+  description:
+    "Track your dispute escalation — step-by-step guide from legal notice to final appeal.",
 };
 
 export default function EscalationPage() {
@@ -16,8 +17,8 @@ export default function EscalationPage() {
             🔺 Escalation Tracker
           </h1>
           <p className="text-muted-foreground font-medium max-w-2xl mx-auto leading-relaxed">
-            Not getting a response? Follow a step-by-step escalation path from internal complaint to
-            legal notice to forum filing.
+            Not getting a response? Follow a step-by-step escalation path from
+            internal complaint to legal notice to forum filing.
           </p>
         </div>
         <AuthorityFinder />

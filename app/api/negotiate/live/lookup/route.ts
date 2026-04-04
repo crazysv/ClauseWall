@@ -13,26 +13,32 @@ export async function POST(request: NextRequest) {
 
     if (!query || !jurisdiction || !document_type) {
       return NextResponse.json(
-        { error: "Missing required fields: query, jurisdiction, document_type" },
-        { status: 400 }
+        {
+          error: "Missing required fields: query, jurisdiction, document_type",
+        },
+        { status: 400 },
       );
     }
 
     if (query.length > 500) {
       return NextResponse.json(
         { error: "Query too long. Maximum 500 characters." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    const result = await lookupClauseQuestion(query, jurisdiction, document_type);
+    const result = await lookupClauseQuestion(
+      query,
+      jurisdiction,
+      document_type,
+    );
 
     return NextResponse.json(result);
   } catch (error: any) {
     console.error("[ClauseWall] Lookup API error:", error);
     return NextResponse.json(
       { error: "Lookup failed. Please try again." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

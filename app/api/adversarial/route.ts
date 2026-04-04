@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
     if (!clauseText || !clauseType) {
       return NextResponse.json(
         { error: "clauseText and clauseType are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
       clauseText,
       clauseType,
       jurisdiction || "ALL-INDIA",
-      documentType || "rental"
+      documentType || "rental",
     );
 
     return NextResponse.json({
@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     console.error("[ClauseWall] [API] Adversarial analysis failed:", error);
     return NextResponse.json(
       { error: "Failed to analyze clause for deception" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -57,14 +57,23 @@ export default function WaveformStyle({
             />
 
             {/* Glow for dangerous/illegal */}
-            {(node.riskLevel === "dangerous" || node.riskLevel === "illegal") && (
+            {(node.riskLevel === "dangerous" ||
+              node.riskLevel === "illegal") && (
               <motion.rect
                 x={x - 2}
                 width={barW + 4}
                 rx={barW / 3}
                 fill={node.riskColor}
-                initial={animated ? { y: centerY, height: 0, opacity: 0 } : { y: centerY - barH - 4, height: barH + 8, opacity: 0.15 }}
-                animate={{ y: centerY - barH - 4, height: barH + 8, opacity: 0.15 }}
+                initial={
+                  animated
+                    ? { y: centerY, height: 0, opacity: 0 }
+                    : { y: centerY - barH - 4, height: barH + 8, opacity: 0.15 }
+                }
+                animate={{
+                  y: centerY - barH - 4,
+                  height: barH + 8,
+                  opacity: 0.15,
+                }}
                 transition={{ delay: i * 0.04 + 0.2, duration: 0.4 }}
                 style={{ pointerEvents: "none" }}
               />
@@ -77,7 +86,11 @@ export default function WaveformStyle({
               rx={barW / 4}
               fill={node.riskColor}
               opacity={node.intensity}
-              initial={animated ? { y: centerY, height: 0 } : { y: centerY - barH, height: barH }}
+              initial={
+                animated
+                  ? { y: centerY, height: 0 }
+                  : { y: centerY - barH, height: barH }
+              }
               animate={{ y: centerY - barH, height: barH }}
               transition={{ delay: i * 0.04, duration: 0.45, ease: "easeOut" }}
               style={{ pointerEvents: "none" }}

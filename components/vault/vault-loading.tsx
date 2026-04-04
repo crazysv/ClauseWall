@@ -68,7 +68,9 @@ const STEPS = [
   },
 ];
 
-export default function VaultLoading({ isComplete = false }: VaultLoadingProps) {
+export default function VaultLoading({
+  isComplete = false,
+}: VaultLoadingProps) {
   const [activeStep, setActiveStep] = useState(0);
 
   useEffect(() => {
@@ -96,9 +98,11 @@ export default function VaultLoading({ isComplete = false }: VaultLoadingProps) 
         animate={{ scale: [1, 1.05, 1] }}
         transition={{ duration: 2, repeat: Infinity }}
       >
-        <div className={`relative w-28 h-28 flex items-center justify-center border-8 border-black bg-white dark:bg-black p-4 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]`}>
+        <div
+          className={`relative w-28 h-28 flex items-center justify-center border-8 border-black bg-white dark:bg-black p-4 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]`}
+        >
           {isComplete ? (
-             <div className="absolute inset-0 bg-green-400/20" />
+            <div className="absolute inset-0 bg-green-400/20" />
           ) : (
             <>
               <div className="absolute inset-0 bg-indigo-500/10" />
@@ -133,40 +137,44 @@ export default function VaultLoading({ isComplete = false }: VaultLoadingProps) 
           const isCurrent = index === activeStep && !isComplete;
 
           return (
-              <motion.div
-                key={step.id}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className={`flex items-center gap-4 px-4 py-3 border-4 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${
-                  isDone
-                    ? "bg-green-100 dark:bg-green-950/30 border-green-500"
-                    : isCurrent
+            <motion.div
+              key={step.id}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.1 }}
+              className={`flex items-center gap-4 px-4 py-3 border-4 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${
+                isDone
+                  ? "bg-green-100 dark:bg-green-950/30 border-green-500"
+                  : isCurrent
                     ? `${step.bg} ${step.border}`
                     : "bg-gray-50 dark:bg-zinc-900 border-black opacity-50"
-                }`}
+              }`}
+            >
+              <div
+                className={`flex-shrink-0 p-2 border-2 ${isDone ? "border-green-600 dark:border-green-500 bg-white dark:bg-black" : isCurrent ? `${step.border} bg-white dark:bg-black` : "border-gray-400 bg-gray-200 dark:bg-zinc-800"}`}
               >
-                <div className={`flex-shrink-0 p-2 border-2 ${isDone ? 'border-green-600 dark:border-green-500 bg-white dark:bg-black' : isCurrent ? `${step.border} bg-white dark:bg-black` : 'border-gray-400 bg-gray-200 dark:bg-zinc-800'}`}>
-                  {isDone ? (
-                    <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-500 stroke-[3px]" />
-                  ) : isCurrent ? (
-                    <Loader2 className={`w-5 h-5 ${step.color} animate-spin stroke-[3px]`} />
-                  ) : (
-                    <Icon className="w-5 h-5 text-gray-500 stroke-[3px]" />
-                  )}
-                </div>
-                <span
-                  className={`text-sm font-black uppercase tracking-widest ${
-                    isDone
-                      ? "text-green-700 dark:text-green-400"
-                      : isCurrent
+                {isDone ? (
+                  <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-500 stroke-[3px]" />
+                ) : isCurrent ? (
+                  <Loader2
+                    className={`w-5 h-5 ${step.color} animate-spin stroke-[3px]`}
+                  />
+                ) : (
+                  <Icon className="w-5 h-5 text-gray-500 stroke-[3px]" />
+                )}
+              </div>
+              <span
+                className={`text-sm font-black uppercase tracking-widest ${
+                  isDone
+                    ? "text-green-700 dark:text-green-400"
+                    : isCurrent
                       ? `${step.color}`
                       : "text-muted-foreground"
-                  }`}
-                >
-                  {step.label}
-                </span>
-              </motion.div>
+                }`}
+              >
+                {step.label}
+              </span>
+            </motion.div>
           );
         })}
       </div>

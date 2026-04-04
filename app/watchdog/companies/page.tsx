@@ -25,13 +25,17 @@ export default async function CompaniesPage() {
   let watchedIds: string[] = [];
   try {
     const userSupabase = await createClient();
-    const { data: { user } } = await userSupabase.auth.getUser();
+    const {
+      data: { user },
+    } = await userSupabase.auth.getUser();
     if (user) {
       const { data: watchlist } = await userSupabase
         .from("user_watchlist")
         .select("company_id")
         .eq("user_id", user.id);
-      watchedIds = (watchlist || []).map((w: { company_id: string }) => w.company_id);
+      watchedIds = (watchlist || []).map(
+        (w: { company_id: string }) => w.company_id,
+      );
     }
   } catch {
     // Not logged in — fine
@@ -43,7 +47,8 @@ export default async function CompaniesPage() {
         <div className="mb-6">
           <h1 className="text-2xl font-bold mb-1">Monitored Companies</h1>
           <p className="text-muted-foreground">
-            {(companies as MonitoredCompany[] || []).length} companies monitored across India
+            {((companies as MonitoredCompany[]) || []).length} companies
+            monitored across India
           </p>
         </div>
         <CompanyGrid

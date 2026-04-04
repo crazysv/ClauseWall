@@ -31,7 +31,8 @@ const PROBABILITY_CONFIG: Record<
 };
 
 export default function PendingChangeCard({ pending }: Props) {
-  const config = PROBABILITY_CONFIG[pending.probability] || PROBABILITY_CONFIG.possible;
+  const config =
+    PROBABILITY_CONFIG[pending.probability] || PROBABILITY_CONFIG.possible;
 
   const dateStr = pending.expected_date
     ? new Date(pending.expected_date).toLocaleDateString("en-IN", {
@@ -48,29 +49,31 @@ export default function PendingChangeCard({ pending }: Props) {
           <Clock className={`h-5 w-5 mt-0.5 flex-shrink-0 ${config.color}`} />
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-2 mb-2">
-              <h3 className="text-sm font-medium text-white/90">
+              <h3 className="text-sm font-medium text-foreground/90">
                 {pending.title}
               </h3>
-              <Badge className={`text-[10px] flex-shrink-0 ${config.color} bg-transparent border border-current/20`}>
+              <Badge
+                className={`text-[10px] flex-shrink-0 ${config.color} bg-transparent border border-current/20`}
+              >
                 {config.label}
               </Badge>
             </div>
 
             {pending.description && (
-              <p className="text-xs text-white/40 leading-relaxed mb-3">
+              <p className="text-xs text-foreground/40 leading-relaxed mb-3">
                 {pending.description}
               </p>
             )}
 
             <div className="flex flex-wrap gap-2 mb-3">
               {dateStr && (
-                <span className="text-[10px] text-white/25 flex items-center gap-1">
+                <span className="text-[10px] text-foreground/25 flex items-center gap-1">
                   <Calendar className="h-3 w-3" />
                   Expected: {dateStr}
                 </span>
               )}
               {pending.source && (
-                <span className="text-[10px] text-white/20">
+                <span className="text-[10px] text-foreground/20">
                   Source: {pending.source}
                 </span>
               )}
@@ -82,7 +85,7 @@ export default function PendingChangeCard({ pending }: Props) {
                 {pending.affected_clause_types.map((ct) => (
                   <span
                     key={ct}
-                    className="text-[9px] px-1.5 py-0.5 rounded bg-white/[0.04] text-white/25"
+                    className="text-[9px] px-1.5 py-0.5 rounded bg-white/[0.04] text-foreground/25"
                   >
                     {ct.replace(/_/g, " ")}
                   </span>
@@ -92,11 +95,13 @@ export default function PendingChangeCard({ pending }: Props) {
 
             {/* Preparation advice */}
             {pending.what_to_prepare && (
-              <div className="p-3 rounded-lg bg-white/[0.02] border border-white/5">
-                <p className="text-[10px] text-white/30 uppercase tracking-wider mb-1">
+              <div className="p-3 rounded-lg bg-white/[0.02] border border-foreground border-2">
+                <p className="text-[10px] text-foreground/30 uppercase tracking-wider mb-1">
                   📋 How to Prepare
                 </p>
-                <p className="text-xs text-white/40">{pending.what_to_prepare}</p>
+                <p className="text-xs text-foreground/40">
+                  {pending.what_to_prepare}
+                </p>
               </div>
             )}
           </div>

@@ -4,7 +4,7 @@ import { generateNegotiationPlaybook } from "@/lib/ai/negotiation-generator";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
+  process.env.SUPABASE_SERVICE_ROLE_KEY!,
 );
 
 export const maxDuration = 60;
@@ -15,7 +15,10 @@ export async function POST(request: NextRequest) {
     const { documentId } = body;
 
     if (!documentId) {
-      return NextResponse.json({ error: "Missing documentId" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing documentId" },
+        { status: 400 },
+      );
     }
 
     // Fetch document
@@ -26,13 +29,16 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (docError || !doc) {
-      return NextResponse.json({ error: "Document not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Document not found" },
+        { status: 404 },
+      );
     }
 
     if (doc.analysis_status !== "completed") {
       return NextResponse.json(
         { error: "Analysis not complete. Please wait for analysis to finish." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -44,7 +50,10 @@ export async function POST(request: NextRequest) {
       .order("clause_number", { ascending: true });
 
     if (clauseError || !clauses) {
-      return NextResponse.json({ error: "Failed to fetch clauses" }, { status: 500 });
+      return NextResponse.json(
+        { error: "Failed to fetch clauses" },
+        { status: 500 },
+      );
     }
 
     // Generate playbook
@@ -61,13 +70,13 @@ export async function POST(request: NextRequest) {
         legal_citation: c.legal_citation,
         fair_alternative: c.fair_alternative,
         negotiation_script: c.negotiation_script,
-      }))
+      })),
     );
 
     if (!result.success) {
       return NextResponse.json(
         { error: result.error || "Generation failed" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -79,7 +88,7 @@ export async function POST(request: NextRequest) {
     console.error("[Negotiate API] Error:", error);
     return NextResponse.json(
       { error: error.message || "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

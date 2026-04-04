@@ -5,12 +5,13 @@ import { CLAUSE_AUTOPSY_PROMPT } from "@/lib/ai/system-prompt";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { clauseText, clauseType, jurisdiction, documentType, riskLevel } = body;
+    const { clauseText, clauseType, jurisdiction, documentType, riskLevel } =
+      body;
 
     if (!clauseText || !clauseType) {
       return NextResponse.json(
         { error: "Missing required fields: clauseText, clauseType" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -52,7 +53,7 @@ Clause text:
       console.error("[ClauseWall] Autopsy JSON parse failed. Raw:", response);
       return NextResponse.json(
         { error: "Failed to parse AI response" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -65,7 +66,7 @@ Clause text:
             (v: Record<string, unknown>) =>
               v.phrase &&
               typeof v.phrase === "string" &&
-              v.phrase.trim().length > 0
+              v.phrase.trim().length > 0,
           )
           .map((v: Record<string, unknown>) => ({
             phrase: String(v.phrase),
@@ -85,21 +86,16 @@ Clause text:
       most_severe: validSeverities.includes(parsed.most_severe)
         ? parsed.most_severe
         : violations.length > 0
-          ? violations.reduce(
-              (
-                worst: string,
-                v: { severity: string }
-              ) => {
-                const order = ["safe", "warning", "dangerous", "illegal"];
-                return order.indexOf(v.severity) > order.indexOf(worst)
-                  ? v.severity
-                  : worst;
-              },
-              "warning"
-            )
+          ? violations.reduce((worst: string, v: { severity: string }) => {
+              const order = ["safe", "warning", "dangerous", "illegal"];
+              return order.indexOf(v.severity) > order.indexOf(worst)
+                ? v.severity
+                : worst;
+            }, "warning")
           : "safe",
-      dissection_summary:
-        String(parsed.dissection_summary || "Analysis complete."),
+      dissection_summary: String(
+        parsed.dissection_summary || "Analysis complete.",
+      ),
     };
 
     return NextResponse.json(result);
@@ -107,7 +103,7 @@ Clause text:
     console.error("[ClauseWall] Autopsy API error:", error);
     return NextResponse.json(
       { error: "Autopsy analysis failed. Please try again." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

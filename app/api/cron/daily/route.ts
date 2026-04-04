@@ -26,9 +26,8 @@ export async function GET(request: NextRequest) {
 
     // ─── Job 1: Deadline reminders (existing) ───
     try {
-      const { checkAndSendReminders } = await import(
-        "@/lib/timebomb/reminder-service"
-      );
+      const { checkAndSendReminders } =
+        await import("@/lib/timebomb/reminder-service");
       console.log("[Daily Cron] Starting deadline reminder check...");
       const deadlineResult = await checkAndSendReminders();
       console.log("[Daily Cron] Deadline reminders:", deadlineResult);
@@ -45,9 +44,8 @@ export async function GET(request: NextRequest) {
 
     // ─── Job 2: Law change notifications (new) ───
     try {
-      const { sendLawChangeNotifications } = await import(
-        "@/lib/lawchange/notification-sender"
-      );
+      const { sendLawChangeNotifications } =
+        await import("@/lib/lawchange/notification-sender");
       console.log("[Daily Cron] Starting law change notifications...");
       const lawChangeResult = await sendLawChangeNotifications();
       console.log("[Daily Cron] Law change notifications:", lawChangeResult);
@@ -55,7 +53,7 @@ export async function GET(request: NextRequest) {
     } catch (lawChangeError) {
       console.error(
         "[Daily Cron] Law change notifications failed:",
-        lawChangeError
+        lawChangeError,
       );
       results.law_changes = {
         error: (lawChangeError as Error).message,
@@ -66,15 +64,19 @@ export async function GET(request: NextRequest) {
 
     // ─── Job 3: Complaint hearing reminders ───
     try {
-      const { getUpcomingHearings } = await import(
-        "@/lib/complaint/case-tracker"
-      );
+      const { getUpcomingHearings } =
+        await import("@/lib/complaint/case-tracker");
       console.log("[Daily Cron] Starting complaint hearing reminder check...");
       const hearings = await getUpcomingHearings();
-      console.log(`[Daily Cron] Found ${hearings.length} upcoming complaint hearings`);
+      console.log(
+        `[Daily Cron] Found ${hearings.length} upcoming complaint hearings`,
+      );
       results.complaint_hearings = { count: hearings.length };
     } catch (hearingError) {
-      console.error("[Daily Cron] Complaint hearing check failed:", hearingError);
+      console.error(
+        "[Daily Cron] Complaint hearing check failed:",
+        hearingError,
+      );
       results.complaint_hearings = {
         error: (hearingError as Error).message,
         count: 0,
@@ -83,9 +85,7 @@ export async function GET(request: NextRequest) {
 
     // ─── Job 4: Contract Watchdog — ToS scrape + analysis ───
     try {
-      const { runWatchdogCron } = await import(
-        "@/lib/watchdog/cron-handler"
-      );
+      const { runWatchdogCron } = await import("@/lib/watchdog/cron-handler");
       console.log("[Daily Cron] Starting Contract Watchdog scan...");
       const watchdogResult = await runWatchdogCron(10);
       console.log("[Daily Cron] Watchdog result:", watchdogResult);
@@ -108,7 +108,7 @@ export async function GET(request: NextRequest) {
         message: (error as Error).message,
         timestamp: new Date().toISOString(),
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

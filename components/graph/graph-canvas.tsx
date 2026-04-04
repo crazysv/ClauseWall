@@ -1,7 +1,12 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import type { GraphVisualizationData, VisNode, VisLink, GraphNodeType } from "@/lib/graph/types";
+import type {
+  GraphVisualizationData,
+  VisNode,
+  VisLink,
+  GraphNodeType,
+} from "@/lib/graph/types";
 
 interface GraphCanvasProps {
   data: GraphVisualizationData;
@@ -10,18 +15,18 @@ interface GraphCanvasProps {
 
 // Node type colors
 const NODE_COLORS: Record<GraphNodeType, string> = {
-  law: "#3B82F6",           // blue
-  section: "#8B5CF6",       // purple
-  clause_type: "#EF4444",   // red
+  law: "#3B82F6", // blue
+  section: "#8B5CF6", // purple
+  clause_type: "#EF4444", // red
   interpretation: "#A855F7", // violet
-  jurisdiction: "#6B7280",  // gray
-  authority: "#EAB308",     // yellow
-  penalty: "#F97316",       // orange
-  case_ref: "#22C55E",      // green
-  guideline: "#06B6D4",     // cyan
-  regulation: "#14B8A6",    // teal
+  jurisdiction: "#6B7280", // gray
+  authority: "#EAB308", // yellow
+  penalty: "#F97316", // orange
+  case_ref: "#22C55E", // green
+  guideline: "#06B6D4", // cyan
+  regulation: "#14B8A6", // teal
   document_type: "#64748B", // slate
-  remedy: "#10B981",        // emerald
+  remedy: "#10B981", // emerald
 };
 
 const NODE_RADIUS: Record<GraphNodeType, number> = {
@@ -52,7 +57,11 @@ export default function GraphCanvas({ data, highlightType }: GraphCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [hoveredNode, setHoveredNode] = useState<SimNode | null>(null);
-  const [tooltip, setTooltip] = useState<{ x: number; y: number; node: SimNode } | null>(null);
+  const [tooltip, setTooltip] = useState<{
+    x: number;
+    y: number;
+    node: SimNode;
+  } | null>(null);
   const nodesRef = useRef<SimNode[]>([]);
   const linksRef = useRef<VisLink[]>([]);
   const animFrameRef = useRef<number>(0);
@@ -115,8 +124,14 @@ export default function GraphCanvas({ data, highlightType }: GraphCanvasProps) {
 
       // Center gravity
       for (const node of nodes) {
-        if (node.fx != null) { node.x = node.fx; continue; }
-        if (node.fy != null) { node.y = node.fy; continue; }
+        if (node.fx != null) {
+          node.x = node.fx;
+          continue;
+        }
+        if (node.fy != null) {
+          node.y = node.fy;
+          continue;
+        }
         node.vx += (centerX - node.x) * 0.001;
         node.vy += (centerY - node.y) * 0.001;
       }
@@ -136,10 +151,18 @@ export default function GraphCanvas({ data, highlightType }: GraphCanvasProps) {
         const fx = (dx / dist) * force;
         const fy = (dy / dist) * force;
 
-        if (source.fx == null) { source.vx += fx; }
-        if (source.fy == null) { source.vy += fy; }
-        if (target.fx == null) { target.vx -= fx; }
-        if (target.fy == null) { target.vy -= fy; }
+        if (source.fx == null) {
+          source.vx += fx;
+        }
+        if (source.fy == null) {
+          source.vy += fy;
+        }
+        if (target.fx == null) {
+          target.vx -= fx;
+        }
+        if (target.fy == null) {
+          target.vy -= fy;
+        }
       }
 
       // Repulsion between nodes
@@ -155,10 +178,18 @@ export default function GraphCanvas({ data, highlightType }: GraphCanvasProps) {
           const fx = (dx / dist) * repulsion;
           const fy = (dy / dist) * repulsion;
 
-          if (a.fx == null) { a.vx -= fx; }
-          if (a.fy == null) { a.vy -= fy; }
-          if (b.fx == null) { b.vx += fx; }
-          if (b.fy == null) { b.vy += fy; }
+          if (a.fx == null) {
+            a.vx -= fx;
+          }
+          if (a.fy == null) {
+            a.vy -= fy;
+          }
+          if (b.fx == null) {
+            b.vx += fx;
+          }
+          if (b.fy == null) {
+            b.vy += fy;
+          }
         }
       }
 
@@ -197,7 +228,10 @@ export default function GraphCanvas({ data, highlightType }: GraphCanvasProps) {
         ctx.lineWidth = 1;
 
         // Highlight edges connected to hovered node
-        if (hoveredNode && (link.source === hoveredNode.id || link.target === hoveredNode.id)) {
+        if (
+          hoveredNode &&
+          (link.source === hoveredNode.id || link.target === hoveredNode.id)
+        ) {
           ctx.strokeStyle = "rgba(6,182,212,0.4)";
           ctx.lineWidth = 2;
         }
@@ -209,8 +243,12 @@ export default function GraphCanvas({ data, highlightType }: GraphCanvasProps) {
       for (const node of nodes) {
         const color = NODE_COLORS[node.type] || "#6B7280";
         const radius = NODE_RADIUS[node.type] || 14;
-        const isHighlight = highlightType && node.type === "clause_type" && node.metadata &&
-          (node as VisNode).id === nodes.find((n) => n.type === "clause_type")?.id;
+        const isHighlight =
+          highlightType &&
+          node.type === "clause_type" &&
+          node.metadata &&
+          (node as VisNode).id ===
+            nodes.find((n) => n.type === "clause_type")?.id;
         const isHovered = hoveredNode?.id === node.id;
 
         // Glow for hovered
@@ -238,7 +276,8 @@ export default function GraphCanvas({ data, highlightType }: GraphCanvasProps) {
 
         const label = node.short_label || node.label;
         const maxLen = radius > 18 ? 14 : 10;
-        const displayLabel = label.length > maxLen ? label.substring(0, maxLen - 2) + ".." : label;
+        const displayLabel =
+          label.length > maxLen ? label.substring(0, maxLen - 2) + ".." : label;
         ctx.fillText(displayLabel, node.x, node.y);
       }
 
@@ -253,7 +292,11 @@ export default function GraphCanvas({ data, highlightType }: GraphCanvasProps) {
         const typeText = t.type.replace(/_/g, " ").toUpperCase();
 
         ctx.fillStyle = "rgba(0,0,0,0.85)";
-        const textWidth = Math.max(ctx.measureText(text).width, ctx.measureText(typeText).width) + 20;
+        const textWidth =
+          Math.max(
+            ctx.measureText(text).width,
+            ctx.measureText(typeText).width,
+          ) + 20;
         ctx.beginPath();
         ctx.roundRect(tx - textWidth / 2, ty - 20, textWidth, 40, 6);
         ctx.fill();
@@ -371,7 +414,9 @@ export default function GraphCanvas({ data, highlightType }: GraphCanvasProps) {
 
       {/* Legend */}
       <div className="absolute bottom-3 left-3 p-2 rounded-lg bg-black/70 border border-white/10">
-        <p className="text-[9px] text-gray-500 mb-1.5 font-medium">NODE TYPES</p>
+        <p className="text-[9px] text-gray-500 mb-1.5 font-medium">
+          NODE TYPES
+        </p>
         <div className="flex flex-wrap gap-x-3 gap-y-1">
           {presentTypes.map((type) => (
             <div key={type} className="flex items-center gap-1">
@@ -389,7 +434,9 @@ export default function GraphCanvas({ data, highlightType }: GraphCanvasProps) {
 
       {/* Controls hint */}
       <div className="absolute top-3 right-3 p-2 rounded-lg bg-black/70 border border-white/10">
-        <p className="text-[9px] text-gray-500">Scroll: Zoom • Drag: Move nodes</p>
+        <p className="text-[9px] text-gray-500">
+          Scroll: Zoom • Drag: Move nodes
+        </p>
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
     if (!proofNodeId || !proofTree || !userChallenge) {
       return NextResponse.json(
         { error: "proofNodeId, proofTree, and userChallenge are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -24,13 +24,14 @@ export async function POST(request: NextRequest) {
     if (!node) {
       return NextResponse.json(
         { error: "Proof node not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     // Build context for Groq
     const nodeContext = buildNodeContext(node);
-    const statuteRef = node.metadata.statute || findStatuteInTree(proofTree.conclusion);
+    const statuteRef =
+      node.metadata.statute || findStatuteInTree(proofTree.conclusion);
 
     const response = await callGroq(
       [
@@ -68,7 +69,7 @@ Respond in JSON format.`,
       {
         temperature: 0.4,
         maxTokens: 512,
-      }
+      },
     );
 
     const parsed = JSON.parse(response);
@@ -88,7 +89,7 @@ Respond in JSON format.`,
     console.error("[ClauseWall] [API] Challenge failed:", error);
     return NextResponse.json(
       { success: false, error: "Failed to process challenge" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -112,7 +113,7 @@ function buildNodeContext(node: ProofNode): string {
   }
   if (node.metadata.leftOperand !== undefined) {
     parts.push(
-      `Comparison: ${node.metadata.leftOperand} ${node.metadata.operator || "=="} ${node.metadata.rightOperand} = ${node.metadata.comparisonResult}`
+      `Comparison: ${node.metadata.leftOperand} ${node.metadata.operator || "=="} ${node.metadata.rightOperand} = ${node.metadata.comparisonResult}`,
     );
   }
   if (node.metadata.ruleName) {
@@ -128,7 +129,9 @@ function buildNodeContext(node: ProofNode): string {
     parts.push(`Remedy: ${node.metadata.remedy}`);
   }
   if (node.metadata.originalText) {
-    parts.push(`Source text: "${node.metadata.originalText.substring(0, 150)}"`);
+    parts.push(
+      `Source text: "${node.metadata.originalText.substring(0, 150)}"`,
+    );
   }
 
   return parts.join(". ") || node.description;

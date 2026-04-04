@@ -18,13 +18,14 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const imageFile = formData.get("image") as Blob | null;
-    const jurisdiction = (formData.get("jurisdiction") as string) || "ALL-INDIA";
+    const jurisdiction =
+      (formData.get("jurisdiction") as string) || "ALL-INDIA";
     const documentType = (formData.get("document_type") as string) || "rental";
 
     if (!imageFile) {
       return NextResponse.json(
         { error: "No image file provided" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -32,7 +33,7 @@ export async function POST(request: NextRequest) {
     if (imageFile.size > 10 * 1024 * 1024) {
       return NextResponse.json(
         { error: "Image too large. Maximum 10MB." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -62,7 +63,7 @@ export async function POST(request: NextRequest) {
       console.error("[ClauseWall] Camera OCR failed:", error);
       return NextResponse.json(
         { error: "OCR failed. Try adjusting the angle or lighting." },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -71,12 +72,17 @@ export async function POST(request: NextRequest) {
         extracted_text: "",
         clauses: [],
         timestamp: Date.now(),
-        message: "No readable text detected. Try adjusting the angle or lighting.",
+        message:
+          "No readable text detected. Try adjusting the angle or lighting.",
       });
     }
 
     // Step 2: Analyze extracted clauses
-    const clauses = processFrameForClauses(extractedText, jurisdiction, documentType);
+    const clauses = processFrameForClauses(
+      extractedText,
+      jurisdiction,
+      documentType,
+    );
 
     return NextResponse.json({
       extracted_text: extractedText,
@@ -87,7 +93,7 @@ export async function POST(request: NextRequest) {
     console.error("[ClauseWall] Camera OCR API error:", error);
     return NextResponse.json(
       { error: "Camera scan failed. Please try again." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

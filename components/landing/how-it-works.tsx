@@ -14,7 +14,9 @@ export function HowItWorks() {
             1
           </div>
           <h3 className="text-xl font-bold text-foreground mt-4">Upload</h3>
-          <p className="text-muted-foreground mt-2 leading-relaxed">Upload your contract or paste text</p>
+          <p className="text-muted-foreground mt-2 leading-relaxed">
+            Upload your contract or paste text
+          </p>
         </div>
         <div className="flex-1 relative">
           <div className="hidden md:block absolute top-[24px] left-[60px] right-[-30px] border-t-2 border-dashed border-border" />
@@ -22,14 +24,18 @@ export function HowItWorks() {
             2
           </div>
           <h3 className="text-xl font-bold text-foreground mt-4">Analyze</h3>
-          <p className="text-muted-foreground mt-2 leading-relaxed">AI analyzes each clause for risks</p>
+          <p className="text-muted-foreground mt-2 leading-relaxed">
+            AI analyzes each clause for risks
+          </p>
         </div>
         <div className="flex-1 relative">
           <div className="w-12 h-12 rounded-full bg-foreground text-background font-black text-lg flex items-center justify-center mb-6 relative z-10">
             3
           </div>
           <h3 className="text-xl font-bold text-foreground mt-4">Review</h3>
-          <p className="text-muted-foreground mt-2 leading-relaxed">Get detailed results and recommendations</p>
+          <p className="text-muted-foreground mt-2 leading-relaxed">
+            Get detailed results and recommendations
+          </p>
         </div>
       </div>
     </section>

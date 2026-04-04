@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Gavel, ArrowRight, Loader2, Shield, AlertTriangle } from "lucide-react";
+import {
+  Gavel,
+  ArrowRight,
+  Loader2,
+  Shield,
+  AlertTriangle,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
@@ -46,8 +52,8 @@ export default function ComplaintCTA({
                     {illegalCount > 0
                       ? `${illegalCount} illegal clause${illegalCount > 1 ? "s" : ""} found`
                       : `${dangerousCount} dangerous clause${dangerousCount > 1 ? "s" : ""} found`}
-                    {entityName ? ` in ${entityName}'s contract` : ""}.
-                    File a formal complaint with the correct regulatory authority.
+                    {entityName ? ` in ${entityName}'s contract` : ""}. File a
+                    formal complaint with the correct regulatory authority.
                   </p>
                   <div className="flex items-center gap-2 mt-4">
                     <span className="text-xs font-bold uppercase tracking-widest px-3 py-1 bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-400 border-2 border-green-500 shadow-[2px_2px_0px_0px_rgba(34,197,94,1)]">

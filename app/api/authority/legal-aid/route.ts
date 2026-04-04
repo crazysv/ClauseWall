@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     console.error("[ClauseWall] Legal aid routing failed:", error);
     return NextResponse.json(
       { success: false, error: "Legal aid check failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

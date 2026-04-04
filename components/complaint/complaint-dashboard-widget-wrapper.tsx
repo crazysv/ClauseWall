@@ -9,8 +9,8 @@ export default function ComplaintDashboardWidgetWrapper() {
 
   useEffect(() => {
     fetch("/api/complaint/list")
-      .then(res => res.json())
-      .then(data => setFilings(data.filings || []))
+      .then((res) => res.json())
+      .then((data) => setFilings(data.filings || []))
       .catch(() => {});
   }, []);
 

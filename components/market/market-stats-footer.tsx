@@ -20,17 +20,18 @@ export default function MarketStatsFooter({
     : "N/A";
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-2 py-4 px-1 border-t border-white/5 mt-8">
-      <div className="flex items-center gap-4 text-[10px] text-white/25">
+    <div className="flex flex-wrap items-center justify-between gap-2 py-4 px-1 border-t border-foreground border-2 mt-8">
+      <div className="flex items-center gap-4 text-[10px] text-foreground/25">
         <span className="flex items-center gap-1">
           <Database className="h-3 w-3" />
           Based on {totalContracts.toLocaleString()} anonymized contracts
         </span>
         <span>Last updated: {formattedDate}</span>
       </div>
-      <div className="flex items-center gap-1 text-[10px] text-white/20">
+      <div className="flex items-center gap-1 text-[10px] text-foreground/20">
         <Shield className="h-3 w-3" />
-        All data is anonymized & aggregated. No individual contract data is exposed.
+        All data is anonymized & aggregated. No individual contract data is
+        exposed.
       </div>
     </div>
   );

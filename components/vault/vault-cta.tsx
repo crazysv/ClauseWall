@@ -68,7 +68,8 @@ export function VaultCTA() {
                 </h3>
                 <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground mt-2 leading-relaxed">
                   ANALYZE {data.contract_count}/2 CONTRACTS UPLOADED. UPLOAD{" "}
-                  {2 - data.contract_count} MORE TO UNLOCK CROSS-CONTRACT ANALYSIS.
+                  {2 - data.contract_count} MORE TO UNLOCK CROSS-CONTRACT
+                  ANALYSIS.
                 </p>
               </div>
               <Link href="/upload" className="w-full sm:w-auto">
@@ -106,7 +107,9 @@ export function VaultCTA() {
           >
             <CardContent className="p-6">
               <div className="flex items-center gap-6">
-                <div className={`p-4 border-4 border-black bg-white dark:bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex-shrink-0`}>
+                <div
+                  className={`p-4 border-4 border-black bg-white dark:bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex-shrink-0`}
+                >
                   {isHighRisk ? (
                     <AlertTriangle className="w-8 h-8 text-red-600 dark:text-red-500 stroke-[3px]" />
                   ) : (
@@ -124,13 +127,23 @@ export function VaultCTA() {
                       </span>
                     )}
                   </div>
-                  <p className={`text-sm font-bold uppercase tracking-widest leading-relaxed line-clamp-2 ${isHighRisk ? 'text-red-900/60 dark:text-red-200/60' : 'text-indigo-900/60 dark:text-indigo-200/60'}`}>
-                    {conflictCount > 0 && `${conflictCount} CONFLICT${conflictCount > 1 ? "S" : ""}`}
+                  <p
+                    className={`text-sm font-bold uppercase tracking-widest leading-relaxed line-clamp-2 ${isHighRisk ? "text-red-900/60 dark:text-red-200/60" : "text-indigo-900/60 dark:text-indigo-200/60"}`}
+                  >
+                    {conflictCount > 0 &&
+                      `${conflictCount} CONFLICT${conflictCount > 1 ? "S" : ""}`}
                     {conflictCount > 0 && gapCount > 0 && " · "}
-                    {gapCount > 0 && `${gapCount} GAP${gapCount > 1 ? "S" : ""}`}
-                    {(conflictCount > 0 || gapCount > 0) && cascadeCount > 0 && " · "}
-                    {cascadeCount > 0 && `${cascadeCount} CASCADE${cascadeCount > 1 ? "S" : ""}`}
-                    {conflictCount === 0 && gapCount === 0 && cascadeCount === 0 && "ALL CLEAR - NO CRITICAL ISSUES"}
+                    {gapCount > 0 &&
+                      `${gapCount} GAP${gapCount > 1 ? "S" : ""}`}
+                    {(conflictCount > 0 || gapCount > 0) &&
+                      cascadeCount > 0 &&
+                      " · "}
+                    {cascadeCount > 0 &&
+                      `${cascadeCount} CASCADE${cascadeCount > 1 ? "S" : ""}`}
+                    {conflictCount === 0 &&
+                      gapCount === 0 &&
+                      cascadeCount === 0 &&
+                      "ALL CLEAR - NO CRITICAL ISSUES"}
                   </p>
                 </div>
                 <div className="p-3 border-4 border-black bg-white dark:bg-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hidden sm:block">
@@ -146,10 +159,7 @@ export function VaultCTA() {
 
   // No analysis yet — prompt to run
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-    >
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
       <Link href="/vault">
         <Card className="cursor-pointer hover:-translate-y-2 hover:shadow-none transition-all bg-indigo-50 dark:bg-indigo-950/20 border-4 border-black rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
           <CardContent className="p-6">
@@ -162,8 +172,12 @@ export function VaultCTA() {
                   CONTRACT VAULT
                 </h3>
                 <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground leading-relaxed">
-                  YOU HAVE <span className="text-indigo-600 dark:text-indigo-400 font-black">{data.contract_count}</span> CONTRACTS. RUN A CROSS-CONTRACT ANALYSIS TO FIND
-                  CONFLICTS, GAPS, AND HIDDEN RISKS.
+                  YOU HAVE{" "}
+                  <span className="text-indigo-600 dark:text-indigo-400 font-black">
+                    {data.contract_count}
+                  </span>{" "}
+                  CONTRACTS. RUN A CROSS-CONTRACT ANALYSIS TO FIND CONFLICTS,
+                  GAPS, AND HIDDEN RISKS.
                 </p>
               </div>
               <div className="p-3 border-4 border-black bg-white dark:bg-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hidden sm:block">

@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     if (!clauseText || !clauseType || !jurisdiction || !documentType) {
       return NextResponse.json(
         { error: "Missing required fields" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
       riskLevel || "warning",
       explanation || null,
       legalCitation || null,
-      fairAlternative || null
+      fairAlternative || null,
     );
 
     return NextResponse.json(result);
@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
     console.error("[ClauseWall] Rewrite API failed:", error);
     return NextResponse.json(
       { error: "Failed to rewrite clause. Please try again." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

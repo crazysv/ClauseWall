@@ -9,12 +9,14 @@ import { createClient } from "@/lib/supabase/server";
 export async function GET() {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return NextResponse.json(
         { error: "Authentication required" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -25,7 +27,7 @@ export async function GET() {
     console.error("[ClauseWall] [API] Get user collectives error:", error);
     return NextResponse.json(
       { error: "Failed to fetch user collectives" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

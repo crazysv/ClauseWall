@@ -1,6 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { compareDocumentToMarket, compareClauseToMarket } from '@/lib/market/comparator';
-import type { MarketCompareRequest } from '@/types/market';
+import { NextRequest, NextResponse } from "next/server";
+import {
+  compareDocumentToMarket,
+  compareClauseToMarket,
+} from "@/lib/market/comparator";
+import type { MarketCompareRequest } from "@/types/market";
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,7 +16,7 @@ export async function POST(request: NextRequest) {
         success: true,
         comparisons,
         document_type: body.document_type,
-        total_benchmarks_found: comparisons.filter(c => c.has_data).length,
+        total_benchmarks_found: comparisons.filter((c) => c.has_data).length,
       });
     }
 
@@ -37,30 +40,33 @@ export async function POST(request: NextRequest) {
             has_data: !!comparison,
             sample_count: comparison?.benchmark.sample_count || 0,
             data_quality: comparison
-              ? comparison.benchmark.id.startsWith('seed-')
-                ? 'seed' as const
+              ? comparison.benchmark.id.startsWith("seed-")
+                ? ("seed" as const)
                 : comparison.benchmark.is_sufficient
-                  ? 'sufficient' as const
-                  : 'partial' as const
-              : 'none' as const,
+                  ? ("sufficient" as const)
+                  : ("partial" as const)
+              : ("none" as const),
           };
-        })
+        }),
       );
 
       return NextResponse.json({
         success: true,
         comparisons: results,
         document_type: body.document_type,
-        total_benchmarks_found: results.filter(c => c.has_data).length,
+        total_benchmarks_found: results.filter((c) => c.has_data).length,
       });
     }
 
-    return NextResponse.json({ success: false, error: 'Provide document_id or clauses' }, { status: 400 });
-  } catch (error) {
-    console.error('[API] Market compare error:', error);
     return NextResponse.json(
-      { success: false, error: 'Market comparison failed' },
-      { status: 500 }
+      { success: false, error: "Provide document_id or clauses" },
+      { status: 400 },
+    );
+  } catch (error) {
+    console.error("[API] Market compare error:", error);
+    return NextResponse.json(
+      { success: false, error: "Market comparison failed" },
+      { status: 500 },
     );
   }
 }

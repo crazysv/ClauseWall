@@ -8,9 +8,21 @@ import Link from "next/link";
 import type { BundleType, BundleConfig } from "@/types/evidence";
 
 const BUNDLE_TYPES: { value: BundleType; label: string; desc: string }[] = [
-  { value: "full", label: "Full Bundle", desc: "All evidence with cover, index, certificates, and chain report" },
-  { value: "chronological", label: "Chronological", desc: "Evidence sorted by date" },
-  { value: "issue_wise", label: "Issue-wise", desc: "Grouped by issue category" },
+  {
+    value: "full",
+    label: "Full Bundle",
+    desc: "All evidence with cover, index, certificates, and chain report",
+  },
+  {
+    value: "chronological",
+    label: "Chronological",
+    desc: "Evidence sorted by date",
+  },
+  {
+    value: "issue_wise",
+    label: "Issue-wise",
+    desc: "Grouped by issue category",
+  },
 ];
 
 export default function EvidenceBundlePage() {
@@ -24,7 +36,9 @@ export default function EvidenceBundlePage() {
   const [includeIndex, setIncludeIndex] = useState(true);
   const [includeChain, setIncludeChain] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<{ pages: number; id: string } | null>(null);
+  const [result, setResult] = useState<{ pages: number; id: string } | null>(
+    null,
+  );
   const [error, setError] = useState("");
 
   const handleGenerate = async () => {
@@ -42,7 +56,12 @@ export default function EvidenceBundlePage() {
       const res = await fetch("/api/evidence/bundle/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ case_id: caseId, bundle_type: bundleType, title, config }),
+        body: JSON.stringify({
+          case_id: caseId,
+          bundle_type: bundleType,
+          title,
+          config,
+        }),
       });
 
       if (!res.ok) {
@@ -63,8 +82,12 @@ export default function EvidenceBundlePage() {
   return (
     <main className="min-h-screen bg-background">
       <div className="max-w-2xl mx-auto px-4 py-8">
-        <Link href={`/evidence/${caseId}`} className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground mb-6">
-          <ArrowLeft className="h-3 w-3" />Back to Case
+        <Link
+          href={`/evidence/${caseId}`}
+          className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground mb-6"
+        >
+          <ArrowLeft className="h-3 w-3" />
+          Back to Case
         </Link>
 
         <div className="flex items-center gap-3 mb-8">
@@ -72,14 +95,21 @@ export default function EvidenceBundlePage() {
             <Package className="h-6 w-6 text-blue-400" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-foreground">Generate Evidence Bundle</h1>
-            <p className="text-xs text-muted-foreground">Create a court-ready PDF with all evidence, certificates, and chain verification</p>
+            <h1 className="text-xl font-bold text-foreground">
+              Generate Evidence Bundle
+            </h1>
+            <p className="text-xs text-muted-foreground">
+              Create a court-ready PDF with all evidence, certificates, and
+              chain verification
+            </p>
           </div>
         </div>
 
         {/* Bundle Type */}
         <div className="space-y-3 mb-6">
-          <label className="text-sm font-medium text-foreground">Bundle Type</label>
+          <label className="text-sm font-medium text-foreground">
+            Bundle Type
+          </label>
           {BUNDLE_TYPES.map((bt) => (
             <button
               key={bt.value}
@@ -98,7 +128,9 @@ export default function EvidenceBundlePage() {
 
         {/* Title */}
         <div className="space-y-2 mb-6">
-          <label className="text-sm font-medium text-foreground">Bundle Title</label>
+          <label className="text-sm font-medium text-foreground">
+            Bundle Title
+          </label>
           <input
             type="text"
             value={title}
@@ -111,11 +143,26 @@ export default function EvidenceBundlePage() {
         <div className="space-y-3 mb-8">
           <label className="text-sm font-medium text-foreground">Include</label>
           {[
-            { label: "Section 65B Certificates", checked: includeCerts, onChange: setIncludeCerts },
-            { label: "Table of Contents / Index", checked: includeIndex, onChange: setIncludeIndex },
-            { label: "Chain of Custody Report", checked: includeChain, onChange: setIncludeChain },
+            {
+              label: "Section 65B Certificates",
+              checked: includeCerts,
+              onChange: setIncludeCerts,
+            },
+            {
+              label: "Table of Contents / Index",
+              checked: includeIndex,
+              onChange: setIncludeIndex,
+            },
+            {
+              label: "Chain of Custody Report",
+              checked: includeChain,
+              onChange: setIncludeChain,
+            },
           ].map((opt) => (
-            <label key={opt.label} className="flex items-center gap-3 p-3 rounded-lg bg-white/[0.02] border border-white/5 cursor-pointer hover:bg-white/[0.04]">
+            <label
+              key={opt.label}
+              className="flex items-center gap-3 p-3 rounded-lg bg-white/[0.02] border border-white/5 cursor-pointer hover:bg-white/[0.04]"
+            >
               <input
                 type="checkbox"
                 checked={opt.checked}
@@ -129,23 +176,39 @@ export default function EvidenceBundlePage() {
 
         {/* Error */}
         {error && (
-          <div className="mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-sm text-red-400">{error}</div>
+          <div className="mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-sm text-red-400">
+            {error}
+          </div>
         )}
 
         {/* Result */}
         {result && (
           <div className="mb-4 p-4 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-            <p className="text-sm text-emerald-400 font-medium">✓ Bundle generated successfully!</p>
-            <p className="text-xs text-muted-foreground mt-1">{result.pages} pages — Ready for download from Supabase Storage</p>
+            <p className="text-sm text-emerald-400 font-medium">
+              ✓ Bundle generated successfully!
+            </p>
+            <p className="text-xs text-muted-foreground mt-1">
+              {result.pages} pages — Ready for download from Supabase Storage
+            </p>
           </div>
         )}
 
         {/* Generate */}
-        <Button onClick={handleGenerate} disabled={loading} className="w-full bg-blue-600 hover:bg-blue-700 h-12">
+        <Button
+          onClick={handleGenerate}
+          disabled={loading}
+          className="w-full bg-blue-600 hover:bg-blue-700 h-12"
+        >
           {loading ? (
-            <><Loader2 className="h-4 w-4 mr-2 animate-spin" />Generating Bundle...</>
+            <>
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              Generating Bundle...
+            </>
           ) : (
-            <><Package className="h-4 w-4 mr-2" />Generate Bundle PDF</>
+            <>
+              <Package className="h-4 w-4 mr-2" />
+              Generate Bundle PDF
+            </>
           )}
         </Button>
       </div>

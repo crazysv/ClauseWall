@@ -6,9 +6,7 @@ import { PrivacyProvider } from "@/lib/privacy";
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <SoundProvider>
-      <PrivacyProvider>
-        {children}
-      </PrivacyProvider>
+      <PrivacyProvider>{children}</PrivacyProvider>
     </SoundProvider>
   );
 }

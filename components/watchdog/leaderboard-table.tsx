@@ -9,9 +9,18 @@ import TrendIndicator from "./trend-indicator";
 import type { MonitoredCompany } from "@/types";
 
 const SECTOR_LABELS: Record<string, string> = {
-  ride_hailing: "Ride-hailing", food_delivery: "Food Delivery", ecommerce: "E-commerce",
-  payments: "Payments", social: "Social", streaming: "Streaming", travel: "Travel",
-  banking: "Banking", telecom: "Telecom", edtech: "EdTech", government: "Government", other: "Other",
+  ride_hailing: "Ride-hailing",
+  food_delivery: "Food Delivery",
+  ecommerce: "E-commerce",
+  payments: "Payments",
+  social: "Social",
+  streaming: "Streaming",
+  travel: "Travel",
+  banking: "Banking",
+  telecom: "Telecom",
+  edtech: "EdTech",
+  government: "Government",
+  other: "Other",
 };
 
 type SortKey = "score" | "name" | "changes";
@@ -49,7 +58,13 @@ export default function LeaderboardTable({
     }
   };
 
-  const SortHeader = ({ label, sortKey }: { label: string; sortKey: SortKey }) => (
+  const SortHeader = ({
+    label,
+    sortKey,
+  }: {
+    label: string;
+    sortKey: SortKey;
+  }) => (
     <button
       onClick={() => toggleSort(sortKey)}
       className="flex items-center gap-1 text-xs font-semibold text-muted-foreground uppercase tracking-wider hover:text-foreground transition-colors"
@@ -65,19 +80,25 @@ export default function LeaderboardTable({
         <thead>
           <tr className="border-b border-gray-800">
             <th className="text-left py-3 px-4 w-12">
-              <span className="text-xs font-semibold text-muted-foreground">#</span>
+              <span className="text-xs font-semibold text-muted-foreground">
+                #
+              </span>
             </th>
             <th className="text-left py-3 px-4">
               <SortHeader label="Company" sortKey="name" />
             </th>
             <th className="text-left py-3 px-4 hidden sm:table-cell">
-              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Sector</span>
+              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                Sector
+              </span>
             </th>
             <th className="text-center py-3 px-4">
               <SortHeader label="Score" sortKey="score" />
             </th>
             <th className="text-center py-3 px-4 hidden sm:table-cell">
-              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Trend</span>
+              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                Trend
+              </span>
             </th>
             <th className="text-center py-3 px-4 hidden md:table-cell">
               <SortHeader label="Changes" sortKey="changes" />
@@ -87,7 +108,8 @@ export default function LeaderboardTable({
         <tbody>
           {sorted.map((company, index) => {
             const rank = index + 1;
-            const medal = rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : null;
+            const medal =
+              rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : null;
 
             return (
               <tr
@@ -98,7 +120,9 @@ export default function LeaderboardTable({
                   {medal ? (
                     <span className="text-lg">{medal}</span>
                   ) : (
-                    <span className="text-sm text-muted-foreground">{rank}</span>
+                    <span className="text-sm text-muted-foreground">
+                      {rank}
+                    </span>
                   )}
                 </td>
                 <td className="py-3 px-4">
@@ -110,7 +134,10 @@ export default function LeaderboardTable({
                   </Link>
                 </td>
                 <td className="py-3 px-4 hidden sm:table-cell">
-                  <Badge variant="outline" className="text-[10px] border-white/10">
+                  <Badge
+                    variant="outline"
+                    className="text-[10px] border-foreground border-2"
+                  >
                     {SECTOR_LABELS[company.sector] || company.sector}
                   </Badge>
                 </td>
@@ -123,7 +150,9 @@ export default function LeaderboardTable({
                   </div>
                 </td>
                 <td className="py-3 px-4 text-center hidden md:table-cell">
-                  <span className="text-sm text-muted-foreground">{company.total_changes}</span>
+                  <span className="text-sm text-muted-foreground">
+                    {company.total_changes}
+                  </span>
                 </td>
               </tr>
             );

@@ -6,9 +6,16 @@ import { ChainStatusBadge } from "./chain-status-badge";
 import { ArrowRight, Calendar } from "lucide-react";
 
 const CASE_EMOJIS: Record<string, string> = {
-  rental: "🏠", employment: "💼", consumer: "🛒", financial: "💳",
-  property: "🏗️", service: "⚙️", insurance: "🛡️", telecom: "📱",
-  ecommerce: "📦", other: "📋",
+  rental: "🏠",
+  employment: "💼",
+  consumer: "🛒",
+  financial: "💳",
+  property: "🏗️",
+  service: "⚙️",
+  insurance: "🛡️",
+  telecom: "📱",
+  ecommerce: "📦",
+  other: "📋",
 };
 
 const STATUS_STYLE: Record<string, string> = {
@@ -18,7 +25,11 @@ const STATUS_STYLE: Record<string, string> = {
   resolved: "bg-purple-200 text-purple-900 border-black",
 };
 
-export function EvidenceCaseCard({ evidenceCase }: { evidenceCase: EvidenceCase }) {
+export function EvidenceCaseCard({
+  evidenceCase,
+}: {
+  evidenceCase: EvidenceCase;
+}) {
   const emoji = CASE_EMOJIS[evidenceCase.dispute_type || "other"] || "📋";
   const timeAgo = getTimeAgo(evidenceCase.updated_at);
 
@@ -33,10 +44,14 @@ export function EvidenceCaseCard({ evidenceCase }: { evidenceCase: EvidenceCase 
                 vs. {evidenceCase.counterparty_name}
               </h3>
             </div>
-            <p className="text-sm font-bold text-muted-foreground truncate">{evidenceCase.title}</p>
+            <p className="text-sm font-bold text-muted-foreground truncate">
+              {evidenceCase.title}
+            </p>
           </div>
 
-          <span className={`inline-flex items-center px-3 py-1 text-xs font-black uppercase tracking-widest border-2 ${STATUS_STYLE[evidenceCase.status] || STATUS_STYLE.active}`}>
+          <span
+            className={`inline-flex items-center px-3 py-1 text-xs font-black uppercase tracking-widest border-2 ${STATUS_STYLE[evidenceCase.status] || STATUS_STYLE.active}`}
+          >
             {evidenceCase.status}
           </span>
         </div>
@@ -45,7 +60,9 @@ export function EvidenceCaseCard({ evidenceCase }: { evidenceCase: EvidenceCase 
           <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground border-2 border-black px-2 py-0.5">
             {evidenceCase.dispute_type || "General"}
           </span>
-          <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground border-2 border-black px-2 py-0.5">{evidenceCase.total_items} items</span>
+          <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground border-2 border-black px-2 py-0.5">
+            {evidenceCase.total_items} items
+          </span>
           <span className="text-xs text-muted-foreground">•</span>
           <ChainStatusBadge verified={evidenceCase.chain_verified} />
         </div>
