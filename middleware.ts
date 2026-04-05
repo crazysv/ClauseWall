@@ -1,33 +1,51 @@
 // ============================================
 // NEXT.JS MIDDLEWARE
 // Runs on every request — handles auth refresh
+// Enforces authenticated ownership model
 // ============================================
 
 import { type NextRequest, NextResponse } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
 
-// Routes that require authentication
+// ── Routes that REQUIRE authentication ──────
+// Unauthenticated visitors are redirected to /auth/login
 const protectedRoutes = [
   "/dashboard",
   "/upload",
+  "/analyze",
   "/results",
   "/letter",
-  "/analyze",
+  "/negotiate",
+  "/builder",
+  "/vault",
+  "/timebomb",
+  "/evidence",
+  "/shadow",
+  "/battle",
+  "/ruin-calculator",
+  "/statemachine",
 ];
 
-// Routes that are always public
+// ── Routes that are ALWAYS public ───────────
+// These are never blocked, even without a session
 const publicRoutes = [
   "/",
   "/auth/login",
   "/auth/signup",
   "/auth/callback",
   "/wall-of-shame",
+  "/verify",      // Public certificate verification
+  "/watchdog",    // Public watchdog pages
+  "/market",      // Public market intelligence
+  "/lawchange",   // Public law change tracker
+  "/authority",   // Public complaint authority lookup
+  "/collab",      // Public collaboration room links
 ];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Update Supabase auth session
+  // Update Supabase auth session (always runs — refreshes tokens)
   const { supabaseResponse, user } = await updateSession(request);
 
   // Check if current route is protected
@@ -35,15 +53,12 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith(route)
   );
 
-  // For now, allow all routes (we'll enable auth protection later)
-  // Uncomment below to enforce auth:
-  /*
+  // Redirect unauthenticated users away from protected routes
   if (isProtectedRoute && !user) {
     const loginUrl = new URL("/auth/login", request.url);
     loginUrl.searchParams.set("redirect", pathname);
     return NextResponse.redirect(loginUrl);
   }
-  */
 
   return supabaseResponse;
 }
@@ -56,7 +71,8 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      * - public folder files (images, etc.)
+     * - api routes (handled by their own auth guards)
      */
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|api/|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
