@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateMarketNarrative } from "@/lib/market/narrative";
 import { getBenchmark } from "@/lib/market/benchmarks";
+import { sanitizeDisplayText } from "@/lib/sanitize";
 
 export async function POST(request: NextRequest) {
   try {
@@ -42,7 +43,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const narrative = await generateMarketNarrative(benchmark, null, context);
+    const safeContext = context ? sanitizeDisplayText(context, 1000) : undefined;
+    const narrative = await generateMarketNarrative(benchmark, null, safeContext);
 
     return NextResponse.json({
       success: true,

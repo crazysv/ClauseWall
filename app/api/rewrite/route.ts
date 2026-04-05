@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { rewriteClause } from "@/lib/ai/clause-rewriter";
 import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
+import { sanitizeLLMInput } from "@/lib/sanitize";
 
 export async function POST(req: NextRequest) {
   try {
@@ -29,7 +30,7 @@ export async function POST(req: NextRequest) {
     }
 
     const result = await rewriteClause(
-      clauseText,
+      sanitizeLLMInput(clauseText, 10_000),
       clauseType,
       jurisdiction,
       documentType,

@@ -21,6 +21,9 @@ const PII_PATTERNS = [
  */
 function sanitizeMessage(content: string): string {
   let sanitized = content;
+  // Strip HTML tags
+  sanitized = sanitized.replace(/<\/?[a-zA-Z][^>]*>/g, "");
+  // Strip PII
   for (const pattern of PII_PATTERNS) {
     sanitized = sanitized.replace(pattern, "[REDACTED]");
   }

@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { quickAnalyze } from "@/lib/bot/quick-analyzer";
 import { parsePDF } from "@/lib/core/pdf-parser";
 import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
+import { sanitizeLLMInput } from "@/lib/sanitize";
 
 export const maxDuration = 30;
 
@@ -54,6 +55,9 @@ export async function POST(request: NextRequest) {
         { status: 400 },
       );
     }
+
+    // Sanitize before sending to AI
+    text = sanitizeLLMInput(text, 50_000);
 
     const result = await quickAnalyze(text, documentType, jurisdiction);
 

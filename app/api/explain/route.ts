@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { callGroq } from "@/lib/ai/groq-client";
 import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
+import { sanitizeLLMInput } from "@/lib/sanitize";
 
 export const maxDuration = 30;
 
@@ -53,13 +54,13 @@ export async function POST(request: NextRequest) {
 
 Clause Type: ${clauseType || "unknown"}
 Risk Level: ${riskLevel || "warning"}
-${legalCitation ? `Law Reference: ${legalCitation}` : ""}
+${legalCitation ? `Law Reference: ${sanitizeLLMInput(String(legalCitation), 500)}` : ""}
 
 Original Clause:
-"${(clauseText || "").substring(0, 500)}"
+"${sanitizeLLMInput(clauseText || "", 500)}"
 
 Legal Analysis:
-"${(explanation || "").substring(0, 500)}"
+"${sanitizeLLMInput(explanation || "", 500)}"
 
 Generate a simple English (ELI5) and Hindi explanation.`;
 

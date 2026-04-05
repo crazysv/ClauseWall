@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateDemandLetter } from "@/lib/ai/letter-generator";
 import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
+import { sanitizeLLMInput } from "@/lib/sanitize";
 import type { Clause } from "@/types";
 
 export const maxDuration = 60;
@@ -26,15 +27,15 @@ export async function POST(request: NextRequest) {
       id: `temp-${index}`,
       document_id: "",
       clause_number: index + 1,
-      original_text: c.original_text,
+      original_text: sanitizeLLMInput(c.original_text || "", 5000),
       clause_type: c.clause_type || "general",
       risk_level: c.risk_level,
       risk_score: c.risk_score,
-      explanation: c.explanation,
+      explanation: sanitizeLLMInput(c.explanation || "", 2000),
       legal_issue: c.legal_issue || null,
       legal_citation: c.legal_citation || null,
       statute_code: c.legal_citation || null,
-      fair_alternative: c.fair_alternative || null,
+      fair_alternative: c.fair_alternative ? sanitizeLLMInput(c.fair_alternative, 2000) : null,
       red_flags: c.red_flags || [],
       percentile: null,
       created_at: new Date().toISOString(),

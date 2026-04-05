@@ -7,6 +7,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
+import { sanitizeEntityName, sanitizeStringArray } from "@/lib/sanitize";
 
 export async function POST(req: NextRequest) {
   try {
@@ -39,6 +40,9 @@ export async function POST(req: NextRequest) {
       violations: string[];
     };
 
+    // Sanitize user-controlled inputs
+    const cleanViolations = sanitizeStringArray(violations || [], 20, 300);
+
     if (!entityName || !entityName.trim()) {
       return NextResponse.json(
         { error: "Entity name is required" },
@@ -54,7 +58,7 @@ export async function POST(req: NextRequest) {
     }
 
     const supabase = createAdminClient();
-    const cleanName = entityName.trim().toLowerCase();
+    const cleanName = sanitizeEntityName(entityName).toLowerCase();
 
     // Check if entity already exists
     const { data: existing, error: fetchError } = await supabase
@@ -66,7 +70,7 @@ export async function POST(req: NextRequest) {
     if (existing) {
       // Update existing entity
       const currentViolations = existing.common_violations || [];
-      const newViolations = [...new Set([...currentViolations, ...violations])];
+      const newViolations = [...new Set([...currentViolations, ...cleanViolations])];
       const newFlagCount = (existing.total_flags || 0) + 1;
       const newAvgScore = Math.round(
         ((existing.avg_risk_score || 0) * existing.total_flags + riskScore) /
@@ -92,7 +96,7 @@ export async function POST(req: NextRequest) {
       }
 
       // Save report record
-      await saveReport(supabase, documentId, null, entityName, violations, user.id);
+      await saveReport(supabase, documentId, null, entityName, cleanViolations, user.id);
 
       return NextResponse.json({
         success: true,
@@ -109,7 +113,7 @@ export async function POST(req: NextRequest) {
           entity_type: entityType || "other",
           jurisdiction: jurisdiction || null,
           total_flags: 1,
-          common_violations: violations.slice(0, 10),
+          common_violations: cleanViolations.slice(0, 10),
           avg_risk_score: riskScore,
         })
         .select("id")
@@ -124,7 +128,7 @@ export async function POST(req: NextRequest) {
       }
 
       // Save report record
-      await saveReport(supabase, documentId, null, entityName, violations, user.id);
+      await saveReport(supabase, documentId, null, entityName, cleanViolations, user.id);
 
       return NextResponse.json({
         success: true,
@@ -147,6 +151,7 @@ async function saveReport(
   documentId: string,
   clauseId: string | null,
   entityName: string,
+  // Note: violations are already sanitized at the route handler level
   violations: string[],
   userId: string,
 ) {

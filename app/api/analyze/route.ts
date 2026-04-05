@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { analyzeDocument } from "@/lib/core/analyzer";
 import { parsePDF } from "@/lib/core/pdf-parser";
+import { sanitizePlainTextBlock } from "@/lib/sanitize";
 
 // Allow longer execution time for analysis
 export const maxDuration = 60;
@@ -66,6 +67,9 @@ export async function POST(request: NextRequest) {
       jurisdiction = body.jurisdiction;
       filename = body.filename || "pasted-text.txt";
     }
+
+    // ---- SANITIZATION ----
+    text = sanitizePlainTextBlock(text, 100_000);
 
     // ---- VALIDATION ----
     if (!text || text.trim().length < 50) {

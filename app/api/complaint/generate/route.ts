@@ -4,6 +4,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { generateComplaint, createFiling, calculateFee } from "@/lib/complaint";
+import { sanitizeDisplayText, sanitizeUserDescription } from "@/lib/sanitize";
 import type { AuthorityType } from "@/types";
 
 export async function POST(request: NextRequest) {
@@ -80,20 +81,27 @@ export async function POST(request: NextRequest) {
       );
 
     // Generate complaint
+    const safeComplainantName = sanitizeDisplayText(complainantName || user.email || "Complainant", 200);
+    const safeComplainantAddress = sanitizeDisplayText(complainantAddress || "", 500);
+    const safeComplainantPhone = sanitizeDisplayText(complainantPhone || "", 20);
+    const safeRespondentName = sanitizeDisplayText(respondentName || doc.entity_name || "Respondent", 200);
+    const safeRespondentAddress = sanitizeDisplayText(respondentAddress || "", 500);
+    const safeAdditionalContext = additionalContext ? sanitizeUserDescription(additionalContext, 3000) : undefined;
+
     const result = await generateComplaint({
       authorityType: authorityType as AuthorityType,
-      complainantName: complainantName || user.email || "Complainant",
-      complainantAddress: complainantAddress || "",
-      complainantPhone: complainantPhone || "",
-      respondentName: respondentName || doc.entity_name || "Respondent",
-      respondentAddress: respondentAddress || "",
+      complainantName: safeComplainantName,
+      complainantAddress: safeComplainantAddress,
+      complainantPhone: safeComplainantPhone,
+      respondentName: safeRespondentName,
+      respondentAddress: safeRespondentAddress,
       respondentType: respondentType || "",
       claimAmount: claimAmount || 0,
       contractClauses: riskyClausesData,
       documentType: doc.document_type || "other",
       jurisdiction: doc.jurisdiction || "pan_india",
       overallRiskScore: doc.overall_risk_score || 0,
-      additionalContext,
+      additionalContext: safeAdditionalContext,
     });
 
     // Calculate fee

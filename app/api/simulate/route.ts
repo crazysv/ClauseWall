@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { callGroq } from "@/lib/ai/groq-client";
 import { CONTRACT_SIMULATOR_PROMPT } from "@/lib/ai/system-prompt";
 import { createClient } from "@/lib/supabase/server";
+import { sanitizeLLMInput } from "@/lib/sanitize";
 
 export async function POST(request: NextRequest) {
   try {
@@ -50,8 +51,8 @@ export async function POST(request: NextRequest) {
           explanation: string;
         }) =>
           `[Clause #${c.clause_number}] (${c.clause_type}, ${c.risk_level})
-Text: "${c.original_text}"
-Analysis: ${c.explanation}`,
+Text: "${sanitizeLLMInput(c.original_text || "", 3000)}"
+Analysis: ${sanitizeLLMInput(c.explanation || "", 1000)}`,
       )
       .join("\n\n---\n\n");
 

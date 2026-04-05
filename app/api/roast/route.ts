@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { callGroq } from "@/lib/ai/groq-client";
 import { CONTRACT_ROAST_PROMPT } from "@/lib/ai/system-prompt";
 import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
+import { sanitizeLLMInput } from "@/lib/sanitize";
 
 export async function POST(request: NextRequest) {
   try {
@@ -31,8 +32,8 @@ export async function POST(request: NextRequest) {
           explanation: string;
         }) =>
           `[ID: ${c.id}] (Clause #${c.clause_number}, Type: ${c.clause_type}, Risk: ${c.risk_level})
-Text: "${c.original_text}"
-Legal Issue: ${c.explanation}`,
+Text: "${sanitizeLLMInput(c.original_text || "", 2000)}"
+Legal Issue: ${sanitizeLLMInput(c.explanation || "", 1000)}`,
       )
       .join("\n\n---\n\n");
 

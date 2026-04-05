@@ -7,6 +7,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { callGroq } from "@/lib/ai/groq-client";
 import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
+import { sanitizeLLMInput } from "@/lib/sanitize";
 
 // ── CORS Headers ────────────────────────────
 
@@ -92,8 +93,16 @@ export async function POST(req: NextRequest) {
       title: string;
     };
 
+    // Combine and sanitize text for analysis
+    let fullText = text || "";
+    if (!fullText && url) {
+      fullText = `URL: ${url}\nTitle: ${title || "untitled"}`;
+    }
+
+    fullText = sanitizeLLMInput(fullText, 25_000);
+
     // Validate
-    if (!text || text.trim().length < 100) {
+    if (!fullText || fullText.trim().length < 100) {
       return NextResponse.json(
         {
           error: true,
@@ -110,8 +119,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Truncate text to avoid token limits
-    const truncatedText = text.substring(0, 25000);
+    // Text is already sanitized and truncated by sanitizeLLMInput above
+    const truncatedText = fullText;
 
     // Build user prompt
     const userPrompt = `Analyze this legal page from: ${url || "unknown website"}

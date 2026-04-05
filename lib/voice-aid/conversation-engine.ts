@@ -32,6 +32,7 @@ import type {
   VoiceAnalysisResponse,
 } from '@/types';
 import type { GroqMessage } from '@/lib/ai/groq-client';
+import { sanitizeLLMInput } from '@/lib/sanitize';
 
 interface ProcessInput {
   audio?: Buffer | ArrayBuffer;
@@ -78,6 +79,11 @@ export async function processVoiceInput(input: ProcessInput): Promise<VoiceAnaly
         getErrorMessage('general', input.language),
         input.language
       );
+    }
+
+    // Sanitize user text before AI processing
+    if (userText) {
+      userText = sanitizeLLMInput(userText, 5000);
     }
 
     // Step 2: Auto-detect language if text looks like a different language
@@ -216,7 +222,7 @@ async function processPhotoInput(
     { role: 'system', content: getVoiceSystemPrompt(language) },
     {
       role: 'user',
-      content: `The user sent a photo of a contract. Here is the analysis result:\n\n${analysisText}\n\n${extractedText ? `Extracted text: ${extractedText.substring(0, 2000)}` : ''}\n\n${userText ? `The user also said: "${userText}"` : 'Explain the findings to the user.'}`
+      content: `The user sent a photo of a contract. Here is the analysis result:\n\n${sanitizeLLMInput(analysisText, 3000)}\n\n${extractedText ? `Extracted text: ${sanitizeLLMInput(extractedText, 2000)}` : ''}\n\n${userText ? `The user also said: "${userText}"` : 'Explain the findings to the user.'}`
     },
   ];
 

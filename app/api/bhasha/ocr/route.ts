@@ -4,6 +4,7 @@ import {
   getMultilingualOCRPrompt,
 } from "@/lib/bhasha/ocr-enhancer";
 import type { SupportedLanguage } from "@/types/bhasha";
+import { sanitizePlainTextBlock } from "@/lib/sanitize";
 
 export async function POST(request: NextRequest) {
   try {
@@ -19,7 +20,7 @@ export async function POST(request: NextRequest) {
 
     // Post-process OCR result with language-aware analysis
     const result = postProcessOCR(
-      extracted_text,
+      sanitizePlainTextBlock(extracted_text, 50_000),
       language_hint as SupportedLanguage | undefined,
     );
 

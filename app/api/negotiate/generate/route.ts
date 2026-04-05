@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { generateNegotiationPlaybook } from "@/lib/ai/negotiation-generator";
+import { sanitizeLLMInput } from "@/lib/sanitize";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -65,11 +66,11 @@ export async function POST(request: NextRequest) {
         clause_number: c.clause_number,
         clause_type: c.clause_type,
         risk_level: c.risk_level,
-        original_text: c.original_text,
-        explanation: c.explanation,
+        original_text: sanitizeLLMInput(c.original_text || "", 5000),
+        explanation: sanitizeLLMInput(c.explanation || "", 2000),
         legal_citation: c.legal_citation,
-        fair_alternative: c.fair_alternative,
-        negotiation_script: c.negotiation_script,
+        fair_alternative: c.fair_alternative ? sanitizeLLMInput(c.fair_alternative, 2000) : null,
+        negotiation_script: c.negotiation_script ? sanitizeLLMInput(c.negotiation_script, 2000) : null,
       })),
     );
 
