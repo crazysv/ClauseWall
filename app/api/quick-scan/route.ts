@@ -6,11 +6,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { quickAnalyze } from "@/lib/bot/quick-analyzer";
 import { parsePDF } from "@/lib/core/pdf-parser";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export const maxDuration = 30;
 
 export async function POST(request: NextRequest) {
   try {
+    // ── Rate Limiting ──
+    const rl = await rateLimit(request, "AI_MEDIUM");
+    if (!rl.success) return rateLimitResponse(rl);
+
     const contentType = request.headers.get("content-type") || "";
 
     let text: string;

@@ -116,14 +116,29 @@ export async function POST(request: NextRequest) {
 
     console.log(`[ClauseWall] Document created: ${document.id}`);
 
-    // ---- START ANALYSIS ----
-    // Note: In production, you'd use a queue (like Inngest, QStash, etc.)
-    // For hackathon, we run it inline but don't wait for completion
-
-    // Analysis will be triggered separately via /api/bot/trigger-analysis
-    console.log(
-      `[ClauseWall] Document created: ${document.id}, waiting for trigger`,
-    );
+    // ---- TRIGGER FULL ANALYSIS (server-side, fire-and-forget) ----
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+    if (appUrl) {
+      fetch(`${appUrl}/api/bot/trigger-analysis`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(process.env.INTERNAL_API_SECRET
+            ? { "x-internal-secret": process.env.INTERNAL_API_SECRET }
+            : {}),
+        },
+        body: JSON.stringify({
+          documentId: document.id,
+          text,
+          documentType,
+          jurisdiction,
+        }),
+      }).catch((err) => {
+        console.error("[ClauseWall] Trigger analysis failed:", err);
+      });
+    } else {
+      console.warn("[ClauseWall] NEXT_PUBLIC_APP_URL not set, skipping trigger");
+    }
 
     // Return immediately with document ID
     return NextResponse.json({

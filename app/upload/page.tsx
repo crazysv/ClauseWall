@@ -257,20 +257,7 @@ export default function UploadPage() {
 
       if (analyzeResponse.ok && analyzeData.documentId) {
         setDocumentId(analyzeData.documentId);
-
-        fetch("/api/bot/trigger-analysis", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            documentId: analyzeData.documentId,
-            text: rawText,
-            documentType,
-            jurisdiction,
-            sourceLanguage,
-          }),
-        }).catch((err) => {
-          console.error("[ClauseWall] Trigger failed:", err);
-        });
+        // Analysis is triggered server-side by /api/analyze
       }
     } catch (fullError) {
       console.error("[ClauseWall] Full analysis trigger failed:", fullError);

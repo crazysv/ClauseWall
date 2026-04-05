@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { rewriteClause } from "@/lib/ai/clause-rewriter";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export async function POST(req: NextRequest) {
   try {
+    // ── Rate Limiting ──
+    const rl = await rateLimit(req, "AI_MEDIUM");
+    if (!rl.success) return rateLimitResponse(rl);
+
     const body = await req.json();
 
     const {

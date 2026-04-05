@@ -1,11 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateDemandLetter } from "@/lib/ai/letter-generator";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 import type { Clause } from "@/types";
 
 export const maxDuration = 60;
 
 export async function POST(request: NextRequest) {
   try {
+    // ── Rate Limiting ──
+    const rl = await rateLimit(request, "AI_HEAVY");
+    if (!rl.success) return rateLimitResponse(rl);
+
     const body = await request.json();
     const { documentType, jurisdiction, entityName, clauses } = body;
 

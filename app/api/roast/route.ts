@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { callGroq } from "@/lib/ai/groq-client";
 import { CONTRACT_ROAST_PROMPT } from "@/lib/ai/system-prompt";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export async function POST(request: NextRequest) {
   try {
+    // ── Rate Limiting ──
+    const rl = await rateLimit(request, "AI_MEDIUM");
+    if (!rl.success) return rateLimitResponse(rl);
+
     const body = await request.json();
     const { clauses, jurisdiction, documentType } = body;
 

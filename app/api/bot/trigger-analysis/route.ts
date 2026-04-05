@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { analyzeDocument } from "@/lib/core/analyzer";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendMessage } from "@/lib/bot/telegram-client";
+import { rateLimit, rateLimitResponse, verifyInternalSecret } from "@/lib/rate-limit";
 
 export const maxDuration = 60;
 
@@ -14,6 +15,19 @@ export async function POST(request: NextRequest) {
   console.log("[ClauseWall] Trigger analysis route called");
 
   try {
+    // ── Internal Secret Verification ──
+    if (!verifyInternalSecret(request)) {
+      console.warn("[ClauseWall] Trigger analysis rejected: invalid secret");
+      return NextResponse.json(
+        { error: "Forbidden" },
+        { status: 403 },
+      );
+    }
+
+    // ── Rate Limiting ──
+    const rl = await rateLimit(request, "AI_HEAVY");
+    if (!rl.success) return rateLimitResponse(rl);
+
     const body = await request.json();
     console.log("[ClauseWall] Trigger body received:", {
       documentId: body.documentId,
