@@ -7,12 +7,25 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const { id, current_step, status, steps } = body;
     const supabase = await createClient();
 
+    // ── Auth gate ──
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json(
+        { success: false, error: "Authentication required" },
+        { status: 401 },
+      );
+    }
+
+    const body = await request.json();
+    const { id, current_step, status, steps } = body;
+
     if (id) {
-      // Update existing tracking
+      // Update existing tracking (scoped to owner)
       const { data, error } = await supabase
         .from("escalation_tracking")
         .update({
@@ -22,6 +35,7 @@ export async function POST(request: Request) {
           updated_at: new Date().toISOString(),
         })
         .eq("id", id)
+        .eq("user_id", user.id)
         .select()
         .single();
 
@@ -32,7 +46,7 @@ export async function POST(request: Request) {
       const { data, error } = await supabase
         .from("escalation_tracking")
         .insert({
-          user_id: body.user_id || "00000000-0000-0000-0000-000000000000",
+          user_id: user.id,
           document_id: body.document_id || null,
           current_step: current_step || 1,
           steps: steps || [],

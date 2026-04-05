@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { generateRoomCode } from "./types";
 import type { CollabRoom } from "@/types";
 
@@ -7,7 +7,7 @@ export async function createRoom(
   hostName: string,
   hostSessionId: string
 ): Promise<CollabRoom | null> {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
 
   // Verify document exists and is completed
   const { data: doc } = await supabase
@@ -69,7 +69,7 @@ export async function createRoom(
 export async function joinRoom(
   roomCode: string
 ): Promise<{ room: CollabRoom; documentId: string } | null> {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
 
   const { data, error } = await supabase
     .from("collab_rooms")
@@ -90,7 +90,7 @@ export async function joinRoom(
 }
 
 export async function closeRoom(roomCode: string, sessionId: string): Promise<boolean> {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
 
   const { error } = await supabase
     .from("collab_rooms")
