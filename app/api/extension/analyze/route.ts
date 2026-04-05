@@ -8,6 +8,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { callGroq } from "@/lib/ai/groq-client";
 import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 import { sanitizeLLMInput } from "@/lib/sanitize";
+import { ExtensionAnalyzeSchema } from "@/lib/validation/schemas";
+import { validateBodyWithCors } from "@/lib/validation/middleware";
 
 // ── CORS Headers ────────────────────────────
 
@@ -87,21 +89,22 @@ export async function POST(req: NextRequest) {
     if (!rl.success) return rateLimitResponse(rl);
 
     const body = await req.json();
-    const { url, text, title } = body as {
-      url: string;
-      text: string;
-      title: string;
-    };
+
+    // ── Schema Validation ──
+    const parsed = validateBodyWithCors(body, ExtensionAnalyzeSchema, corsHeaders);
+    if (!parsed.success) return parsed.response;
+    const { url, text, title } = parsed.data;
 
     // Combine and sanitize text for analysis
-    let fullText = text || "";
+    let fullText = text;
     if (!fullText && url) {
       fullText = `URL: ${url}\nTitle: ${title || "untitled"}`;
     }
 
     fullText = sanitizeLLMInput(fullText, 25_000);
 
-    // Validate
+    // Text is already validated by schema (min 100 chars)
+    // but re-check after sanitization in case stripping reduced length
     if (!fullText || fullText.trim().length < 100) {
       return NextResponse.json(
         {

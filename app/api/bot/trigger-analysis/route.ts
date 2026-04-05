@@ -8,6 +8,8 @@ import { analyzeDocument } from "@/lib/core/analyzer";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendMessage } from "@/lib/bot/telegram-client";
 import { rateLimit, rateLimitResponse, verifyInternalSecret } from "@/lib/rate-limit";
+import { TriggerAnalysisSchema } from "@/lib/validation/schemas";
+import { validateBody } from "@/lib/validation/middleware";
 
 export const maxDuration = 60;
 
@@ -29,23 +31,20 @@ export async function POST(request: NextRequest) {
     if (!rl.success) return rateLimitResponse(rl);
 
     const body = await request.json();
-    console.log("[ClauseWall] Trigger body received:", {
-      documentId: body.documentId,
-      textLength: body.text?.length,
-      documentType: body.documentType,
-      jurisdiction: body.jurisdiction,
-      chatId: body.chatId,
+
+    // ── Schema Validation ──
+    const parsed = validateBody(body, TriggerAnalysisSchema);
+    if (!parsed.success) return parsed.response;
+
+    const { documentId, text, documentType, jurisdiction, chatId } = parsed.data;
+
+    console.log("[ClauseWall] Trigger body validated:", {
+      documentId,
+      textLength: text.length,
+      documentType,
+      jurisdiction,
+      chatId,
     });
-
-    const { documentId, text, documentType, jurisdiction, chatId } = body;
-
-    if (!documentId || !text) {
-      console.error("[ClauseWall] Missing required fields");
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 },
-      );
-    }
 
     console.log("[ClauseWall] Creating admin client...");
     const supabase = createAdminClient();

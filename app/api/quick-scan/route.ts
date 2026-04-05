@@ -8,6 +8,9 @@ import { quickAnalyze } from "@/lib/bot/quick-analyzer";
 import { parsePDF } from "@/lib/core/pdf-parser";
 import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 import { sanitizeLLMInput } from "@/lib/sanitize";
+import { QuickScanSchema } from "@/lib/validation/schemas";
+import { validateBody, validateFileSize } from "@/lib/validation/middleware";
+import { FILE_SIZE_LIMITS } from "@/lib/validation/enums";
 
 export const maxDuration = 30;
 
@@ -26,8 +29,8 @@ export async function POST(request: NextRequest) {
     if (contentType.includes("multipart/form-data")) {
       const formData = await request.formData();
       const file = formData.get("file") as File;
-      documentType = formData.get("documentType") as string;
-      jurisdiction = formData.get("jurisdiction") as string;
+      documentType = (formData.get("documentType") as string) || "other";
+      jurisdiction = (formData.get("jurisdiction") as string) || "pan_india";
 
       if (!file) {
         return NextResponse.json(
@@ -35,6 +38,10 @@ export async function POST(request: NextRequest) {
           { status: 400 },
         );
       }
+
+      // Validate file size
+      const sizeError = validateFileSize(file, FILE_SIZE_LIMITS.CONTRACT_PDF_TXT, "Contract file");
+      if (sizeError) return sizeError;
 
       if (file.type === "application/pdf") {
         const buffer = Buffer.from(await file.arrayBuffer());
@@ -44,11 +51,17 @@ export async function POST(request: NextRequest) {
       }
     } else {
       const body = await request.json();
-      text = body.text;
-      documentType = body.documentType;
-      jurisdiction = body.jurisdiction;
+
+      // ── Schema Validation ──
+      const parsed = validateBody(body, QuickScanSchema);
+      if (!parsed.success) return parsed.response;
+
+      text = parsed.data.text;
+      documentType = parsed.data.documentType;
+      jurisdiction = parsed.data.jurisdiction;
     }
 
+    // Post-sanitization length check (file upload path bypasses schema)
     if (!text || text.trim().length < 50) {
       return NextResponse.json(
         { error: "Text too short. Minimum 50 characters required." },

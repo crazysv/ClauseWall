@@ -3,6 +3,9 @@ import { createClient } from "@/lib/supabase/server";
 import { analyzeDocument } from "@/lib/core/analyzer";
 import { parsePDF } from "@/lib/core/pdf-parser";
 import { sanitizePlainTextBlock } from "@/lib/sanitize";
+import { AnalyzeJsonSchema } from "@/lib/validation/schemas";
+import { validateBody, validateFileSize } from "@/lib/validation/middleware";
+import { FILE_SIZE_LIMITS } from "@/lib/validation/enums";
 
 // Allow longer execution time for analysis
 export const maxDuration = 60;
@@ -44,6 +47,10 @@ export async function POST(request: NextRequest) {
         );
       }
 
+      // Validate file size
+      const sizeError = validateFileSize(file, FILE_SIZE_LIMITS.CONTRACT_PDF_TXT, "Contract file");
+      if (sizeError) return sizeError;
+
       filename = file.name;
 
       // Extract text based on file type
@@ -59,39 +66,44 @@ export async function POST(request: NextRequest) {
           { status: 400 },
         );
       }
+
+      // Validate extracted text + required fields for file path
+      if (!documentType) {
+        return NextResponse.json(
+          { error: "Please select a document type" },
+          { status: 400 },
+        );
+      }
+      if (!jurisdiction) {
+        return NextResponse.json(
+          { error: "Please select your state" },
+          { status: 400 },
+        );
+      }
     } else {
       // ---- PASTED TEXT ----
       const body = await request.json();
-      text = body.text;
-      documentType = body.documentType;
-      jurisdiction = body.jurisdiction;
-      filename = body.filename || "pasted-text.txt";
+
+      // ── Schema Validation ──
+      const parsed = validateBody(body, AnalyzeJsonSchema);
+      if (!parsed.success) return parsed.response;
+
+      text = parsed.data.text;
+      documentType = parsed.data.documentType;
+      jurisdiction = parsed.data.jurisdiction;
+      filename = parsed.data.filename;
     }
 
     // ---- SANITIZATION ----
     text = sanitizePlainTextBlock(text, 100_000);
 
-    // ---- VALIDATION ----
+    // ---- POST-SANITIZATION CHECK ----
     if (!text || text.trim().length < 50) {
       return NextResponse.json(
         {
           error:
             "Document text is too short. Please provide a complete contract (minimum 50 characters).",
         },
-        { status: 400 },
-      );
-    }
-
-    if (!documentType) {
-      return NextResponse.json(
-        { error: "Please select a document type" },
-        { status: 400 },
-      );
-    }
-
-    if (!jurisdiction) {
-      return NextResponse.json(
-        { error: "Please select your state" },
         { status: 400 },
       );
     }
