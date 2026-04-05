@@ -1,0 +1,3 @@
+Manual note:
+Automated env usage scan was skipped due to PowerShell performance/tooling limitations.
+Will validate environment variables during Phase 1 secret rotation and key usage review.
