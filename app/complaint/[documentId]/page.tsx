@@ -192,7 +192,7 @@ export default function ComplaintFilingPage() {
               <Gavel className="h-6 w-6 text-orange-500" />
               File Regulatory Complaint
             </h1>
-            <p className="text-sm font-bold uppercase tracking-wider text-muted-foreground mt-1">
+            <p className="text-sm font-bold uppercase tracking-wider text-foreground mt-1">
               We{"'"}ll guide you through the entire process
             </p>
           </div>
@@ -206,7 +206,7 @@ export default function ComplaintFilingPage() {
               <button
                 key={s.id}
                 onClick={() => i <= step && setStep(i)}
-                className={`flex items-center gap-2 px-4 py-2 font-bold uppercase tracking-widest border-2 transition-all ${i === step ? "bg-orange-500 text-black border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]" : i < step ? "bg-green-500 text-black border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] opacity-80" : "bg-white dark:bg-zinc-900 text-muted-foreground border-gray-400 opacity-50 shadow-none border-dashed"}`}
+                className={`flex items-center gap-2 px-4 py-2 font-bold uppercase tracking-widest border-2 transition-all ${i === step ? "bg-orange-500 text-black border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]" : i < step ? "bg-green-500 text-black border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] opacity-80" : "bg-white dark:bg-zinc-900 text-foreground border-gray-400 opacity-50 shadow-none border-dashed"}`}
               >
                 {i < step ? (
                   <CheckCircle2 className="h-3.5 w-3.5" />
@@ -267,7 +267,7 @@ export default function ComplaintFilingPage() {
                       Update
                     </Button>
                   </div>
-                  <p className="text-xs font-semibold text-muted-foreground mt-3">
+                  <p className="text-xs font-semibold text-foreground mt-3">
                     This determines filing fees and which forum level handles
                     your complaint.
                   </p>
@@ -290,7 +290,7 @@ export default function ComplaintFilingPage() {
                               Recommended
                             </span>
                           )}
-                          <span className="text-[10px] px-2 py-1 font-black uppercase tracking-widest bg-white dark:bg-black text-muted-foreground dark:text-muted-foreground border-2 border-black">
+                          <span className="text-[10px] px-2 py-1 font-black uppercase tracking-widest bg-white dark:bg-black text-foreground dark:text-foreground border-2 border-black">
                             {rec.primary.filing_method === "online"
                               ? "🌐 Online"
                               : rec.primary.filing_method === "offline"
@@ -301,18 +301,18 @@ export default function ComplaintFilingPage() {
                         <h4 className="font-black text-lg uppercase tracking-wide">
                           {rec.primary.name}
                         </h4>
-                        <p className="text-sm font-medium text-muted-foreground mt-2">
+                        <p className="text-sm font-medium text-foreground mt-2">
                           {rec.reasoning}
                         </p>
 
                         {rec.primary.address && (
-                          <div className="flex items-start gap-1.5 mt-2 text-xs text-muted-foreground">
+                          <div className="flex items-start gap-1.5 mt-2 text-xs text-foreground">
                             <MapPin className="h-3 w-3 mt-0.5 flex-shrink-0" />
                             <span>{rec.primary.address}</span>
                           </div>
                         )}
                         {rec.primary.phone && (
-                          <div className="flex items-center gap-1.5 mt-1 text-xs text-muted-foreground">
+                          <div className="flex items-center gap-1.5 mt-1 text-xs text-foreground">
                             <Phone className="h-3 w-3" />
                             <span>{rec.primary.phone}</span>
                           </div>
@@ -362,7 +362,7 @@ export default function ComplaintFilingPage() {
                     {rec.limitation_period.days_remaining !== null && (
                       <div className="mt-3 flex items-center gap-2">
                         <Clock className="h-4 w-4 text-amber-500 stroke-[3px]" />
-                        <span className="text-sm font-bold uppercase tracking-wide text-muted-foreground">
+                        <span className="text-sm font-bold uppercase tracking-wide text-foreground">
                           {rec.limitation_period.is_expired ? (
                             <span className="text-red-500">
                               Limitation may have expired
@@ -494,18 +494,18 @@ export default function ComplaintFilingPage() {
               {!complaintDocs ? (
                 <div className="card-impact p-16 text-center rounded-none">
                   <div className="inline-flex items-center justify-center w-20 h-20 border-4 border-black bg-orange-100 dark:bg-orange-900/50 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-6">
-                    <FileText className="h-10 w-10 text-orange-600 dark:text-orange-400" />
+                    <FileText className="h-10 w-10 text-orange-900 dark:text-orange-100 font-bold dark:text-orange-400" />
                   </div>
                   <h3 className="text-impact-subheading mb-2">
                     Ready to Generate
                   </h3>
-                  <p className="font-bold text-muted-foreground uppercase tracking-widest mb-2">
+                  <p className="font-bold text-foreground uppercase tracking-widest mb-2">
                     Filing at:{" "}
                     <span className="text-black dark:text-foreground underline decoration-2">
                       {selectedAuth?.primary.short_name}
                     </span>
                   </p>
-                  <p className="text-md font-medium text-muted-foreground mb-8 max-w-lg mx-auto">
+                  <p className="text-md font-medium text-foreground mb-8 max-w-lg mx-auto">
                     We'll generate a formal complaint, affidavit, and index of
                     documents.
                   </p>
@@ -550,7 +550,7 @@ export default function ComplaintFilingPage() {
                               <h4 className="font-black text-lg uppercase tracking-wide">
                                 {doc!.title}
                               </h4>
-                              <p className="text-sm font-bold text-muted-foreground mt-1">
+                              <p className="text-sm font-bold text-foreground mt-1">
                                 {doc!.format_notes}
                               </p>
                             </div>
@@ -604,7 +604,7 @@ export default function ComplaintFilingPage() {
                           {complaintDocs.fee.notes.map((note, i) => (
                             <p
                               key={i}
-                              className="text-sm font-bold text-muted-foreground uppercase flex items-center gap-2 pr-4"
+                              className="text-sm font-bold text-foreground uppercase flex items-center gap-2 pr-4"
                             >
                               <ArrowRight className="h-4 w-4" /> {note}
                             </p>
@@ -669,7 +669,7 @@ export default function ComplaintFilingPage() {
                             <h4 className="font-black text-lg uppercase tracking-wide mb-2">
                               {gs.title}
                             </h4>
-                            <p className="font-medium text-muted-foreground leading-relaxed text-sm mb-4">
+                            <p className="font-medium text-foreground leading-relaxed text-sm mb-4">
                               {gs.description}
                             </p>
                             {gs.url && (
@@ -687,7 +687,7 @@ export default function ComplaintFilingPage() {
                                 {gs.tips.map((tip, ti) => (
                                   <p
                                     key={ti}
-                                    className="font-bold text-sm text-green-700 dark:text-green-400"
+                                    className="font-bold text-sm text-green-900 dark:text-green-100 font-bold dark:text-green-400"
                                   >
                                     💡 {tip}
                                   </p>
@@ -725,7 +725,7 @@ export default function ComplaintFilingPage() {
                                 {item.document}
                               </p>
                               {item.how_to_get && (
-                                <p className="font-medium text-sm text-muted-foreground mt-2 border-l-2 border-gray-300 pl-3">
+                                <p className="font-medium text-sm text-foreground mt-2 border-l-2 border-gray-300 pl-3">
                                   {item.how_to_get}
                                 </p>
                               )}
@@ -739,7 +739,7 @@ export default function ComplaintFilingPage() {
                   {/* Helpline */}
                   {guide.helpline && (
                     <div className="p-6 bg-blue-100 dark:bg-blue-900/30 border-4 border-blue-500 text-center shadow-[4px_4px_0px_0px_rgba(59,130,246,1)]">
-                      <p className="font-black text-xl uppercase tracking-widest text-blue-700 dark:text-blue-300">
+                      <p className="font-black text-xl uppercase tracking-widest text-blue-900 dark:text-blue-100 font-bold dark:text-blue-300">
                         📞 Need help? Call:{" "}
                         <span className="bg-white dark:bg-black px-4 py-2 border-2 border-blue-500 ml-2 shadow-[2px_2px_0px_0px_rgba(59,130,246,1)] text-black dark:text-foreground">
                           {guide.helpline}
@@ -767,7 +767,7 @@ export default function ComplaintFilingPage() {
               ) : (
                 <div className="text-center py-12">
                   <Loader2 className="h-8 w-8 animate-spin text-orange-400 mx-auto mb-3" />
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-foreground">
                     Loading filing guide...
                   </p>
                 </div>

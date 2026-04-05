@@ -38,7 +38,7 @@ export default async function CampaignsPage() {
           </div>
           <div>
             <h1 className="text-2xl font-bold">Opt-Out Campaigns</h1>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-foreground">
               Collective legal objections against unfair ToS changes
             </p>
           </div>
@@ -50,23 +50,23 @@ export default async function CampaignsPage() {
               <p className="text-2xl font-bold text-amber-400">
                 {activeCampaigns.length}
               </p>
-              <p className="text-xs text-muted-foreground">Active Campaigns</p>
+              <p className="text-xs text-foreground">Active Campaigns</p>
             </CardContent>
           </Card>
           <Card className="bg-background border-2 border-foreground bg-popover/50 border-foreground border-2">
             <CardContent className="p-4 flex items-center justify-center gap-2">
-              <Users className="h-5 w-5 text-muted-foreground" />
+              <Users className="h-5 w-5 text-foreground" />
               <p className="text-2xl font-bold">{totalSignatories}</p>
-              <p className="text-xs text-muted-foreground">Total Signatories</p>
+              <p className="text-xs text-foreground">Total Signatories</p>
             </CardContent>
           </Card>
         </div>
 
         {typedCampaigns.length === 0 ? (
           <div className="text-center py-12">
-            <Shield className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
-            <p className="text-muted-foreground">No campaigns yet.</p>
-            <p className="text-sm text-muted-foreground mt-1">
+            <Shield className="h-10 w-10 text-foreground mx-auto mb-3" />
+            <p className="text-foreground">No campaigns yet.</p>
+            <p className="text-sm text-foreground mt-1">
               Campaigns will be created when critical or illegal ToS changes are
               detected.
             </p>

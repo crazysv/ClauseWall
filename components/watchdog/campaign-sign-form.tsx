@@ -54,7 +54,7 @@ export default function CampaignSignForm({
         <CardContent className="p-6 text-center">
           <CheckCircle className="h-8 w-8 text-green-400 mx-auto mb-3" />
           <p className="font-semibold text-green-400">Thank you for signing!</p>
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className="text-sm text-foreground mt-1">
             Your name has been added to the collective objection.
           </p>
         </CardContent>
@@ -92,7 +92,7 @@ export default function CampaignSignForm({
             "Sign Campaign"
           )}
         </Button>
-        <p className="text-[10px] text-muted-foreground text-center">
+        <p className="text-[10px] text-foreground text-center">
           By signing, your display name will be visible on the campaign page.
         </p>
       </CardContent>

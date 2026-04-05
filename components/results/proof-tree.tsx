@@ -144,7 +144,7 @@ function getNodeColors(node: ProofNode): {
         bg: "bg-muted",
         border: "border-foreground",
         text: "text-foreground",
-        icon: "text-muted-foreground",
+        icon: "text-foreground",
       };
   }
 }
@@ -241,7 +241,7 @@ function TreeNodeCard({
               </p>
               {node.type === "comparison" &&
                 node.metadata.leftOperand !== undefined && (
-                  <p className="text-[10px] text-muted-foreground font-bold mt-0.5 font-mono">
+                  <p className="text-[10px] text-foreground font-bold mt-0.5 font-mono">
                     {String(node.metadata.leftOperand)} {node.metadata.operator}{" "}
                     {String(node.metadata.rightOperand)}
                   </p>
@@ -271,7 +271,7 @@ function TreeNodeCard({
                 e.stopPropagation();
                 setIsChildrenExpanded(!isChildrenExpanded);
               }}
-              className="flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-muted-foreground hover:text-foreground mb-1 ml-3"
+              className="flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-foreground hover:text-foreground mb-1 ml-3"
             >
               {isChildrenExpanded ? (
                 <>
@@ -349,7 +349,7 @@ function NodeDetailPanel({
         </div>
         <button
           onClick={onClose}
-          className="text-muted-foreground hover:text-foreground"
+          className="text-foreground hover:text-foreground"
         >
           <X className="h-4 w-4" />
         </button>
@@ -367,7 +367,7 @@ function NodeDetailPanel({
         )}
         {node.metadata.confidence !== undefined && (
           <div>
-            <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-1">
+            <p className="text-[10px] font-black uppercase tracking-wider text-foreground mb-1">
               Confidence
             </p>
             <div className="flex items-center gap-2">
@@ -390,7 +390,7 @@ function NodeDetailPanel({
         )}
         {node.metadata.statuteText && (
           <div>
-            <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-0.5">
+            <p className="text-[10px] font-black uppercase tracking-wider text-foreground mb-0.5">
               Statute Text
             </p>
             <p className="text-xs font-bold text-foreground italic leading-relaxed">
@@ -400,7 +400,7 @@ function NodeDetailPanel({
         )}
         {node.metadata.leftOperand !== undefined && (
           <div>
-            <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-0.5">
+            <p className="text-[10px] font-black uppercase tracking-wider text-foreground mb-0.5">
               Comparison
             </p>
             <p className="text-xs font-bold text-foreground font-mono">
@@ -430,7 +430,7 @@ function NodeDetailPanel({
         )}
         {node.metadata.originalText && (
           <div>
-            <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-0.5">
+            <p className="text-[10px] font-black uppercase tracking-wider text-foreground mb-0.5">
               Source Text
             </p>
             <p className="text-xs font-bold text-foreground italic leading-relaxed">
@@ -457,7 +457,7 @@ function NodeDetailPanel({
 function MetaRow({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-[10px] text-muted-foreground font-black uppercase tracking-wider mb-0.5">
+      <p className="text-[10px] text-foreground font-black uppercase tracking-wider mb-0.5">
         {label}
       </p>
       <p className="text-xs font-bold text-foreground">{value}</p>
@@ -516,7 +516,7 @@ export default function ProofTreeView({
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: i * 0.05 }}
-            className={`p-3 card-impact border-2 text-sm font-bold leading-relaxed ${activeNodeId && i === getActiveStepIndex(proofTree, activeNodeId) ? "border-foreground bg-foreground text-background" : "bg-muted border-foreground text-muted-foreground"}`}
+            className={`p-3 card-impact border-2 text-sm font-bold leading-relaxed ${activeNodeId && i === getActiveStepIndex(proofTree, activeNodeId) ? "border-foreground bg-foreground text-background" : "bg-muted border-foreground text-foreground"}`}
           >
             {step}
           </motion.div>

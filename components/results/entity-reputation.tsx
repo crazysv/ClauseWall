@@ -168,7 +168,7 @@ export default function EntityReputation({
               <p className="text-sm font-black uppercase tracking-wider text-foreground">
                 Entity Not Identified
               </p>
-              <p className="text-xs font-medium text-muted-foreground mt-1">
+              <p className="text-xs font-medium text-foreground mt-1">
                 Could not extract landlord/company name from this contract. The
                 contract may not contain identifiable party names.
               </p>
@@ -188,7 +188,7 @@ export default function EntityReputation({
         <CardContent className="p-6">
           <div className="flex items-center gap-3">
             <Loader2 className="h-5 w-5 text-foreground animate-spin" />
-            <p className="text-sm font-bold tracking-wider text-muted-foreground uppercase">
+            <p className="text-sm font-bold tracking-wider text-foreground uppercase">
               Checking community reputation for{" "}
               <span className="text-foreground font-black">{entityName}</span>
               ...
@@ -248,7 +248,7 @@ export default function EntityReputation({
               >
                 {isKnownBadActor ? (
                   <ShieldAlert
-                    className={`h-6 w-6 ${isSevere ? "text-red-400" : "text-orange-400"}`}
+                    className={`h-6 w-6 ${isSevere ? "text-red-900 dark:text-red-100 font-bold" : "text-orange-400"}`}
                   />
                 ) : (
                   <Shield className="h-6 w-6 text-blue-400" />
@@ -257,7 +257,7 @@ export default function EntityReputation({
               <div>
                 {/* Entity Type Badge */}
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-xs text-foreground">
                     {entityTypeInfo.emoji} {entityTypeInfo.label}
                   </span>
                 </div>
@@ -268,7 +268,7 @@ export default function EntityReputation({
                 {/* Location + Flag Status */}
                 <div className="flex items-center gap-2 mt-1.5 flex-wrap">
                   {jurisdiction && (
-                    <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1 text-xs text-foreground">
                       <MapPin className="h-3 w-3" />
                       {getStateName(jurisdiction)}
                     </span>
@@ -338,7 +338,7 @@ export default function EntityReputation({
                       {flagCount}
                     </span>
                   </div>
-                  <p className="text-[10px] text-muted-foreground">
+                  <p className="text-[10px] text-foreground">
                     Times Flagged
                   </p>
                 </div>
@@ -349,7 +349,7 @@ export default function EntityReputation({
                       {avgScore}
                     </span>
                   </div>
-                  <p className="text-[10px] text-muted-foreground">
+                  <p className="text-[10px] text-foreground">
                     Avg Risk Score
                   </p>
                 </div>
@@ -360,7 +360,7 @@ export default function EntityReputation({
                       {percentile}%
                     </span>
                   </div>
-                  <p className="text-[10px] text-muted-foreground">
+                  <p className="text-[10px] text-foreground">
                     Worse Than
                   </p>
                 </div>
@@ -370,7 +370,7 @@ export default function EntityReputation({
               {avgScore > 0 && (
                 <div className="p-3 rounded-none bg-white/[0.02] border border-foreground border-2">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-medium text-muted-foreground">
+                    <span className="text-xs font-medium text-foreground">
                       Community Risk Level
                     </span>
                     <span
@@ -428,14 +428,14 @@ export default function EntityReputation({
               {/* Common Violations */}
               {commonViolations.length > 0 && (
                 <div>
-                  <p className="text-xs font-medium text-muted-foreground mb-2">
+                  <p className="text-xs font-medium text-foreground mb-2">
                     Common Violations Reported
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {commonViolations.slice(0, 5).map((violation, i) => (
                       <Badge
                         key={i}
-                        className="bg-red-500/10 text-red-300 border-red-500/20 text-xs"
+                        className="bg-red-500/10 text-red-800 dark:text-red-100 font-bold border-red-500/20 text-xs"
                       >
                         {violation.length > 60
                           ? violation.substring(0, 60) + "..."
@@ -453,11 +453,11 @@ export default function EntityReputation({
               >
                 <div className="flex items-center gap-2">
                   <Skull className="h-4 w-4 text-red-400" />
-                  <span className="text-sm text-muted-foreground">
+                  <span className="text-sm text-foreground">
                     View Wall of Shame
                   </span>
                 </div>
-                <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="h-4 w-4 text-foreground group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
           )}
@@ -472,7 +472,7 @@ export default function EntityReputation({
                   <Check className="h-4 w-4" />
                   No community flags found for this entity.
                 </p>
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-xs text-foreground mt-1">
                   This is the first time ClauseWall is seeing this entity. If
                   you find this contract unfair, flag it to help others.
                 </p>
@@ -521,12 +521,12 @@ export default function EntityReputation({
           <div className="py-4 space-y-3">
             <div className="p-3 rounded-none bg-muted border border-foreground border-2">
               <div className="flex items-center gap-2 mb-1">
-                <span className="text-xs text-muted-foreground">
+                <span className="text-xs text-foreground">
                   {entityTypeInfo.emoji} {entityTypeInfo.label}
                 </span>
               </div>
               <p className="text-sm font-medium">{entityName}</p>
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-xs text-foreground mt-1">
                 Risk Score: {overallRiskScore}/100 •{" "}
                 {getStateName(jurisdiction)}
               </p>
@@ -534,7 +534,7 @@ export default function EntityReputation({
 
             {(dangerousClauses.length > 0 || illegalClauses.length > 0) && (
               <div>
-                <p className="text-xs font-medium text-muted-foreground mb-2">
+                <p className="text-xs font-medium text-foreground mb-2">
                   Issues found in this contract:
                 </p>
                 <div className="space-y-1.5 max-h-32 overflow-y-auto">
@@ -544,7 +544,7 @@ export default function EntityReputation({
                       className="flex items-start gap-2 text-xs"
                     >
                       <span className="text-purple-400">⛔</span>
-                      <span className="text-muted-foreground line-clamp-2">
+                      <span className="text-foreground line-clamp-2">
                         {clause}
                       </span>
                     </div>
@@ -555,7 +555,7 @@ export default function EntityReputation({
                       className="flex items-start gap-2 text-xs"
                     >
                       <span className="text-red-400">🔴</span>
-                      <span className="text-muted-foreground line-clamp-2">
+                      <span className="text-foreground line-clamp-2">
                         {clause}
                       </span>
                     </div>

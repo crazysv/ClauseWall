@@ -23,7 +23,7 @@ const statusConfig: Record<
   string,
   { color: string; icon: typeof Clock; label: string }
 > = {
-  draft: { color: "text-gray-400", icon: FileText, label: "Draft" },
+  draft: { color: "text-foreground", icon: FileText, label: "Draft" },
   documents_ready: {
     color: "text-blue-400",
     icon: FileText,
@@ -53,7 +53,7 @@ const statusConfig: Record<
   },
   resolved: { color: "text-green-400", icon: CheckCircle2, label: "Resolved" },
   appealed: { color: "text-red-400", icon: AlertCircle, label: "Appealed" },
-  closed: { color: "text-gray-500", icon: CheckCircle2, label: "Closed" },
+  closed: { color: "text-foreground", icon: CheckCircle2, label: "Closed" },
 };
 
 export default function ComplaintListPage() {
@@ -84,7 +84,7 @@ export default function ComplaintListPage() {
               <Gavel className="h-6 w-6 text-orange-500" />
               Complaint Filings
             </h1>
-            <p className="text-sm text-muted-foreground mt-1">
+            <p className="text-sm text-foreground mt-1">
               Track and manage your regulatory complaints
             </p>
           </div>
@@ -97,7 +97,7 @@ export default function ComplaintListPage() {
               <p className="text-2xl font-black text-orange-500">
                 {active.length}
               </p>
-              <p className="text-xs text-muted-foreground">Active</p>
+              <p className="text-xs text-foreground">Active</p>
             </CardContent>
           </Card>
           <Card className="card-impact p-4 rounded-lg">
@@ -105,7 +105,7 @@ export default function ComplaintListPage() {
               <p className="text-2xl font-black text-green-500">
                 {resolved.length}
               </p>
-              <p className="text-xs text-muted-foreground">Resolved</p>
+              <p className="text-xs text-foreground">Resolved</p>
             </CardContent>
           </Card>
           <Card className="card-impact p-4 rounded-lg">
@@ -113,7 +113,7 @@ export default function ComplaintListPage() {
               <p className="text-2xl font-black text-blue-500">
                 {filings.length}
               </p>
-              <p className="text-xs text-muted-foreground">Total</p>
+              <p className="text-xs text-foreground">Total</p>
             </CardContent>
           </Card>
         </div>
@@ -136,7 +136,7 @@ export default function ComplaintListPage() {
             <h3 className="text-impact-subheading mb-2">
               No Complaints Filed Yet
             </h3>
-            <p className="text-muted-foreground mb-6">
+            <p className="text-foreground mb-6">
               Analyze a contract first, then file a complaint if violations are
               found.
             </p>
@@ -173,7 +173,7 @@ export default function ComplaintListPage() {
                                 {config.label}
                               </span>
                               {filing.case_number && (
-                                <span className="text-[10px] text-muted-foreground">
+                                <span className="text-[10px] text-foreground">
                                   #{filing.case_number}
                                 </span>
                               )}
@@ -181,7 +181,7 @@ export default function ComplaintListPage() {
                             <h4 className="font-semibold text-sm truncate group-hover:text-orange-300 transition-colors">
                               {filing.complaint_title}
                             </h4>
-                            <p className="text-xs text-muted-foreground mt-1 font-bold uppercase tracking-wider">
+                            <p className="text-xs text-foreground mt-1 font-bold uppercase tracking-wider">
                               {filing.authority_type.replace(/_/g, " ")} • ₹
                               {(filing.claim_amount || 0).toLocaleString(
                                 "en-IN",
@@ -197,7 +197,7 @@ export default function ComplaintListPage() {
                               </p>
                             )}
                           </div>
-                          <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:translate-x-1 transition-transform flex-shrink-0 mt-2" />
+                          <ArrowRight className="h-4 w-4 text-foreground group-hover:translate-x-1 transition-transform flex-shrink-0 mt-2" />
                         </div>
                       </CardContent>
                     </Card>

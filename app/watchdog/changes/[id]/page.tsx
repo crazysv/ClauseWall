@@ -46,7 +46,7 @@ export default async function ChangeDetailPage({
         {/* Back nav */}
         <Link
           href={`/watchdog/companies/${company.slug}`}
-          className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors"
+          className="flex items-center gap-2 text-sm text-foreground hover:text-foreground mb-6 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to {company.name}
@@ -64,7 +64,7 @@ export default async function ChangeDetailPage({
             >
               {change.tos_type.toUpperCase()}
             </Badge>
-            <span className="text-sm text-muted-foreground">
+            <span className="text-sm text-foreground">
               Detected {new Date(change.detected_at).toLocaleString("en-IN")}
             </span>
             {change.overall_direction && (
@@ -116,7 +116,7 @@ export default async function ChangeDetailPage({
                 <p className={`text-xl font-bold ${stat.color}`}>
                   {stat.value}
                 </p>
-                <p className="text-[10px] text-muted-foreground">
+                <p className="text-[10px] text-foreground">
                   {stat.label}
                 </p>
               </CardContent>
@@ -144,7 +144,7 @@ export default async function ChangeDetailPage({
                     <p className="text-sm font-medium text-red-300">
                       {issue.law_name} — {issue.section}
                     </p>
-                    <p className="text-sm text-muted-foreground mt-0.5">
+                    <p className="text-sm text-foreground mt-0.5">
                       {issue.violation_description}
                     </p>
                   </div>

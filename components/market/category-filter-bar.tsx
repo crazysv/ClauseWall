@@ -45,7 +45,7 @@ export default function CategoryFilterBar({
     <div className="space-y-3 p-4 rounded-none bg-white/[0.02] border border-foreground border-2">
       {/* Benchmark Type */}
       <div>
-        <p className="text-[10px] text-foreground/30 font-medium uppercase tracking-wider mb-1.5">
+        <p className="text-[10px] text-foreground font-medium uppercase tracking-wider mb-1.5">
           Metric
         </p>
         <div className="flex flex-wrap gap-1.5">
@@ -53,7 +53,7 @@ export default function CategoryFilterBar({
             <button
               key={type}
               onClick={() => onTypeChange(type)}
-              className={`px-2.5 py-1 rounded-md text-xs transition-colors ${selectedType === type ? "bg-cyan-500/15 text-cyan-400 border border-cyan-500/30" : "bg-white/[0.03] text-foreground/40 border border-foreground border-2 hover:text-foreground/60"}`}
+              className={`px-2.5 py-1 rounded-md text-xs transition-colors ${selectedType === type ? "bg-cyan-500/15 text-cyan-400 border border-cyan-500/30" : "bg-white/[0.03] text-foreground border border-foreground border-2 hover:text-foreground"}`}
             >
               {type === "all"
                 ? "All"
@@ -65,7 +65,7 @@ export default function CategoryFilterBar({
 
       {/* Document Type */}
       <div>
-        <p className="text-[10px] text-foreground/30 font-medium uppercase tracking-wider mb-1.5">
+        <p className="text-[10px] text-foreground font-medium uppercase tracking-wider mb-1.5">
           Contract Type
         </p>
         <div className="flex flex-wrap gap-1.5">
@@ -75,7 +75,7 @@ export default function CategoryFilterBar({
               <button
                 key={dt}
                 onClick={() => onDocTypeChange(dt)}
-                className={`px-2.5 py-1 rounded-md text-xs transition-colors ${selectedDocType === dt ? "bg-purple-500/15 text-purple-400 border border-purple-500/30" : "bg-white/[0.03] text-foreground/40 border border-foreground border-2 hover:text-foreground/60"}`}
+                className={`px-2.5 py-1 rounded-md text-xs transition-colors ${selectedDocType === dt ? "bg-purple-500/15 text-purple-400 border border-purple-500/30" : "bg-white/[0.03] text-foreground border border-foreground border-2 hover:text-foreground"}`}
               >
                 {dt === "all"
                   ? "All"
@@ -88,7 +88,7 @@ export default function CategoryFilterBar({
 
       {/* Scope */}
       <div>
-        <p className="text-[10px] text-foreground/30 font-medium uppercase tracking-wider mb-1.5">
+        <p className="text-[10px] text-foreground font-medium uppercase tracking-wider mb-1.5">
           Region
         </p>
         <div className="flex flex-wrap gap-1.5">
@@ -98,7 +98,7 @@ export default function CategoryFilterBar({
               <button
                 key={scope}
                 onClick={() => onScopeChange(scope)}
-                className={`px-2.5 py-1 rounded-md text-xs transition-colors capitalize ${selectedScope === scope ? "bg-green-500/15 text-green-400 border border-green-500/30" : "bg-white/[0.03] text-foreground/40 border border-foreground border-2 hover:text-foreground/60"}`}
+                className={`px-2.5 py-1 rounded-md text-xs transition-colors capitalize ${selectedScope === scope ? "bg-green-500/15 text-green-400 border border-green-500/30" : "bg-white/[0.03] text-foreground border border-foreground border-2 hover:text-foreground"}`}
               >
                 {scope === "all"
                   ? "All India"

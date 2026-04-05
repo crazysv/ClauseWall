@@ -302,13 +302,13 @@ export default function ContractPreviewPage() {
             <div className="flex justify-end gap-3 mb-4 print:hidden">
               <button
                 onClick={expandAll}
-                className="text-xs text-muted-foreground hover:text-muted-foreground transition-colors"
+                className="text-xs text-foreground hover:text-muted-foreground transition-colors"
               >
                 Expand All
               </button>
               <button
                 onClick={collapseAll}
-                className="text-xs text-muted-foreground hover:text-muted-foreground transition-colors"
+                className="text-xs text-foreground hover:text-muted-foreground transition-colors"
               >
                 Collapse All
               </button>

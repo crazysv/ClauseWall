@@ -78,7 +78,7 @@ export default function RTIForm({
               <h2 className="font-black text-2xl uppercase tracking-widest">
                 RTI Generator
               </h2>
-              <p className="text-sm font-bold text-muted-foreground mt-1">
+              <p className="text-sm font-bold text-foreground mt-1">
                 Generate a formal Right to Information application. Cost: ₹10
                 only. Response within 30 days guaranteed by law.
               </p>

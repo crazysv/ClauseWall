@@ -113,7 +113,7 @@ export default function MarketDashboardPage() {
             </div>
             <div>
               <h1 className="text-2xl font-bold">Market Intelligence</h1>
-              <p className="text-sm text-foreground/50">
+              <p className="text-sm text-foreground">
                 Real-time benchmarks from anonymized contract analysis data
               </p>
             </div>
@@ -187,7 +187,7 @@ export default function MarketDashboardPage() {
                               key={type}
                               className="flex items-center justify-between py-1.5 border-b border-foreground border-2 last:border-0"
                             >
-                              <span className="text-xs text-foreground/60">
+                              <span className="text-xs text-foreground">
                                 {label}
                               </span>
                               <span className="text-sm font-medium text-foreground">
@@ -199,7 +199,7 @@ export default function MarketDashboardPage() {
                     </div>
                     <Link
                       href="/market/benchmarks"
-                      className="flex items-center justify-center gap-1 mt-3 py-2 rounded-none bg-white/[0.03] hover:bg-white/[0.06] transition-colors text-xs text-foreground/50 hover:text-foreground/70"
+                      className="flex items-center justify-center gap-1 mt-3 py-2 rounded-none bg-white/[0.03] hover:bg-white/[0.06] transition-colors text-xs text-foreground hover:text-foreground/70"
                     >
                       View All Benchmarks <ArrowRight className="h-3 w-3" />
                     </Link>
@@ -244,11 +244,11 @@ export default function MarketDashboardPage() {
                           <p className="text-xs font-medium text-foreground">
                             {link.label}
                           </p>
-                          <p className="text-[10px] text-foreground/30">
+                          <p className="text-[10px] text-foreground">
                             {link.desc}
                           </p>
                         </div>
-                        <ArrowRight className="h-3.5 w-3.5 text-foreground/20 group-hover:text-foreground/50 group-hover:translate-x-0.5 transition-all" />
+                        <ArrowRight className="h-3.5 w-3.5 text-foreground group-hover:text-foreground group-hover:translate-x-0.5 transition-all" />
                       </Link>
                     ))}
                   </CardContent>

@@ -84,7 +84,7 @@ export default async function WatchdogPage() {
             </div>
             <div>
               <h1 className="text-2xl font-bold">Contract Watchdog</h1>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-foreground">
                 Automated ToS & Privacy Policy change monitoring
               </p>
             </div>
@@ -105,7 +105,7 @@ export default async function WatchdogPage() {
                       </div>
                       <div>
                         <p className="text-2xl font-bold">{stat.value}</p>
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-xs text-foreground">
                           {stat.label}
                         </p>
                       </div>

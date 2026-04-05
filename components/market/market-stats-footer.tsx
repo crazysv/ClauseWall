@@ -28,7 +28,7 @@ export default function MarketStatsFooter({
         </span>
         <span>Last updated: {formattedDate}</span>
       </div>
-      <div className="flex items-center gap-1 text-[10px] text-foreground/20">
+      <div className="flex items-center gap-1 text-[10px] text-foreground">
         <Shield className="h-3 w-3" />
         All data is anonymized & aggregated. No individual contract data is
         exposed.

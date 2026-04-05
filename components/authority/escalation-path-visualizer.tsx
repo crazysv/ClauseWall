@@ -26,7 +26,7 @@ export default function EscalationPathVisualizer({
           <h3 className="font-black text-xl uppercase tracking-widest">
             Escalation Path
           </h3>
-          <p className="text-sm font-bold text-muted-foreground">
+          <p className="text-sm font-bold text-foreground">
             {label} — {path.total_steps} steps
           </p>
         </div>
@@ -44,7 +44,7 @@ export default function EscalationPathVisualizer({
       </div>
 
       {compact && path.steps.length > 3 && (
-        <p className="text-xs text-muted-foreground text-center mt-2">
+        <p className="text-xs text-foreground text-center mt-2">
           +{path.steps.length - 3} more steps...
         </p>
       )}

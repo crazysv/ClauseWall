@@ -62,7 +62,7 @@ export default function LegalAidChecker() {
               <h2 className="font-black text-2xl uppercase tracking-widest">
                 Free Legal Aid Checker
               </h2>
-              <p className="text-sm font-bold text-muted-foreground mt-1">
+              <p className="text-sm font-bold text-foreground mt-1">
                 Under the Legal Services Authorities Act 1987, eligible persons
                 can get FREE legal representation.
               </p>
@@ -165,9 +165,9 @@ export default function LegalAidChecker() {
             <CardContent className="p-6">
               <div className="flex items-center gap-3 mb-4">
                 {result.eligibility.is_eligible ? (
-                  <CheckCircle2 className="h-8 w-8 text-green-600 dark:text-green-400 stroke-[3px]" />
+                  <CheckCircle2 className="h-8 w-8 text-green-900 dark:text-green-100 font-bold dark:text-green-400 stroke-[3px]" />
                 ) : (
-                  <XCircle className="h-8 w-8 text-amber-600 dark:text-amber-400 stroke-[3px]" />
+                  <XCircle className="h-8 w-8 text-amber-900 dark:text-amber-100 font-bold dark:text-amber-400 stroke-[3px]" />
                 )}
                 <h3 className="font-black text-lg uppercase tracking-widest">
                   {result.eligibility.is_eligible
@@ -178,7 +178,7 @@ export default function LegalAidChecker() {
               {result.eligibility.reasons.map((r, i) => (
                 <p
                   key={i}
-                  className="text-sm font-bold text-muted-foreground mt-2 flex gap-2"
+                  className="text-sm font-bold text-foreground mt-2 flex gap-2"
                 >
                   <span className="text-pink-600 dark:text-pink-400 mt-1">
                     ▶
@@ -206,7 +206,7 @@ export default function LegalAidChecker() {
                         {p.name}
                       </p>
                       {p.description && (
-                        <p className="text-sm font-medium text-muted-foreground mt-1 mb-2">
+                        <p className="text-sm font-medium text-foreground mt-1 mb-2">
                           {p.description}
                         </p>
                       )}
@@ -246,7 +246,7 @@ export default function LegalAidChecker() {
                     <p className="font-bold text-base uppercase tracking-widest">
                       {h.name}
                     </p>
-                    <p className="text-sm font-black text-green-700 dark:text-green-400">
+                    <p className="text-sm font-black text-green-900 dark:text-green-100 font-bold dark:text-green-400">
                       {h.number} • {h.hours}
                     </p>
                   </div>

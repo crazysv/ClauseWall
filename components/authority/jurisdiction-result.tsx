@@ -95,7 +95,7 @@ export default function JurisdictionResultView({ result }: Props) {
                 className="card-impact bg-red-50 dark:bg-red-900/20 border-red-500 rounded-none"
               >
                 <CardContent className="p-4 flex items-start gap-4">
-                  <AlertTriangle className="h-6 w-6 text-red-600 dark:text-red-400 mt-1 flex-shrink-0 stroke-[3px]" />
+                  <AlertTriangle className="h-6 w-6 text-red-900 dark:text-red-100 font-bold dark:text-red-400 mt-1 flex-shrink-0 stroke-[3px]" />
                   <div>
                     <p className="text-base font-black uppercase tracking-widest text-red-800 dark:text-red-300">
                       {nt.authority_name}

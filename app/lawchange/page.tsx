@@ -28,7 +28,7 @@ export default function LawChangePage() {
             <h1 className="text-2xl sm:text-3xl font-bold">
               Law <span className="text-indigo-400">Monitor</span>
             </h1>
-            <p className="text-muted-foreground text-sm">
+            <p className="text-foreground text-sm">
               Track legal changes affecting your contracts in real-time
             </p>
           </div>

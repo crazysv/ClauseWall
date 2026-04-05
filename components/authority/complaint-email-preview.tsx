@@ -45,7 +45,7 @@ export default function ComplaintEmailPreview({
             <FileText className="h-5 w-5 text-blue-400" />
             <div>
               <h3 className="font-semibold text-sm">Complaint Draft</h3>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-foreground">
                 To: {draft.authority_name}
               </p>
             </div>
@@ -77,7 +77,7 @@ export default function ComplaintEmailPreview({
         </div>
 
         <div className="mb-3 p-2 rounded-none bg-white/[0.03] border border-foreground border-2">
-          <p className="text-xs text-muted-foreground">Subject:</p>
+          <p className="text-xs text-foreground">Subject:</p>
           <p className="text-sm font-medium">{draft.subject}</p>
         </div>
 
@@ -87,10 +87,10 @@ export default function ComplaintEmailPreview({
 
         {draft.attachments_needed.length > 0 && (
           <div className="mt-3">
-            <p className="text-xs font-medium text-muted-foreground mb-1">
+            <p className="text-xs font-medium text-foreground mb-1">
               📎 Attach these documents:
             </p>
-            <ul className="text-xs text-muted-foreground space-y-0.5">
+            <ul className="text-xs text-foreground space-y-0.5">
               {draft.attachments_needed.map((a, i) => (
                 <li key={i} className="flex items-start gap-1">
                   <span className="text-blue-400">•</span> {a}

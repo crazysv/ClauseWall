@@ -190,7 +190,7 @@ export default function VaultPage() {
               <h3 className="text-lg font-semibold text-red-400 mb-2">
                 Analysis Failed
               </h3>
-              <p className="text-sm text-white/40 max-w-md mb-6">{error}</p>
+              <p className="text-sm text-white max-w-md mb-6">{error}</p>
               <Button
                 onClick={resetToSelector}
                 variant="outline"

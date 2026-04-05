@@ -186,7 +186,7 @@ export default function ComparePage() {
               COMPARE CONTRACTS
             </h1>
           </div>
-          <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground w-full max-w-xl mx-auto border-t-2 border-black/10 pt-4">
+          <p className="text-sm font-bold uppercase tracking-widest text-foreground w-full max-w-xl mx-auto border-t-2 border-black/10 pt-4">
             UPLOAD TWO CONTRACTS SIDE-BY-SIDE. WE WILL COMPARE THEM
             CLAUSE-BY-CLAUSE AND TELL YOU WHICH ONE IS SAFER.
           </p>
@@ -244,11 +244,11 @@ export default function ComparePage() {
                       <input {...dropzoneA.getInputProps()} />
                       {fileA ? (
                         <div className="flex flex-col items-center gap-3">
-                          <FileText className="h-10 w-10 text-green-700" />
+                          <FileText className="h-10 w-10 text-green-900 dark:text-green-100 font-bold" />
                           <p className="text-base font-black uppercase tracking-tight truncate max-w-[200px]">
                             {fileA.name}
                           </p>
-                          <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">
+                          <p className="text-xs font-bold text-foreground uppercase tracking-widest">
                             CLICK TO CHANGE
                           </p>
                         </div>
@@ -266,7 +266,7 @@ export default function ComparePage() {
                       placeholder="PASTE CONTRACT A TEXT HERE..."
                       value={textA}
                       onChange={(e) => setTextA(e.target.value)}
-                      className="min-h-[250px] bg-white border-4 border-black text-black font-medium placeholder:font-black placeholder:uppercase placeholder:text-gray-400 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
+                      className="min-h-[250px] bg-white border-4 border-black text-black font-medium placeholder:font-black placeholder:uppercase placeholder:text-foreground rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
                     />
                   )}
                 </CardContent>
@@ -320,11 +320,11 @@ export default function ComparePage() {
                       <input {...dropzoneB.getInputProps()} />
                       {fileB ? (
                         <div className="flex flex-col items-center gap-3">
-                          <FileText className="h-10 w-10 text-green-700" />
+                          <FileText className="h-10 w-10 text-green-900 dark:text-green-100 font-bold" />
                           <p className="text-base font-black uppercase tracking-tight truncate max-w-[200px]">
                             {fileB.name}
                           </p>
-                          <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">
+                          <p className="text-xs font-bold text-foreground uppercase tracking-widest">
                             CLICK TO CHANGE
                           </p>
                         </div>
@@ -342,7 +342,7 @@ export default function ComparePage() {
                       placeholder="PASTE CONTRACT B TEXT HERE..."
                       value={textB}
                       onChange={(e) => setTextB(e.target.value)}
-                      className="min-h-[250px] bg-white border-4 border-black text-black font-medium placeholder:font-black placeholder:uppercase placeholder:text-gray-400 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
+                      className="min-h-[250px] bg-white border-4 border-black text-black font-medium placeholder:font-black placeholder:uppercase placeholder:text-foreground rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
                     />
                   )}
                 </CardContent>

@@ -135,7 +135,7 @@ export default function AuthoritySection({
           <h2 className="text-xl font-black uppercase tracking-widest">
             ⚖️ File Complaint
           </h2>
-          <p className="text-sm font-bold text-muted-foreground">
+          <p className="text-sm font-bold text-foreground">
             AI-powered jurisdiction routing for {entityName || "this entity"}
           </p>
         </div>
@@ -207,7 +207,7 @@ export default function AuthoritySection({
                   </Button>
                 </CardContent>
               </Card>
-              <div className="font-bold text-center text-muted-foreground p-4 border-4 border-black bg-white dark:bg-zinc-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+              <div className="font-bold text-center text-foreground p-4 border-4 border-black bg-white dark:bg-zinc-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                 <span className="uppercase tracking-widest">
                   📞 NALSA Helpline:
                 </span>{" "}

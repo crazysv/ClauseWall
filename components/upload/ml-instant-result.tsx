@@ -155,7 +155,7 @@ export default function MLInstantResult({
               >
                 {animatedScore}
               </span>
-              <span className="text-3xl font-bold text-muted-foreground">
+              <span className="text-3xl font-bold text-foreground">
                 /100
               </span>
             </div>
@@ -167,7 +167,7 @@ export default function MLInstantResult({
             </p>
 
             {/* Quick Stats Row */}
-            <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
+            <div className="flex items-center justify-center gap-4 text-xs text-foreground">
               <span className="flex items-center gap-1">
                 <Brain className="h-3 w-3 text-amber-400" />
                 {result.totalClauses} clauses
@@ -228,7 +228,7 @@ export default function MLInstantResult({
               )}
             </div>
 
-            <div className="flex justify-between text-xs text-muted-foreground">
+            <div className="flex justify-between text-xs text-foreground">
               <span className="flex items-center gap-1">
                 <span className="w-2 h-2 rounded-full bg-green-500" />
                 Safe: {result.riskBreakdown.safe}
@@ -262,9 +262,9 @@ export default function MLInstantResult({
               Clause-by-Clause Preview ({result.totalClauses})
             </span>
             {showClauses ? (
-              <ChevronUp className="h-4 w-4 text-muted-foreground" />
+              <ChevronUp className="h-4 w-4 text-foreground" />
             ) : (
-              <ChevronDown className="h-4 w-4 text-muted-foreground" />
+              <ChevronDown className="h-4 w-4 text-foreground" />
             )}
           </button>
 
@@ -299,7 +299,7 @@ export default function MLInstantResult({
                             >
                               {config.label}
                             </Badge>
-                            <span className="text-[10px] font-black uppercase tracking-wider text-muted-foreground">
+                            <span className="text-[10px] font-black uppercase tracking-wider text-foreground">
                               {confPercent}% confident
                             </span>
                             {clause.confidence < 0.65 && (
@@ -308,7 +308,7 @@ export default function MLInstantResult({
                               </span>
                             )}
                           </div>
-                          <p className="text-sm font-bold text-muted-foreground leading-relaxed truncate">
+                          <p className="text-sm font-bold text-foreground leading-relaxed truncate">
                             {clause.truncatedText}
                           </p>
                         </div>
@@ -323,7 +323,7 @@ export default function MLInstantResult({
       </Card>
 
       {/* Privacy + Tech Badge */}
-      <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
+      <div className="flex items-center justify-center gap-4 text-xs text-foreground">
         <span className="flex items-center gap-1">
           <Lock className="h-3 w-3 text-green-400" />
           No data left your device
@@ -355,7 +355,7 @@ export default function MLInstantResult({
                     <p className="text-sm font-medium">
                       Running detailed AI scan...
                     </p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-foreground">
                       Verifying against 750+ Indian legal rules. This takes 3-5
                       seconds.
                     </p>
@@ -407,7 +407,7 @@ export default function MLInstantResult({
                   <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
 
-                <p className="text-xs text-muted-foreground text-center mt-3">
+                <p className="text-xs text-foreground text-center mt-3">
                   Includes legal citations • Negotiation scripts • Fair
                   alternatives • Penalty info
                 </p>

@@ -133,7 +133,7 @@ export default function ProposeActionModal({
             </h3>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-foreground/30 hover:text-foreground/60 hover:bg-muted"
+              className="p-1.5 rounded-lg text-foreground hover:text-foreground hover:bg-muted"
             >
               <X className="h-4 w-4" />
             </button>
@@ -142,7 +142,7 @@ export default function ProposeActionModal({
           <div className="p-5 space-y-4">
             {/* Action type selection */}
             <div>
-              <label className="text-xs text-foreground/40 mb-2 block">
+              <label className="text-xs text-foreground mb-2 block">
                 Action Type
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -156,7 +156,7 @@ export default function ProposeActionModal({
                       className={
                         selectedType === at.type
                           ? "text-amber-400"
-                          : "text-white/30"
+                          : "text-white"
                       }
                     >
                       {at.icon}
@@ -165,7 +165,7 @@ export default function ProposeActionModal({
                       <p className="text-[11px] font-medium text-foreground">
                         {at.label}
                       </p>
-                      <p className="text-[9px] text-foreground/30">
+                      <p className="text-[9px] text-foreground">
                         {at.description}
                       </p>
                     </div>
@@ -176,7 +176,7 @@ export default function ProposeActionModal({
 
             {/* Title */}
             <div>
-              <label className="text-xs text-foreground/40 mb-1.5 block">
+              <label className="text-xs text-foreground mb-1.5 block">
                 Title
               </label>
               <input
@@ -184,14 +184,14 @@ export default function ProposeActionModal({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g., Demand refund for delayed possession"
-                className="w-full px-3 py-2 text-xs bg-white/[0.03] border border-foreground border-2 rounded-lg text-foreground placeholder:text-foreground/20 focus:outline-none focus:border-amber-500/30"
+                className="w-full px-3 py-2 text-xs bg-white/[0.03] border border-foreground border-2 rounded-lg text-foreground placeholder:text-foreground focus:outline-none focus:border-amber-500/30"
                 maxLength={200}
               />
             </div>
 
             {/* Description */}
             <div>
-              <label className="text-xs text-foreground/40 mb-1.5 block">
+              <label className="text-xs text-foreground mb-1.5 block">
                 Description (optional)
               </label>
               <textarea
@@ -199,7 +199,7 @@ export default function ProposeActionModal({
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Explain why this action is needed and what you hope to achieve..."
                 rows={3}
-                className="w-full px-3 py-2 text-xs bg-white/[0.03] border border-foreground border-2 rounded-lg text-foreground placeholder:text-foreground/20 focus:outline-none focus:border-amber-500/30 resize-none"
+                className="w-full px-3 py-2 text-xs bg-white/[0.03] border border-foreground border-2 rounded-lg text-foreground placeholder:text-foreground focus:outline-none focus:border-amber-500/30 resize-none"
                 maxLength={1000}
               />
             </div>

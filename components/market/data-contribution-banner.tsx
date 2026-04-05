@@ -47,13 +47,13 @@ export default function DataContributionBanner({
               Your analysis contributed to{" "}
               <span className="font-semibold text-cyan-400">{location}</span>{" "}
               benchmarks.{" "}
-              <span className="text-foreground/50">
+              <span className="text-foreground">
                 You&apos;re helping{" "}
                 <span className="text-foreground/70">{userCount}</span> other
                 users get fairer contracts. 🙏
               </span>
             </p>
-            <div className="flex items-center gap-1 mt-1.5 text-[10px] text-foreground/30">
+            <div className="flex items-center gap-1 mt-1.5 text-[10px] text-foreground">
               <TrendingUp className="h-3 w-3" />
               All data is anonymized — individual contract details are never
               shared.
@@ -63,7 +63,7 @@ export default function DataContributionBanner({
           {/* Dismiss */}
           <button
             onClick={handleDismiss}
-            className="flex-shrink-0 text-foreground/20 hover:text-foreground/50 transition-colors"
+            className="flex-shrink-0 text-foreground hover:text-foreground transition-colors"
             aria-label="Dismiss"
           >
             <X className="h-4 w-4" />

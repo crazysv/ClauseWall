@@ -106,7 +106,7 @@ function getVerdictStyle(verdict: string) {
       };
     default:
       return {
-        color: "text-muted-foreground",
+        color: "text-foreground",
         bg: "bg-background border-muted-foreground border-2",
         glow: "",
       };
@@ -238,13 +238,13 @@ function CategoryRow({
       </div>
 
       {/* Description */}
-      <p className="text-xs font-bold text-muted-foreground leading-relaxed">
+      <p className="text-xs font-bold text-foreground leading-relaxed">
         {category.description}
       </p>
 
       {/* Key Clause Reference */}
       {category.key_clause && (
-        <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground italic">
+        <p className="text-[10px] font-black uppercase tracking-wider text-foreground italic">
           Driven by: {category.key_clause}
         </p>
       )}
@@ -288,7 +288,7 @@ export default function PowerBalanceMeter({
           {/* Party Labels + Percentages */}
           <div className="flex items-end justify-between">
             <div className="text-left">
-              <p className="text-xs font-black uppercase tracking-wider text-muted-foreground mb-0.5">
+              <p className="text-xs font-black uppercase tracking-wider text-foreground mb-0.5">
                 {powerBalance.party_a_role}
               </p>
               <p className="text-sm font-bold text-foreground truncate max-w-[140px] sm:max-w-[200px]">
@@ -307,13 +307,13 @@ export default function PowerBalanceMeter({
               transition={{ duration: 0.5, delay: 1.5 }}
               className="text-center px-3"
             >
-              <span className="text-xs font-black uppercase tracking-wider text-muted-foreground">
+              <span className="text-xs font-black uppercase tracking-wider text-foreground">
                 vs
               </span>
             </motion.div>
 
             <div className="text-right">
-              <p className="text-xs font-black uppercase tracking-wider text-muted-foreground mb-0.5">
+              <p className="text-xs font-black uppercase tracking-wider text-foreground mb-0.5">
                 {powerBalance.party_b_role}
               </p>
               <p className="text-sm font-bold text-foreground truncate max-w-[140px] sm:max-w-[200px]">
@@ -334,7 +334,7 @@ export default function PowerBalanceMeter({
           />
 
           {/* Color Legend */}
-          <div className="flex justify-between text-[10px] font-black uppercase tracking-wider text-muted-foreground">
+          <div className="flex justify-between text-[10px] font-black uppercase tracking-wider text-foreground">
             <div className="flex items-center gap-1">
               <div className="w-2 h-2 rounded-full bg-red-600" />
               <span>Entity Power</span>
@@ -362,7 +362,7 @@ export default function PowerBalanceMeter({
             {powerBalance.verdict_description}
           </p>
           <div className="flex items-center gap-2 mt-2">
-            <span className="text-xs font-black uppercase tracking-wider text-muted-foreground">
+            <span className="text-xs font-black uppercase tracking-wider text-foreground">
               Fairness Score:
             </span>
             <div className="flex-1 h-3 border-2 border-foreground bg-muted overflow-hidden max-w-[120px]">
@@ -417,7 +417,7 @@ export default function PowerBalanceMeter({
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 0.5 } : { opacity: 0 }}
           transition={{ delay: 3 }}
-          className="text-[10px] font-bold text-center text-muted-foreground uppercase tracking-wider pt-2 border-t-2 border-foreground"
+          className="text-[10px] font-bold text-center text-foreground uppercase tracking-wider pt-2 border-t-2 border-foreground"
         >
           A fair contract distributes power equally (50/50). Imbalance above
           65/35 is concerning.

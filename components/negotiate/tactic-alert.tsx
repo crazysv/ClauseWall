@@ -40,13 +40,13 @@ export default function TacticAlert({
           )}
           <div>
             <p
-              className={`text-sm font-black uppercase tracking-widest ${isBluff ? "text-red-700" : "text-yellow-700"}`}
+              className={`text-sm font-black uppercase tracking-widest ${isBluff ? "text-red-700" : "text-yellow-900 dark:text-yellow-100 font-bold"}`}
             >
               {isBluff
                 ? "⚡ BLUFF DETECTED"
                 : `⚠️ ${tacticData?.name || "Tactic Detected"}`}
             </p>
-            <p className="text-[10px] font-bold uppercase tracking-wider text-black/60 mt-0.5">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-foreground mt-0.5">
               {tactic.confidence} confidence
             </p>
           </div>
@@ -62,7 +62,7 @@ export default function TacticAlert({
       {/* Matched phrase */}
       {expanded && (
         <div className="px-4 pb-4">
-          <p className="text-[10px] font-black uppercase tracking-wider text-black/50 mb-1">
+          <p className="text-[10px] font-black uppercase tracking-wider text-foreground mb-1">
             Detected:
           </p>
           <p className="text-sm font-bold text-black italic leading-relaxed">
@@ -135,7 +135,7 @@ export default function TacticAlert({
       {/* Expand/Collapse toggle */}
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full py-3 text-[10px] font-bold uppercase tracking-widest text-black/50 hover:text-black hover:bg-muted border-t-2 border-black/10 transition-colors"
+        className="w-full py-3 text-[10px] font-bold uppercase tracking-widest text-foreground hover:text-black hover:bg-muted border-t-2 border-black/10 transition-colors"
       >
         {expanded ? "▲ COLLAPSE" : "▼ SHOW DETAILS"}
       </button>

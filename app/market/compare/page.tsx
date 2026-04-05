@@ -66,7 +66,7 @@ export default function ComparePage() {
         >
           <Link
             href="/market"
-            className="text-xs text-foreground/30 hover:text-foreground/50 mb-3 flex items-center gap-1"
+            className="text-xs text-foreground hover:text-foreground mb-3 flex items-center gap-1"
           >
             <ArrowLeft className="h-3 w-3" /> Back to Market Dashboard
           </Link>
@@ -76,7 +76,7 @@ export default function ComparePage() {
             </div>
             <div>
               <h1 className="text-2xl font-bold">Compare Your Contract</h1>
-              <p className="text-sm text-foreground/50">
+              <p className="text-sm text-foreground">
                 Enter your analyzed document ID to compare against market
                 benchmarks
               </p>
@@ -87,7 +87,7 @@ export default function ComparePage() {
         {/* Input */}
         <Card className="bg-background/50 border-foreground border-2 mb-6">
           <CardContent className="p-5">
-            <label className="text-xs text-foreground/40 mb-2 block">
+            <label className="text-xs text-foreground mb-2 block">
               Document ID
             </label>
             <div className="flex gap-2">
@@ -112,7 +112,7 @@ export default function ComparePage() {
               </button>
             </div>
             {error && <p className="text-xs text-red-400 mt-2">{error}</p>}
-            <p className="text-[10px] text-foreground/20 mt-2">
+            <p className="text-[10px] text-foreground mt-2">
               💡 Tip: You can find your document ID in the URL of any analysis
               result page.
             </p>
@@ -164,7 +164,7 @@ export default function ComparePage() {
                         <p className="text-sm font-bold text-foreground">
                           {ctx.comparison.chart_data.user_value} {unit}
                         </p>
-                        <p className="text-[10px] text-foreground/30">
+                        <p className="text-[10px] text-foreground">
                           Your Value
                         </p>
                       </div>
@@ -172,18 +172,18 @@ export default function ComparePage() {
                         <p className="text-sm font-bold text-amber-400">
                           {ctx.comparison.chart_data.median} {unit}
                         </p>
-                        <p className="text-[10px] text-foreground/30">Median</p>
+                        <p className="text-[10px] text-foreground">Median</p>
                       </div>
                       <div className="text-center p-1.5 rounded bg-white/[0.03]">
-                        <p className="text-sm font-bold text-foreground/50">
+                        <p className="text-sm font-bold text-foreground">
                           {ctx.benchmark.sample_count}
                         </p>
-                        <p className="text-[10px] text-foreground/30">
+                        <p className="text-[10px] text-foreground">
                           Samples
                         </p>
                       </div>
                     </div>
-                    <p className="text-[10px] text-foreground/40">
+                    <p className="text-[10px] text-foreground">
                       {ctx.comparison.narrative}
                     </p>
                   </CardContent>
@@ -194,7 +194,7 @@ export default function ComparePage() {
         )}
 
         {comparisons.length > 0 && comparableItems.length === 0 && (
-          <div className="text-center py-12 text-foreground/30">
+          <div className="text-center py-12 text-foreground">
             <BarChart3 className="h-10 w-10 mx-auto mb-3 opacity-20" />
             <p className="text-sm">
               No comparable market data found for this document&apos;s clauses.

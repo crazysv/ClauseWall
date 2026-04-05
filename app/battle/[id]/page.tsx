@@ -154,7 +154,7 @@ export default function BattlePage() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6">
         <Loader2 className="h-16 w-16 text-black animate-spin" />
-        <p className="text-sm font-black uppercase tracking-widest text-muted-foreground">
+        <p className="text-sm font-black uppercase tracking-widest text-foreground">
           Loading battle data...
         </p>
       </div>
@@ -184,7 +184,7 @@ export default function BattlePage() {
       <div className="px-4 sm:px-6 lg:px-8 py-8 max-w-3xl mx-auto">
         <Link
           href={`/results/${documentId}`}
-          className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest text-muted-foreground hover:text-black mb-8 transition-all hover:-translate-x-1"
+          className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest text-foreground hover:text-black mb-8 transition-all hover:-translate-x-1"
         >
           <ArrowLeft className="h-4 w-4" /> Back to Results
         </Link>
@@ -194,7 +194,7 @@ export default function BattlePage() {
             <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-4">
               NOT ENOUGH DATA YET
             </h2>
-            <p className="text-sm font-bold text-muted-foreground leading-relaxed max-w-md mx-auto mb-6">
+            <p className="text-sm font-bold text-foreground leading-relaxed max-w-md mx-auto mb-6">
               We need at least 10 analyzed{" "}
               <span className="text-black uppercase">
                 {getDocumentTypeLabel(doc.document_type).toLowerCase()}
@@ -240,7 +240,7 @@ export default function BattlePage() {
       {/* Back link */}
       <Link
         href={`/results/${documentId}`}
-        className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest text-muted-foreground hover:text-black mb-8 transition-all hover:-translate-x-1"
+        className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest text-foreground hover:text-black mb-8 transition-all hover:-translate-x-1"
       >
         <ArrowLeft className="h-4 w-4" /> Back to Results
       </Link>
@@ -255,7 +255,7 @@ export default function BattlePage() {
             Contract Battle
           </h1>
         </div>
-        <p className="text-muted-foreground font-bold uppercase tracking-widest">
+        <p className="text-foreground font-bold uppercase tracking-widest">
           Your{" "}
           <span className="text-black">
             {getDocumentTypeLabel(doc.document_type)}
@@ -282,7 +282,7 @@ export default function BattlePage() {
                 ? "bg-purple-600 border-black text-white"
                 : stateScope?.available
                   ? "bg-white border-black text-black hover:bg-gray-100"
-                  : "bg-gray-100 border-gray-300 text-gray-400 cursor-not-allowed shadow-none"
+                  : "bg-gray-100 border-gray-300 text-foreground cursor-not-allowed shadow-none"
             }`}
           >
             🏠 {stateScope?.label || "State"}{" "}
@@ -298,7 +298,7 @@ export default function BattlePage() {
                 ? "bg-purple-600 border-black text-white"
                 : indiaScope?.available
                   ? "bg-white border-black text-black hover:bg-gray-100"
-                  : "bg-gray-100 border-gray-300 text-gray-400 cursor-not-allowed shadow-none"
+                  : "bg-gray-100 border-gray-300 text-foreground cursor-not-allowed shadow-none"
             }`}
           >
             🇮🇳 ALL INDIA{" "}
@@ -320,7 +320,7 @@ export default function BattlePage() {
       {battleLoading && (
         <div className="flex flex-col items-center justify-center py-20 gap-6">
           <Loader2 className="h-16 w-16 text-black animate-spin" />
-          <p className="text-sm font-black uppercase tracking-widest text-muted-foreground">
+          <p className="text-sm font-black uppercase tracking-widest text-foreground">
             Calculating comparisons...
           </p>
         </div>
@@ -380,7 +380,7 @@ export default function BattlePage() {
                         HARSHER THAN {activeData.overallPercentile}%
                       </span>
                     </p>
-                    <p className="text-sm font-bold text-muted-foreground mb-4 leading-relaxed">
+                    <p className="text-sm font-bold text-foreground mb-4 leading-relaxed">
                       of {getDocumentTypeLabel(doc.document_type).toLowerCase()}{" "}
                       agreements{" "}
                       <span className="text-black uppercase">
@@ -462,7 +462,7 @@ export default function BattlePage() {
               {hasValueComparisons && (
                 <div className="flex items-center gap-4 my-10">
                   <div className="h-0.5 bg-black/10 flex-1" />
-                  <span className="text-sm font-black uppercase tracking-widest text-black/50">
+                  <span className="text-sm font-black uppercase tracking-widest text-foreground">
                     Risk Score Matchups
                   </span>
                   <div className="h-0.5 bg-black/10 flex-1" />
@@ -499,7 +499,7 @@ export default function BattlePage() {
             >
               <Card className="border-2 border-black rounded-none bg-blue-50 shadow-[8px_8px_0px_0px_rgba(30,58,138,1)] mt-12 mb-8">
                 <CardContent className="p-8">
-                  <h3 className="font-black uppercase tracking-widest text-blue-900 mb-6 flex items-center gap-3 border-b-2 border-blue-200 pb-4">
+                  <h3 className="font-black uppercase tracking-widest text-blue-900 dark:text-blue-100 font-bold mb-6 flex items-center gap-3 border-b-2 border-blue-200 pb-4">
                     <Info className="h-6 w-6" />
                     KEY INSIGHTS
                   </h3>
@@ -616,7 +616,7 @@ function ComparisonCard({
 
           {/* Average */}
           <div className="flex items-center gap-4">
-            <span className="text-xs font-black uppercase tracking-widest text-muted-foreground w-24 flex-shrink-0">
+            <span className="text-xs font-black uppercase tracking-widest text-foreground w-24 flex-shrink-0">
               MARKET APG
             </span>
             <div className="flex-1 h-8 bg-gray-100 border-2 border-gray-400 border-dashed rounded-none relative opacity-70">
@@ -626,7 +626,7 @@ function ComparisonCard({
                 animate={{ width: `${Math.max(comp.avgValue * scale, 1)}%` }}
                 transition={{ duration: 0.8, ease: "easeOut", delay: 0.35 }}
               />
-              <span className="absolute -right-2 top-1/2 -translate-y-1/2 translate-x-full text-sm font-bold text-gray-500">
+              <span className="absolute -right-2 top-1/2 -translate-y-1/2 translate-x-full text-sm font-bold text-foreground">
                 {comp.avgValue} {comp.avgUnit}
               </span>
             </div>
@@ -651,7 +651,7 @@ function ComparisonCard({
                       "repeating-linear-gradient(45deg, #166534 0px, #166534 2px, transparent 2px, transparent 6px)",
                   }}
                 />
-                <span className="absolute -right-2 top-1/2 -translate-y-1/2 translate-x-full text-sm font-black text-green-700">
+                <span className="absolute -right-2 top-1/2 -translate-y-1/2 translate-x-full text-sm font-black text-green-900 dark:text-green-100 font-bold">
                   {comp.legalLimit} {comp.legalUnit || comp.yourUnit}
                 </span>
               </div>
@@ -670,7 +670,7 @@ function ComparisonCard({
             </span>
             {comp.insight}
             {comp.statuteCode && (
-              <span className="text-gray-500 ml-2 font-black text-xs uppercase tracking-widest border-2 border-gray-300 px-2 py-0.5 rounded-none inline-block mt-2 sm:mt-0">
+              <span className="text-foreground ml-2 font-black text-xs uppercase tracking-widest border-2 border-gray-300 px-2 py-0.5 rounded-none inline-block mt-2 sm:mt-0">
                 — {comp.statuteCode}
               </span>
             )}
@@ -735,7 +735,7 @@ function ScoreComparisonCard({
           </div>
 
           <div className="flex items-center gap-4">
-            <span className="text-[11px] font-black uppercase tracking-widest text-muted-foreground w-16 flex-shrink-0">
+            <span className="text-[11px] font-black uppercase tracking-widest text-foreground w-16 flex-shrink-0">
               MARKET
             </span>
             <div className="flex-1 h-6 bg-gray-100 border-2 border-gray-400 border-dashed relative opacity-70">
@@ -745,7 +745,7 @@ function ScoreComparisonCard({
                 animate={{ width: `${(comp.avgScore / maxScore) * 100}%` }}
                 transition={{ duration: 0.7, delay: 0.35 }}
               />
-              <span className="absolute -right-2 top-1/2 -translate-y-1/2 translate-x-full text-[11px] font-bold text-gray-500">
+              <span className="absolute -right-2 top-1/2 -translate-y-1/2 translate-x-full text-[11px] font-bold text-foreground">
                 {comp.avgScore}
               </span>
             </div>
@@ -756,11 +756,11 @@ function ScoreComparisonCard({
           className="text-sm font-bold mt-6 leading-relaxed bg-gray-50 border-2 border-black/10 p-3"
           style={{ color: severity.text }}
         >
-          <span className="font-black uppercase tracking-widest text-black/50 mr-2">
+          <span className="font-black uppercase tracking-widest text-foreground mr-2">
             INSIGHT:
           </span>
           {comp.insight}{" "}
-          <span className="text-xs text-black/40 font-black tracking-widest uppercase ml-2">
+          <span className="text-xs text-foreground font-black tracking-widest uppercase ml-2">
             ({comp.sampleCount} SAMPLES)
           </span>
         </p>

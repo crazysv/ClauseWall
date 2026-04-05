@@ -17,11 +17,11 @@ interface Props {
 }
 
 const TYPE_COLORS: Record<string, string> = {
-  government: "bg-blue-500/10 text-blue-400 border-blue-500/20",
-  ngo: "bg-green-500/10 text-green-400 border-green-500/20",
-  legal_aid: "bg-purple-500/10 text-purple-400 border-purple-500/20",
-  consumer_forum: "bg-amber-500/10 text-amber-400 border-amber-500/20",
-  rights_org: "bg-pink-500/10 text-pink-400 border-pink-500/20",
+  government: "bg-blue-500/10 text-blue-800 dark:text-blue-100 font-bold border-blue-500/20",
+  ngo: "bg-green-500/10 text-green-800 dark:text-green-100 font-bold border-green-500/20",
+  legal_aid: "bg-purple-500/10 text-purple-800 dark:text-purple-100 font-bold border-purple-500/20",
+  consumer_forum: "bg-amber-500/10 text-amber-800 dark:text-amber-100 font-bold border-amber-500/20",
+  rights_org: "bg-pink-500/10 text-pink-800 dark:text-pink-100 font-bold border-pink-500/20",
 };
 
 export default function LegalAidCard({ org }: Props) {
@@ -36,7 +36,7 @@ export default function LegalAidCard({ org }: Props) {
                 {org.type.replace("_", " ")}
               </Badge>
               {org.free_service && (
-                <Badge className="text-[9px] bg-green-500/10 text-green-400 border-green-500/20">
+                <Badge className="text-[9px] bg-green-500/10 text-green-800 dark:text-green-100 font-bold border-green-500/20">
                   <CheckCircle2 className="h-2.5 w-2.5 mr-1" />
                   Free
                 </Badge>
@@ -44,7 +44,7 @@ export default function LegalAidCard({ org }: Props) {
             </div>
           </div>
           {org.coverage && (
-            <span className="text-[10px] text-foreground/30 flex items-center gap-1">
+            <span className="text-[10px] text-foreground flex items-center gap-1">
               <MapPin className="h-3 w-3" />
               {org.coverage}
             </span>
@@ -52,7 +52,7 @@ export default function LegalAidCard({ org }: Props) {
         </div>
 
         {org.description && (
-          <p className="text-[11px] text-foreground/40 mb-3 line-clamp-2">
+          <p className="text-[11px] text-foreground mb-3 line-clamp-2">
             {org.description}
           </p>
         )}
@@ -63,13 +63,13 @@ export default function LegalAidCard({ org }: Props) {
             {org.services.slice(0, 4).map((service, i) => (
               <span
                 key={i}
-                className="text-[9px] px-1.5 py-0.5 rounded bg-white/[0.03] text-foreground/30"
+                className="text-[9px] px-1.5 py-0.5 rounded bg-white/[0.03] text-foreground"
               >
                 {service}
               </span>
             ))}
             {org.services.length > 4 && (
-              <span className="text-[9px] text-foreground/20">
+              <span className="text-[9px] text-foreground">
                 +{org.services.length - 4} more
               </span>
             )}
@@ -111,7 +111,7 @@ export default function LegalAidCard({ org }: Props) {
         </div>
 
         {org.eligibility && (
-          <p className="text-[9px] text-foreground/20 mt-2 italic">
+          <p className="text-[9px] text-foreground mt-2 italic">
             Eligibility: {org.eligibility}
           </p>
         )}

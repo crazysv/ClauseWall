@@ -210,10 +210,10 @@ export default function QRSection({ document: doc }: QRSectionProps) {
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium flex items-center gap-2">
-          <Icon className="h-3.5 w-3.5 text-muted-foreground" />
+          <Icon className="h-3.5 w-3.5 text-foreground" />
           {label}
         </p>
-        <p className="text-xs text-muted-foreground mt-0.5">{description}</p>
+        <p className="text-xs text-foreground mt-0.5">{description}</p>
       </div>
     </button>
   );
@@ -233,7 +233,7 @@ export default function QRSection({ document: doc }: QRSectionProps) {
             <h3 className="text-lg font-black uppercase tracking-wider mb-2 text-foreground">
               Scan Before You Sign
             </h3>
-            <p className="text-sm font-bold text-muted-foreground max-w-md mx-auto mb-6">
+            <p className="text-sm font-bold text-foreground max-w-md mx-auto mb-6">
               Generate a QR verification badge for this contract. Share it with
               the other party to build trust before signing.
             </p>
@@ -255,7 +255,7 @@ export default function QRSection({ document: doc }: QRSectionProps) {
                 <Settings2 className="h-5 w-5 text-foreground" />
                 Badge Privacy Settings
               </DialogTitle>
-              <DialogDescription className="font-bold text-muted-foreground uppercase tracking-wider text-xs mt-2">
+              <DialogDescription className="font-bold text-foreground uppercase tracking-wider text-xs mt-2">
                 Choose what information is visible when someone scans the QR
                 code.
               </DialogDescription>
@@ -354,7 +354,7 @@ export default function QRSection({ document: doc }: QRSectionProps) {
             </h3>
             <button
               onClick={() => setShowSettings(true)}
-              className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors p-1"
+              className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-foreground hover:text-foreground transition-colors p-1"
             >
               <Settings2 className="h-3.5 w-3.5" />
               Settings
@@ -374,7 +374,7 @@ export default function QRSection({ document: doc }: QRSectionProps) {
                   includeMargin={false}
                 />
               </div>
-              <p className="text-xs font-bold text-muted-foreground text-center">
+              <p className="text-xs font-bold text-foreground text-center">
                 Scan with any phone camera
               </p>
             </div>
@@ -391,25 +391,25 @@ export default function QRSection({ document: doc }: QRSectionProps) {
                 </span>
               </div>
 
-              <p className="text-sm font-bold text-muted-foreground mb-4">
+              <p className="text-sm font-bold text-foreground mb-4">
                 {tierConfig.description}
               </p>
 
               <div className="space-y-2 text-sm">
-                <div className="flex items-center gap-2 text-muted-foreground">
+                <div className="flex items-center gap-2 text-foreground">
                   <span>📋</span>
                   <span>{getDocumentTypeLabel(doc.document_type)}</span>
                 </div>
-                <div className="flex items-center gap-2 text-muted-foreground">
+                <div className="flex items-center gap-2 text-foreground">
                   <span>📍</span>
                   <span>{getStateName(doc.jurisdiction)}</span>
                 </div>
-                <div className="flex items-center gap-2 text-muted-foreground">
+                <div className="flex items-center gap-2 text-foreground">
                   <span>📅</span>
                   <span>Verified: {formattedDate}</span>
                 </div>
                 {doc.share_count > 0 && (
-                  <div className="flex items-center gap-2 text-muted-foreground">
+                  <div className="flex items-center gap-2 text-foreground">
                     <Users className="h-3.5 w-3.5" />
                     <span>Scanned {doc.share_count} times</span>
                   </div>
@@ -423,7 +423,7 @@ export default function QRSection({ document: doc }: QRSectionProps) {
                 </code>
                 <button
                   onClick={copyLink}
-                  className="flex-shrink-0 text-muted-foreground hover:text-foreground transition-colors"
+                  className="flex-shrink-0 text-foreground hover:text-foreground transition-colors"
                 >
                   {copied ? (
                     <Check className="h-4 w-4 text-green-400" />
@@ -491,7 +491,7 @@ export default function QRSection({ document: doc }: QRSectionProps) {
             {!settings.show_entity &&
               !settings.show_summary &&
               !settings.allow_full_analysis && (
-                <span className="text-[10px] px-2 py-0.5 font-bold uppercase tracking-wider bg-muted text-muted-foreground border-2 border-foreground card-impact">
+                <span className="text-[10px] px-2 py-0.5 font-bold uppercase tracking-wider bg-muted text-foreground border-2 border-foreground card-impact">
                   Summary only — maximum privacy
                 </span>
               )}
@@ -656,7 +656,7 @@ export default function QRSection({ document: doc }: QRSectionProps) {
               <Settings2 className="h-5 w-5 text-foreground" />
               Update Badge Settings
             </DialogTitle>
-            <DialogDescription className="font-bold text-muted-foreground uppercase tracking-wider text-xs mt-2">
+            <DialogDescription className="font-bold text-foreground uppercase tracking-wider text-xs mt-2">
               Change what information is visible when someone scans the QR code.
             </DialogDescription>
           </DialogHeader>
@@ -761,10 +761,10 @@ function SettingsToggle({
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-black uppercase tracking-wider text-foreground flex items-center gap-2">
-          <Icon className="h-3.5 w-3.5 text-muted-foreground" />
+          <Icon className="h-3.5 w-3.5 text-foreground" />
           {label}
         </p>
-        <p className="text-xs font-bold text-muted-foreground mt-0.5">
+        <p className="text-xs font-bold text-foreground mt-0.5">
           {description}
         </p>
       </div>

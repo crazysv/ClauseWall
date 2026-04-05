@@ -34,7 +34,7 @@ export default function CityBreakdownChart({
 
   if (chartData.length === 0) {
     return (
-      <div className="h-[120px] flex items-center justify-center text-sm text-white/30">
+      <div className="h-[120px] flex items-center justify-center text-sm text-white">
         No city data available
       </div>
     );

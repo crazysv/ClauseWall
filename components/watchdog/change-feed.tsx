@@ -39,7 +39,7 @@ export default function ChangeFeed({
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-12 gap-3 text-muted-foreground">
+      <div className="flex items-center justify-center py-12 gap-3 text-foreground">
         <Loader2 className="h-5 w-5 animate-spin" />
         Loading changes...
       </div>
@@ -49,9 +49,9 @@ export default function ChangeFeed({
   if (changes.length === 0) {
     return (
       <div className="text-center py-12">
-        <Newspaper className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
-        <p className="text-muted-foreground">No changes detected yet.</p>
-        <p className="text-sm text-muted-foreground mt-1">
+        <Newspaper className="h-10 w-10 text-foreground mx-auto mb-3" />
+        <p className="text-foreground">No changes detected yet.</p>
+        <p className="text-sm text-foreground mt-1">
           Changes will appear here once ToS pages are scraped.
         </p>
       </div>

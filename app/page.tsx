@@ -57,7 +57,7 @@ export default function HomePage() {
             Before Signing
           </h1>
 
-          <p className="animate-fade-in-up stagger-2 mt-6 text-xl md:text-2xl text-muted-foreground font-medium max-w-2xl mx-auto leading-relaxed">
+          <p className="animate-fade-in-up stagger-2 mt-6 text-xl md:text-2xl text-foreground font-medium max-w-2xl mx-auto leading-relaxed">
             India&apos;s first AI contract analyzer. ClauseWall finds clauses{" "}
             <span className="text-primary font-bold">designed to trap you</span>
             , cites the{" "}
@@ -87,7 +87,7 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="animate-fade-in-up stagger-4 mt-12 flex flex-wrap items-center justify-center gap-6 text-sm font-semibold text-muted-foreground">
+          <div className="animate-fade-in-up stagger-4 mt-12 flex flex-wrap items-center justify-center gap-6 text-sm font-semibold text-foreground">
             <div className="flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4 text-primary" />
               <span>
@@ -137,7 +137,7 @@ export default function HomePage() {
                     NEW
                   </Badge>
                 </div>
-                <p className="text-muted-foreground text-sm font-bold mt-2">
+                <p className="text-foreground text-sm font-bold mt-2">
                   Automatically scan Terms of Service on any website. Visit
                   Spotify, Uber, or any app&apos;s legal page — ClauseWall
                   highlights dangerous clauses in real-time.
@@ -174,7 +174,7 @@ export default function HomePage() {
                 <div className="text-primary text-5xl font-black tabular-nums">
                   73
                 </div>
-                <div className="text-sm font-black text-muted-foreground uppercase tracking-wider mt-2">
+                <div className="text-sm font-black text-foreground uppercase tracking-wider mt-2">
                   Overall Risk Score
                 </div>
               </div>
@@ -182,7 +182,7 @@ export default function HomePage() {
                 <div className="text-foreground text-5xl font-black tabular-nums">
                   12
                 </div>
-                <div className="text-sm font-black text-muted-foreground uppercase tracking-wider mt-2">
+                <div className="text-sm font-black text-foreground uppercase tracking-wider mt-2">
                   Clauses Analyzed
                 </div>
               </div>
@@ -190,7 +190,7 @@ export default function HomePage() {
                 <div className="text-purple-600 text-5xl font-black tabular-nums">
                   3
                 </div>
-                <div className="text-sm font-black text-muted-foreground uppercase tracking-wider mt-2">
+                <div className="text-sm font-black text-foreground uppercase tracking-wider mt-2">
                   Illegal Clauses Found
                 </div>
               </div>
@@ -273,7 +273,7 @@ export default function HomePage() {
           <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
             Not Just Another <span className="text-primary">AI Tool</span>
           </h2>
-          <p className="text-lg md:text-xl text-muted-foreground mt-4 max-w-2xl mx-auto font-medium">
+          <p className="text-lg md:text-xl text-foreground mt-4 max-w-2xl mx-auto font-medium">
             ChatGPT gives vague advice. ClauseWall gives you exact Indian laws,
             risk scores, negotiation scripts, and legal notices.
           </p>
@@ -290,7 +290,7 @@ export default function HomePage() {
                 <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">
                   750+ Legal Rules
                 </h3>
-                <p className="text-muted-foreground font-bold leading-relaxed text-sm">
+                <p className="text-foreground font-bold leading-relaxed text-sm">
                   Verified against Indian Contract Act, RERA, Model Tenancy Act,
                   and state-specific laws. Not AI guesses — real legal database.
                 </p>
@@ -307,7 +307,7 @@ export default function HomePage() {
                 <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">
                   Clause-by-Clause Scoring
                 </h3>
-                <p className="text-muted-foreground font-bold leading-relaxed text-sm">
+                <p className="text-foreground font-bold leading-relaxed text-sm">
                   Every clause gets a 0-100 risk score with plain English
                   explanation. No legal jargon. No confusion.
                 </p>
@@ -324,7 +324,7 @@ export default function HomePage() {
                 <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">
                   Legal Notice Generator
                 </h3>
-                <p className="text-muted-foreground font-bold leading-relaxed text-sm">
+                <p className="text-foreground font-bold leading-relaxed text-sm">
                   Don&apos;t just find problems — fight back. Auto-generate a
                   professional legal notice citing every violation.
                 </p>
@@ -347,7 +347,7 @@ export default function HomePage() {
                 <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">
                   Negotiation Playbook
                 </h3>
-                <p className="text-muted-foreground font-bold leading-relaxed text-sm">
+                <p className="text-foreground font-bold leading-relaxed text-sm">
                   Get exact scripts for what to say to your landlord.
                   Counter-responses for every pushback. Share to WhatsApp.
                 </p>
@@ -371,7 +371,7 @@ export default function HomePage() {
               <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">
                 Browser Extension
               </h3>
-              <p className="text-muted-foreground font-bold leading-relaxed text-sm">
+              <p className="text-foreground font-bold leading-relaxed text-sm">
                 Auto-scan Terms of Service on any website. Extension highlights
                 dangerous clauses in real-time. Works on Chrome, Brave, Edge.
               </p>
@@ -391,7 +391,7 @@ export default function HomePage() {
               <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">
                 QR Verification Badge
               </h3>
-              <p className="text-muted-foreground font-bold leading-relaxed text-sm">
+              <p className="text-foreground font-bold leading-relaxed text-sm">
                 &quot;Scan Before You Sign&quot; — Generate a QR badge for your
                 contract. Tenant scans, sees verification status. Build trust.
               </p>
@@ -406,7 +406,7 @@ export default function HomePage() {
               <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">
                 Fair Alternative Suggestions
               </h3>
-              <p className="text-muted-foreground font-bold leading-relaxed text-sm">
+              <p className="text-foreground font-bold leading-relaxed text-sm">
                 For every predatory clause, we show how it SHOULD read.
                 Copy-paste the fair version into your counter-proposal.
               </p>
@@ -421,7 +421,7 @@ export default function HomePage() {
               <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">
                 Community Intelligence
               </h3>
-              <p className="text-muted-foreground font-bold leading-relaxed text-sm">
+              <p className="text-foreground font-bold leading-relaxed text-sm">
                 &quot;This clause pattern has been flagged 47 times in
                 Mumbai.&quot; Learn from others&apos; experiences. Crowdsourced
                 protection.
@@ -438,7 +438,7 @@ export default function HomePage() {
                 <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-2">
                   Wall of Shame
                 </h3>
-                <p className="text-muted-foreground font-bold leading-relaxed text-sm">
+                <p className="text-foreground font-bold leading-relaxed text-sm">
                   &quot;This landlord&apos;s contracts have been flagged 47
                   times.&quot; Check entity reputation before you sign.
                 </p>
@@ -457,7 +457,7 @@ export default function HomePage() {
           <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
             Three Steps to <span className="text-primary">Protection</span>
           </h2>
-          <p className="text-lg text-muted-foreground mt-4 font-medium">
+          <p className="text-lg text-foreground mt-4 font-medium">
             It takes just seconds to protect yourself from predatory clauses.
           </p>
         </div>
@@ -471,7 +471,7 @@ export default function HomePage() {
             <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-3">
               Upload
             </h3>
-            <p className="text-sm text-muted-foreground font-bold leading-relaxed">
+            <p className="text-sm text-foreground font-bold leading-relaxed">
               Drop your PDF or paste the contract text. Rental agreements, offer
               letters, loan documents — we handle them all.
             </p>
@@ -485,7 +485,7 @@ export default function HomePage() {
             <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-3">
               Analyze
             </h3>
-            <p className="text-sm text-muted-foreground font-bold leading-relaxed">
+            <p className="text-sm text-foreground font-bold leading-relaxed">
               Quick scan in 5 seconds. Full verified analysis in 60 seconds.
             </p>
           </div>
@@ -497,7 +497,7 @@ export default function HomePage() {
             <h3 className="text-xl font-black uppercase tracking-wider text-foreground mt-4 mb-3">
               Protect
             </h3>
-            <p className="text-sm text-muted-foreground font-bold leading-relaxed">
+            <p className="text-sm text-foreground font-bold leading-relaxed">
               Get negotiation scripts, generate legal notices, share QR badge.
             </p>
           </div>
@@ -512,7 +512,7 @@ export default function HomePage() {
               <div className="text-5xl md:text-6xl font-black tabular-nums text-foreground">
                 750+
               </div>
-              <div className="text-sm font-bold text-muted-foreground uppercase tracking-wider mt-2">
+              <div className="text-sm font-bold text-foreground uppercase tracking-wider mt-2">
                 Legal Rules
               </div>
             </div>
@@ -520,7 +520,7 @@ export default function HomePage() {
               <div className="text-5xl md:text-6xl font-black tabular-nums text-foreground">
                 21
               </div>
-              <div className="text-sm font-bold text-muted-foreground uppercase tracking-wider mt-2">
+              <div className="text-sm font-bold text-foreground uppercase tracking-wider mt-2">
                 Indian States
               </div>
             </div>
@@ -528,7 +528,7 @@ export default function HomePage() {
               <div className="text-5xl md:text-6xl font-black tabular-nums text-foreground">
                 10
               </div>
-              <div className="text-sm font-bold text-muted-foreground uppercase tracking-wider mt-2">
+              <div className="text-sm font-bold text-foreground uppercase tracking-wider mt-2">
                 Contract Types
               </div>
             </div>
@@ -536,7 +536,7 @@ export default function HomePage() {
               <div className="text-5xl md:text-6xl font-black tabular-nums text-foreground">
                 5 sec
               </div>
-              <div className="text-sm font-bold text-muted-foreground uppercase tracking-wider mt-2">
+              <div className="text-sm font-bold text-foreground uppercase tracking-wider mt-2">
                 Quick Scan
               </div>
             </div>
@@ -551,7 +551,7 @@ export default function HomePage() {
             Your Next Contract Could Cost You{" "}
             <span className="text-primary">Everything</span>
           </h2>
-          <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-xl mx-auto font-medium">
+          <p className="text-lg md:text-xl text-foreground mb-10 max-w-xl mx-auto font-medium">
             Lakhs of Indians sign predatory rental agreements every year.
             Employment bonds with illegal clauses trap workers. Build your wall.
           </p>

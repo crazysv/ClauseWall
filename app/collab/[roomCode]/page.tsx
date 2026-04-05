@@ -346,7 +346,7 @@ export default function CollabPage() {
             <Users className="h-6 w-6 text-blue-400" />
             <h2 className="text-lg font-bold">Join Collaboration</h2>
           </div>
-          <p className="text-sm text-muted-foreground mb-4">
+          <p className="text-sm text-foreground mb-4">
             Room:{" "}
             <span className="font-mono font-bold text-blue-400">
               {roomCode}
@@ -447,7 +447,7 @@ export default function CollabPage() {
       <div className="max-w-4xl mx-auto px-4 py-6">
         {/* Header */}
         <div className="mb-6">
-          <div className="flex items-center gap-2 text-muted-foreground text-sm mb-1">
+          <div className="flex items-center gap-2 text-foreground text-sm mb-1">
             <Users className="h-4 w-4" />
             <span>Collaborative Review</span>
             <span>•</span>
@@ -467,7 +467,7 @@ export default function CollabPage() {
             >
               Risk Score: {document.overall_risk_score}/100
             </div>
-            <span className="text-xs text-muted-foreground">
+            <span className="text-xs text-foreground">
               {document.total_clauses} clauses
             </span>
           </div>
@@ -489,7 +489,7 @@ export default function CollabPage() {
                     ).length
                   }
                 </p>
-                <p className="text-[10px] text-muted-foreground">Accept</p>
+                <p className="text-[10px] text-foreground">Accept</p>
               </div>
               <div className="p-2 rounded-none bg-yellow-500/10">
                 <p className="text-lg font-bold text-yellow-400">
@@ -499,7 +499,7 @@ export default function CollabPage() {
                     ).length
                   }
                 </p>
-                <p className="text-[10px] text-muted-foreground">Negotiate</p>
+                <p className="text-[10px] text-foreground">Negotiate</p>
               </div>
               <div className="p-2 rounded-none bg-red-500/10">
                 <p className="text-lg font-bold text-red-400">
@@ -509,7 +509,7 @@ export default function CollabPage() {
                     ).length
                   }
                 </p>
-                <p className="text-[10px] text-muted-foreground">Reject</p>
+                <p className="text-[10px] text-foreground">Reject</p>
               </div>
             </div>
           </div>
@@ -535,7 +535,7 @@ export default function CollabPage() {
                 <div className="flex items-center gap-2 flex-wrap">
                   {risk.icon}
                   <Badge className={risk.badgeClass}>{risk.label}</Badge>
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-xs text-foreground">
                     Clause {clause.clause_number}
                   </span>
                   <Badge
@@ -547,12 +547,12 @@ export default function CollabPage() {
                 </div>
 
                 {/* Text */}
-                <p className="text-sm text-muted-foreground leading-relaxed">
+                <p className="text-sm text-foreground leading-relaxed">
                   {clause.original_text}
                 </p>
 
                 {/* Explanation */}
-                <p className="text-xs text-muted-foreground leading-relaxed">
+                <p className="text-xs text-foreground leading-relaxed">
                   {clause.explanation}
                 </p>
 
@@ -587,7 +587,7 @@ export default function CollabPage() {
                           >
                             {ann.author_name}
                           </span>
-                          <p className="text-xs text-muted-foreground">
+                          <p className="text-xs text-foreground">
                             {ann.content}
                           </p>
                         </div>
@@ -622,7 +622,7 @@ export default function CollabPage() {
                 ) : (
                   <button
                     onClick={() => setAnnotatingClause(clause.id)}
-                    className="flex items-center gap-1.5 text-[10px] text-muted-foreground hover:text-muted-foreground transition-colors"
+                    className="flex items-center gap-1.5 text-[10px] text-foreground hover:text-muted-foreground transition-colors"
                   >
                     <MessageSquare className="h-3 w-3" />
                     Add note

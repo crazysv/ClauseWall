@@ -58,7 +58,7 @@ export default function BenchmarkChart({
 
   if (chartData.length === 0) {
     return (
-      <div className="h-[120px] flex items-center justify-center text-sm text-foreground/30">
+      <div className="h-[120px] flex items-center justify-center text-sm text-foreground">
         Not enough data for histogram
       </div>
     );
@@ -128,7 +128,7 @@ export default function BenchmarkChart({
       </ResponsiveContainer>
 
       {/* Legend */}
-      <div className="flex items-center justify-center gap-4 text-[10px] text-foreground/40 -mt-2">
+      <div className="flex items-center justify-center gap-4 text-[10px] text-foreground -mt-2">
         <span className="flex items-center gap-1">
           <span className="w-2.5 h-2.5 rounded-sm bg-blue-500 inline-block" />
           Your value ({userValue} {unit})

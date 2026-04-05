@@ -64,7 +64,7 @@ export default function AuthorityDetail({
     return (
       <Card className="border-red-500/20 bg-red-500/5">
         <CardContent className="p-6 text-center">
-          <p className="text-muted-foreground">Authority not found.</p>
+          <p className="text-foreground">Authority not found.</p>
         </CardContent>
       </Card>
     );
@@ -96,7 +96,7 @@ export default function AuthorityDetail({
           )}
         </div>
         <h1 className="text-xl font-bold">{authority.name}</h1>
-        <p className="text-sm text-muted-foreground">{typeLabel}</p>
+        <p className="text-sm text-foreground">{typeLabel}</p>
       </div>
 
       {/* Contact Row */}
@@ -118,7 +118,7 @@ export default function AuthorityDetail({
               <div>
                 <p className="text-sm">{authority.physical_address}</p>
                 {authority.pincode && (
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-foreground">
                     PIN: {authority.pincode}
                   </p>
                 )}
@@ -131,7 +131,7 @@ export default function AuthorityDetail({
               <div>
                 <p className="text-sm">{authority.working_hours}</p>
                 {authority.working_days && (
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-foreground">
                     {authority.working_days}
                   </p>
                 )}
@@ -152,7 +152,7 @@ export default function AuthorityDetail({
             </div>
           )}
           {authority.notes && (
-            <p className="text-xs text-muted-foreground border-t border-foreground border-2 pt-2 mt-2">
+            <p className="text-xs text-foreground border-t border-foreground border-2 pt-2 mt-2">
               {authority.notes}
             </p>
           )}
@@ -177,7 +177,7 @@ export default function AuthorityDetail({
           variant="ghost"
           size="sm"
           onClick={() => setShowReport(true)}
-          className="text-xs text-muted-foreground gap-1"
+          className="text-xs text-foreground gap-1"
         >
           <Flag className="h-3 w-3" /> Report incorrect information
         </Button>

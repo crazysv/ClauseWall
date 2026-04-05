@@ -120,7 +120,7 @@ export default function LeaderboardTable({
                   {medal ? (
                     <span className="text-lg">{medal}</span>
                   ) : (
-                    <span className="text-sm text-muted-foreground">
+                    <span className="text-sm text-foreground">
                       {rank}
                     </span>
                   )}
@@ -150,7 +150,7 @@ export default function LeaderboardTable({
                   </div>
                 </td>
                 <td className="py-3 px-4 text-center hidden md:table-cell">
-                  <span className="text-sm text-muted-foreground">
+                  <span className="text-sm text-foreground">
                     {company.total_changes}
                   </span>
                 </td>

@@ -90,7 +90,7 @@ export default function WatchdogSettingsPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        <Loader2 className="h-6 w-6 animate-spin text-foreground" />
       </div>
     );
   }
@@ -100,11 +100,11 @@ export default function WatchdogSettingsPage() {
       <div className="container mx-auto px-4 py-8 max-w-3xl">
         <div className="flex items-center gap-3 mb-6">
           <div className="h-10 w-10 rounded-none bg-background border-2 border-foreground card-impact flex items-center justify-center">
-            <Settings className="h-5 w-5 text-muted-foreground" />
+            <Settings className="h-5 w-5 text-foreground" />
           </div>
           <div>
             <h1 className="text-2xl font-bold">Watchdog Settings</h1>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-foreground">
               Manage your alert preferences
             </p>
           </div>
@@ -113,11 +113,11 @@ export default function WatchdogSettingsPage() {
         {watchlist.length === 0 ? (
           <Card className="bg-background border-2 border-foreground card-impact/50 border-foreground border-2">
             <CardContent className="p-8 text-center">
-              <Shield className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
-              <p className="text-muted-foreground mb-2">
+              <Shield className="h-10 w-10 text-foreground mx-auto mb-3" />
+              <p className="text-foreground mb-2">
                 You're not watching any companies yet.
               </p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-foreground">
                 Go to the{" "}
                 <a
                   href="/watchdog/companies"

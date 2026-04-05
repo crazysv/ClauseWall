@@ -57,7 +57,7 @@ const RESULT_STYLES: Record<
   unverifiable: {
     bg: "bg-gray-500/5",
     border: "border-gray-500/20",
-    text: "text-gray-400",
+    text: "text-foreground",
     icon: <HelpCircle className="w-5 h-5 text-muted-foreground" />,
     label: "UNVERIFIABLE",
   },
@@ -268,7 +268,7 @@ export default function BluffDetectorPanel({
             {/* Source */}
             <div className="px-5 pb-4">
               <span
-                className={`inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] ${result.source === "database" ? "bg-green-500/10 text-green-400 border border-green-500/20" : "bg-blue-500/10 text-blue-400 border border-blue-500/20"}`}
+                className={`inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] ${result.source === "database" ? "bg-green-500/10 text-green-800 dark:text-green-100 font-bold border border-green-500/20" : "bg-blue-500/10 text-blue-800 dark:text-blue-100 font-bold border border-blue-500/20"}`}
               >
                 {result.source === "database"
                   ? "Verified from law database"

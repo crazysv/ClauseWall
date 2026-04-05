@@ -172,7 +172,7 @@ export default function ProofSection({
             </div>
           </div>
 
-          <p className="text-sm font-bold text-muted-foreground mb-6">
+          <p className="text-sm font-bold text-foreground mb-6">
             This analysis is permanently recorded and independently verified.
             Use this proof in disputes as digital evidence under the{" "}
             <span className="text-foreground font-black">
@@ -191,7 +191,7 @@ export default function ProofSection({
 
               <div className="space-y-2.5">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground font-black uppercase tracking-wider flex items-center gap-2">
+                  <span className="text-foreground font-black uppercase tracking-wider flex items-center gap-2">
                     <Fingerprint className="h-3.5 w-3.5 text-green-600" />
                     Proof Hash
                   </span>
@@ -201,7 +201,7 @@ export default function ProofSection({
                     </code>
                     <button
                       onClick={() => copyToClipboard(proofHash, "Hash")}
-                      className="text-muted-foreground hover:text-foreground"
+                      className="text-foreground hover:text-foreground"
                     >
                       {copied === "Hash" ? (
                         <Check className="h-3.5 w-3.5 text-green-600" />
@@ -214,7 +214,7 @@ export default function ProofSection({
 
                 {formattedDate && (
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground font-black uppercase tracking-wider flex items-center gap-2">
+                    <span className="text-foreground font-black uppercase tracking-wider flex items-center gap-2">
                       <Clock className="h-3.5 w-3.5 text-green-600" />
                       TSA Timestamp
                     </span>
@@ -226,7 +226,7 @@ export default function ProofSection({
 
                 {tsaSerial && (
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground font-black uppercase tracking-wider flex items-center gap-2">
+                    <span className="text-foreground font-black uppercase tracking-wider flex items-center gap-2">
                       <Hash className="h-3.5 w-3.5 text-green-600" />
                       Serial Number
                     </span>
@@ -237,7 +237,7 @@ export default function ProofSection({
                 )}
 
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground font-black uppercase tracking-wider flex items-center gap-2">
+                  <span className="text-foreground font-black uppercase tracking-wider flex items-center gap-2">
                     <FileCheck className="h-3.5 w-3.5 text-green-600" />
                     Authority
                   </span>
@@ -279,7 +279,7 @@ export default function ProofSection({
                   />
                 </div>
                 <div className="flex-1 text-center sm:text-left">
-                  <p className="text-xs font-black uppercase tracking-wider text-muted-foreground mb-1">
+                  <p className="text-xs font-black uppercase tracking-wider text-foreground mb-1">
                     IPFS CID
                   </p>
                   <code className="text-xs font-bold text-blue-600 font-mono break-all">
@@ -316,13 +316,13 @@ export default function ProofSection({
           {!hasTSA && !hasIPFS && (
             <div className="mb-4 p-4 card-impact border-2 border-foreground bg-background">
               <div className="flex items-center justify-between text-sm mb-2">
-                <span className="text-muted-foreground font-black uppercase tracking-wider flex items-center gap-2">
+                <span className="text-foreground font-black uppercase tracking-wider flex items-center gap-2">
                   <Fingerprint className="h-3.5 w-3.5 text-foreground" />
                   Proof Hash (SHA-256)
                 </span>
                 <button
                   onClick={() => copyToClipboard(proofHash, "Hash")}
-                  className="text-muted-foreground hover:text-foreground"
+                  className="text-foreground hover:text-foreground"
                 >
                   {copied === "Hash" ? (
                     <Check className="h-3.5 w-3.5 text-green-600" />
@@ -408,7 +408,7 @@ export default function ProofSection({
           </div>
 
           {/* Legal note */}
-          <p className="text-[10px] font-bold text-muted-foreground mt-4 leading-relaxed uppercase tracking-wider">
+          <p className="text-[10px] font-bold text-foreground mt-4 leading-relaxed uppercase tracking-wider">
             🔒 This proof contains NO personal data or contract text. The
             SHA-256 hash is deterministic — identical analysis always produces
             the same hash.

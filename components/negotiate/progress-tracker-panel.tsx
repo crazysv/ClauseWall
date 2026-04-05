@@ -167,9 +167,9 @@ export default function ProgressTrackerPanel({
         <div className="text-center mb-6">
           <p className="text-5xl font-black text-black tracking-tighter">
             {score.win_percentage}
-            <span className="text-xl font-bold text-muted-foreground">%</span>
+            <span className="text-xl font-bold text-foreground">%</span>
           </p>
-          <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mt-2">
+          <p className="text-xs font-black uppercase tracking-widest text-foreground mt-2">
             Win Rate
           </p>
         </div>
@@ -188,13 +188,13 @@ export default function ProgressTrackerPanel({
               value: score.deadlocked,
               color: "text-orange-700",
             },
-            { label: "Left", value: score.pending, color: "text-gray-400" },
+            { label: "Left", value: score.pending, color: "text-foreground" },
           ].map((stat) => (
             <div key={stat.label}>
               <p className={`text-2xl font-black ${stat.color}`}>
                 {stat.value}
               </p>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mt-1">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-foreground mt-1">
                 {stat.label}
               </p>
             </div>
@@ -257,21 +257,21 @@ export default function ProgressTrackerPanel({
             placeholder="CLAUSE NAME (E.G., SECURITY DEPOSIT)"
             value={newClauseSummary}
             onChange={(e) => setNewClauseSummary(e.target.value)}
-            className="w-full px-4 py-3 text-sm font-bold text-black bg-white border-2 border-black placeholder:text-muted-foreground placeholder:uppercase placeholder:tracking-wider focus:outline-none focus:ring-2 focus:ring-indigo-900 shadow-[inset_2px_2px_0px_0px_rgba(0,0,0,0.05)]"
+            className="w-full px-4 py-3 text-sm font-bold text-black bg-white border-2 border-black placeholder:text-foreground placeholder:uppercase placeholder:tracking-wider focus:outline-none focus:ring-2 focus:ring-indigo-900 shadow-[inset_2px_2px_0px_0px_rgba(0,0,0,0.05)]"
             style={{ fontSize: "16px" }}
           />
           <input
             placeholder="THEIR TERMS (E.G., 6 MONTHS DEPOSIT)"
             value={newOriginalTerms}
             onChange={(e) => setNewOriginalTerms(e.target.value)}
-            className="w-full px-4 py-3 text-sm font-bold text-black bg-white border-2 border-black placeholder:text-muted-foreground placeholder:uppercase placeholder:tracking-wider focus:outline-none focus:ring-2 focus:ring-indigo-900 shadow-[inset_2px_2px_0px_0px_rgba(0,0,0,0.05)]"
+            className="w-full px-4 py-3 text-sm font-bold text-black bg-white border-2 border-black placeholder:text-foreground placeholder:uppercase placeholder:tracking-wider focus:outline-none focus:ring-2 focus:ring-indigo-900 shadow-[inset_2px_2px_0px_0px_rgba(0,0,0,0.05)]"
             style={{ fontSize: "16px" }}
           />
           <input
             placeholder="YOUR ASK (E.G., 2 MONTHS DEPOSIT)"
             value={newYourAsk}
             onChange={(e) => setNewYourAsk(e.target.value)}
-            className="w-full px-4 py-3 text-sm font-bold text-black bg-white border-2 border-black placeholder:text-muted-foreground placeholder:uppercase placeholder:tracking-wider focus:outline-none focus:ring-2 focus:ring-indigo-900 shadow-[inset_2px_2px_0px_0px_rgba(0,0,0,0.05)]"
+            className="w-full px-4 py-3 text-sm font-bold text-black bg-white border-2 border-black placeholder:text-foreground placeholder:uppercase placeholder:tracking-wider focus:outline-none focus:ring-2 focus:ring-indigo-900 shadow-[inset_2px_2px_0px_0px_rgba(0,0,0,0.05)]"
             style={{ fontSize: "16px" }}
           />
           <div className="flex gap-3">
@@ -297,7 +297,7 @@ export default function ProgressTrackerPanel({
       {/* Clause List */}
       {session.clauses.length > 0 && (
         <div className="space-y-4">
-          <p className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1 mb-3 pt-6 border-t-2 border-black/10">
+          <p className="text-xs font-black uppercase tracking-widest text-foreground px-1 mb-3 pt-6 border-t-2 border-black/10">
             {session.clauses.length} clause
             {session.clauses.length !== 1 ? "s" : ""} tracked
           </p>
@@ -381,7 +381,7 @@ export default function ProgressTrackerPanel({
           value={noteText}
           onChange={(e) => setNoteText(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleAddNote()}
-          className="w-full px-4 py-4 pr-12 text-sm font-bold text-black bg-white border-2 border-black placeholder:text-muted-foreground placeholder:uppercase placeholder:font-black tracking-widest focus:outline-none focus:bg-gray-50 focus:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
+          className="w-full px-4 py-4 pr-12 text-sm font-bold text-black bg-white border-2 border-black placeholder:text-foreground placeholder:uppercase placeholder:font-black tracking-widest focus:outline-none focus:bg-gray-50 focus:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
           style={{ fontSize: "16px" }}
         />
         <button
@@ -396,7 +396,7 @@ export default function ProgressTrackerPanel({
       {/* Notes */}
       {session.notes.length > 0 && (
         <div className="space-y-2">
-          <p className="text-xs font-black uppercase tracking-widest text-muted-foreground px-1 mt-6 mb-2">
+          <p className="text-xs font-black uppercase tracking-widest text-foreground px-1 mt-6 mb-2">
             Notes
           </p>
           <div className="max-h-40 overflow-y-auto border-2 border-black bg-gray-50 p-4 space-y-3 shadow-[inset_2px_2px_0px_0px_rgba(0,0,0,0.05)]">

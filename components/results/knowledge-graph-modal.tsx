@@ -136,7 +136,7 @@ export default function KnowledgeGraphModal({
     return (
       map[outcome || ""] || {
         label: outcome || "Unknown",
-        color: "text-gray-400",
+        color: "text-foreground",
       }
     );
   };
@@ -192,14 +192,14 @@ export default function KnowledgeGraphModal({
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20">
               <Loader2 className="h-8 w-8 text-cyan-400 animate-spin mb-3" />
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-foreground">
                 Loading legal web data...
               </p>
             </div>
           ) : error ? (
             <div className="flex flex-col items-center justify-center py-20">
               <AlertTriangle className="h-8 w-8 text-yellow-400 mb-3" />
-              <p className="text-sm text-muted-foreground">{error}</p>
+              <p className="text-sm text-foreground">{error}</p>
               <Button
                 variant="outline"
                 size="sm"
@@ -212,10 +212,10 @@ export default function KnowledgeGraphModal({
           ) : !hasData ? (
             <div className="flex flex-col items-center justify-center py-20">
               <Network className="h-8 w-8 text-muted-foreground mb-3" />
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-foreground">
                 No knowledge graph data available for this clause type yet.
               </p>
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-xs text-foreground mt-1">
                 The graph database is being expanded.
               </p>
             </div>
@@ -226,7 +226,7 @@ export default function KnowledgeGraphModal({
                 <GraphCanvas data={graphData} highlightType={clauseType} />
               ) : (
                 <div className="flex items-center justify-center h-full">
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-foreground">
                     No graph visualization available
                   </p>
                 </div>
@@ -240,7 +240,7 @@ export default function KnowledgeGraphModal({
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {context.win_rate !== null && (
                     <div className="p-3 card-impact bg-green-50 border-2 border-green-600 text-center">
-                      <Trophy className="h-4 w-4 text-green-600 mx-auto mb-1" />
+                      <Trophy className="h-4 w-4 text-green-900 dark:text-green-100 font-bold mx-auto mb-1" />
                       <p className="text-lg font-black text-green-800">
                         {context.win_rate}%
                       </p>
@@ -250,7 +250,7 @@ export default function KnowledgeGraphModal({
                     </div>
                   )}
                   <div className="p-3 card-impact bg-blue-50 border-2 border-blue-600 text-center">
-                    <Landmark className="h-4 w-4 text-blue-600 mx-auto mb-1" />
+                    <Landmark className="h-4 w-4 text-blue-900 dark:text-blue-100 font-bold mx-auto mb-1" />
                     <p className="text-lg font-black text-blue-800">
                       {context.total_related_cases}
                     </p>
@@ -259,7 +259,7 @@ export default function KnowledgeGraphModal({
                     </p>
                   </div>
                   <div className="p-3 card-impact bg-purple-50 border-2 border-purple-600 text-center">
-                    <Scale className="h-4 w-4 text-purple-600 mx-auto mb-1" />
+                    <Scale className="h-4 w-4 text-purple-900 dark:text-purple-100 font-bold mx-auto mb-1" />
                     <p className="text-lg font-black text-purple-800">
                       {(context.supporting_laws?.length || 0) +
                         (context.primary_law ? 1 : 0)}
@@ -269,7 +269,7 @@ export default function KnowledgeGraphModal({
                     </p>
                   </div>
                   <div className="p-3 card-impact bg-yellow-50 border-2 border-yellow-600 text-center">
-                    <Building2 className="h-4 w-4 text-yellow-600 mx-auto mb-1" />
+                    <Building2 className="h-4 w-4 text-yellow-900 dark:text-yellow-100 font-bold mx-auto mb-1" />
                     <p className="text-lg font-black text-yellow-800">
                       {context.authorities.length}
                     </p>
@@ -293,7 +293,7 @@ export default function KnowledgeGraphModal({
                   <div className="space-y-3">
                     <div className="p-3 border-2 border-blue-600 bg-blue-50 card-impact">
                       <div className="flex items-center gap-2 mb-1">
-                        <ShieldCheck className="h-3.5 w-3.5 text-blue-600" />
+                        <ShieldCheck className="h-3.5 w-3.5 text-blue-900 dark:text-blue-100 font-bold" />
                         <span className="text-sm font-black uppercase tracking-wider text-blue-900">
                           {context.primary_law.name}
                         </span>
@@ -355,7 +355,7 @@ export default function KnowledgeGraphModal({
                         >
                           <div className="flex items-start justify-between mb-1">
                             <div className="flex items-center gap-2 flex-wrap">
-                              <span className="text-sm font-black uppercase tracking-wider text-green-900">
+                              <span className="text-sm font-black uppercase tracking-wider text-green-900 dark:text-green-100 font-bold">
                                 {c.case_name}
                               </span>
                               {c.is_landmark && (
@@ -404,7 +404,7 @@ export default function KnowledgeGraphModal({
                         key={i}
                         className="p-3 border-2 border-yellow-600 bg-yellow-50 card-impact"
                       >
-                        <p className="text-sm font-black uppercase tracking-wider text-yellow-900 mb-1">
+                        <p className="text-sm font-black uppercase tracking-wider text-yellow-900 dark:text-yellow-100 font-bold mb-1">
                           {auth.name}
                         </p>
                         <div className="grid grid-cols-2 gap-2 text-xs">
@@ -456,7 +456,7 @@ export default function KnowledgeGraphModal({
                         key={i}
                         className="p-3 border-2 border-orange-600 bg-orange-50 card-impact"
                       >
-                        <p className="text-sm font-bold text-orange-900 leading-relaxed">
+                        <p className="text-sm font-bold text-orange-900 dark:text-orange-100 font-bold leading-relaxed">
                           {p.description}
                         </p>
                         {p.law_reference && (
@@ -486,7 +486,7 @@ export default function KnowledgeGraphModal({
                         key={i}
                         className="p-3 border-2 border-purple-600 bg-purple-50 card-impact"
                       >
-                        <p className="text-sm font-bold text-purple-900 leading-relaxed">
+                        <p className="text-sm font-bold text-purple-900 dark:text-purple-100 font-bold leading-relaxed">
                           {interp.text}
                         </p>
                         <p className="text-[10px] font-black uppercase tracking-wider text-purple-800/70 mt-1">
@@ -514,7 +514,7 @@ export default function KnowledgeGraphModal({
                         key={i}
                         className="p-3 border-2 border-emerald-600 bg-emerald-50 card-impact"
                       >
-                        <p className="text-sm font-bold text-emerald-900 leading-relaxed">
+                        <p className="text-sm font-bold text-emerald-900 dark:text-emerald-100 font-bold leading-relaxed">
                           {r.description}
                         </p>
                         {r.authority && (

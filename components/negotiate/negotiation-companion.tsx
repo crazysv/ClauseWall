@@ -168,7 +168,7 @@ export default function NegotiationCompanion() {
               <p className="text-sm font-black uppercase tracking-tight text-black truncate max-w-[140px] sm:max-w-none">
                 {session.entity_name}
               </p>
-              <p className="text-[10px] text-muted-foreground font-black uppercase tracking-wider">
+              <p className="text-[10px] text-foreground font-black uppercase tracking-wider">
                 {formatTime(elapsedTime)}
               </p>
             </div>

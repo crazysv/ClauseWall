@@ -172,7 +172,7 @@ export default function WallOfShamePage() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
         <Loader2 className="h-12 w-12 text-red-500 animate-spin" />
-        <p className="text-muted-foreground">Loading Wall of Shame...</p>
+        <p className="text-foreground">Loading Wall of Shame...</p>
       </div>
     );
   }
@@ -194,7 +194,7 @@ export default function WallOfShamePage() {
           <h1 className="text-3xl sm:text-4xl font-bold mb-3">
             Wall of <span className="text-red-400">Shame</span>
           </h1>
-          <p className="text-muted-foreground max-w-lg mx-auto">
+          <p className="text-foreground max-w-lg mx-auto">
             Community-flagged entities with a history of predatory contracts.
             Check here before signing with any landlord, employer, or company.
           </p>
@@ -208,7 +208,7 @@ export default function WallOfShamePage() {
                 <p className="text-2xl font-bold text-red-400">
                   {entities.length}
                 </p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-foreground">
                   Flagged Entities
                 </p>
               </CardContent>
@@ -218,7 +218,7 @@ export default function WallOfShamePage() {
                 <p className="text-2xl font-bold text-orange-400">
                   {totalFlags}
                 </p>
-                <p className="text-xs text-muted-foreground">Total Flags</p>
+                <p className="text-xs text-foreground">Total Flags</p>
               </CardContent>
             </Card>
             <Card className="bg-background border-2 border-foreground card-impact/50 border-foreground border-2">
@@ -226,7 +226,7 @@ export default function WallOfShamePage() {
                 <p className="text-2xl font-bold text-purple-400">
                   {avgRiskScore}
                 </p>
-                <p className="text-xs text-muted-foreground">Avg Risk Score</p>
+                <p className="text-xs text-foreground">Avg Risk Score</p>
               </CardContent>
             </Card>
             <Card className="bg-background border-2 border-foreground card-impact/50 border-foreground border-2">
@@ -234,7 +234,7 @@ export default function WallOfShamePage() {
                 <p className="text-2xl font-bold text-blue-400">
                   {totalDocuments}
                 </p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-foreground">
                   Contracts Scanned
                 </p>
               </CardContent>
@@ -245,7 +245,7 @@ export default function WallOfShamePage() {
         {/* Search & Filter */}
         <div className="flex flex-col sm:flex-row gap-3 mb-6">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-foreground" />
             <Input
               placeholder="Search by entity name..."
               value={searchQuery}
@@ -258,7 +258,7 @@ export default function WallOfShamePage() {
             onValueChange={setFilterJurisdiction}
           >
             <SelectTrigger className="w-full sm:w-[200px] bg-background border-2 border-foreground card-impact/50 border-foreground border-2">
-              <Filter className="h-4 w-4 mr-2 text-muted-foreground" />
+              <Filter className="h-4 w-4 mr-2 text-foreground" />
               <SelectValue placeholder="All States" />
             </SelectTrigger>
             <SelectContent>
@@ -280,7 +280,7 @@ export default function WallOfShamePage() {
               <h3 className="text-lg font-semibold mb-2">
                 No Flagged Entities Yet
               </h3>
-              <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+              <p className="text-foreground mb-6 max-w-md mx-auto">
                 When users flag landlords, employers, or companies with
                 predatory contracts, they&apos;ll appear here. Be the first to
                 contribute!
@@ -299,8 +299,8 @@ export default function WallOfShamePage() {
         {entities.length > 0 && filteredEntities.length === 0 && (
           <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] bg-background">
             <CardContent className="p-8 text-center">
-              <Search className="h-8 w-8 text-muted-foreground mx-auto mb-3" />
-              <p className="text-muted-foreground">
+              <Search className="h-8 w-8 text-foreground mx-auto mb-3" />
+              <p className="text-foreground">
                 No entities found matching your search.
               </p>
               <button
@@ -337,7 +337,7 @@ export default function WallOfShamePage() {
                       <h3 className="font-semibold text-lg mb-1">
                         {entity.entity_name}
                       </h3>
-                      <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground mb-3">
+                      <div className="flex flex-wrap items-center gap-2 text-sm text-foreground mb-3">
                         <Badge
                           variant="outline"
                           className="text-xs border-foreground border-2"
@@ -354,7 +354,7 @@ export default function WallOfShamePage() {
                         {marketAvgRisk !== null &&
                           entity.avg_risk_score > 0 && (
                             <Badge
-                              className={`text-[10px] ${entity.avg_risk_score > marketAvgRisk ? "bg-red-500/10 text-red-300 border-red-500/20" : "bg-green-500/10 text-green-300 border-green-500/20"}`}
+                              className={`text-[10px] ${entity.avg_risk_score > marketAvgRisk ? "bg-red-500/10 text-red-800 dark:text-red-100 font-bold border-red-500/20" : "bg-green-500/10 text-green-800 dark:text-green-100 font-bold border-green-500/20"}`}
                             >
                               Market avg: {marketAvgRisk} | This entity:{" "}
                               {entity.avg_risk_score}
@@ -371,7 +371,7 @@ export default function WallOfShamePage() {
                               .map((violation, i) => (
                                 <Badge
                                   key={i}
-                                  className="bg-red-500/10 text-red-300 border-red-500/20 text-xs"
+                                  className="bg-red-500/10 text-red-800 dark:text-red-100 font-bold border-red-500/20 text-xs"
                                 >
                                   {violation.length > 50
                                     ? violation.substring(0, 50) + "..."
@@ -385,7 +385,7 @@ export default function WallOfShamePage() {
                       {entity.total_flags >= 3 && (
                         <div className="mt-2">
                           <Link href={`/collective`}>
-                            <Badge className="bg-amber-500/10 text-amber-400 border-amber-500/20 text-xs gap-1.5 cursor-pointer hover:bg-amber-500/20 transition-colors">
+                            <Badge className="bg-amber-500/10 text-amber-800 dark:text-amber-100 font-bold border-amber-500/20 text-xs gap-1.5 cursor-pointer hover:bg-amber-500/20 transition-colors">
                               <Users className="h-3 w-3" />
                               Collective Available — Join {entity.total_flags}+
                               affected people
@@ -400,7 +400,7 @@ export default function WallOfShamePage() {
                         <Link
                           href={`/authority?entity=${encodeURIComponent(entity.entity_name)}&jurisdiction=${entity.jurisdiction || "general"}`}
                         >
-                          <Badge className="bg-purple-500/10 text-purple-400 border-purple-500/20 text-xs gap-1.5 cursor-pointer hover:bg-purple-500/20 transition-colors">
+                          <Badge className="bg-purple-500/10 text-purple-800 dark:text-purple-100 font-bold border-purple-500/20 text-xs gap-1.5 cursor-pointer hover:bg-purple-500/20 transition-colors">
                             <Gavel className="h-3 w-3" />
                             File complaint →{" "}
                             {(entity.entity_type as string) === "landlord"
@@ -434,9 +434,9 @@ export default function WallOfShamePage() {
                         {entity.total_flags}
                       </span>
                     </div>
-                    <p className="text-xs text-muted-foreground mb-2">flags</p>
+                    <p className="text-xs text-foreground mb-2">flags</p>
                     {entity.avg_risk_score > 0 && (
-                      <div className="flex items-center gap-1 text-sm text-muted-foreground justify-end">
+                      <div className="flex items-center gap-1 text-sm text-foreground justify-end">
                         <TrendingUp className="h-3 w-3" />
                         Avg: {entity.avg_risk_score}/100
                       </div>
@@ -451,7 +451,7 @@ export default function WallOfShamePage() {
         {/* CTA */}
         {entities.length > 0 && (
           <div className="mt-12 text-center">
-            <p className="text-muted-foreground mb-4">
+            <p className="text-foreground mb-4">
               Know a predatory landlord or company? Help others by flagging
               them.
             </p>

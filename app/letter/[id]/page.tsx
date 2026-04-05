@@ -159,7 +159,7 @@ export default function LetterPage() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6">
         <Loader2 className="h-16 w-16 text-black animate-spin" />
-        <p className="text-sm font-black uppercase tracking-widest text-muted-foreground">
+        <p className="text-sm font-black uppercase tracking-widest text-foreground">
           Loading document...
         </p>
       </div>
@@ -193,7 +193,7 @@ export default function LetterPage() {
         {/* Back Link */}
         <Link
           href={`/results/${documentId}`}
-          className="inline-flex items-center gap-2 text-muted-foreground font-black uppercase tracking-wider hover:text-black mb-8 transition-colors hover:translate-x-1"
+          className="inline-flex items-center gap-2 text-foreground font-black uppercase tracking-wider hover:text-black mb-8 transition-colors hover:translate-x-1"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Results
@@ -209,7 +209,7 @@ export default function LetterPage() {
               <h1 className="text-3xl sm:text-4xl font-black text-black uppercase tracking-tighter">
                 Legal Notice Generator
               </h1>
-              <p className="text-muted-foreground font-bold uppercase tracking-widest mt-2">
+              <p className="text-foreground font-bold uppercase tracking-widest mt-2">
                 {document.original_filename} •{" "}
                 {getDocumentTypeLabel(document.document_type)} •{" "}
                 {getStateName(document.jurisdiction)}
@@ -279,7 +279,7 @@ export default function LetterPage() {
                   </div>
                 ))}
                 {clauses.length > 5 && (
-                  <p className="text-xs font-black uppercase tracking-widest text-muted-foreground text-center mt-6">
+                  <p className="text-xs font-black uppercase tracking-widest text-foreground text-center mt-6">
                     + {clauses.length - 5} MORE CLAUSES
                   </p>
                 )}
@@ -309,7 +309,7 @@ export default function LetterPage() {
                 </>
               )}
             </Button>
-            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mt-8">
+            <p className="text-xs font-bold uppercase tracking-widest text-foreground mt-8">
               This will create a formal legal notice citing Indian laws
             </p>
           </div>
@@ -325,7 +325,7 @@ export default function LetterPage() {
                   <h3 className="font-black text-2xl uppercase tracking-tight text-black">
                     {letter.subject}
                   </h3>
-                  <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mt-2">
+                  <p className="text-xs font-bold uppercase tracking-widest text-foreground mt-2">
                     Generated under Indian law
                   </p>
                 </div>
@@ -357,7 +357,7 @@ export default function LetterPage() {
               {letter.legal_references &&
                 letter.legal_references.length > 0 && (
                   <div className="mt-6 p-6 bg-blue-50 border-2 border-blue-900 border-dashed">
-                    <p className="text-xs font-black uppercase tracking-widest text-blue-900 mb-4">
+                    <p className="text-xs font-black uppercase tracking-widest text-blue-900 dark:text-blue-100 font-bold mb-4">
                       LAWS & SECTIONS REFERENCED:
                     </p>
                     <div className="flex flex-wrap gap-2">
@@ -377,7 +377,7 @@ export default function LetterPage() {
               {/* Agencies */}
               {letter.agencies && letter.agencies.length > 0 && (
                 <div className="mt-6 p-6 bg-purple-50 border-2 border-purple-900 border-dashed">
-                  <p className="text-xs font-black uppercase tracking-widest text-purple-900 mb-4">
+                  <p className="text-xs font-black uppercase tracking-widest text-purple-900 dark:text-purple-100 font-bold mb-4">
                     WHERE TO FILE COMPLAINTS:
                   </p>
                   <ul className="text-sm font-bold text-purple-950 space-y-3">
@@ -433,7 +433,7 @@ export default function LetterPage() {
         {/* Disclaimer */}
         <div className="mt-12 p-6 bg-yellow-50 border-2 border-yellow-900 shadow-[4px_4px_0px_0px_rgba(113,63,18,1)]">
           <div className="flex flex-col sm:flex-row items-start gap-4">
-            <AlertTriangle className="text-yellow-700 h-8 w-8 flex-shrink-0" />
+            <AlertTriangle className="text-yellow-900 dark:text-yellow-100 font-bold h-8 w-8 flex-shrink-0" />
             <div className="text-yellow-900">
               <p className="font-black uppercase tracking-widest text-base mb-2">
                 IMPORTANT DISCLAIMER
@@ -480,7 +480,7 @@ export default function LetterPage() {
                 </Link>
               </div>
 
-              <p className="text-sm font-bold text-muted-foreground leading-relaxed">
+              <p className="text-sm font-bold text-foreground leading-relaxed">
                 Under Indian consumer law, if the opposing party does not
                 respond to your legal notice within 15 days, you can escalate by
                 filing a formal complaint at the appropriate forum.

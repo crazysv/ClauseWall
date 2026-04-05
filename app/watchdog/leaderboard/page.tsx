@@ -42,7 +42,7 @@ export default async function LeaderboardPage() {
           </div>
           <div>
             <h1 className="text-2xl font-bold">ToS Fairness Leaderboard</h1>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-foreground">
               How do Indian companies rate on Terms of Service fairness?
             </p>
           </div>
@@ -53,19 +53,19 @@ export default async function LeaderboardPage() {
           <Card className="bg-background border-2 border-foreground card-impact/50 border-foreground border-2">
             <CardContent className="p-4 text-center">
               <p className="text-2xl font-bold">{typedCompanies.length}</p>
-              <p className="text-xs text-muted-foreground">Companies Tracked</p>
+              <p className="text-xs text-foreground">Companies Tracked</p>
             </CardContent>
           </Card>
           <Card className="bg-background border-2 border-foreground card-impact/50 border-foreground border-2">
             <CardContent className="p-4 text-center">
               <p className="text-2xl font-bold text-blue-400">{avgScore}</p>
-              <p className="text-xs text-muted-foreground">Average Score</p>
+              <p className="text-xs text-foreground">Average Score</p>
             </CardContent>
           </Card>
           <Card className="bg-background border-2 border-foreground card-impact/50 border-foreground border-2">
             <CardContent className="p-4 text-center">
               <p className="text-2xl font-bold">{withScores.length}</p>
-              <p className="text-xs text-muted-foreground">Scored</p>
+              <p className="text-xs text-foreground">Scored</p>
             </CardContent>
           </Card>
         </div>
@@ -77,7 +77,7 @@ export default async function LeaderboardPage() {
           </CardContent>
         </Card>
 
-        <p className="text-[10px] text-muted-foreground text-center mt-6">
+        <p className="text-[10px] text-foreground text-center mt-6">
           Scores are calculated based on ToS change history, fairness of terms,
           data privacy practices, and consumer rights preservation. Lower scores
           indicate more consumer-hostile terms.

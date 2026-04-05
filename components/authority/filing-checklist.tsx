@@ -31,7 +31,7 @@ export default function FilingChecklist({ steps, documents }: Props) {
             <ClipboardList className="h-4 w-4 text-blue-400" />
             <h3 className="text-sm font-semibold">Filing Checklist</h3>
           </div>
-          <span className="text-xs text-muted-foreground">
+          <span className="text-xs text-foreground">
             {progress}% complete
           </span>
         </div>
@@ -47,7 +47,7 @@ export default function FilingChecklist({ steps, documents }: Props) {
         {/* Steps */}
         {steps.length > 0 && (
           <div className="space-y-1.5 mb-4">
-            <p className="text-xs font-medium text-muted-foreground mb-2">
+            <p className="text-xs font-medium text-foreground mb-2">
               Steps:
             </p>
             {steps.map((step) => (
@@ -59,10 +59,10 @@ export default function FilingChecklist({ steps, documents }: Props) {
                 {checked.has(step.step) ? (
                   <CheckCircle2 className="h-4 w-4 text-green-400 mt-0.5 flex-shrink-0" />
                 ) : (
-                  <Circle className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                  <Circle className="h-4 w-4 text-foreground mt-0.5 flex-shrink-0" />
                 )}
                 <span
-                  className={`text-xs ${checked.has(step.step) ? "line-through text-muted-foreground" : ""}`}
+                  className={`text-xs ${checked.has(step.step) ? "line-through text-foreground" : ""}`}
                 >
                   {step.description}
                   {step.required && (
@@ -77,14 +77,14 @@ export default function FilingChecklist({ steps, documents }: Props) {
         {/* Required Documents */}
         {documents.length > 0 && (
           <div>
-            <p className="text-xs font-medium text-muted-foreground mb-2">
+            <p className="text-xs font-medium text-foreground mb-2">
               Required Documents:
             </p>
             <ul className="space-y-1">
               {documents.map((doc, i) => (
                 <li
                   key={i}
-                  className="text-xs text-muted-foreground flex items-start gap-1.5"
+                  className="text-xs text-foreground flex items-start gap-1.5"
                 >
                   <span className="text-blue-400 mt-0.5">•</span>
                   <span>{doc}</span>

@@ -39,13 +39,13 @@ const STATUS_CONFIG = {
   },
   upcoming: {
     icon: Circle,
-    color: "text-gray-600 dark:text-gray-400",
+    color: "text-gray-600 dark:text-foreground",
     bg: "bg-gray-200 dark:bg-zinc-800",
     line: "bg-gray-300 dark:bg-gray-700 border-dashed",
   },
   skipped: {
     icon: Circle,
-    color: "text-gray-500",
+    color: "text-foreground",
     bg: "bg-gray-200 dark:bg-zinc-800",
     line: "bg-gray-300 dark:bg-gray-700",
   },
@@ -91,7 +91,7 @@ export default function EscalationStepCard({ step, isActive, isLast }: Props) {
         <CardContent className="p-4 sm:p-5">
           <div className="flex items-start justify-between mb-2">
             <h4 className="text-base sm:text-lg font-black uppercase tracking-widest flex items-center gap-2">
-              <span className="text-muted-foreground">
+              <span className="text-foreground">
                 Step {step.step_number}:
               </span>
               {step.action}
@@ -107,7 +107,7 @@ export default function EscalationStepCard({ step, isActive, isLast }: Props) {
             )}
           </div>
 
-          <p className="text-sm font-medium text-muted-foreground leading-relaxed mb-4">
+          <p className="text-sm font-medium text-foreground leading-relaxed mb-4">
             {step.description}
           </p>
 
@@ -131,13 +131,13 @@ export default function EscalationStepCard({ step, isActive, isLast }: Props) {
           {/* Required Documents */}
           {step.required_documents.length > 0 && (
             <div className="mt-2">
-              <p className="text-xs font-medium text-muted-foreground mb-1">
+              <p className="text-xs font-medium text-foreground mb-1">
                 📋 Documents needed:
               </p>
-              <ul className="text-xs text-muted-foreground space-y-0.5">
+              <ul className="text-xs text-foreground space-y-0.5">
                 {step.required_documents.map((doc, i) => (
                   <li key={i} className="flex items-start gap-1">
-                    <span className="text-blue-400 mt-0.5">•</span>
+                    <span className="text-blue-900 dark:text-blue-100 font-bold mt-0.5">•</span>
                     <span>{doc}</span>
                   </li>
                 ))}

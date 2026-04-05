@@ -68,7 +68,7 @@ export default function CompanyCard({
               </Link>
               <Badge
                 variant="outline"
-                className="text-[10px] border-foreground border-2 text-muted-foreground"
+                className="text-[10px] border-foreground border-2 text-foreground"
               >
                 {SECTOR_LABELS[company.sector] || company.sector}
               </Badge>
@@ -83,7 +83,7 @@ export default function CompanyCard({
           </div>
         )}
 
-        <div className="flex items-center justify-between text-sm text-muted-foreground mb-3">
+        <div className="flex items-center justify-between text-sm text-foreground mb-3">
           <span>Last change: {timeAgo}</span>
           <span>{company.total_changes} total changes</span>
         </div>
@@ -109,7 +109,7 @@ export default function CompanyCard({
                 />
               )}
             </div>
-            <div className="flex justify-between text-[10px] text-muted-foreground mt-1">
+            <div className="flex justify-between text-[10px] text-foreground mt-1">
               <span className="text-red-400">
                 {company.pro_company_changes} pro-company
               </span>
@@ -125,7 +125,7 @@ export default function CompanyCard({
             <WatchlistToggle companyId={company.id} isWatching={isWatching} />
           )}
           <Link href={`/watchdog/companies/${company.slug}`}>
-            <button className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <button className="text-sm text-foreground hover:text-foreground transition-colors">
               View Details →
             </button>
           </Link>

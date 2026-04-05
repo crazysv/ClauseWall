@@ -30,7 +30,7 @@ export default function PrivacyBadge({
       label: "MAXIMUM PRIVACY",
       color: "border-green-600",
       badgeColor:
-        "bg-green-50 text-green-800 border-2 border-green-600 font-bold uppercase",
+        "bg-green-50 text-green-900 dark:text-green-100 font-bold border-2 border-green-600 font-bold uppercase",
       items: [
         { icon: <Cpu className="h-3 w-3" />, text: "Processed 100% on-device" },
         {
@@ -48,7 +48,7 @@ export default function PrivacyBadge({
       label: "PRIVACY PROTECTED",
       color: "border-blue-600",
       badgeColor:
-        "bg-blue-50 text-blue-800 border-2 border-blue-600 font-bold uppercase",
+        "bg-blue-50 text-blue-900 dark:text-blue-100 font-bold border-2 border-blue-600 font-bold uppercase",
       items: [
         {
           icon: <Lock className="h-3 w-3" />,
@@ -69,7 +69,7 @@ export default function PrivacyBadge({
       label: "STANDARD MODE",
       color: "border-yellow-600",
       badgeColor:
-        "bg-yellow-50 text-yellow-800 border-2 border-yellow-600 font-bold uppercase",
+        "bg-yellow-50 text-yellow-900 dark:text-yellow-100 font-bold border-2 border-yellow-600 font-bold uppercase",
       items: [
         {
           icon: <Globe className="h-3 w-3" />,
@@ -104,7 +104,7 @@ export default function PrivacyBadge({
           {c.items.map((item, i) => (
             <div
               key={i}
-              className="flex items-center gap-2 text-xs font-bold text-muted-foreground uppercase tracking-wider"
+              className="flex items-center gap-2 text-xs font-bold text-foreground uppercase tracking-wider"
             >
               <span className="text-foreground border-2 border-foreground bg-muted p-0.5">
                 {item.icon}

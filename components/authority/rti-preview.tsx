@@ -24,7 +24,7 @@ export default function RTIPreview({ rti }: Props) {
             <FileText className="h-5 w-5 text-emerald-400" />
             <div>
               <h3 className="font-semibold text-sm">RTI Application</h3>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-foreground">
                 To: {rti.recipient_authority}
               </p>
             </div>
@@ -43,7 +43,7 @@ export default function RTIPreview({ rti }: Props) {
           {rti.full_text}
         </div>
 
-        <div className="mt-3 flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
+        <div className="mt-3 flex flex-wrap items-center gap-4 text-xs text-foreground">
           <span>📝 Questions: {rti.questions.length}</span>
           <span>💰 Fee: ₹{rti.fee_amount}</span>
           <span>📅 Date: {new Date(rti.date).toLocaleDateString("en-IN")}</span>

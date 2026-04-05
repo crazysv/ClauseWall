@@ -28,7 +28,7 @@ export default function CompanyGrid({
     <div>
       <div className="space-y-4 mb-6">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-foreground" />
           <Input
             placeholder="Search companies..."
             value={search}
@@ -40,7 +40,7 @@ export default function CompanyGrid({
       </div>
 
       {filtered.length === 0 ? (
-        <div className="text-center py-12 text-muted-foreground">
+        <div className="text-center py-12 text-foreground">
           <p>No companies match your filters.</p>
           <button
             onClick={() => {

@@ -384,7 +384,7 @@ export default function ClauseAutopsyModal({
                   <h2 className="font-black text-xl uppercase tracking-wider text-foreground">
                     Clause Breakdown
                   </h2>
-                  <p className="text-[10px] text-muted-foreground font-black uppercase tracking-wider">
+                  <p className="text-[10px] text-foreground font-black uppercase tracking-wider">
                     Clause #{clause.clause_number} •{" "}
                     {clause.clause_type.replace(/_/g, " ")}
                   </p>
@@ -392,7 +392,7 @@ export default function ClauseAutopsyModal({
               </div>
               <button
                 onClick={onClose}
-                className="p-2 border-2 border-transparent hover:border-foreground transition-all text-muted-foreground hover:text-foreground hover:bg-background"
+                className="p-2 border-2 border-transparent hover:border-foreground transition-all text-foreground hover:text-foreground hover:bg-background"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -409,7 +409,7 @@ export default function ClauseAutopsyModal({
                 <div className="space-y-6">
                   {/* Clause text with scan animation */}
                   <div className="relative overflow-hidden card-impact bg-muted p-5">
-                    <p className="text-sm text-muted-foreground font-bold leading-relaxed font-mono">
+                    <p className="text-sm text-foreground font-bold leading-relaxed font-mono">
                       {clause.original_text}
                     </p>
                     {/* Scanning line */}
@@ -447,11 +447,11 @@ export default function ClauseAutopsyModal({
               {/* ── Error State ── */}
               {error && !loading && (
                 <div className="text-center py-8 space-y-4">
-                  <XCircle className="h-10 w-10 text-red-500 mx-auto" />
+                  <XCircle className="h-10 w-10 text-red-900 dark:text-red-100 font-bold mx-auto" />
                   <p className="text-red-400">{error}</p>
                   <button
                     onClick={fetchAutopsy}
-                    className="px-4 py-2 rounded-none bg-muted border border-foreground border-2 text-sm text-muted-foreground hover:bg-muted transition-colors"
+                    className="px-4 py-2 rounded-none bg-muted border border-foreground border-2 text-sm text-foreground hover:bg-muted transition-colors"
                   >
                     Try Again
                   </button>
@@ -463,7 +463,7 @@ export default function ClauseAutopsyModal({
                 <>
                   {/* ── Dissected Text ── */}
                   <div>
-                    <p className="text-xs font-black text-muted-foreground mb-2 uppercase tracking-wider">
+                    <p className="text-xs font-black text-foreground mb-2 uppercase tracking-wider">
                       Dissected Clause
                     </p>
                     <div className="card-impact bg-background p-5 border-2 border-foreground">
@@ -515,7 +515,7 @@ export default function ClauseAutopsyModal({
                         >
                           {getSeverityConfig(result.most_severe).label}
                         </Badge>
-                        <span className="text-xs text-muted-foreground">
+                        <span className="text-xs text-foreground">
                           ⚖️ {result.total_violations} violation
                           {result.total_violations !== 1 ? "s" : ""} found in
                           this clause
@@ -524,7 +524,7 @@ export default function ClauseAutopsyModal({
                     )}
 
                     {result.total_violations === 0 && (
-                      <p className="text-sm text-green-400 mt-3">
+                      <p className="text-sm text-green-900 dark:text-green-100 font-bold mt-3">
                         ✅ No word-level violations identified in this clause.
                       </p>
                     )}
@@ -533,7 +533,7 @@ export default function ClauseAutopsyModal({
                   {/* ── Violation Detail Cards ── */}
                   {result.violations.length > 0 && (
                     <div>
-                      <p className="text-xs font-medium text-muted-foreground mb-3 uppercase tracking-wider">
+                      <p className="text-xs font-medium text-foreground mb-3 uppercase tracking-wider">
                         Violation Details
                       </p>
                       <div className="space-y-3">
@@ -607,7 +607,7 @@ export default function ClauseAutopsyModal({
                                       <div className="pt-3">
                                         {/* Explanation */}
                                         <div className="mb-3">
-                                          <p className="text-xs font-black text-muted-foreground uppercase tracking-wider mb-1">
+                                          <p className="text-xs font-black text-foreground uppercase tracking-wider mb-1">
                                             Why This Is a Problem
                                           </p>
                                           <p className="text-sm font-bold text-foreground uppercase tracking-wider leading-relaxed">
@@ -618,7 +618,7 @@ export default function ClauseAutopsyModal({
                                         {/* Statute */}
                                         {violation.statute && (
                                           <div className="mb-3">
-                                            <p className="text-xs font-black text-muted-foreground uppercase tracking-wider mb-1">
+                                            <p className="text-xs font-black text-foreground uppercase tracking-wider mb-1">
                                               📖 Legal Reference
                                             </p>
                                             <p
@@ -632,7 +632,7 @@ export default function ClauseAutopsyModal({
                                         {/* Penalty */}
                                         {violation.penalty && (
                                           <div>
-                                            <p className="text-xs font-black uppercase tracking-wider text-muted-foreground mb-1">
+                                            <p className="text-xs font-black uppercase tracking-wider text-foreground mb-1">
                                               💰 Consequence
                                             </p>
                                             <p className="text-sm font-bold text-foreground">
@@ -655,7 +655,7 @@ export default function ClauseAutopsyModal({
                   {/* ── Summary ── */}
                   {result.dissection_summary && (
                     <div>
-                      <p className="text-xs font-black text-muted-foreground mb-2 uppercase tracking-wider">
+                      <p className="text-xs font-black text-foreground mb-2 uppercase tracking-wider">
                         Breakdown Summary
                       </p>
                       <div className="p-4 card-impact bg-muted flex items-center gap-2">

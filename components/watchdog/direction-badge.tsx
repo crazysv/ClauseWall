@@ -19,7 +19,7 @@ const directionConfig: Record<
   },
   neutral: {
     label: "Neutral",
-    color: "bg-gray-500/15 text-gray-400 border-gray-500/30",
+    color: "bg-gray-500/15 text-foreground border-gray-500/30",
     emoji: "⚪",
   },
 };

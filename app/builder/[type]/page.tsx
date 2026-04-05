@@ -241,7 +241,7 @@ export default function BuilderFormPage() {
           />
         ) : field.type === "currency" ? (
           <div className="relative">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground text-sm">
               ₹
             </span>
             <input
@@ -292,7 +292,7 @@ export default function BuilderFormPage() {
         )}
 
         {field.helpText && !error && (
-          <p className="text-xs text-muted-foreground flex items-center gap-1">
+          <p className="text-xs text-foreground flex items-center gap-1">
             <Info className="w-3 h-3" />
             {field.helpText}
           </p>
@@ -409,7 +409,7 @@ export default function BuilderFormPage() {
                 {errors["_jurisdiction"]}
               </p>
             )}
-            <p className="text-xs text-muted-foreground mt-2">
+            <p className="text-xs text-foreground mt-2">
               Laws vary by state. This ensures your contract references the
               correct statutes.
             </p>
@@ -512,7 +512,7 @@ export default function BuilderFormPage() {
                       {" "}
                       · {law.section}
                     </span>
-                    <p className="text-muted-foreground text-xs">
+                    <p className="text-foreground text-xs">
                       {law.relevance}
                     </p>
                   </div>

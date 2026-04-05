@@ -18,7 +18,7 @@ export default function JurisdictionReasoning({
     <Card className="card-impact bg-blue-50 dark:bg-blue-900/20 border-blue-500 rounded-none">
       <CardContent className="p-4">
         <div className="flex items-start gap-3 mb-2">
-          <Scale className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0 stroke-[3px]" />
+          <Scale className="h-5 w-5 text-blue-900 dark:text-blue-100 font-bold dark:text-blue-400 mt-0.5 flex-shrink-0 stroke-[3px]" />
           <p className="text-sm font-bold text-blue-900 dark:text-blue-100 leading-relaxed tracking-wide">
             {reasoning}
           </p>

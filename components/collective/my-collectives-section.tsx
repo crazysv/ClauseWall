@@ -59,12 +59,12 @@ export default function MyCollectivesSection() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {collectives.slice(0, 4).map(({ collective, membership }) => {
           const statusColors: Record<string, string> = {
-            forming: "bg-blue-500/10 text-blue-400",
-            active: "bg-green-500/10 text-green-400",
+            forming: "bg-blue-500/10 text-blue-800 dark:text-blue-100 font-bold",
+            active: "bg-green-500/10 text-green-800 dark:text-green-100 font-bold",
             threshold_reached: "bg-amber-500 text-white font-bold",
-            action_taken: "bg-purple-500/10 text-purple-400",
-            resolved: "bg-emerald-500/10 text-emerald-400",
-            dormant: "bg-white/5 text-white/30",
+            action_taken: "bg-purple-500/10 text-purple-800 dark:text-purple-100 font-bold",
+            resolved: "bg-emerald-500/10 text-emerald-800 dark:text-emerald-100 font-bold",
+            dormant: "bg-white/5 text-white",
           };
 
           return (

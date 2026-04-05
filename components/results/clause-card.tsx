@@ -249,28 +249,28 @@ export default function ClauseCard({
       icon: <CheckCircle2 className="h-5 w-5 text-green-600" />,
       borderClass: "border-l-[6px] border-green-600",
       badgeClass:
-        "bg-green-50 text-green-800 border-2 border-green-600 font-bold uppercase dark:bg-green-950 dark:text-green-300",
+        "bg-green-50 text-green-900 dark:text-green-100 font-bold border-2 border-green-600 font-bold uppercase dark:bg-green-950 dark:text-green-300",
       label: "Safe",
     },
     warning: {
       icon: <AlertTriangle className="h-5 w-5 text-yellow-600" />,
       borderClass: "border-l-[6px] border-yellow-600",
       badgeClass:
-        "bg-yellow-50 text-yellow-800 border-2 border-yellow-600 font-bold uppercase dark:bg-yellow-950 dark:text-yellow-300",
+        "bg-yellow-50 text-yellow-900 dark:text-yellow-100 font-bold border-2 border-yellow-600 font-bold uppercase dark:bg-yellow-950 dark:text-yellow-300",
       label: "Warning",
     },
     dangerous: {
       icon: <XCircle className="h-5 w-5 text-red-600" />,
       borderClass: "border-l-[6px] border-red-600",
       badgeClass:
-        "bg-red-50 text-red-800 border-2 border-red-600 font-bold uppercase dark:bg-red-950 dark:text-red-300",
+        "bg-red-50 text-red-900 dark:text-red-100 font-bold border-2 border-red-600 font-bold uppercase dark:bg-red-950 dark:text-red-300",
       label: "Dangerous",
     },
     illegal: {
       icon: <Scale className="h-5 w-5 text-purple-600" />,
       borderClass: "border-l-[6px] border-purple-600",
       badgeClass:
-        "bg-purple-50 text-purple-800 border-2 border-purple-600 font-bold uppercase dark:bg-purple-950 dark:text-purple-300",
+        "bg-purple-50 text-purple-900 dark:text-purple-100 font-bold border-2 border-purple-600 font-bold uppercase dark:bg-purple-950 dark:text-purple-300",
       label: "Illegal",
     },
   };
@@ -358,20 +358,20 @@ export default function ClauseCard({
             {risk.icon}
             <Badge className={risk.badgeClass}>{risk.label}</Badge>
             <span
-              className="text-xs font-black tracking-wider text-muted-foreground uppercase"
+              className="text-xs font-black tracking-wider text-foreground uppercase"
               title="Risk score for this clause (0-100)"
             >
               Score: {clause.risk_score}/100
             </span>
             <Badge
               variant="outline"
-              className="text-[10px] uppercase font-bold text-muted-foreground border-2 border-muted border-foreground"
+              className="text-[10px] uppercase font-bold text-foreground border-2 border-muted border-foreground"
             >
               {clause.clause_type}
             </Badge>
             {verificationBadge()}
             {showRoast && (
-              <Badge className="bg-orange-50 text-orange-800 border-2 border-orange-600 font-bold uppercase text-[10px] px-1.5 gap-1">
+              <Badge className="bg-orange-50 text-orange-900 dark:text-orange-100 font-bold border-2 border-orange-600 font-bold uppercase text-[10px] px-1.5 gap-1">
                 <Flame className="h-3.5 w-3.5" />
                 Roasted
               </Badge>
@@ -425,7 +425,7 @@ export default function ClauseCard({
 
               {/* Full Clause Text */}
               <div>
-                <p className="text-xs font-black uppercase tracking-wider text-muted-foreground mb-1.5">
+                <p className="text-xs font-black uppercase tracking-wider text-foreground mb-1.5">
                   Full Clause Text
                 </p>
                 <p className="text-sm text-foreground bg-muted p-4 border border-foreground leading-relaxed font-medium">
@@ -447,12 +447,12 @@ export default function ClauseCard({
                       <Flame className="h-4 w-4" />
                       Roasted Analysis 🔥
                     </p>
-                    <div className="p-4 bg-orange-50 dark:bg-orange-950 border-2 border-orange-600 text-orange-900 dark:text-orange-100">
+                    <div className="p-4 bg-orange-50 dark:bg-orange-950 border-2 border-orange-600 text-orange-900 dark:text-orange-100 font-bold dark:text-orange-100">
                       <p className="text-sm leading-relaxed font-bold">
                         {roastText}
                       </p>
                     </div>
-                    <p className="text-[10px] text-muted-foreground mt-2 font-bold uppercase tracking-wider">
+                    <p className="text-[10px] text-foreground mt-2 font-bold uppercase tracking-wider">
                       ⚠️ Roast mode — entertainment + education. Formal legal
                       analysis is above when roast mode is off.
                     </p>
@@ -465,7 +465,7 @@ export default function ClauseCard({
                     exit={{ opacity: 0, y: -5 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <p className="text-xs font-black uppercase tracking-wider text-muted-foreground mb-1.5">
+                    <p className="text-xs font-black uppercase tracking-wider text-foreground mb-1.5">
                       Analysis
                     </p>
                     <p className="text-sm text-foreground font-medium leading-relaxed">
@@ -505,7 +505,7 @@ export default function ClauseCard({
               {/* ── QUICK ACTIONS — Compact CTA Row ── */}
               {clause.risk_level !== "safe" && (
                 <div className="flex flex-wrap items-center gap-2 py-2">
-                  <span className="text-[10px] text-muted-foreground font-black uppercase tracking-wider mr-1">
+                  <span className="text-[10px] text-foreground font-black uppercase tracking-wider mr-1">
                     Quick Actions
                   </span>
 
@@ -594,7 +594,7 @@ export default function ClauseCard({
                               className={`text-xs py-1.5 px-3 rounded-none border-2 transition-colors duration-150 font-bold uppercase ${
                                 activeSubTab === subTab.id
                                   ? "text-background bg-foreground border-foreground"
-                                  : "text-muted-foreground border-transparent hover:text-foreground hover:border-foreground"
+                                  : "text-foreground border-transparent hover:text-foreground hover:border-foreground"
                               }`}
                             >
                               {subTab.label}
@@ -683,7 +683,7 @@ export default function ClauseCard({
                                         <MessageSquare className="h-3.5 w-3.5" />
                                         Negotiation Script
                                       </p>
-                                      <p className="text-sm text-gray-400">
+                                      <p className="text-sm text-foreground">
                                         A detailed negotiation script with
                                         counter-responses is available in the
                                         full playbook.
@@ -823,7 +823,7 @@ export default function ClauseCard({
                                     <ShieldCheck className="h-3.5 w-3.5" />
                                     Legal Proof
                                   </p>
-                                  <p className="text-xs text-white/40 mb-3">
+                                  <p className="text-xs text-white mb-3">
                                     Step-by-step logical proof of this
                                     clause&apos;s legality
                                   </p>

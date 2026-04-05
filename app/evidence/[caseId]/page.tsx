@@ -264,7 +264,7 @@ export default function EvidenceCaseDetailPage() {
   if (loading) {
     return (
       <main className="min-h-screen bg-background flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        <Loader2 className="h-8 w-8 animate-spin text-foreground" />
       </main>
     );
   }
@@ -277,7 +277,7 @@ export default function EvidenceCaseDetailPage() {
         {/* Header */}
         <Link
           href="/evidence"
-          className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest text-muted-foreground hover:text-foreground mb-6 border-b-2 border-transparent hover:border-black transition-all"
+          className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest text-foreground hover:text-foreground mb-6 border-b-2 border-transparent hover:border-black transition-all"
         >
           <ArrowLeft className="h-4 w-4 stroke-[3px]" />
           BACK TO CASES
@@ -288,7 +288,7 @@ export default function EvidenceCaseDetailPage() {
             <h1 className="text-3xl font-black uppercase tracking-widest text-foreground">
               {evidenceCase.title}
             </h1>
-            <p className="text-sm font-bold text-muted-foreground mt-2 tracking-wide uppercase">
+            <p className="text-sm font-bold text-foreground mt-2 tracking-wide uppercase">
               vs. {evidenceCase.counterparty_name}{" "}
               <span className="mx-2">•</span>{" "}
               {evidenceCase.dispute_type || "General"} Dispute
@@ -356,7 +356,7 @@ export default function EvidenceCaseDetailPage() {
             </h3>
             <EvidenceUploadZone caseId={caseId} onUpload={handleUpload} />
             {uploading && (
-              <div className="flex items-center gap-3 mt-6 text-sm font-bold text-blue-700 dark:text-blue-400 uppercase tracking-widest">
+              <div className="flex items-center gap-3 mt-6 text-sm font-bold text-blue-900 dark:text-blue-100 font-bold dark:text-blue-400 uppercase tracking-widest">
                 <Loader2 className="h-5 w-5 animate-spin stroke-[3px]" />
                 PROCESSING...
               </div>
@@ -381,7 +381,7 @@ export default function EvidenceCaseDetailPage() {
                   className={`flex items-center gap-2 px-4 py-2 border-2 border-black text-sm font-black uppercase tracking-widest transition-all ${
                     viewMode === mode
                       ? "bg-black text-white dark:bg-white dark:text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-                      : "bg-white dark:bg-zinc-900 text-muted-foreground hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                      : "bg-white dark:bg-zinc-900 text-foreground hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                   }`}
                 >
                   <Icon className="h-5 w-5 stroke-[3px]" />
@@ -403,7 +403,7 @@ export default function EvidenceCaseDetailPage() {
         {viewMode === "items" && (
           <div className="space-y-3">
             {items.length === 0 ? (
-              <div className="text-center py-12 text-muted-foreground text-sm">
+              <div className="text-center py-12 text-foreground text-sm">
                 No evidence items yet. Click &quot;Add Evidence&quot; to get
                 started.
               </div>

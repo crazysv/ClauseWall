@@ -565,7 +565,7 @@ export default function UploadPage() {
             </div>
             <div className="text-center">
               <h2 className="text-2xl font-bold mb-2">Quick Scanning...</h2>
-              <p className="text-muted-foreground font-medium">
+              <p className="text-foreground font-medium">
                 Finding red flags in your contract. This takes 3-5 seconds.
               </p>
             </div>
@@ -583,7 +583,7 @@ export default function UploadPage() {
                   <>🛡️ Contract Analysis</>
                 )}
               </h1>
-              <p className="text-lg md:text-xl text-muted-foreground">
+              <p className="text-lg md:text-xl text-foreground">
                 {!quickScanResult && mlResult
                   ? "On-device scan complete • Enhancing with AI..."
                   : "AI analysis of your contract"}
@@ -625,7 +625,7 @@ export default function UploadPage() {
               <h1 className="text-impact-heading text-foreground mb-4">
                 Analyze Your Contract
               </h1>
-              <p className="text-lg md:text-xl text-muted-foreground mt-4 max-w-2xl mx-auto">
+              <p className="text-lg md:text-xl text-foreground mt-4 max-w-2xl mx-auto">
                 Upload your document or paste the text. Get instant red flags in
                 5 seconds, then a full verified analysis in 60 seconds.
               </p>
@@ -697,10 +697,10 @@ export default function UploadPage() {
                             <p className="text-xl font-black uppercase tracking-wider text-foreground mt-4">
                               Drag & drop your PDF here
                             </p>
-                            <p className="text-sm font-bold text-muted-foreground mt-2">
+                            <p className="text-sm font-bold text-foreground mt-2">
                               or click to browse
                             </p>
-                            <p className="text-xs font-bold text-muted-foreground mt-4 uppercase tracking-wider">
+                            <p className="text-xs font-bold text-foreground mt-4 uppercase tracking-wider">
                               PDF or TXT • Max 10MB
                             </p>
                           </>
@@ -716,7 +716,7 @@ export default function UploadPage() {
                             <p className="text-base font-black uppercase tracking-wider text-foreground">
                               {file.name}
                             </p>
-                            <p className="text-sm font-bold text-muted-foreground">
+                            <p className="text-sm font-bold text-foreground">
                               {(file.size / 1024).toFixed(1)} KB
                             </p>
                           </div>
@@ -751,10 +751,10 @@ export default function UploadPage() {
                       />
                     </div>
                     <div className="flex justify-between mt-3">
-                      <p className="text-xs font-black uppercase tracking-wider text-muted-foreground tabular-nums">
+                      <p className="text-xs font-black uppercase tracking-wider text-foreground tabular-nums">
                         Minimum 50 characters required
                       </p>
-                      <p className="text-xs font-black uppercase tracking-wider text-muted-foreground tabular-nums text-right">
+                      <p className="text-xs font-black uppercase tracking-wider text-foreground tabular-nums text-right">
                         {pastedText.length} characters
                       </p>
                     </div>
@@ -819,7 +819,7 @@ export default function UploadPage() {
                     value={sourceLanguage}
                     onChange={setSourceLanguage}
                   />
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <p className="text-xs text-foreground mt-1">
                     Auto-detect works for most documents. Select manually for
                     better accuracy.
                   </p>
@@ -852,22 +852,22 @@ export default function UploadPage() {
 
                 <div className="flex flex-wrap items-center justify-center gap-6 mt-6 pt-6 border-t border-border">
                   {mlStatus === "ready" && (
-                    <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
                       <Cpu className="h-4 w-4 text-primary" />
                       ML scan: instant
                     </div>
                   )}
-                  <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
                     <Zap className="h-4 w-4 text-primary" />
                     Quick scan: 5 sec
                   </div>
-                  <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
                     <Shield className="h-4 w-4 text-primary" />
                     Full report: 60 sec
                   </div>
                 </div>
 
-                <p className="text-xs text-muted-foreground text-center mt-4">
+                <p className="text-xs text-foreground text-center mt-4">
                   🔒 Your document is analyzed in real-time and not permanently
                   stored. We take your privacy seriously.
                 </p>
@@ -875,7 +875,7 @@ export default function UploadPage() {
             </Card>
 
             <div className="mt-8 text-center">
-              <p className="text-sm text-muted-foreground mb-3">
+              <p className="text-sm text-foreground mb-3">
                 Supported document types:
               </p>
               <div className="flex flex-wrap justify-center gap-2">
@@ -883,7 +883,7 @@ export default function UploadPage() {
                   <Badge
                     key={type.value}
                     variant="outline"
-                    className="border-foreground border-2 text-muted-foreground"
+                    className="border-foreground border-2 text-foreground"
                   >
                     {type.label}
                   </Badge>

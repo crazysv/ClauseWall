@@ -175,7 +175,7 @@ export default async function VerifyPage({
                   >
                     {doc.overall_risk_score}
                   </span>
-                  <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                  <span className="text-xs font-bold uppercase tracking-widest text-foreground">
                     /100
                   </span>
                 </div>
@@ -183,7 +183,7 @@ export default async function VerifyPage({
             </div>
 
             {/* Description */}
-            <p className="text-center text-sm text-muted-foreground mb-6">
+            <p className="text-center text-sm text-foreground mb-6">
               {tier.description}
             </p>
 
@@ -194,21 +194,21 @@ export default async function VerifyPage({
             <div className="space-y-4 mb-8 pt-6 border-t-4 border-black border-dashed">
               <div className="flex items-center gap-4 text-sm font-bold uppercase tracking-widest">
                 <FileText className="h-5 w-5 text-black dark:text-foreground flex-shrink-0 stroke-[3px]" />
-                <span className="text-muted-foreground w-32">TYPE</span>
+                <span className="text-foreground w-32">TYPE</span>
                 <span className="font-black text-foreground">
                   {getDocumentTypeLabel(doc.document_type)}
                 </span>
               </div>
               <div className="flex items-center gap-4 text-sm font-bold uppercase tracking-widest">
                 <MapPin className="h-5 w-5 text-black dark:text-foreground flex-shrink-0 stroke-[3px]" />
-                <span className="text-muted-foreground w-32">JURISDICTION</span>
+                <span className="text-foreground w-32">JURISDICTION</span>
                 <span className="font-black text-foreground">
                   {getStateName(doc.jurisdiction)}
                 </span>
               </div>
               <div className="flex items-center gap-4 text-sm font-bold uppercase tracking-widest">
                 <Calendar className="h-5 w-5 text-black dark:text-foreground flex-shrink-0 stroke-[3px]" />
-                <span className="text-muted-foreground w-32">VERIFIED</span>
+                <span className="text-foreground w-32">VERIFIED</span>
                 <span className="font-black text-foreground">
                   {formattedDate}
                 </span>
@@ -218,7 +218,7 @@ export default async function VerifyPage({
               {settings.show_entity && doc.entity_name && (
                 <div className="flex items-center gap-4 text-sm font-bold uppercase tracking-widest">
                   <Building2 className="h-5 w-5 text-black dark:text-foreground flex-shrink-0 stroke-[3px]" />
-                  <span className="text-muted-foreground w-32">ENTITY</span>
+                  <span className="text-foreground w-32">ENTITY</span>
                   <span className="font-black text-foreground">
                     {doc.entity_name}
                   </span>
@@ -237,7 +237,7 @@ export default async function VerifyPage({
 
             {/* Clause Breakdown */}
             <div className="mb-8 pt-6 border-t-4 border-black border-dashed">
-              <h3 className="text-sm font-black uppercase tracking-widest text-muted-foreground mb-4">
+              <h3 className="text-sm font-black uppercase tracking-widest text-foreground mb-4">
                 CLAUSE BREAKDOWN
               </h3>
               <div className="grid grid-cols-4 gap-3">
@@ -278,7 +278,7 @@ export default async function VerifyPage({
                   </p>
                 </div>
               </div>
-              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground text-center mt-4">
+              <p className="text-xs font-bold uppercase tracking-widest text-foreground text-center mt-4">
                 {doc.total_clauses} TOTAL CLAUSES ANALYZED
               </p>
             </div>
@@ -287,7 +287,7 @@ export default async function VerifyPage({
             {settings.show_summary && doc.summary && (
               <>
                 <div className="mb-8 pt-6 border-t-4 border-black border-dashed">
-                  <h3 className="text-sm font-black uppercase tracking-widest text-muted-foreground mb-4">
+                  <h3 className="text-sm font-black uppercase tracking-widest text-foreground mb-4">
                     ANALYSIS SUMMARY
                   </h3>
                   <p className="text-base font-medium text-foreground leading-relaxed p-4 border-l-4 border-black bg-gray-50 dark:bg-zinc-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
@@ -328,7 +328,7 @@ export default async function VerifyPage({
                 CLAUSEWALL
               </span>
             </div>
-            <p className="text-xs text-center font-bold text-muted-foreground uppercase tracking-widest leading-relaxed">
+            <p className="text-xs text-center font-bold text-foreground uppercase tracking-widest leading-relaxed">
               India&apos;s AI Contract Analyzer. This verification is valid as
               of the date shown. Contract terms may have changed since
               verification. This is not legal advice.
@@ -348,7 +348,7 @@ function NotFound() {
       <div className="text-center max-w-sm">
         <div className="text-5xl mb-4">🔍</div>
         <h1 className="text-xl font-bold mb-2">Verification Not Found</h1>
-        <p className="text-sm text-muted-foreground mb-6">
+        <p className="text-sm text-foreground mb-6">
           This verification link is invalid or has expired. The contract owner
           may have removed it.
         </p>

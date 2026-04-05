@@ -22,7 +22,7 @@ export default function FeeBreakdown({ result, claimAmount }: Props) {
         <div className="space-y-2 mb-3">
           {result.breakdown.map((item, i) => (
             <div key={i} className="flex justify-between text-xs">
-              <span className="text-muted-foreground">{item.item}</span>
+              <span className="text-foreground">{item.item}</span>
               <span
                 className={
                   item.amount === 0
@@ -51,14 +51,14 @@ export default function FeeBreakdown({ result, claimAmount }: Props) {
         {/* Payment Methods */}
         {result.payment_methods.length > 0 && (
           <div className="mb-3">
-            <div className="flex items-center gap-1 text-xs text-muted-foreground mb-1">
+            <div className="flex items-center gap-1 text-xs text-foreground mb-1">
               <CreditCard className="h-3 w-3" /> Payment methods:
             </div>
             <div className="flex flex-wrap gap-1">
               {result.payment_methods.map((m, i) => (
                 <span
                   key={i}
-                  className="text-[10px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground"
+                  className="text-[10px] px-1.5 py-0.5 rounded bg-muted text-foreground"
                 >
                   {m}
                 </span>

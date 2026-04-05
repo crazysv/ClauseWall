@@ -110,7 +110,7 @@ export default function PrivacyDashboard({
                   ) : step.status === "pending" ? (
                     <Loader2 className="h-4 w-4 text-primary animate-spin flex-shrink-0" />
                   ) : (
-                    <span className="h-4 w-4 text-muted-foreground flex-shrink-0 flex items-center justify-center font-bold">
+                    <span className="h-4 w-4 text-foreground flex-shrink-0 flex items-center justify-center font-bold">
                       −
                     </span>
                   )}
@@ -120,7 +120,7 @@ export default function PrivacyDashboard({
                         ? "font-black uppercase tracking-wider text-foreground"
                         : step.status === "pending"
                           ? "font-black uppercase tracking-wider text-primary"
-                          : "font-bold text-muted-foreground"
+                          : "font-bold text-foreground"
                     }
                   >
                     {step.label}
@@ -128,7 +128,7 @@ export default function PrivacyDashboard({
                   {step.location === "device" && (
                     <Badge
                       variant="outline"
-                      className="text-[10px] px-1.5 py-0 border-2 font-black uppercase tracking-wider text-muted-foreground border-foreground bg-muted"
+                      className="text-[10px] px-1.5 py-0 border-2 font-black uppercase tracking-wider text-foreground border-foreground bg-muted"
                     >
                       LOCAL
                     </Badge>
@@ -149,7 +149,7 @@ export default function PrivacyDashboard({
           {/* Redaction Stats */}
           {redactionStats && redactionStats.total > 0 && (
             <div className="pt-4 border-t-2 border-foreground border-dashed">
-              <p className="text-xs text-muted-foreground font-black mb-2 uppercase tracking-wider">
+              <p className="text-xs text-foreground font-black mb-2 uppercase tracking-wider">
                 PII REDACTED LOCALLY
               </p>
               <div className="flex flex-wrap gap-x-2 gap-y-2 text-xs font-black uppercase tracking-wider text-foreground">
@@ -184,7 +184,7 @@ export default function PrivacyDashboard({
 
           {/* Bytes Sent */}
           <div className="mt-4 pt-4 border-t-2 border-foreground border-dashed">
-            <p className="text-xs text-muted-foreground flex items-center gap-1.5 font-bold">
+            <p className="text-xs text-foreground flex items-center gap-1.5 font-bold">
               <Lock className="h-3.5 w-3.5" />
               Data sent to server:{" "}
               <span className="font-black uppercase tracking-wider text-background bg-foreground px-2 py-0.5 border-2 border-foreground">

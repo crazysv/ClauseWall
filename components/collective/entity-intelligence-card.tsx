@@ -97,7 +97,7 @@ export default function EntityIntelligenceCard({
                   <h3 className="text-sm font-semibold text-foreground">
                     Community Intelligence
                   </h3>
-                  <p className="text-[10px] text-foreground/40">
+                  <p className="text-[10px] text-foreground">
                     {entity.total_flags} community flags •{" "}
                     {entity.total_documents} documents
                   </p>
@@ -116,33 +116,33 @@ export default function EntityIntelligenceCard({
                 <p className="text-lg font-bold text-amber-400">
                   {entity.total_flags}
                 </p>
-                <p className="text-[10px] text-foreground/40">Flags</p>
+                <p className="text-[10px] text-foreground">Flags</p>
               </div>
               <div className="rounded-lg bg-white/[0.03] p-3 text-center">
                 <p className="text-lg font-bold text-orange-400">
                   {entity.common_violations.length}
                 </p>
-                <p className="text-[10px] text-foreground/40">Violations</p>
+                <p className="text-[10px] text-foreground">Violations</p>
               </div>
               <div className="rounded-lg bg-white/[0.03] p-3 text-center">
                 <p className="text-lg font-bold text-red-400">
                   {entity.avg_risk_score}
                 </p>
-                <p className="text-[10px] text-foreground/40">Avg Risk</p>
+                <p className="text-[10px] text-foreground">Avg Risk</p>
               </div>
             </div>
 
             {/* Common violations */}
             {entity.common_violations.length > 0 && (
               <div className="mb-4">
-                <p className="text-[10px] text-foreground/30 uppercase tracking-wider mb-2">
+                <p className="text-[10px] text-foreground uppercase tracking-wider mb-2">
                   Most Common Violations
                 </p>
                 <div className="flex flex-wrap gap-1.5">
                   {entity.common_violations.slice(0, 4).map((v, i) => (
                     <Badge
                       key={i}
-                      className="bg-red-500/10 text-red-300/80 text-[10px] border-red-500/20"
+                      className="bg-red-500/10 text-red-800 dark:text-red-100 font-bold/80 text-[10px] border-red-500/20"
                     >
                       {v.clause_type} ({v.occurrence_count}x)
                     </Badge>
@@ -161,7 +161,7 @@ export default function EntityIntelligenceCard({
                       Active Collective
                     </span>
                   </div>
-                  <Badge className="text-[10px] bg-amber-500/10 text-amber-400">
+                  <Badge className="text-[10px] bg-amber-500/10 text-amber-800 dark:text-amber-100 font-bold">
                     {collective.member_count} members
                   </Badge>
                 </div>
@@ -191,7 +191,7 @@ export default function EntityIntelligenceCard({
               <div className="rounded-lg bg-white/[0.02] border border-foreground border-2 p-3 mb-3">
                 <div className="flex items-center gap-2 mb-2">
                   <AlertCircle className="h-4 w-4 text-orange-400" />
-                  <span className="text-xs text-foreground/60">
+                  <span className="text-xs text-foreground">
                     {entity.total_flags} flags recorded — collective forming
                     soon
                   </span>
@@ -204,7 +204,7 @@ export default function EntityIntelligenceCard({
               <div className="flex items-center justify-between rounded-lg bg-white/[0.02] p-3">
                 <div className="flex items-center gap-2">
                   <TrendingUp className="h-4 w-4 text-green-400" />
-                  <span className="text-xs text-foreground/60">
+                  <span className="text-xs text-foreground">
                     Collective action is{" "}
                     <span className="text-green-400 font-medium">
                       {leverage.collective.multiplier}x

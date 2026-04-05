@@ -119,7 +119,7 @@ export default function BuilderPage() {
               <h3 className="text-2xl font-black uppercase tracking-widest mb-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                 {template.name}
               </h3>
-              <p className="text-muted-foreground text-sm font-bold mb-6 leading-relaxed">
+              <p className="text-foreground text-sm font-bold mb-6 leading-relaxed">
                 {template.description}
               </p>
 

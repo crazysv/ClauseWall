@@ -46,7 +46,7 @@ export default function WrappedPage() {
       <div className="min-h-screen flex flex-col items-center justify-center gap-4 px-4">
         <div className="text-5xl">📊</div>
         <h1 className="text-xl font-bold">No Data Yet</h1>
-        <p className="text-gray-400 text-sm text-center max-w-sm">
+        <p className="text-foreground text-sm text-center max-w-sm">
           Analyze some contracts first to generate your Contract Wrapped
           summary.
         </p>
@@ -117,7 +117,7 @@ export default function WrappedPage() {
       <div className="w-full max-w-md mb-4">
         <Link
           href="/dashboard"
-          className="flex items-center gap-2 text-gray-500 hover:text-foreground text-sm transition-colors"
+          className="flex items-center gap-2 text-foreground hover:text-foreground text-sm transition-colors"
         >
           <ChevronLeft className="h-4 w-4" />
           Back to Dashboard
@@ -314,10 +314,10 @@ function buildSlides(data: WrappedData): SlideConfig[] {
         <h2 className="text-4xl font-extrabold bg-background bg-clip-text text-transparent">
           CONTRACT WRAPPED
         </h2>
-        <p className="text-gray-500 text-xs mt-4">
+        <p className="text-foreground text-xs mt-4">
           {data.dateRange.first} → {data.dateRange.last}
         </p>
-        <p className="text-gray-400 mt-6 text-sm">Tap to continue →</p>
+        <p className="text-foreground mt-6 text-sm">Tap to continue →</p>
       </>
     ),
     exportContent: (
@@ -360,10 +360,10 @@ function buildSlides(data: WrappedData): SlideConfig[] {
           {data.totalContracts}
         </h1>
         <h2 className="text-2xl font-bold text-green-400">CONTRACTS</h2>
-        <p className="text-gray-400 mt-4 text-sm">
+        <p className="text-foreground mt-4 text-sm">
           That&apos;s more than {data.percentile}% of Indians
         </p>
-        <p className="text-gray-500 mt-2 text-xs">
+        <p className="text-foreground mt-2 text-xs">
           {data.totalClauses} clauses · {data.dateRange.spanDays} days
         </p>
       </>
@@ -423,7 +423,7 @@ function buildSlides(data: WrappedData): SlideConfig[] {
           <p className="text-yellow-400">⚠️ {data.warningFound} Warning</p>
         </div>
         {illegalComment && (
-          <p className="text-gray-400 text-xs mt-4 italic">{illegalComment}</p>
+          <p className="text-foreground text-xs mt-4 italic">{illegalComment}</p>
         )}
       </>
     ),
@@ -495,13 +495,13 @@ function buildSlides(data: WrappedData): SlideConfig[] {
         <h1 className="text-7xl font-black text-foreground mb-2">
           {savingsLabel}
         </h1>
-        <p className="text-gray-400 text-sm mt-2">
+        <p className="text-foreground text-sm mt-2">
           In excessive deposits, penalties & hidden fees
         </p>
         <p className="text-2xl mt-6">
           {data.estimatedSavings >= 100000 ? "🎉" : "🏖️"}
         </p>
-        <p className="text-gray-500 text-xs mt-2 italic">{savingsComparison}</p>
+        <p className="text-foreground text-xs mt-2 italic">{savingsComparison}</p>
       </>
     ),
     exportContent: (
@@ -562,7 +562,7 @@ function buildSlides(data: WrappedData): SlideConfig[] {
           <p className="text-7xl font-black text-purple-400 my-4">
             {data.riskiestContract.score}/100
           </p>
-          <p className="text-gray-400 text-sm italic">{riskyComment}</p>
+          <p className="text-foreground text-sm italic">{riskyComment}</p>
         </>
       ),
       exportContent: (
@@ -623,7 +623,7 @@ function buildSlides(data: WrappedData): SlideConfig[] {
           <p className="text-7xl font-black text-green-400 my-4">
             {data.safestContract.score}/100
           </p>
-          <p className="text-gray-400 text-sm italic">
+          <p className="text-foreground text-sm italic">
             Someone actually wrote a fair contract. Respect. ✅
           </p>
         </>
@@ -686,11 +686,11 @@ function buildSlides(data: WrappedData): SlideConfig[] {
           <p className="text-5xl font-black text-orange-400 my-4">
             {data.mostCommonRedFlag.count}×
           </p>
-          <p className="text-gray-400 text-sm">
+          <p className="text-foreground text-sm">
             Found in {data.mostCommonRedFlag.count} of your{" "}
             {data.totalContracts} contracts
           </p>
-          <p className="text-gray-500 text-xs mt-4 italic">
+          <p className="text-foreground text-xs mt-4 italic">
             {data.mostCommonRedFlag.wittyComment}
           </p>
         </>
@@ -754,10 +754,10 @@ function buildSlides(data: WrappedData): SlideConfig[] {
         <h1 className="text-3xl font-black text-foreground mb-2">
           {data.personalityType.name}
         </h1>
-        <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
+        <p className="text-foreground text-sm leading-relaxed max-w-xs">
           {data.personalityType.description}
         </p>
-        <div className="mt-6 space-y-1 text-xs text-gray-500">
+        <div className="mt-6 space-y-1 text-xs text-foreground">
           <p>
             Mostly scanned: {data.topDocumentTypeLabel} (
             {data.topDocumentTypeCount})
@@ -823,7 +823,7 @@ function buildSlides(data: WrappedData): SlideConfig[] {
         <h1 className="text-3xl font-black text-foreground mb-2">
           {data.badge.name}
         </h1>
-        <p className="text-gray-400 text-sm">{data.badge.description}</p>
+        <p className="text-foreground text-sm">{data.badge.description}</p>
         <div className="mt-6 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20">
           <p className="text-yellow-400 text-sm font-semibold">
             Top {100 - data.percentile}% of ClauseWall users
@@ -889,13 +889,13 @@ function buildSlides(data: WrappedData): SlideConfig[] {
       <>
         <div className="text-5xl mb-6">🛡️</div>
         <h1 className="text-3xl font-bold text-foreground mb-2">ClauseWall</h1>
-        <p className="text-gray-500 text-sm mb-6">
+        <p className="text-foreground text-sm mb-6">
           India&apos;s AI Contract Analyzer 🇮🇳
         </p>
         <p className="text-xl text-foreground font-bold mb-2">
           Keep protecting yourself in {year + 1}.
         </p>
-        <p className="text-gray-400 text-sm mb-6">Never sign blind again.</p>
+        <p className="text-foreground text-sm mb-6">Never sign blind again.</p>
         <div className="px-6 py-3 rounded-full bg-blue-500/10 border border-blue-500/20">
           <p className="text-blue-400 font-semibold text-sm">
             Scan your next contract free →

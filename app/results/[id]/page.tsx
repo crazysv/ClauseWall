@@ -619,7 +619,7 @@ export default function ResultsPage() {
         </div>
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-2">Analyzing Your Contract</h2>
-          <p className="text-muted-foreground max-w-md">
+          <p className="text-foreground max-w-md">
             Checking against 750+ verified Indian legal rules. This typically
             takes 30-60 seconds.
           </p>
@@ -636,7 +636,7 @@ export default function ResultsPage() {
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4 px-4">
         <XCircle className="h-12 w-12 text-red-500" />
         <h2 className="text-2xl font-bold text-red-400">Analysis Failed</h2>
-        <p className="text-muted-foreground text-center max-w-md">
+        <p className="text-foreground text-center max-w-md">
           {document.summary || "Something went wrong. Please try again."}
         </p>
         <Link href="/upload">
@@ -666,7 +666,7 @@ export default function ResultsPage() {
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
             <div>
-              <div className="flex flex-wrap items-center gap-2 text-muted-foreground text-sm font-bold uppercase tracking-wider mb-3">
+              <div className="flex flex-wrap items-center gap-2 text-foreground text-sm font-bold uppercase tracking-wider mb-3">
                 <span className="text-foreground">
                   {document.original_filename || "Analyzed Document"}
                 </span>
@@ -770,7 +770,7 @@ export default function ResultsPage() {
                   </div>
                 </div>
                 <div>
-                  <p className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-1">
+                  <p className="text-sm font-bold uppercase tracking-wider text-foreground mb-1">
                     Overall Risk Score
                   </p>
                   <p
@@ -790,7 +790,7 @@ export default function ResultsPage() {
               <CardContent className="p-6 flex flex-col justify-center h-full">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="text-center p-2 rounded border-2 border-green-600 bg-green-50 dark:bg-green-950">
-                    <p className="text-2xl md:text-3xl font-black text-green-700 dark:text-green-400 tabular-nums">
+                    <p className="text-2xl md:text-3xl font-black text-green-900 dark:text-green-100 font-bold dark:text-green-400 tabular-nums">
                       {document.safe_count}
                     </p>
                     <p className="text-[10px] font-bold uppercase tracking-wider text-green-800 dark:text-green-300">
@@ -798,7 +798,7 @@ export default function ResultsPage() {
                     </p>
                   </div>
                   <div className="text-center p-2 rounded border-2 border-yellow-600 bg-yellow-50 dark:bg-yellow-950">
-                    <p className="text-2xl md:text-3xl font-black text-yellow-700 dark:text-yellow-400 tabular-nums">
+                    <p className="text-2xl md:text-3xl font-black text-yellow-900 dark:text-yellow-100 font-bold dark:text-yellow-400 tabular-nums">
                       {document.warning_count}
                     </p>
                     <p className="text-[10px] font-bold uppercase tracking-wider text-yellow-800 dark:text-yellow-300">
@@ -806,7 +806,7 @@ export default function ResultsPage() {
                     </p>
                   </div>
                   <div className="text-center p-2 rounded border-2 border-red-600 bg-red-50 dark:bg-red-950">
-                    <p className="text-2xl md:text-3xl font-black text-red-700 dark:text-red-400 tabular-nums">
+                    <p className="text-2xl md:text-3xl font-black text-red-900 dark:text-red-100 font-bold dark:text-red-400 tabular-nums">
                       {document.dangerous_count}
                     </p>
                     <p className="text-[10px] font-bold uppercase tracking-wider text-red-800 dark:text-red-300">
@@ -814,7 +814,7 @@ export default function ResultsPage() {
                     </p>
                   </div>
                   <div className="text-center p-2 rounded border-2 border-purple-600 bg-purple-50 dark:bg-purple-950">
-                    <p className="text-2xl md:text-3xl font-black text-purple-700 dark:text-purple-400 tabular-nums">
+                    <p className="text-2xl md:text-3xl font-black text-purple-900 dark:text-purple-100 font-bold dark:text-purple-400 tabular-nums">
                       {document.illegal_count}
                     </p>
                     <p className="text-[10px] font-bold uppercase tracking-wider text-purple-800 dark:text-purple-300">
@@ -827,7 +827,7 @@ export default function ResultsPage() {
 
             <Card className="card-impact">
               <CardContent className="p-6 flex flex-col justify-center h-full">
-                <p className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-2">
+                <p className="text-sm font-bold uppercase tracking-wider text-foreground mb-2">
                   Identified Entity
                 </p>
                 <p className="text-xl font-bold truncate text-foreground">
@@ -931,7 +931,7 @@ export default function ResultsPage() {
                         </h3>
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                           <div className="text-center p-3 rounded-none border-2 border-green-600 bg-green-50 dark:bg-green-950">
-                            <p className="text-2xl font-black text-green-700 dark:text-green-400 tabular-nums">
+                            <p className="text-2xl font-black text-green-900 dark:text-green-100 font-bold dark:text-green-400 tabular-nums">
                               {verificationStats.verified}
                             </p>
                             <p className="text-xs font-bold uppercase text-green-800 dark:text-green-300">
@@ -939,7 +939,7 @@ export default function ResultsPage() {
                             </p>
                           </div>
                           <div className="text-center p-3 rounded-none border-2 border-yellow-600 bg-yellow-50 dark:bg-yellow-950">
-                            <p className="text-2xl font-black text-yellow-700 dark:text-yellow-400 tabular-nums">
+                            <p className="text-2xl font-black text-yellow-900 dark:text-yellow-100 font-bold dark:text-yellow-400 tabular-nums">
                               {verificationStats.partial}
                             </p>
                             <p className="text-xs font-bold uppercase text-yellow-800 dark:text-yellow-300">
@@ -947,7 +947,7 @@ export default function ResultsPage() {
                             </p>
                           </div>
                           <div className="text-center p-3 rounded-none border-2 border-blue-600 bg-blue-50 dark:bg-blue-950">
-                            <p className="text-2xl font-black text-blue-700 dark:text-blue-400 tabular-nums">
+                            <p className="text-2xl font-black text-blue-900 dark:text-blue-100 font-bold dark:text-blue-400 tabular-nums">
                               {verificationStats.ai_suggested}
                             </p>
                             <p className="text-xs font-bold uppercase text-blue-800 dark:text-blue-300">
@@ -958,7 +958,7 @@ export default function ResultsPage() {
                             <p className="text-2xl font-black tabular-nums text-foreground">
                               {verificationStats.verification_rate}%
                             </p>
-                            <p className="text-xs font-bold uppercase text-muted-foreground">
+                            <p className="text-xs font-bold uppercase text-foreground">
                               Verified Rate
                             </p>
                           </div>
@@ -1023,7 +1023,7 @@ export default function ResultsPage() {
                   <button
                     key={filter.value}
                     onClick={() => setFilterRisk(filter.value)}
-                    className={`px-4 py-2 rounded-none text-xs font-bold uppercase tracking-wider border-2 transition-all ${filterRisk === filter.value ? "bg-foreground border-foreground text-background" : "bg-background border-border text-muted-foreground hover:border-foreground hover:text-foreground"}`}
+                    className={`px-4 py-2 rounded-none text-xs font-bold uppercase tracking-wider border-2 transition-all ${filterRisk === filter.value ? "bg-foreground border-foreground text-background" : "bg-background border-border text-foreground hover:border-foreground hover:text-foreground"}`}
                   >
                     <span
                       className={
@@ -1052,13 +1052,13 @@ export default function ResultsPage() {
 
                 <button
                   onClick={expandAll}
-                  className="text-xs text-muted-foreground hover:text-muted-foreground transition-colors"
+                  className="text-xs text-foreground hover:text-foreground transition-colors"
                 >
                   Expand All
                 </button>
                 <button
                   onClick={collapseAll}
-                  className="text-xs text-muted-foreground hover:text-muted-foreground transition-colors"
+                  className="text-xs text-foreground hover:text-foreground transition-colors"
                 >
                   Collapse All
                 </button>
@@ -1108,7 +1108,7 @@ export default function ResultsPage() {
 
             {/* No results for filter */}
             {filteredClauses.length === 0 && (
-              <div className="text-center py-12 text-muted-foreground">
+              <div className="text-center py-12 text-foreground">
                 <p>No {filterRisk} clauses found.</p>
                 <button
                   onClick={() => setFilterRisk("all")}
@@ -1163,7 +1163,7 @@ export default function ResultsPage() {
                           <BarChart3 className="w-6 h-6 text-foreground" />
                         </div>
                         <div className="flex-1">
-                          <h4 className="text-sm font-black uppercase text-red-900 dark:text-red-100">
+                          <h4 className="text-sm font-black uppercase text-red-900 dark:text-red-100 font-bold dark:text-red-100">
                             Financial Risk Calculator
                           </h4>
                           <p className="text-xs font-medium text-red-800/80 dark:text-red-200/80 mt-1">
@@ -1218,7 +1218,7 @@ export default function ResultsPage() {
                           <FileStack className="w-6 h-6 text-foreground" />
                         </div>
                         <div className="flex-1">
-                          <h4 className="text-sm font-black uppercase text-indigo-900 dark:text-indigo-100">
+                          <h4 className="text-sm font-black uppercase text-indigo-900 dark:text-indigo-100 font-bold dark:text-indigo-100">
                             Contract Vault
                           </h4>
                           <p className="text-xs font-medium text-indigo-800/80 dark:text-indigo-200/80 mt-1">

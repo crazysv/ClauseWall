@@ -95,14 +95,14 @@ export default function AmmunitionReportModal({
               <h2 className="font-semibold text-foreground">
                 Negotiation Ammunition
               </h2>
-              <p className="text-xs text-foreground/40">
+              <p className="text-xs text-foreground">
                 Data-backed arguments from market benchmarks
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-foreground/30 hover:text-foreground/60"
+            className="text-foreground hover:text-foreground"
           >
             <X className="h-5 w-5" />
           </button>
@@ -110,7 +110,7 @@ export default function AmmunitionReportModal({
 
         {/* Audience Selector */}
         <div className="p-5 border-b border-foreground border-2">
-          <p className="text-xs text-foreground/40 mb-2">
+          <p className="text-xs text-foreground mb-2">
             Generate arguments for:
           </p>
           <div className="grid grid-cols-3 gap-2">
@@ -177,7 +177,7 @@ export default function AmmunitionReportModal({
                         <p className="text-sm font-bold text-foreground">
                           {section.user_value}
                         </p>
-                        <p className="text-[10px] text-foreground/30">
+                        <p className="text-[10px] text-foreground">
                           Your Value
                         </p>
                       </div>
@@ -185,21 +185,21 @@ export default function AmmunitionReportModal({
                         <p className="text-sm font-bold text-amber-400">
                           {section.market_median}
                         </p>
-                        <p className="text-[10px] text-foreground/30">
+                        <p className="text-[10px] text-foreground">
                           Market Median
                         </p>
                       </div>
                       <div className="text-center p-2 rounded bg-white/[0.03]">
-                        <p className="text-sm font-bold text-foreground/50">
+                        <p className="text-sm font-bold text-foreground">
                           {section.sample_count}
                         </p>
-                        <p className="text-[10px] text-foreground/30">
+                        <p className="text-[10px] text-foreground">
                           Sample Size
                         </p>
                       </div>
                     </div>
 
-                    <p className="text-xs text-foreground/50 leading-relaxed">
+                    <p className="text-xs text-foreground leading-relaxed">
                       {section.narrative}
                     </p>
                   </CardContent>
@@ -207,14 +207,14 @@ export default function AmmunitionReportModal({
               ))}
 
               {report.sections.length === 0 && (
-                <p className="text-center text-foreground/30 py-8 text-sm">
+                <p className="text-center text-foreground py-8 text-sm">
                   All terms in this contract are within market norms. No
                   ammunition points found.
                 </p>
               )}
             </div>
           ) : !loading ? (
-            <div className="text-center py-12 text-foreground/20">
+            <div className="text-center py-12 text-foreground">
               <BarChart3 className="h-10 w-10 mx-auto mb-3 opacity-30" />
               <p className="text-sm">
                 Select an audience and generate your report

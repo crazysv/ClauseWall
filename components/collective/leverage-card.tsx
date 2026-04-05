@@ -30,7 +30,7 @@ export default function LeverageCard({ leverage }: Props) {
             </p>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-[11px] text-foreground/40">
+                <span className="text-[11px] text-foreground">
                   Legal Fees
                 </span>
                 <span className="text-xs font-medium text-red-400">
@@ -38,20 +38,20 @@ export default function LeverageCard({ leverage }: Props) {
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-[11px] text-foreground/40">Recovery</span>
-                <span className="text-xs font-medium text-foreground/60">
+                <span className="text-[11px] text-foreground">Recovery</span>
+                <span className="text-xs font-medium text-foreground">
                   ₹{individual.recovery_potential.toLocaleString("en-IN")}
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-[11px] text-foreground/40">Time</span>
-                <span className="text-xs text-foreground/60">
+                <span className="text-[11px] text-foreground">Time</span>
+                <span className="text-xs text-foreground">
                   {individual.time_estimate_months} months
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-[11px] text-foreground/40">Success</span>
-                <span className="text-xs text-foreground/60">
+                <span className="text-[11px] text-foreground">Success</span>
+                <span className="text-xs text-foreground">
                   {Math.round(individual.success_probability * 100)}%
                 </span>
               </div>
@@ -73,7 +73,7 @@ export default function LeverageCard({ leverage }: Props) {
             </p>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-[11px] text-foreground/40">
+                <span className="text-[11px] text-foreground">
                   Your Share
                 </span>
                 <span className="text-xs font-medium text-green-400">
@@ -81,20 +81,20 @@ export default function LeverageCard({ leverage }: Props) {
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-[11px] text-foreground/40">Recovery</span>
-                <span className="text-xs font-medium text-foreground/60">
+                <span className="text-[11px] text-foreground">Recovery</span>
+                <span className="text-xs font-medium text-foreground">
                   ₹{collective.per_person_recovery.toLocaleString("en-IN")}
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-[11px] text-foreground/40">Time</span>
-                <span className="text-xs text-foreground/60">
+                <span className="text-[11px] text-foreground">Time</span>
+                <span className="text-xs text-foreground">
                   {collective.time_estimate_months} months
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-[11px] text-foreground/40">Success</span>
-                <span className="text-xs text-foreground/60">
+                <span className="text-[11px] text-foreground">Success</span>
+                <span className="text-xs text-foreground">
                   {Math.round(collective.success_probability * 100)}%
                 </span>
               </div>
@@ -121,13 +121,13 @@ export default function LeverageCard({ leverage }: Props) {
           <span className="text-sm font-bold text-amber-400">
             {collective.multiplier}x
           </span>
-          <span className="text-xs text-foreground/50">
+          <span className="text-xs text-foreground">
             better cost-benefit with collective action
           </span>
         </motion.div>
 
         {/* Summary */}
-        <p className="text-[11px] text-foreground/30 mt-3 leading-relaxed">
+        <p className="text-[11px] text-foreground mt-3 leading-relaxed">
           {comparison_summary}
         </p>
       </CardContent>

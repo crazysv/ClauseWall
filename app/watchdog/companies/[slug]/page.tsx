@@ -114,7 +114,7 @@ export default async function CompanyDetailPage({
           <Card className="bg-background/50 border-foreground border-2">
             <CardContent className="p-4 text-center">
               <p className="text-2xl font-bold">{typedCompany.total_changes}</p>
-              <p className="text-xs text-muted-foreground">Total Changes</p>
+              <p className="text-xs text-foreground">Total Changes</p>
             </CardContent>
           </Card>
           <Card className="bg-background/50 border-foreground border-2">
@@ -122,7 +122,7 @@ export default async function CompanyDetailPage({
               <p className="text-2xl font-bold text-red-400">
                 {typedCompany.pro_company_changes}
               </p>
-              <p className="text-xs text-muted-foreground">Pro-Company</p>
+              <p className="text-xs text-foreground">Pro-Company</p>
             </CardContent>
           </Card>
           <Card className="bg-background/50 border-foreground border-2">
@@ -130,13 +130,13 @@ export default async function CompanyDetailPage({
               <p className="text-2xl font-bold text-green-400">
                 {typedCompany.pro_consumer_changes}
               </p>
-              <p className="text-xs text-muted-foreground">Pro-Consumer</p>
+              <p className="text-xs text-foreground">Pro-Consumer</p>
             </CardContent>
           </Card>
           <Card className="bg-background/50 border-foreground border-2">
             <CardContent className="p-4 text-center">
               <TrendIndicator trend={typedCompany.score_trend} />
-              <p className="text-xs text-muted-foreground mt-1">Trend</p>
+              <p className="text-xs text-foreground mt-1">Trend</p>
             </CardContent>
           </Card>
         </div>
@@ -174,7 +174,7 @@ export default async function CompanyDetailPage({
               ))}
             </div>
             {typedCompany.last_scraped_at && (
-              <p className="text-[10px] text-muted-foreground mt-3">
+              <p className="text-[10px] text-foreground mt-3">
                 Last scraped:{" "}
                 {new Date(typedCompany.last_scraped_at).toLocaleString("en-IN")}
               </p>

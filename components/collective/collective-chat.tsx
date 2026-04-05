@@ -96,7 +96,7 @@ export default function CollectiveChat({
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader2 className="h-6 w-6 text-foreground/20 animate-spin" />
+        <Loader2 className="h-6 w-6 text-foreground animate-spin" />
       </div>
     );
   }
@@ -107,9 +107,9 @@ export default function CollectiveChat({
       <div className="flex-1 overflow-y-auto space-y-3 p-3">
         {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center">
-            <MessageCircle className="h-8 w-8 text-foreground/10 mb-2" />
-            <p className="text-xs text-foreground/30">No messages yet</p>
-            <p className="text-[10px] text-foreground/20">
+            <MessageCircle className="h-8 w-8 text-foreground mb-2" />
+            <p className="text-xs text-foreground">No messages yet</p>
+            <p className="text-[10px] text-foreground">
               Start the conversation — all messages are anonymous
             </p>
           </div>
@@ -151,7 +151,7 @@ export default function CollectiveChat({
                   <p className="text-xs text-foreground/70 leading-relaxed">
                     {msg.content}
                   </p>
-                  <p className="text-[9px] text-foreground/20 mt-1">
+                  <p className="text-[9px] text-foreground mt-1">
                     {new Date(msg.created_at).toLocaleTimeString("en-IN", {
                       hour: "2-digit",
                       minute: "2-digit",
@@ -175,7 +175,7 @@ export default function CollectiveChat({
               onChange={(e) => setNewMessage(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Type an anonymous message..."
-              className="flex-1 px-3 py-2 text-xs bg-white/[0.03] border border-foreground border-2 rounded-lg text-foreground placeholder:text-foreground/20 focus:outline-none focus:border-amber-500/30"
+              className="flex-1 px-3 py-2 text-xs bg-white/[0.03] border border-foreground border-2 rounded-lg text-foreground placeholder:text-foreground focus:outline-none focus:border-amber-500/30"
               maxLength={2000}
             />
             <Button
@@ -197,7 +197,7 @@ export default function CollectiveChat({
         </div>
       ) : (
         <div className="border-t border-foreground border-2 p-3 text-center">
-          <p className="text-xs text-foreground/30">
+          <p className="text-xs text-foreground">
             Join the collective to participate in discussions
           </p>
         </div>

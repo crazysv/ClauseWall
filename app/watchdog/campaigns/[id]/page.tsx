@@ -52,7 +52,7 @@ export default async function CampaignDetailPage({
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <Link
           href="/watchdog/campaigns"
-          className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors"
+          className="flex items-center gap-2 text-sm text-foreground hover:text-foreground mb-6 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Campaigns
@@ -62,16 +62,16 @@ export default async function CampaignDetailPage({
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-2 flex-wrap">
             <Badge
-              className={`text-[10px] ${campaign.status === "active" ? "bg-green-500/15 text-green-400 border-green-500/30" : "bg-gray-500/15 text-muted-foreground border-gray-500/30"}`}
+              className={`text-[10px] ${campaign.status === "active" ? "bg-green-500/15 text-green-400 border-green-500/30" : "bg-gray-500/15 text-foreground border-gray-500/30"}`}
             >
               {campaign.status}
             </Badge>
-            <span className="text-sm text-muted-foreground">
+            <span className="text-sm text-foreground">
               vs {campaign.company?.name}
             </span>
           </div>
           <h1 className="text-2xl font-bold mb-2">{campaign.title}</h1>
-          <p className="text-muted-foreground">{campaign.description}</p>
+          <p className="text-foreground">{campaign.description}</p>
         </div>
 
         {/* Progress */}
@@ -83,7 +83,7 @@ export default async function CampaignDetailPage({
                 <span className="text-2xl font-bold text-amber-400">
                   {campaign.signatory_count}
                 </span>
-                <span className="text-muted-foreground">
+                <span className="text-foreground">
                   / {campaign.target_count} signatories
                 </span>
               </div>
@@ -108,7 +108,7 @@ export default async function CampaignDetailPage({
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-foreground">
                   {campaign.legal_basis}
                 </p>
               </CardContent>
@@ -122,7 +122,7 @@ export default async function CampaignDetailPage({
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <pre className="text-sm text-muted-foreground whitespace-pre-wrap font-sans leading-relaxed">
+                  <pre className="text-sm text-foreground whitespace-pre-wrap font-sans leading-relaxed">
                     {campaign.objection_template}
                   </pre>
                 </CardContent>
@@ -139,7 +139,7 @@ export default async function CampaignDetailPage({
               </CardHeader>
               <CardContent>
                 {typedSignatories.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-foreground">
                     No signatories yet. Be the first!
                   </p>
                 ) : (
@@ -150,7 +150,7 @@ export default async function CampaignDetailPage({
                         className="flex items-center justify-between py-1.5 text-sm"
                       >
                         <span>{sig.display_name}</span>
-                        <span className="text-[10px] text-muted-foreground">
+                        <span className="text-[10px] text-foreground">
                           {new Date(sig.signed_at).toLocaleDateString("en-IN", {
                             day: "numeric",
                             month: "short",

@@ -213,7 +213,7 @@ export default function ClauseRewriteModal({
                   <h2 className="font-black text-xl uppercase tracking-wider text-foreground">
                     Clause Rewriter
                   </h2>
-                  <p className="text-[10px] text-muted-foreground font-black uppercase tracking-wider">
+                  <p className="text-[10px] text-foreground font-black uppercase tracking-wider">
                     Clause #{clause.clause_number} •{" "}
                     {clause.clause_type.replace(/_/g, " ")}
                   </p>
@@ -241,7 +241,7 @@ export default function ClauseRewriteModal({
                       Original (Predatory)
                     </p>
                     <div className="p-4 card-impact bg-red-50 border-2 border-red-600">
-                      <p className="text-sm font-bold text-red-900 leading-relaxed uppercase tracking-wider">
+                      <p className="text-sm font-bold text-red-900 dark:text-red-100 font-bold leading-relaxed uppercase tracking-wider">
                         &quot;{clause.original_text}&quot;
                       </p>
                     </div>
@@ -286,7 +286,7 @@ export default function ClauseRewriteModal({
                   <p className="text-red-400">{error}</p>
                   <button
                     onClick={fetchRewrite}
-                    className="px-4 py-2 rounded-none bg-muted border border-foreground border-2 text-sm text-muted-foreground hover:bg-muted transition-colors"
+                    className="px-4 py-2 rounded-none bg-muted border border-foreground border-2 text-sm text-foreground hover:bg-muted transition-colors"
                   >
                     Try Again
                   </button>
@@ -308,7 +308,7 @@ export default function ClauseRewriteModal({
                       </Badge>
                     </div>
                     <div className="p-4 card-impact border-2 border-red-600 bg-red-50">
-                      <p className="text-sm text-red-900 leading-relaxed font-bold font-mono">
+                      <p className="text-sm text-red-900 dark:text-red-100 font-bold leading-relaxed font-bold font-mono">
                         &quot;{clause.original_text}&quot;
                       </p>
                     </div>
@@ -345,7 +345,7 @@ export default function ClauseRewriteModal({
                       </Badge>
                     </div>
                     <div className="p-4 card-impact border-2 border-green-600 bg-green-50 relative group">
-                      <p className="text-sm font-bold text-green-900 leading-relaxed font-mono">
+                      <p className="text-sm font-bold text-green-900 dark:text-green-100 font-bold leading-relaxed font-mono">
                         &quot;{result.rewritten_clause}&quot;
                       </p>
 
@@ -395,7 +395,7 @@ export default function ClauseRewriteModal({
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pl-6">
                               {change.original && (
                                 <div className="px-3 py-2 border-2 border-red-600 bg-red-50">
-                                  <p className="text-[10px] text-red-800 font-black tracking-wider uppercase mb-0.5">
+                                  <p className="text-[10px] text-red-900 dark:text-red-100 font-bold font-black tracking-wider uppercase mb-0.5">
                                     BEFORE
                                   </p>
                                   <p className="text-xs font-bold text-red-900 line-through decoration-red-600/40">
@@ -405,7 +405,7 @@ export default function ClauseRewriteModal({
                               )}
                               {change.rewritten && (
                                 <div className="px-3 py-2 border-2 border-green-600 bg-green-50">
-                                  <p className="text-[10px] text-green-800 font-black tracking-wider uppercase mb-0.5">
+                                  <p className="text-[10px] text-green-900 dark:text-green-100 font-bold font-black tracking-wider uppercase mb-0.5">
                                     AFTER
                                   </p>
                                   <p className="text-xs font-bold text-green-900">
@@ -438,7 +438,7 @@ export default function ClauseRewriteModal({
                     className="p-4 card-impact mt-6 bg-blue-50 border-2 border-blue-600"
                   >
                     <div className="flex items-start gap-2">
-                      <Scale className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                      <Scale className="h-4 w-4 text-blue-900 dark:text-blue-100 font-bold mt-0.5 flex-shrink-0" />
                       <div>
                         <p className="text-xs font-black uppercase tracking-wider text-blue-800 mb-1">
                           Legal Compliance
@@ -510,7 +510,7 @@ export default function ClauseRewriteModal({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 0.4 }}
                     transition={{ delay: 1.2 }}
-                    className="text-[10px] text-center text-muted-foreground/50 pt-2 border-t border-foreground border-2"
+                    className="text-[10px] text-center text-foreground pt-2 border-t border-foreground border-2"
                   >
                     AI-generated rewrite for reference. Have a legal
                     professional review before using in official agreements.

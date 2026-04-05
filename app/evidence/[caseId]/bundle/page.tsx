@@ -84,7 +84,7 @@ export default function EvidenceBundlePage() {
       <div className="max-w-2xl mx-auto px-4 py-8">
         <Link
           href={`/evidence/${caseId}`}
-          className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground mb-6"
+          className="inline-flex items-center gap-1 text-xs text-foreground hover:text-foreground mb-6"
         >
           <ArrowLeft className="h-3 w-3" />
           Back to Case
@@ -98,7 +98,7 @@ export default function EvidenceBundlePage() {
             <h1 className="text-xl font-bold text-foreground">
               Generate Evidence Bundle
             </h1>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-foreground">
               Create a court-ready PDF with all evidence, certificates, and
               chain verification
             </p>
@@ -117,7 +117,7 @@ export default function EvidenceBundlePage() {
               className={`w-full text-left rounded-none border p-4 transition-all ${bundleType === bt.value ? "border-blue-500/50 bg-blue-500/5" : "border-foreground border-2 bg-white/[0.02] hover:border-foreground border-2"}`}
             >
               <p className="text-sm font-medium text-foreground">{bt.label}</p>
-              <p className="text-xs text-muted-foreground mt-0.5">{bt.desc}</p>
+              <p className="text-xs text-foreground mt-0.5">{bt.desc}</p>
             </button>
           ))}
         </div>
@@ -183,7 +183,7 @@ export default function EvidenceBundlePage() {
             <p className="text-sm text-emerald-400 font-medium">
               ✓ Bundle generated successfully!
             </p>
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="text-xs text-foreground mt-1">
               {result.pages} pages — Ready for download from Supabase Storage
             </p>
           </div>

@@ -12,7 +12,7 @@ export function LetterPreview({ letter }: { letter: any }) {
           <h4 className="font-bold text-lg text-black">
             {letter.subject || "Subject: Important Notice"}
           </h4>
-          <p className="font-bold uppercase tracking-wider text-xs text-muted-foreground bg-gray-100 px-3 py-1 border-2 border-black">
+          <p className="font-bold uppercase tracking-wider text-xs text-foreground bg-gray-100 px-3 py-1 border-2 border-black">
             Date: {letter.date || new Date().toLocaleDateString()}
           </p>
         </div>

@@ -42,7 +42,7 @@ export default function EvidenceListPage() {
                 <h1 className="text-3xl font-black uppercase tracking-widest text-foreground">
                   Evidence Chain Builder
                 </h1>
-                <p className="text-sm font-bold text-muted-foreground mt-1 tracking-wide">
+                <p className="text-sm font-bold text-foreground mt-1 tracking-wide">
                   Build court-admissible evidence bundles with cryptographic
                   integrity
                 </p>
@@ -60,7 +60,7 @@ export default function EvidenceListPage() {
         {/* Cases list */}
         {loading ? (
           <div className="flex items-center justify-center py-16">
-            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+            <Loader2 className="h-6 w-6 animate-spin text-foreground" />
           </div>
         ) : cases.length === 0 ? (
           <div className="text-center py-20 border-4 border-black border-dashed bg-white dark:bg-zinc-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
@@ -68,7 +68,7 @@ export default function EvidenceListPage() {
             <h3 className="text-2xl font-black uppercase tracking-widest text-foreground mb-2">
               No evidence cases yet
             </h3>
-            <p className="text-sm font-bold text-muted-foreground mb-8">
+            <p className="text-sm font-bold text-foreground mb-8">
               Create your first case to start building court-admissible evidence
               chains
             </p>

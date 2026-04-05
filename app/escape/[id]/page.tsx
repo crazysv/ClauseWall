@@ -264,7 +264,7 @@ export default function EscapePlanPage() {
           <h2 className="text-2xl font-black uppercase tracking-tighter text-black mb-2 border-b-4 border-black pb-2">
             GENERATING ESCAPE PLAN
           </h2>
-          <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground mt-4">
+          <p className="text-sm font-bold uppercase tracking-widest text-foreground mt-4">
             FINDING LOOPHOLES. CALCULATING RECOVERY.
           </p>
         </div>
@@ -314,7 +314,7 @@ export default function EscapePlanPage() {
         {/* Back Button */}
         <button
           onClick={() => router.push(`/results/${documentId}`)}
-          className="flex items-center gap-2 text-sm font-black uppercase tracking-widest text-muted-foreground hover:text-black transition-all hover:-translate-x-1 mb-8"
+          className="flex items-center gap-2 text-sm font-black uppercase tracking-widest text-foreground hover:text-black transition-all hover:-translate-x-1 mb-8"
         >
           <ArrowLeft className="h-4 w-4" />
           BACK TO RESULTS
@@ -342,7 +342,7 @@ export default function EscapePlanPage() {
               <h1 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter text-black">
                 ESCAPE PLAN
               </h1>
-              <p className="text-sm font-bold tracking-widest uppercase text-muted-foreground mt-2">
+              <p className="text-sm font-bold tracking-widest uppercase text-foreground mt-2">
                 ALREADY SIGNED? HERE'S HOW TO BREAK IT.
               </p>
             </div>
@@ -382,7 +382,7 @@ export default function EscapePlanPage() {
               {/* Stats Row */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="p-4 border-2 border-black bg-gray-50 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                  <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-2">
+                  <p className="text-xs font-black uppercase tracking-widest text-foreground mb-2">
                     RECOVERABLE
                   </p>
                   <p className="text-2xl font-black text-green-700">
@@ -392,7 +392,7 @@ export default function EscapePlanPage() {
                   </p>
                 </div>
                 <div className="p-4 border-2 border-black bg-gray-50 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                  <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-2">
+                  <p className="text-xs font-black uppercase tracking-widest text-foreground mb-2">
                     VOID CLAUSES
                   </p>
                   <p className="text-2xl font-black text-orange-600">
@@ -400,7 +400,7 @@ export default function EscapePlanPage() {
                   </p>
                 </div>
                 <div className="p-4 border-2 border-black bg-gray-50 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                  <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-2">
+                  <p className="text-xs font-black uppercase tracking-widest text-foreground mb-2">
                     TIMELINE
                   </p>
                   <p className="text-xl font-black text-blue-700 uppercase tracking-tight truncate">
@@ -408,7 +408,7 @@ export default function EscapePlanPage() {
                   </p>
                 </div>
                 <div className="p-4 border-2 border-black bg-gray-50 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                  <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-2">
+                  <p className="text-xs font-black uppercase tracking-widest text-foreground mb-2">
                     SUCCESS RATE
                   </p>
                   <p
@@ -482,7 +482,7 @@ export default function EscapePlanPage() {
 
                       <div className="space-y-4">
                         <div className="border-2 border-black p-4 bg-blue-50">
-                          <p className="text-xs font-black uppercase tracking-widest text-blue-900 mb-2 border-b-2 border-blue-900/10 pb-2">
+                          <p className="text-xs font-black uppercase tracking-widest text-blue-900 dark:text-blue-100 font-bold mb-2 border-b-2 border-blue-900/10 pb-2">
                             📖 LEGAL BASIS
                           </p>
                           <p className="text-sm font-bold text-black mb-1">
@@ -495,7 +495,7 @@ export default function EscapePlanPage() {
 
                         {vc.enforceable_portion && (
                           <div className="border-2 border-black p-4 bg-yellow-50">
-                            <p className="text-xs font-black uppercase tracking-widest text-yellow-900 mb-2 border-b-2 border-yellow-900/10 pb-2">
+                            <p className="text-xs font-black uppercase tracking-widest text-yellow-900 dark:text-yellow-100 font-bold mb-2 border-b-2 border-yellow-900/10 pb-2">
                               ⚠️ WHAT IS ENFORCEABLE
                             </p>
                             <p className="text-sm font-bold text-black">
@@ -505,7 +505,7 @@ export default function EscapePlanPage() {
                         )}
 
                         <div className="border-2 border-black p-4 bg-green-50">
-                          <p className="text-xs font-black uppercase tracking-widest text-green-900 mb-2 border-b-2 border-green-900/10 pb-2">
+                          <p className="text-xs font-black uppercase tracking-widest text-green-900 dark:text-green-100 font-bold mb-2 border-b-2 border-green-900/10 pb-2">
                             🔄 HOW TO RECOVER
                           </p>
                           <p className="text-sm font-bold text-black">
@@ -541,7 +541,7 @@ export default function EscapePlanPage() {
                       className={`flex items-center gap-2 px-4 py-2 font-black uppercase tracking-widest transition-all whitespace-nowrap border-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none ${
                         expandedSteps.has(step.step_number)
                           ? `${stepColor.bg} ${stepColor.text} ${stepColor.border}`
-                          : "bg-white text-gray-500 border-gray-300 hover:text-black hover:border-black"
+                          : "bg-white text-foreground border-gray-300 hover:text-black hover:border-black"
                       }`}
                     >
                       <span>{step.step_number}</span>
@@ -601,7 +601,7 @@ export default function EscapePlanPage() {
                                 {step.title}
                               </span>
                             </div>
-                            <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground mt-1 flex items-center gap-2">
+                            <p className="text-sm font-bold uppercase tracking-widest text-foreground mt-1 flex items-center gap-2">
                               <Clock className="h-4 w-4" />
                               {step.timeframe}
                             </p>
@@ -643,7 +643,7 @@ export default function EscapePlanPage() {
                                 >
                                   <div className="flex items-center gap-3">
                                     {step.link_to === "letter" ? (
-                                      <FileText className="h-5 w-5 text-blue-900" />
+                                      <FileText className="h-5 w-5 text-blue-900 dark:text-blue-100 font-bold" />
                                     ) : (
                                       <Swords className="h-5 w-5 text-blue-900" />
                                     )}
@@ -734,7 +734,7 @@ export default function EscapePlanPage() {
                       <p className="text-base font-black uppercase tracking-widest text-black mb-1">
                         {item.label}
                       </p>
-                      <p className="text-sm font-bold text-gray-500">
+                      <p className="text-sm font-bold text-foreground">
                         {item.explanation}
                       </p>
                     </div>
@@ -764,7 +764,7 @@ export default function EscapePlanPage() {
                   <p className="text-sm font-black uppercase tracking-widest text-black mb-2 sm:mb-0">
                     TOTAL RECOVERABLE
                   </p>
-                  <p className="text-3xl sm:text-4xl font-black text-green-700">
+                  <p className="text-3xl sm:text-4xl font-black text-green-900 dark:text-green-100 font-bold">
                     {formatCurrencyFull(plan.recovery.total)}
                   </p>
                 </div>
@@ -806,7 +806,7 @@ export default function EscapePlanPage() {
                     <span
                       className={`text-base font-bold text-left leading-relaxed ${
                         checkedItems.has(i)
-                          ? "text-green-900 line-through"
+                          ? "text-green-900 dark:text-green-100 font-bold line-through"
                           : "text-black"
                       }`}
                     >
@@ -832,7 +832,7 @@ export default function EscapePlanPage() {
             </h2>
             <div className="mb-6">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-black uppercase tracking-widest text-muted-foreground">
+                <span className="text-xs font-black uppercase tracking-widest text-foreground">
                   LIKELIHOOD OF FAVORABLE OUTCOME
                 </span>
                 <span
@@ -869,7 +869,7 @@ export default function EscapePlanPage() {
         {plan.warnings.length > 0 && (
           <Card className="border-4 border-yellow-400 rounded-none bg-yellow-50 mb-12 shadow-[8px_8px_0px_0px_rgba(250,204,21,1)]">
             <CardContent className="p-6">
-              <p className="text-sm font-black uppercase tracking-widest text-yellow-900 mb-4 border-b-2 border-yellow-200 pb-2 flex items-center gap-2">
+              <p className="text-sm font-black uppercase tracking-widest text-yellow-900 dark:text-yellow-100 font-bold mb-4 border-b-2 border-yellow-200 pb-2 flex items-center gap-2">
                 <AlertTriangle className="h-4 w-4" />
                 IMPORTANT DISCLAIMERS
               </p>

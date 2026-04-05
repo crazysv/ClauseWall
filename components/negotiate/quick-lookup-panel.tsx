@@ -189,7 +189,7 @@ export default function QuickLookupPanel({
           {/* Legal Limit Badge */}
           {currentResult.legal_limit && (
             <div className="px-5 lg:px-6 pb-4 pt-2">
-              <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-100 border-2 border-blue-900 text-xs font-black uppercase tracking-wider text-blue-900 shadow-[2px_2px_0px_0px_rgba(30,58,138,1)]">
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-100 border-2 border-blue-900 text-xs font-black uppercase tracking-wider text-blue-900 dark:text-blue-100 font-bold shadow-[2px_2px_0px_0px_rgba(30,58,138,1)]">
                 📏 Legal Limit: {currentResult.legal_limit}
               </span>
             </div>

@@ -110,7 +110,7 @@ export default function MarketComparisonSection({
               <h3 className="font-semibold text-foreground">
                 Market Comparison
               </h3>
-              <p className="text-xs text-foreground/40">
+              <p className="text-xs text-foreground">
                 How your contract compares to{" "}
                 {comparableItems[0]?.comparison?.scope_used || "the market"}
               </p>
@@ -175,14 +175,14 @@ export default function MarketComparisonSection({
                       />
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-[10px] text-foreground/30">
+                      <span className="text-[10px] text-foreground">
                         {ctx.comparison.chart_data.user_value}{" "}
                         {UNIT_LABELS[ctx.benchmark.value_unit || ""] || ""}
                       </span>
                       {isExpanded ? (
-                        <ChevronUp className="h-3.5 w-3.5 text-foreground/30" />
+                        <ChevronUp className="h-3.5 w-3.5 text-foreground" />
                       ) : (
-                        <ChevronDown className="h-3.5 w-3.5 text-foreground/30" />
+                        <ChevronDown className="h-3.5 w-3.5 text-foreground" />
                       )}
                     </div>
                   </div>
@@ -202,7 +202,7 @@ export default function MarketComparisonSection({
                     />
                   </div>
 
-                  <p className="text-[10px] text-foreground/40 mt-1">
+                  <p className="text-[10px] text-foreground mt-1">
                     {ctx.comparison.narrative}
                   </p>
                 </button>
@@ -231,7 +231,7 @@ export default function MarketComparisonSection({
                             height={180}
                           />
                           {ctx.data_quality === "seed" && (
-                            <p className="text-[10px] text-foreground/20 text-center mt-1">
+                            <p className="text-[10px] text-foreground text-center mt-1">
                               ⚠ Based on statutory/public reference data, not
                               live analysis
                             </p>

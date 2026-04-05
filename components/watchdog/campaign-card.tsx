@@ -23,10 +23,10 @@ export default function CampaignCard({
         <div className="flex items-start justify-between gap-3 mb-3">
           <div>
             <h3 className="font-semibold mb-1">{campaign.title}</h3>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2 text-sm text-foreground">
               <span>vs {companyName}</span>
               <Badge
-                className={`text-[10px] ${campaign.status === "active" ? "bg-green-500/15 text-green-400 border-green-500/30" : campaign.status === "delivered" ? "bg-blue-500/15 text-blue-400 border-blue-500/30" : "bg-gray-500/15 text-muted-foreground border-gray-500/30"}`}
+                className={`text-[10px] ${campaign.status === "active" ? "bg-green-500/15 text-green-400 border-green-500/30" : campaign.status === "delivered" ? "bg-blue-500/15 text-blue-400 border-blue-500/30" : "bg-gray-500/15 text-foreground border-gray-500/30"}`}
               >
                 {campaign.status}
               </Badge>
@@ -37,13 +37,13 @@ export default function CampaignCard({
               <Users className="h-4 w-4" />
               <span className="font-bold">{campaign.signatory_count}</span>
             </div>
-            <p className="text-[10px] text-muted-foreground">
+            <p className="text-[10px] text-foreground">
               of {campaign.target_count}
             </p>
           </div>
         </div>
 
-        <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+        <p className="text-sm text-foreground mb-3 line-clamp-2">
           {campaign.description}
         </p>
 
@@ -55,7 +55,7 @@ export default function CampaignCard({
               style={{ width: `${progress}%` }}
             />
           </div>
-          <p className="text-[10px] text-muted-foreground mt-1">
+          <p className="text-[10px] text-foreground mt-1">
             {Math.round(progress)}% of target
           </p>
         </div>

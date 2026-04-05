@@ -298,7 +298,7 @@ export default function NegotiatePage() {
         );
       case "weak":
         return (
-          <Badge className="bg-gray-500/15 text-gray-400 border-gray-500/30 text-[10px]">
+          <Badge className="bg-gray-500/15 text-foreground border-gray-500/30 text-[10px]">
             🤝 Diplomatic Approach
           </Badge>
         );
@@ -319,7 +319,7 @@ export default function NegotiatePage() {
           <h2 className="text-2xl font-black uppercase tracking-tight mb-2">
             Building Your Negotiation Playbook
           </h2>
-          <p className="text-muted-foreground text-sm max-w-md font-medium uppercase tracking-wider">
+          <p className="text-foreground text-sm max-w-md font-medium uppercase tracking-wider">
             Crafting personalized scripts with counter-responses and escalation
             paths...
           </p>
@@ -360,7 +360,7 @@ export default function NegotiatePage() {
         {/* Back */}
         <button
           onClick={() => router.push(`/results/${documentId}`)}
-          className="flex items-center gap-2 text-muted-foreground hover:text-foreground font-bold uppercase tracking-wider text-sm mb-8 transition-colors print:hidden"
+          className="flex items-center gap-2 text-foreground hover:text-foreground font-bold uppercase tracking-wider text-sm mb-8 transition-colors print:hidden"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to results
@@ -380,7 +380,7 @@ export default function NegotiatePage() {
               <h1 className="text-impact-heading mb-1 text-3xl md:text-5xl">
                 Negotiation Playbook
               </h1>
-              <p className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
+              <p className="text-sm font-bold uppercase tracking-wider text-foreground">
                 {docInfo.filename} ·{" "}
                 {getDocumentTypeLabel(docInfo.document_type)} ·{" "}
                 {jurisdictionName}
@@ -391,16 +391,16 @@ export default function NegotiatePage() {
           {/* Stats Bar */}
           <div className="flex flex-wrap gap-4 mt-6">
             <div className="px-4 py-2 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] bg-white text-sm font-bold uppercase tracking-wider">
-              <span className="text-muted-foreground mr-2">Issues:</span>
+              <span className="text-foreground mr-2">Issues:</span>
               <span className="text-black">{playbook.total_issues}</span>
             </div>
             <div className="px-4 py-2 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] bg-white text-sm font-bold uppercase tracking-wider">
-              <span className="text-muted-foreground mr-2">Priority:</span>
+              <span className="text-foreground mr-2">Priority:</span>
               <span className="text-black">{playbook.priority_order}</span>
             </div>
             {docInfo.entity_name && (
               <div className="px-4 py-2 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] bg-white text-sm font-bold uppercase tracking-wider">
-                <span className="text-muted-foreground mr-2">
+                <span className="text-foreground mr-2">
                   Negotiating with:
                 </span>
                 <span className="text-black">{docInfo.entity_name}</span>
@@ -483,7 +483,7 @@ export default function NegotiatePage() {
                         <p className="text-sm font-black uppercase tracking-tight text-black">
                           Full Playbook
                         </p>
-                        <p className="text-xs font-semibold uppercase text-muted-foreground">
+                        <p className="text-xs font-semibold uppercase text-foreground">
                           Send entire playbook
                         </p>
                       </div>
@@ -498,7 +498,7 @@ export default function NegotiatePage() {
                         <p className="text-sm font-black uppercase tracking-tight text-black">
                           Share Link
                         </p>
-                        <p className="text-xs font-semibold uppercase text-muted-foreground">
+                        <p className="text-xs font-semibold uppercase text-foreground">
                           Send page link
                         </p>
                       </div>
@@ -506,7 +506,7 @@ export default function NegotiatePage() {
                   </div>
 
                   <div className="border-t-2 border-black p-3 bg-gray-50">
-                    <p className="text-[10px] font-bold uppercase text-muted-foreground">
+                    <p className="text-[10px] font-bold uppercase text-foreground">
                       You can also share individual scripts from inside each
                       card
                     </p>
@@ -519,14 +519,14 @@ export default function NegotiatePage() {
           <div className="flex-1" />
           <button
             onClick={expandAllScripts}
-            className="text-xs font-bold uppercase tracking-wider text-muted-foreground hover:text-black"
+            className="text-xs font-bold uppercase tracking-wider text-foreground hover:text-black"
           >
             Expand All
           </button>
-          <span className="text-muted-foreground mx-2">|</span>
+          <span className="text-foreground mx-2">|</span>
           <button
             onClick={collapseAllScripts}
-            className="text-xs font-bold uppercase tracking-wider text-muted-foreground hover:text-black"
+            className="text-xs font-bold uppercase tracking-wider text-foreground hover:text-black"
           >
             Collapse All
           </button>
@@ -564,7 +564,7 @@ export default function NegotiatePage() {
         {playbook.scripts.length === 0 && (
           <Card className="card-impact bg-green-50 border-green-900">
             <CardContent className="p-10 text-center">
-              <CheckCircle2 className="h-16 w-16 text-green-600 mx-auto mb-6" />
+              <CheckCircle2 className="h-16 w-16 text-green-900 dark:text-green-100 font-bold mx-auto mb-6" />
               <h3 className="text-2xl font-black uppercase tracking-tight text-green-900 mb-2">
                 No Negotiation Needed!
               </h3>
@@ -612,7 +612,7 @@ export default function NegotiatePage() {
                           </Badge>
                           {getStrengthBadge(script.strength)}
                         </div>
-                        <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                        <p className="text-sm font-semibold uppercase tracking-wider text-foreground">
                           {script.clause_summary}
                         </p>
                       </div>
@@ -650,7 +650,7 @@ export default function NegotiatePage() {
                           {script.counter_responses &&
                             script.counter_responses.length > 0 && (
                               <div className="mt-8">
-                                <p className="text-xs font-black uppercase tracking-tight text-muted-foreground mb-4 flex items-center gap-2">
+                                <p className="text-xs font-black uppercase tracking-tight text-foreground mb-4 flex items-center gap-2">
                                   <Swords className="h-4 w-4" />
                                   IF THEY PUSH BACK...
                                 </p>
@@ -701,7 +701,7 @@ export default function NegotiatePage() {
                                                 className="overflow-hidden border-t-2 border-black bg-green-50"
                                               >
                                                 <div className="p-4">
-                                                  <span className="text-green-700 font-bold uppercase tracking-wider text-xs block mb-2">
+                                                  <span className="text-green-900 dark:text-green-100 font-bold font-bold uppercase tracking-wider text-xs block mb-2">
                                                     You say:
                                                   </span>
                                                   <p className="text-base font-semibold text-green-950 leading-relaxed">
@@ -845,7 +845,7 @@ export default function NegotiatePage() {
         <RelatedActions documentId={documentId} currentPage="negotiate" />
 
         {/* Disclaimer */}
-        <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground text-center mt-12 print:hidden border-t-2 border-black pt-8">
+        <p className="text-xs font-bold uppercase tracking-wider text-foreground text-center mt-12 print:hidden border-t-2 border-black pt-8">
           These scripts are AI-generated guidance, not legal advice. Adapt them
           to your situation. ClauseWall is not a substitute for professional
           legal counsel.

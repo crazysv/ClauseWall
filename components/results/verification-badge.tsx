@@ -45,11 +45,11 @@ export default function VerificationBadge({
   const getBadgeClass = () => {
     switch (verification.confidence) {
       case "verified":
-        return "bg-green-50 text-green-800 border-2 border-green-600 font-bold uppercase dark:bg-green-950 dark:text-green-300";
+        return "bg-green-50 text-green-900 dark:text-green-100 font-bold border-2 border-green-600 font-bold uppercase dark:bg-green-950 dark:text-green-300";
       case "partial":
-        return "bg-yellow-50 text-yellow-800 border-2 border-yellow-600 font-bold uppercase dark:bg-yellow-950 dark:text-yellow-300";
+        return "bg-yellow-50 text-yellow-900 dark:text-yellow-100 font-bold border-2 border-yellow-600 font-bold uppercase dark:bg-yellow-950 dark:text-yellow-300";
       case "ai_suggested":
-        return "bg-blue-50 text-blue-800 border-2 border-blue-600 font-bold uppercase dark:bg-blue-950 dark:text-blue-300";
+        return "bg-blue-50 text-blue-900 dark:text-blue-100 font-bold border-2 border-blue-600 font-bold uppercase dark:bg-blue-950 dark:text-blue-300";
     }
   };
 
@@ -75,7 +75,7 @@ export default function VerificationBadge({
           {getIcon()}
           {getLabel()}
         </Badge>
-        <span className="text-xs text-muted-foreground">
+        <span className="text-xs text-foreground">
           {verification.verification_note}
         </span>
         {verification.matched_rules.length > 0 && (

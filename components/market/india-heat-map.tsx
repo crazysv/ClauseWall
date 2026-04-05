@@ -145,7 +145,7 @@ function IndiaHeatMapComponent({
               {tooltip.data ? (
                 <div className="mt-1.5 space-y-1">
                   <div className="flex justify-between text-xs">
-                    <span className="text-white/50">Risk Score</span>
+                    <span className="text-white">Risk Score</span>
                     <span
                       className="font-medium"
                       style={{
@@ -156,20 +156,20 @@ function IndiaHeatMapComponent({
                     </span>
                   </div>
                   <div className="flex justify-between text-xs">
-                    <span className="text-white/50">Contracts</span>
+                    <span className="text-white">Contracts</span>
                     <span className="text-white/70">
                       {tooltip.data.total_contracts}
                     </span>
                   </div>
                   <div className="flex justify-between text-xs">
-                    <span className="text-white/50">High Risk</span>
+                    <span className="text-white">High Risk</span>
                     <span className="text-red-400">
                       {tooltip.data.high_risk_count}
                     </span>
                   </div>
                 </div>
               ) : (
-                <p className="text-[10px] text-white/30 mt-1">No data yet</p>
+                <p className="text-[10px] text-white mt-1">No data yet</p>
               )}
             </div>
           </div>
@@ -178,7 +178,7 @@ function IndiaHeatMapComponent({
 
       {/* Legend */}
       <div className="flex items-center justify-between mt-3 px-1">
-        <div className="flex items-center gap-3 text-[10px] text-white/40">
+        <div className="flex items-center gap-3 text-[10px] text-white">
           <span className="flex items-center gap-1">
             <span
               className="w-3 h-3 rounded-sm"
@@ -208,7 +208,7 @@ function IndiaHeatMapComponent({
             Critical (76+)
           </span>
         </div>
-        <span className="text-[10px] text-white/20">
+        <span className="text-[10px] text-white">
           National avg: {nationalAverage}/100
         </span>
       </div>
@@ -231,7 +231,7 @@ function IndiaHeatMapComponent({
               </div>
               <button
                 onClick={() => setSelectedState(null)}
-                className="text-white/30 hover:text-white/60"
+                className="text-white hover:text-white"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -245,25 +245,25 @@ function IndiaHeatMapComponent({
                 >
                   {selectedState.avg_risk_score}
                 </p>
-                <p className="text-[10px] text-white/40">Avg Risk Score</p>
+                <p className="text-[10px] text-white">Avg Risk Score</p>
               </div>
               <div className="text-center p-2 rounded-lg bg-white/[0.03]">
                 <p className="text-lg font-bold text-white">
                   {selectedState.total_contracts}
                 </p>
-                <p className="text-[10px] text-white/40">Contracts</p>
+                <p className="text-[10px] text-white">Contracts</p>
               </div>
               <div className="text-center p-2 rounded-lg bg-white/[0.03]">
                 <p className="text-lg font-bold text-red-400">
                   {selectedState.high_risk_count}
                 </p>
-                <p className="text-[10px] text-white/40">High Risk</p>
+                <p className="text-[10px] text-white">High Risk</p>
               </div>
               <div className="text-center p-2 rounded-lg bg-white/[0.03]">
                 <p className="text-lg font-bold text-green-400">
                   {selectedState.low_risk_count}
                 </p>
-                <p className="text-[10px] text-white/40">Low Risk</p>
+                <p className="text-[10px] text-white">Low Risk</p>
               </div>
             </div>
           </motion.div>

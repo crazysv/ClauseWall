@@ -33,12 +33,12 @@ const ACTION_LABELS: Record<string, { label: string; emoji: string }> = {
 };
 
 const STATUS_STYLES: Record<string, string> = {
-  proposed: "bg-blue-500/10 text-blue-400",
-  voting: "bg-amber-500/10 text-amber-400",
-  approved: "bg-green-500/10 text-green-400",
-  in_progress: "bg-purple-500/10 text-purple-400",
-  completed: "bg-emerald-500/10 text-emerald-400",
-  rejected: "bg-red-500/10 text-red-400",
+  proposed: "bg-blue-500/10 text-blue-800 dark:text-blue-100 font-bold",
+  voting: "bg-amber-500/10 text-amber-800 dark:text-amber-100 font-bold",
+  approved: "bg-green-500/10 text-green-800 dark:text-green-100 font-bold",
+  in_progress: "bg-purple-500/10 text-purple-800 dark:text-purple-100 font-bold",
+  completed: "bg-emerald-500/10 text-emerald-800 dark:text-emerald-100 font-bold",
+  rejected: "bg-red-500/10 text-red-800 dark:text-red-100 font-bold",
 };
 
 export default function CollectiveActionCard({
@@ -90,7 +90,7 @@ export default function CollectiveActionCard({
               <h4 className="text-sm font-medium text-foreground">
                 {action.title}
               </h4>
-              <p className="text-[10px] text-foreground/30 mt-0.5">
+              <p className="text-[10px] text-foreground mt-0.5">
                 {actionInfo.label} • Proposed by {action.proposed_by}
               </p>
             </div>
@@ -103,7 +103,7 @@ export default function CollectiveActionCard({
         </div>
 
         {action.description && (
-          <p className="text-xs text-foreground/50 mb-3 line-clamp-2">
+          <p className="text-xs text-foreground mb-3 line-clamp-2">
             {action.description}
           </p>
         )}
@@ -115,19 +115,19 @@ export default function CollectiveActionCard({
               <p className="text-sm font-bold text-green-400">
                 {currentVotes.yes_votes}
               </p>
-              <p className="text-[9px] text-foreground/30">Yes</p>
+              <p className="text-[9px] text-foreground">Yes</p>
             </div>
             <div className="rounded-lg bg-red-500/5 p-2 text-center">
               <p className="text-sm font-bold text-red-400">
                 {currentVotes.no_votes}
               </p>
-              <p className="text-[9px] text-foreground/30">No</p>
+              <p className="text-[9px] text-foreground">No</p>
             </div>
             <div className="rounded-lg bg-white/[0.03] p-2 text-center">
-              <p className="text-sm font-bold text-foreground/40">
+              <p className="text-sm font-bold text-foreground">
                 {currentVotes.abstain_votes}
               </p>
-              <p className="text-[9px] text-foreground/30">Abstain</p>
+              <p className="text-[9px] text-foreground">Abstain</p>
             </div>
           </div>
         )}
@@ -141,7 +141,7 @@ export default function CollectiveActionCard({
                 variant="outline"
                 onClick={() => handleVote("yes")}
                 disabled={voting}
-                className="flex-1 text-xs gap-1 border-green-500/20 hover:bg-green-500/10 text-green-400"
+                className="flex-1 text-xs gap-1 border-green-500/20 hover:bg-green-500/10 text-green-800 dark:text-green-100 font-bold"
               >
                 {voting ? (
                   <Loader2 className="h-3 w-3 animate-spin" />
@@ -155,7 +155,7 @@ export default function CollectiveActionCard({
                 variant="outline"
                 onClick={() => handleVote("no")}
                 disabled={voting}
-                className="flex-1 text-xs gap-1 border-red-500/20 hover:bg-red-500/10 text-red-400"
+                className="flex-1 text-xs gap-1 border-red-500/20 hover:bg-red-500/10 text-red-800 dark:text-red-100 font-bold"
               >
                 <ThumbsDown className="h-3 w-3" />
                 No
@@ -165,7 +165,7 @@ export default function CollectiveActionCard({
                 variant="outline"
                 onClick={() => handleVote("abstain")}
                 disabled={voting}
-                className="flex-1 text-xs gap-1 border-foreground border-2 hover:bg-muted text-foreground/40"
+                className="flex-1 text-xs gap-1 border-foreground border-2 hover:bg-muted text-foreground"
               >
                 <Minus className="h-3 w-3" />
                 Abstain

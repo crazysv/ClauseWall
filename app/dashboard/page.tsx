@@ -158,7 +158,7 @@ export default function DashboardPage() {
       case "failed":
         return <AlertTriangle className="h-4 w-4 text-red-500" />;
       default:
-        return <Clock className="h-4 w-4 text-muted-foreground" />;
+        return <Clock className="h-4 w-4 text-foreground" />;
     }
   };
 
@@ -202,7 +202,7 @@ export default function DashboardPage() {
               <h2 className="text-impact-heading text-foreground mb-3">
                 Your Contract Portfolio
               </h2>
-              <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto border-2 border-transparent border-t-foregroundpt-4">
+              <p className="text-lg md:text-xl text-foreground mb-8 max-w-2xl mx-auto border-2 border-transparent border-t-foregroundpt-4">
                 Upload your first contract to start building your portfolio.
                 Track risks, earn achievements, and get smarter about contracts.
               </p>
@@ -243,7 +243,7 @@ export default function DashboardPage() {
             <h1 className="text-impact-heading text-foreground">
               Your Contract Portfolio
             </h1>
-            <p className="text-lg text-muted-foreground mt-4 max-w-2xl font-bold">
+            <p className="text-lg text-foreground mt-4 max-w-2xl font-bold">
               {documents.length} contract{documents.length !== 1 ? "s" : ""}{" "}
               analyzed
               {contractsBuilt > 0 && ` · ${contractsBuilt} built`}
@@ -417,13 +417,13 @@ export default function DashboardPage() {
               {/* Search & Filter Bar */}
               <div className="flex flex-col sm:flex-row gap-3">
                 <div className="relative flex-1">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground" />
                   <input
                     type="text"
                     placeholder="Search by filename..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 text-sm font-bold bg-background border-2 border-foreground rounded shadow-[inset_2px_2px_0px_0px_rgba(10,10,10,0.05)] text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-0 transition-colors"
+                    className="w-full pl-10 pr-4 py-3 text-sm font-bold bg-background border-2 border-foreground rounded shadow-[inset_2px_2px_0px_0px_rgba(10,10,10,0.05)] text-foreground placeholder:text-foreground focus:outline-none focus:border-primary focus:ring-0 transition-colors"
                   />
                 </div>
                 <select
@@ -444,7 +444,7 @@ export default function DashboardPage() {
 
               {/* Results count */}
               {(searchQuery || filterType !== "all") && (
-                <p className="text-xs font-bold text-muted-foreground mt-3 uppercase tracking-wider">
+                <p className="text-xs font-bold text-foreground mt-3 uppercase tracking-wider">
                   Showing {filteredDocuments.length} of {documents.length}{" "}
                   documents
                 </p>
@@ -454,13 +454,13 @@ export default function DashboardPage() {
             <div className="divide-y-2 divide-foreground">
               {filteredDocuments.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-16 px-4 bg-background">
-                  <Search className="w-12 h-12 text-muted-foreground mb-4" />
+                  <Search className="w-12 h-12 text-foreground mb-4" />
                   {searchQuery || filterType !== "all" ? (
                     <>
                       <p className="text-sm font-black uppercase text-foreground mb-1">
                         No matching documents
                       </p>
-                      <p className="text-xs font-bold text-muted-foreground mb-4">
+                      <p className="text-xs font-bold text-foreground mb-4">
                         Try adjusting your search or filters
                       </p>
                       <button
@@ -478,7 +478,7 @@ export default function DashboardPage() {
                       <p className="text-sm font-black uppercase text-foreground mb-1">
                         No contracts analyzed yet
                       </p>
-                      <p className="text-xs font-bold text-muted-foreground mb-4">
+                      <p className="text-xs font-bold text-foreground mb-4">
                         Upload your first contract to get started
                       </p>
                       <Link
@@ -526,7 +526,7 @@ export default function DashboardPage() {
                                   {doc.original_filename || "Untitled Document"}
                                 </p>
                               </div>
-                              <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                              <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-foreground uppercase tracking-wider">
                                 <span>
                                   {getDocumentTypeLabel(doc.document_type)}
                                 </span>
@@ -646,11 +646,11 @@ function UpcomingDeadlinesSection() {
                   : "border-foreground shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] bg-background";
           const textColor =
             days <= 3
-              ? "text-red-700"
+              ? "text-red-900 dark:text-red-100 font-bold"
               : days <= 7
-                ? "text-orange-700"
+                ? "text-orange-900 dark:text-orange-100 font-bold"
                 : days <= 30
-                  ? "text-yellow-700"
+                  ? "text-yellow-900 dark:text-yellow-100 font-bold"
                   : "text-foreground";
 
           return (
@@ -665,12 +665,12 @@ function UpcomingDeadlinesSection() {
                 >
                   {days <= 0 ? "OVERDUE" : `${days}D REC. LEFT`}
                 </span>
-                <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+                <ChevronRight className="w-4 h-4 text-foreground group-hover:text-foreground transition-colors" />
               </div>
               <p className="text-sm font-bold text-foreground truncate">
                 {d.title}
               </p>
-              <p className="text-xs font-bold text-muted-foreground mt-2 uppercase tracking-wider">
+              <p className="text-xs font-bold text-foreground mt-2 uppercase tracking-wider">
                 {new Date(d.deadline_date).toLocaleDateString("en-IN", {
                   day: "numeric",
                   month: "short",

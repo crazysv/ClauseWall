@@ -501,7 +501,7 @@ export default function ScoreCardModal({
               <Share2 className="h-5 w-5 text-foreground" />
               Share Score Card
             </DialogTitle>
-            <DialogDescription className="font-bold text-muted-foreground uppercase tracking-wider text-xs mt-2">
+            <DialogDescription className="font-bold text-foreground uppercase tracking-wider text-xs mt-2">
               {isCarousel
                 ? "Generate a swipeable carousel for Instagram & stories"
                 : "Download or share your contract analysis score card"}
@@ -519,7 +519,7 @@ export default function ScoreCardModal({
                   className={`flex-1 flex items-center justify-center gap-1.5 px-2.5 py-2 text-xs font-black uppercase tracking-wider transition-all ${
                     format === f
                       ? "bg-foreground text-background border-2 border-transparent"
-                      : "text-muted-foreground hover:text-foreground hover:bg-background border-2 border-transparent hover:border-foreground"
+                      : "text-foreground hover:text-foreground hover:bg-background border-2 border-transparent hover:border-foreground"
                   }`}
                 >
                   <Icon className="h-3.5 w-3.5" />
@@ -534,7 +534,7 @@ export default function ScoreCardModal({
 
           {/* ── Carousel slide count badge ── */}
           {isCarousel && (
-            <div className="flex items-center justify-center gap-2 text-xs font-black text-muted-foreground uppercase tracking-wider">
+            <div className="flex items-center justify-center gap-2 text-xs font-black text-foreground uppercase tracking-wider">
               <Layers className="h-3.5 w-3.5 text-foreground" />
               <span>
                 {totalSlides} slides • {topRedFlags.length} red flag
@@ -557,7 +557,7 @@ export default function ScoreCardModal({
                   }}
                 >
                   <Loader2 className="h-8 w-8 text-foreground animate-spin" />
-                  <p className="text-xs font-black uppercase tracking-wider text-muted-foreground">
+                  <p className="text-xs font-black uppercase tracking-wider text-foreground">
                     {carouselProgress || "Generating slides..."}
                   </p>
                 </div>
@@ -627,7 +627,7 @@ export default function ScoreCardModal({
                 }}
               >
                 <Loader2 className="h-8 w-8 text-foreground animate-spin" />
-                <p className="text-xs font-black text-muted-foreground uppercase tracking-wider">
+                <p className="text-xs font-black text-foreground uppercase tracking-wider">
                   Generating card...
                 </p>
               </div>
@@ -776,7 +776,7 @@ export default function ScoreCardModal({
 
           {/* Smart Share Text Preview */}
           <div className="mt-4 p-4 border-2 border-foreground bg-muted card-impact">
-            <p className="text-[10px] text-muted-foreground mb-2 font-black uppercase tracking-wider">
+            <p className="text-[10px] text-foreground mb-2 font-black uppercase tracking-wider">
               Share Message Preview
             </p>
             <p className="text-xs font-bold text-foreground whitespace-pre-line leading-relaxed pb-1">
@@ -791,14 +791,14 @@ export default function ScoreCardModal({
 
           {/* QR Hint */}
           {!hasQR && (
-            <p className="text-[10px] text-muted-foreground text-center font-bold">
+            <p className="text-[10px] text-foreground text-center font-bold">
               💡 Generate a QR verification badge below to include it on your
               score card
             </p>
           )}
 
           {/* Disclaimer */}
-          <p className="text-[10px] text-muted-foreground text-center font-black uppercase tracking-wider">
+          <p className="text-[10px] text-foreground text-center font-black uppercase tracking-wider">
             No personal data is included in the shared image.
           </p>
         </DialogContent>

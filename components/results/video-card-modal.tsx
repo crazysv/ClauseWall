@@ -99,7 +99,7 @@ export default function VideoCardModal({
             <Video className="h-5 w-5 text-foreground" />
             Animated Score Card
           </DialogTitle>
-          <DialogDescription className="font-bold text-muted-foreground uppercase tracking-wider text-xs mt-2">
+          <DialogDescription className="font-bold text-foreground uppercase tracking-wider text-xs mt-2">
             Generate an animated video of your contract score reveal
           </DialogDescription>
         </DialogHeader>
@@ -119,14 +119,14 @@ export default function VideoCardModal({
           ) : generating ? (
             <div className="w-full max-w-xs space-y-4 text-center py-8">
               <Loader2 className="h-10 w-10 text-foreground animate-spin mx-auto" />
-              <p className="text-sm font-black uppercase tracking-wider text-muted-foreground">
+              <p className="text-sm font-black uppercase tracking-wider text-foreground">
                 Rendering video...
               </p>
               <Progress
                 value={progress}
                 className="h-2 border-2 border-foreground bg-muted [&>div]:bg-foreground"
               />
-              <p className="text-xs font-bold text-muted-foreground">
+              <p className="text-xs font-bold text-foreground">
                 {progress}%
               </p>
             </div>
@@ -142,7 +142,7 @@ export default function VideoCardModal({
               <p className="text-sm text-foreground font-black uppercase tracking-wider">
                 Click to generate animated video
               </p>
-              <p className="text-xs text-muted-foreground font-bold">
+              <p className="text-xs text-foreground font-bold">
                 ~4 second animation • WebM format
               </p>
             </div>
@@ -180,7 +180,7 @@ export default function VideoCardModal({
           ) : null}
         </div>
 
-        <p className="text-[10px] text-muted-foreground text-center font-bold">
+        <p className="text-[10px] text-foreground text-center font-bold">
           Video renders at 1080×1350 resolution. Works best in Chrome/Edge.
         </p>
       </DialogContent>

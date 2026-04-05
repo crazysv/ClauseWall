@@ -87,7 +87,7 @@ export default function PortfolioStatsSection({ stats }: PortfolioStatsProps) {
           ? "text-emerald-400"
           : stats.riskTrend === "worsening"
             ? "text-amber-400"
-            : "text-gray-400",
+            : "text-foreground",
     },
     {
       label: "Potential Savings",

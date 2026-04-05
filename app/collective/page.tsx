@@ -69,7 +69,7 @@ export default function CollectiveHubPage() {
               Bargaining
             </span>
           </h1>
-          <p className="text-foreground/40 max-w-lg mx-auto text-sm">
+          <p className="text-foreground max-w-lg mx-auto text-sm">
             Stand together against predatory contract practices. When enough
             people flag the same entity, collectives form automatically —
             enabling coordinated legal action while keeping everyone anonymous.
@@ -121,7 +121,7 @@ export default function CollectiveHubPage() {
                   <p className="text-xs font-semibold text-foreground mb-1">
                     {step.title}
                   </p>
-                  <p className="text-[10px] text-foreground/30">{step.desc}</p>
+                  <p className="text-[10px] text-foreground">{step.desc}</p>
                 </CardContent>
               </Card>
             ))}
@@ -131,7 +131,7 @@ export default function CollectiveHubPage() {
         {/* My Collectives */}
         {loading ? (
           <div className="flex justify-center py-12">
-            <Loader2 className="h-6 w-6 text-foreground/20 animate-spin" />
+            <Loader2 className="h-6 w-6 text-foreground animate-spin" />
           </div>
         ) : myCollectives.length > 0 ? (
           <motion.div
@@ -155,12 +155,12 @@ export default function CollectiveHubPage() {
                           <p className="text-sm font-semibold text-foreground group-hover:text-amber-400 transition-colors">
                             {collective.entity_name}
                           </p>
-                          <p className="text-[10px] text-foreground/30">
+                          <p className="text-[10px] text-foreground">
                             {collective.entity_type} •{" "}
                             {collective.primary_jurisdiction}
                           </p>
                         </div>
-                        <ArrowRight className="h-4 w-4 text-foreground/10 group-hover:text-amber-400 transition-colors" />
+                        <ArrowRight className="h-4 w-4 text-foreground group-hover:text-amber-400 transition-colors" />
                       </div>
 
                       <ThresholdProgress
@@ -168,7 +168,7 @@ export default function CollectiveHubPage() {
                         threshold={collective.threshold}
                       />
 
-                      <div className="flex items-center justify-between mt-2 text-[10px] text-foreground/20">
+                      <div className="flex items-center justify-between mt-2 text-[10px] text-foreground">
                         <span className="flex items-center gap-1">
                           <Lock className="h-2.5 w-2.5" />
                           {membership.anonymous_id}
@@ -192,12 +192,12 @@ export default function CollectiveHubPage() {
             className="text-center py-12 mb-10"
           >
             <div className="h-16 w-16 rounded-none bg-white/[0.03] flex items-center justify-center mx-auto mb-4">
-              <Users className="h-8 w-8 text-foreground/10" />
+              <Users className="h-8 w-8 text-foreground" />
             </div>
-            <p className="text-sm text-foreground/30 mb-1">
+            <p className="text-sm text-foreground mb-1">
               No collectives yet
             </p>
-            <p className="text-[11px] text-foreground/20 max-w-sm mx-auto">
+            <p className="text-[11px] text-foreground max-w-sm mx-auto">
               Upload and analyze contracts to detect predatory entities. When
               others flag the same entity, you&apos;ll be matched automatically.
             </p>

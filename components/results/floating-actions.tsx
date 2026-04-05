@@ -367,7 +367,7 @@ export default function FloatingActions({
                     setIsOpen(false);
                     setExpandedGroup(null);
                   }}
-                  className="flex items-center gap-3 px-3 py-2.5 rounded-none text-muted-foreground hover:text-foreground hover:bg-muted transition-all uppercase tracking-wider font-bold"
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-none text-foreground hover:text-foreground hover:bg-muted transition-all uppercase tracking-wider font-bold"
                 >
                   <X className="h-5 w-5" />
                   <span className="text-sm font-black">Close</span>
@@ -386,7 +386,7 @@ export default function FloatingActions({
                       <button
                         key={group.id}
                         onClick={() => toggleGroup(group.id)}
-                        className={`w-full flex items-center justify-between px-3 py-2.5 rounded-none text-muted-foreground hover:text-foreground hover:bg-muted transition-all ${
+                        className={`w-full flex items-center justify-between px-3 py-2.5 rounded-none text-foreground hover:text-foreground hover:bg-muted transition-all ${
                           isExpanded ? "bg-muted" : ""
                         }`}
                       >
@@ -398,7 +398,7 @@ export default function FloatingActions({
                             <span className="text-sm font-black uppercase tracking-wider text-foreground">
                               {group.label}
                             </span>
-                            <p className="text-[10px] text-muted-foreground font-black uppercase tracking-wide">
+                            <p className="text-[10px] text-foreground font-black uppercase tracking-wide">
                               {group.subtitle}
                             </p>
                           </div>
@@ -435,7 +435,7 @@ export default function FloatingActions({
                                     key={action.id}
                                     onClick={() => handleAction(action.id)}
                                     disabled={isDisabled}
-                                    className="w-full flex items-center gap-3 px-3 py-2 rounded-none hover:bg-muted hover:text-foreground transition-all disabled:opacity-50 text-muted-foreground font-bold tracking-wider uppercase border-l-2 border-transparent hover:border-foreground"
+                                    className="w-full flex items-center gap-3 px-3 py-2 rounded-none hover:bg-muted hover:text-foreground transition-all disabled:opacity-50 text-foreground font-bold tracking-wider uppercase border-l-2 border-transparent hover:border-foreground"
                                   >
                                     <ActionIcon className="h-4 w-4 flex-shrink-0" />
                                     <span className="text-xs whitespace-nowrap">
@@ -515,7 +515,7 @@ export default function FloatingActions({
                 </button>
 
                 {/* Roast Mode subtitle */}
-                <p className="text-[10px] text-white/20 px-3 pb-1">
+                <p className="text-[10px] text-white px-3 pb-1">
                   Fun mode — roasts your contract
                 </p>
               </motion.div>
@@ -534,10 +534,10 @@ export default function FloatingActions({
                 ) : (
                   <Wrench className="h-5 w-5" />
                 )}
-                <span className="text-[10px] font-medium text-white/50">
+                <span className="text-[10px] font-medium text-white">
                   Tools
                 </span>
-                <span className="text-[9px] text-white/30">
+                <span className="text-[9px] text-white">
                   ({ACTION_GROUPS.reduce((sum, g) => sum + g.actions.length, 0)}
                   )
                 </span>

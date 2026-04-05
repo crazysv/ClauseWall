@@ -87,7 +87,7 @@ export default function RiskTrendChart({ data }: RiskTrendChartProps) {
           <p className="font-bold text-foreground text-sm uppercase tracking-wider">
             Analyze 2+ contracts to see your risk trend
           </p>
-          <p className="text-muted-foreground text-xs mt-2 font-bold">
+          <p className="text-foreground text-xs mt-2 font-bold">
             Each contract will appear as a data point
           </p>
         </div>

@@ -83,7 +83,7 @@ export default function AuthorityCard({
               >
                 {authority.short_name || authority.name}
               </h3>
-              <p className="text-sm font-bold text-muted-foreground mt-1">
+              <p className="text-sm font-bold text-foreground mt-1">
                 {typeLabel}
               </p>
             </div>
@@ -91,11 +91,11 @@ export default function AuthorityCard({
             {confidence && (
               <div className="flex items-center gap-1">
                 {confidence === "high" ? (
-                  <CheckCircle2 className="h-4 w-4 text-green-400" />
+                  <CheckCircle2 className="h-4 w-4 text-green-900 dark:text-green-100 font-bold" />
                 ) : confidence === "medium" ? (
-                  <AlertCircle className="h-4 w-4 text-amber-400" />
+                  <AlertCircle className="h-4 w-4 text-amber-900 dark:text-amber-100 font-bold" />
                 ) : (
-                  <AlertCircle className="h-4 w-4 text-muted-foreground" />
+                  <AlertCircle className="h-4 w-4 text-foreground" />
                 )}
               </div>
             )}
@@ -107,14 +107,14 @@ export default function AuthorityCard({
               <div className="absolute -top-3 -left-3 bg-blue-500 p-1 border-2 border-black">
                 <Scale className="h-4 w-4 text-foreground stroke-[3px]" />
               </div>
-              <p className="text-sm font-bold text-blue-900 dark:text-blue-100 leading-relaxed ml-2">
+              <p className="text-sm font-bold text-blue-900 dark:text-blue-100 font-bold dark:text-blue-100 leading-relaxed ml-2">
                 {reasoning}
               </p>
             </div>
           )}
 
           {/* Info Row */}
-          <div className="flex flex-wrap items-center gap-4 text-sm font-bold text-muted-foreground mb-4">
+          <div className="flex flex-wrap items-center gap-4 text-sm font-bold text-foreground mb-4">
             {authority.city && (
               <span className="flex items-center gap-1">
                 <MapPin className="h-4 w-4 stroke-[3px]" /> {authority.city}

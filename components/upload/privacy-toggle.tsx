@@ -61,7 +61,7 @@ export default function PrivacyToggle() {
       <CardContent className="p-4">
         <div className="flex items-center justify-between mb-4">
           <h3
-            className={`font-black uppercase tracking-wider ${isPrivacyMode ? "text-green-800" : "text-foreground"}`}
+            className={`font-black uppercase tracking-wider ${isPrivacyMode ? "text-green-900 dark:text-green-100 font-bold" : "text-foreground"}`}
           >
             Quantum Privacy Mode
           </h3>
@@ -71,7 +71,7 @@ export default function PrivacyToggle() {
             </Badge>
           )}
         </div>
-        <p className="text-sm font-bold text-muted-foreground mb-4">
+        <p className="text-sm font-bold text-foreground mb-4">
           Pre-process sensitive data locally in your browser before sending
           array references to the server for analysis.
         </p>
@@ -88,7 +88,7 @@ export default function PrivacyToggle() {
                 className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 text-[10px] sm:text-xs font-black uppercase tracking-wider transition-all ${
                   isActive
                     ? "bg-foreground text-background border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(10,10,10,1)] -translate-y-[1px]"
-                    : "text-muted-foreground hover:text-foreground hover:bg-background border-2 border-transparent hover:border-foreground"
+                    : "text-foreground hover:text-foreground hover:bg-background border-2 border-transparent hover:border-foreground"
                 }`}
               >
                 {c.icon}
@@ -101,7 +101,7 @@ export default function PrivacyToggle() {
           })}
         </div>
 
-        <p className="text-[10px] text-muted-foreground flex items-center gap-1 mt-3">
+        <p className="text-[10px] text-foreground flex items-center gap-1 mt-3">
           <Info className="h-3 w-3 flex-shrink-0" />
           {config.description}
         </p>

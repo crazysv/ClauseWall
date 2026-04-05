@@ -325,11 +325,11 @@ export default function QuickScanResult({
               >
                 {animatedScore}
               </span>
-              <span className="text-3xl font-bold text-muted-foreground">
+              <span className="text-3xl font-bold text-foreground">
                 /100
               </span>
             </div>
-            <div className="mt-2 flex items-center justify-center gap-3 text-sm text-muted-foreground">
+            <div className="mt-2 flex items-center justify-center gap-3 text-sm text-foreground">
               <span>📄 {displayDocType}</span>
               <span>•</span>
               <span>{displayClauses} clauses detected</span>
@@ -369,7 +369,7 @@ export default function QuickScanResult({
                     <p className="text-sm font-medium">
                       Enhancing with AI analysis...
                     </p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-foreground">
                       Verifying against 750+ Indian legal rules • 3-5 seconds
                     </p>
                   </div>
@@ -417,7 +417,7 @@ export default function QuickScanResult({
                             {flag.title}
                           </span>
                         </div>
-                        <p className="text-sm font-medium text-muted-foreground">
+                        <p className="text-sm font-medium text-foreground">
                           {flag.explanation}
                         </p>
                         {flag.law_reference && (
@@ -451,7 +451,7 @@ export default function QuickScanResult({
                     ON-DEVICE
                   </Badge>
                 </h3>
-                <p className="text-sm font-medium text-muted-foreground mb-4">
+                <p className="text-sm font-medium text-foreground mb-4">
                   Based on ML classification • Detailed explanations loading...
                 </p>
                 <div className="space-y-2">
@@ -478,11 +478,11 @@ export default function QuickScanResult({
                             >
                               {config.label}
                             </Badge>
-                            <span className="text-[10px] font-bold text-muted-foreground">
+                            <span className="text-[10px] font-bold text-foreground">
                               {confPercent}% confident
                             </span>
                           </div>
-                          <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
+                          <p className="text-xs text-foreground leading-relaxed line-clamp-2">
                             {clause.truncatedText}
                           </p>
                         </div>
@@ -509,7 +509,7 @@ export default function QuickScanResult({
                 <p className="text-sm font-medium text-green-400">
                   Preliminary scan looks good!
                 </p>
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-xs text-foreground mt-1">
                   AI verification in progress to confirm...
                 </p>
               </CardContent>
@@ -609,7 +609,7 @@ export default function QuickScanResult({
       {/* 6. ML ATTRIBUTION — when both ML + Quick Scan */}
       {/* ============================================ */}
       {hasML && result && (
-        <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
+        <div className="flex items-center justify-center gap-4 text-xs text-foreground">
           <span className="flex items-center gap-1">
             <Zap className="h-3 w-3 text-amber-400" />
             Pre-scanned on-device in {mlResult!.inferenceTimeMs.toFixed(0)}ms
@@ -623,7 +623,7 @@ export default function QuickScanResult({
 
       {/* ML-only privacy badge */}
       {isPreliminary && (
-        <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
+        <div className="flex items-center justify-center gap-4 text-xs text-foreground">
           <span className="flex items-center gap-1">
             <Cpu className="h-3 w-3 text-amber-400" />
             TF.js v{mlResult!.modelVersion}
@@ -664,14 +664,14 @@ export default function QuickScanResult({
                       <h3 className="text-lg font-semibold">
                         Full Analysis in Progress
                       </h3>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-foreground">
                         Verifying against 750+ Indian legal rules
                       </p>
                     </div>
                   </div>
 
                   <div className="mb-3">
-                    <div className="flex justify-between text-xs text-muted-foreground mb-1.5">
+                    <div className="flex justify-between text-xs text-foreground mb-1.5">
                       <span className="flex items-center gap-1.5">
                         {getStepIcon(progressData.step)}
                         <span className="truncate max-w-[250px]">
@@ -704,7 +704,7 @@ export default function QuickScanResult({
                     <div className="flex items-center justify-between text-sm mb-4 p-3 rounded-none bg-muted">
                       <div className="flex items-center gap-2">
                         <Brain className="h-4 w-4 text-blue-400" />
-                        <span className="text-muted-foreground">
+                        <span className="text-foreground">
                           Clauses analyzed:
                         </span>
                       </div>
@@ -717,7 +717,7 @@ export default function QuickScanResult({
                         >
                           {progressData.clauses_analyzed}
                         </motion.span>
-                        <span className="text-muted-foreground">
+                        <span className="text-foreground">
                           / {progressData.total_clauses}
                         </span>
                       </div>
@@ -745,7 +745,7 @@ export default function QuickScanResult({
                     ].map((item, i) => (
                       <div
                         key={i}
-                        className="flex items-center gap-1.5 text-muted-foreground p-2 rounded bg-white/[0.02]"
+                        className="flex items-center gap-1.5 text-foreground p-2 rounded bg-white/[0.02]"
                       >
                         <span className="text-blue-400">{item.icon}</span>
                         {item.text}
@@ -776,7 +776,7 @@ export default function QuickScanResult({
                       <h3 className="text-lg font-semibold text-green-400">
                         ✅ Full Report Ready!
                       </h3>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-foreground">
                         All {progressData.total_clauses} clauses verified
                       </p>
                     </div>
@@ -785,7 +785,7 @@ export default function QuickScanResult({
                   {progressData.overall_risk_score !== null && (
                     <div className="flex items-center gap-6 mb-5 p-4 rounded-none bg-muted">
                       <div>
-                        <span className="text-xs text-muted-foreground block mb-1">
+                        <span className="text-xs text-foreground block mb-1">
                           Verified Score
                         </span>
                         <span
@@ -795,7 +795,7 @@ export default function QuickScanResult({
                         </span>
                       </div>
                       <div>
-                        <span className="text-xs text-muted-foreground block mb-1">
+                        <span className="text-xs text-foreground block mb-1">
                           Clauses Analyzed
                         </span>
                         <span className="text-3xl font-bold">
@@ -813,7 +813,7 @@ export default function QuickScanResult({
                     </Button>
                   </Link>
 
-                  <p className="text-xs text-muted-foreground text-center mt-3">
+                  <p className="text-xs text-foreground text-center mt-3">
                     ⚖️ Verified citations • Negotiation scripts • Penalty info •
                     Fair alternatives
                   </p>
@@ -832,7 +832,7 @@ export default function QuickScanResult({
                       Full Analysis Failed
                     </h3>
                   </div>
-                  <p className="text-sm text-muted-foreground mb-4">
+                  <p className="text-sm text-foreground mb-4">
                     The detailed analysis encountered an error. The scan results
                     above are still valid.
                   </p>
@@ -865,7 +865,7 @@ export default function QuickScanResult({
       {/* ============================================ */}
       {/* 9. DISCLAIMER                                 */}
       {/* ============================================ */}
-      <p className="text-xs text-muted-foreground text-center">
+      <p className="text-xs text-foreground text-center">
         🤖 Quick scan uses AI analysis. Full report includes verification
         against our legal database for higher accuracy.
       </p>

@@ -29,7 +29,7 @@ export default function LegalAidResultView({ result }: Props) {
             </h3>
           </div>
           {result.eligibility.reasons.map((r, i) => (
-            <p key={i} className="text-xs text-muted-foreground mt-1">
+            <p key={i} className="text-xs text-foreground mt-1">
               • {r}
             </p>
           ))}
@@ -52,7 +52,7 @@ export default function LegalAidResultView({ result }: Props) {
                   <div>
                     <p className="text-sm font-medium">{p.name}</p>
                     {p.description && (
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-foreground">
                         {p.description}
                       </p>
                     )}

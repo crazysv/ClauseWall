@@ -30,7 +30,7 @@ const severityConfig: Record<
     label: "MINOR",
   },
   cosmetic: {
-    color: "bg-gray-500/15 text-gray-400 border-gray-500/30",
+    color: "bg-gray-500/15 text-foreground border-gray-500/30",
     emoji: "⚪",
     label: "COSMETIC",
   },
@@ -61,7 +61,7 @@ export default function ChangeCard({
               {config.emoji} {config.label}
             </Badge>
             <span className="font-semibold">{companyName}</span>
-            <span className="text-sm text-muted-foreground">· {timeAgo}</span>
+            <span className="text-sm text-foreground">· {timeAgo}</span>
           </div>
           {change.overall_direction && (
             <DirectionBadge
@@ -72,7 +72,7 @@ export default function ChangeCard({
           )}
         </div>
 
-        <p className="text-sm text-muted-foreground mb-3">
+        <p className="text-sm text-foreground mb-3">
           {change.summary ||
             `${changes.length} change${changes.length !== 1 ? "s" : ""} detected`}
         </p>
@@ -84,14 +84,14 @@ export default function ChangeCard({
             return (
               <div key={i} className="flex items-start gap-2 text-sm">
                 <span className="flex-shrink-0">{cConfig.emoji}</span>
-                <span className="text-muted-foreground">
+                <span className="text-foreground">
                   {c.user_impact_summary}
                 </span>
               </div>
             );
           })}
           {changes.length > 3 && (
-            <p className="text-xs text-muted-foreground ml-5">
+            <p className="text-xs text-foreground ml-5">
               +{changes.length - 3} more changes
             </p>
           )}
@@ -106,7 +106,7 @@ export default function ChangeCard({
           </Link>
           {change.legality_issues &&
             (change.legality_issues as unknown[]).length > 0 && (
-              <Badge className="bg-red-500/10 text-red-400 border-red-500/20 text-[10px]">
+              <Badge className="bg-red-500/10 text-red-800 dark:text-red-100 font-bold border-red-500/20 text-[10px]">
                 ⚖️ Legal Issues Found
               </Badge>
             )}

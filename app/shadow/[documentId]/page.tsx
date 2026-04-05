@@ -171,7 +171,7 @@ export default function ShadowPage() {
                 </span>
                 Shadow Agreement Detector
               </h1>
-              <p className="text-sm font-bold uppercase tracking-widest text-black/60 mt-2 bg-gray-100 inline-block px-2 py-1">
+              <p className="text-sm font-bold uppercase tracking-widest text-foreground mt-2 bg-gray-100 inline-block px-2 py-1">
                 Compare verbal promises against your contract
               </p>
             </div>

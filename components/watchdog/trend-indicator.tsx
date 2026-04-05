@@ -9,7 +9,7 @@ const trendConfig: Record<
 > = {
   improving: { icon: TrendingUp, color: "text-green-400", label: "Improving" },
   declining: { icon: TrendingDown, color: "text-red-400", label: "Declining" },
-  stable: { icon: Minus, color: "text-gray-400", label: "Stable" },
+  stable: { icon: Minus, color: "text-foreground", label: "Stable" },
 };
 
 export default function TrendIndicator({

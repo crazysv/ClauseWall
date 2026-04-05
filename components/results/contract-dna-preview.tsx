@@ -57,14 +57,14 @@ export default function ContractDNAPreview({
               <h3 className="font-black uppercase tracking-wider text-sm text-foreground">
                 Contract Personality
               </h3>
-              <span className="text-xs text-muted-foreground font-mono">
+              <span className="text-xs text-foreground font-mono">
                 {contractId}
               </span>
             </div>
             <p className="text-lg font-black uppercase tracking-wider text-foreground">
               {personality.emoji} {personality.name}
             </p>
-            <p className="text-xs text-muted-foreground font-bold mt-0.5">
+            <p className="text-xs text-foreground font-bold mt-0.5">
               {personality.description}
             </p>
           </div>

@@ -100,7 +100,7 @@ export default function ReportIssueModal({
                 <div className="text-center py-8">
                   <CheckCircle2 className="h-12 w-12 text-green-400 mx-auto mb-3" />
                   <p className="font-semibold">Report Submitted</p>
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <p className="text-xs text-foreground mt-1">
                     We will review and update this information.
                   </p>
                 </div>
@@ -112,7 +112,7 @@ export default function ReportIssueModal({
                       <h3 className="font-semibold">
                         Report Incorrect Information
                       </h3>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-foreground">
                         {authorityName}
                       </p>
                     </div>
@@ -120,7 +120,7 @@ export default function ReportIssueModal({
 
                   <div className="space-y-4">
                     <div>
-                      <label className="text-xs text-muted-foreground mb-1 block">
+                      <label className="text-xs text-foreground mb-1 block">
                         Issue Type
                       </label>
                       <select
@@ -136,7 +136,7 @@ export default function ReportIssueModal({
                       </select>
                     </div>
                     <div>
-                      <label className="text-xs text-muted-foreground mb-1 block">
+                      <label className="text-xs text-foreground mb-1 block">
                         Description *
                       </label>
                       <textarea
@@ -148,7 +148,7 @@ export default function ReportIssueModal({
                       />
                     </div>
                     <div>
-                      <label className="text-xs text-muted-foreground mb-1 block">
+                      <label className="text-xs text-foreground mb-1 block">
                         Suggested Correction
                       </label>
                       <input

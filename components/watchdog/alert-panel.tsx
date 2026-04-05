@@ -49,7 +49,7 @@ export default function AlertPanel() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+        <Loader2 className="h-5 w-5 animate-spin text-foreground" />
       </div>
     );
   }
@@ -88,7 +88,7 @@ export default function AlertPanel() {
       </CardHeader>
       <CardContent className="space-y-2 max-h-80 overflow-y-auto">
         {alerts.length === 0 ? (
-          <p className="text-sm text-muted-foreground text-center py-4">
+          <p className="text-sm text-foreground text-center py-4">
             No alerts yet. Watch some companies to get notified.
           </p>
         ) : (
@@ -104,14 +104,14 @@ export default function AlertPanel() {
                 </span>
                 <div className="min-w-0">
                   <p
-                    className={`text-sm font-medium truncate ${alert.is_read ? "text-muted-foreground" : ""}`}
+                    className={`text-sm font-medium truncate ${alert.is_read ? "text-foreground" : ""}`}
                   >
                     {alert.title}
                   </p>
-                  <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5">
+                  <p className="text-xs text-foreground line-clamp-2 mt-0.5">
                     {alert.body}
                   </p>
-                  <p className="text-[10px] text-muted-foreground mt-1">
+                  <p className="text-[10px] text-foreground mt-1">
                     {new Date(alert.sent_at).toLocaleDateString("en-IN", {
                       day: "numeric",
                       month: "short",

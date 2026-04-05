@@ -57,7 +57,7 @@ export default function TrendsPage() {
         >
           <Link
             href="/market"
-            className="text-xs text-foreground/30 hover:text-foreground/50 mb-3 flex items-center gap-1"
+            className="text-xs text-foreground hover:text-foreground mb-3 flex items-center gap-1"
           >
             <ArrowLeft className="h-3 w-3" /> Back to Market Dashboard
           </Link>
@@ -67,7 +67,7 @@ export default function TrendsPage() {
             </div>
             <div>
               <h1 className="text-2xl font-bold">Market Trends</h1>
-              <p className="text-sm text-foreground/50">
+              <p className="text-sm text-foreground">
                 Time-series trend detection from benchmark snapshots
               </p>
             </div>
@@ -80,11 +80,11 @@ export default function TrendsPage() {
           </div>
         ) : trends.length === 0 ? (
           <div className="text-center py-20">
-            <BarChart3 className="h-12 w-12 text-foreground/10 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-foreground/60">
+            <BarChart3 className="h-12 w-12 text-foreground mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-foreground">
               No Trends Detected Yet
             </h3>
-            <p className="text-sm text-foreground/30 mt-2 max-w-md mx-auto">
+            <p className="text-sm text-foreground mt-2 max-w-md mx-auto">
               Trends are detected automatically as more contracts are analyzed
               over time. Keep analyzing contracts to build trend data.
             </p>
@@ -129,8 +129,8 @@ export default function TrendsPage() {
             {stable.length > 0 && (
               <div className="mb-8">
                 <div className="flex items-center gap-2 mb-3">
-                  <BarChart3 className="h-4 w-4 text-gray-400" />
-                  <h2 className="font-semibold text-foreground/60 text-sm">
+                  <BarChart3 className="h-4 w-4 text-foreground" />
+                  <h2 className="font-semibold text-foreground text-sm">
                     Stable Metrics
                   </h2>
                 </div>

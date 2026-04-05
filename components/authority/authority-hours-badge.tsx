@@ -92,7 +92,7 @@ export default function AuthorityHoursBadge({
       icon: Clock,
       label: "Hours Unknown",
       bg: "bg-gray-500/15",
-      text: "text-gray-400",
+      text: "text-foreground",
       dot: "bg-gray-400",
     },
   };

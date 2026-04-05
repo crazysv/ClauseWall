@@ -59,7 +59,7 @@ export default function EscalationCountdown({
               : `${daysRemaining} days left`}
         </p>
         {!compact && (
-          <p className="text-[10px] text-muted-foreground">{deadline.action}</p>
+          <p className="text-[10px] text-foreground">{deadline.action}</p>
         )}
       </div>
     </div>

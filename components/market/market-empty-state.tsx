@@ -28,7 +28,7 @@ export default function MarketEmptyState() {
       <h3 className="text-xl font-bold text-foreground mb-2">
         Market Intelligence Building...
       </h3>
-      <p className="text-sm text-foreground/50 max-w-md mx-auto mb-6">
+      <p className="text-sm text-foreground max-w-md mx-auto mb-6">
         Analyze more contracts to power the market intelligence engine. Each
         analysis contributes anonymized data to build comprehensive benchmarks.
       </p>
@@ -57,7 +57,7 @@ export default function MarketEmptyState() {
               <p className="text-xs font-medium text-foreground">
                 {step.label}
               </p>
-              <p className="text-[10px] text-foreground/30 mt-0.5">
+              <p className="text-[10px] text-foreground mt-0.5">
                 {step.desc}
               </p>
             </CardContent>
@@ -67,7 +67,7 @@ export default function MarketEmptyState() {
 
       <Link
         href="/"
-        className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg bg-cyan-500/10 text-cyan-400 hover:bg-cyan-500/20 transition-colors text-sm font-medium border border-cyan-500/20"
+        className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg bg-cyan-500/10 text-cyan-800 dark:text-cyan-100 font-bold hover:bg-cyan-500/20 transition-colors text-sm font-medium border border-cyan-500/20"
       >
         <Upload className="h-4 w-4" />
         Analyze Your First Contract

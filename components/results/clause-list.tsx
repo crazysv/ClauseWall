@@ -22,12 +22,12 @@ export function ClauseList({ clauses }: { clauses: any[] }) {
             <span
               className={`inline-block mt-3 px-3 py-1 text-xs font-bold uppercase rounded-none border-2 ${
                 clause.riskLevel === "safe"
-                  ? "border-green-600 text-green-700 bg-green-50 dark:bg-green-950 dark:text-green-300"
+                  ? "border-green-600 text-green-700 bg-green-50 dark:bg-green-950 dark:text-green-900 dark:text-green-100 font-bold"
                   : clause.riskLevel === "warning"
-                    ? "border-yellow-600 text-yellow-700 bg-yellow-50 dark:bg-yellow-950 dark:text-yellow-300"
+                    ? "border-yellow-600 text-yellow-700 bg-yellow-50 dark:bg-yellow-950 dark:text-yellow-900 dark:text-yellow-100 font-bold"
                     : clause.riskLevel === "dangerous"
-                      ? "border-red-600 text-red-700 bg-red-50 dark:bg-red-950 dark:text-red-300"
-                      : "border-purple-600 text-purple-700 bg-purple-50 dark:bg-purple-950 dark:text-purple-300"
+                      ? "border-red-600 text-red-700 bg-red-50 dark:bg-red-950 dark:text-red-900 dark:text-red-100 font-bold"
+                      : "border-purple-600 text-purple-700 bg-purple-50 dark:bg-purple-950 dark:text-purple-900 dark:text-purple-100 font-bold"
               }`}
             >
               {clause.riskLevel}

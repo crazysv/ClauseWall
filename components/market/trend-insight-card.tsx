@@ -29,7 +29,7 @@ export default function TrendInsightCard({
   const isStable = Math.abs(trend.change_percent) < 2;
 
   const trendIcon = isStable ? (
-    <Minus className="h-4 w-4 text-gray-400" />
+    <Minus className="h-4 w-4 text-foreground" />
   ) : isUp ? (
     <TrendingUp className="h-4 w-4 text-red-400" />
   ) : (
@@ -84,24 +84,24 @@ export default function TrendInsightCard({
             </Badge>
           </div>
 
-          <p className="text-xs text-foreground/50 mb-2 leading-relaxed">
+          <p className="text-xs text-foreground mb-2 leading-relaxed">
             {trend.description}
           </p>
 
           <div className="flex items-center justify-between">
             <span
-              className={`text-lg font-bold ${isStable ? "text-gray-400" : isUp ? "text-red-400" : "text-green-400"}`}
+              className={`text-lg font-bold ${isStable ? "text-foreground" : isUp ? "text-red-400" : "text-green-400"}`}
             >
               {isUp ? "+" : ""}
               {trend.change_percent.toFixed(1)}%
             </span>
-            <span className="text-[10px] text-foreground/30">
+            <span className="text-[10px] text-foreground">
               {trend.period_months}mo period
             </span>
           </div>
 
           {insight.actionable_advice && (
-            <p className="text-[10px] text-foreground/30 mt-2 pt-2 border-t border-foreground border-2 italic">
+            <p className="text-[10px] text-foreground mt-2 pt-2 border-t border-foreground border-2 italic">
               💡 {insight.actionable_advice}
             </p>
           )}

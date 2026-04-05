@@ -256,7 +256,7 @@ function OverlayContent({
                 {riskCounts.warning} Warning
               </span>
             )}
-            <span className="text-xs text-muted-foreground">
+            <span className="text-xs text-foreground">
               {matchedCount}/{filteredClauses.length} matched
             </span>
           </div>
@@ -273,7 +273,7 @@ function OverlayContent({
               >
                 <ChevronUp className="h-3.5 w-3.5" />
               </Button>
-              <span className="text-[11px] text-muted-foreground w-8 text-center">
+              <span className="text-[11px] text-foreground w-8 text-center">
                 {currentDangerIndex + 1}/{dangerSegments.length}
               </span>
               <Button
@@ -290,7 +290,7 @@ function OverlayContent({
           <Button
             variant="ghost"
             size="sm"
-            className="gap-1.5 text-xs text-muted-foreground h-8 px-2"
+            className="gap-1.5 text-xs text-foreground h-8 px-2"
             onClick={() => setShowSafe(!showSafe)}
           >
             {showSafe ? (
@@ -312,7 +312,7 @@ function OverlayContent({
             >
               <ZoomOut className="h-3.5 w-3.5" />
             </Button>
-            <span className="text-[11px] text-muted-foreground w-10 text-center">
+            <span className="text-[11px] text-foreground w-10 text-center">
               {Math.round(zoom * 100)}%
             </span>
             <Button
@@ -360,7 +360,7 @@ function OverlayContent({
                 {doc.original_filename || "Contract Document"}
               </h2>
             </div>
-            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-8">
+            <p className="text-xs font-bold uppercase tracking-wider text-foreground ml-8">
               {clauses.length} clauses analyzed • Risk Score:{" "}
               {doc.overall_risk_score}/100 • X-Ray Scan by ClauseWall
             </p>
@@ -419,7 +419,7 @@ function OverlayContent({
             })}
           </div>
 
-          <div className="px-8 py-4 border-t border-foreground border-2/60 flex items-center justify-between text-[11px] text-muted-foreground">
+          <div className="px-8 py-4 border-t border-foreground border-2/60 flex items-center justify-between text-[11px] text-foreground">
             <span>
               🛡️ Analyzed by ClauseWall • {matchedCount} clauses highlighted
             </span>
@@ -468,11 +468,11 @@ function OverlayContent({
                 {RISK_STYLES[hoveredClause.risk_level].emoji}{" "}
                 {RISK_STYLES[hoveredClause.risk_level].label}
               </span>
-              <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+              <span className="text-[11px] font-bold text-foreground uppercase tracking-wider">
                 Clause #{hoveredClause.clause_number}
               </span>
               {hoveredClause.risk_score != null && (
-                <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider ml-auto">
+                <span className="text-[11px] font-bold text-foreground uppercase tracking-wider ml-auto">
                   Score: {hoveredClause.risk_score}
                 </span>
               )}
@@ -492,7 +492,7 @@ function OverlayContent({
                 {hoveredClause.red_flags.slice(0, 3).map((flag, i) => (
                   <span
                     key={i}
-                    className="text-[9px] px-1.5 py-0.5 bg-red-500/10 text-red-400 rounded border border-red-500/20"
+                    className="text-[9px] px-1.5 py-0.5 bg-red-500/10 text-red-800 dark:text-red-100 font-bold rounded border border-red-500/20"
                   >
                     🚩 {flag}
                   </span>
@@ -542,7 +542,7 @@ export default function XRayMode({ document: doc, clauses }: XRayModeProps) {
                   NEW
                 </Badge>
               </h3>
-              <p className="text-xs uppercase tracking-wider font-bold text-muted-foreground mt-1">
+              <p className="text-xs uppercase tracking-wider font-bold text-foreground mt-1">
                 See dangerous clauses highlighted directly on your document
               </p>
             </div>

@@ -236,7 +236,7 @@ export default function ProofWalkthrough({
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
                       {parsed.stepNumber && (
-                        <span className="text-[10px] text-muted-foreground font-black uppercase tracking-wider">
+                        <span className="text-[10px] text-foreground font-black uppercase tracking-wider">
                           {parsed.stepNumber}
                         </span>
                       )}
@@ -281,7 +281,7 @@ export default function ProofWalkthrough({
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
-                  className="mt-3 pt-3 border-t-2 border-foreground text-xs text-muted-foreground font-bold space-y-1"
+                  className="mt-3 pt-3 border-t-2 border-foreground text-xs text-foreground font-bold space-y-1"
                 >
                   {matchingNode.metadata.statute && (
                     <p>📜 Statute: {matchingNode.metadata.statute}</p>

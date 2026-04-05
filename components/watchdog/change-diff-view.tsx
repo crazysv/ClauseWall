@@ -28,7 +28,7 @@ const severityConfig: Record<
     bgColor: "border-blue-500/20",
   },
   cosmetic: {
-    color: "text-gray-400",
+    color: "text-foreground",
     emoji: "⚪",
     label: "COSMETIC",
     bgColor: "border-gray-500/20",
@@ -96,7 +96,7 @@ export default function ChangeDiffView({
                     <p className="text-[10px] text-red-400 font-semibold mb-1.5 uppercase tracking-wider">
                       Before
                     </p>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
+                    <p className="text-sm text-foreground leading-relaxed">
                       {change.old_text}
                     </p>
                   </div>
@@ -106,7 +106,7 @@ export default function ChangeDiffView({
                     <p className="text-[10px] text-green-400 font-semibold mb-1.5 uppercase tracking-wider">
                       After
                     </p>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
+                    <p className="text-sm text-foreground leading-relaxed">
                       {change.new_text}
                     </p>
                   </div>
@@ -118,7 +118,7 @@ export default function ChangeDiffView({
                 <div className="flex items-start gap-2">
                   <span className="text-sm">📌</span>
                   <div>
-                    <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    <span className="text-xs font-semibold text-foreground uppercase tracking-wider">
                       Impact
                     </span>
                     <p className="text-sm mt-0.5">
@@ -132,7 +132,7 @@ export default function ChangeDiffView({
                     <div className="flex items-start gap-2">
                       <span className="text-sm">⚖️</span>
                       <div>
-                        <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                        <span className="text-xs font-semibold text-foreground uppercase tracking-wider">
                           Legal
                         </span>
                         <p className="text-sm mt-0.5 text-amber-300/80">
@@ -147,7 +147,7 @@ export default function ChangeDiffView({
                     <div className="flex items-start gap-2">
                       <span className="text-sm">👤</span>
                       <div>
-                        <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                        <span className="text-xs font-semibold text-foreground uppercase tracking-wider">
                           Affected Actions
                         </span>
                         <div className="flex flex-wrap gap-1 mt-1">
@@ -168,7 +168,7 @@ export default function ChangeDiffView({
 
               {/* Confidence */}
               <div className="mt-3 flex items-center justify-end">
-                <span className="text-[10px] text-muted-foreground">
+                <span className="text-[10px] text-foreground">
                   Confidence: {Math.round(change.confidence * 100)}%
                 </span>
               </div>

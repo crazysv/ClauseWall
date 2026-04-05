@@ -81,7 +81,7 @@ export default function ShadowLandingPage() {
               Shadow <span className="text-amber-500">Agreement Detector</span>
             </h1>
           </div>
-          <p className="text-muted-foreground max-w-xl mx-auto text-lg">
+          <p className="text-foreground max-w-xl mx-auto text-lg">
             Did the broker promise free parking? Did HR promise a bonus over
             email? Check if your informal promises match the final formal
             contract.

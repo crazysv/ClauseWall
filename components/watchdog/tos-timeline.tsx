@@ -45,7 +45,7 @@ export default function TosTimeline({ changes }: { changes: TosChange[] }) {
                   {change.tos_type.toUpperCase()} v
                   {change.change_number || index + 1}
                 </Badge>
-                <span className="text-xs text-muted-foreground">
+                <span className="text-xs text-foreground">
                   {change.total_changes} change
                   {change.total_changes !== 1 ? "s" : ""}
                 </span>
@@ -84,7 +84,7 @@ export default function TosTimeline({ changes }: { changes: TosChange[] }) {
                   );
                 })}
                 {semanticChanges.length > 3 && (
-                  <p className="text-xs text-muted-foreground ml-5">
+                  <p className="text-xs text-foreground ml-5">
                     +{semanticChanges.length - 3} more
                   </p>
                 )}
