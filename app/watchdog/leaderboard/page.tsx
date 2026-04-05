@@ -2,7 +2,7 @@
 // /watchdog/leaderboard — ToS Score Leaderboard
 // ============================================
 
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import { Trophy } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import LeaderboardTable from "@/components/watchdog/leaderboard-table";
@@ -15,7 +15,7 @@ export const metadata = {
 };
 
 export default async function LeaderboardPage() {
-  const supabase = createAdminClient();
+  const supabase = await createClient();
 
   const { data: companies } = await supabase
     .from("monitored_companies")

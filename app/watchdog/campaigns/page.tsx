@@ -2,7 +2,7 @@
 // /watchdog/campaigns — Campaign List
 // ============================================
 
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import { Shield, Users } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import CampaignCard from "@/components/watchdog/campaign-card";
@@ -15,7 +15,7 @@ export const metadata = {
 };
 
 export default async function CampaignsPage() {
-  const supabase = createAdminClient();
+  const supabase = await createClient();
 
   const { data: campaigns } = await supabase
     .from("optout_campaigns")

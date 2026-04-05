@@ -2,7 +2,7 @@
 // /watchdog — Main Dashboard
 // ============================================
 
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import { Rss, Building2, AlertTriangle, Trophy, Shield } from "lucide-react";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,7 +16,7 @@ export const metadata = {
 };
 
 export default async function WatchdogPage() {
-  const supabase = createAdminClient();
+  const supabase = await createClient();
 
   // Get stats
   const [companiesRes, changesRes] = await Promise.all([

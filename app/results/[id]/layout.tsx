@@ -2,6 +2,11 @@
 // RESULTS PAGE LAYOUT — OG METADATA
 // Server component that provides dynamic
 // meta tags for social sharing link previews
+//
+// SECURITY NOTE (Phase B RLS):
+// This intentionally uses createAdminClient() because OG crawlers
+// (Twitter, Facebook) fetch metadata without auth cookies.
+// The SELECT is tightly constrained to non-PII aggregate fields.
 // ============================================
 
 import { Metadata } from "next";
@@ -21,6 +26,7 @@ export async function generateMetadata({
     const { id } = await params;
     const supabase = createAdminClient();
 
+    // IMPORTANT: Only select non-PII aggregate fields for OG tags
     const { data: doc } = await supabase
       .from("documents")
       .select(

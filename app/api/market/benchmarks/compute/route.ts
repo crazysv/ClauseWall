@@ -7,9 +7,15 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const adminKey = body.admin_key;
 
-    // Simple admin key check
-    const expectedKey =
-      process.env.MARKET_ADMIN_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    // Require a dedicated admin key — never fall back to public keys
+    const expectedKey = process.env.MARKET_ADMIN_KEY;
+    if (!expectedKey) {
+      console.error("[Market] MARKET_ADMIN_KEY is not configured");
+      return NextResponse.json(
+        { success: false, error: "Server misconfiguration" },
+        { status: 500 },
+      );
+    }
     if (!adminKey || adminKey !== expectedKey) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },

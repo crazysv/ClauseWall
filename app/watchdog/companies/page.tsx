@@ -2,7 +2,6 @@
 // /watchdog/companies — Company Browser
 // ============================================
 
-import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import CompanyGrid from "@/components/watchdog/company-grid";
 import type { MonitoredCompany } from "@/types";
@@ -13,7 +12,7 @@ export const metadata = {
 };
 
 export default async function CompaniesPage() {
-  const supabase = createAdminClient();
+  const supabase = await createClient();
 
   const { data: companies } = await supabase
     .from("monitored_companies")

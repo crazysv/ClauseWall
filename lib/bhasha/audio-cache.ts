@@ -5,6 +5,7 @@
 
 import type { SupportedLanguage, TTSCacheEntry } from "@/types/bhasha";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 // ============================================
 // HASH TEXT FOR CACHE KEY
@@ -72,7 +73,7 @@ export async function cacheAudio(
 ): Promise<string | null> {
   try {
     const textHash = await hashText(text);
-    const supabase = await createClient();
+    const supabase = createAdminClient();
 
     // Upload to Supabase Storage
     const storagePath = `tts-cache/${language}/${textHash}.wav`;
@@ -115,11 +116,36 @@ export async function cacheAudio(
 }
 
 /**
+ * Get a signed URL for cached audio (safe access pattern).
+ */
+export async function getAudioSignedUrl(
+  storagePath: string,
+  expiresIn: number = 3600
+): Promise<string | null> {
+  try {
+    const supabase = createAdminClient();
+    const { data, error } = await supabase.storage
+      .from("audio")
+      .createSignedUrl(storagePath, expiresIn);
+
+    if (error || !data?.signedUrl) {
+      console.warn("[ClauseWall] Audio signed URL error:", error);
+      return null;
+    }
+
+    return data.signedUrl;
+  } catch (error) {
+    console.warn("[ClauseWall] Audio caching failed:", error);
+    return null;
+  }
+}
+
+/**
  * Clean expired cache entries.
  */
 export async function cleanExpiredCache(): Promise<number> {
   try {
-    const supabase = await createClient();
+    const supabase = createAdminClient();
 
     // Get expired entries
     const { data: expired, error: fetchError } = await supabase
