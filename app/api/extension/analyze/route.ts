@@ -6,7 +6,6 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { callGroq } from "@/lib/ai/groq-client";
-import { createAdminClient } from "@/lib/supabase/admin";
 
 // ── CORS Headers ────────────────────────────
 
@@ -157,83 +156,6 @@ Identify the top predatory/concerning clauses. Return JSON only.`;
         clause_number: index + 1,
       }));
 
-    // ── Save to Database ────────────────────
-    let documentId: string | null = null;
-
-    try {
-      const supabase = createAdminClient();
-
-      // Extract domain name for filename
-      let domainName = "unknown";
-      try {
-        const urlObj = new URL(url);
-        domainName = urlObj.hostname.replace("www.", "");
-      } catch {}
-
-      // Create document record
-      const { data: docData, error: docError } = await supabase
-        .from("documents")
-        .insert({
-          user_id: null, // Anonymous extension scan
-          original_filename:
-            `${domainName} - ${title || "Terms of Service"}`.substring(0, 200),
-          document_type: "tos",
-          jurisdiction: "IN-OTHER", // Default for web ToS
-          raw_text: truncatedText,
-          overall_risk_score: riskScore,
-          total_clauses: topIssues.length,
-          safe_count: clauseCounts.safe,
-          warning_count: clauseCounts.warning,
-          dangerous_count: clauseCounts.dangerous,
-          illegal_count: clauseCounts.illegal,
-          entity_name: domainName,
-          summary: analysis.summary || null,
-          is_public: true, // Extension scans are public
-          analysis_status: "completed",
-        })
-        .select("id")
-        .single();
-
-      if (docError) {
-        console.error("[Extension API] Failed to save document:", docError);
-      } else if (docData) {
-        documentId = docData.id;
-
-        // Save clauses
-        if (topIssues.length > 0) {
-          const clauseRecords = topIssues.map((issue: any, index: number) => ({
-            document_id: documentId,
-            clause_number: index + 1,
-            original_text: issue.text,
-            clause_type:
-              issue.title?.toLowerCase().replace(/\s+/g, "_") || "general",
-            risk_level: issue.risk_level,
-            risk_score: issue.risk_score,
-            explanation: issue.explanation,
-            legal_issue: issue.legal_issue || null,
-            legal_citation: issue.legal_issue || null,
-            statute_code: null,
-            fair_alternative: issue.fair_alternative || null,
-            red_flags: [issue.title],
-            percentile: null,
-          }));
-
-          const { error: clauseError } = await supabase
-            .from("clauses")
-            .insert(clauseRecords);
-
-          if (clauseError) {
-            console.error(
-              "[Extension API] Failed to save clauses:",
-              clauseError,
-            );
-          }
-        }
-      }
-    } catch (dbError) {
-      console.error("[Extension API] Database error:", dbError);
-      // Continue anyway — return results even if DB save fails
-    }
 
     const result = {
       risk_score: riskScore,
@@ -243,7 +165,7 @@ Identify the top predatory/concerning clauses. Return JSON only.`;
         analysis.total_clauses_estimated || topIssues.length,
       clause_counts: clauseCounts,
       top_issues: topIssues,
-      document_id: documentId,
+      document_id: null, // Stateless extension scan
       analyzed_url: url || "",
       analyzed_at: new Date().toISOString(),
     };

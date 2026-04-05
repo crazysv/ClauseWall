@@ -10,6 +10,17 @@ export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient();
 
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "Authentication required to analyze documents" },
+        { status: 401 },
+      );
+    }
+
     let text: string;
     let documentType: string;
     let jurisdiction: string;
@@ -90,7 +101,7 @@ export async function POST(request: NextRequest) {
         jurisdiction: jurisdiction,
         raw_text: text,
         analysis_status: "pending",
-        user_id: null, // Anonymous for now
+        user_id: user.id,
       })
       .select()
       .single();

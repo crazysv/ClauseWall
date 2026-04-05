@@ -6,9 +6,22 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 
 export async function POST(req: NextRequest) {
   try {
+    const userClient = await createClient();
+    const {
+      data: { user },
+    } = await userClient.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "Authentication required to flag entities" },
+        { status: 401 },
+      );
+    }
+
     const body = await req.json();
     const {
       documentId,
@@ -79,7 +92,7 @@ export async function POST(req: NextRequest) {
       }
 
       // Save report record
-      await saveReport(supabase, documentId, null, entityName, violations);
+      await saveReport(supabase, documentId, null, entityName, violations, user.id);
 
       return NextResponse.json({
         success: true,
@@ -111,7 +124,7 @@ export async function POST(req: NextRequest) {
       }
 
       // Save report record
-      await saveReport(supabase, documentId, null, entityName, violations);
+      await saveReport(supabase, documentId, null, entityName, violations, user.id);
 
       return NextResponse.json({
         success: true,
@@ -129,19 +142,19 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// Save to reports table
 async function saveReport(
   supabase: any,
   documentId: string,
   clauseId: string | null,
   entityName: string,
   violations: string[],
+  userId: string,
 ) {
   try {
     await supabase.from("reports").insert({
       document_id: documentId,
       clause_id: clauseId,
-      user_id: null,
+      user_id: userId,
       entity_name: entityName,
       report_type: "predatory",
       description: violations.join(", "),
