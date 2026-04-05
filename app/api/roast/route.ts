@@ -3,6 +3,8 @@ import { callGroq } from "@/lib/ai/groq-client";
 import { CONTRACT_ROAST_PROMPT } from "@/lib/ai/system-prompt";
 import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 import { sanitizeLLMInput } from "@/lib/sanitize";
+import { RoastSchema } from "@/lib/validation/schemas";
+import { validateBody } from "@/lib/validation/middleware";
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,27 +13,17 @@ export async function POST(request: NextRequest) {
     if (!rl.success) return rateLimitResponse(rl);
 
     const body = await request.json();
-    const { clauses, jurisdiction, documentType } = body;
 
-    if (!clauses || !Array.isArray(clauses) || clauses.length === 0) {
-      return NextResponse.json(
-        { error: "No clauses provided" },
-        { status: 400 },
-      );
-    }
+    // ── Schema Validation ──
+    const parsed = validateBody(body, RoastSchema);
+    if (!parsed.success) return parsed.response;
+    const { clauses, jurisdiction, documentType } = parsed.data;
 
     // Build clause list for the prompt
     const clauseList = clauses
       .map(
-        (c: {
-          id: string;
-          clause_number: number;
-          clause_type: string;
-          original_text: string;
-          risk_level: string;
-          explanation: string;
-        }) =>
-          `[ID: ${c.id}] (Clause #${c.clause_number}, Type: ${c.clause_type}, Risk: ${c.risk_level})
+        (c) =>
+          `[ID: ${c.id || "unknown"}] (Clause #${c.clause_number ?? 0}, Type: ${c.clause_type}, Risk: ${c.risk_level || "unknown"})
 Text: "${sanitizeLLMInput(c.original_text || "", 2000)}"
 Legal Issue: ${sanitizeLLMInput(c.explanation || "", 1000)}`,
       )
@@ -53,13 +45,13 @@ ${clauseList}`,
     ]);
 
     // Parse response
-    let parsed;
+    let aiResponse;
     try {
       let cleaned = response.trim();
       if (cleaned.startsWith("```json")) cleaned = cleaned.slice(7);
       if (cleaned.startsWith("```")) cleaned = cleaned.slice(3);
       if (cleaned.endsWith("```")) cleaned = cleaned.slice(0, -3);
-      parsed = JSON.parse(cleaned.trim());
+      aiResponse = JSON.parse(cleaned.trim());
     } catch {
       console.error("[ClauseWall] Roast JSON parse failed. Raw:", response);
       return NextResponse.json(
@@ -70,8 +62,8 @@ ${clauseList}`,
 
     // Validate
     const roasts: Record<string, string> = {};
-    if (parsed.roasts && typeof parsed.roasts === "object") {
-      for (const [id, text] of Object.entries(parsed.roasts)) {
+    if (aiResponse.roasts && typeof aiResponse.roasts === "object") {
+      for (const [id, text] of Object.entries(aiResponse.roasts)) {
         if (typeof text === "string" && text.trim().length > 0) {
           roasts[id] = text.trim();
         }

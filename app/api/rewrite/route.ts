@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { rewriteClause } from "@/lib/ai/clause-rewriter";
 import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 import { sanitizeLLMInput } from "@/lib/sanitize";
+import { RewriteSchema } from "@/lib/validation/schemas";
+import { validateBody } from "@/lib/validation/middleware";
 
 export async function POST(req: NextRequest) {
   try {
@@ -10,6 +12,10 @@ export async function POST(req: NextRequest) {
     if (!rl.success) return rateLimitResponse(rl);
 
     const body = await req.json();
+
+    // ── Schema Validation ──
+    const parsed = validateBody(body, RewriteSchema);
+    if (!parsed.success) return parsed.response;
 
     const {
       clauseText,
@@ -20,14 +26,7 @@ export async function POST(req: NextRequest) {
       explanation,
       legalCitation,
       fairAlternative,
-    } = body;
-
-    if (!clauseText || !clauseType || !jurisdiction || !documentType) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 },
-      );
-    }
+    } = parsed.data;
 
     const result = await rewriteClause(
       sanitizeLLMInput(clauseText, 10_000),

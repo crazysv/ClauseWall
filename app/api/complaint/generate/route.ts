@@ -5,6 +5,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { generateComplaint, createFiling, calculateFee } from "@/lib/complaint";
 import { sanitizeDisplayText, sanitizeUserDescription } from "@/lib/sanitize";
+import { ComplaintGenerateSchema } from "@/lib/validation/schemas";
+import { validateBody } from "@/lib/validation/middleware";
 import type { AuthorityType } from "@/types";
 
 export async function POST(request: NextRequest) {
@@ -17,6 +19,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const body = await request.json();
+
+    // ── Schema Validation ──
+    const parsed = validateBody(body, ComplaintGenerateSchema);
+    if (!parsed.success) return parsed.response;
     const {
       documentId,
       authorityType,
@@ -29,14 +35,7 @@ export async function POST(request: NextRequest) {
       respondentType,
       claimAmount,
       additionalContext,
-    } = body;
-
-    if (!documentId || !authorityType) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 },
-      );
-    }
+    } = parsed.data;
 
     // Fetch document and clauses
     const { data: doc } = await supabase
@@ -114,7 +113,7 @@ export async function POST(request: NextRequest) {
     // Create filing record
     const filing = await createFiling(user.id, {
       document_id: documentId,
-      authority_type: authorityType,
+      authority_type: authorityType as AuthorityType,
       complaint_title: `${complainantName || "Complainant"} v. ${respondentName || doc.entity_name || "Respondent"}`,
       complainant_name: complainantName,
       complainant_address: complainantAddress,

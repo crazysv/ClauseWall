@@ -5,6 +5,8 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { DeliberationRunSchema } from "@/lib/validation/schemas";
+import { validateBody } from "@/lib/validation/middleware";
 import { deliberateClause, deliberateDocument } from "@/lib/deliberation";
 import type {
   DeliberationResult,
@@ -59,12 +61,11 @@ function summarizeProofTree(proofData: unknown): string | undefined {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { documentId, clauseText, documentType, jurisdiction } = body as {
-      documentId?: string;
-      clauseText?: string;
-      documentType?: string;
-      jurisdiction?: string;
-    };
+
+    // ── Schema Validation ──
+    const parsed = validateBody(body, DeliberationRunSchema);
+    if (!parsed.success) return parsed.response;
+    const { documentId, clauseText, documentType, jurisdiction } = parsed.data;
 
     // ── MODE 1: Full document deliberation ──
     if (documentId) {

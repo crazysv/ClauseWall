@@ -7,6 +7,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { callGroq } from "@/lib/ai/groq-client";
 import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 import { sanitizeLLMInput } from "@/lib/sanitize";
+import { ExplainSchema } from "@/lib/validation/schemas";
+import { validateBody } from "@/lib/validation/middleware";
 
 export const maxDuration = 30;
 
@@ -40,15 +42,12 @@ export async function POST(request: NextRequest) {
     const rl = await rateLimit(request, "AI_MEDIUM");
     if (!rl.success) return rateLimitResponse(rl);
 
-    const { clauseText, explanation, riskLevel, legalCitation, clauseType } =
-      await request.json();
+    const body = await request.json();
 
-    if (!clauseText && !explanation) {
-      return NextResponse.json(
-        { error: "Clause text or explanation required" },
-        { status: 400 },
-      );
-    }
+    // ── Schema Validation ──
+    const parsed = validateBody(body, ExplainSchema);
+    if (!parsed.success) return parsed.response;
+    const { clauseText, explanation, riskLevel, legalCitation, clauseType } = parsed.data;
 
     const userMessage = `Explain this legal clause issue:
 
@@ -72,19 +71,19 @@ Generate a simple English (ELI5) and Hindi explanation.`;
       { temperature: 0.3, maxTokens: 1024 },
     );
 
-    let parsed;
+    let aiResponse;
     try {
-      parsed = JSON.parse(response);
+      aiResponse = JSON.parse(response);
     } catch {
       const jsonMatch = response.match(/\{[\s\S]*\}/);
       if (!jsonMatch) throw new Error("Invalid response format");
-      parsed = JSON.parse(jsonMatch[0]);
+      aiResponse = JSON.parse(jsonMatch[0]);
     }
 
     return NextResponse.json({
       simple_english:
-        parsed.simple_english || "Could not generate simple explanation.",
-      hindi: parsed.hindi || "सरल व्याख्या उपलब्ध नहीं है।",
+        aiResponse.simple_english || "Could not generate simple explanation.",
+      hindi: aiResponse.hindi || "सरल व्याख्या उपलब्ध नहीं है।",
     });
   } catch (error) {
     console.error("[ClauseWall] Explain API error:", error);

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { generateNegotiationPlaybook } from "@/lib/ai/negotiation-generator";
 import { sanitizeLLMInput } from "@/lib/sanitize";
+import { NegotiateGenerateSchema } from "@/lib/validation/schemas";
+import { validateBody } from "@/lib/validation/middleware";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -13,14 +15,11 @@ export const maxDuration = 60;
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { documentId } = body;
 
-    if (!documentId) {
-      return NextResponse.json(
-        { error: "Missing documentId" },
-        { status: 400 },
-      );
-    }
+    // ── Schema Validation ──
+    const parsed = validateBody(body, NegotiateGenerateSchema);
+    if (!parsed.success) return parsed.response;
+    const { documentId } = parsed.data;
 
     // Fetch document
     const { data: doc, error: docError } = await supabase

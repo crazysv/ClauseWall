@@ -1,23 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { analyzeAdversarial } from "@/lib/ai/adversarial-analyzer";
+import { AdversarialSchema } from "@/lib/validation/schemas";
+import { validateBody } from "@/lib/validation/middleware";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { clauseText, clauseType, jurisdiction, documentType } = body;
 
-    if (!clauseText || !clauseType) {
-      return NextResponse.json(
-        { error: "clauseText and clauseType are required" },
-        { status: 400 },
-      );
-    }
+    // ── Schema Validation ──
+    const parsed = validateBody(body, AdversarialSchema);
+    if (!parsed.success) return parsed.response;
+    const { clauseText, clauseType, jurisdiction, documentType } = parsed.data;
 
     const result = await analyzeAdversarial(
       clauseText,
       clauseType,
-      jurisdiction || "ALL-INDIA",
-      documentType || "rental",
+      jurisdiction,
+      documentType,
     );
 
     return NextResponse.json({

@@ -3,18 +3,17 @@ import { callGroq } from "@/lib/ai/groq-client";
 import { CONTRACT_SIMULATOR_PROMPT } from "@/lib/ai/system-prompt";
 import { createClient } from "@/lib/supabase/server";
 import { sanitizeLLMInput } from "@/lib/sanitize";
+import { SimulateSchema } from "@/lib/validation/schemas";
+import { validateBody } from "@/lib/validation/middleware";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { documentId } = body;
 
-    if (!documentId) {
-      return NextResponse.json(
-        { error: "Missing documentId" },
-        { status: 400 },
-      );
-    }
+    // ── Schema Validation ──
+    const parsed = validateBody(body, SimulateSchema);
+    if (!parsed.success) return parsed.response;
+    const { documentId } = parsed.data;
 
     const supabase = await createClient();
 
@@ -76,13 +75,13 @@ ${clauseContext}`,
       { maxTokens: 5000 },
     );
 
-    let parsed;
+    let aiResponse;
     try {
       let cleaned = response.trim();
       if (cleaned.startsWith("```json")) cleaned = cleaned.slice(7);
       if (cleaned.startsWith("```")) cleaned = cleaned.slice(3);
       if (cleaned.endsWith("```")) cleaned = cleaned.slice(0, -3);
-      parsed = JSON.parse(cleaned.trim());
+      aiResponse = JSON.parse(cleaned.trim());
     } catch {
       console.error("[ClauseWall] Simulator JSON parse failed:", response);
       return NextResponse.json(
@@ -99,12 +98,12 @@ ${clauseContext}`,
 
     const result = {
       contract_duration_months: sanitizeNum(
-        parsed.contract_duration_months,
+        aiResponse.contract_duration_months,
         11,
       ),
-      document_type: String(parsed.document_type || doc.document_type),
-      upfront_costs: Array.isArray(parsed.upfront_costs)
-        ? parsed.upfront_costs.map((c: Record<string, unknown>) => ({
+      document_type: String(aiResponse.document_type || doc.document_type),
+      upfront_costs: Array.isArray(aiResponse.upfront_costs)
+        ? aiResponse.upfront_costs.map((c: Record<string, unknown>) => ({
             label: String(c.label || ""),
             amount: sanitizeNum(c.amount),
             is_refundable: !!c.is_refundable,
@@ -115,8 +114,8 @@ ${clauseContext}`,
             issue: c.issue ? String(c.issue) : null,
           }))
         : [],
-      monthly_costs: Array.isArray(parsed.monthly_costs)
-        ? parsed.monthly_costs.map((c: Record<string, unknown>) => ({
+      monthly_costs: Array.isArray(aiResponse.monthly_costs)
+        ? aiResponse.monthly_costs.map((c: Record<string, unknown>) => ({
             label: String(c.label || ""),
             amount: sanitizeNum(c.amount),
             escalation_percent: sanitizeNum(c.escalation_percent),
@@ -126,8 +125,8 @@ ${clauseContext}`,
             fair_amount: sanitizeNum(c.fair_amount),
           }))
         : [],
-      exit_costs: Array.isArray(parsed.exit_costs)
-        ? parsed.exit_costs.map((c: Record<string, unknown>) => ({
+      exit_costs: Array.isArray(aiResponse.exit_costs)
+        ? aiResponse.exit_costs.map((c: Record<string, unknown>) => ({
             label: String(c.label || ""),
             amount: sanitizeNum(c.amount),
             condition: String(c.condition || ""),
@@ -136,75 +135,75 @@ ${clauseContext}`,
           }))
         : [],
       penalties: {
-        early_exit_during_lockin: parsed.penalties?.early_exit_during_lockin
+        early_exit_during_lockin: aiResponse.penalties?.early_exit_during_lockin
           ? {
               amount: sanitizeNum(
-                parsed.penalties.early_exit_during_lockin.amount,
+                aiResponse.penalties.early_exit_during_lockin.amount,
               ),
               description: String(
-                parsed.penalties.early_exit_during_lockin.description || "",
+                aiResponse.penalties.early_exit_during_lockin.description || "",
               ),
-              is_legal: !!parsed.penalties.early_exit_during_lockin.is_legal,
-              law: parsed.penalties.early_exit_during_lockin.law
-                ? String(parsed.penalties.early_exit_during_lockin.law)
+              is_legal: !!aiResponse.penalties.early_exit_during_lockin.is_legal,
+              law: aiResponse.penalties.early_exit_during_lockin.law
+                ? String(aiResponse.penalties.early_exit_during_lockin.law)
                 : null,
             }
           : null,
-        early_exit_after_lockin: parsed.penalties?.early_exit_after_lockin
+        early_exit_after_lockin: aiResponse.penalties?.early_exit_after_lockin
           ? {
               amount: sanitizeNum(
-                parsed.penalties.early_exit_after_lockin.amount,
+                aiResponse.penalties.early_exit_after_lockin.amount,
               ),
               description: String(
-                parsed.penalties.early_exit_after_lockin.description || "",
+                aiResponse.penalties.early_exit_after_lockin.description || "",
               ),
-              is_legal: !!parsed.penalties.early_exit_after_lockin.is_legal,
-              law: parsed.penalties.early_exit_after_lockin.law
-                ? String(parsed.penalties.early_exit_after_lockin.law)
+              is_legal: !!aiResponse.penalties.early_exit_after_lockin.is_legal,
+              law: aiResponse.penalties.early_exit_after_lockin.law
+                ? String(aiResponse.penalties.early_exit_after_lockin.law)
                 : null,
             }
           : null,
-        late_rent_per_day: parsed.penalties?.late_rent_per_day
+        late_rent_per_day: aiResponse.penalties?.late_rent_per_day
           ? {
-              amount: sanitizeNum(parsed.penalties.late_rent_per_day.amount),
+              amount: sanitizeNum(aiResponse.penalties.late_rent_per_day.amount),
               description: String(
-                parsed.penalties.late_rent_per_day.description || "",
+                aiResponse.penalties.late_rent_per_day.description || "",
               ),
-              is_legal: !!parsed.penalties.late_rent_per_day.is_legal,
-              law: parsed.penalties.late_rent_per_day.law
-                ? String(parsed.penalties.late_rent_per_day.law)
+              is_legal: !!aiResponse.penalties.late_rent_per_day.is_legal,
+              law: aiResponse.penalties.late_rent_per_day.law
+                ? String(aiResponse.penalties.late_rent_per_day.law)
                 : null,
             }
           : null,
       },
       lock_in: {
-        months: sanitizeNum(parsed.lock_in?.months),
-        applies_to: String(parsed.lock_in?.applies_to || "tenant_only"),
-        is_mutual: !!parsed.lock_in?.is_mutual,
-        fair_months: sanitizeNum(parsed.lock_in?.fair_months, 6),
-        issue: parsed.lock_in?.issue ? String(parsed.lock_in.issue) : null,
+        months: sanitizeNum(aiResponse.lock_in?.months),
+        applies_to: String(aiResponse.lock_in?.applies_to || "tenant_only"),
+        is_mutual: !!aiResponse.lock_in?.is_mutual,
+        fair_months: sanitizeNum(aiResponse.lock_in?.fair_months, 6),
+        issue: aiResponse.lock_in?.issue ? String(aiResponse.lock_in.issue) : null,
       },
       notice_period: {
-        days: sanitizeNum(parsed.notice_period?.days, 30),
-        fair_days: sanitizeNum(parsed.notice_period?.fair_days, 30),
-        issue: parsed.notice_period?.issue
-          ? String(parsed.notice_period.issue)
+        days: sanitizeNum(aiResponse.notice_period?.days, 30),
+        fair_days: sanitizeNum(aiResponse.notice_period?.fair_days, 30),
+        issue: aiResponse.notice_period?.issue
+          ? String(aiResponse.notice_period.issue)
           : null,
       },
       deposit_refund: {
-        total_deposit: sanitizeNum(parsed.deposit_refund?.total_deposit),
+        total_deposit: sanitizeNum(aiResponse.deposit_refund?.total_deposit),
         refund_timeline_days: sanitizeNum(
-          parsed.deposit_refund?.refund_timeline_days,
+          aiResponse.deposit_refund?.refund_timeline_days,
         ),
-        conditions: String(parsed.deposit_refund?.conditions || ""),
+        conditions: String(aiResponse.deposit_refund?.conditions || ""),
         refundable_if_full_term:
-          parsed.deposit_refund?.refundable_if_full_term !== false,
+          aiResponse.deposit_refund?.refundable_if_full_term !== false,
         refundable_if_early_exit:
-          !!parsed.deposit_refund?.refundable_if_early_exit,
-        deductions: sanitizeNum(parsed.deposit_refund?.deductions),
+          !!aiResponse.deposit_refund?.refundable_if_early_exit,
+        deductions: sanitizeNum(aiResponse.deposit_refund?.deductions),
       },
-      danger_zones: Array.isArray(parsed.danger_zones)
-        ? parsed.danger_zones.map((z: Record<string, unknown>) => ({
+      danger_zones: Array.isArray(aiResponse.danger_zones)
+        ? aiResponse.danger_zones.map((z: Record<string, unknown>) => ({
             month_start: sanitizeNum(z.month_start),
             month_end: sanitizeNum(z.month_end),
             label: String(z.label || ""),
@@ -212,8 +211,8 @@ ${clauseContext}`,
             severity: z.severity === "critical" ? "critical" : "warning",
           }))
         : [],
-      scenarios: Array.isArray(parsed.scenarios)
-        ? parsed.scenarios.map((s: Record<string, unknown>) => ({
+      scenarios: Array.isArray(aiResponse.scenarios)
+        ? aiResponse.scenarios.map((s: Record<string, unknown>) => ({
             label: String(s.label || ""),
             total_cost: sanitizeNum(s.total_cost),
             deposit_returned: sanitizeNum(s.deposit_returned),
@@ -221,10 +220,10 @@ ${clauseContext}`,
             net_cost: sanitizeNum(s.net_cost),
           }))
         : [],
-      overpayment_vs_fair: sanitizeNum(parsed.overpayment_vs_fair),
-      worst_case_total: sanitizeNum(parsed.worst_case_total),
-      fair_contract_total: sanitizeNum(parsed.fair_contract_total),
-      summary: String(parsed.summary || "Simulation generated."),
+      overpayment_vs_fair: sanitizeNum(aiResponse.overpayment_vs_fair),
+      worst_case_total: sanitizeNum(aiResponse.worst_case_total),
+      fair_contract_total: sanitizeNum(aiResponse.fair_contract_total),
+      summary: String(aiResponse.summary || "Simulation generated."),
     };
 
     return NextResponse.json(result);
