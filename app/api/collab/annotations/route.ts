@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { safeErrorResponse } from "@/lib/api/error-response";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -17,7 +18,7 @@ export async function GET(request: NextRequest) {
     .order("created_at", { ascending: true });
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return safeErrorResponse("collab-annotations", error, "Failed to fetch annotations");
   }
 
   return NextResponse.json({ success: true, annotations: data });
@@ -59,7 +60,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return safeErrorResponse("collab-annotations", error, "Failed to insert annotation");
     }
 
     return NextResponse.json({ success: true, annotation: data });
@@ -91,7 +92,7 @@ export async function DELETE(request: NextRequest) {
     .eq("author_id", authorId);
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return safeErrorResponse("collab-annotations", error, "Failed to delete annotation");
   }
 
   return NextResponse.json({ success: true });

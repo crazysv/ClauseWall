@@ -6,6 +6,7 @@
 
 import { callGroq } from "./groq-client";
 import { CLAUSE_EXTRACTION_PROMPT } from "./system-prompt";
+import { log } from "@/lib/logger";
 import { safeParseJson, safeString, safeArray, safeBoolean, safeStringArray, safeStringOrNull, safeInt } from "./output-guards";
 import type { ExtractedClause, DocumentInfo, ExtractionResult } from "@/types";
 import type { SupportedLanguage } from "@/types/bhasha";
@@ -83,14 +84,14 @@ function isValidEntityName(
 
   // ---- Check 1: Minimum length ----
   if (name.length < MIN_ENTITY_LENGTH) {
-    console.log(`[ClauseWall] Entity rejected (too short): "${name}"`);
+    log.debug("extractor", "Entity rejected: too short", { length: name.length });
     return false;
   }
 
   // ---- Check 2: Invalid patterns ----
   for (const pattern of INVALID_ENTITY_PATTERNS) {
     if (pattern.test(name)) {
-      console.log(`[ClauseWall] Entity rejected (invalid pattern): "${name}"`);
+      log.debug("extractor", "Entity rejected: invalid pattern");
       return false;
     }
   }
@@ -98,7 +99,7 @@ function isValidEntityName(
   // ---- Check 3: Single suspicious word ----
   const words = name.toLowerCase().split(/\s+/).filter(w => w.length > 0);
   if (words.length === 1 && SUSPICIOUS_STANDALONE_WORDS.has(words[0])) {
-    console.log(`[ClauseWall] Entity rejected (standalone suspicious word): "${name}"`);
+    log.debug("extractor", "Entity rejected: standalone suspicious word");
     return false;
   }
 
@@ -106,7 +107,7 @@ function isValidEntityName(
   // e.g., "Properties Pvt Ltd" is invalid, but "Sharma Properties Pvt Ltd" is valid
   const nonGenericWords = words.filter(w => !SUSPICIOUS_STANDALONE_WORDS.has(w));
   if (nonGenericWords.length === 0) {
-    console.log(`[ClauseWall] Entity rejected (only generic words): "${name}"`);
+    log.debug("extractor", "Entity rejected: only generic words");
     return false;
   }
 
@@ -124,7 +125,7 @@ function isValidEntityName(
     // Extra check: maybe it's a proper name that appears exactly
     const exactMatch = docLower.includes(name.toLowerCase());
     if (!exactMatch) {
-      console.log(`[ClauseWall] Entity rejected (not found in document): "${name}"`);
+      log.debug("extractor", "Entity rejected: not found in document");
       return false;
     }
   }
@@ -135,7 +136,7 @@ function isValidEntityName(
     docTypeWords.includes(w) || SUSPICIOUS_STANDALONE_WORDS.has(w)
   );
   if (allWordsAreDocType) {
-    console.log(`[ClauseWall] Entity rejected (document type words only): "${name}"`);
+    log.debug("extractor", "Entity rejected: document type words only");
     return false;
   }
 
@@ -258,14 +259,14 @@ export async function extractClauses(
     let entityName = sanitizeEntityName(parsed.document_info?.entity_name);
     
     if (entityName && !isValidEntityName(entityName, documentText)) {
-      console.log(`[ClauseWall] AI extracted invalid entity "${entityName}" — setting to null`);
+      log.debug("extractor", "AI extracted entity rejected by validation");
       entityName = null;
     }
 
     if (entityName) {
-      console.log(`[ClauseWall] Valid entity extracted: "${entityName}"`);
+      log.info("extractor", "Valid entity extracted", { hasEntity: true });
     } else {
-      console.log(`[ClauseWall] No valid entity found in document`);
+      log.info("extractor", "No valid entity found");
     }
 
     // ---- Validate jurisdiction ----
@@ -281,7 +282,7 @@ export async function extractClauses(
       const isValidJurisdiction = validJurisdictionPatterns.some(p => p.test(detectedJurisdiction!));
       
       if (!isValidJurisdiction) {
-        console.log(`[ClauseWall] Invalid jurisdiction detected: "${detectedJurisdiction}" — setting to null`);
+        log.debug("extractor", "Invalid jurisdiction detected, nullified");
         detectedJurisdiction = null;
       }
     }
@@ -297,13 +298,15 @@ export async function extractClauses(
       stamp_value: parsed.document_info?.stamp_value || null,
     };
 
-    console.log(
-      `[ClauseWall] Extracted ${parsed.clauses.length} clauses | Entity: ${entityName || "none"} | Jurisdiction: ${detectedJurisdiction || "none"}`
-    );
+    log.info("extractor", "Clause extraction complete", {
+      clauseCount: parsed.clauses.length,
+      hasEntity: !!entityName,
+      hasJurisdiction: !!detectedJurisdiction,
+    });
 
     return parsed;
   } catch (error) {
-    console.error("[ClauseWall] Clause extraction failed:", error);
+    log.errorWithCause("extractor", "Clause extraction failed", error);
     throw new Error(
       `Failed to extract clauses: ${(error as Error).message}`
     );

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { safeErrorResponse } from "@/lib/api/error-response";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -16,7 +17,7 @@ export async function GET(request: NextRequest) {
     .eq("room_id", roomId);
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return safeErrorResponse("collab-votes", error, "Failed to fetch votes");
   }
 
   return NextResponse.json({ success: true, votes: data });
@@ -60,7 +61,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return safeErrorResponse("collab-votes", error, "Failed to cast vote");
     }
 
     return NextResponse.json({ success: true, vote: data });

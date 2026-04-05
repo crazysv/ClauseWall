@@ -5,6 +5,7 @@
 
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { safeErrorResponse } from "@/lib/api/error-response";
 
 export async function GET() {
   try {
@@ -19,14 +20,11 @@ export async function GET() {
       .order("expected_date", { ascending: true });
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return safeErrorResponse("lawchange-pending", error, "Failed to fetch pending law changes");
     }
 
     return NextResponse.json({ pending: data || [] });
   } catch (error) {
-    return NextResponse.json(
-      { error: (error as Error).message },
-      { status: 500 },
-    );
+    return safeErrorResponse("lawchange-pending", error, "Failed to fetch pending law changes");
   }
 }

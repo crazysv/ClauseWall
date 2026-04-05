@@ -1,6 +1,7 @@
 // Evidence Case Detail API — GET, PATCH, DELETE
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { safeErrorResponse } from "@/lib/api/error-response";
 
 export async function GET(
   _request: NextRequest,
@@ -82,7 +83,7 @@ export async function PATCH(
       .single();
 
     if (error)
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return safeErrorResponse("evidence-cases", error, "Failed to update case");
 
     return NextResponse.json({ case: data });
   } catch {
@@ -113,7 +114,7 @@ export async function DELETE(
       .eq("user_id", user.id);
 
     if (error)
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return safeErrorResponse("evidence-cases", error, "Failed to delete case");
 
     return NextResponse.json({ success: true });
   } catch {

@@ -1,6 +1,7 @@
 // Evidence Item Detail — GET, PATCH, DELETE
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { safeErrorResponse } from "@/lib/api/error-response";
 
 export async function GET(
   _request: NextRequest,
@@ -65,7 +66,7 @@ export async function PATCH(
       .single();
 
     if (error)
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return safeErrorResponse("evidence-items", error, "Failed to update item");
 
     return NextResponse.json({ item: data });
   } catch {

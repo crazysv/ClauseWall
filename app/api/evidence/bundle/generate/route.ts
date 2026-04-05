@@ -1,6 +1,7 @@
 // Evidence Bundle Generation API
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { safeErrorResponse } from "@/lib/api/error-response";
 import { generateEvidenceBundle } from "@/lib/evidence/legal/evidence-bundle-generator";
 import { uploadBundlePdf } from "@/lib/evidence/storage";
 import type {
@@ -96,7 +97,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (error)
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return safeErrorResponse("evidence-bundle", error, "Failed to create bundle record");
 
     return NextResponse.json(
       { bundle, total_pages: totalPages },

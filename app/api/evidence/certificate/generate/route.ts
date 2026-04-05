@@ -1,6 +1,7 @@
 // Certificate Generation API
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { safeErrorResponse } from "@/lib/api/error-response";
 import { generateSection65BData } from "@/lib/evidence/legal/section-65b-generator";
 import { generateCertificatePdf } from "@/lib/evidence/certificate-template";
 import { uploadCertificatePdf } from "@/lib/evidence/storage";
@@ -80,7 +81,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (error)
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return safeErrorResponse("evidence-certificate", error, "Failed to create certificate record");
 
     // Mark item as certified
     await supabase

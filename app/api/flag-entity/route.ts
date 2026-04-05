@@ -8,6 +8,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { sanitizeEntityName, sanitizeStringArray } from "@/lib/sanitize";
+import { safeErrorResponse } from "@/lib/api/error-response";
 
 export async function POST(req: NextRequest) {
   try {
@@ -137,12 +138,8 @@ export async function POST(req: NextRequest) {
         entityId: newEntity?.id,
       });
     }
-  } catch (error: any) {
-    console.error("[FlagEntity] Error:", error);
-    return NextResponse.json(
-      { error: error.message || "Internal server error" },
-      { status: 500 },
-    );
+  } catch (error) {
+    return safeErrorResponse("flag-entity", error, "Failed to flag entity");
   }
 }
 
@@ -222,11 +219,7 @@ export async function GET(req: NextRequest) {
       percentile: percentile,
       totalEntities: totalEntities,
     });
-  } catch (error: any) {
-    console.error("[FlagEntity GET] Error:", error);
-    return NextResponse.json(
-      { error: error.message || "Internal server error" },
-      { status: 500 },
-    );
+  } catch (error) {
+    return safeErrorResponse("flag-entity-get", error, "Failed to fetch entity flags");
   }
 }

@@ -4,6 +4,7 @@ import { generateNegotiationPlaybook } from "@/lib/ai/negotiation-generator";
 import { sanitizeLLMInput } from "@/lib/sanitize";
 import { NegotiateGenerateSchema } from "@/lib/validation/schemas";
 import { validateBody } from "@/lib/validation/middleware";
+import { safeErrorResponse } from "@/lib/api/error-response";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -84,11 +85,7 @@ export async function POST(request: NextRequest) {
       success: true,
       playbook: result.playbook,
     });
-  } catch (error: any) {
-    console.error("[Negotiate API] Error:", error);
-    return NextResponse.json(
-      { error: error.message || "Internal server error" },
-      { status: 500 },
-    );
+  } catch (error) {
+    return safeErrorResponse("negotiate-generate", error, "Negotiation playbook generation failed");
   }
 }

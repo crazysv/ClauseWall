@@ -1,6 +1,7 @@
 // Evidence Cases API — GET (list), POST (create)
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { safeErrorResponse } from "@/lib/api/error-response";
 import type { EvidenceCase } from "@/types/evidence";
 
 export async function GET() {
@@ -19,7 +20,7 @@ export async function GET() {
       .order("updated_at", { ascending: false });
 
     if (error)
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return safeErrorResponse("evidence-cases", error, "Failed to fetch cases");
 
     return NextResponse.json({ cases: data as EvidenceCase[] });
   } catch (error) {
@@ -73,7 +74,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (error)
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return safeErrorResponse("evidence-cases", error, "Failed to create case");
 
     return NextResponse.json({ case: data as EvidenceCase }, { status: 201 });
   } catch (error) {

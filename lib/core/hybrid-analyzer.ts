@@ -16,6 +16,7 @@ import { matchAgainstRules } from "@/lib/core/rule-engine";
 import { safeParseJson, safeString } from "@/lib/ai/output-guards";
 import { callGroq } from "@/lib/ai/groq-client";
 import { runNeurosymbolicAnalysis } from "@/lib/reasoning";
+import { log } from "@/lib/logger";
 import type { HybridAnalysisResult } from "@/types";
 import type { ProofTree } from "@/lib/reasoning/types";
 
@@ -75,23 +76,25 @@ export async function hybridAnalyzeClause(
 ): Promise<HybridAnalysisResult> {
   try {
     // ---- STEP 1: Extract structured values (lightweight AI call) ----
-    console.log(`[ClauseWall] [Hybrid] Extracting values for: ${clauseType}`);
+    log.info("hybrid", "Extracting values", { clauseType });
     const values = await extractValues(clauseText, clauseType, documentType);
 
-    console.log("[ClauseWall] Extracted values:", values);
+    log.debug("hybrid", "Values extracted", { hasValues: !!values, clauseType: values.clause_type });
 
     // Use the AI-refined clause type (might be more accurate)
     const refinedClauseType = values.clause_type || clauseType;
 
     // ---- STEP 2: Check against structured rules DB ----
-    console.log(`[ClauseWall] [Hybrid] Checking DB rules for: ${refinedClauseType}`);
+    log.info("hybrid", "Checking DB rules", { clauseType: refinedClauseType });
     const ruleResult = await matchAgainstRules(values, jurisdiction, documentType);
 
     // ---- STEP 3A: DB match found with violation → VERIFIED result ----
     if (ruleResult.matched && ruleResult.violation && ruleResult.rule) {
-      console.log(
-        `[ClauseWall] [Hybrid] ⚖️ DB MATCH: ${refinedClauseType} → ${ruleResult.severity} (${ruleResult.risk_score}/100)`
-      );
+      log.info("hybrid", "DB match found with violation", {
+        clauseType: refinedClauseType,
+        severity: ruleResult.severity,
+        riskScore: ruleResult.risk_score,
+      });
 
       // Generate a readable explanation using AI (but citations come from DB)
       const explanation = await generateExplanation(
@@ -123,7 +126,7 @@ export async function hybridAnalyzeClause(
           clauseText, values, jurisdiction, documentType, refinedClauseType
         );
       } catch (reasoningErr) {
-        console.error("[ClauseWall] [Reasoning] Non-fatal error:", reasoningErr);
+        log.warn("hybrid", "Reasoning error (non-fatal, DB path)");
       }
 
       return {
@@ -147,9 +150,7 @@ export async function hybridAnalyzeClause(
 
     // ---- STEP 3B: DB match found, no violation → SAFE (VERIFIED) ----
     if (ruleResult.matched && !ruleResult.violation) {
-      console.log(
-        `[ClauseWall] [Hybrid] ✅ DB MATCH (compliant): ${refinedClauseType}`
-      );
+      log.info("hybrid", "DB match: compliant", { clauseType: refinedClauseType });
 
       return {
         risk_level: "safe",
@@ -172,9 +173,7 @@ export async function hybridAnalyzeClause(
     }
 
     // ---- STEP 3C: No DB match → Fall back to AI analysis ----
-    console.log(
-      `[ClauseWall] [Hybrid] 🤖 No DB match for: ${refinedClauseType} → using AI`
-    );
+    log.info("hybrid", "No DB match, using AI", { clauseType: refinedClauseType });
 
     const aiResult = await analyzeClause(
       clauseText,
@@ -190,7 +189,7 @@ export async function hybridAnalyzeClause(
         clauseText, values, jurisdiction, documentType, refinedClauseType
       );
     } catch (reasoningErr) {
-      console.error("[ClauseWall] [Reasoning] Non-fatal error (AI path):", reasoningErr);
+      log.warn("hybrid", "Reasoning error (non-fatal, AI path)");
     }
 
     return {
@@ -211,7 +210,7 @@ export async function hybridAnalyzeClause(
       proof_tree: aiProofTree,
     };
   } catch (error) {
-    console.error("[ClauseWall] Hybrid analysis failed, falling back to AI:", error);
+    log.errorWithCause("hybrid", "Hybrid analysis failed, falling back to AI", error);
 
     // Ultimate fallback — pure AI analysis
     try {
@@ -236,7 +235,7 @@ export async function hybridAnalyzeClause(
         extracted_unit: null,
       };
     } catch (fallbackError) {
-      console.error("[ClauseWall] Complete analysis failure:", fallbackError);
+      log.errorWithCause("hybrid", "Complete analysis failure", fallbackError);
 
       return {
         risk_level: "warning",

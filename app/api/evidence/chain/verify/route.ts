@@ -1,6 +1,7 @@
 // Chain Verification API
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { safeErrorResponse } from "@/lib/api/error-response";
 import { verifyChainIntegrity, buildMerkleTree } from "@/lib/evidence/chain";
 import type { EvidenceItem } from "@/types/evidence";
 
@@ -26,7 +27,7 @@ export async function POST(request: NextRequest) {
       .order("sequence_number", { ascending: true });
 
     if (error)
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return safeErrorResponse("evidence-verify", error, "Failed to fetch items for verification");
 
     const typedItems = (items || []) as EvidenceItem[];
     const verification = verifyChainIntegrity(typedItems);

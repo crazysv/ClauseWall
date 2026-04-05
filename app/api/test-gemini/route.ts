@@ -1,6 +1,23 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  // ── Internal-only route ──
+  const secret = process.env.INTERNAL_API_SECRET;
+  const provided = request.headers.get("x-internal-secret");
+  const isDev = process.env.NODE_ENV === "development";
+
+  if (!isDev) {
+    if (!secret) {
+      return NextResponse.json(
+        { error: "Route not available — server misconfiguration" },
+        { status: 503 },
+      );
+    }
+    if (provided !== secret) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+  }
+
   const apiKey = process.env.GOOGLE_AI_API_KEY_1;
 
   if (!apiKey) {

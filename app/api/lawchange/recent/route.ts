@@ -5,6 +5,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { safeErrorResponse } from "@/lib/api/error-response";
 
 export async function GET(request: NextRequest) {
   try {
@@ -39,7 +40,7 @@ export async function GET(request: NextRequest) {
     const { data, count, error } = await query;
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return safeErrorResponse("lawchange-recent", error, "Failed to fetch recent law changes");
     }
 
     return NextResponse.json({
@@ -47,9 +48,6 @@ export async function GET(request: NextRequest) {
       total: count || 0,
     });
   } catch (error) {
-    return NextResponse.json(
-      { error: (error as Error).message },
-      { status: 500 },
-    );
+    return safeErrorResponse("lawchange-recent", error, "Failed to fetch recent law changes");
   }
 }

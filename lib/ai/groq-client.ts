@@ -4,6 +4,7 @@
 // ============================================
 
 import Groq from "groq-sdk";
+import { log } from "@/lib/logger";
 
 // ============================================
 // API KEY ROTATION SETUP
@@ -22,7 +23,7 @@ if (API_KEYS.length === 0 && process.env.GROQ_API_KEY) {
 }
 
 if (API_KEYS.length === 0) {
-  console.warn("WARNING: No GROQ API keys found in environment variables");
+  log.warn("groq", "No GROQ API keys found in environment variables");
 }
 
 // Track which key we're currently using
@@ -45,7 +46,7 @@ function getGroqClient(): Groq {
 
   // If all keys exhausted, reset and try anyway
   if (attempts >= API_KEYS.length) {
-    console.log("[ClauseWall] All API keys exhausted, resetting...");
+    log.warn("groq", "All API keys exhausted, resetting");
     exhaustedKeys.clear();
   }
 
@@ -58,14 +59,14 @@ function getGroqClient(): Groq {
  * Mark current key as exhausted and switch to next
  */
 function switchToNextKey(): boolean {
-  console.log(`[ClauseWall] Key ${currentKeyIndex + 1} rate limited, switching...`);
+  log.info("groq", "Key rate limited, switching", { keyIndex: currentKeyIndex + 1 });
   
   exhaustedKeys.add(currentKeyIndex);
   
   // Schedule key recovery
   setTimeout(() => {
     exhaustedKeys.delete(currentKeyIndex);
-    console.log(`[ClauseWall] Key ${currentKeyIndex + 1} cooldown complete, available again`);
+    log.info("groq", "Key cooldown complete", { keyIndex: currentKeyIndex + 1 });
   }, KEY_COOLDOWN_MS);
 
   // Find next available key
@@ -74,11 +75,11 @@ function switchToNextKey(): boolean {
 
   // Check if we've tried all keys
   if (exhaustedKeys.size >= API_KEYS.length) {
-    console.error("[ClauseWall] All API keys exhausted!");
+    log.error("groq", "All API keys exhausted");
     return false;
   }
 
-  console.log(`[ClauseWall] Switched to Key ${currentKeyIndex + 1}`);
+  log.info("groq", "Switched API key", { keyIndex: currentKeyIndex + 1 });
   return true;
 }
 
@@ -118,7 +119,7 @@ export async function callGroq(
     try {
       const groq = getGroqClient();
       
-      console.log(`[ClauseWall] API call using Key ${currentKeyIndex + 1} (attempt ${totalAttempts}/${maxTotalAttempts})`);
+      log.debug("groq", "API call", { keyIndex: currentKeyIndex + 1, attempt: totalAttempts, maxAttempts: maxTotalAttempts });
 
       const response = await groq.chat.completions.create({
         model: "llama-3.3-70b-versatile",
@@ -147,15 +148,16 @@ export async function callGroq(
       const errorMessage = error?.message || String(error);
       const statusCode = error?.status || error?.statusCode;
 
-      console.error(
-        `[ClauseWall] Groq API attempt ${totalAttempts}/${maxTotalAttempts} failed:`,
+      log.error("groq", "API attempt failed", {
+        attempt: totalAttempts,
+        maxAttempts: maxTotalAttempts,
         statusCode,
-        errorMessage.substring(0, 200)
-      );
+        errorMessage: errorMessage.substring(0, 150),
+      });
 
       // Handle specific error types
       if (errorMessage.includes("Invalid API Key") || errorMessage.includes("API key")) {
-        console.error(`[ClauseWall] Key ${currentKeyIndex + 1} is invalid!`);
+        log.error("groq", "API key is invalid", { keyIndex: currentKeyIndex + 1 });
         // Mark this key as permanently bad and switch
         if (!switchToNextKey()) {
           throw new Error("All Groq API keys are invalid. Please check your keys.");
@@ -169,7 +171,7 @@ export async function callGroq(
         if (!switched) {
           // All keys exhausted — wait and retry
           const waitTime = extractWaitTime(errorMessage);
-          console.log(`[ClauseWall] All keys exhausted. Waiting ${waitTime}s...`);
+          log.warn("groq", "All keys exhausted, waiting before retry", { waitSeconds: waitTime });
           await new Promise((resolve) => setTimeout(resolve, waitTime * 1000));
           exhaustedKeys.clear(); // Reset and try again
         }
@@ -179,7 +181,7 @@ export async function callGroq(
       // Server error (503, 500) — retry with backoff
       if (statusCode === 503 || statusCode === 500) {
         const delay = Math.pow(2, totalAttempts) * 1000;
-        console.log(`[ClauseWall] Server error, retrying in ${delay / 1000}s...`);
+        log.info("groq", "Server error, retrying", { delayMs: delay, statusCode });
         await new Promise((resolve) => setTimeout(resolve, delay));
         continue;
       }
@@ -187,7 +189,7 @@ export async function callGroq(
       // Other errors — standard retry with backoff
       if (totalAttempts < maxTotalAttempts) {
         const delay = Math.pow(2, totalAttempts % retries) * 1000;
-        console.log(`[ClauseWall] Retrying in ${delay / 1000}s...`);
+        log.info("groq", "Retrying after error", { delayMs: delay });
         await new Promise((resolve) => setTimeout(resolve, delay));
       }
     }
@@ -432,4 +434,4 @@ export async function callGroqWhisper(
   throw new Error(`Groq Whisper failed after ${totalAttempts} attempts: ${lastError?.message}`);
 }
 
-console.log("[ClauseWall] Total Groq keys loaded:", API_KEYS.length);
+log.info("groq", "Groq client initialized", { keyCount: API_KEYS.length });

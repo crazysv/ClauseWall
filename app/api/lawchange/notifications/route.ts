@@ -5,6 +5,7 @@
 
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { safeErrorResponse } from "@/lib/api/error-response";
 
 export async function GET() {
   try {
@@ -26,7 +27,7 @@ export async function GET() {
       .limit(50);
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return safeErrorResponse("lawchange-notifications", error, "Failed to fetch law change notifications");
     }
 
     const unreadCount = (notifications || []).filter(
@@ -38,9 +39,6 @@ export async function GET() {
       unread_count: unreadCount,
     });
   } catch (error) {
-    return NextResponse.json(
-      { error: (error as Error).message },
-      { status: 500 },
-    );
+    return safeErrorResponse("lawchange-notifications", error, "Failed to fetch law change notifications");
   }
 }

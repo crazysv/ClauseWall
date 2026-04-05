@@ -5,6 +5,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { safeErrorResponse } from "@/lib/api/error-response";
 
 export async function POST(request: NextRequest) {
   try {
@@ -33,7 +34,7 @@ export async function POST(request: NextRequest) {
         .eq("user_acknowledged", false);
 
       if (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        return safeErrorResponse("lawchange-impacts", error, "Failed to acknowledge law change impacts");
       }
     } else if (impact_ids && Array.isArray(impact_ids)) {
       const { error } = await supabase
@@ -46,7 +47,7 @@ export async function POST(request: NextRequest) {
         .eq("user_id", user.id);
 
       if (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        return safeErrorResponse("lawchange-impacts", error, "Failed to acknowledge law change impacts");
       }
     } else {
       return NextResponse.json(
@@ -57,9 +58,6 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    return NextResponse.json(
-      { error: (error as Error).message },
-      { status: 500 },
-    );
+    return safeErrorResponse("lawchange-impacts", error, "Failed to acknowledge law change impacts");
   }
 }
