@@ -8,6 +8,7 @@ import { sanitizeDisplayText, sanitizeUserDescription } from "@/lib/sanitize";
 import { ComplaintGenerateSchema } from "@/lib/validation/schemas";
 import { validateBody } from "@/lib/validation/middleware";
 import type { AuthorityType } from "@/types";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export async function POST(request: NextRequest) {
   try {
@@ -17,6 +18,9 @@ export async function POST(request: NextRequest) {
     } = await supabase.auth.getUser();
     if (!user)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+    const rl = await rateLimit(request, "AI_HEAVY", user.id);
+    if (!rl.success) return rateLimitResponse(rl);
 
     const body = await request.json();
 

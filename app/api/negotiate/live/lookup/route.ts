@@ -5,9 +5,13 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { lookupClauseQuestion } from "@/lib/negotiate/quick-lookup";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export async function POST(request: NextRequest) {
   try {
+    const rl = await rateLimit(request, "AI_MEDIUM");
+    if (!rl.success) return rateLimitResponse(rl);
+
     const body = await request.json();
     const { query, jurisdiction, document_type } = body;
 

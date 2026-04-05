@@ -8,9 +8,13 @@ import { transcribeAudio } from "@/lib/negotiate/whisper-client";
 import { detectAllTactics } from "@/lib/negotiate/pressure-tactics";
 import { quickFactCheck } from "@/lib/negotiate/bluff-checker";
 import type { BluffAnalysis, DetectedTactic } from "@/types";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export async function POST(request: NextRequest) {
   try {
+    const rl = await rateLimit(request, "AI_MEDIUM");
+    if (!rl.success) return rateLimitResponse(rl);
+
     const formData = await request.formData();
     const audioFile = formData.get("audio") as Blob | null;
     const language = (formData.get("language") as string) || "en";

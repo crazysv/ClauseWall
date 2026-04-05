@@ -6,9 +6,13 @@ import { sanitizeLLMInput } from "@/lib/sanitize";
 import { SimulateSchema } from "@/lib/validation/schemas";
 import { validateBody } from "@/lib/validation/middleware";
 import { safeParseJson } from "@/lib/ai/output-guards";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export async function POST(request: NextRequest) {
   try {
+    const rl = await rateLimit(request, "AI_HEAVY");
+    if (!rl.success) return rateLimitResponse(rl);
+
     const body = await request.json();
 
     // ── Schema Validation ──

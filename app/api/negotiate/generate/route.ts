@@ -5,6 +5,7 @@ import { sanitizeLLMInput } from "@/lib/sanitize";
 import { NegotiateGenerateSchema } from "@/lib/validation/schemas";
 import { validateBody } from "@/lib/validation/middleware";
 import { safeErrorResponse } from "@/lib/api/error-response";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -15,6 +16,9 @@ export const maxDuration = 60;
 
 export async function POST(request: NextRequest) {
   try {
+    const rl = await rateLimit(request, "AI_HEAVY");
+    if (!rl.success) return rateLimitResponse(rl);
+
     const body = await request.json();
 
     // ── Schema Validation ──

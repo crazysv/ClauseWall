@@ -2,9 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { generateMarketNarrative } from "@/lib/market/narrative";
 import { getBenchmark } from "@/lib/market/benchmarks";
 import { sanitizeDisplayText } from "@/lib/sanitize";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export async function POST(request: NextRequest) {
   try {
+    const rl = await rateLimit(request, "AI_MEDIUM");
+    if (!rl.success) return rateLimitResponse(rl);
+
     const body = await request.json();
     const {
       benchmark_id,

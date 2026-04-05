@@ -6,6 +6,7 @@ import { sanitizePlainTextBlock } from "@/lib/sanitize";
 import { AnalyzeJsonSchema } from "@/lib/validation/schemas";
 import { validateBody, validateFileSize } from "@/lib/validation/middleware";
 import { FILE_SIZE_LIMITS } from "@/lib/validation/enums";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 // Allow longer execution time for analysis
 export const maxDuration = 60;
@@ -24,6 +25,9 @@ export async function POST(request: NextRequest) {
         { status: 401 },
       );
     }
+
+    const rl = await rateLimit(request, "AI_HEAVY", user.id);
+    if (!rl.success) return rateLimitResponse(rl);
 
     let text: string;
     let documentType: string;

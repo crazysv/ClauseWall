@@ -12,9 +12,13 @@ import type {
   FinancialRuinAnalysis,
   RuinCalculatorRequest,
 } from "@/lib/simulation/types";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export async function POST(request: NextRequest) {
   try {
+    const rl = await rateLimit(request, "AI_HEAVY");
+    if (!rl.success) return rateLimitResponse(rl);
+
     const body: RuinCalculatorRequest = await request.json();
     const {
       documentId,

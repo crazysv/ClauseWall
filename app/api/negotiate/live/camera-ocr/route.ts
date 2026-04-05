@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { callGeminiVision } from "@/lib/bot/gemini-client";
 import { processFrameForClauses } from "@/lib/negotiate/camera-processor";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 const OCR_PROMPT = `Extract ALL visible text from this contract/document image. 
 Return ONLY the raw text content, preserving the original structure, numbering, and formatting as closely as possible.
@@ -16,6 +17,9 @@ Return as JSON: { "extracted_text": "the full text here" }`;
 
 export async function POST(request: NextRequest) {
   try {
+    const rl = await rateLimit(request, "AI_MEDIUM");
+    if (!rl.success) return rateLimitResponse(rl);
+
     const formData = await request.formData();
     const imageFile = formData.get("image") as Blob | null;
     const jurisdiction =
