@@ -1,0 +1,1418 @@
+{
+  "app\\analyze\\[id]\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 3,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\auth\\login\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 8,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\auth\\signup\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 8,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\authority\\escalation\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\authority\\legal-aid\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\authority\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\authority\\rti\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\authority\\rti\\[documentId]\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\battle\\[id]\\page.tsx": [
+    {
+      "reason": "low opacity text",
+      "count": 3,
+      "samples": [
+        "text-black/50",
+        "text-black/40"
+      ]
+    },
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 9,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\builder\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 8,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\builder\\preview\\[id]\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 9,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\builder\\[type]\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 12,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\collab\\[roomCode]\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 15,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\collective\\page.tsx": [
+    {
+      "reason": "highly transparent foreground text",
+      "count": 9,
+      "samples": [
+        "text-foreground/40",
+        "text-foreground/30",
+        "text-foreground/20"
+      ]
+    }
+  ],
+  "app\\compare\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\complaint\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 8,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\complaint\\[documentId]\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 16,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\dashboard\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 12,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\escape\\[id]\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 9,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\evidence\\new\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 3,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\evidence\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 3,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\evidence\\[caseId]\\bundle\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 4,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\evidence\\[caseId]\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 5,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\lawchange\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\letter\\[id]\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 7,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\market\\compare\\page.tsx": [
+    {
+      "reason": "highly transparent foreground text",
+      "count": 11,
+      "samples": [
+        "text-foreground/30",
+        "text-foreground/50",
+        "text-foreground/40"
+      ]
+    }
+  ],
+  "app\\market\\page.tsx": [
+    {
+      "reason": "highly transparent foreground text",
+      "count": 5,
+      "samples": [
+        "text-foreground/50",
+        "text-foreground/30",
+        "text-foreground/20"
+      ]
+    }
+  ],
+  "app\\market\\trends\\page.tsx": [
+    {
+      "reason": "highly transparent foreground text",
+      "count": 5,
+      "samples": [
+        "text-foreground/30",
+        "text-foreground/50",
+        "text-foreground/10"
+      ]
+    }
+  ],
+  "app\\negotiate\\[id]\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 15,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 25,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\results\\[id]\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 12,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\ruin-calculator\\[id]\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 4,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\shadow\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\shadow\\[documentId]\\page.tsx": [
+    {
+      "reason": "low opacity text",
+      "count": 1,
+      "samples": [
+        "text-black/60"
+      ]
+    }
+  ],
+  "app\\simulate\\[id]\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 27,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\timebomb\\[documentId]\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 2,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\upload\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 15,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\vault\\page.tsx": [
+    {
+      "reason": "low opacity text",
+      "count": 1,
+      "samples": [
+        "text-white/40"
+      ]
+    },
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 3,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\verify\\[id]\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 11,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\wall-of-shame\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 15,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\watchdog\\campaigns\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 7,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\watchdog\\campaigns\\[id]\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 9,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\watchdog\\changes\\[id]\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 4,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\watchdog\\companies\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\watchdog\\companies\\[slug]\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 5,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\watchdog\\leaderboard\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 5,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\watchdog\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 2,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "app\\watchdog\\settings\\page.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 6,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\shared\\navbar.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 5,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\ui\\card.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\ui\\dialog.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 2,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\ui\\dropdown-menu.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 3,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\ui\\input.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\ui\\select.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 4,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\ui\\sheet.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\ui\\tabs.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\ui\\textarea.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\upload\\ml-instant-result.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 10,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\upload\\pre-send-review-modal.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 2,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\upload\\privacy-dashboard.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 5,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\upload\\privacy-toggle.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 3,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\upload\\quick-scan-result.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 21,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\upload\\text-input.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\clause-autopsy-modal.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 11,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\clause-card.tsx": [
+    {
+      "reason": "low opacity text",
+      "count": 1,
+      "samples": [
+        "text-white/40"
+      ]
+    },
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 7,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\clause-list.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\clause-rewrite-modal.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 5,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\community-insight.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\contract-dna-modal.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 5,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\contract-dna-preview.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 2,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\deception-tab.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 7,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\eli5-section.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 6,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\entity-reputation.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 17,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\escape-cta.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\floating-actions.tsx": [
+    {
+      "reason": "low opacity text",
+      "count": 2,
+      "samples": [
+        "text-white/50",
+        "text-white/30"
+      ]
+    },
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 4,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\knowledge-graph-modal.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 12,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\mismatch-banner.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 2,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\next-steps.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 11,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\power-balance-meter.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 9,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\privacy-badge.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\proof-section.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 10,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\proof-summary.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 3,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\proof-tree-modal.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 2,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\proof-tree.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 10,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\proof-walkthrough.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 5,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\qr-section.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 16,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\score-card-modal.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 8,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\simulator-cta.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 2,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\summary-stats.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\verification-badge.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 3,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\video-card-modal.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 5,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\results\\xray-mode.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 9,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\dashboard\\achievements-section.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 4,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\dashboard\\portfolio-stats.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\dashboard\\risk-trend-chart.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 4,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\negotiate\\bluff-detector-panel.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\negotiate\\floating-lookup-bar.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\negotiate\\negotiation-companion.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 3,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\negotiate\\progress-tracker-panel.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 9,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\negotiate\\quick-lookup-panel.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 6,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\negotiate\\session-setup.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\negotiate\\tactic-alert.tsx": [
+    {
+      "reason": "low opacity text",
+      "count": 3,
+      "samples": [
+        "text-black/60",
+        "text-black/50"
+      ]
+    }
+  ],
+  "components\\letter\\letter-preview.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\market\\ammunition-report-modal.tsx": [
+    {
+      "reason": "highly transparent foreground text",
+      "count": 10,
+      "samples": [
+        "text-foreground/40",
+        "text-foreground/30",
+        "text-foreground/50"
+      ]
+    }
+  ],
+  "components\\market\\benchmark-chart.tsx": [
+    {
+      "reason": "highly transparent foreground text",
+      "count": 2,
+      "samples": [
+        "text-foreground/30",
+        "text-foreground/40"
+      ]
+    }
+  ],
+  "components\\market\\category-filter-bar.tsx": [
+    {
+      "reason": "highly transparent foreground text",
+      "count": 6,
+      "samples": [
+        "text-foreground/30",
+        "text-foreground/40"
+      ]
+    }
+  ],
+  "components\\market\\city-breakdown-chart.tsx": [
+    {
+      "reason": "low opacity text",
+      "count": 1,
+      "samples": [
+        "text-white/30"
+      ]
+    }
+  ],
+  "components\\market\\data-contribution-banner.tsx": [
+    {
+      "reason": "highly transparent foreground text",
+      "count": 4,
+      "samples": [
+        "text-foreground/50",
+        "text-foreground/30",
+        "text-foreground/20"
+      ]
+    }
+  ],
+  "components\\market\\india-heat-map.tsx": [
+    {
+      "reason": "low opacity text",
+      "count": 11,
+      "samples": [
+        "text-white/50",
+        "text-white/30",
+        "text-white/40"
+      ]
+    }
+  ],
+  "components\\market\\market-comparison-section.tsx": [
+    {
+      "reason": "highly transparent foreground text",
+      "count": 6,
+      "samples": [
+        "text-foreground/40",
+        "text-foreground/30",
+        "text-foreground/20"
+      ]
+    }
+  ],
+  "components\\market\\market-empty-state.tsx": [
+    {
+      "reason": "highly transparent foreground text",
+      "count": 2,
+      "samples": [
+        "text-foreground/50",
+        "text-foreground/30"
+      ]
+    }
+  ],
+  "components\\market\\market-stats-footer.tsx": [
+    {
+      "reason": "highly transparent foreground text",
+      "count": 1,
+      "samples": [
+        "text-foreground/20"
+      ]
+    }
+  ],
+  "components\\market\\trend-insight-card.tsx": [
+    {
+      "reason": "highly transparent foreground text",
+      "count": 3,
+      "samples": [
+        "text-foreground/50",
+        "text-foreground/30"
+      ]
+    }
+  ],
+  "components\\watchdog\\alert-panel.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 5,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\watchdog\\campaign-card.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 5,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\watchdog\\campaign-sign-form.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 2,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\watchdog\\change-card.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 4,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\watchdog\\change-diff-view.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 6,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\watchdog\\change-feed.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 4,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\watchdog\\company-card.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 4,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\watchdog\\company-grid.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 2,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\watchdog\\leaderboard-table.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 6,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\watchdog\\sector-filter.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 2,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\watchdog\\tos-score-badge.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\watchdog\\tos-timeline.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 4,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\authority\\authority-card.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 3,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\authority\\authority-detail.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 6,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\authority\\authority-search-bar.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\authority\\authority-section.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 2,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\authority\\complaint-email-preview.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 4,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\authority\\escalation-countdown.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\authority\\escalation-path-visualizer.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 2,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\authority\\escalation-step-card.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 4,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\authority\\fee-breakdown.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 3,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\authority\\filing-checklist.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 6,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\authority\\legal-aid-checker.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 3,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\authority\\legal-aid-result.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 2,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\authority\\report-issue-modal.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 5,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\authority\\rti-form.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 1,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\authority\\rti-preview.tsx": [
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 2,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    }
+  ],
+  "components\\collective\\collective-action-card.tsx": [
+    {
+      "reason": "highly transparent foreground text",
+      "count": 7,
+      "samples": [
+        "text-foreground/30",
+        "text-foreground/50",
+        "text-foreground/40"
+      ]
+    }
+  ],
+  "components\\collective\\collective-chat.tsx": [
+    {
+      "reason": "highly transparent foreground text",
+      "count": 7,
+      "samples": [
+        "text-foreground/20",
+        "text-foreground/10",
+        "text-foreground/30"
+      ]
+    }
+  ],
+  "components\\collective\\collective-dashboard.tsx": [
+    {
+      "reason": "low opacity text",
+      "count": 1,
+      "samples": [
+        "text-white/30"
+      ]
+    },
+    {
+      "reason": "muted text, maybe low contrast",
+      "count": 11,
+      "samples": [
+        "text-muted-foreground"
+      ]
+    },
+    {
+      "reason": "highly transparent foreground text",
+      "count": 3,
+      "samples": [
+        "text-foreground/50",
+        "text-foreground/10"
+      ]
+    }
+  ],
+  "components\\collective\\entity-intelligence-card.tsx": [
+    {
+      "reason": "highly transparent foreground text",
+      "count": 5,
+      "samples": [
+        "text-foreground/40",
+        "text-foreground/30"
+      ]
+    }
+  ],
+  "components\\collective\\legal-aid-card.tsx": [
+    {
+      "reason": "highly transparent foreground text",
+      "count": 5,
+      "samples": [
+        "text-foreground/30",
+        "text-foreground/40",
+        "text-foreground/20"
+      ]
+    }
+  ],
+  "components\\collective\\leverage-card.tsx": [
+    {
+      "reason": "highly transparent foreground text",
+      "count": 10,
+      "samples": [
+        "text-foreground/40",
+        "text-foreground/50",
+        "text-foreground/30"
+      ]
+    }
+  ],
+  "components\\collective\\my-collectives-section.tsx": [
+    {
+      "reason": "low opacity text",
+      "count": 1,
+      "samples": [
+        "text-white/30"
+      ]
+    }
+  ],
+  "components\\collective\\propose-action-modal.tsx": [
+    {
+      "reason": "low opacity text",
+      "count": 1,
+      "samples": [
+        "text-white/30"
+      ]
+    },
+    {
+      "reason": "highly transparent foreground text",
+      "count": 7,
+      "samples": [
+        "text-foreground/30",
+        "text-foreground/40",
+        "text-foreground/20"
+      ]
+    }
+  ]
+}

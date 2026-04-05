@@ -1,0 +1,4070 @@
+{
+  "totalFiles": 467,
+  "verifiedUpdated": 234,
+  "partiallyUpdated": 77,
+  "notUpdated": 1,
+  "notApplicable": 155,
+  "legacyInstances": {
+    "glass": [],
+    "backdrop-blur": [],
+    "rounded-3xl": [],
+    "bg-gradient-": [],
+    "from-": [
+      "components\\negotiate\\camera-scanner-panel.tsx",
+      "components\\results\\clause-autopsy-modal.tsx",
+      "components\\ui\\dialog.tsx",
+      "components\\ui\\dropdown-menu.tsx",
+      "components\\ui\\select.tsx",
+      "components\\ui\\sheet.tsx",
+      "components\\ui\\tooltip.tsx",
+      "components\\upload\\quick-scan-result.tsx",
+      "components\\voice-aid\\camera-capture-button.tsx"
+    ],
+    "via-": [
+      "components\\results\\clause-autopsy-modal.tsx"
+    ],
+    "to-": [
+      "app\\battle\\[id]\\page.tsx",
+      "app\\letter\\[id]\\page.tsx",
+      "app\\page.tsx",
+      "app\\results\\[id]\\page.tsx",
+      "app\\timebomb\\[documentId]\\page.tsx",
+      "app\\upload\\page.tsx",
+      "app\\wrapped\\page.tsx",
+      "components\\authority\\authority-finder.tsx",
+      "components\\bhasha\\language-selector.tsx",
+      "components\\collective\\collective-chat.tsx",
+      "components\\collective\\entity-intelligence-card.tsx",
+      "components\\compare\\comparison-card-modal.tsx",
+      "components\\lawchange\\law-change-dashboard-widget.tsx",
+      "components\\lawchange\\law-change-summary-card.tsx",
+      "components\\market\\market-empty-state.tsx",
+      "components\\negotiate\\audio-companion-panel.tsx",
+      "components\\negotiate\\camera-scanner-panel.tsx",
+      "components\\results\\clause-autopsy-modal.tsx",
+      "components\\results\\deception-tab.tsx",
+      "components\\results\\proof-section.tsx",
+      "components\\results\\proof-tree-modal.tsx",
+      "components\\results\\qr-section.tsx",
+      "components\\results\\score-card-modal.tsx",
+      "components\\timebomb\\timebomb-cta.tsx",
+      "components\\ui\\dialog.tsx",
+      "components\\ui\\sheet.tsx",
+      "components\\upload\\quick-scan-result.tsx",
+      "components\\voice\\mic-button.tsx",
+      "components\\voice-aid\\camera-capture-button.tsx",
+      "components\\voice-aid\\voice-interface.tsx"
+    ],
+    "bg-white/[": [
+      "app\\collective\\page.tsx",
+      "app\\evidence\\[caseId]\\bundle\\page.tsx",
+      "app\\market\\compare\\page.tsx",
+      "app\\market\\page.tsx",
+      "app\\results\\[id]\\page.tsx",
+      "app\\shadow\\page.tsx",
+      "app\\simulate\\[id]\\page.tsx",
+      "components\\authority\\authority-detail.tsx",
+      "components\\authority\\complaint-email-preview.tsx",
+      "components\\authority\\fee-breakdown.tsx",
+      "components\\authority\\filing-checklist.tsx",
+      "components\\authority\\legal-aid-result.tsx",
+      "components\\bhasha\\text-correction-modal.tsx",
+      "components\\collab\\clause-vote.tsx",
+      "components\\collective\\collective-action-card.tsx",
+      "components\\collective\\collective-chat.tsx",
+      "components\\collective\\collective-dashboard.tsx",
+      "components\\collective\\entity-intelligence-card.tsx",
+      "components\\collective\\join-collective-modal.tsx",
+      "components\\collective\\legal-aid-card.tsx",
+      "components\\collective\\leverage-card.tsx",
+      "components\\collective\\propose-action-modal.tsx",
+      "components\\deliberation\\deliberation-modal.tsx",
+      "components\\deliberation\\deliberation-summary.tsx",
+      "components\\deliberation\\document-deliberation.tsx",
+      "components\\lawchange\\impact-card.tsx",
+      "components\\lawchange\\law-change-card.tsx",
+      "components\\lawchange\\law-change-feed.tsx",
+      "components\\lawchange\\pending-change-card.tsx",
+      "components\\lawchange\\retroactive-banner.tsx",
+      "components\\market\\ammunition-report-modal.tsx",
+      "components\\market\\benchmark-table.tsx",
+      "components\\market\\category-filter-bar.tsx",
+      "components\\market\\india-heat-map.tsx",
+      "components\\market\\market-comparison-section.tsx",
+      "components\\market\\market-empty-state.tsx",
+      "components\\negotiate\\audio-companion-panel.tsx",
+      "components\\negotiate\\bluff-detector-panel.tsx",
+      "components\\negotiate\\session-setup.tsx",
+      "components\\poisonpill\\interconnection-map.tsx",
+      "components\\poisonpill\\negotiation-roadmap.tsx",
+      "components\\poisonpill\\poison-pill-cta.tsx",
+      "components\\poisonpill\\poison-pill-section.tsx",
+      "components\\poisonpill\\trap-card.tsx",
+      "components\\poisonpill\\trap-mechanism-flow.tsx",
+      "components\\poisonpill\\trap-summary-bar.tsx",
+      "components\\results\\clause-autopsy-modal.tsx",
+      "components\\results\\entity-reputation.tsx",
+      "components\\results\\qr-section.tsx",
+      "components\\shared\\related-actions.tsx",
+      "components\\timebomb\\reminder-settings.tsx",
+      "components\\upload\\quick-scan-result.tsx",
+      "components\\watchdog\\leaderboard-table.tsx"
+    ],
+    "border-white/[": [],
+    "bg-gray-900/80": [],
+    "opacity-[0\\.\\d+]": []
+  },
+  "boldImpactInstances": {},
+  "demoRoutes": {
+    "app/page.tsx": {
+      "exists": true,
+      "hasDefaultExport": true,
+      "hasLinks": true
+    },
+    "app/upload/page.tsx": {
+      "exists": true,
+      "hasDefaultExport": true,
+      "hasLinks": false
+    },
+    "app/analyze/[id]/page.tsx": {
+      "exists": true,
+      "hasDefaultExport": true,
+      "hasLinks": true
+    },
+    "app/results/[id]/page.tsx": {
+      "exists": true,
+      "hasDefaultExport": true,
+      "hasLinks": true
+    },
+    "app/letter/page.tsx": {
+      "exists": false
+    },
+    "app/negotiate/[id]/page.tsx": {
+      "exists": true,
+      "hasDefaultExport": true,
+      "hasLinks": true
+    },
+    "app/dashboard/page.tsx": {
+      "exists": true,
+      "hasDefaultExport": true,
+      "hasLinks": true
+    },
+    "app/wall-of-shame/page.tsx": {
+      "exists": true,
+      "hasDefaultExport": true,
+      "hasLinks": true
+    },
+    "app/verify/page.tsx": {
+      "exists": false
+    },
+    "app/market/page.tsx": {
+      "exists": true,
+      "hasDefaultExport": true,
+      "hasLinks": true
+    },
+    "app/watchdog/page.tsx": {
+      "exists": true,
+      "hasDefaultExport": true,
+      "hasLinks": true
+    },
+    "app/collective/page.tsx": {
+      "exists": true,
+      "hasDefaultExport": true,
+      "hasLinks": true
+    }
+  },
+  "filesData": {
+    "app\\analyze\\[id]\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\auth\\login\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\auth\\signup\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 4,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\authority\\escalation\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": false,
+      "isPage": true
+    },
+    "app\\authority\\legal-aid\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": false,
+      "isPage": true
+    },
+    "app\\authority\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": false,
+      "isPage": true
+    },
+    "app\\authority\\rti\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": false,
+      "isPage": true
+    },
+    "app\\authority\\rti\\[documentId]\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": false,
+      "isPage": true
+    },
+    "app\\authority\\[authorityId]\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": false,
+      "isPage": true
+    },
+    "app\\battle\\[id]\\page.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "to-"
+      ],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\builder\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 4,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\builder\\preview\\[id]\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\builder\\[type]\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\collab\\[roomCode]\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\collective\\page.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\collective\\[collectiveId]\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\compare\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 5,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\complaint\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\complaint\\[documentId]\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 5,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\dashboard\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 6,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\escape\\[id]\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 7,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\evidence\\new\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\evidence\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\evidence\\[caseId]\\bundle\\page.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\evidence\\[caseId]\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\lawchange\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\layout.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": false,
+      "isPage": false
+    },
+    "app\\letter\\[id]\\page.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "to-"
+      ],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 5,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\market\\benchmarks\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\market\\compare\\page.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\market\\heatmap\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\market\\page.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\market\\trends\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\negotiate\\live\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": false,
+      "isPage": true
+    },
+    "app\\negotiate\\[id]\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 4,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\page.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "to-"
+      ],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 6,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\results\\[id]\\layout.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": false,
+      "isPage": false
+    },
+    "app\\results\\[id]\\page.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "to-",
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 6,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\ruin-calculator\\[id]\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 5,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\shadow\\page.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-["
+      ],
+      "responsiveCoverage": 6,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\shadow\\[documentId]\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 5,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\simulate\\[id]\\page.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-["
+      ],
+      "responsiveCoverage": 5,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\statemachine\\[id]\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\timebomb\\[documentId]\\page.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "to-"
+      ],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\upload\\page.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "to-"
+      ],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 4,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\vault\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\verify\\[id]\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 4,
+      "hasUseClient": false,
+      "isPage": true
+    },
+    "app\\voice\\client.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "app\\voice\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": false,
+      "isPage": true
+    },
+    "app\\wall-of-shame\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-["
+      ],
+      "responsiveCoverage": 5,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\watchdog\\campaigns\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": false,
+      "isPage": true
+    },
+    "app\\watchdog\\campaigns\\[id]\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 5,
+      "hasUseClient": false,
+      "isPage": true
+    },
+    "app\\watchdog\\changes\\[id]\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": false,
+      "isPage": true
+    },
+    "app\\watchdog\\companies\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": false,
+      "isPage": true
+    },
+    "app\\watchdog\\companies\\[slug]\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": false,
+      "isPage": true
+    },
+    "app\\watchdog\\leaderboard\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": false,
+      "isPage": true
+    },
+    "app\\watchdog\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 4,
+      "hasUseClient": false,
+      "isPage": true
+    },
+    "app\\watchdog\\settings\\page.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "app\\wrapped\\page.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "to-"
+      ],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": true
+    },
+    "components\\authority\\authority-card.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\authority\\authority-contact-buttons.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\authority\\authority-detail.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "border-foreground"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\authority\\authority-finder.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "to-"
+      ],
+      "boldMatches": [
+        "card-impact",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\authority\\authority-hours-badge.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\authority\\authority-search-bar.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-["
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\authority\\authority-section.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\authority\\complaint-email-preview.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\authority\\escalation-countdown.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\authority\\escalation-path-visualizer.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\authority\\escalation-step-card.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\authority\\fee-breakdown.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "border-foreground"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\authority\\filing-checklist.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "border-foreground"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\authority\\jurisdiction-reasoning.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\authority\\jurisdiction-result.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\authority\\legal-aid-checker.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\authority\\legal-aid-result.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "border-foreground"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\authority\\not-this-authority.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\authority\\report-issue-modal.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\authority\\rti-form.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 4,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\authority\\rti-preview.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\bhasha\\audio-player-inline.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\bhasha\\audio-player.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\bhasha\\bilingual-toggle.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\bhasha\\bilingual-viewer.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "uppercase"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\bhasha\\language-badge.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\bhasha\\language-banner.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\bhasha\\language-preferences-modal.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\bhasha\\language-selector.tsx": {
+      "status": "NOT UPDATED",
+      "legacyMatches": [
+        "to-"
+      ],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\bhasha\\script-confidence-banner.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\bhasha\\terminology-tooltip.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\bhasha\\text-correction-modal.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "border-foreground"
+      ],
+      "responsiveCoverage": 4,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\bhasha\\voice-input-button.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\collab\\clause-vote.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "border-foreground"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\collab\\presence-bar.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground",
+        "shadow-["
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\collab\\share-room-modal.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\collective\\collective-action-card.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "border-foreground"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\collective\\collective-chat.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "to-",
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "border-foreground"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\collective\\collective-dashboard.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\collective\\entity-intelligence-card.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "to-",
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground",
+        "uppercase"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\collective\\join-collective-modal.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground",
+        "shadow-["
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\collective\\legal-aid-card.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "border-foreground"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\collective\\leverage-card.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground",
+        "uppercase"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\collective\\my-collectives-section.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "border-foreground",
+        "shadow-["
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\collective\\propose-action-modal.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground",
+        "shadow-["
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\collective\\threshold-progress.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\compare\\comparison-card-modal.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "to-"
+      ],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\complaint\\complaint-cta.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\complaint\\complaint-dashboard-widget-wrapper.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\complaint\\complaint-dashboard-widget.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\dashboard\\achievements-section.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 4,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\dashboard\\insights-section.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\dashboard\\portfolio-stats.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\dashboard\\risk-trend-chart.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\deliberation\\deliberation-cta.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\deliberation\\deliberation-modal.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "uppercase"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\deliberation\\deliberation-panel.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "border-foreground",
+        "uppercase"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\deliberation\\deliberation-summary.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "border-foreground"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\deliberation\\document-deliberation.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "border-foreground"
+      ],
+      "responsiveCoverage": 4,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\embed\\embed-code-modal.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\evidence\\chain-status-badge.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\evidence\\evidence-case-card.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\evidence\\evidence-chain-visualizer.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\evidence\\evidence-item-card.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\evidence\\evidence-stats.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\evidence\\evidence-timeline.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\evidence\\evidence-type-icon.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\evidence\\evidence-upload-zone.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\evidence\\storage-usage-bar.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\graph\\graph-canvas.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "border-foreground"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\landing\\features.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "border-foreground"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": false,
+      "isPage": false
+    },
+    "components\\landing\\hero.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "font-black"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": false,
+      "isPage": false
+    },
+    "components\\landing\\how-it-works.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "font-black"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": false,
+      "isPage": false
+    },
+    "components\\lawchange\\impact-card.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "border-foreground",
+        "uppercase"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\lawchange\\law-change-card.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "card-impact",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\lawchange\\law-change-dashboard-widget.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "to-"
+      ],
+      "boldMatches": [
+        "bg-background"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\lawchange\\law-change-feed.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "border-foreground"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\lawchange\\law-change-summary-card.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "to-"
+      ],
+      "boldMatches": [
+        "bg-background"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\lawchange\\pending-change-card.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "border-foreground",
+        "uppercase"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\lawchange\\retroactive-banner.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "border-foreground"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\letter\\letter-preview.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": false,
+      "isPage": false
+    },
+    "components\\market\\ammunition-report-modal.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-["
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\market\\benchmark-chart.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "border-foreground"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\market\\benchmark-table.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "border-foreground"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\market\\category-filter-bar.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "border-foreground",
+        "uppercase"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\market\\city-breakdown-chart.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\market\\clause-market-badge.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\market\\data-contribution-banner.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\market\\india-heat-map.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\market\\market-comparison-section.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\market\\market-empty-state.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "to-",
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\market\\market-overview-cards.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\market\\market-stats-footer.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "border-foreground"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\market\\percentile-badge.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\market\\trend-insight-card.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "border-foreground"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\negotiate\\audio-companion-panel.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "to-",
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "border-foreground",
+        "shadow-["
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\negotiate\\audio-waveform.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\negotiate\\bluff-detector-panel.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "border-foreground"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\negotiate\\camera-scanner-panel.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "from-",
+        "to-"
+      ],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground",
+        "uppercase"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\negotiate\\floating-lookup-bar.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\negotiate\\negotiation-companion.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\negotiate\\progress-tracker-panel.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 4,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\negotiate\\quick-lookup-panel.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\negotiate\\session-setup.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\negotiate\\tactic-alert.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\poisonpill\\interconnection-map.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "border-foreground"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\poisonpill\\negotiation-roadmap.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground",
+        "uppercase"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\poisonpill\\poison-pill-cta.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\poisonpill\\poison-pill-section.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\poisonpill\\trap-card.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground",
+        "shadow-["
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\poisonpill\\trap-mechanism-flow.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "border-foreground"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\poisonpill\\trap-summary-bar.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "border-foreground",
+        "uppercase"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\providers.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\clause-autopsy-modal.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "from-",
+        "via-",
+        "to-",
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\clause-card.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "border-foreground",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 4,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\clause-list.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "border-foreground",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": false,
+      "isPage": false
+    },
+    "components\\results\\clause-rewrite-modal.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 5,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\community-insight.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\contract-dna-modal.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\contract-dna-preview.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\danger-gauge.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "border-foreground",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": false,
+      "isPage": false
+    },
+    "components\\results\\deception-tab.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "to-"
+      ],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 4,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\dna\\constellation-style.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\dna\\fingerprint-style.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\dna\\heartbeat-style.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\dna\\helix-style.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\dna\\skyline-style.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\dna\\waveform-style.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\eli5-section.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\entity-reputation.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 5,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\escape-cta.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\export-buttons.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "border-foreground",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\floating-actions.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 4,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\knowledge-graph-modal.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 5,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\mismatch-banner.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\mood-ring-background.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\next-steps.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\power-balance-meter.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\privacy-badge.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "border-foreground",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\proof-section.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "to-"
+      ],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\proof-summary.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\proof-tree-modal.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "to-"
+      ],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\proof-tree.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\proof-walkthrough.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\qr-section.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "to-",
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 5,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\score-card-modal.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "to-"
+      ],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\simulator-cta.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\summary-stats.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "border-foreground",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": false,
+      "isPage": false
+    },
+    "components\\results\\verification-badge.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "border-foreground",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\video-card-modal.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\results\\xray-mode.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 4,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\ruin-calculator\\fair-comparison-bar.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\ruin-calculator\\fair-comparison-table.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\ruin-calculator\\insurance-gap-meter.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\ruin-calculator\\monte-carlo-chart.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\ruin-calculator\\percentile-cards.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\ruin-calculator\\probability-callouts.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\ruin-calculator\\risk-adjusted-hero.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\ruin-calculator\\risk-clause-ranking.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\ruin-calculator\\stress-test-builder.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\ruin-calculator\\stress-test-grid.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\ruin-calculator\\stress-test-result.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\shadow\\comparison-table.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\shadow\\evidence-upload.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 4,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\shadow\\mismatch-card.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\shadow\\mismatch-list.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\shadow\\promise-timeline.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\shadow\\shadow-cta.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\shadow\\shadow-summary-card.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\shadow\\trust-score-gauge.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\shadow\\whatsapp-guide-modal.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\shared\\footer.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "border-foreground",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": false,
+      "isPage": false
+    },
+    "components\\shared\\loading-state.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 3,
+      "hasUseClient": false,
+      "isPage": false
+    },
+    "components\\shared\\navbar.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground",
+        "font-black"
+      ],
+      "responsiveCoverage": 4,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\shared\\related-actions.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "border-foreground",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\statemachine\\report-card.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\statemachine\\state-graph.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 6,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\statemachine\\state-machine-modal.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 6,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\statemachine\\statemachine-cta.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\statemachine\\timeline-slider.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\statemachine\\trap-state-card.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\timebomb\\calendar-export.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\timebomb\\countdown-widget.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\timebomb\\deadline-card.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\timebomb\\deadline-timeline.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\timebomb\\notification-bell.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\timebomb\\reminder-settings.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\timebomb\\signing-date-modal.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\timebomb\\telegram-link.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\timebomb\\timebomb-cta.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "to-"
+      ],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\timebomb\\timebomb-summary.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 4,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\ui\\badge.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "border-foreground"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": false,
+      "isPage": false
+    },
+    "components\\ui\\button.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": false,
+      "isPage": false
+    },
+    "components\\ui\\card.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": false,
+      "isPage": false
+    },
+    "components\\ui\\dialog.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "from-",
+        "to-"
+      ],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground",
+        "shadow-["
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\ui\\dropdown-menu.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "from-"
+      ],
+      "boldMatches": [
+        "bg-background",
+        "shadow-[",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\ui\\input.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": false,
+      "isPage": false
+    },
+    "components\\ui\\label.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\ui\\progress.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\ui\\scroll-area.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\ui\\select.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "from-"
+      ],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground",
+        "shadow-["
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\ui\\separator.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\ui\\sheet.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "from-",
+        "to-"
+      ],
+      "boldMatches": [
+        "bg-background"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\ui\\skeleton.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": false,
+      "isPage": false
+    },
+    "components\\ui\\sonner.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\ui\\tabs.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\ui\\textarea.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": false,
+      "isPage": false
+    },
+    "components\\ui\\tooltip.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "from-"
+      ],
+      "boldMatches": [
+        "border-foreground",
+        "shadow-["
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\upload\\document-type-select.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\upload\\dropzone.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\upload\\jurisdiction-select.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\upload\\ml-instant-result.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\upload\\pre-send-review-modal.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 4,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\upload\\privacy-dashboard.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\upload\\privacy-toggle.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\upload\\quick-scan-result.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "from-",
+        "to-",
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\upload\\text-input.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\vault\\cascades-list.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\vault\\conflict-list.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 4,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\vault\\contract-selector.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\vault\\exposure-dashboard.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\vault\\gaps-list.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\vault\\obligations-list.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\vault\\vault-cta.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\vault\\vault-loading.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\vault\\vault-overview.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\vault\\vault-summary-card.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 4,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\vault\\whatif-panel.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "shadow-[",
+        "font-black",
+        "uppercase",
+        "tracking-widest"
+      ],
+      "responsiveCoverage": 6,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\voice\\mic-button.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "to-"
+      ],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "font-black",
+        "uppercase"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\voice-aid\\audio-waveform.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\voice-aid\\camera-capture-button.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "from-",
+        "to-"
+      ],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\voice-aid\\language-selector.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground",
+        "shadow-[",
+        "uppercase"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\voice-aid\\microphone-button.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\voice-aid\\read-aloud-button.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\voice-aid\\voice-floating-button.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\voice-aid\\voice-interface.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "to-"
+      ],
+      "boldMatches": [
+        "border-foreground"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\voice-aid\\voice-message-bubble.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "border-foreground"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\watchdog\\alert-bell.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\watchdog\\alert-panel.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\watchdog\\campaign-card.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\watchdog\\campaign-sign-form.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\watchdog\\change-card.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 2,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\watchdog\\change-diff-view.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground",
+        "uppercase"
+      ],
+      "responsiveCoverage": 4,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\watchdog\\change-feed.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\watchdog\\company-card.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\watchdog\\company-grid.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\watchdog\\direction-badge.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\watchdog\\leaderboard-table.tsx": {
+      "status": "PARTIALLY UPDATED",
+      "legacyMatches": [
+        "bg-white/["
+      ],
+      "boldMatches": [
+        "border-foreground",
+        "uppercase"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\watchdog\\sector-filter.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\watchdog\\tos-score-badge.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "border-foreground"
+      ],
+      "responsiveCoverage": 3,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\watchdog\\tos-timeline.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [
+        "card-impact",
+        "bg-background",
+        "border-foreground"
+      ],
+      "responsiveCoverage": 1,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\watchdog\\trend-indicator.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    },
+    "components\\watchdog\\watchlist-toggle.tsx": {
+      "status": "VERIFIED UPDATED",
+      "legacyMatches": [],
+      "boldMatches": [],
+      "responsiveCoverage": 0,
+      "hasUseClient": true,
+      "isPage": false
+    }
+  }
+}
