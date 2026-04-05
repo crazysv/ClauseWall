@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import type { UserWatchlistEntry } from "@/types";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export async function GET() {
   try {
@@ -46,6 +47,9 @@ export async function POST(request: NextRequest) {
     if (!user) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
+
+    const rl = await rateLimit(request, "DB_WRITE", user.id);
+    if (!rl.success) return rateLimitResponse(rl);
 
     const body = await request.json();
     const {
@@ -103,6 +107,9 @@ export async function DELETE(request: NextRequest) {
     if (!user) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
+
+    const rl = await rateLimit(request, "DB_WRITE", user.id);
+    if (!rl.success) return rateLimitResponse(rl);
 
     const { searchParams } = new URL(request.url);
     const companyId = searchParams.get("company_id");

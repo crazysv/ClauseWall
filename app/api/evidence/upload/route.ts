@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { uploadEvidenceFile } from "@/lib/evidence/storage";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,6 +12,9 @@ export async function POST(request: NextRequest) {
     } = await supabase.auth.getUser();
     if (!user)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+    const rl = await rateLimit(request, "DB_WRITE", user.id);
+    if (!rl.success) return rateLimitResponse(rl);
 
     const formData = await request.formData();
     const file = formData.get("file") as File | null;

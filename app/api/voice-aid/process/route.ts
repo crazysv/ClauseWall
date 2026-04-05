@@ -6,11 +6,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { processVoiceInput } from "@/lib/voice-aid";
 import type { SupportedLanguage } from "@/types";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export const maxDuration = 60;
 
 export async function POST(request: NextRequest) {
   try {
+    const rl = await rateLimit(request, "TTS");
+    if (!rl.success) return rateLimitResponse(rl);
+
     const contentType = request.headers.get("content-type") || "";
 
     let language: SupportedLanguage = "hi";

@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getCampaigns, createCampaign } from "@/lib/watchdog/campaign-manager";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export async function GET(request: NextRequest) {
   try {
@@ -35,6 +36,9 @@ export async function POST(request: NextRequest) {
     if (!user) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
+
+    const rl = await rateLimit(request, "DB_WRITE", user.id);
+    if (!rl.success) return rateLimitResponse(rl);
 
     const body = await request.json();
     const {

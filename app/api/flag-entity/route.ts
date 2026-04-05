@@ -9,6 +9,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { sanitizeEntityName, sanitizeStringArray } from "@/lib/sanitize";
 import { safeErrorResponse } from "@/lib/api/error-response";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export async function POST(req: NextRequest) {
   try {
@@ -23,6 +24,9 @@ export async function POST(req: NextRequest) {
         { status: 401 },
       );
     }
+
+    const rl = await rateLimit(req, "DB_WRITE", user.id);
+    if (!rl.success) return rateLimitResponse(rl);
 
     const body = await req.json();
     const {

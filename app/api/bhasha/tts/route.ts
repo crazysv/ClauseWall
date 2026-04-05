@@ -3,9 +3,13 @@ import { generateAudio } from "@/lib/bhasha/tts-engine";
 import { getCachedAudio, cacheAudio } from "@/lib/bhasha/audio-cache";
 import type { SupportedLanguage } from "@/types/bhasha";
 import { LANGUAGE_CONFIGS } from "@/lib/bhasha/constants";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export async function POST(request: NextRequest) {
   try {
+    const rl = await rateLimit(request, "TTS");
+    if (!rl.success) return rateLimitResponse(rl);
+
     const { text, language, voice } = await request.json();
 
     if (!text || !language) {

@@ -6,9 +6,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { synthesizeSpeech, audioBufferToBase64 } from "@/lib/voice-aid/tts";
 import type { SupportedLanguage } from "@/types";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export async function POST(request: NextRequest) {
   try {
+    const rl = await rateLimit(request, "TTS");
+    if (!rl.success) return rateLimitResponse(rl);
+
     const body = await request.json();
     const { text, language = "hi", gender = "female" } = body;
 

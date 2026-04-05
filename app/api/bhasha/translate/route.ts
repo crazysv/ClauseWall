@@ -2,9 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { translateText } from "@/lib/bhasha/translator";
 import type { SupportedLanguage } from "@/types/bhasha";
 import { LANGUAGE_CONFIGS } from "@/lib/bhasha/constants";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export async function POST(request: NextRequest) {
   try {
+    const rl = await rateLimit(request, "TTS");
+    if (!rl.success) return rateLimitResponse(rl);
+
     const { text, source_language, target_language } = await request.json();
 
     if (!text || !source_language || !target_language) {

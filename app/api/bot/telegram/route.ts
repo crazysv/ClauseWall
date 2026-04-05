@@ -18,6 +18,7 @@ import {
 import { parsePDF } from "@/lib/core/pdf-parser";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { QuickAnalysisResult } from "@/lib/bot/quick-analyzer";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export const maxDuration = 60;
 
@@ -88,6 +89,10 @@ export async function POST(request: NextRequest) {
 
   const message = update.message;
   const callbackQuery = update.callback_query;
+
+  const chatIdStr = message?.chat.id ? String(message.chat.id) : (callbackQuery?.message?.chat.id ? String(callbackQuery.message.chat.id) : undefined);
+  const rl = await rateLimit(request, "TELEGRAM", chatIdStr);
+  if (!rl.success) return rateLimitResponse(rl);
 
   // Handle callback queries (inline keyboard)
   if (callbackQuery?.data?.startsWith("bhasha_")) {
