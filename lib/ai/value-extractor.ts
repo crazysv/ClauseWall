@@ -6,6 +6,7 @@
 
 import { callGroq } from "./groq-client";
 import type { ExtractedValues } from "@/types";
+import { safeParseJson, safeString, safeBoolean, safeStringOrNull } from "./output-guards";
 import type { SupportedLanguage } from "@/types/bhasha";
 import { convertNumerals, preprocessDocumentNumerals } from "@/lib/bhasha/numeral-converter";
 import { getMultilingualValueExtractionPrompt } from "@/lib/bhasha/multilingual-prompts";
@@ -72,20 +73,23 @@ Clause text:
       }
     );
 
-    const parsed = JSON.parse(response);
+    const parsed = safeParseJson(response);
+    if (!parsed) {
+      throw new Error("Failed to parse value extraction response");
+    }
 
     return {
-      clause_type: parsed.clause_type || clauseType,
-      primary_value: parsed.primary_value != null ? Number(parsed.primary_value) : null,
-      primary_unit: parsed.primary_unit || null,
-      secondary_value: parsed.secondary_value != null ? Number(parsed.secondary_value) : null,
-      secondary_unit: parsed.secondary_unit || null,
-      property_type: parsed.property_type || null,
-      is_one_sided: Boolean(parsed.is_one_sided),
-      favors_party: parsed.favors_party || null,
-      has_forfeiture: Boolean(parsed.has_forfeiture),
-      has_penalty: Boolean(parsed.has_penalty),
-      raw_amount_text: parsed.raw_amount_text || null,
+      clause_type: safeString(parsed.clause_type, clauseType, 100),
+      primary_value: parsed.primary_value != null ? Number(parsed.primary_value) || null : null,
+      primary_unit: safeStringOrNull(parsed.primary_unit, 50),
+      secondary_value: parsed.secondary_value != null ? Number(parsed.secondary_value) || null : null,
+      secondary_unit: safeStringOrNull(parsed.secondary_unit, 50),
+      property_type: (parsed.property_type === "residential" || parsed.property_type === "commercial" || parsed.property_type === "all") ? parsed.property_type : null,
+      is_one_sided: safeBoolean(parsed.is_one_sided, false),
+      favors_party: safeStringOrNull(parsed.favors_party, 50),
+      has_forfeiture: safeBoolean(parsed.has_forfeiture, false),
+      has_penalty: safeBoolean(parsed.has_penalty, false),
+      raw_amount_text: safeStringOrNull(parsed.raw_amount_text, 200),
     };
   } catch (error) {
     console.error("[ClauseWall] Value extraction failed:", error);

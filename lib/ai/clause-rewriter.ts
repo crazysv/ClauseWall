@@ -6,6 +6,7 @@
 
 import { callGroq } from "@/lib/ai/groq-client";
 import type { RewriteResult, RewriteChange } from "@/types";
+import { safeParseJson, safeString, safeEnum, safeArray, safeStringOrNull } from "./output-guards";
 
 // ============================================
 // SYSTEM PROMPT
@@ -154,27 +155,52 @@ export async function rewriteClause(
     }
   );
 
-  const parsed = JSON.parse(response);
+  let parsed: Record<string, unknown>;
+  try {
+    const raw = safeParseJson(response);
+    if (!raw) {
+      throw new Error("Failed to parse rewrite response");
+    }
+    parsed = raw;
+  } catch (parseError) {
+    console.error("[ClauseWall] Clause rewrite JSON parse failed:", parseError);
+    return {
+      rewritten_clause: "Unable to generate rewrite. Please try again.",
+      changes: [],
+      total_changes: 0,
+      legal_compliance_note: "The rewrite could not be completed due to a processing error.",
+      tone: "formal",
+    };
+  }
 
-  // Validate changes array
-  const validatedChanges: RewriteChange[] = Array.isArray(parsed.changes)
-    ? parsed.changes.map((c: any) => ({
-        label: c.label || "Clause updated",
-        original: c.original || "",
-        rewritten: c.rewritten || "",
-        legal_basis: c.legal_basis || null,
-      }))
-    : [];
+  // Validate changes array with per-item guards
+  const validatedChanges: RewriteChange[] = safeArray(parsed.changes)
+    .map((c: unknown) => {
+      const item = c as Record<string, unknown> | null;
+      if (!item) return null;
+      return {
+        label: safeString(item.label, "Clause updated", 200),
+        original: safeString(item.original, ""),
+        rewritten: safeString(item.rewritten, ""),
+        legal_basis: safeStringOrNull(item.legal_basis, 200),
+      };
+    })
+    .filter((c): c is RewriteChange => c !== null);
+
+  const VALID_TONES = ["formal", "friendly", "assertive"] as const;
 
   const result: RewriteResult = {
-    rewritten_clause:
-      parsed.rewritten_clause || "Unable to generate rewrite. Please try again.",
+    rewritten_clause: safeString(
+      parsed.rewritten_clause,
+      "Unable to generate rewrite. Please try again."
+    ),
     changes: validatedChanges,
     total_changes: validatedChanges.length,
-    legal_compliance_note:
-      parsed.legal_compliance_note ||
-      "The rewritten clause aims to comply with applicable Indian law.",
-    tone: parsed.tone === "friendly" || parsed.tone === "assertive" ? parsed.tone : "formal",
+    legal_compliance_note: safeString(
+      parsed.legal_compliance_note,
+      "The rewritten clause aims to comply with applicable Indian law."
+    ),
+    tone: safeEnum(parsed.tone, VALID_TONES, "formal"),
   };
 
   return result;

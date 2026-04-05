@@ -5,6 +5,7 @@
 
 import { callGroq } from "@/lib/ai/groq-client";
 import type { AdversarialResult } from "@/types";
+import { safeParseJson, safeString, safeNumber, safeArray, safeStringArray, safeArrayMap, safeEnum } from "./output-guards";
 
 const ADVERSARIAL_SYSTEM_PROMPT = `You are a legal deception analyst specializing in Indian contracts. Your job is to analyze a contract clause from TWO perspectives:
 
@@ -109,50 +110,57 @@ Respond with JSON only.`,
       }
     );
 
-    const parsed = JSON.parse(response);
+    const parsed = safeParseJson(response);
+    if (!parsed) {
+      console.error("[ClauseWall] [Adversarial] Failed to parse response");
+      return createFallbackAdversarialResult();
+    }
 
-    // Validate and sanitize
+    const DECEPTION_LEVELS = ["none", "low", "medium", "high", "extreme"] as const;
+    const SEVERITIES = ["low", "medium", "high"] as const;
+
+    // Validate and sanitize with guards
     return {
-      deception_score: Math.min(10, Math.max(0, Number(parsed.deception_score) || 0)),
-      deception_level: validateDeceptionLevel(parsed.deception_level),
-      disguise_techniques: Array.isArray(parsed.disguise_techniques)
-        ? parsed.disguise_techniques.map((t: any) => ({
-            technique: String(t.technique || "unknown"),
-            label: String(t.label || "Unknown Technique"),
-            phrase: String(t.phrase || ""),
-            explanation: String(t.explanation || ""),
-            severity: validateSeverity(t.severity),
-          }))
-        : [],
-      decoded_meaning: String(parsed.decoded_meaning || "Could not decode."),
-      hidden_powers: Array.isArray(parsed.hidden_powers)
-        ? parsed.hidden_powers.map(String)
-        : [],
-      cross_references: Array.isArray(parsed.cross_references)
-        ? parsed.cross_references.map(String)
-        : [],
-      vague_terms: Array.isArray(parsed.vague_terms)
-        ? parsed.vague_terms.map(String)
-        : [],
-      one_sided_triggers: Array.isArray(parsed.one_sided_triggers)
-        ? parsed.one_sided_triggers.map(String)
-        : [],
-      surface_reading: String(parsed.surface_reading || ""),
-      true_reading: String(parsed.true_reading || ""),
-      risk_amplification: Math.min(5, Math.max(1, Number(parsed.risk_amplification) || 1)),
+      deception_score: safeNumber(parsed.deception_score, 0, 0, 10),
+      deception_level: safeEnum(parsed.deception_level, DECEPTION_LEVELS, "low"),
+      disguise_techniques: safeArrayMap(parsed.disguise_techniques, (t) => {
+        const item = t as Record<string, unknown> | null;
+        if (!item) return null;
+        return {
+          technique: safeString(item.technique, "unknown", 100),
+          label: safeString(item.label, "Unknown Technique", 200),
+          phrase: safeString(item.phrase, ""),
+          explanation: safeString(item.explanation, ""),
+          severity: safeEnum(item.severity, SEVERITIES, "medium"),
+        };
+      }),
+      decoded_meaning: safeString(parsed.decoded_meaning, "Could not decode."),
+      hidden_powers: safeStringArray(parsed.hidden_powers),
+      cross_references: safeStringArray(parsed.cross_references),
+      vague_terms: safeStringArray(parsed.vague_terms),
+      one_sided_triggers: safeStringArray(parsed.one_sided_triggers),
+      surface_reading: safeString(parsed.surface_reading, ""),
+      true_reading: safeString(parsed.true_reading, ""),
+      risk_amplification: safeNumber(parsed.risk_amplification, 1, 1, 5),
     };
   } catch (error) {
     console.error("[ClauseWall] [Adversarial] Analysis failed:", error);
-    throw error;
+    return createFallbackAdversarialResult();
   }
 }
 
-function validateDeceptionLevel(level: string): AdversarialResult["deception_level"] {
-  const valid = ["none", "low", "medium", "high", "extreme"];
-  return valid.includes(level) ? (level as AdversarialResult["deception_level"]) : "low";
-}
-
-function validateSeverity(severity: string): "low" | "medium" | "high" {
-  const valid = ["low", "medium", "high"];
-  return valid.includes(severity) ? (severity as "low" | "medium" | "high") : "medium";
+function createFallbackAdversarialResult(): AdversarialResult {
+  return {
+    deception_score: 0,
+    deception_level: "low",
+    disguise_techniques: [],
+    decoded_meaning: "Adversarial analysis could not be completed. Manual review recommended.",
+    hidden_powers: [],
+    cross_references: [],
+    vague_terms: [],
+    one_sided_triggers: [],
+    surface_reading: "",
+    true_reading: "",
+    risk_amplification: 1,
+  };
 }

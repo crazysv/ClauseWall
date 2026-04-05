@@ -8,6 +8,7 @@ import { callGroq } from "@/lib/ai/groq-client";
 import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 import { sanitizeLLMInput } from "@/lib/sanitize";
 import { ExplainSchema } from "@/lib/validation/schemas";
+import { safeParseJson, safeString } from "@/lib/ai/output-guards";
 import { validateBody } from "@/lib/validation/middleware";
 
 export const maxDuration = 30;
@@ -71,19 +72,14 @@ Generate a simple English (ELI5) and Hindi explanation.`;
       { temperature: 0.3, maxTokens: 1024 },
     );
 
-    let aiResponse;
-    try {
-      aiResponse = JSON.parse(response);
-    } catch {
-      const jsonMatch = response.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) throw new Error("Invalid response format");
-      aiResponse = JSON.parse(jsonMatch[0]);
+    const aiResponse = safeParseJson(response);
+    if (!aiResponse) {
+      throw new Error("Invalid response format");
     }
 
     return NextResponse.json({
-      simple_english:
-        aiResponse.simple_english || "Could not generate simple explanation.",
-      hindi: aiResponse.hindi || "सरल व्याख्या उपलब्ध नहीं है।",
+      simple_english: safeString(aiResponse.simple_english, "Could not generate simple explanation."),
+      hindi: safeString(aiResponse.hindi, "सरल व्याख्या उपलब्ध नहीं है।"),
     });
   } catch (error) {
     console.error("[ClauseWall] Explain API error:", error);

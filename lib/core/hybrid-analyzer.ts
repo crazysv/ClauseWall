@@ -13,6 +13,7 @@
 import { extractValues } from "@/lib/ai/value-extractor";
 import { analyzeClause } from "@/lib/ai/clause-analyzer";
 import { matchAgainstRules } from "@/lib/core/rule-engine";
+import { safeParseJson, safeString } from "@/lib/ai/output-guards";
 import { callGroq } from "@/lib/ai/groq-client";
 import { runNeurosymbolicAnalysis } from "@/lib/reasoning";
 import type { HybridAnalysisResult } from "@/types";
@@ -54,8 +55,8 @@ Severity: ${severity}`,
       }
     );
 
-    const parsed = JSON.parse(response);
-    return parsed.explanation || violationDescription;
+    const parsed = safeParseJson(response);
+    return safeString(parsed?.explanation, violationDescription);
   } catch {
     // If explanation generation fails, use the template
     return violationDescription;

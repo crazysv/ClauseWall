@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { callGroq } from "@/lib/ai/groq-client";
 import { CLAUSE_AUTOPSY_PROMPT } from "@/lib/ai/system-prompt";
+import { safeParseJson, safeString, safeEnum, safeArrayMap, safeStringOrNull } from "@/lib/ai/output-guards";
 
 export async function POST(request: NextRequest) {
   try {
@@ -34,23 +35,10 @@ Clause text:
       },
     ]);
 
-    // Parse AI response
-    let parsed;
-    try {
-      // Clean response — remove markdown code fences if present
-      let cleaned = response.trim();
-      if (cleaned.startsWith("```json")) {
-        cleaned = cleaned.slice(7);
-      }
-      if (cleaned.startsWith("```")) {
-        cleaned = cleaned.slice(3);
-      }
-      if (cleaned.endsWith("```")) {
-        cleaned = cleaned.slice(0, -3);
-      }
-      parsed = JSON.parse(cleaned.trim());
-    } catch {
-      console.error("[ClauseWall] Autopsy JSON parse failed. Raw:", response);
+    // Parse AI response with safe guard
+    const parsed = safeParseJson(response);
+    if (!parsed) {
+      console.error("[ClauseWall] Autopsy JSON parse failed. Raw:", response.substring(0, 200));
       return NextResponse.json(
         { error: "Failed to parse AI response" },
         { status: 500 },
@@ -58,34 +46,28 @@ Clause text:
     }
 
     // Validate and sanitize
-    const validSeverities = ["safe", "warning", "dangerous", "illegal"];
+    const VALID_SEVERITIES = ["safe", "warning", "dangerous", "illegal"] as const;
 
-    const violations = Array.isArray(parsed.violations)
-      ? parsed.violations
-          .filter(
-            (v: Record<string, unknown>) =>
-              v.phrase &&
-              typeof v.phrase === "string" &&
-              v.phrase.trim().length > 0,
-          )
-          .map((v: Record<string, unknown>) => ({
-            phrase: String(v.phrase),
-            severity: validSeverities.includes(v.severity as string)
-              ? v.severity
-              : "warning",
-            issue: String(v.issue || "Potential issue"),
-            explanation: String(v.explanation || "Review recommended."),
-            statute: v.statute ? String(v.statute) : null,
-            penalty: v.penalty ? String(v.penalty) : null,
-          }))
-      : [];
+    const violations = safeArrayMap(parsed.violations, (v) => {
+      const item = v as Record<string, unknown> | null;
+      if (!item) return null;
+      const phrase = safeString(item.phrase, "").trim();
+      if (phrase.length === 0) return null;
+      return {
+        phrase,
+        severity: safeEnum(item.severity, VALID_SEVERITIES, "warning"),
+        issue: safeString(item.issue, "Potential issue"),
+        explanation: safeString(item.explanation, "Review recommended."),
+        statute: safeStringOrNull(item.statute),
+        penalty: safeStringOrNull(item.penalty),
+      };
+    });
 
     const result = {
       violations,
       total_violations: violations.length,
-      most_severe: validSeverities.includes(parsed.most_severe)
-        ? parsed.most_severe
-        : violations.length > 0
+      most_severe: safeEnum(parsed.most_severe, VALID_SEVERITIES,
+        violations.length > 0
           ? violations.reduce((worst: string, v: { severity: string }) => {
               const order = ["safe", "warning", "dangerous", "illegal"];
               return order.indexOf(v.severity) > order.indexOf(worst)
@@ -93,8 +75,9 @@ Clause text:
                 : worst;
             }, "warning")
           : "safe",
-      dissection_summary: String(
-        parsed.dissection_summary || "Analysis complete.",
+      ),
+      dissection_summary: safeString(
+        parsed.dissection_summary, "Analysis complete.",
       ),
     };
 

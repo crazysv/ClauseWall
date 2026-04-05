@@ -5,7 +5,14 @@
 
 import { callGroq } from '@/lib/ai/groq-client';
 import { COMPLAINT_GENERATION_PROMPT, AFFIDAVIT_TEMPLATE, SYNOPSIS_TEMPLATE } from './prompts';
-import type { ComplaintDocument, ComplaintFiling, AuthorityType } from '@/types';
+import type { ComplaintDocument, ComplaintFiling, AuthorityType, ComplaintDocumentType } from '@/types';
+import { safeParseJson, safeString, safeInt, safeStringArray, safeEnum } from '@/lib/ai/output-guards';
+
+const VALID_DOC_TYPES: readonly ComplaintDocumentType[] = [
+  'consumer_complaint_form', 'rera_complaint_form', 'rbi_ombudsman_form',
+  'labour_complaint', 'insurance_ombudsman_form', 'legal_notice',
+  'affidavit', 'vakalatnama', 'memorandum_of_parties', 'synopsis', 'supporting_analysis',
+] as const;
 
 interface GenerateInput {
   authorityType: AuthorityType;
@@ -75,13 +82,13 @@ ${input.additionalContext ? `ADDITIONAL CONTEXT:\n${input.additionalContext}` : 
     { maxTokens: 6000 }
   );
 
-  let parsed;
+  let parsed: Record<string, unknown>;
   try {
-    let cleaned = response.trim();
-    if (cleaned.startsWith('```json')) cleaned = cleaned.slice(7);
-    if (cleaned.startsWith('```')) cleaned = cleaned.slice(3);
-    if (cleaned.endsWith('```')) cleaned = cleaned.slice(0, -3);
-    parsed = JSON.parse(cleaned.trim());
+    const raw = safeParseJson(response);
+    if (!raw) {
+      throw new Error("JSON parse failed");
+    }
+    parsed = raw;
   } catch {
     console.error('[ClauseWall] Complaint generation JSON parse failed');
     parsed = {
@@ -97,13 +104,20 @@ ${input.additionalContext ? `ADDITIONAL CONTEXT:\n${input.additionalContext}` : 
   const today = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
 
   // Generate complaint document
+  const complaintFields: Record<string, string> = {};
+  if (parsed.fields != null && typeof parsed.fields === 'object') {
+    for (const [k, v] of Object.entries(parsed.fields as Record<string, unknown>)) {
+      complaintFields[k] = String(v ?? '');
+    }
+  }
+
   const complaint: ComplaintDocument = {
     id: `complaint-${Date.now()}`,
-    type: parsed.document_type || 'consumer_complaint_form',
+    type: safeEnum(parsed.document_type, VALID_DOC_TYPES, 'consumer_complaint_form'),
     title: `Complaint — ${input.complainantName} v. ${input.respondentName}`,
-    content: String(parsed.complaint_text || ''),
+    content: safeString(parsed.complaint_text, ''),
     pdf_url: null,
-    fields: parsed.fields || {},
+    fields: complaintFields,
     format_notes: 'Print on A4 paper, file 3 copies (1 for Forum, 1 for each Opposite Party, 1 for self)',
   };
 
@@ -141,7 +155,7 @@ ${input.additionalContext ? `ADDITIONAL CONTEXT:\n${input.additionalContext}` : 
       .replace('{additional_docs}', '')
       .replace('{total_pages}', '~21')
       .replace('{complaint_summary}', `unfair trade practices and deficiency in service by ${input.respondentName}`)
-      .replace('{relief_summary}', (parsed.relief_items || []).join('\n')),
+      .replace('{relief_summary}', safeStringArray(parsed.relief_items).join('\n')),
     pdf_url: null,
     fields: {},
     format_notes: 'Place this as the first page of the complaint bundle',
@@ -151,8 +165,8 @@ ${input.additionalContext ? `ADDITIONAL CONTEXT:\n${input.additionalContext}` : 
     complaint,
     affidavit,
     synopsis,
-    reliefItems: Array.isArray(parsed.relief_items) ? parsed.relief_items.map(String) : [],
-    factsCount: Number(parsed.facts_count) || 5,
-    citations: Array.isArray(parsed.citations) ? parsed.citations.map(String) : [],
+    reliefItems: safeStringArray(parsed.relief_items),
+    factsCount: safeInt(parsed.facts_count, 5, 0, 100),
+    citations: safeStringArray(parsed.citations),
   };
 }

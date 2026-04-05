@@ -8,6 +8,9 @@ import { CLAUSE_ANALYSIS_SYSTEM_PROMPT } from "./system-prompt";
 import type { AnalysisResult, RiskLevel } from "@/types";
 import type { SupportedLanguage } from "@/types/bhasha";
 import { getMultilingualAnalysisPrompt } from "@/lib/bhasha/multilingual-prompts";
+import { safeParseJson, safeString, safeInt, safeEnum, safeStringArray, safeStringOrNull } from "./output-guards";
+
+const VALID_RISK_LEVELS = ["safe", "warning", "dangerous", "illegal"] as const;
 
 /**
  * Analyze a single clause for predatory/illegal content
@@ -47,33 +50,20 @@ Clause text:
 },
     ]);
 
-    const parsed = JSON.parse(response);
+    const parsed = safeParseJson(response);
+    if (!parsed) {
+      throw new Error("Failed to parse clause analysis response");
+    }
 
-    // Validate risk level
-    const validRiskLevels: RiskLevel[] = [
-      "safe",
-      "warning",
-      "dangerous",
-      "illegal",
-    ];
-
-    // Build validated result
+    // Build validated result with guards
     const result: AnalysisResult = {
-      risk_level: validRiskLevels.includes(parsed.risk_level)
-        ? parsed.risk_level
-        : "warning",
-      risk_score: Math.min(
-        100,
-        Math.max(0, parseInt(parsed.risk_score) || 50)
-      ),
-      explanation:
-        parsed.explanation || "Unable to analyze this clause fully.",
-      legal_issue: parsed.legal_issue || null,
-      applicable_law: parsed.applicable_law || null,
-      fair_alternative: parsed.fair_alternative || null,
-      red_flags: Array.isArray(parsed.red_flags)
-        ? parsed.red_flags
-        : [],
+      risk_level: safeEnum(parsed.risk_level, VALID_RISK_LEVELS, "warning"),
+      risk_score: safeInt(parsed.risk_score, 50, 0, 100),
+      explanation: safeString(parsed.explanation, "Unable to analyze this clause fully."),
+      legal_issue: safeStringOrNull(parsed.legal_issue),
+      applicable_law: safeStringOrNull(parsed.applicable_law),
+      fair_alternative: safeStringOrNull(parsed.fair_alternative),
+      red_flags: safeStringArray(parsed.red_flags),
     };
 
     // Ensure risk_level matches risk_score for consistency

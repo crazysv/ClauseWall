@@ -6,6 +6,7 @@
 
 import { callGroq } from "./groq-client";
 import { CLAUSE_EXTRACTION_PROMPT } from "./system-prompt";
+import { safeParseJson, safeString, safeArray, safeBoolean, safeStringArray, safeStringOrNull, safeInt } from "./output-guards";
 import type { ExtractedClause, DocumentInfo, ExtractionResult } from "@/types";
 import type { SupportedLanguage } from "@/types/bhasha";
 import { getMultilingualExtractionPrompt } from "@/lib/bhasha/multilingual-prompts";
@@ -207,27 +208,51 @@ export async function extractClauses(
       },
     ]);
 
-    const parsed = JSON.parse(response) as ExtractionResult;
-
-    // ---- Validate response structure ----
-    if (!parsed.clauses || !Array.isArray(parsed.clauses)) {
-      throw new Error("Invalid extraction response: missing clauses array");
+    const raw = safeParseJson(response);
+    if (!raw) {
+      throw new Error("Invalid extraction response: could not parse JSON");
     }
 
-    if (parsed.clauses.length === 0) {
+    // ---- Build typed result from guarded fields ----
+    const rawDocInfo = (raw.document_info != null && typeof raw.document_info === "object")
+      ? raw.document_info as Record<string, unknown>
+      : {} as Record<string, unknown>;
+
+    const parsed: ExtractionResult = {
+      clauses: [],
+      document_info: {
+        detected_type: safeString(rawDocInfo.detected_type, "other", 50),
+        detected_jurisdiction: safeStringOrNull(rawDocInfo.detected_jurisdiction, 100),
+        entity_name: safeStringOrNull(rawDocInfo.entity_name, 200),
+        parties: safeStringArray(rawDocInfo.parties, 10),
+        agreement_date: safeStringOrNull(rawDocInfo.agreement_date, 50),
+        is_stamp_paper: safeBoolean(rawDocInfo.is_stamp_paper, false),
+        stamp_value: rawDocInfo.stamp_value != null ? safeString(rawDocInfo.stamp_value, "") || null : null,
+      },
+    };
+
+    // ---- Validate response structure ----
+    const rawClauses = safeArray(raw.clauses);
+    if (rawClauses.length === 0) {
       throw new Error(
         "No clauses could be extracted from this document. Please check if the text is a valid contract."
       );
     }
 
-    // ---- Sanitize clauses ----
-    parsed.clauses = parsed.clauses
-      .filter((clause) => clause.text && clause.text.trim().length > 0)
-      .map((clause, index) => ({
-        clause_number: clause.clause_number || index + 1,
-        clause_type: clause.clause_type || "general",
-        text: clause.text.trim(),
-      }));
+    // ---- Sanitize clauses with per-item guards ----
+    parsed.clauses = rawClauses
+      .map((c: unknown, index: number) => {
+        const item = c as Record<string, unknown> | null;
+        if (!item) return null;
+        const text = safeString(item.text, "").trim();
+        if (text.length === 0) return null;
+        return {
+          clause_number: safeInt(item.clause_number, index + 1, 0),
+          clause_type: safeString(item.clause_type, "general", 100),
+          text,
+        };
+      })
+      .filter((c): c is ExtractedClause => c !== null);
 
     // ---- Validate and sanitize entity name ----
     let entityName = sanitizeEntityName(parsed.document_info?.entity_name);

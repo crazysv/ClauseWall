@@ -6,6 +6,7 @@
 import { callGroq } from "./groq-client";
 import { DEMAND_LETTER_PROMPT } from "./system-prompt";
 import type { Clause, DemandLetter } from "@/types";
+import { safeParseJson, safeString, safeStringArray } from "./output-guards";
 import { translateText } from "@/lib/bhasha/translator";
 import type { SupportedLanguage } from "@/types/bhasha";
 
@@ -70,16 +71,17 @@ Respond with a JSON object containing the legal notice.`,
       { maxTokens: 6000 }
     );
 
-    const parsed = JSON.parse(response) as DemandLetter;
+    const parsed = safeParseJson(response);
+    if (!parsed) {
+      throw new Error("Failed to parse demand letter response");
+    }
 
-    // Validate response
+    // Validate response with guards
     const result: DemandLetter = {
-      subject: parsed.subject || "Legal Notice Regarding Contract Violations",
-      body: parsed.body || "Error generating letter content.",
-      agencies: Array.isArray(parsed.agencies) ? parsed.agencies : [],
-      legal_references: Array.isArray(parsed.legal_references)
-        ? parsed.legal_references
-        : [],
+      subject: safeString(parsed.subject, "Legal Notice Regarding Contract Violations"),
+      body: safeString(parsed.body, "Error generating letter content."),
+      agencies: safeStringArray(parsed.agencies),
+      legal_references: safeStringArray(parsed.legal_references),
     };
 
     // If outputLanguage is non-English, translate body (keep legal refs in English)

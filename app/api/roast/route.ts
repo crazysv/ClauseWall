@@ -5,6 +5,7 @@ import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 import { sanitizeLLMInput } from "@/lib/sanitize";
 import { RoastSchema } from "@/lib/validation/schemas";
 import { validateBody } from "@/lib/validation/middleware";
+import { safeParseJson } from "@/lib/ai/output-guards";
 
 export async function POST(request: NextRequest) {
   try {
@@ -44,16 +45,10 @@ ${clauseList}`,
       },
     ]);
 
-    // Parse response
-    let aiResponse;
-    try {
-      let cleaned = response.trim();
-      if (cleaned.startsWith("```json")) cleaned = cleaned.slice(7);
-      if (cleaned.startsWith("```")) cleaned = cleaned.slice(3);
-      if (cleaned.endsWith("```")) cleaned = cleaned.slice(0, -3);
-      aiResponse = JSON.parse(cleaned.trim());
-    } catch {
-      console.error("[ClauseWall] Roast JSON parse failed. Raw:", response);
+    // Parse response with safe guard
+    const aiResponse = safeParseJson(response);
+    if (!aiResponse) {
+      console.error("[ClauseWall] Roast JSON parse failed. Raw:", response.substring(0, 200));
       return NextResponse.json(
         { error: "Failed to parse roast response" },
         { status: 500 },

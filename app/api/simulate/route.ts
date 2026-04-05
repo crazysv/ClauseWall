@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { sanitizeLLMInput } from "@/lib/sanitize";
 import { SimulateSchema } from "@/lib/validation/schemas";
 import { validateBody } from "@/lib/validation/middleware";
+import { safeParseJson } from "@/lib/ai/output-guards";
 
 export async function POST(request: NextRequest) {
   try {
@@ -75,15 +76,10 @@ ${clauseContext}`,
       { maxTokens: 5000 },
     );
 
-    let aiResponse;
-    try {
-      let cleaned = response.trim();
-      if (cleaned.startsWith("```json")) cleaned = cleaned.slice(7);
-      if (cleaned.startsWith("```")) cleaned = cleaned.slice(3);
-      if (cleaned.endsWith("```")) cleaned = cleaned.slice(0, -3);
-      aiResponse = JSON.parse(cleaned.trim());
-    } catch {
-      console.error("[ClauseWall] Simulator JSON parse failed:", response);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const aiResponse = safeParseJson(response) as any;
+    if (!aiResponse) {
+      console.error("[ClauseWall] Simulator JSON parse failed:", response.substring(0, 200));
       return NextResponse.json(
         { error: "Failed to parse simulation" },
         { status: 500 },

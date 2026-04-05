@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { callGroq } from "@/lib/ai/groq-client";
 import { ESCAPE_PLAN_PROMPT } from "@/lib/ai/system-prompt";
 import { createClient } from "@/lib/supabase/server";
+import { safeParseJson } from "@/lib/ai/output-guards";
 
 export async function POST(request: NextRequest) {
   try {
@@ -130,18 +131,13 @@ ${clauseContext}`,
       { maxTokens: 6000 },
     );
 
-    // Parse response
-    let parsed;
-    try {
-      let cleaned = response.trim();
-      if (cleaned.startsWith("```json")) cleaned = cleaned.slice(7);
-      if (cleaned.startsWith("```")) cleaned = cleaned.slice(3);
-      if (cleaned.endsWith("```")) cleaned = cleaned.slice(0, -3);
-      parsed = JSON.parse(cleaned.trim());
-    } catch {
+    // Parse response with safe guard
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const parsed = safeParseJson(response) as any;
+    if (!parsed) {
       console.error(
         "[ClauseWall] Escape plan JSON parse failed. Raw:",
-        response,
+        response.substring(0, 200),
       );
       return NextResponse.json(
         { error: "Failed to parse escape plan" },

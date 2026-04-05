@@ -6,6 +6,7 @@
 
 import { callGroq } from "@/lib/ai/groq-client";
 import type { PowerBalance, PowerCategory } from "@/types";
+import { safeParseJson, safeString, safeInt, safeArray, safeStringOrNull } from "./output-guards";
 
 // ============================================
 // SYSTEM PROMPT
@@ -191,35 +192,47 @@ Determine the power distribution across all 5 categories and provide the overall
     }
   );
 
-  const parsed = JSON.parse(response);
+  let parsed: Record<string, unknown>;
+  try {
+    const raw = safeParseJson(response);
+    if (!raw) {
+      throw new Error("Failed to parse power balance response");
+    }
+    parsed = raw;
+  } catch (parseError) {
+    console.error("[ClauseWall] Power balance JSON parse failed:", parseError);
+    // Return balanced fallback
+    return createFallbackPowerBalance(entityName, aRole, bRole);
+  }
 
   // ---- VALIDATE & NORMALIZE ----
 
   // Ensure overall adds to 100
-  const overallA = Math.max(0, Math.min(100, Math.round(parsed.overall_party_a || 50)));
+  const overallA = safeInt(parsed.overall_party_a, 50, 0, 100);
   const overallB = 100 - overallA;
 
   // Validate categories
   const validKeys = ["termination", "financial", "penalties", "dispute", "control"];
   const validatedCategories: PowerCategory[] = [];
+  const rawCategories = safeArray(parsed.categories);
 
   for (const key of validKeys) {
-    const cat = (parsed.categories || []).find(
-      (c: any) => c.key === key
-    );
+    const cat = rawCategories.find(
+      (c: unknown) => (c as Record<string, unknown>)?.key === key
+    ) as Record<string, unknown> | undefined;
 
     if (cat) {
       // Ensure percentages add to 100
-      let pA = Math.max(0, Math.min(100, Math.round(cat.party_a_percent || 50)));
+      let pA = safeInt(cat.party_a_percent, 50, 0, 100);
       let pB = 100 - pA;
 
       validatedCategories.push({
-        name: cat.name || key,
+        name: safeString(cat.name, key),
         key: key,
         party_a_percent: pA,
         party_b_percent: pB,
-        description: cat.description || "No specific analysis available.",
-        key_clause: cat.key_clause || null,
+        description: safeString(cat.description, "No specific analysis available."),
+        key_clause: safeStringOrNull(cat.key_clause),
       });
     } else {
       // Category missing from AI response — default to 50/50
@@ -252,7 +265,7 @@ Determine the power distribution across all 5 categories and provide the overall
     "FAIR",
   ];
 
-  let verdict = parsed.verdict || "BALANCED";
+  let verdict = safeString(parsed.verdict, "BALANCED");
   if (!validVerdicts.includes(verdict)) {
     // Determine from score
     if (overallA >= 85) verdict = "PREDATORY";
@@ -270,19 +283,59 @@ Determine the power distribution across all 5 categories and provide the overall
   );
 
   const result: PowerBalance = {
-    party_a_name: parsed.party_a_name || entityName || aRole,
-    party_b_name: parsed.party_b_name || `You (${bRole})`,
-    party_a_role: parsed.party_a_role || aRole,
-    party_b_role: parsed.party_b_role || bRole,
+    party_a_name: safeString(parsed.party_a_name, entityName || aRole),
+    party_b_name: safeString(parsed.party_b_name, `You (${bRole})`),
+    party_a_role: safeString(parsed.party_a_role, aRole),
+    party_b_role: safeString(parsed.party_b_role, bRole),
     overall_party_a: overallA,
     overall_party_b: overallB,
     categories: validatedCategories,
     verdict,
-    verdict_description:
-      parsed.verdict_description ||
-      `This contract gives ${overallA}% of the power to the ${aRole}. A fair contract would be close to 50/50.`,
+    verdict_description: safeString(
+      parsed.verdict_description,
+      `This contract gives ${overallA}% of the power to the ${aRole}. A fair contract would be close to 50/50.`
+    ),
     fairness_score: fairnessScore,
   };
 
   return result;
+}
+
+// ============================================
+// FALLBACK CONSTRUCTOR
+// ============================================
+
+function createFallbackPowerBalance(
+  entityName: string | null,
+  aRole: string,
+  bRole: string
+): PowerBalance {
+  const defaultNames: Record<string, string> = {
+    termination: "Termination & Exit",
+    financial: "Financial Burden",
+    penalties: "Penalties & Consequences",
+    dispute: "Dispute Resolution",
+    control: "Control & Modifications",
+  };
+  const defaultCategories: PowerCategory[] = Object.entries(defaultNames).map(([key, name]) => ({
+    name,
+    key,
+    party_a_percent: 50,
+    party_b_percent: 50,
+    description: "Power balance analysis could not be completed for this category.",
+    key_clause: null,
+  }));
+
+  return {
+    party_a_name: entityName || aRole,
+    party_b_name: `You (${bRole})`,
+    party_a_role: aRole,
+    party_b_role: bRole,
+    overall_party_a: 50,
+    overall_party_b: 50,
+    categories: defaultCategories,
+    verdict: "BALANCED",
+    verdict_description: "Power balance analysis could not be fully completed. Manual review is recommended.",
+    fairness_score: 100,
+  };
 }

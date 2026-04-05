@@ -6,6 +6,9 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { callGroq } from "@/lib/ai/groq-client";
+import { safeParseJson, safeString, safeInt, safeEnum, safeArrayMap } from "@/lib/ai/output-guards";
+
+const VALID_RISK_LEVELS = ["safe", "warning", "dangerous", "illegal"] as const;
 import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 import { sanitizeLLMInput } from "@/lib/sanitize";
 import { ExtensionAnalyzeSchema } from "@/lib/validation/schemas";
@@ -148,38 +151,46 @@ Identify the top predatory/concerning clauses. Return JSON only.`;
       },
     );
 
-    // Parse response
-    const analysis = JSON.parse(response);
+    // Parse response with safe guard
+    const analysis = safeParseJson(response);
+    if (!analysis) {
+      throw new Error("Failed to parse extension analysis response");
+    }
 
     // Validate and sanitize response
-    const riskScore = Math.min(100, Math.max(0, analysis.risk_score || 0));
-    const riskLevel = validateRiskLevel(analysis.risk_level);
+    const riskScore = safeInt(analysis.risk_score, 0, 0, 100);
+    const riskLevel = safeEnum(analysis.risk_level, VALID_RISK_LEVELS, "warning");
+    const rawCounts = (analysis.clause_counts != null && typeof analysis.clause_counts === "object")
+      ? analysis.clause_counts as Record<string, unknown>
+      : {} as Record<string, unknown>;
     const clauseCounts = {
-      safe: analysis.clause_counts?.safe || 0,
-      warning: analysis.clause_counts?.warning || 0,
-      dangerous: analysis.clause_counts?.dangerous || 0,
-      illegal: analysis.clause_counts?.illegal || 0,
+      safe: safeInt(rawCounts.safe, 0, 0),
+      warning: safeInt(rawCounts.warning, 0, 0),
+      dangerous: safeInt(rawCounts.dangerous, 0, 0),
+      illegal: safeInt(rawCounts.illegal, 0, 0),
     };
-    const topIssues = (analysis.top_issues || [])
-      .slice(0, 10)
-      .map((issue: any, index: number) => ({
-        text: (issue.text || "").substring(0, 500),
-        risk_level: validateRiskLevel(issue.risk_level),
-        risk_score: Math.min(100, Math.max(0, issue.risk_score || 50)),
-        title: (issue.title || "Concerning Clause").substring(0, 60),
-        explanation: (issue.explanation || "").substring(0, 300),
-        legal_issue: (issue.legal_issue || "").substring(0, 300),
-        fair_alternative: (issue.fair_alternative || "").substring(0, 500),
+    const topIssues = safeArrayMap(analysis.top_issues, (issue, index) => {
+      const item = issue as Record<string, unknown> | null;
+      if (!item) return null;
+      return {
+        text: safeString(item.text, "", 500),
+        risk_level: safeEnum(item.risk_level, VALID_RISK_LEVELS, "warning"),
+        risk_score: safeInt(item.risk_score, 50, 0, 100),
+        title: safeString(item.title, "Concerning Clause", 60),
+        explanation: safeString(item.explanation, "", 300),
+        legal_issue: safeString(item.legal_issue, "", 300),
+        fair_alternative: safeString(item.fair_alternative, "", 500),
         clause_number: index + 1,
-      }));
+      };
+    }, 10);
 
 
     const result = {
       risk_score: riskScore,
       risk_level: riskLevel,
-      summary: analysis.summary || "Analysis complete.",
+      summary: safeString(analysis.summary, "Analysis complete."),
       total_clauses_estimated:
-        analysis.total_clauses_estimated || topIssues.length,
+        safeInt(analysis.total_clauses_estimated, topIssues.length, 0),
       clause_counts: clauseCounts,
       top_issues: topIssues,
       document_id: null, // Stateless extension scan
@@ -208,8 +219,3 @@ Identify the top predatory/concerning clauses. Return JSON only.`;
 }
 
 // ── Helpers ──────────────────────────────────
-
-function validateRiskLevel(level: string): string {
-  const valid = ["safe", "warning", "dangerous", "illegal"];
-  return valid.includes(level) ? level : "warning";
-}

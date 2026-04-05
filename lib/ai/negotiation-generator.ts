@@ -9,6 +9,7 @@ import {
   buildNegotiationUserPrompt,
 } from "@/lib/ai/negotiation-prompt";
 import type { NegotiationPlaybook, NegotiationScript } from "@/types";
+import { safeParseJson, safeString, safeArray, safeStringArray } from "@/lib/ai/output-guards";
 import { translateText } from "@/lib/bhasha/translator";
 import type { SupportedLanguage } from "@/types/bhasha";
 
@@ -93,9 +94,13 @@ export async function generateNegotiationPlaybook(
     });
 
     // Parse response
-    let parsed: any;
+    let parsed: Record<string, unknown>;
     try {
-      parsed = JSON.parse(rawResponse);
+      const raw = safeParseJson(rawResponse);
+      if (!raw) {
+        throw new Error("JSON parse failed");
+      }
+      parsed = raw;
     } catch {
       console.error("[ClauseWall] Failed to parse negotiation response");
       return {
@@ -105,8 +110,9 @@ export async function generateNegotiationPlaybook(
       };
     }
 
-    // Validate
-    if (!parsed.scripts || !Array.isArray(parsed.scripts)) {
+    // Validate scripts array
+    const rawScripts = safeArray(parsed.scripts);
+    if (rawScripts.length === 0) {
       return {
         success: false,
         playbook: null,
@@ -114,17 +120,17 @@ export async function generateNegotiationPlaybook(
       };
     }
 
-    // Build playbook
+    // Build playbook with guarded fields
     const playbook: NegotiationPlaybook = {
       document_type: documentType,
       jurisdiction,
       entity_name: entityName,
-      total_issues: parsed.scripts.length,
+      total_issues: rawScripts.length,
       priority_order: `${riskyClauses.filter((c) => c.risk_level === "illegal").length} illegal, ${riskyClauses.filter((c) => c.risk_level === "dangerous").length} dangerous, ${riskyClauses.filter((c) => c.risk_level === "warning").length} warning`,
-      scripts: parsed.scripts as NegotiationScript[],
-      general_tips: parsed.general_tips || [],
-      opening_approach: parsed.opening_approach || "",
-      closing_statement: parsed.closing_statement || "",
+      scripts: rawScripts as NegotiationScript[],
+      general_tips: safeStringArray(parsed.general_tips),
+      opening_approach: safeString(parsed.opening_approach, ""),
+      closing_statement: safeString(parsed.closing_statement, ""),
     };
 
     console.log(`[ClauseWall] Playbook generated: ${playbook.total_issues} scripts`);
