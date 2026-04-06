@@ -24,6 +24,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { createClient } from "@/lib/supabase/client";
 import {
   getRiskLevel,
@@ -272,135 +273,25 @@ export default function DashboardPage() {
           </div>
         </motion.div>
 
-        <div className="max-w-7xl mx-auto py-8 space-y-8">
-          {/* ── CONTRACT WRAPPED CTA ── */}
-          {showWrapped && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-            >
-              <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(236,72,153,1)] bg-pink-100 rounded-lg overflow-hidden relative">
-                {/* Dismiss button */}
-                <button
-                  onClick={() => {
-                    setShowWrapped(false);
-                    if (typeof window !== "undefined") {
-                      localStorage.setItem(
-                        `clausewall_wrapped_dismissed_${currentYear}`,
-                        "true",
-                      );
-                    }
-                  }}
-                  className="absolute top-3 right-3 p-1.5 border-2 border-foreground rounded hover:bg-pink-200 transition-colors z-10"
-                  aria-label="Dismiss"
-                >
-                  <X className="w-4 h-4 text-foreground font-black" />
-                </button>
+        <div className="max-w-7xl mx-auto py-8">
 
-                <CardContent className="relative p-6">
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-                    <div className="flex items-center gap-5">
-                      <div className="h-16 w-16 border-2 border-foreground bg-pink-400 flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(10,10,10,1)]">
-                        <Gift className="h-8 w-8 text-foreground" />
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-3 mb-2">
-                          <h3 className="text-xl font-black uppercase tracking-wider text-foreground">
-                            Your {currentYear} Contract Wrapped
-                          </h3>
-                          <Badge className="bg-pink-500 text-foreground border-2 border-foreground font-black uppercase shadow-[2px_2px_0px_0px_rgba(10,10,10,1)] px-2">
-                            NEW
-                          </Badge>
-                        </div>
-                        <p className="text-sm font-bold text-pink-900 max-w-md">
-                          See your contract journey — stats, savings, badges &
-                          more!
-                        </p>
-                      </div>
-                    </div>
-                    <Link href="/wrapped">
-                      <Button className="button border-2 border-foreground bg-pink-500 hover:bg-pink-600 text-foreground text-impact-heading shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] hover:-translate-y-[2px] transition-all gap-2 py-6 px-6 w-full sm:w-auto">
-                        <Sparkles className="h-5 w-5" />
-                        View Wrapped
-                      </Button>
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          )}
+          <Tabs defaultValue="contracts" className="space-y-8">
+            <TabsList className="bg-muted border-2 border-foreground p-1 h-auto flex flex-wrap gap-2 justify-start max-w-full rounded-lg shadow-[4px_4px_0_0_rgba(10,10,10,1)]">
+              <TabsTrigger value="contracts" className="font-black uppercase tracking-wider text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground border-2 border-transparent data-[state=active]:border-foreground data-[state=active]:shadow-[2px_2px_0_0_rgba(10,10,10,1)] px-4 py-2 hover:-translate-y-0.5 transition-transform">My Contracts</TabsTrigger>
+              <TabsTrigger value="intelligence" className="font-black uppercase tracking-wider text-sm data-[state=active]:bg-purple-500 data-[state=active]:text-white border-2 border-transparent data-[state=active]:border-foreground data-[state=active]:shadow-[2px_2px_0_0_rgba(10,10,10,1)] px-4 py-2 hover:-translate-y-0.5 transition-transform">Intelligence Map</TabsTrigger>
+              <TabsTrigger value="workspace" className="font-black uppercase tracking-wider text-sm data-[state=active]:bg-blue-500 data-[state=active]:text-white border-2 border-transparent data-[state=active]:border-foreground data-[state=active]:shadow-[2px_2px_0_0_rgba(10,10,10,1)] px-4 py-2 hover:-translate-y-0.5 transition-transform">Workspace & Discovery</TabsTrigger>
+            </TabsList>
 
-          {/* ── SECTION 1: Portfolio Stats ── */}
+            {/* TAB 1: MY CONTRACTS */}
+            <TabsContent value="contracts" className="space-y-8 mt-6 outline-none">
+{/* ── SECTION 1: Portfolio Stats ── */}
           {stats && <PortfolioStatsSection stats={stats} />}
-
-          {/* ── SECTION 2: Chart + Insights (side by side on desktop) ── */}
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-            <div className="lg:col-span-3">
-              <RiskTrendChart data={chartData} />
-            </div>
-            <div className="lg:col-span-2">
-              {stats && <InsightsSection stats={stats} documents={documents} />}
-            </div>
-          </div>
-
-          {/* ── SECTION 3: Achievements ── */}
-          {achievements.length > 0 && (
-            <AchievementsSection achievements={achievements} />
-          )}
-
-          {/* ── SECTION 3.5: Contract Vault CTA ── */}
-          {documents.length >= 2 && <VaultCTA />}
-
-          {/* ── SECTION 3.55: Live Negotiation CTA ── */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.32 }}
-          >
-            <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(59,130,246,1)] bg-blue-100 rounded-lg overflow-hidden relative">
-              <CardContent className="relative p-6">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-                  <div className="flex items-center gap-5">
-                    <div className="h-16 w-16 border-2 border-foreground bg-blue-400 flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(10,10,10,1)]">
-                      <Handshake className="h-8 w-8 text-foreground" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-3 mb-2">
-                        <h3 className="text-xl font-black uppercase tracking-wider text-foreground">
-                          Live Negotiation Companion
-                        </h3>
-                        <Badge className="bg-blue-500 text-foreground border-2 border-foreground font-black uppercase shadow-[2px_2px_0px_0px_rgba(10,10,10,1)] px-2 animate-pulse">
-                          NEW
-                        </Badge>
-                      </div>
-                      <p className="text-sm font-bold text-blue-900">
-                        Real-time legal intelligence for in-person negotiations
-                      </p>
-                    </div>
-                  </div>
-                  <Link href="/negotiate/live">
-                    <Button className="button border-2 border-foreground bg-blue-500 hover:bg-blue-600 text-foreground text-impact-heading shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] hover:-translate-y-[2px] transition-all gap-2 py-6 px-6 w-full sm:w-auto">
-                      <Handshake className="h-5 w-5" />
-                      Start Session
-                    </Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          {/* ── SECTION 3.58: My Collectives ── */}
-          <MyCollectivesSection />
 
           {/* ── SECTION 3.6: Upcoming Deadlines ── */}
           <UpcomingDeadlinesSection />
 
-          {/* ── SECTION 3.7: Law Monitor ── */}
-          <LawChangeDashboardWidget />
-
-          {/* ── SECTION 3.8: Complaint Filings ── */}
-          <ComplaintDashboardWidgetWrapper />
+          {/* ── SECTION 3.5: Contract Vault CTA ── */}
+          {documents.length >= 2 && <VaultCTA />}
 
           {/* ── SECTION 4: Recent Documents ── */}
           <motion.div
@@ -582,7 +473,138 @@ export default function DashboardPage() {
               )}
             </div>
           </motion.div>
-        </div>
+            </TabsContent>
+
+            {/* TAB 2: INTELLIGENCE MAP */}
+            <TabsContent value="intelligence" className="space-y-8 mt-6 outline-none">
+{/* ── SECTION 2: Chart + Insights (side by side on desktop) ── */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+            <div className="lg:col-span-3">
+              <RiskTrendChart data={chartData} />
+            </div>
+            <div className="lg:col-span-2">
+              {stats && <InsightsSection stats={stats} documents={documents} />}
+            </div>
+          </div>
+
+          {/* ── SECTION 3.7: Law Monitor ── */}
+          <LawChangeDashboardWidget />
+
+          {/* ── CONTRACT WRAPPED CTA ── */}
+          {showWrapped && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(236,72,153,1)] bg-pink-100 rounded-lg overflow-hidden relative">
+                {/* Dismiss button */}
+                <button
+                  onClick={() => {
+                    setShowWrapped(false);
+                    if (typeof window !== "undefined") {
+                      localStorage.setItem(
+                        `clausewall_wrapped_dismissed_${currentYear}`,
+                        "true",
+                      );
+                    }
+                  }}
+                  className="absolute top-3 right-3 p-1.5 border-2 border-foreground rounded hover:bg-pink-200 transition-colors z-10"
+                  aria-label="Dismiss"
+                >
+                  <X className="w-4 h-4 text-foreground font-black" />
+                </button>
+
+                <CardContent className="relative p-6">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+                    <div className="flex items-center gap-5">
+                      <div className="h-16 w-16 border-2 border-foreground bg-pink-400 flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(10,10,10,1)]">
+                        <Gift className="h-8 w-8 text-foreground" />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-3 mb-2">
+                          <h3 className="text-xl font-black uppercase tracking-wider text-foreground">
+                            Your {currentYear} Contract Wrapped
+                          </h3>
+                          <Badge className="bg-pink-500 text-foreground border-2 border-foreground font-black uppercase shadow-[2px_2px_0px_0px_rgba(10,10,10,1)] px-2">
+                            NEW
+                          </Badge>
+                        </div>
+                        <p className="text-sm font-bold text-pink-900 max-w-md">
+                          See your contract journey — stats, savings, badges &
+                          more!
+                        </p>
+                      </div>
+                    </div>
+                    <Link href="/wrapped">
+                      <Button className="button border-2 border-foreground bg-pink-500 hover:bg-pink-600 text-foreground text-impact-heading shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] hover:-translate-y-[2px] transition-all gap-2 py-6 px-6 w-full sm:w-auto">
+                        <Sparkles className="h-5 w-5" />
+                        View Wrapped
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          )}
+
+                      </TabsContent>
+
+            {/* TAB 3: WORKSPACE & DISCOVERY */}
+            <TabsContent value="workspace" className="space-y-8 mt-6 outline-none">
+{/* ── SECTION 3.55: Live Negotiation CTA ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.32 }}
+          >
+            <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(59,130,246,1)] bg-blue-100 rounded-lg overflow-hidden relative">
+              <CardContent className="relative p-6">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+                  <div className="flex items-center gap-5">
+                    <div className="h-16 w-16 border-2 border-foreground bg-blue-400 flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(10,10,10,1)]">
+                      <Handshake className="h-8 w-8 text-foreground" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-3 mb-2">
+                        <h3 className="text-xl font-black uppercase tracking-wider text-foreground">
+                          Live Negotiation Companion
+                        </h3>
+                        <Badge className="bg-blue-500 text-foreground border-2 border-foreground font-black uppercase shadow-[2px_2px_0px_0px_rgba(10,10,10,1)] px-2 animate-pulse">
+                          NEW
+                        </Badge>
+                      </div>
+                      <p className="text-sm font-bold text-blue-900">
+                        Real-time legal intelligence for in-person negotiations
+                      </p>
+                    </div>
+                  </div>
+                  <Link href="/negotiate/live">
+                    <Button className="button border-2 border-foreground bg-blue-500 hover:bg-blue-600 text-foreground text-impact-heading shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] hover:-translate-y-[2px] transition-all gap-2 py-6 px-6 w-full sm:w-auto">
+                      <Handshake className="h-5 w-5" />
+                      Start Session
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* ── SECTION 3.58: My Collectives ── */}
+          <MyCollectivesSection />
+
+          {/* ── SECTION 3.8: Complaint Filings ── */}
+          <ComplaintDashboardWidgetWrapper />
+
+          {/* ── SECTION 3: Achievements ── */}
+          {achievements.length > 0 && (
+            <AchievementsSection achievements={achievements} />
+          )}
+
+                      </TabsContent>
+          </Tabs>
+
+                  </div>
       </div>
     </div>
   );
