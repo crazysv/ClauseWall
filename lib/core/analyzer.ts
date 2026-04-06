@@ -193,91 +193,113 @@ export async function analyzeDocument(
     // ---- Step 2: Hybrid analysis for each clause ----
     console.log(`[ClauseWall] [Hybrid] Analyzing ${totalClauses} clauses...`);
 
-    const analyzedClauses: any[] = [];
+    const analyzedClausesCurrent: any[] = new Array(totalClauses);
     let dbMatchCount = 0;
     let aiFallbackCount = 0;
+    let clausesCompleted = 0;
 
-    for (let i = 0; i < extraction.clauses.length; i++) {
-      const extractedClause = extraction.clauses[i];
-      const clauseNum = i + 1;
+    // Helper for bounded concurrency (limit = 3)
+    const concurrencyLimit = 3;
+    let currentIndex = 0;
 
-      // Calculate progress: 15% (extraction) + 70% (analysis) = 85% when done
-      const analysisProgress = 15 + Math.round((clauseNum / totalClauses) * 70);
+    const worker = async () => {
+      while (currentIndex < extraction.clauses.length) {
+        const i = currentIndex++;
+        const extractedClause = extraction.clauses[i];
+        const clauseNum = i + 1;
 
-      // Update progress for each clause
-      await updateProgress(
-        supabase,
-        documentId,
-        analysisProgress,
-        `Analyzing clause ${clauseNum}/${totalClauses}: ${extractedClause.clause_type}`,
-        clauseNum
-      );
+        try {
+          console.log(`[ClauseWall] Clause ${clauseNum}/${totalClauses}: ${extractedClause.clause_type}`);
 
-      console.log(`[ClauseWall] Clause ${clauseNum}/${totalClauses}: ${extractedClause.clause_type}`);
+          // Use HYBRID analysis
+          const analysis = await hybridAnalyzeClause(
+            extractedClause.text,
+            jurisdiction,
+            documentType,
+            extractedClause.clause_type
+          );
 
-      // Use HYBRID analysis
-      const analysis = await hybridAnalyzeClause(
-        extractedClause.text,
-        jurisdiction,
-        documentType,
-        extractedClause.clause_type
-      );
+          // Track verification sources
+          if (analysis.verification_source === "database") {
+            dbMatchCount++;
+          } else {
+            aiFallbackCount++;
+          }
 
-      // Track verification sources
-      if (analysis.verification_source === "database") {
-        dbMatchCount++;
-      } else {
-        aiFallbackCount++;
-      }
+          // ---- NEW: Check community match BEFORE adding ----
+          let communityMatch = null;
+          if (analysis.risk_level === "dangerous" || analysis.risk_level === "illegal") {
+            const { checkCommunityMatch } = await import("@/lib/community");
+            try {
+              communityMatch = await checkCommunityMatch(
+                extractedClause.text,
+                extractedClause.clause_type
+              );
+          
+              if (communityMatch) {
+                console.log(
+                  `[ClauseWall] [Community] Match found for clause ${clauseNum}: ${communityMatch.match_type} (${communityMatch.match_percentage}%)`
+                );
+              }
+            } catch (err) {
+              console.error(`[ClauseWall] [Community] Error checking match for clause ${clauseNum}:`, err);
+            }
+          }
 
-      // ---- NEW: Check community match BEFORE adding ----
-      let communityMatch = null;
-      if (analysis.risk_level === "dangerous" || analysis.risk_level === "illegal") {
-        const { checkCommunityMatch } = await import("@/lib/community");
-        communityMatch = await checkCommunityMatch(
-          extractedClause.text,
-          extractedClause.clause_type
-        );
-    
-        if (communityMatch) {
-          console.log(
-            `[ClauseWall] [Community] Match found for clause ${clauseNum}: ${communityMatch.match_type} (${communityMatch.match_percentage}%)`
+          analyzedClausesCurrent[i] = {
+            document_id: documentId,
+            clause_number: extractedClause.clause_number,
+            original_text: extractedClause.text,
+            clause_type: extractedClause.clause_type,
+            risk_level: analysis.risk_level,
+            risk_score: analysis.risk_score,
+            explanation: analysis.explanation,
+            legal_issue: analysis.legal_issue || null,
+            legal_citation: analysis.applicable_law || null,
+            statute_code: analysis.applicable_law || null,
+            fair_alternative: analysis.fair_alternative || null,
+            red_flags: analysis.red_flags,
+            percentile: null,
+            verification_source: analysis.verification_source,
+            matched_rule_id: analysis.matched_rule_id || null,
+            negotiation_script: analysis.negotiation_script || null,
+            penalty_info: analysis.penalty_info || null,
+            confidence: analysis.confidence,
+            extracted_value: analysis.extracted_value ?? null,
+            extracted_unit: analysis.extracted_unit ?? null,
+            community_match: communityMatch ? JSON.stringify(communityMatch) : null,
+            proof_data: analysis.proof_tree ? JSON.stringify(analysis.proof_tree) : null,
+          };
+        } catch (error) {
+          console.error(`[ClauseWall] ❌ Clause ${clauseNum} analysis failed. Skipping this clause.`, error);
+          analyzedClausesCurrent[i] = null; // Mark as failed
+        } finally {
+          clausesCompleted++;
+          const analysisProgress = 15 + Math.round((clausesCompleted / totalClauses) * 70);
+          
+          // Fire-and-forget the progress update so we don't hold up the array
+          updateProgress(
+            supabase,
+            documentId,
+            analysisProgress,
+            `Analyzing clauses... (${clausesCompleted}/${totalClauses})`,
+            clausesCompleted
+          ).catch((e) => console.error("[ClauseWall] Progress update failed:", e));
+
+          // Delay between requests to avoid rate limiting
+          await new Promise((resolve) =>
+            setTimeout(resolve, ANALYSIS_CONFIG.clauseDelayMs)
           );
         }
       }
+    };
 
-      analyzedClauses.push({
-        document_id: documentId,
-        clause_number: extractedClause.clause_number,
-        original_text: extractedClause.text,
-        clause_type: extractedClause.clause_type,
-        risk_level: analysis.risk_level,
-        risk_score: analysis.risk_score,
-        explanation: analysis.explanation,
-        legal_issue: analysis.legal_issue || null,
-        legal_citation: analysis.applicable_law || null,
-        statute_code: analysis.applicable_law || null,
-        fair_alternative: analysis.fair_alternative || null,
-        red_flags: analysis.red_flags,
-        percentile: null,
-        verification_source: analysis.verification_source,
-        matched_rule_id: analysis.matched_rule_id || null,
-        negotiation_script: analysis.negotiation_script || null,
-        penalty_info: analysis.penalty_info || null,
-        confidence: analysis.confidence,
-        extracted_value: analysis.extracted_value ?? null,
-        extracted_unit: analysis.extracted_unit ?? null,
-        // ---- NEW: Store community match data ----
-        community_match: communityMatch ? JSON.stringify(communityMatch) : null,
-        // ---- NEW: Store neurosymbolic proof tree ----
-        proof_data: analysis.proof_tree ? JSON.stringify(analysis.proof_tree) : null,
-      });
+    // Run 3 workers in parallel
+    const workers = Array.from({ length: Math.min(concurrencyLimit, totalClauses) }, () => worker());
+    await Promise.all(workers);
 
-      // Delay between requests to avoid rate limiting
-      await new Promise((resolve) =>
-        setTimeout(resolve, ANALYSIS_CONFIG.clauseDelayMs)
-      );
-    }
+    // Filter out any failed clauses (nulls) to maintain a dense array that preserves original temporal reading order
+    const analyzedClauses = analyzedClausesCurrent.filter(c => c !== null);
 
     console.log(
       `[ClauseWall] [Hybrid] Results: ${dbMatchCount} DB-verified, ${aiFallbackCount} AI-analyzed`
