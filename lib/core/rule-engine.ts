@@ -7,6 +7,14 @@
 import { createClient } from "@/lib/supabase/server";
 import type { ExtractedValues, StructuredRule, RuleMatchResult, RiskLevel } from "@/types";
 
+// Simple in-memory cache for structured rules
+interface CacheEntry {
+  data: StructuredRule[];
+  expiresAt: number;
+}
+const rulesCache = new Map<string, CacheEntry>();
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+
 /**
  * Find matching rules from structured_rules table
  */
@@ -16,24 +24,37 @@ async function findMatchingRules(
   documentType: string,
   subType: string | null
 ): Promise<StructuredRule[]> {
-  const supabase = await createClient();
+  const cacheKey = `${clauseType}:${jurisdiction}:${documentType}`;
+  const now = Date.now();
+  const cached = rulesCache.get(cacheKey);
 
-  // Query for rules matching clause type + jurisdiction + document type
-  const { data, error } = await supabase
-    .from("structured_rules")
-    .select("*")
-    .eq("clause_type", clauseType)
-    .eq("is_active", true)
-    .in("jurisdiction", [jurisdiction, "ALL-INDIA"])
-    .in("document_type", [documentType, "all"])
-    .order("jurisdiction", { ascending: false }); // Prefer specific jurisdiction over ALL-INDIA
+  let rawRules: StructuredRule[];
 
-  if (error) {
-    console.error("[ClauseWall] Rule lookup failed:", error);
-    return [];
+  if (cached && cached.expiresAt > now) {
+    rawRules = cached.data;
+  } else {
+    const supabase = await createClient();
+
+    // Query for rules matching clause type + jurisdiction + document type
+    const { data, error } = await supabase
+      .from("structured_rules")
+      .select("*")
+      .eq("clause_type", clauseType)
+      .eq("is_active", true)
+      .in("jurisdiction", [jurisdiction, "ALL-INDIA"])
+      .in("document_type", [documentType, "all"])
+      .order("jurisdiction", { ascending: false }); // Prefer specific jurisdiction over ALL-INDIA
+
+    if (error) {
+      console.error("[ClauseWall] Rule lookup failed:", error);
+      return [];
+    }
+
+    rawRules = (data as StructuredRule[]) || [];
+    rulesCache.set(cacheKey, { data: rawRules, expiresAt: now + CACHE_TTL_MS });
   }
 
-  let rules = (data as StructuredRule[]) || [];
+  let rules = [...rawRules];
 
   // Filter by sub_type if provided
   if (subType && rules.length > 0) {
