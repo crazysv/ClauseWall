@@ -277,10 +277,41 @@ export default function ResultsPage() {
       document?.analysis_status === "analyzing" ||
       document?.analysis_status === "pending"
     ) {
-      const interval = setInterval(fetchData, 3000);
-      return () => clearInterval(interval);
+      // 1. Fallback polling mechanism (slower, 10s fallback)
+      const interval = setInterval(fetchData, 10000);
+
+      // 2. Realtime subscription
+      const channel = supabase
+        .channel(`document-progress-${documentId}`)
+        .on(
+          "postgres_changes",
+          {
+            event: "UPDATE",
+            schema: "public",
+            table: "documents",
+            filter: `id=eq.${documentId}`,
+          },
+          (payload) => {
+            const updatedDoc = payload.new as Document;
+            setDocument(updatedDoc);
+            
+            // If it just transitioned to completed or failed, we need to fetch clauses
+            if (
+              updatedDoc.analysis_status === "completed" ||
+              updatedDoc.analysis_status === "failed"
+            ) {
+              fetchData();
+            }
+          }
+        )
+        .subscribe();
+
+      return () => {
+        clearInterval(interval);
+        supabase.removeChannel(channel);
+      };
     }
-  }, [document?.analysis_status]);
+  }, [document?.analysis_status, documentId]);
 
   // ═══════════════════════════════════════════
   // 🔊 SOUND EFFECT + SCREEN SHAKE TRIGGER

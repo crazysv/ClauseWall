@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 import { Loader2, CheckCircle2, Circle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -15,36 +16,68 @@ const STEPS = [
 
 export default function AnalyzePage({ params }: { params: { id: string } }) {
   const [progress, setProgress] = useState(0);
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStepText, setCurrentStepText] = useState("Preparing document...");
+  const [status, setStatus] = useState("pending");
   const router = useRouter();
+  const supabaseRef = useRef(createClient());
 
-  // Mock polling logic as required by the prompt structure
+  // Realtime progress logic from Supabase
   useEffect(() => {
-    const duration = 8000;
-    const interval = 100;
-    const steps = duration / interval;
-    let current = 0;
-
-    const timer = setInterval(() => {
-      current++;
-      const newProgress = Math.min((current / steps) * 100, 100);
-      setProgress(newProgress);
-
-      const stepIndex = Math.min(
-        Math.floor((current / steps) * STEPS.length),
-        STEPS.length - 1,
-      );
-      setCurrentStep(stepIndex);
-
-      if (current >= steps) {
-        clearInterval(timer);
-        // Simulate redirect to results
-        setTimeout(() => router.push(`/results/${params.id}`), 500);
+    const supabase = supabaseRef.current;
+    
+    // Initial fetch
+    const fetchDoc = async () => {
+      const { data } = await supabase.from("documents").select("analysis_progress, analysis_step, analysis_status").eq("id", params.id).single();
+      if (data) {
+        setProgress(data.analysis_progress || 0);
+        if (data.analysis_step) setCurrentStepText(data.analysis_step);
+        if (data.analysis_status) {
+          setStatus(data.analysis_status);
+          if (data.analysis_status === "completed" || data.analysis_status === "failed") {
+            setTimeout(() => router.push(`/results/${params.id}`), 500);
+          }
+        }
       }
-    }, interval);
+    };
+    fetchDoc();
 
-    return () => clearInterval(timer);
-  }, [params.id, router]);
+    // Setup realtime subscription
+    const channel = supabase
+      .channel(`analyze-${params.id}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "documents",
+          filter: `id=eq.${params.id}`,
+        },
+        (payload) => {
+          const newDoc = payload.new;
+          if (newDoc.analysis_progress !== undefined) setProgress(newDoc.analysis_progress);
+          if (newDoc.analysis_step) setCurrentStepText(newDoc.analysis_step);
+          if (newDoc.analysis_status) {
+            setStatus(newDoc.analysis_status);
+            if (newDoc.analysis_status === "completed" || newDoc.analysis_status === "failed") {
+              setTimeout(() => router.push(`/results/${params.id}`), 500);
+            }
+          }
+        }
+      )
+      .subscribe();
+
+    // Fallback polling (every 5s) in case realtime fails
+    const interval = setInterval(() => {
+      if (status !== "completed" && status !== "failed") {
+        fetchDoc();
+      }
+    }, 5000);
+
+    return () => {
+      clearInterval(interval);
+      supabase.removeChannel(channel);
+    };
+  }, [params.id, router, status]);
 
   const radius = 60;
   const circumference = 2 * Math.PI * radius;
@@ -105,15 +138,20 @@ export default function AnalyzePage({ params }: { params: { id: string } }) {
           </div>
 
           <div className="text-lg font-black uppercase tracking-wider text-foreground mb-8">
-            {STEPS[currentStep]}
+            {currentStepText}
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse inline-block ml-2 border border-foreground" />
           </div>
 
           {/* Step Checklist */}
           <div className="space-y-4 text-left max-w-sm mx-auto bg-muted/30 p-6 border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(10,10,10,1)]">
             {STEPS.map((step, index) => {
-              const isCompleted = index < currentStep;
-              const isCurrent = index === currentStep;
+              // Determine which checklist step we're on based on percentage (0-100) -> mapping to 5 steps
+              const currentStepIndex = Math.min(
+                Math.floor((progress / 100) * STEPS.length),
+                STEPS.length - 1
+              );
+              const isCompleted = index < currentStepIndex || status === "completed";
+              const isCurrent = index === currentStepIndex && status !== "completed";
 
               return (
                 <div key={index} className="flex items-center gap-4">
