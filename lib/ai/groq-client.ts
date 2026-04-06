@@ -247,7 +247,7 @@ export async function callGroqStreaming(
     if (error?.status === 429) {
       switchToNextKey();
     }
-    console.error("[ClauseWall] Groq streaming failed:", error);
+    log.errorWithCause("groq", "Streaming failed", error);
     throw new Error(`Streaming failed: ${(error as Error).message}`);
   }
 }
@@ -368,7 +368,7 @@ export async function callGroqWhisper(
 
       const apiKey = API_KEYS[currentKeyIndex] || "";
 
-      console.log(`[ClauseWall] Whisper: Using Key ${currentKeyIndex + 1} (attempt ${totalAttempts}/${maxTotalAttempts})`);
+      log.debug("groq", "Whisper call", { keyIndex: currentKeyIndex + 1, attempt: totalAttempts, maxAttempts: maxTotalAttempts });
 
       // Build FormData
       const mimeType = audioFormat === 'ogg' ? 'audio/ogg'
@@ -397,14 +397,14 @@ export async function callGroqWhisper(
       });
 
       if (response.status === 429) {
-        console.log('[ClauseWall] Whisper: Rate limited (429)');
+        log.warn("groq", "Whisper rate limited", { status: 429 });
         switchToNextKey();
         continue;
       }
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error(`[ClauseWall] Whisper error: ${response.status}`, errorText.substring(0, 200));
+        log.error("groq", "Whisper HTTP error", { status: response.status });
 
         if (response.status === 401 || response.status === 403) {
           if (!switchToNextKey()) throw new Error("All Groq API keys are invalid for Whisper");
@@ -422,7 +422,7 @@ export async function callGroqWhisper(
       };
     } catch (error: any) {
       lastError = error;
-      console.error(`[ClauseWall] Whisper attempt ${totalAttempts} failed:`, error.message);
+      log.errorWithCause("groq", "Whisper attempt failed", error, { attempt: totalAttempts });
 
       if (totalAttempts < maxTotalAttempts) {
         const delay = Math.pow(2, totalAttempts % 3) * 1000;

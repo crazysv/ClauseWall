@@ -12,6 +12,7 @@ import { checkChangeLegality } from "./legality-checker";
 import { dispatchAlerts } from "./alert-dispatcher";
 import type { MonitoredCompany, TosDocType } from "@/types";
 import type { CronRunResult } from "./types";
+import { log } from "@/lib/logger";
 
 /**
  * Run the watchdog cron job
@@ -24,11 +25,11 @@ export async function runWatchdogCron(maxCompanies = 10): Promise<CronRunResult>
   let changesDetected = 0;
   let alertsSent = 0;
 
-  console.log("[Watchdog Cron] Starting...");
+  log.info("watchdog.cron", "Starting watchdog cron");
 
   try {
     const companies = await getCompaniesDueForScrape(maxCompanies);
-    console.log(`[Watchdog Cron] ${companies.length} companies due for scraping`);
+    log.info("watchdog.cron", "Companies due for scraping", { count: companies.length });
 
     for (const company of companies) {
       try {
@@ -41,7 +42,7 @@ export async function runWatchdogCron(maxCompanies = 10): Promise<CronRunResult>
         }
       } catch (err) {
         const msg = `Failed to process ${company.name}: ${(err as Error).message}`;
-        console.error(`[Watchdog Cron] ${msg}`);
+        log.error("watchdog.cron", msg);
         errors.push(msg);
         companiesSkipped++;
       }
@@ -62,7 +63,7 @@ export async function runWatchdogCron(maxCompanies = 10): Promise<CronRunResult>
     duration_ms: Date.now() - startTime,
   };
 
-  console.log("[Watchdog Cron] Complete:", JSON.stringify(result));
+  log.info("watchdog.cron", "Cron run complete", { companiesProcessed, companiesSkipped, changesDetected, alertsSent, durationMs: result.duration_ms, errorCount: errors.length });
   return result;
 }
 
@@ -80,7 +81,7 @@ async function processCompany(company: MonitoredCompany): Promise<{
 
   for (const tosEntry of tosUrls) {
     try {
-      console.log(`[Watchdog] Scraping ${company.name} — ${tosEntry.label}`);
+      log.info("watchdog", "Scraping company", { company: company.name, tosLabel: tosEntry.label });
 
       // Scrape
       const scrapeResult = await scrapeWithRetry(
@@ -89,7 +90,7 @@ async function processCompany(company: MonitoredCompany): Promise<{
       );
 
       if (!scrapeResult.success || !scrapeResult.clean_text) {
-        console.warn(`[Watchdog] Scrape failed for ${company.name}/${tosEntry.type}: ${scrapeResult.error}`);
+        log.warn("watchdog", "Scrape failed", { company: company.name, tosType: tosEntry.type });
         continue;
       }
 
@@ -114,13 +115,13 @@ async function processCompany(company: MonitoredCompany): Promise<{
       );
 
       if (!isNew || !newSnapshot) {
-        console.log(`[Watchdog] No change detected for ${company.name}/${tosEntry.type}`);
+        log.debug("watchdog", "No change detected", { company: company.name, tosType: tosEntry.type });
         continue;
       }
 
       // If we have a previous snapshot, perform diff
       if (latestSnapshot && latestSnapshot.clean_text) {
-        console.log(`[Watchdog] Change detected for ${company.name}/${tosEntry.type}, running diff...`);
+        log.info("watchdog", "Change detected, running diff", { company: company.name, tosType: tosEntry.type });
 
         const diffResult = await performSemanticDiff(
           latestSnapshot.clean_text,
@@ -161,7 +162,7 @@ async function processCompany(company: MonitoredCompany): Promise<{
         }
       }
     } catch (err) {
-      console.error(`[Watchdog] Error processing ${tosEntry.url}:`, err);
+      log.errorWithCause("watchdog", "Error processing ToS URL", err, { url: tosEntry.url });
     }
 
     // Rate limit between URLs

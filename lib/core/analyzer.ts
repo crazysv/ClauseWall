@@ -17,6 +17,7 @@ import { determineJurisdiction } from "@/lib/authority/jurisdiction-router";
 import type { SupportedLanguage } from "@/types/bhasha";
 import { detectLanguage, detectLanguageQuick } from "@/lib/bhasha/language-detector";
 import { preprocessDocumentNumerals } from "@/lib/bhasha/numeral-converter";
+import { log } from "@/lib/logger";
 
 /**
  * Update analysis progress in database
@@ -53,8 +54,7 @@ export async function analyzeDocument(
   const supabase = externalSupabase || (await createClient());
 
   try {
-    console.log(`[ClauseWall] analyzeDocument started for ${documentId}`);
-    console.log(`[ClauseWall] Text length: ${rawText?.length || 0}`);
+    log.info("analyzer", "analyzeDocument started", { docId: documentId, textLength: rawText?.length || 0 });
 
     // ---- Language Detection ----
     let detectedLang: SupportedLanguage = "en";
@@ -69,7 +69,7 @@ export async function analyzeDocument(
       const quickDetect = detectLanguageQuick(rawText.substring(0, 2000));
       detectedLang = quickDetect.language;
       langConfidence = quickDetect.confidence;
-      console.log(`[ClauseWall] Quick language detection: ${detectedLang} (${langConfidence})`);
+      log.debug("analyzer", "Quick language detection", { docId: documentId, lang: detectedLang, confidence: langConfidence });
 
       // Full async detection if not English and not very confident
       if (detectedLang !== "en" || langConfidence < 0.9) {
@@ -77,9 +77,9 @@ export async function analyzeDocument(
           const fullDetect = await detectLanguage(rawText.substring(0, 3000));
           detectedLang = fullDetect.primary_language;
           langConfidence = fullDetect.confidence;
-          console.log(`[ClauseWall] Full language detection: ${detectedLang} (${langConfidence})`);
+          log.debug("analyzer", "Full language detection", { docId: documentId, lang: detectedLang, confidence: langConfidence });
         } catch {
-          console.warn("[ClauseWall] Full language detection failed, using quick result");
+          log.warn("analyzer", "Full language detection failed, using quick result", { docId: documentId });
         }
       }
     } else if (sourceLanguage && sourceLanguage !== "auto") {
@@ -91,7 +91,7 @@ export async function analyzeDocument(
     const finalSourceLang: SupportedLanguage = isAutoDetect ? detectedLang : effectiveSourceLang;
     const finalOutputLang: SupportedLanguage = outputLanguage || (isMultilingual ? detectedLang : "en");
 
-    console.log(`[ClauseWall] Language: source=${finalSourceLang}, output=${finalOutputLang}, multilingual=${isMultilingual}`);
+    log.info("analyzer", "Language resolved", { docId: documentId, source: finalSourceLang, output: finalOutputLang, multilingual: isMultilingual });
 
     // Pre-process numerals for non-English text
     const processedText = isMultilingual ? preprocessDocumentNumerals(rawText) : rawText;
@@ -117,9 +117,9 @@ export async function analyzeDocument(
     // ---- Step 1: Extract clauses ----
     await updateProgress(supabase, documentId, 10, "Extracting clauses from document...");
     
-    console.log(`[ClauseWall] Extracting clauses...`);
+    log.info("analyzer", "Extracting clauses", { docId: documentId });
     const extraction = await extractClauses(processedText, isMultilingual ? finalSourceLang : undefined);
-    console.log(`[ClauseWall] Found ${extraction.clauses?.length || 0} clauses`);
+    log.info("analyzer", "Clauses extracted", { docId: documentId, clauseCount: extraction.clauses?.length || 0 });
 
     const totalClauses = extraction.clauses.length;
 
@@ -127,54 +127,41 @@ export async function analyzeDocument(
     let entityName = extraction.document_info.entity_name || null;
 
         if (!entityName) {
-      console.log(
-        `[ClauseWall] AI entity extraction missed. Running regex fallback...`
-      );
+      log.info("analyzer", "AI entity extraction missed, running regex fallback", { docId: documentId });
       const fallbackEntity = extractEntityFallback(rawText, documentType);
       
       if (fallbackEntity) {
-        // Validate the regex-extracted entity too
         if (isValidEntityName(fallbackEntity, rawText)) {
           entityName = fallbackEntity;
-          console.log(
-            `[ClauseWall] ✅ Regex fallback found valid entity: ${entityName}`
-          );
+          log.info("analyzer", "Regex fallback found valid entity", { docId: documentId });
         } else {
-          console.log(
-            `[ClauseWall] ⚠️ Regex fallback found "${fallbackEntity}" but rejected as invalid`
-          );
+          log.info("analyzer", "Regex fallback entity rejected as invalid", { docId: documentId });
         }
       } else {
-        console.log(
-          `[ClauseWall] ⚠️ No entity found by AI or regex fallback`
-        );
+        log.info("analyzer", "No entity found by AI or regex fallback", { docId: documentId });
       }
     }
 
     // Normalize entity name for consistent matching
     if (entityName) {
       entityName = normalizeEntityName(entityName);
-      console.log(`[ClauseWall] Final entity (normalized): ${entityName}`);
+      log.info("analyzer", "Final entity resolved", { docId: documentId, hasEntity: true });
     } else {
-      console.log(`[ClauseWall] Final entity: none`);
+      log.info("analyzer", "Final entity resolved", { docId: documentId, hasEntity: false });
     } 
 
             // Get AI-detected jurisdiction (may differ from user selection)
     const detectedJurisdiction = extraction.document_info.detected_jurisdiction || null;
     
     if (detectedJurisdiction && detectedJurisdiction !== jurisdiction) {
-      console.log(
-        `[ClauseWall] ⚠️ Jurisdiction mismatch: User selected "${jurisdiction}", AI detected "${detectedJurisdiction}"`
-      );
+      log.warn("analyzer", "Jurisdiction mismatch", { docId: documentId, selected: jurisdiction, detected: detectedJurisdiction });
     }
 
     // Get AI-detected document type (may differ from user selection)
     const detectedDocType = extraction.document_info.detected_type || null;
     
     if (detectedDocType && detectedDocType !== documentType && detectedDocType !== "other") {
-      console.log(
-        `[ClauseWall] ⚠️ Document type mismatch: User selected "${documentType}", AI detected "${detectedDocType}"`
-      );
+      log.warn("analyzer", "Document type mismatch", { docId: documentId, selected: documentType, detected: detectedDocType });
     }
 
     // Update document with detected entity name, jurisdiction, document type, and total clauses
@@ -191,7 +178,7 @@ export async function analyzeDocument(
       .eq("id", documentId);
 
     // ---- Step 2: Hybrid analysis for each clause ----
-    console.log(`[ClauseWall] [Hybrid] Analyzing ${totalClauses} clauses...`);
+    log.info("analyzer", "Starting hybrid clause analysis", { docId: documentId, totalClauses });
 
     const analyzedClausesCurrent: any[] = new Array(totalClauses);
     let dbMatchCount = 0;
@@ -209,7 +196,7 @@ export async function analyzeDocument(
         const clauseNum = i + 1;
 
         try {
-          console.log(`[ClauseWall] Clause ${clauseNum}/${totalClauses}: ${extractedClause.clause_type}`);
+          log.debug("analyzer", "Analyzing clause", { docId: documentId, clauseNum, totalClauses, clauseType: extractedClause.clause_type });
 
           // Use HYBRID analysis
           const analysis = await hybridAnalyzeClause(
@@ -237,12 +224,10 @@ export async function analyzeDocument(
               );
           
               if (communityMatch) {
-                console.log(
-                  `[ClauseWall] [Community] Match found for clause ${clauseNum}: ${communityMatch.match_type} (${communityMatch.match_percentage}%)`
-                );
+                log.info("analyzer", "Community match found", { docId: documentId, clauseNum, matchType: communityMatch.match_type, matchPct: communityMatch.match_percentage });
               }
             } catch (err) {
-              console.error(`[ClauseWall] [Community] Error checking match for clause ${clauseNum}:`, err);
+              log.errorWithCause("analyzer", "Community match check failed", err, { docId: documentId, clauseNum });
             }
           }
 
@@ -271,7 +256,7 @@ export async function analyzeDocument(
             proof_data: analysis.proof_tree ? JSON.stringify(analysis.proof_tree) : null,
           };
         } catch (error) {
-          console.error(`[ClauseWall] ❌ Clause ${clauseNum} analysis failed. Skipping this clause.`, error);
+          log.errorWithCause("analyzer", "Clause analysis failed, skipping", error, { docId: documentId, clauseNum });
           analyzedClausesCurrent[i] = null; // Mark as failed
         } finally {
           clausesCompleted++;
@@ -284,7 +269,7 @@ export async function analyzeDocument(
             analysisProgress,
             `Analyzing clauses... (${clausesCompleted}/${totalClauses})`,
             clausesCompleted
-          ).catch((e) => console.error("[ClauseWall] Progress update failed:", e));
+          ).catch((e) => log.errorWithCause("analyzer", "Progress update failed", e, { docId: documentId }));
 
           // Delay between requests to avoid rate limiting
           await new Promise((resolve) =>
@@ -301,9 +286,7 @@ export async function analyzeDocument(
     // Filter out any failed clauses (nulls) to maintain a dense array that preserves original temporal reading order
     const analyzedClauses = analyzedClausesCurrent.filter(c => c !== null);
 
-    console.log(
-      `[ClauseWall] [Hybrid] Results: ${dbMatchCount} DB-verified, ${aiFallbackCount} AI-analyzed`
-    );
+    log.info("analyzer", "Hybrid analysis complete", { docId: documentId, dbMatches: dbMatchCount, aiAnalyzed: aiFallbackCount });
 
     // ---- Step 3: Save clauses to database ----
     await updateProgress(supabase, documentId, 88, "Saving analysis results...", totalClauses);
@@ -319,7 +302,7 @@ export async function analyzeDocument(
     // ---- Step 3.5: Add dangerous/illegal clauses to community DB ----
     await updateProgress(supabase, documentId, 90, "Updating community database...", totalClauses);
     
-    console.log(`[ClauseWall] [Community] Sharing predatory patterns...`);
+    log.info("analyzer", "Sharing predatory patterns to community DB", { docId: documentId });
     let communityAdded = 0;
     for (const clause of analyzedClauses) {
       if (clause.risk_level === "dangerous" || clause.risk_level === "illegal") {
@@ -335,7 +318,7 @@ export async function analyzeDocument(
         if (added) communityAdded++;
       }
     }
-    console.log(`[ClauseWall] [Community] ${communityAdded} patterns shared`);
+    log.info("analyzer", "Community patterns shared", { docId: documentId, communityAdded });
 
     // ---- Step 3.55: Enrich clauses with Knowledge Graph ----
     await updateProgress(supabase, documentId, 91, "Enriching with legal knowledge graph...", totalClauses);
@@ -343,9 +326,9 @@ export async function analyzeDocument(
     try {
       const { enrichDocumentClauses } = await import("@/lib/graph");
       const enrichedCount = await enrichDocumentClauses(documentId, jurisdiction);
-      console.log(`[ClauseWall] [Graph] ✅ Enriched ${enrichedCount} clauses with knowledge graph`);
+      log.info("analyzer", "Graph enrichment complete", { docId: documentId, enrichedCount });
     } catch (graphError) {
-      console.error("[ClauseWall] [Graph] Non-fatal enrichment error:", graphError);
+      log.errorWithCause("analyzer", "Graph enrichment failed (non-fatal)", graphError, { docId: documentId });
       // Non-fatal — analysis continues without graph enrichment
     }
     
@@ -385,7 +368,7 @@ export async function analyzeDocument(
       // 1. Power Balance extraction
       (async () => {
         try {
-          console.log(`[ClauseWall] [Power] Extracting power balance...`);
+          log.info("analyzer", "Extracting power balance", { docId: documentId });
           powerBalance = await extractPowerBalance(
             analyzedClauses.map((c) => ({
               clause_number: c.clause_number,
@@ -398,9 +381,9 @@ export async function analyzeDocument(
             jurisdiction,
             entityName
           );
-          console.log(`[ClauseWall] [Power] ⚖️ Balance: ${powerBalance.overall_party_a}/${powerBalance.overall_party_b}`);
+          log.info("analyzer", "Power balance extracted", { docId: documentId });
         } catch (e) {
-          console.error("[ClauseWall] [Power] Power balance failed:", e);
+          log.errorWithCause("analyzer", "Power balance extraction failed", e, { docId: documentId });
         }
       })(),
 
@@ -439,7 +422,7 @@ export async function analyzeDocument(
             tsaSerial = proofResult.tsa_serial;
           }
         } catch (e) {
-          console.error("[ClauseWall] [Proof] Proof generation failed:", e);
+          log.errorWithCause("analyzer", "Proof generation failed", e, { docId: documentId });
         }
       })(),
 
@@ -466,7 +449,7 @@ export async function analyzeDocument(
               .eq("id", documentId);
           }
         } catch (e) {
-          console.error("[ClauseWall] [StateMachine] State machine failed:", e);
+          log.errorWithCause("analyzer", "State machine extraction failed", e, { docId: documentId });
         }
       })(),
 
@@ -485,7 +468,7 @@ export async function analyzeDocument(
             }))
           );
         } catch (e) {
-          console.error("[ClauseWall] [TimeBomb] Temporal extraction failed:", e);
+          log.errorWithCause("analyzer", "Temporal extraction failed", e, { docId: documentId });
         }
       })(),
 
@@ -510,7 +493,7 @@ export async function analyzeDocument(
             entityName || null
           );
         } catch (e) {
-          console.error("[ClauseWall] [PoisonPill] Detection failed:", e);
+          log.errorWithCause("analyzer", "Poison pill detection failed", e, { docId: documentId });
         }
       })(),
 
@@ -530,7 +513,7 @@ export async function analyzeDocument(
             }))
           );
         } catch (e) {
-          console.error("[ClauseWall] [LawChange] Retroactive check failed:", e);
+          log.errorWithCause("analyzer", "Retroactive law change check failed", e, { docId: documentId });
         }
       })(),
 
@@ -541,7 +524,7 @@ export async function analyzeDocument(
           const { getEntityIntelligence } = await import("@/lib/collective");
           await getEntityIntelligence(entityName, undefined, documentId, jurisdiction, documentType);
         } catch (e) {
-          console.error("[ClauseWall] [Collective] Intelligence fetch failed:", e);
+          log.errorWithCause("analyzer", "Collective intelligence fetch failed", e, { docId: documentId });
         }
       })(),
 
@@ -560,7 +543,7 @@ export async function analyzeDocument(
             .update({ authority_routing: routingResult })
             .eq("id", documentId);
         } catch (e) {
-          console.warn("[ClauseWall] Authority routing failed:", e);
+          log.errorWithCause("analyzer", "Authority routing failed", e, { docId: documentId });
         }
       })()
     ];
@@ -572,10 +555,10 @@ export async function analyzeDocument(
     try {
       const { incrementalBenchmarkUpdate } = await import("@/lib/market/aggregator");
       incrementalBenchmarkUpdate(documentId).catch((marketErr: any) => {
-        console.error("[ClauseWall] [Market] Incremental update failed:", marketErr);
+        log.errorWithCause("analyzer", "Market incremental update failed", marketErr, { docId: documentId });
       });
     } catch (e) {
-      console.error("[ClauseWall] [Market] Import failed:", e);
+      log.errorWithCause("analyzer", "Market import failed", e, { docId: documentId });
     }
 
     // ---- Step 6: Update document with final gathered results ----
@@ -610,14 +593,9 @@ export async function analyzeDocument(
       throw new Error(`Failed to update document: ${updateError.message}`);
     }
 
-    console.log(
-      `[ClauseWall] ✅ Hybrid analysis complete for document ${documentId}. Score: ${overallScore}/100 | DB: ${dbMatchCount} | AI: ${aiFallbackCount}`
-    );
+    log.info("analyzer", "Analysis complete", { docId: documentId, score: overallScore, dbMatches: dbMatchCount, aiAnalyzed: aiFallbackCount, totalClauses: analyzedClauses.length });
   } catch (error) {
-    console.error(
-      `[ClauseWall] ❌ Analysis failed for document ${documentId}:`,
-      error
-    );
+    log.errorWithCause("analyzer", "Analysis failed", error, { docId: documentId });
 
     await supabase
       .from("documents")

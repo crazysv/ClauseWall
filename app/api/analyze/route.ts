@@ -7,6 +7,7 @@ import { AnalyzeJsonSchema } from "@/lib/validation/schemas";
 import { validateBody, validateFileSize } from "@/lib/validation/middleware";
 import { FILE_SIZE_LIMITS } from "@/lib/validation/enums";
 import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
+import { log } from "@/lib/logger";
 
 // Allow longer execution time for analysis
 export const maxDuration = 60;
@@ -127,14 +128,14 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (insertError || !document) {
-      console.error("[ClauseWall] Failed to create document:", insertError);
+      log.errorWithCause("api.analyze", "Failed to create document record", insertError);
       return NextResponse.json(
         { error: "Failed to save document. Please try again." },
         { status: 500 },
       );
     }
 
-    console.log(`[ClauseWall] Document created: ${document.id}`);
+    log.info("api.analyze", "Document created", { docId: document.id });
 
     // ---- TRIGGER FULL ANALYSIS (server-side, fire-and-forget) ----
     const appUrl = process.env.NEXT_PUBLIC_APP_URL;
@@ -154,10 +155,10 @@ export async function POST(request: NextRequest) {
           jurisdiction,
         }),
       }).catch((err) => {
-        console.error("[ClauseWall] Trigger analysis failed:", err);
+        log.errorWithCause("api.analyze", "Trigger analysis failed", err);
       });
     } else {
-      console.warn("[ClauseWall] NEXT_PUBLIC_APP_URL not set, skipping trigger");
+      log.warn("api.analyze", "NEXT_PUBLIC_APP_URL not set, skipping trigger");
     }
 
     // Return immediately with document ID
@@ -167,7 +168,7 @@ export async function POST(request: NextRequest) {
       message: "Analysis started. You will be redirected to results.",
     });
   } catch (error) {
-    console.error("[ClauseWall] API error:", error);
+    log.errorWithCause("api.analyze", "API error", error);
     return NextResponse.json(
       {
         error:
