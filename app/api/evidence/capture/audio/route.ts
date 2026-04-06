@@ -29,6 +29,23 @@ export async function POST(request: NextRequest) {
         { status: 400 },
       );
 
+    // Server-side MIME validation for Audio
+    const allowedAudioMimes = [
+      "audio/mpeg",
+      "audio/mp3",
+      "audio/wav",
+      "audio/webm",
+      "audio/ogg",
+      "audio/x-m4a",
+    ];
+
+    if (!allowedAudioMimes.includes(file.type)) {
+      return NextResponse.json(
+        { error: "Invalid file type. Please upload a supported audio format (MP3, WAV, WebM, OGG, M4A)." },
+        { status: 400 },
+      );
+    }
+
     const buffer = Buffer.from(await file.arrayBuffer());
 
     // Transcribe

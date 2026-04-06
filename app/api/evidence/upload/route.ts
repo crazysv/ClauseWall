@@ -28,15 +28,32 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate MIME type
-    const dangerousMimes = [
-      "application/x-executable",
-      "application/x-msdownload",
-      "application/x-sh",
+    // Server-side MIME validation (Whitelist approach)
+    const allowedMimeTypes = [
+      // Documents
+      "application/pdf",
+      "text/plain",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      // Images
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+      // Audio
+      "audio/mpeg",
+      "audio/mp3",
+      "audio/wav",
+      "audio/webm",
+      "audio/ogg",
+      "audio/x-m4a",
+      // Email/Messages
+      "message/rfc822",
+      "application/vnd.ms-outlook",
     ];
-    if (dangerousMimes.includes(file.type)) {
+
+    if (!allowedMimeTypes.includes(file.type)) {
       return NextResponse.json(
-        { error: "File type not allowed" },
+        { error: "File type not allowed. Supported types: PDF, Word, images, audio, text, and email." },
         { status: 400 },
       );
     }
