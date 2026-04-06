@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 import type { StateMachineReport } from "@/lib/statemachine/types";
 
 export async function GET(
@@ -17,6 +18,10 @@ export async function GET(
     }
 
     const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const rl = await rateLimit(_request, "DB_WRITE", user.id);
+    if (!rl.success) return rateLimitResponse(rl);
 
     const { data: doc, error: docError } = await supabase
       .from("documents")

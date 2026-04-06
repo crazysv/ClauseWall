@@ -1,10 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 import { matchDocumentClauses } from "@/lib/core/legal-matcher";
 import { createClient } from "@/lib/supabase/server";
 import type { Clause } from "@/types";
 
 export async function POST(request: NextRequest) {
   try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    
+    const rl = await rateLimit(request, "DB_WRITE", user.id);
+    if (!rl.success) return rateLimitResponse(rl);
+
     const { documentId, jurisdiction, documentType } = await request.json();
 
     if (!documentId) {
@@ -14,7 +22,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const supabase = await createClient();
+    
 
     // Fetch clauses for this document
     const { data: clauses, error } = await supabase

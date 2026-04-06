@@ -62,7 +62,7 @@ export async function GET(request: NextRequest) {
 // Mark notifications as read
 export async function PATCH(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    
     const {
       data: { user },
     } = await supabase.auth.getUser();

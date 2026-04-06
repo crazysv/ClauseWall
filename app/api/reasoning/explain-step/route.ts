@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createClient } from "@/lib/supabase/server";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 import type { ProofNode, ProofTree } from "@/lib/reasoning/types";
 import {
   formatELI5,
@@ -7,6 +9,13 @@ import {
 
 export async function POST(request: NextRequest) {
   try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    
+    const rl = await rateLimit(request, "AI_MEDIUM", user.id);
+    if (!rl.success) return rateLimitResponse(rl);
+
     const body = await request.json();
     const { proofNodeId, proofTree, mode } = body as {
       proofNodeId: string;

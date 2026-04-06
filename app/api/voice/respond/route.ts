@@ -1,9 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 import { getHindiResponse } from "@/lib/ai/hindi-responder";
 import { createClient } from "@/lib/supabase/server";
 
 export async function POST(request: NextRequest) {
   try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    
+    const rl = await rateLimit(request, "AI_HEAVY", user.id);
+    if (!rl.success) return rateLimitResponse(rl);
+
     const body = await request.json();
     const { question, documentId, clauseId, language } = body;
 
@@ -17,7 +25,7 @@ export async function POST(request: NextRequest) {
     let context: Record<string, any> = {};
 
     if (documentId) {
-      const supabase = await createClient();
+      
 
       const { data: doc } = await supabase
         .from("documents")

@@ -1,9 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 import { createClient } from "@/lib/supabase/server";
 import { extractAndAnalyzeStateMachine } from "@/lib/statemachine";
 
 export async function POST(request: NextRequest) {
   try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    
+    const rl = await rateLimit(request, "AI_HEAVY", user.id);
+    if (!rl.success) return rateLimitResponse(rl);
+
     const body = await request.json();
     const { documentId, contractText, documentType, jurisdiction } = body;
 
@@ -15,7 +23,7 @@ export async function POST(request: NextRequest) {
 
     // If documentId provided, fetch from Supabase
     if (documentId) {
-      const supabase = await createClient();
+      
 
       const { data: doc, error: docError } = await supabase
         .from("documents")
@@ -94,7 +102,7 @@ export async function POST(request: NextRequest) {
 
     // Store result if documentId was provided
     if (documentId) {
-      const supabase = await createClient();
+      
       await supabase
         .from("documents")
         .update({ state_machine_data: report })

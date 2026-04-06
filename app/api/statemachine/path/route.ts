@@ -1,10 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 import { createClient } from "@/lib/supabase/server";
 import { StateMachineAnalyzer } from "@/lib/statemachine/analyzer";
 import type { StateMachineReport } from "@/lib/statemachine/types";
 
 export async function POST(request: NextRequest) {
   try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    
+    const rl = await rateLimit(request, "AI_MEDIUM", user.id);
+    if (!rl.success) return rateLimitResponse(rl);
+
     const body = await request.json();
     const { documentId, fromStateId, toStateId } = body;
 
@@ -18,7 +26,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const supabase = await createClient();
+    
 
     const { data: doc, error: docError } = await supabase
       .from("documents")
