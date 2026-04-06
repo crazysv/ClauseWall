@@ -53,6 +53,11 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith(route)
   );
 
+  // E2E bypass for testing golden funnels without live network auth dependencies
+  if (process.env.NODE_ENV !== "production" && request.cookies.get("e2e-bypass-auth")) {
+    return supabaseResponse;
+  }
+
   // Redirect unauthenticated users away from protected routes
   if (isProtectedRoute && !user) {
     const loginUrl = new URL("/auth/login", request.url);
