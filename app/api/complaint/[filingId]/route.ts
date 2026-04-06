@@ -42,7 +42,7 @@ export async function PUT(
   { params }: { params: Promise<{ filingId: string }> },
 ) {
   try {
-    
+    const supabase = await createClient();
     const {
       data: { user },
     } = await supabase.auth.getUser();

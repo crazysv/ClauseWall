@@ -49,7 +49,7 @@ export async function PATCH(
 ) {
   try {
     const { caseId } = await params;
-    
+    const supabase = await createClient();
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -100,7 +100,7 @@ export async function DELETE(
 ) {
   try {
     const { caseId } = await params;
-    
+    const supabase = await createClient();
     const {
       data: { user },
     } = await supabase.auth.getUser();

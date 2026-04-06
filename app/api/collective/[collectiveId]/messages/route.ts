@@ -45,7 +45,7 @@ export async function POST(
   { params }: { params: Promise<{ collectiveId: string }> },
 ) {
   try {
-    
+    const supabase = await createClient();
     const {
       data: { user },
     } = await supabase.auth.getUser();

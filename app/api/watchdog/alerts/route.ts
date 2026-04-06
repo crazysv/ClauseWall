@@ -48,7 +48,7 @@ export async function GET() {
 
 export async function PATCH(request: NextRequest) {
   try {
-    
+    const supabase = await createClient();
     const {
       data: { user },
     } = await supabase.auth.getUser();

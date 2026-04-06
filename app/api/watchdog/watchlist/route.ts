@@ -39,7 +39,7 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    
+    const supabase = await createClient();
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    
+    const supabase = await createClient();
     const {
       data: { user },
     } = await supabase.auth.getUser();
