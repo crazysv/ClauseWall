@@ -349,39 +349,9 @@ export async function analyzeDocument(
       // Non-fatal — analysis continues without graph enrichment
     }
     
-    // ---- Step 3.6: Power Balance Analysis ----
-    await updateProgress(supabase, documentId, 92, "Analyzing power balance...", totalClauses);
-
-    let powerBalance = null;
-    try {
-      console.log(`[ClauseWall] [Power] Extracting power balance...`);
-      powerBalance = await extractPowerBalance(
-        analyzedClauses.map((c) => ({
-          clause_number: c.clause_number,
-          clause_type: c.clause_type,
-          risk_level: c.risk_level,
-          risk_score: c.risk_score,
-          explanation: c.explanation,
-        })),
-        documentType,
-        jurisdiction,
-        entityName
-      );
-      console.log(
-        `[ClauseWall] [Power] ⚖️ Balance: ${powerBalance.overall_party_a}/${powerBalance.overall_party_b} — ${powerBalance.verdict}`
-      );
-    } catch (powerError) {
-      console.error("[ClauseWall] [Power] Power balance analysis failed (non-fatal):", powerError);
-      // Non-fatal — analysis continues without power balance
-    }
-
-    // ---- Step 4: Calculate scores ----
-    await updateProgress(supabase, documentId, 95, "Calculating final score...", totalClauses);
-
+    // ---- Step 4: Calculate Core Statistics (Synchronous) ----
     const overallScore = calculateWeightedScore(analyzedClauses);
     const counts = getRiskCounts(analyzedClauses);
-
-    // ---- Step 5: Generate summary ----
     const verificationRate = analyzedClauses.length > 0
       ? Math.round((dbMatchCount / analyzedClauses.length) * 100)
       : 0;
@@ -394,12 +364,16 @@ export async function analyzeDocument(
       counts.illegal,
       overallScore
     );
-
     summary += ` | Verification: ${dbMatchCount} of ${analyzedClauses.length} clauses (${verificationRate}%) verified against ClauseWall Legal Database.`;
 
-    // ---- Step 5.5: Generate Blockchain Proof ----
-    await updateProgress(supabase, documentId, 97, "Generating blockchain proof...", totalClauses);
+    // ---- Step 5: Non-Blocking Secondary Subsystems (Concurrent execution) ----
+    await updateProgress(supabase, documentId, 92, "Running parallel AI enrichments...", totalClauses);
 
+    let powerBalance = null;
+    let temporalData = null;
+    let poisonPillData = null;
+    let lawChangesData = null;
+    
     let proofHash: string | null = null;
     let proofCid: string | null = null;
     let proofTimestamp: string | null = null;
@@ -407,193 +381,204 @@ export async function analyzeDocument(
     let tsaToken: string | null = null;
     let tsaSerial: string | null = null;
 
-    try {
-      const { generateAndPinProof } = await import("@/lib/proof");
-
-      const proofResult = await generateAndPinProof(
-        {
-          document_type: documentType,
-          jurisdiction,
-          overall_risk_score: overallScore,
-          total_clauses: analyzedClauses.length,
-          safe_count: counts.safe,
-          warning_count: counts.warning,
-          dangerous_count: counts.dangerous,
-          illegal_count: counts.illegal,
-        },
-        analyzedClauses.map((c: any) => ({
-          clause_number: c.clause_number,
-          clause_type: c.clause_type,
-          risk_level: c.risk_level,
-          risk_score: c.risk_score,
-          verification_source: c.verification_source,
-          legal_citation: c.legal_citation,
-        })),
-        verificationRate
-      );
-
-      if (proofResult.success) {
-        proofHash = proofResult.proof_hash;
-        proofCid = proofResult.cid;
-        proofTimestamp = proofResult.timestamp;
-        proofStatus = proofResult.cid ? "pinned" : proofResult.tsa_token ? "verified" : "hash_only";
-        tsaToken = proofResult.tsa_token;
-        tsaSerial = proofResult.tsa_serial;
-
-        console.log(
-          `[ClauseWall] [Proof] ✅ Hash: ${proofHash?.substring(0, 16)}... TSA: ${tsaSerial || "none"} IPFS: ${proofCid || "none"}`
-        );
-      }
-    } catch (proofError) {
-      console.error("[ClauseWall] [Proof] Non-fatal error:", proofError);
-    }
-
-    // ---- Step 5.7: State Machine Extraction (non-blocking) ----
-    try {
-      await updateProgress(supabase, documentId, 98, "Extracting contract state machine...", totalClauses);
-      const { extractAndAnalyzeStateMachine } = await import("@/lib/statemachine");
-      const stateMachineReport = await extractAndAnalyzeStateMachine(
-        rawText,
-        documentType,
-        jurisdiction,
-        documentId,
-        analyzedClauses.map((c: { original_text: string; clause_type: string; clause_number: number }) => ({
-          text: c.original_text,
-          type: c.clause_type,
-          index: c.clause_number - 1,
-        }))
-      );
-
-      if (stateMachineReport) {
-        await supabase
-          .from("documents")
-          .update({ state_machine_data: stateMachineReport })
-          .eq("id", documentId);
-        console.log(
-          `[ClauseWall] [StateMachine] ✅ Stored: ${stateMachineReport.stateMachine.metadata.totalStates} states, ${stateMachineReport.trapAnalysis.length} traps`
-        );
-      }
-    } catch (smError) {
-      console.error("[ClauseWall] [StateMachine] Non-fatal extraction error:", smError);
-      // Non-blocking — analysis continues without state machine
-    }
-
-    // ---- Step 5.8: Temporal Extraction (Time Bomb Defuser) ----
-    let temporalData = null;
-    try {
-      await updateProgress(supabase, documentId, 99, "Extracting temporal obligations...", totalClauses);
-      const { extractTemporalObligations } = await import("@/lib/timebomb");
-      temporalData = await extractTemporalObligations(
-        rawText,
-        documentType,
-        jurisdiction,
-        analyzedClauses.map((c: { clause_number: number; original_text: string; clause_type: string }) => ({
-          clause_number: c.clause_number,
-          original_text: c.original_text,
-          clause_type: c.clause_type,
-        }))
-      );
-      console.log(
-        `[ClauseWall] [TimeBomb] ✅ Extracted ${temporalData.deadlines.length} temporal deadlines, risk: ${temporalData.overall_temporal_risk}`
-      );
-    } catch (temporalError) {
-      console.error("[ClauseWall] [TimeBomb] Non-fatal temporal extraction error:", temporalError);
-      // Non-blocking — analysis continues without temporal data
-    }
-
-    // ---- Step 5.9: Poison Pill Detection (Clause Interconnection Traps) ----
-    let poisonPillData = null;
-    try {
-      await updateProgress(supabase, documentId, 99, "Detecting clause interconnection traps...", totalClauses);
-      const { analyzePoisonPills } = await import("@/lib/poisonpill");
-      poisonPillData = await analyzePoisonPills(
-        analyzedClauses.map((c: any) => ({
-          clause_number: c.clause_number,
-          original_text: c.original_text,
-          clause_type: c.clause_type,
-          risk_level: c.risk_level,
-          risk_score: c.risk_score,
-          explanation: c.explanation,
-          legal_citation: c.legal_citation || null,
-          extracted_value: c.extracted_value || null,
-          extracted_unit: c.extracted_unit || null,
-        })),
-        documentType,
-        jurisdiction,
-        entityName || null
-      );
-      console.log(
-        `[ClauseWall] [PoisonPill] ✅ ${poisonPillData.traps.length} traps found, score: ${poisonPillData.combined_trap_score}/100`
-      );
-    } catch (poisonPillError) {
-      console.error("[ClauseWall] [PoisonPill] Non-fatal detection error:", poisonPillError);
-      // Non-blocking — analysis continues without poison pill data
-    }
-
-    // ---- Step 5.95: Collective Intelligence Feed (non-blocking) ----
-    try {
-      if (entityName) {
-        const { getEntityIntelligence } = await import("@/lib/collective");
-        const intelligence = await getEntityIntelligence(
-          entityName,
-          undefined,
-          documentId,
-          jurisdiction,
-          documentType
-        );
-        if (intelligence?.collective) {
-          console.log(
-            `[ClauseWall] [Collective] ✅ Entity "${entityName}" — ${intelligence.entity.total_flags} flags, collective: ${intelligence.collective.status} (${intelligence.collective.member_count} members)`
+    const enrichmentTasks = [
+      // 1. Power Balance extraction
+      (async () => {
+        try {
+          console.log(`[ClauseWall] [Power] Extracting power balance...`);
+          powerBalance = await extractPowerBalance(
+            analyzedClauses.map((c) => ({
+              clause_number: c.clause_number,
+              clause_type: c.clause_type,
+              risk_level: c.risk_level,
+              risk_score: c.risk_score,
+              explanation: c.explanation,
+            })),
+            documentType,
+            jurisdiction,
+            entityName
           );
-        } else if (intelligence?.entity) {
-          console.log(
-            `[ClauseWall] [Collective] ℹ️ Entity "${entityName}" — ${intelligence.entity.total_flags} flags, no collective yet`
-          );
+          console.log(`[ClauseWall] [Power] ⚖️ Balance: ${powerBalance.overall_party_a}/${powerBalance.overall_party_b}`);
+        } catch (e) {
+          console.error("[ClauseWall] [Power] Power balance failed:", e);
         }
-      }
-    } catch (collectiveError) {
-      console.error("[ClauseWall] [Collective] Non-fatal intelligence error:", collectiveError);
-      // Non-blocking — analysis continues without collective data
-    }
+      })(),
 
-    // ---- Step 5.96: Retroactive Law Change Check (non-blocking) ----
-    let lawChangesData = null;
-    try {
-      const { analyzeRetroactiveImpact } = await import("@/lib/lawchange");
-      const signingDate = temporalData?.signing_date_detected || null;
-      lawChangesData = await analyzeRetroactiveImpact(
-        documentId,
-        signingDate,
-        documentType,
-        jurisdiction,
-        analyzedClauses.map((c: any) => ({
-          clause_type: c.clause_type,
-          clause_number: c.clause_number,
-          original_text: c.original_text,
-        }))
-      );
-      if (lawChangesData && lawChangesData.total_changes > 0) {
-        console.log(
-          `[ClauseWall] [LawChange] ✅ Retroactive: ${lawChangesData.total_changes} changes since signing`
-        );
-      }
-    } catch (lawChangeError) {
-      console.error("[ClauseWall] [LawChange] Retroactive check failed (non-fatal):", lawChangeError);
-      // Non-blocking — analysis continues without law change data
-    }
+      // 2. Blockchain Proof generation
+      (async () => {
+        try {
+          const { generateAndPinProof } = await import("@/lib/proof");
+          const proofResult = await generateAndPinProof(
+            {
+              document_type: documentType,
+              jurisdiction,
+              overall_risk_score: overallScore,
+              total_clauses: analyzedClauses.length,
+              safe_count: counts.safe,
+              warning_count: counts.warning,
+              dangerous_count: counts.dangerous,
+              illegal_count: counts.illegal,
+            },
+            analyzedClauses.map((c: any) => ({
+              clause_number: c.clause_number,
+              clause_type: c.clause_type,
+              risk_level: c.risk_level,
+              risk_score: c.risk_score,
+              verification_source: c.verification_source,
+              legal_citation: c.legal_citation,
+            })),
+            verificationRate
+          );
 
-    // ---- Step 5.97: Market Intelligence Benchmark Update (non-blocking) ----
+          if (proofResult.success) {
+            proofHash = proofResult.proof_hash;
+            proofCid = proofResult.cid;
+            proofTimestamp = proofResult.timestamp;
+            proofStatus = proofResult.cid ? "pinned" : proofResult.tsa_token ? "verified" : "hash_only";
+            tsaToken = proofResult.tsa_token;
+            tsaSerial = proofResult.tsa_serial;
+          }
+        } catch (e) {
+          console.error("[ClauseWall] [Proof] Proof generation failed:", e);
+        }
+      })(),
+
+      // 3. State Machine extraction
+      (async () => {
+        try {
+          const { extractAndAnalyzeStateMachine } = await import("@/lib/statemachine");
+          const stateMachineReport = await extractAndAnalyzeStateMachine(
+            rawText,
+            documentType,
+            jurisdiction,
+            documentId,
+            analyzedClauses.map((c: any) => ({
+              text: c.original_text,
+              type: c.clause_type,
+              index: c.clause_number - 1,
+            }))
+          );
+
+          if (stateMachineReport) {
+            await supabase
+              .from("documents")
+              .update({ state_machine_data: stateMachineReport })
+              .eq("id", documentId);
+          }
+        } catch (e) {
+          console.error("[ClauseWall] [StateMachine] State machine failed:", e);
+        }
+      })(),
+
+      // 4. Temporal extraction
+      (async () => {
+        try {
+          const { extractTemporalObligations } = await import("@/lib/timebomb");
+          temporalData = await extractTemporalObligations(
+            rawText,
+            documentType,
+            jurisdiction,
+            analyzedClauses.map((c: any) => ({
+              clause_number: c.clause_number,
+              original_text: c.original_text,
+              clause_type: c.clause_type,
+            }))
+          );
+        } catch (e) {
+          console.error("[ClauseWall] [TimeBomb] Temporal extraction failed:", e);
+        }
+      })(),
+
+      // 5. Poison Pill detection
+      (async () => {
+        try {
+          const { analyzePoisonPills } = await import("@/lib/poisonpill");
+          poisonPillData = await analyzePoisonPills(
+            analyzedClauses.map((c: any) => ({
+              clause_number: c.clause_number,
+              original_text: c.original_text,
+              clause_type: c.clause_type,
+              risk_level: c.risk_level,
+              risk_score: c.risk_score,
+              explanation: c.explanation,
+              legal_citation: c.legal_citation || null,
+              extracted_value: c.extracted_value || null,
+              extracted_unit: c.extracted_unit || null,
+            })),
+            documentType,
+            jurisdiction,
+            entityName || null
+          );
+        } catch (e) {
+          console.error("[ClauseWall] [PoisonPill] Detection failed:", e);
+        }
+      })(),
+
+      // 6. Retroactive Law Change check
+      (async () => {
+        try {
+          const { analyzeRetroactiveImpact } = await import("@/lib/lawchange");
+          lawChangesData = await analyzeRetroactiveImpact(
+            documentId,
+            null, // signing date dynamically unknown inside the concurrent block context, using null fallback
+            documentType,
+            jurisdiction,
+            analyzedClauses.map((c: any) => ({
+              clause_type: c.clause_type,
+              clause_number: c.clause_number,
+              original_text: c.original_text,
+            }))
+          );
+        } catch (e) {
+          console.error("[ClauseWall] [LawChange] Retroactive check failed:", e);
+        }
+      })(),
+
+      // 7. Collective Intelligence trigger
+      (async () => {
+        if (!entityName) return;
+        try {
+          const { getEntityIntelligence } = await import("@/lib/collective");
+          await getEntityIntelligence(entityName, undefined, documentId, jurisdiction, documentType);
+        } catch (e) {
+          console.error("[ClauseWall] [Collective] Intelligence fetch failed:", e);
+        }
+      })(),
+
+      // 8. Authority Routing
+      (async () => {
+        try {
+          const clauseTypes = analyzedClauses.map((c: any) => c.clause_type).filter(Boolean);
+          const routingResult = await determineJurisdiction({
+            document_type: documentType || "other",
+            jurisdiction: jurisdiction || "general",
+            clause_types: clauseTypes,
+            entity_name: entityName || undefined,
+          });
+          await supabase
+            .from("documents")
+            .update({ authority_routing: routingResult })
+            .eq("id", documentId);
+        } catch (e) {
+          console.warn("[ClauseWall] Authority routing failed:", e);
+        }
+      })()
+    ];
+
+    // Wait for all concurrent enrichments to resolve or reject silently
+    await Promise.allSettled(enrichmentTasks);
+
+    // ---- Step 5.97: Market Intelligence Benchmark Update (fire-and-forget) ----
     try {
       const { incrementalBenchmarkUpdate } = await import("@/lib/market/aggregator");
-      // Fire-and-forget — don't await to keep pipeline fast
       incrementalBenchmarkUpdate(documentId).catch((marketErr: any) => {
-        console.error("[ClauseWall] [Market] Incremental update failed (non-fatal):", marketErr);
+        console.error("[ClauseWall] [Market] Incremental update failed:", marketErr);
       });
-    } catch (marketImportError) {
-      console.error("[ClauseWall] [Market] Import failed (non-fatal):", marketImportError);
+    } catch (e) {
+      console.error("[ClauseWall] [Market] Import failed:", e);
     }
 
-    // ---- Step 6: Update document with results ----
+    // ---- Step 6: Update document with final gathered results ----
     const { error: updateError } = await supabase
       .from("documents")
       .update({
@@ -623,26 +608,6 @@ export async function analyzeDocument(
 
     if (updateError) {
       throw new Error(`Failed to update document: ${updateError.message}`);
-    }
-
-    // ---- Step 7 (non-blocking): Authority Routing ----
-    try {
-      const clauseTypes = analyzedClauses.map((c: any) => c.clause_type).filter(Boolean);
-      const routingResult = await determineJurisdiction({
-        document_type: documentType || "other",
-        jurisdiction: jurisdiction || "general",
-        claim_amount: undefined,
-        counterparty_type: undefined,
-        clause_types: clauseTypes,
-        entity_name: entityName || undefined,
-      });
-      await supabase
-        .from("documents")
-        .update({ authority_routing: routingResult })
-        .eq("id", documentId);
-      console.log(`[ClauseWall] ⚖️ Authority routing computed: ${routingResult.dispute_category}`);
-    } catch (routingError) {
-      console.warn("[ClauseWall] Authority routing failed (non-fatal):", routingError);
     }
 
     console.log(
