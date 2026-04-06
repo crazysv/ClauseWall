@@ -73,7 +73,7 @@ async function findMatchingRules(
     * Compare extracted values against a single rule
     * Returns true if the clause VIOLATES the rule
     */
-    function checkViolation(values: ExtractedValues, rule: StructuredRule): boolean {
+    export function checkViolation(values: ExtractedValues, rule: StructuredRule): boolean {
     switch (rule.rule_type) {
     case "max_value":
         if (rule.limit_value == null) return false;
@@ -146,7 +146,7 @@ async function findMatchingRules(
 /**
  * Convert between common units
  */
-function convertUnits(value: number, fromUnit: string, toUnit: string): number | null {
+export function convertUnits(value: number, fromUnit: string, toUnit: string): number | null {
   // months_of_rent and months are compatible
   if (
     (fromUnit === "months_of_rent" && toUnit === "months") ||
@@ -178,7 +178,7 @@ function convertUnits(value: number, fromUnit: string, toUnit: string): number |
  * Fill in violation template with actual values
  * Replaces {{value}}, {{value_minus_2}}, {{landlord_value}}, etc.
  */
-function fillTemplate(template: string, values: ExtractedValues): string {
+export function fillTemplate(template: string, values: ExtractedValues): string {
   let filled = template;
 
   if (values.primary_value != null) {
