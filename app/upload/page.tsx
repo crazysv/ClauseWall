@@ -25,6 +25,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+import { motion } from "framer-motion";
 import { DOCUMENT_TYPES, JURISDICTIONS } from "@/lib/utils/constants";
 import { toast } from "sonner";
 import QuickScanResult from "@/components/upload/quick-scan-result";
@@ -748,71 +750,96 @@ export default function UploadPage() {
                   </TabsContent>
                 </Tabs>
 
-                {/* Privacy Mode Toggle */}
-                <div className="mb-6">
-                  <PrivacyToggle />
-                </div>
+                
+                {/* --- DEFERRED SETTINGS: ONLY SHOW AFTER INGESTION --- */}
+                {hasContent && (
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    className="space-y-6 pt-4 mb-8"
+                  >
+                    
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm font-bold text-foreground mb-2 block">
+                        Document Type <span className="text-primary">*</span>
+                      </label>
+                      <Select value={documentType} onValueChange={setDocumentType}>
+                        <SelectTrigger className="h-11 font-medium bg-background border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(10,10,10,1)]">
+                          <SelectValue placeholder="Select type..." />
+                        </SelectTrigger>
+                        <SelectContent className="border-2 border-foreground shadow-[4px_4px_0_0_rgba(10,10,10,1)] font-medium">
+                          {DOCUMENT_TYPES.map((type) => (
+                            <SelectItem key={type.value} value={type.value}>
+                              {type.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                  <div>
-                    <label className="text-sm font-bold text-foreground mb-2 block">
-                      Document Type <span className="text-primary">*</span>
-                    </label>
-                    <Select
-                      value={documentType}
-                      onValueChange={setDocumentType}
-                    >
-                      <SelectTrigger className="h-11 font-medium">
-                        <SelectValue placeholder="Select type..." />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {DOCUMENT_TYPES.map((type) => (
-                          <SelectItem key={type.value} value={type.value}>
-                            {type.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <div>
+                      <label className="text-sm font-bold text-foreground mb-2 block">
+                        State <span className="text-primary">*</span>
+                      </label>
+                      <Select value={jurisdiction} onValueChange={setJurisdiction}>
+                        <SelectTrigger className="h-11 font-medium bg-background border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(10,10,10,1)]">
+                          <SelectValue placeholder="Select state..." />
+                        </SelectTrigger>
+                        <SelectContent className="border-2 border-foreground shadow-[4px_4px_0_0_rgba(10,10,10,1)] font-medium">
+                          {JURISDICTIONS.map((j) => (
+                            <SelectItem key={j.value} value={j.value}>
+                              {j.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
 
-                  <div>
-                    <label className="text-sm font-bold text-foreground mb-2 block">
-                      State <span className="text-primary">*</span>
-                    </label>
-                    <Select
-                      value={jurisdiction}
-                      onValueChange={setJurisdiction}
-                    >
-                      <SelectTrigger className="h-11 font-medium">
-                        <SelectValue placeholder="Select state..." />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {JURISDICTIONS.map((j) => (
-                          <SelectItem key={j.value} value={j.value}>
-                            {j.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
 
-                {/* Language Selector */}
-                <div className="mb-6">
-                  <label className="text-sm font-bold text-foreground mb-2 block">
-                    Document Language
-                  </label>
-                  <LanguageSelector
-                    value={sourceLanguage}
-                    onChange={setSourceLanguage}
-                  />
-                  <p className="text-xs text-foreground mt-1">
-                    Auto-detect works for most documents. Select manually for
-                    better accuracy.
-                  </p>
-                </div>
+                    {/* Advanced Settings Accordion */}
+                    <Accordion type="single" collapsible className="w-full">
+                      <AccordionItem value="advanced" className="border-2 border-foreground bg-muted hover:bg-muted/50 transition-colors">
+                        <AccordionTrigger className="text-sm font-black uppercase tracking-wider py-4 px-4 data-[state=open]:text-primary data-[state=open]:border-b-2 data-[state=open]:border-foreground transition-all">
+                          <div className="flex items-center gap-2">
+                            <span>⚙️ Advanced Settings</span>
+                          </div>
+                        </AccordionTrigger>
+                        <AccordionContent className="pt-6 pb-6 px-4 space-y-8 bg-background border-t-0 p-4">
+                          
+                          {/* Privacy Slider Inside Advanced */}
+                          <div>
+                            <div className="mb-4">
+                              <h4 className="text-sm font-black uppercase tracking-wider text-foreground">Data Exfiltration & Privacy Rules</h4>
+                              <p className="text-xs font-medium text-foreground mt-1">ClauseWall anonymizes personally identifiable indicators locally by default before network transitions.</p>
+                            </div>
+                            <PrivacyToggle />
+                          </div>
 
-                {error && (
+                          <div className="h-px bg-foreground/10 my-4" />
+
+                          {/* LanguageSelector Inside Advanced */}
+                          <div>
+                            <label className="text-sm font-black uppercase tracking-wider text-foreground mb-2 block">
+                              Source Language
+                            </label>
+                            <LanguageSelector
+                              value={sourceLanguage}
+                              onChange={setSourceLanguage}
+                            />
+                            <p className="text-xs text-foreground mt-2 font-medium">
+                              Auto-detect correctly parses major Indian and global languages.
+                            </p>
+                          </div>
+
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
+                  </motion.div>
+                )}
+
+{error && (
                   <div className="flex items-center gap-2 text-destructive text-sm font-medium mb-4 p-3 rounded-none bg-destructive/5 border border-destructive">
                     <AlertCircle className="h-4 w-4 flex-shrink-0" />
                     {error}
@@ -837,27 +864,18 @@ export default function UploadPage() {
                   )}
                 </Button>
 
-                <div className="flex flex-wrap items-center justify-center gap-6 mt-6 pt-6 border-t border-border">
-                  {mlStatus === "ready" && (
-                    <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
-                      <Cpu className="h-4 w-4 text-primary" />
-                      ML scan: instant
-                    </div>
-                  )}
-                  <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
-                    <Zap className="h-4 w-4 text-primary" />
-                    Quick scan: 5 sec
+                
+                {/* TRUST LOCKUP */}
+                <div className="flex flex-col items-center justify-center gap-4 mt-6 pt-6 border-t-2 border-foreground">
+                  <div className="flex flex-wrap items-center justify-center gap-5 text-sm font-black uppercase tracking-wider text-foreground">
+                    <span className="flex items-center gap-1.5"><Shield className="w-4 h-4 text-primary"/> On-Device Privacy</span>
+                    <span className="flex items-center gap-1.5"><Zap className="w-4 h-4 text-amber-500"/> 5-sec Scan</span>
+                    <span className="flex items-center gap-1.5"><Shield className="w-4 h-4 text-emerald-500"/> Auto-Deleted</span>
                   </div>
-                  <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
-                    <Shield className="h-4 w-4 text-primary" />
-                    Full report: 60 sec
-                  </div>
+                  <p className="text-xs font-bold text-foreground text-center">
+                    Confidential mode encrypts clauses. No full documents sent.
+                  </p>
                 </div>
-
-                <p className="text-xs text-foreground text-center mt-4">
-                  🔒 Your document is analyzed in real-time and not permanently
-                  stored. We take your privacy seriously.
-                </p>
               </CardContent>
             </Card>
 
