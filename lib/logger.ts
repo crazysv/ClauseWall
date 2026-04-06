@@ -23,6 +23,8 @@ const isDev = process.env.NODE_ENV === "development";
 // In production, skip debug logs
 const MIN_LEVEL: number = isDev ? LOG_LEVELS.debug : LOG_LEVELS.info;
 
+import { getRequestContext } from "./context";
+
 /**
  * Core log function — formats output based on environment.
  *
@@ -41,11 +43,13 @@ function emit(
 
   if (!isDev) {
     // Production: structured JSON
+    const ctx = getRequestContext();
     const entry: Record<string, unknown> = {
       timestamp,
       level,
       module,
       message,
+      reqId: ctx.reqId,
     };
 
     if (meta && Object.keys(meta).length > 0) {
@@ -66,7 +70,9 @@ function emit(
     }
   } else {
     // Development: human-readable
-    const prefix = `[${timestamp.slice(11, 23)}] [${level.toUpperCase().padEnd(5)}] [${module}]`;
+    const ctx = getRequestContext();
+    const prefixCtx = ctx.reqId ? `[${ctx.reqId.slice(0, 8)}] ` : "";
+    const prefix = `${prefixCtx}[${timestamp.slice(11, 23)}] [${level.toUpperCase().padEnd(5)}] [${module}]`;
     const metaStr =
       meta && Object.keys(meta).length > 0
         ? ` ${JSON.stringify(meta)}`

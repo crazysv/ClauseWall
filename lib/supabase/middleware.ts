@@ -7,8 +7,14 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function updateSession(request: NextRequest) {
+  // Generate tracking ID and inject into downstream headers
+  const reqId = crypto.randomUUID();
+  request.headers.set("x-request-id", reqId);
+
   let supabaseResponse = NextResponse.next({
-    request,
+    request: {
+      headers: request.headers,
+    },
   });
 
   const supabase = createServerClient(
