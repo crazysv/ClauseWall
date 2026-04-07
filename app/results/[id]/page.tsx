@@ -6,14 +6,10 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Shield,
-  ShieldCheck,
-  FileStack,
   XCircle,
   FileText,
   Loader2,
   RefreshCw,
-  ChevronDown,
-  BarChart3,
 } from "lucide-react";
 import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
@@ -31,20 +27,17 @@ import {
 import type { Document, Clause } from "@/types";
 import { toast } from "sonner";
 import { useSound } from "@/lib/audio/sound-context";
-import ClauseCard from "@/components/results/clause-card";
+import ResultsLayout from "@/components/results/results-layout";
+import ContextRail from "@/components/results/context-rail";
+import ClauseListComponent from "@/components/results/clause-list";
+import ClauseDetailDrawer from "@/components/results/clause-detail-drawer";
 import QRSection from "@/components/results/qr-section";
-import EntityReputation from "@/components/results/entity-reputation";
 import MismatchBanner from "@/components/results/mismatch-banner";
 import FloatingActions from "@/components/results/floating-actions";
-import EscapeCTA from "@/components/results/escape-cta";
-import SimulatorCTA from "@/components/results/simulator-cta";
-import PowerBalanceMeter from "@/components/results/power-balance-meter";
-import { NextSteps } from "@/components/results/next-steps";
 import ClauseRewriteModal from "@/components/results/clause-rewrite-modal";
 import MoodRingBackground from "@/components/results/mood-ring-background";
 import ProofSection from "@/components/results/proof-section";
 import MicButton from "@/components/voice/mic-button";
-import StateMachineCTA from "@/components/statemachine/statemachine-cta";
 import StateMachineModal from "@/components/statemachine/state-machine-modal";
 
 // Voice-First Legal Aid
@@ -91,7 +84,6 @@ const ShareRoomModal = dynamic(
   { ssr: false },
 );
 import type { StateMachineReport } from "@/lib/statemachine/types";
-import DeliberationCTA from "@/components/deliberation/deliberation-cta";
 import DocumentDeliberation from "@/components/deliberation/document-deliberation";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import type {
@@ -99,15 +91,10 @@ import type {
   DeliberationProgress,
   ClauseDeliberation,
 } from "@/lib/deliberation/types";
-import { TimebombCTA } from "@/components/timebomb/timebomb-cta";
 import type {
-  TemporalExtractionResult,
   PoisonPillAnalysisResult,
 } from "@/types";
-import { PoisonPillCTA } from "@/components/poisonpill/poison-pill-cta";
 import { PoisonPillSection } from "@/components/poisonpill/poison-pill-section";
-import ComplaintCTA from "@/components/complaint/complaint-cta";
-import ShadowCTA from "@/components/shadow/shadow-cta";
 
 // Bhasha Engine
 import { LanguageBadge } from "@/components/bhasha/language-badge";
@@ -157,6 +144,7 @@ export default function ResultsPage() {
   // UX Overhaul: Sort + Collapsible
   const [sortByRisk, setSortByRisk] = useState(true);
   const [analysisDetailsOpen, setAnalysisDetailsOpen] = useState(false);
+  const [forensicsLabOpen, setForensicsLabOpen] = useState(false);
 
   // Deliberation state
   const [deliberationResult, setDeliberationResult] =
@@ -176,6 +164,10 @@ export default function ResultsPage() {
   const [autopsyClause, setAutopsyClause] = useState<HybridClause | null>(null);
 
   const [rewriteClause, setRewriteClause] = useState<HybridClause | null>(null);
+
+  // 📋 CLAUSE DETAIL DRAWER
+  const [drawerClause, setDrawerClause] = useState<HybridClause | null>(null);
+  const [drawerInitialTab, setDrawerInitialTab] = useState<string | null>(null);
 
   // 🌈 MOOD RING
   const [activeClauseIndex, setActiveClauseIndex] = useState<number | null>(
@@ -680,32 +672,30 @@ export default function ResultsPage() {
   const riskLevel = getRiskLevel(document.overall_risk_score);
   const riskColor = RISK_COLORS[riskLevel];
 
+  // ═══════════════════════════════════════════
+  // RENDER: Split Workspace Layout
+  // ═══════════════════════════════════════════
   return (
-    <>
-      {/* 🌈 Mood Ring Background */}
-      <MoodRingBackground
-        activeRiskLevel={activeMoodRisk}
-        isInClauseZone={isInClauseZone}
-      />
-      <div className="relative px-4 sm:px-6 md:px-8 py-8 pb-24 sm:pb-12 bg-background min-h-screen">
-        {/* Background */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 left-0 w-full h-1 bg-red-600" />
-        </div>
-
-        <div className="relative mx-auto max-w-5xl">
-          {/* Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+    <ResultsLayout
+      header={
+        <MoodRingBackground
+          activeRiskLevel={activeMoodRisk}
+          isInClauseZone={isInClauseZone}
+        />
+      }
+      main={
+        <>
+          {/* ── Page Header ── */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <div>
-              <div className="flex flex-wrap items-center gap-2 text-foreground text-sm font-bold uppercase tracking-wider mb-3">
-                <span className="text-foreground">
+              <div className="flex flex-wrap items-center gap-2 text-[#a3a3a3] text-xs font-medium tracking-wider mb-2">
+                <span className="text-[#fafafa]">
                   {document.original_filename || "Analyzed Document"}
                 </span>
                 <span>•</span>
                 <span>{getDocumentTypeLabel(document.document_type)}</span>
                 <span>•</span>
                 <span>{getStateName(document.jurisdiction)}</span>
-                {/* Bhasha: Language badge for non-English docs */}
                 {document.detected_language &&
                   document.detected_language !== "en" && (
                     <>
@@ -719,7 +709,7 @@ export default function ResultsPage() {
                     </>
                   )}
               </div>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-foreground tracking-tight">
+              <h1 className="font-space text-2xl sm:text-3xl font-bold text-[#fafafa] tracking-tight">
                 Analysis Results
               </h1>
             </div>
@@ -740,7 +730,7 @@ export default function ResultsPage() {
             </div>
           </div>
 
-          {/* Mismatch Warning */}
+          {/* ── Banners ── */}
           <MismatchBanner
             documentId={documentId}
             selectedJurisdiction={document.jurisdiction}
@@ -748,11 +738,7 @@ export default function ResultsPage() {
             selectedDocType={document.document_type}
             detectedDocType={document.detected_document_type}
           />
-
-          {/* Law Change Retroactive Banner */}
           <RetroactiveBanner documentId={documentId} />
-
-          {/* Bhasha: Language Detection Banner + Bilingual Toggle */}
           {document.detected_language &&
             document.detected_language !== "en" && (
               <div className="mb-6 space-y-3">
@@ -779,380 +765,62 @@ export default function ResultsPage() {
               </div>
             )}
 
-          {/* Score Overview */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <Card className="card-impact md:col-span-2">
-              <CardContent className="p-6 md:p-8 flex items-center gap-6 md:gap-8">
-                <div
-                  className="relative h-28 w-28 md:h-32 md:w-32 rounded-full border-4 flex items-center justify-center flex-shrink-0"
-                  title="Overall contract risk score. 0 = safe, 100 = extremely dangerous"
-                  style={{
-                    borderColor: riskColor,
-                    borderStyle: "solid",
-                  }}
+          {/* ── Mobile: Compact summary (visible only below lg) ── */}
+          <div className="lg:hidden mb-6">
+            <div className="card-results p-4 flex items-center gap-4">
+              <div
+                className="relative h-16 w-16 rounded-full border-[3px] flex items-center justify-center flex-shrink-0"
+                style={{ borderColor: riskColor, backgroundColor: '#111111' }}
+              >
+                <span
+                  className="font-space text-2xl font-black tabular-nums"
+                  style={{ color: riskColor }}
                 >
-                  <div className="absolute inset-2 bg-background rounded-full flex items-center justify-center border-2 border-foreground">
-                    <span
-                      className="text-4xl md:text-5xl font-black tabular-nums"
-                      style={{ color: riskColor }}
-                    >
-                      {document.overall_risk_score}
-                    </span>
-                  </div>
-                </div>
-                <div>
-                  <p className="text-sm font-bold uppercase tracking-wider text-foreground mb-1">
-                    Overall Risk Score
-                  </p>
-                  <p
-                    className="text-2xl md:text-3xl font-black uppercase"
-                    style={{ color: riskColor }}
-                  >
-                    {getRiskLabel(riskLevel)}
-                  </p>
-                  <p className="text-sm font-bold text-foreground mt-2 px-3 py-1 bg-muted inline-block rounded-none border border-foreground">
-                    {document.total_clauses} clauses analyzed
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="card-impact">
-              <CardContent className="p-6 flex flex-col justify-center h-full">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center p-2 rounded border-2 border-green-600 bg-green-50 dark:bg-green-950">
-                    <p className="text-2xl md:text-3xl font-black text-green-900 dark:text-green-100 font-bold dark:text-green-400 tabular-nums">
-                      {document.safe_count}
-                    </p>
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-green-800 dark:text-green-300">
-                      Safe
-                    </p>
-                  </div>
-                  <div className="text-center p-2 rounded border-2 border-yellow-600 bg-yellow-50 dark:bg-yellow-950">
-                    <p className="text-2xl md:text-3xl font-black text-yellow-900 dark:text-yellow-100 font-bold dark:text-yellow-400 tabular-nums">
-                      {document.warning_count}
-                    </p>
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-yellow-800 dark:text-yellow-300">
-                      Warning
-                    </p>
-                  </div>
-                  <div className="text-center p-2 rounded border-2 border-red-600 bg-red-50 dark:bg-red-950">
-                    <p className="text-2xl md:text-3xl font-black text-red-900 dark:text-red-100 font-bold dark:text-red-400 tabular-nums">
-                      {document.dangerous_count}
-                    </p>
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-800 dark:text-red-300">
-                      Dangerous
-                    </p>
-                  </div>
-                  <div className="text-center p-2 rounded border-2 border-purple-600 bg-purple-50 dark:bg-purple-950">
-                    <p className="text-2xl md:text-3xl font-black text-purple-900 dark:text-purple-100 font-bold dark:text-purple-400 tabular-nums">
-                      {document.illegal_count}
-                    </p>
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-purple-800 dark:text-purple-300">
-                      Illegal
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="card-impact">
-              <CardContent className="p-6 flex flex-col justify-center h-full">
-                <p className="text-sm font-bold uppercase tracking-wider text-foreground mb-2">
-                  Identified Entity
-                </p>
-                <p className="text-xl font-bold truncate text-foreground">
-                  {document.entity_name || "Not identified"}
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Summary */}
-          {document.summary && (
-            <Card className="card-impact mb-8 bg-muted">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-black uppercase tracking-wider mb-3 flex items-center gap-2 text-foreground">
-                  <FileText className="h-5 w-5 text-red-600" />
-                  Executive Summary
-                </h3>
-                <p className="text-foreground leading-relaxed text-sm md:text-base font-medium">
-                  {document.summary}
-                </p>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* ═══ ANALYSIS DETAILS — Collapsible ═══ */}
-          <div className="rounded-none border border-foreground border-2 bg-white/[0.02] overflow-hidden mb-8">
-            <button
-              onClick={() => setAnalysisDetailsOpen(!analysisDetailsOpen)}
-              className="w-full flex items-center justify-between p-4 hover:bg-white/[0.02] transition-colors"
-              aria-label={
-                analysisDetailsOpen
-                  ? "Collapse analysis details"
-                  : "Expand analysis details"
-              }
-            >
-              <div className="flex items-center gap-3">
-                <BarChart3 className="w-4 h-4 text-foreground" />
-                <span className="text-sm font-medium text-foreground">
-                  Analysis Details
+                  {document.overall_risk_score}
                 </span>
               </div>
-
-              {!analysisDetailsOpen && (
-                <div className="flex items-center gap-4 text-xs text-foreground">
-                  <span>
-                    {clauses.length} clauses •{" "}
-                    {verificationStats.verification_rate}% verified
-                  </span>
-                </div>
-              )}
-
-              <ChevronDown
-                className={`w-4 h-4 text-foreground transition-transform duration-200 ${analysisDetailsOpen ? "rotate-180" : ""}`}
-              />
-            </button>
-
-            <AnimatePresence>
-              {analysisDetailsOpen && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="overflow-hidden"
+              <div className="flex-1 min-w-0">
+                <p
+                  className="font-space text-sm font-bold uppercase tracking-wider"
+                  style={{ color: riskColor }}
                 >
-                  <div className="px-4 pb-4 space-y-4">
-                    {/* Power Balance */}
-                    <PowerBalanceMeter
-                      powerBalance={document.power_balance ?? null}
-                    />
-
-                    {/* Entity Reputation */}
-                    <EntityReputation
-                      entityName={document.entity_name}
-                      documentId={documentId}
-                      jurisdiction={document.jurisdiction}
-                      documentType={document.document_type}
-                      overallRiskScore={document.overall_risk_score}
-                      dangerousClauses={clauses
-                        .filter((c) => c.risk_level === "dangerous")
-                        .map((c) => c.explanation)}
-                      illegalClauses={clauses
-                        .filter((c) => c.risk_level === "illegal")
-                        .map((c) => c.explanation)}
-                    />
-
-                    {/* Community Intelligence */}
-                    <EntityIntelligenceCard
-                      entityName={document.entity_name}
-                      documentId={documentId}
-                      jurisdiction={document.jurisdiction || "pan_india"}
-                      documentType={document.document_type || "other"}
-                    />
-
-                    {/* Verification Stats */}
-                    <Card className="card-impact-emphasis">
-                      <CardContent className="p-6">
-                        <h3 className="text-sm font-bold uppercase tracking-wider mb-4 flex items-center gap-2 text-foreground">
-                          <ShieldCheck className="h-5 w-5 text-green-600" />
-                          Legal Database Verification
-                        </h3>
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                          <div className="text-center p-3 rounded-none border-2 border-green-600 bg-green-50 dark:bg-green-950">
-                            <p className="text-2xl font-black text-green-900 dark:text-green-100 font-bold dark:text-green-400 tabular-nums">
-                              {verificationStats.verified}
-                            </p>
-                            <p className="text-xs font-bold uppercase text-green-800 dark:text-green-300">
-                              Verified ✓
-                            </p>
-                          </div>
-                          <div className="text-center p-3 rounded-none border-2 border-yellow-600 bg-yellow-50 dark:bg-yellow-950">
-                            <p className="text-2xl font-black text-yellow-900 dark:text-yellow-100 font-bold dark:text-yellow-400 tabular-nums">
-                              {verificationStats.partial}
-                            </p>
-                            <p className="text-xs font-bold uppercase text-yellow-800 dark:text-yellow-300">
-                              Partial
-                            </p>
-                          </div>
-                          <div className="text-center p-3 rounded-none border-2 border-blue-600 bg-blue-50 dark:bg-blue-950">
-                            <p className="text-2xl font-black text-blue-900 dark:text-blue-100 font-bold dark:text-blue-400 tabular-nums">
-                              {verificationStats.ai_suggested}
-                            </p>
-                            <p className="text-xs font-bold uppercase text-blue-800 dark:text-blue-300">
-                              AI-Only
-                            </p>
-                          </div>
-                          <div className="text-center p-3 rounded-none border-2 border-foreground bg-muted">
-                            <p className="text-2xl font-black tabular-nums text-foreground">
-                              {verificationStats.verification_rate}%
-                            </p>
-                            <p className="text-xs font-bold uppercase text-foreground">
-                              Verified Rate
-                            </p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* ═══ NEXT STEPS ═══ */}
-          <div className="mb-8">
-            <NextSteps
-              overallRiskScore={document.overall_risk_score ?? 0}
-              illegalCount={document.illegal_count ?? 0}
-              dangerousCount={document.dangerous_count ?? 0}
-              warningCount={document.warning_count ?? 0}
-              documentId={documentId}
-              hasStateMachine={!!document.state_machine_data}
-              hasDeliberation={!!deliberationResult}
-              entityName={document.entity_name || undefined}
-            />
-          </div>
-
-          {/* ═══ CLAUSE SECTION — MOOD RING ZONE ═══ */}
-          <div id="clause-list">
-            {/* Clause Header + Filters */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
-              <h2 className="text-3xl font-black text-foreground tracking-tight uppercase">
-                Clause Analysis
-              </h2>
-              <div className="flex items-center gap-2 flex-wrap">
-                {[
-                  { value: "all", label: "All", count: clauses.length },
-                  {
-                    value: "illegal",
-                    label: "Illegal",
-                    count: document.illegal_count,
-                    color: "text-purple-400",
-                  },
-                  {
-                    value: "dangerous",
-                    label: "Dangerous",
-                    count: document.dangerous_count,
-                    color: "text-red-400",
-                  },
-                  {
-                    value: "warning",
-                    label: "Warning",
-                    count: document.warning_count,
-                    color: "text-yellow-400",
-                  },
-                  {
-                    value: "safe",
-                    label: "Safe",
-                    count: document.safe_count,
-                    color: "text-green-400",
-                  },
-                ].map((filter) => (
-                  <button
-                    key={filter.value}
-                    onClick={() => setFilterRisk(filter.value)}
-                    className={`px-4 py-2 rounded-none text-xs font-bold uppercase tracking-wider border-2 transition-all ${filterRisk === filter.value ? "bg-foreground border-foreground text-background" : "bg-background border-border text-foreground hover:border-foreground hover:text-foreground"}`}
-                  >
-                    <span
-                      className={
-                        filterRisk === filter.value
-                          ? "text-background"
-                          : filter.color
-                      }
-                    >
-                      {filter.count}
-                    </span>{" "}
-                    {filter.label}
-                  </button>
-                ))}
-
-                <span className="text-gray-700">|</span>
-
-                <button
-                  onClick={() => setSortByRisk(!sortByRisk)}
-                  className="text-xs text-foreground hover:text-foreground transition-colors"
-                  aria-label="Toggle sort order"
-                >
-                  {sortByRisk ? "↕ Sort by order" : "↕ Sort by risk"}
-                </button>
-
-                <span className="text-gray-700">|</span>
-
-                <button
-                  onClick={expandAll}
-                  className="text-xs text-foreground hover:text-foreground transition-colors"
-                >
-                  Expand All
-                </button>
-                <button
-                  onClick={collapseAll}
-                  className="text-xs text-foreground hover:text-foreground transition-colors"
-                >
-                  Collapse All
-                </button>
+                  {getRiskLabel(riskLevel)}
+                </p>
+                <p className="text-[10px] text-[#a3a3a3] font-medium mt-0.5">
+                  {document.total_clauses} clauses • {document.illegal_count} illegal • {document.dangerous_count} dangerous
+                </p>
               </div>
             </div>
-
-            {/* Sort indicator */}
-            {sortByRisk && (
-              <p className="text-xs text-foreground mb-2">
-                Sorted by risk level — most critical first
-              </p>
-            )}
-
-            {/* Clause Cards */}
-            <div className="space-y-3" ref={clauseListRef}>
-              {filteredClauses.map((clause, index) => (
-                <motion.div
-                  key={clause.id}
-                  data-clause-index={index}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.03 }}
-                >
-                  <ClauseCard
-                    clause={clause}
-                    isExpanded={expandedClauses.has(clause.id)}
-                    onToggle={() => toggleClause(clause.id)}
-                    jurisdiction={document.jurisdiction}
-                    documentType={document.document_type}
-                    onAutopsy={() => setAutopsyClause(clause)}
-                    onRewrite={() => setRewriteClause(clause)}
-                    isRoastMode={isRoastMode}
-                    roastText={roastCache.get(clause.id) || null}
-                    deliberation={
-                      deliberationResult?.deliberations?.find(
-                        (d) =>
-                          d.clauseIndex === clause.clause_number ||
-                          d.clauseId === clause.id,
-                      ) || null
-                    }
-                    documentId={documentId}
-                    detectedLanguage={document.detected_language || undefined}
-                  />
-                </motion.div>
-              ))}
-            </div>
-
-            {/* No results for filter */}
-            {filteredClauses.length === 0 && (
-              <div className="text-center py-12 text-foreground">
-                <p>No {filterRisk} clauses found.</p>
-                <button
-                  onClick={() => setFilterRisk("all")}
-                  className="text-blue-400 text-sm mt-2 hover:underline"
-                >
-                  Show all clauses
-                </button>
-              </div>
-            )}
           </div>
 
-          {/* ═══ MARKET COMPARISON ═══ */}
-          <div className="mb-8">
+          {/* ── Clause List ── */}
+          <ClauseListComponent
+            document={document}
+            documentId={documentId}
+            clauses={clauses}
+            filteredClauses={filteredClauses}
+            expandedClauses={expandedClauses}
+            filterRisk={filterRisk}
+            sortByRisk={sortByRisk}
+            isRoastMode={isRoastMode}
+            roastCache={roastCache}
+            clauseListRef={clauseListRef}
+            deliberationResult={deliberationResult}
+            onToggleClause={toggleClause}
+            onSetFilterRisk={setFilterRisk}
+            onSetSortByRisk={setSortByRisk}
+            onExpandAll={expandAll}
+            onCollapseAll={collapseAll}
+            onAutopsy={(c) => setAutopsyClause(c as any)}
+            onRewrite={(c) => setRewriteClause(c as any)}
+            onDeepDive={(c, tab) => {
+              setDrawerClause(c as unknown as HybridClause);
+              setDrawerInitialTab(tab);
+            }}
+          />
+
+          {/* ── Market Comparison ── */}
+          <div className="mt-8 mb-8">
             <MarketComparisonSection
               documentId={documentId}
               documentType={document.document_type || "rental"}
@@ -1160,158 +828,7 @@ export default function ResultsPage() {
             />
           </div>
 
-          {/* ── Explore Deeper ── */}
-          <div className="mt-12 space-y-6">
-            <div className="flex items-center gap-4">
-              <h3 className="text-xl font-black uppercase tracking-wider text-foreground">
-                Explore Deeper
-              </h3>
-              <div className="flex-1 border-t-2 border-foreground" />
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <EscapeCTA
-                  documentId={documentId}
-                  dangerousCount={document.dangerous_count}
-                  illegalCount={document.illegal_count}
-                />
-              </div>
-
-              <div>
-                <SimulatorCTA
-                  documentId={documentId}
-                  overallRiskScore={document.overall_risk_score}
-                />
-              </div>
-
-              <div id="ruin-calculator-cta">
-                <Link href={`/ruin-calculator/${documentId}`}>
-                  <Card className="card-impact cursor-pointer hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all border-red-600 bg-red-50 dark:bg-red-950 h-full">
-                    <CardContent className="p-5">
-                      <div className="flex items-center gap-4">
-                        <div className="p-3 bg-red-600 border-2 border-black dark:border-white">
-                          <BarChart3 className="w-6 h-6 text-foreground" />
-                        </div>
-                        <div className="flex-1">
-                          <h4 className="text-sm font-black uppercase text-red-900 dark:text-red-100 font-bold dark:text-red-100">
-                            Financial Risk Calculator
-                          </h4>
-                          <p className="text-xs font-medium text-red-800/80 dark:text-red-200/80 mt-1">
-                            Monte Carlo simulation: see the real cost of this
-                            contract over 36 months
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              </div>
-
-              <div id="statemachine-cta">
-                {document.state_machine_data && (
-                  <StateMachineCTA
-                    report={
-                      document.state_machine_data as unknown as StateMachineReport
-                    }
-                    onExplore={() => setShowStateMachineModal(true)}
-                  />
-                )}
-              </div>
-
-              <div id="deliberation-cta">
-                <DeliberationCTA
-                  result={deliberationResult}
-                  isLoading={isRunningDeliberation}
-                  progress={deliberationProgress}
-                  onRun={runFullDeliberation}
-                  onView={() => setShowDeliberationView(true)}
-                />
-              </div>
-
-              <div id="timebomb-cta">
-                <TimebombCTA
-                  documentId={documentId}
-                  temporalData={
-                    (document?.temporal_data as unknown as TemporalExtractionResult) ||
-                    null
-                  }
-                  hasActivated={false}
-                />
-              </div>
-
-              <div id="vault-cta">
-                <Link href="/vault">
-                  <Card className="card-impact cursor-pointer hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all border-indigo-600 bg-indigo-50 dark:bg-indigo-950 h-full">
-                    <CardContent className="p-5">
-                      <div className="flex items-center gap-4">
-                        <div className="p-3 bg-indigo-600 border-2 border-black dark:border-white">
-                          <FileStack className="w-6 h-6 text-foreground" />
-                        </div>
-                        <div className="flex-1">
-                          <h4 className="text-sm font-black uppercase text-indigo-900 dark:text-indigo-100 font-bold dark:text-indigo-100">
-                            Contract Vault
-                          </h4>
-                          <p className="text-xs font-medium text-indigo-800/80 dark:text-indigo-200/80 mt-1">
-                            Cross-analyze all your contracts for conflicts, gaps
-                            & hidden risks
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              </div>
-
-              <div id="poisonpill-cta">
-                <PoisonPillCTA
-                  documentId={documentId}
-                  poisonPillData={
-                    (document?.poison_pill_data as unknown as PoisonPillAnalysisResult) ||
-                    null
-                  }
-                  totalClauses={document.total_clauses || 0}
-                />
-              </div>
-
-              <div id="complaint-cta">
-                <ComplaintCTA
-                  documentId={documentId}
-                  dangerousCount={document.dangerous_count}
-                  illegalCount={document.illegal_count}
-                  entityName={document.entity_name}
-                />
-              </div>
-
-              <div id="shadow-cta">
-                <ShadowCTA
-                  documentId={documentId}
-                  shadowData={
-                    document.shadow_analysis_data as {
-                      trust_score?: number;
-                      total_mismatches?: number;
-                      critical_mismatches?: number;
-                      has_analysis?: boolean;
-                    } | null
-                  }
-                />
-              </div>
-
-              <div id="authority-section-cta">
-                <AuthoritySection
-                  documentType={document.document_type}
-                  jurisdiction={document.jurisdiction}
-                  entityName={document.entity_name || ""}
-                  clauseTypes={clauses
-                    .map((c) => c.clause_type)
-                    .filter(Boolean)}
-                  preloadedRouting={(document as any).authority_routing || null}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* ── Poison Pill Interconnection Analysis ── */}
+          {/* ── Poison Pill Interconnection ── */}
           <div id="poison-pill-section" className="mt-8">
             <PoisonPillSection
               documentId={documentId}
@@ -1322,12 +839,12 @@ export default function ResultsPage() {
             />
           </div>
 
-          {/* QR Verification Badge */}
+          {/* ── QR Verification Badge ── */}
           <div id="qr-section" className="mt-8">
             <QRSection document={document} />
           </div>
 
-          {/* Blockchain Proof */}
+          {/* ── Blockchain Proof ── */}
           <ProofSection
             proofHash={document.proof_hash}
             proofCid={document.proof_cid}
@@ -1338,176 +855,221 @@ export default function ResultsPage() {
             overallRiskScore={document.overall_risk_score}
             totalClauses={document.total_clauses}
           />
-        </div>
-
-        {/* ── Floating Action Sidebar ── */}
-        <FloatingActions
+        </>
+      }
+      rail={
+        <ContextRail
           document={document}
-          clauses={clauses}
-          onOpenDNA={() => setShowDNA(true)}
-          onOpenXRay={() => setShowXRay(true)}
-          onOpenScoreCard={() => setShowScoreCard(true)}
-          onOpenVideoCard={() => setShowVideoCard(true)}
-          isRoastMode={isRoastMode}
-          roastLoading={roastLoading}
-          onToggleRoast={handleToggleRoast}
+          documentId={documentId}
+          clauses={clauses as any}
+          analysisDetailsOpen={analysisDetailsOpen}
+          onSetAnalysisDetailsOpen={setAnalysisDetailsOpen}
+          verificationStats={verificationStats}
+          deliberationResult={deliberationResult}
+          isRunningDeliberation={isRunningDeliberation}
+          deliberationProgress={deliberationProgress}
+          onRunFullDeliberation={runFullDeliberation}
+          onShowDeliberationView={() => setShowDeliberationView(true)}
+          forensicsLabOpen={forensicsLabOpen}
+          onSetForensicsLabOpen={setForensicsLabOpen}
+          onShowStateMachineModal={() => setShowStateMachineModal(true)}
         />
+      }
+      footer={
+        <>
+          {/* ── Floating Action Sidebar ── */}
+          <FloatingActions
+            document={document}
+            clauses={clauses}
+            onOpenDNA={() => setShowDNA(true)}
+            onOpenXRay={() => setShowXRay(true)}
+            onOpenScoreCard={() => setShowScoreCard(true)}
+            onOpenVideoCard={() => setShowVideoCard(true)}
+            isRoastMode={isRoastMode}
+            roastLoading={roastLoading}
+            onToggleRoast={handleToggleRoast}
+          />
 
-        {/* ── X-Ray Overlay ── */}
-        <AnimatePresence>
-          {showXRay && (
-            <XRayOverlay
-              document={document}
-              clauses={clauses}
-              onClose={() => setShowXRay(false)}
+          {/* ── X-Ray Overlay ── */}
+          <AnimatePresence>
+            {showXRay && (
+              <XRayOverlay
+                document={document}
+                clauses={clauses}
+                onClose={() => setShowXRay(false)}
+              />
+            )}
+          </AnimatePresence>
+
+          {/* ── DNA Modal ── */}
+          <ContractDNAModal
+            isOpen={showDNA}
+            onClose={() => setShowDNA(false)}
+            contractDoc={document}
+            clauses={clauses}
+          />
+
+          {/* ── Score Card Modal ── */}
+          <ScoreCardModal
+            isOpen={showScoreCard}
+            onClose={() => setShowScoreCard(false)}
+            document={document}
+            clauses={clauses}
+            verificationRate={verificationStats.verification_rate}
+          />
+
+          {/* ── Video Card Modal ── */}
+          <VideoCardModal
+            isOpen={showVideoCard}
+            onClose={() => setShowVideoCard(false)}
+            document={document}
+            clauses={clauses}
+            verificationRate={verificationStats.verification_rate}
+          />
+
+          {/* ── Clause Autopsy Modal ── */}
+          <ClauseAutopsyModal
+            isOpen={!!autopsyClause}
+            onClose={() => setAutopsyClause(null)}
+            clause={autopsyClause}
+            jurisdiction={document.jurisdiction}
+            documentType={document.document_type}
+          />
+
+          {/* ── Clause Detail Drawer ── */}
+          <ClauseDetailDrawer
+            clause={drawerClause}
+            isOpen={!!drawerClause}
+            onClose={() => {
+              setDrawerClause(null);
+              setDrawerInitialTab(null);
+            }}
+            initialTab={drawerInitialTab as any}
+            jurisdiction={document.jurisdiction}
+            documentType={document.document_type}
+            documentId={documentId}
+            deliberation={
+              drawerClause
+                ? deliberationResult?.deliberations?.find(
+                    (d) =>
+                      d.clauseIndex === drawerClause.clause_number ||
+                      d.clauseId === drawerClause.id,
+                  ) || null
+                : null
+            }
+          />
+
+          {/* ── Clause Rewrite Modal ── */}
+          <ClauseRewriteModal
+            isOpen={!!rewriteClause}
+            onClose={() => setRewriteClause(null)}
+            clause={rewriteClause}
+            jurisdiction={document.jurisdiction}
+            documentType={document.document_type}
+          />
+
+          {/* ── State Machine Modal ── */}
+          {document.state_machine_data && (
+            <StateMachineModal
+              report={
+                document.state_machine_data as unknown as StateMachineReport
+              }
+              isOpen={showStateMachineModal}
+              onClose={() => setShowStateMachineModal(false)}
+              documentId={documentId}
             />
           )}
-        </AnimatePresence>
 
-        {/* ── DNA Modal ── */}
-        <ContractDNAModal
-          isOpen={showDNA}
-          onClose={() => setShowDNA(false)}
-          contractDoc={document}
-          clauses={clauses}
-        />
-
-        {/* ── Score Card Modal ── */}
-        <ScoreCardModal
-          isOpen={showScoreCard}
-          onClose={() => setShowScoreCard(false)}
-          document={document}
-          clauses={clauses}
-          verificationRate={verificationStats.verification_rate}
-        />
-
-        {/* ── Video Card Modal ── */}
-        <VideoCardModal
-          isOpen={showVideoCard}
-          onClose={() => setShowVideoCard(false)}
-          document={document}
-          clauses={clauses}
-          verificationRate={verificationStats.verification_rate}
-        />
-
-        {/* ── Clause Autopsy Modal ── */}
-        <ClauseAutopsyModal
-          isOpen={!!autopsyClause}
-          onClose={() => setAutopsyClause(null)}
-          clause={autopsyClause}
-          jurisdiction={document.jurisdiction}
-          documentType={document.document_type}
-        />
-
-        {/* ── Clause Rewrite Modal ── */}
-        <ClauseRewriteModal
-          isOpen={!!rewriteClause}
-          onClose={() => setRewriteClause(null)}
-          clause={rewriteClause}
-          jurisdiction={document.jurisdiction}
-          documentType={document.document_type}
-        />
-
-        {/* ── State Machine Modal ── */}
-        {document.state_machine_data && (
-          <StateMachineModal
-            report={
-              document.state_machine_data as unknown as StateMachineReport
-            }
-            isOpen={showStateMachineModal}
-            onClose={() => setShowStateMachineModal(false)}
+          {/* ── Collaboration Modal ── */}
+          <ShareRoomModal
+            isOpen={showCollab}
+            onClose={() => setShowCollab(false)}
             documentId={documentId}
           />
-        )}
 
-        {/* ── Collaboration Modal ── */}
-        <ShareRoomModal
-          isOpen={showCollab}
-          onClose={() => setShowCollab(false)}
-          documentId={documentId}
-        />
+          {/* ── Document Deliberation Modal ── */}
+          {deliberationResult && (
+            <Dialog
+              open={showDeliberationView}
+              onOpenChange={setShowDeliberationView}
+            >
+              <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto bg-background border-2 border-foreground card-impact">
+                <DocumentDeliberation
+                  result={deliberationResult}
+                  onClauseClick={(index) => {
+                    setShowDeliberationView(false);
+                    setFilterRisk("all");
+                    const targetClause = clauses[index];
+                    if (targetClause) {
+                      setExpandedClauses(new Set([targetClause.id]));
+                      setTimeout(() => {
+                        const el = window.document.querySelector(
+                          `[data-clause-index="${index}"]`,
+                        );
+                        el?.scrollIntoView({
+                          behavior: "smooth",
+                          block: "center",
+                        });
+                      }, 100);
+                    }
+                  }}
+                />
+              </DialogContent>
+            </Dialog>
+          )}
 
-        {/* ── Document Deliberation Modal ── */}
-        {deliberationResult && (
-          <Dialog
-            open={showDeliberationView}
-            onOpenChange={setShowDeliberationView}
-          >
-            <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto bg-background border-2 border-foreground card-impact border-foreground border-2">
-              <DocumentDeliberation
-                result={deliberationResult}
-                onClauseClick={(index) => {
-                  setShowDeliberationView(false);
-                  setFilterRisk("all");
-                  const targetClause = clauses[index];
-                  if (targetClause) {
-                    setExpandedClauses(new Set([targetClause.id]));
+          {/* ── Voice Mic Button ── */}
+          <MicButton
+            documentId={documentId}
+            onCommand={(intent, params) => {
+              switch (intent) {
+                case "SCORE":
+                  setShowScoreCard(true);
+                  break;
+                case "DNA":
+                  setShowDNA(true);
+                  break;
+                case "XRAY":
+                  setShowXRay(true);
+                  break;
+                case "NEGOTIATE":
+                  window.location.href = `/negotiate/${documentId}`;
+                  break;
+                case "LEGAL_NOTICE":
+                  window.location.href = `/letter/${documentId}`;
+                  break;
+                case "ESCAPE":
+                  window.location.href = `/escape/${documentId}`;
+                  break;
+                case "BATTLE":
+                  window.location.href = `/battle/${documentId}`;
+                  break;
+                case "SHARE":
+                  navigator.clipboard.writeText(window.location.href);
+                  toast.success("Link copied!");
+                  break;
+                case "NAVIGATE_CLAUSE":
+                  const idx = (params.clause_number as number) - 1;
+                  if (idx >= 0 && idx < clauses.length) {
+                    setFilterRisk("all");
+                    setExpandedClauses(new Set([clauses[idx].id]));
                     setTimeout(() => {
                       const el = window.document.querySelector(
-                        `[data-clause-index="${index}"]`,
+                        `[data-clause-index="${idx}"]`,
                       );
-                      el?.scrollIntoView({
-                        behavior: "smooth",
-                        block: "center",
-                      });
+                      el?.scrollIntoView({ behavior: "smooth", block: "center" });
                     }, 100);
                   }
-                }}
-              />
-            </DialogContent>
-          </Dialog>
-        )}
-
-        {/* ── Voice Mic Button ── */}
-        <MicButton
-          documentId={documentId}
-          onCommand={(intent, params) => {
-            switch (intent) {
-              case "SCORE":
-                setShowScoreCard(true);
-                break;
-              case "DNA":
-                setShowDNA(true);
-                break;
-              case "XRAY":
-                setShowXRay(true);
-                break;
-              case "NEGOTIATE":
-                window.location.href = `/negotiate/${documentId}`;
-                break;
-              case "LEGAL_NOTICE":
-                window.location.href = `/letter/${documentId}`;
-                break;
-              case "ESCAPE":
-                window.location.href = `/escape/${documentId}`;
-                break;
-              case "BATTLE":
-                window.location.href = `/battle/${documentId}`;
-                break;
-              case "SHARE":
-                navigator.clipboard.writeText(window.location.href);
-                toast.success("Link copied!");
-                break;
-              case "NAVIGATE_CLAUSE":
-                const idx = (params.clause_number as number) - 1;
-                if (idx >= 0 && idx < clauses.length) {
-                  setFilterRisk("all");
-                  setExpandedClauses(new Set([clauses[idx].id]));
-                  setTimeout(() => {
-                    const el = window.document.querySelector(
-                      `[data-clause-index="${idx}"]`,
-                    );
-                    el?.scrollIntoView({ behavior: "smooth", block: "center" });
-                  }, 100);
-                }
-                break;
-              case "STOP":
-                break;
-            }
-          }}
-        />
-      </div>
-      <VoiceFloatingButton />
-    </>
+                  break;
+                case "STOP":
+                  break;
+              }
+            }}
+          />
+          <VoiceFloatingButton />
+        </>
+      }
+    />
   );
 }
+

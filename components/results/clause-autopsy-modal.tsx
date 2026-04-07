@@ -17,6 +17,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import type { RiskLevel } from "@/types";
+import { formatClauseType } from "@/lib/format-clause-type";
 
 // ── Types ──
 
@@ -311,7 +312,7 @@ export default function ClauseAutopsyModal({
     const lines = [
       "🔬 CLAUSE BREAKDOWN — ClauseWall",
       "",
-      `Clause #${clause.clause_number} — ${clause.clause_type}`,
+      `Clause #${clause.clause_number} — ${formatClauseType(clause.clause_type)}`,
       "",
       `"${clause.original_text}"`,
       "",
@@ -386,7 +387,7 @@ export default function ClauseAutopsyModal({
                   </h2>
                   <p className="text-[10px] text-foreground font-black uppercase tracking-wider">
                     Clause #{clause.clause_number} •{" "}
-                    {clause.clause_type.replace(/_/g, " ")}
+                    {formatClauseType(clause.clause_type)}
                   </p>
                 </div>
               </div>

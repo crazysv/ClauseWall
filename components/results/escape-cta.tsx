@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { DoorOpen, ArrowRight, IndianRupee } from "lucide-react";
+import { DoorOpen, ChevronRight } from "lucide-react";
 
 interface EscapeCTAProps {
   documentId: string;
@@ -21,29 +21,20 @@ export default function EscapeCTA({
 
   return (
     <Link href={`/escape/${documentId}`}>
-      <div className="p-4 card-impact border-2 border-orange-600 bg-background hover:-translate-y-[2px] hover:shadow-[4px_4px_0px_0px_rgba(234,88,12,1)] transition-all cursor-pointer group">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 border-2 border-orange-600 bg-muted transition-colors">
-              <DoorOpen className="h-6 w-6 text-orange-600" />
-            </div>
-            <div>
-              <p className="font-black uppercase tracking-wider text-orange-600 flex items-center gap-2">
-                Already Signed This Contract?
-              </p>
-              <p className="text-sm font-bold text-muted-foreground mt-0.5">
-                {totalRisky} clause{totalRisky !== 1 ? "s" : ""} may be void
-                under Indian law. Get your personalized escape plan with
-                recovery amounts.
-              </p>
-            </div>
+      <div className="card-results p-3 hover:bg-[#1f1f1f] transition-colors cursor-pointer group">
+        <div className="flex items-center gap-2.5">
+          <div className="p-1.5 bg-orange-600 rounded-lg">
+            <DoorOpen className="w-3.5 h-3.5 text-white" />
           </div>
-          <div className="flex items-center gap-2 flex-shrink-0 ml-4">
-            <span className="text-sm font-black uppercase tracking-wider text-orange-600 hidden sm:inline">
-              Get Escape Plan
-            </span>
-            <ArrowRight className="h-5 w-5 text-orange-600 group-hover:translate-x-1 transition-transform" />
+          <div className="flex-1 min-w-0">
+            <h4 className="text-[10px] font-bold uppercase text-orange-100">
+              Escape Plan
+            </h4>
+            <p className="text-[9px] text-[#a3a3a3] mt-0.5">
+              {totalRisky} clause{totalRisky !== 1 ? "s" : ""} may be void
+            </p>
           </div>
+          <ChevronRight className="w-3.5 h-3.5 text-[#a3a3a3] group-hover:translate-x-0.5 transition-transform flex-shrink-0" />
         </div>
       </div>
     </Link>

@@ -18,6 +18,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import type { RewriteResult } from "@/types";
+import { formatClauseType } from "@/lib/format-clause-type";
 
 // ── Types ──
 
@@ -124,7 +125,7 @@ export default function ClauseRewriteModal({
     const lines = [
       "✏️ CLAUSE REWRITE — ClauseWall",
       "",
-      `Clause #${clause.clause_number} — ${clause.clause_type.replace(/_/g, " ")}`,
+      `Clause #${clause.clause_number} — ${formatClauseType(clause.clause_type)}`,
       "",
       "━━━ ORIGINAL (PREDATORY) ━━━",
       `"${clause.original_text}"`,
@@ -215,7 +216,7 @@ export default function ClauseRewriteModal({
                   </h2>
                   <p className="text-[10px] text-foreground font-black uppercase tracking-wider">
                     Clause #{clause.clause_number} •{" "}
-                    {clause.clause_type.replace(/_/g, " ")}
+                    {formatClauseType(clause.clause_type)}
                   </p>
                 </div>
               </div>

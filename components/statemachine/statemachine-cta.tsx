@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, GitBranch } from "lucide-react";
+import { GitBranch, ChevronRight } from "lucide-react";
 import type { StateMachineReport } from "@/lib/statemachine/types";
 
 interface StateMachineCTAProps {
@@ -17,48 +17,40 @@ export default function StateMachineCTA({
 
   const sm = report.stateMachine;
   const trapCount = report.trapAnalysis.length;
+  const hasTraps = trapCount > 0;
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: 0.15 }}
-      className={`border-4 p-5 cursor-pointer transition-all hover:translate-y-1 hover:shadow-none ${
-        trapCount > 0
-          ? "border-red-900 bg-red-100 shadow-[6px_6px_0_0_rgba(127,29,29,1)]"
-          : "border-green-800 bg-green-100 shadow-[6px_6px_0_0_rgba(22,101,52,1)]"
-      }`}
-      onClick={onExplore}
     >
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div
-            className={`p-3 border-2 border-black bg-white shadow-[2px_2px_0_0_rgba(0,0,0,1)]`}
+      <button
+        onClick={onExplore}
+        className={`w-full text-left px-3 py-2.5 rounded-lg border cursor-pointer transition-colors flex items-center gap-3 ${
+          hasTraps
+            ? "bg-[#dc2626]/10 border-[#dc2626]/20 hover:bg-[#dc2626]/15"
+            : "bg-green-500/10 border-green-500/20 hover:bg-green-500/15"
+        }`}
+      >
+        <GitBranch
+          className={`w-4 h-4 flex-shrink-0 ${hasTraps ? "text-[#dc2626]" : "text-green-500"}`}
+        />
+        <div className="flex-1 min-w-0">
+          <p
+            className={`text-[12px] font-semibold ${hasTraps ? "text-[#dc2626]" : "text-green-500"}`}
           >
-            <GitBranch className={`h-6 w-6 text-black`} />
-          </div>
-          <div>
-            <h4 className="text-sm font-black uppercase tracking-widest text-black mb-1">
-              🔄 Your Contract Has {sm.metadata.totalStates} States{" "}
-              {trapCount > 0 && (
-                <span className="text-red-900">
-                  and {trapCount} Trap{trapCount > 1 ? "s" : ""}
-                </span>
-              )}
-            </h4>
-            <p className="text-xs font-bold text-black/70">
-              See how your contract executes over time and where you could get
-              trapped.
-            </p>
-            <p className="text-[10px] font-black uppercase tracking-widest text-black/40 mt-1">
-              Find hidden trap paths in your contract&apos;s timeline
-            </p>
-          </div>
+            {sm.metadata.totalStates} States
+            {hasTraps && ` • ${trapCount} Trap${trapCount > 1 ? "s" : ""}`}
+          </p>
+          <p className="text-[10px] text-[#a3a3a3] mt-0.5">
+            Find hidden trap paths in your contract
+          </p>
         </div>
-        <div className="bg-white border-2 border-black p-2 shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
-          <ArrowRight className="h-5 w-5 text-black flex-shrink-0" />
-        </div>
-      </div>
+        <ChevronRight
+          className={`w-3.5 h-3.5 flex-shrink-0 ${hasTraps ? "text-[#dc2626]" : "text-green-500"}`}
+        />
+      </button>
     </motion.div>
   );
 }

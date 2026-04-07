@@ -1,15 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Swords, Loader2 } from "lucide-react";
+import { Swords, Loader2, ChevronRight } from "lucide-react";
 import type {
   DeliberationResult,
   DeliberationProgress,
 } from "@/lib/deliberation/types";
-
-// ============================================
-// PROPS
-// ============================================
 
 interface DeliberationCTAProps {
   result: DeliberationResult | null;
@@ -18,10 +14,6 @@ interface DeliberationCTAProps {
   onRun: () => void;
   onView: () => void;
 }
-
-// ============================================
-// AGENT INFO
-// ============================================
 
 const agentLabels: Record<
   string,
@@ -32,10 +24,6 @@ const agentLabels: Record<
   arbiter: { icon: "⚖️", name: "Judicial Arbiter", action: "deliberating" },
 };
 
-// ============================================
-// COMPONENT
-// ============================================
-
 export default function DeliberationCTA({
   result,
   isLoading,
@@ -43,7 +31,7 @@ export default function DeliberationCTA({
   onRun,
   onView,
 }: DeliberationCTAProps) {
-  // ── STATE 3: Loading / In Progress ──
+  // ── Loading / In Progress ──
   if (isLoading) {
     const agent = progress?.currentAgent
       ? agentLabels[progress.currentAgent]
@@ -56,38 +44,36 @@ export default function DeliberationCTA({
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mt-4 p-4 rounded-none bg-background border border-amber-500/20"
+        className="px-3 py-2.5 rounded-lg bg-amber-500/10 border border-amber-500/20"
       >
-        <div className="flex items-center gap-3 mb-3">
-          <div className="p-2 rounded-none bg-amber-500/15">
-            <Loader2 className="h-5 w-5 text-amber-400 animate-spin" />
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-amber-300">
+        <div className="flex items-center gap-3 mb-2">
+          <Loader2 className="w-4 h-4 text-amber-400 animate-spin flex-shrink-0" />
+          <div className="flex-1 min-w-0">
+            <p className="text-[12px] font-semibold text-amber-400">
               Deliberation in Progress...
             </p>
-            <p className="text-xs text-muted-foreground mt-0.5">
+            <p className="text-[10px] text-[#a3a3a3] mt-0.5">
               {progress?.message || "Agents are deliberating..."}
             </p>
           </div>
         </div>
 
         {agent && (
-          <p className="text-xs text-foreground mb-2 ml-[52px]">
+          <p className="text-[10px] text-[#a3a3a3] ml-7 mb-1.5">
             {agent.icon} {agent.name} is {agent.action}...
           </p>
         )}
 
         {/* Progress Bar */}
-        <div className="ml-[52px]">
-          <div className="h-1.5 rounded-full bg-muted overflow-hidden mb-1">
+        <div className="ml-7">
+          <div className="h-1 rounded-full bg-[#262626] overflow-hidden mb-1">
             <motion.div
               className="h-full bg-amber-500 rounded-full"
               animate={{ width: `${percent}%` }}
               transition={{ duration: 0.4 }}
             />
           </div>
-          <div className="flex justify-between text-[10px] text-foreground">
+          <div className="flex justify-between text-[9px] text-[#a3a3a3]">
             <span>
               Clause {progress?.currentClause || 0} of{" "}
               {progress?.totalClauses || "?"}
@@ -101,7 +87,7 @@ export default function DeliberationCTA({
     );
   }
 
-  // ── STATE 1: Result Exists (Completed) ──
+  // ── Result Exists (Completed) ──
   if (result) {
     const { summary } = result;
 
@@ -110,71 +96,53 @@ export default function DeliberationCTA({
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.15 }}
-        className="mt-4 p-4 rounded-none border border-amber-500/20 bg-amber-500/[0.03] hover:bg-amber-500/[0.06] transition-all cursor-pointer group"
-        onClick={onView}
       >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-none bg-amber-500/10 group-hover:bg-amber-500/20 transition-colors">
-              <Swords className="h-5 w-5 text-amber-400" />
-            </div>
-            <div>
-              <h4 className="text-sm font-semibold text-amber-300">
-                ⚔️ AI Debate Complete
-              </h4>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                3 agents debated {summary.totalClauses} clauses —{" "}
-                {summary.fairCount > 0 && `${summary.fairCount}✅ `}
-                {summary.partiallyFairCount > 0 &&
-                  `${summary.partiallyFairCount}⚠️ `}
-                {summary.unfairCount > 0 && `${summary.unfairCount}❌ `}
-                {summary.illegalCount > 0 && `${summary.illegalCount}⛔`}
-              </p>
-            </div>
+        <button
+          onClick={onView}
+          className="w-full text-left px-3 py-2.5 rounded-lg bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/15 transition-colors cursor-pointer flex items-center gap-3"
+        >
+          <Swords className="w-4 h-4 text-amber-400 flex-shrink-0" />
+          <div className="flex-1 min-w-0">
+            <p className="text-[12px] font-semibold text-amber-400">
+              AI Debate Complete
+            </p>
+            <p className="text-[10px] text-[#a3a3a3] mt-0.5">
+              {summary.totalClauses} clauses —{" "}
+              {summary.fairCount > 0 && `${summary.fairCount}✅ `}
+              {summary.partiallyFairCount > 0 &&
+                `${summary.partiallyFairCount}⚠️ `}
+              {summary.unfairCount > 0 && `${summary.unfairCount}❌ `}
+              {summary.illegalCount > 0 && `${summary.illegalCount}⛔`}
+            </p>
           </div>
-          <div className="flex items-center gap-2 flex-shrink-0 ml-4">
-            <span className="text-sm font-medium text-amber-400 hidden sm:inline">
-              View All
-            </span>
-            <ArrowRight className="h-5 w-5 text-amber-400 group-hover:translate-x-1 transition-transform" />
-          </div>
-        </div>
+          <ChevronRight className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
+        </button>
       </motion.div>
     );
   }
 
-  // ── STATE 2: No Result (CTA Trigger) ──
+  // ── No Result (CTA Trigger) ──
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: 0.15 }}
-      className="mt-4 p-4 rounded-none bg-background border border-amber-500/15 hover:border-amber-500/30 hover: hover: transition-all cursor-pointer group"
-      onClick={onRun}
     >
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-none bg-amber-500/10 group-hover:bg-amber-500/20 transition-colors">
-            <Swords className="h-6 w-6 text-amber-400" />
-          </div>
-          <div>
-            <p className="font-semibold text-amber-300">⚔️ Run AI Debate</p>
-            <p className="text-xs text-foreground">
-              Three AI agents argue whether each clause is fair
-            </p>
-            <p className="text-sm text-muted-foreground mt-0.5">
-              Three AI agents — a corporate lawyer, a consumer rights advocate,
-              and a retired judge — will debate every clause in this contract.
-            </p>
-          </div>
+      <button
+        onClick={onRun}
+        className="w-full text-left px-3 py-2.5 rounded-lg bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/15 transition-colors cursor-pointer flex items-center gap-3"
+      >
+        <Swords className="w-4 h-4 text-amber-400 flex-shrink-0" />
+        <div className="flex-1 min-w-0">
+          <p className="text-[12px] font-semibold text-amber-400">
+            Run AI Debate
+          </p>
+          <p className="text-[10px] text-[#a3a3a3] mt-0.5">
+            3 AI agents debate whether each clause is fair
+          </p>
         </div>
-        <div className="flex items-center gap-2 flex-shrink-0 ml-4">
-          <span className="text-sm font-medium text-amber-400 hidden sm:inline">
-            Start
-          </span>
-          <ArrowRight className="h-5 w-5 text-amber-400 group-hover:translate-x-1 transition-transform" />
-        </div>
-      </div>
+        <ChevronRight className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
+      </button>
     </motion.div>
   );
 }
