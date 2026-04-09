@@ -1,34 +1,26 @@
-import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { NextResponse } from "next/server";
+import { withApiHandler } from "@/lib/api/with-api-handler";
 import { analyzeDocument } from "@/lib/core/analyzer";
 import { parsePDF } from "@/lib/core/pdf-parser";
 import { sanitizePlainTextBlock } from "@/lib/sanitize";
 import { AnalyzeJsonSchema } from "@/lib/validation/schemas";
 import { validateBody, validateFileSize } from "@/lib/validation/middleware";
 import { FILE_SIZE_LIMITS } from "@/lib/validation/enums";
-import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 import { log } from "@/lib/logger";
 
 // Allow longer execution time for analysis
 export const maxDuration = 60;
 
-export async function POST(request: NextRequest) {
-  try {
-    const supabase = await createClient();
-
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json(
-        { error: "Authentication required to analyze documents" },
-        { status: 401 },
-      );
-    }
-
-    const rl = await rateLimit(request, "AI_HEAVY", user.id);
-    if (!rl.success) return rateLimitResponse(rl);
+export const POST = withApiHandler(
+  {
+    module: "analyze",
+    rateLimit: "AI_HEAVY",
+    rateLimitIdentifier: "user",
+    auth: true,
+    // No schema — this route accepts both FormData and JSON
+  },
+  async (ctx) => {
+    const { request, supabase, user } = ctx;
 
     let text: string;
     let documentType: string;
@@ -122,7 +114,7 @@ export async function POST(request: NextRequest) {
         jurisdiction: jurisdiction,
         raw_text: text,
         analysis_status: "pending",
-        user_id: user.id,
+        user_id: user!.id,
       })
       .select()
       .single();
@@ -167,15 +159,5 @@ export async function POST(request: NextRequest) {
       status: "analyzing",
       message: "Analysis started. You will be redirected to results.",
     });
-  } catch (error) {
-    log.errorWithCause("api.analyze", "API error", error);
-    return NextResponse.json(
-      {
-        error:
-          (error as Error).message ||
-          "An unexpected error occurred. Please try again.",
-      },
-      { status: 500 },
-    );
-  }
-}
+  },
+);
