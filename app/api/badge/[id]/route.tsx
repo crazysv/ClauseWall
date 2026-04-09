@@ -3,7 +3,7 @@
 // Returns dynamic SVG badge for embedding
 // ============================================
 
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import { getRiskLevel } from "@/lib/utils/constants";
 import { NextRequest } from "next/server";
 
@@ -31,9 +31,7 @@ export async function GET(
     const { searchParams } = new URL(request.url);
     const style = searchParams.get("style") || "full";
 
-    console.log("Badge request for ID:", id); // Debug log
-
-    const supabase = createAdminClient();
+    const supabase = await createClient();
 
     // Try to find by public_share_id first
     let { data: doc, error } = await supabase
@@ -46,7 +44,7 @@ export async function GET(
 
     // If not found by public_share_id, try by document id
     if (error || !doc) {
-      console.log("Not found by public_share_id, trying document id..."); // Debug
+
       const result = await supabase
         .from("documents")
         .select(
@@ -60,11 +58,11 @@ export async function GET(
     }
 
     if (error || !doc) {
-      console.log("Document not found:", error); // Debug log
+
       return notFoundBadge();
     }
 
-    console.log("Found document:", doc); // Debug log
+
 
     const riskLevel = getRiskLevel(doc.overall_risk_score);
     const theme = BADGE_THEMES[riskLevel];

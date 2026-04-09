@@ -219,6 +219,24 @@ export const AutopsySchema = z.object({
   riskLevel: RiskLevelEnum.optional().default("warning"),
 });
 
+// ── /api/authority/complaint/draft ──
+export const ComplaintDraftSchema = z.object({
+  authority_id: z.string().max(100).optional(),
+  document_context: z.object({
+    document_type: z.string().max(100).optional().default("other"),
+    entity_name: z.string().max(200).optional().default("Unknown Entity"),
+    jurisdiction: z.string().max(100).optional().default("general"),
+    violations: z.array(z.string()).optional().default([]),
+    summary: z.string().max(5000).optional().default(""),
+    claim_amount: z.number().optional(),
+    authority_name: z.string().max(200).optional(),
+    authority_type: z.string().max(100).optional(),
+    authority_address: z.string().max(500).optional(),
+  }),
+  complainant_name: z.string().min(1, "complainant_name is required").max(200),
+  complainant_address: z.string().max(500).optional().default(""),
+});
+
 // ── Wave 2 type exports ──
 export type GenerateLetterInput = z.infer<typeof GenerateLetterSchema>;
 export type RoastInput = z.infer<typeof RoastSchema>;
@@ -230,3 +248,5 @@ export type ComplaintGenerateInput = z.infer<typeof ComplaintGenerateSchema>;
 export type AdversarialInput = z.infer<typeof AdversarialSchema>;
 export type DeliberationRunInput = z.infer<typeof DeliberationRunSchema>;
 export type AutopsyInput = z.infer<typeof AutopsySchema>;
+export type ComplaintDraftInput = z.infer<typeof ComplaintDraftSchema>;
+

@@ -5,7 +5,6 @@
 // ============================================
 
 import { NextRequest, NextResponse } from "next/server";
-import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { sanitizeEntityName, sanitizeStringArray } from "@/lib/sanitize";
 import { safeErrorResponse } from "@/lib/api/error-response";
@@ -13,10 +12,10 @@ import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export async function POST(req: NextRequest) {
   try {
-    const userClient = await createClient();
+    const supabase = await createClient();
     const {
       data: { user },
-    } = await userClient.auth.getUser();
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return NextResponse.json(
@@ -62,11 +61,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const supabase = createAdminClient();
     const cleanName = sanitizeEntityName(entityName).toLowerCase();
 
     // Check if entity already exists
-    const { data: existing, error: fetchError } = await supabase
+    const { data: existing } = await supabase
       .from("flagged_entities")
       .select("*")
       .ilike("entity_name", cleanName)
@@ -93,11 +91,7 @@ export async function POST(req: NextRequest) {
         .eq("id", existing.id);
 
       if (updateError) {
-        console.error("[FlagEntity] Update error:", updateError);
-        return NextResponse.json(
-          { error: "Failed to update flag" },
-          { status: 500 },
-        );
+        return safeErrorResponse("flag-entity", updateError, "Failed to update flag");
       }
 
       // Save report record
@@ -125,11 +119,7 @@ export async function POST(req: NextRequest) {
         .single();
 
       if (insertError) {
-        console.error("[FlagEntity] Insert error:", insertError);
-        return NextResponse.json(
-          { error: "Failed to flag entity" },
-          { status: 500 },
-        );
+        return safeErrorResponse("flag-entity", insertError, "Failed to flag entity");
       }
 
       // Save report record
@@ -148,6 +138,7 @@ export async function POST(req: NextRequest) {
 }
 
 async function saveReport(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   supabase: any,
   documentId: string,
   clauseId: string | null,
@@ -165,8 +156,8 @@ async function saveReport(
       report_type: "predatory",
       description: violations.join(", "),
     });
-  } catch (err) {
-    console.error("[FlagEntity] Failed to save report:", err);
+  } catch {
+    // Report insertion is best-effort — don't fail the main operation
   }
 }
 
@@ -183,7 +174,7 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    const supabase = createAdminClient();
+    const supabase = await createClient();
 
     // Search for entity (case insensitive, partial match)
     const { data: entity, error } = await supabase

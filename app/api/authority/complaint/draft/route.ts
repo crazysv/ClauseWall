@@ -3,25 +3,25 @@
 // ============================================
 
 import { NextResponse } from "next/server";
+import { withApiHandler } from "@/lib/api/with-api-handler";
+import { ComplaintDraftSchema, type ComplaintDraftInput } from "@/lib/validation/schemas";
 import { draftComplaintEmail } from "@/lib/authority/complaint-drafter";
 import { getAuthorityById } from "@/lib/authority/authority-db";
 
-export async function POST(request: Request) {
-  try {
-    const body = await request.json();
+export const POST = withApiHandler<ComplaintDraftInput>(
+  {
+    module: "complaint-draft",
+    rateLimit: "AI_HEAVY",
+    auth: true,
+    schema: ComplaintDraftSchema,
+  },
+  async (ctx) => {
     const {
       authority_id,
       document_context,
       complainant_name,
       complainant_address,
-    } = body;
-
-    if (!document_context || !complainant_name) {
-      return NextResponse.json(
-        { success: false, error: "Missing required fields" },
-        { status: 400 },
-      );
-    }
+    } = ctx.body;
 
     let authority = null;
     if (authority_id) {
@@ -43,23 +43,17 @@ export async function POST(request: Request) {
     const draft = await draftComplaintEmail(
       authority,
       {
-        document_type: document_context.document_type || "other",
-        entity_name: document_context.entity_name || "Unknown Entity",
-        jurisdiction: document_context.jurisdiction || "general",
-        violations: document_context.violations || [],
-        summary: document_context.summary || "",
+        document_type: document_context.document_type,
+        entity_name: document_context.entity_name,
+        jurisdiction: document_context.jurisdiction,
+        violations: document_context.violations,
+        summary: document_context.summary,
         claim_amount: document_context.claim_amount,
       },
       complainant_name,
-      complainant_address || "",
+      complainant_address,
     );
 
     return NextResponse.json({ success: true, draft });
-  } catch (error) {
-    console.error("[ClauseWall] Complaint drafting failed:", error);
-    return NextResponse.json(
-      { success: false, error: "Complaint drafting failed" },
-      { status: 500 },
-    );
-  }
-}
+  },
+);

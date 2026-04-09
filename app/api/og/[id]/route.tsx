@@ -5,7 +5,7 @@
 // ============================================
 
 import { ImageResponse } from "next/og";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import {
   getDocumentTypeLabel,
   getStateName,
@@ -45,7 +45,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const supabase = createAdminClient();
+    const supabase = await createClient();
 
     const { data: doc, error } = await supabase
       .from("documents")

@@ -349,7 +349,10 @@ export async function analyzeDocument(
     );
     summary += ` | Verification: ${dbMatchCount} of ${analyzedClauses.length} clauses (${verificationRate}%) verified against ClauseWall Legal Database.`;
 
-    // ---- Step 5: Non-Blocking Secondary Subsystems (Concurrent execution) ----
+    // ---- Step 5: Non-Blocking Secondary Subsystems ----
+    // Enrichment tasks run with bounded concurrency (max 3) to avoid
+    // overwhelming LLM rate limits and causing Vercel function timeouts.
+    const ENRICHMENT_CONCURRENCY = 3;
     await updateProgress(supabase, documentId, 92, "Running parallel AI enrichments...", totalClauses);
 
     let powerBalance = null;
@@ -364,9 +367,9 @@ export async function analyzeDocument(
     let tsaToken: string | null = null;
     let tsaSerial: string | null = null;
 
-    const enrichmentTasks = [
+    const enrichmentTasks: Array<() => Promise<void>> = [
       // 1. Power Balance extraction
-      (async () => {
+      async () => {
         try {
           log.info("analyzer", "Extracting power balance", { docId: documentId });
           powerBalance = await extractPowerBalance(
@@ -385,10 +388,10 @@ export async function analyzeDocument(
         } catch (e) {
           log.errorWithCause("analyzer", "Power balance extraction failed", e, { docId: documentId });
         }
-      })(),
+      },
 
       // 2. Blockchain Proof generation
-      (async () => {
+      async () => {
         try {
           const { generateAndPinProof } = await import("@/lib/proof");
           const proofResult = await generateAndPinProof(
@@ -424,10 +427,10 @@ export async function analyzeDocument(
         } catch (e) {
           log.errorWithCause("analyzer", "Proof generation failed", e, { docId: documentId });
         }
-      })(),
+      },
 
       // 3. State Machine extraction
-      (async () => {
+      async () => {
         try {
           const { extractAndAnalyzeStateMachine } = await import("@/lib/statemachine");
           const stateMachineReport = await extractAndAnalyzeStateMachine(
@@ -451,10 +454,10 @@ export async function analyzeDocument(
         } catch (e) {
           log.errorWithCause("analyzer", "State machine extraction failed", e, { docId: documentId });
         }
-      })(),
+      },
 
       // 4. Temporal extraction
-      (async () => {
+      async () => {
         try {
           const { extractTemporalObligations } = await import("@/lib/timebomb");
           temporalData = await extractTemporalObligations(
@@ -470,10 +473,10 @@ export async function analyzeDocument(
         } catch (e) {
           log.errorWithCause("analyzer", "Temporal extraction failed", e, { docId: documentId });
         }
-      })(),
+      },
 
       // 5. Poison Pill detection
-      (async () => {
+      async () => {
         try {
           const { analyzePoisonPills } = await import("@/lib/poisonpill");
           poisonPillData = await analyzePoisonPills(
@@ -495,10 +498,10 @@ export async function analyzeDocument(
         } catch (e) {
           log.errorWithCause("analyzer", "Poison pill detection failed", e, { docId: documentId });
         }
-      })(),
+      },
 
       // 6. Retroactive Law Change check
-      (async () => {
+      async () => {
         try {
           const { analyzeRetroactiveImpact } = await import("@/lib/lawchange");
           lawChangesData = await analyzeRetroactiveImpact(
@@ -515,10 +518,10 @@ export async function analyzeDocument(
         } catch (e) {
           log.errorWithCause("analyzer", "Retroactive law change check failed", e, { docId: documentId });
         }
-      })(),
+      },
 
       // 7. Collective Intelligence trigger
-      (async () => {
+      async () => {
         if (!entityName) return;
         try {
           const { getEntityIntelligence } = await import("@/lib/collective");
@@ -526,10 +529,10 @@ export async function analyzeDocument(
         } catch (e) {
           log.errorWithCause("analyzer", "Collective intelligence fetch failed", e, { docId: documentId });
         }
-      })(),
+      },
 
       // 8. Authority Routing
-      (async () => {
+      async () => {
         try {
           const clauseTypes = analyzedClauses.map((c: any) => c.clause_type).filter(Boolean);
           const routingResult = await determineJurisdiction({
@@ -545,11 +548,23 @@ export async function analyzeDocument(
         } catch (e) {
           log.errorWithCause("analyzer", "Authority routing failed", e, { docId: documentId });
         }
-      })()
+      },
     ];
 
-    // Wait for all concurrent enrichments to resolve or reject silently
-    await Promise.allSettled(enrichmentTasks);
+    // Execute enrichment tasks with bounded concurrency pool
+    {
+      let taskIndex = 0;
+      const runNextTask = async (): Promise<void> => {
+        while (taskIndex < enrichmentTasks.length) {
+          const idx = taskIndex++;
+          await enrichmentTasks[idx]();
+        }
+      };
+      const poolSize = Math.min(ENRICHMENT_CONCURRENCY, enrichmentTasks.length);
+      await Promise.allSettled(
+        Array.from({ length: poolSize }, () => runNextTask()),
+      );
+    }
 
     // ---- Step 5.97: Market Intelligence Benchmark Update (fire-and-forget) ----
     try {

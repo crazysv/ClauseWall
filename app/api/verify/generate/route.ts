@@ -4,12 +4,25 @@
 // ============================================
 
 import { NextRequest, NextResponse } from "next/server";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import { generateShareId, getVerificationTier } from "@/lib/qr";
+import { safeErrorResponse } from "@/lib/api/error-response";
 import type { ShareSettings } from "@/lib/qr";
 
 export async function POST(req: NextRequest) {
   try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "Authentication required" },
+        { status: 401 },
+      );
+    }
+
     const body = await req.json();
     const { documentId, settings } = body as {
       documentId: string;
@@ -30,9 +43,7 @@ export async function POST(req: NextRequest) {
       allow_full_analysis: Boolean(settings?.allow_full_analysis),
     };
 
-    const supabase = createAdminClient();
-
-    // Fetch document
+    // Fetch document — RLS ensures only the owner can access
     const { data: doc, error: docError } = await supabase
       .from("documents")
       .select("id, overall_risk_score, public_share_id, analysis_status")
@@ -83,7 +94,7 @@ export async function POST(req: NextRequest) {
 
     const tier = getVerificationTier(doc.overall_risk_score);
 
-    // Update document with QR data
+    // Update document with QR data — RLS ensures only the owner can update
     const { error: updateError } = await supabase
       .from("documents")
       .update({
@@ -95,11 +106,7 @@ export async function POST(req: NextRequest) {
       .eq("id", documentId);
 
     if (updateError) {
-      console.error("QR generation update error:", updateError);
-      return NextResponse.json(
-        { error: "Failed to generate badge" },
-        { status: 500 },
-      );
+      return safeErrorResponse("verify-generate", updateError, "Failed to generate badge");
     }
 
     return NextResponse.json({
@@ -109,10 +116,6 @@ export async function POST(req: NextRequest) {
       verifyUrl: `https://clause-wall.vercel.app/verify/${shareId}`,
     });
   } catch (error) {
-    console.error("QR generation error:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 },
-    );
+    return safeErrorResponse("verify-generate", error, "Failed to generate badge");
   }
 }

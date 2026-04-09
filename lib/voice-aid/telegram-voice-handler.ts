@@ -13,9 +13,64 @@ import {
 import { processVoiceInput } from '@/lib/voice-aid/conversation-engine';
 import { getLanguageConfig, SUPPORTED_LANGUAGES } from '@/lib/voice-aid/languages';
 import type { SupportedLanguage } from '@/types';
+import { Redis } from '@upstash/redis';
 
-// Track user language preferences (in-memory, per lifetime)
-const userLanguages = new Map<number, SupportedLanguage>();
+// ============================================
+// DURABLE LANGUAGE PREFERENCE STORE
+// Uses Upstash Redis with in-memory fallback for local dev
+// ============================================
+
+const REDIS_PREFIX = 'clausewall:voice:lang:';
+const LANGUAGE_TTL_SECONDS = 60 * 60 * 24 * 30; // 30 days
+
+// In-memory fallback for when Redis is not configured (local dev)
+const memoryFallback = new Map<number, SupportedLanguage>();
+
+let _redis: Redis | null | undefined;
+
+function getRedis(): Redis | null {
+  if (_redis !== undefined) return _redis;
+  const url = process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  _redis = url && token ? new Redis({ url, token }) : null;
+  return _redis;
+}
+
+async function getUserLanguage(chatId: number): Promise<SupportedLanguage> {
+  const redis = getRedis();
+  if (redis) {
+    try {
+      const lang = await redis.get<string>(`${REDIS_PREFIX}${chatId}`);
+      if (lang && lang in SUPPORTED_LANGUAGES) {
+        return lang as SupportedLanguage;
+      }
+    } catch {
+      // Redis failure — fall through to default
+    }
+  } else {
+    const lang = memoryFallback.get(chatId);
+    if (lang) return lang;
+  }
+  return 'hi';
+}
+
+async function setUserLanguage(chatId: number, lang: SupportedLanguage): Promise<void> {
+  const redis = getRedis();
+  if (redis) {
+    try {
+      await redis.set(`${REDIS_PREFIX}${chatId}`, lang, { ex: LANGUAGE_TTL_SECONDS });
+    } catch {
+      // Redis failure — fall through to memory
+      memoryFallback.set(chatId, lang);
+    }
+  } else {
+    memoryFallback.set(chatId, lang);
+  }
+}
+
+// ============================================
+// HANDLERS
+// ============================================
 
 /**
  * Handle a Telegram voice message.
@@ -25,7 +80,7 @@ export async function handleVoiceMessage(
   fileId: string,
   duration: number
 ): Promise<void> {
-  const language = userLanguages.get(chatId) || 'hi';
+  const language = await getUserLanguage(chatId);
 
   sendChatAction(chatId);
 
@@ -77,7 +132,7 @@ export async function handleVoicePhoto(
   fileId: string,
   caption?: string
 ): Promise<void> {
-  const language = userLanguages.get(chatId) || 'hi';
+  const language = await getUserLanguage(chatId);
 
   sendChatAction(chatId);
 
@@ -114,7 +169,7 @@ export async function handleVoicePhoto(
  * Handle /voice command — enable voice mode.
  */
 export async function handleVoiceCommand(chatId: number): Promise<void> {
-  const language = userLanguages.get(chatId) || 'hi';
+  const language = await getUserLanguage(chatId);
   const config = getLanguageConfig(language);
 
   await sendMessage(
@@ -138,7 +193,7 @@ export async function handleVoiceCommand(chatId: number): Promise<void> {
  * Handle /language command — show language selector.
  */
 export async function handleLanguageCommand(chatId: number): Promise<void> {
-  const currentLang = userLanguages.get(chatId) || 'hi';
+  const currentLang = await getUserLanguage(chatId);
   const allLangs = Object.values(SUPPORTED_LANGUAGES);
 
   const lines = [
@@ -168,7 +223,7 @@ export async function handleSetLanguage(chatId: number, langCode: string): Promi
     return;
   }
 
-  userLanguages.set(chatId, code);
+  await setUserLanguage(chatId, code);
   const config = getLanguageConfig(code);
 
   await sendMessage(
