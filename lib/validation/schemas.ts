@@ -210,6 +210,15 @@ export const DeliberationRunSchema = z
     path: ["documentId"],
   });
 
+// ── /api/autopsy ──
+export const AutopsySchema = z.object({
+  clauseText: z.string().min(1, "clauseText is required").max(10_000),
+  clauseType: z.string().min(1, "clauseType is required").max(100),
+  jurisdiction: JurisdictionSchema.optional().default("India"),
+  documentType: DocumentTypeEnum.optional().default("other"),
+  riskLevel: RiskLevelEnum.optional().default("warning"),
+});
+
 // ── Wave 2 type exports ──
 export type GenerateLetterInput = z.infer<typeof GenerateLetterSchema>;
 export type RoastInput = z.infer<typeof RoastSchema>;
@@ -220,3 +229,4 @@ export type NegotiateGenerateInput = z.infer<typeof NegotiateGenerateSchema>;
 export type ComplaintGenerateInput = z.infer<typeof ComplaintGenerateSchema>;
 export type AdversarialInput = z.infer<typeof AdversarialSchema>;
 export type DeliberationRunInput = z.infer<typeof DeliberationRunSchema>;
+export type AutopsyInput = z.infer<typeof AutopsySchema>;

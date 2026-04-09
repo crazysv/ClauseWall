@@ -4,14 +4,9 @@
 // ============================================
 
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@/lib/supabase/server";
 import { generateContract } from "@/lib/builder/contract-generator";
 import { ContractTemplateType } from "@/types";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-);
 
 const VALID_TYPES: ContractTemplateType[] = [
   "rental",
@@ -28,6 +23,16 @@ const VALID_TYPES: ContractTemplateType[] = [
 
 export async function POST(request: NextRequest) {
   try {
+    const supabase = await createClient();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      return NextResponse.json(
+        { success: false, error: "Unauthorized. You must be logged in to generate contracts." },
+        { status: 401 }
+      );
+    }
+
     const body = await request.json();
     const { template_type, jurisdiction, values } = body;
 
@@ -70,7 +75,7 @@ export async function POST(request: NextRequest) {
         generated_clauses: result.clauses,
         title: result.title,
         stamp_paper_note: result.stamp_paper_note,
-        user_id: null, // TODO: Extract from auth if logged in
+        user_id: user.id,
       })
       .select("id")
       .single();

@@ -4,7 +4,8 @@
 // ============================================
 
 import { NextRequest, NextResponse } from "next/server";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
+import { safeErrorResponse } from "@/lib/api/error-response";
 import type { TosChangeWithCompany } from "@/types";
 
 export async function GET(request: NextRequest) {
@@ -14,7 +15,7 @@ export async function GET(request: NextRequest) {
     const severity = searchParams.get("severity");
     const limit = parseInt(searchParams.get("limit") || "20");
 
-    const supabase = createAdminClient();
+    const supabase = await createClient();
 
     let query = supabase
       .from("tos_changes")
@@ -29,16 +30,14 @@ export async function GET(request: NextRequest) {
 
     const { data, error } = await query;
 
-    if (error) throw error;
+    if (error) {
+      return safeErrorResponse("watchdog-changes", error, "Failed to fetch changes");
+    }
 
     return NextResponse.json({
       changes: (data as TosChangeWithCompany[]) || [],
     });
   } catch (error) {
-    console.error("[Watchdog API] Changes feed error:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch changes" },
-      { status: 500 },
-    );
+    return safeErrorResponse("watchdog-changes", error, "Failed to fetch changes");
   }
 }

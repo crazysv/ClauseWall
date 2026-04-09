@@ -34,6 +34,13 @@ CRITICAL RULES:
 4. For late fees, extract the per-day or per-month amount in rupees.
 5. ALWAYS respond in valid JSON. Nothing else.`;
 
+function safeNumericExtract(val: any): number | null {
+  if (val === null || val === undefined || val === "") return null;
+  if (typeof val === "boolean") return null;
+  const num = Number(val);
+  return isNaN(num) ? null : num;
+}
+
 /**
  * Extract structured values from a clause using lightweight AI
  */
@@ -80,9 +87,9 @@ Clause text:
 
     return {
       clause_type: safeString(parsed.clause_type, clauseType, 100),
-      primary_value: parsed.primary_value != null ? Number(parsed.primary_value) || null : null,
+      primary_value: safeNumericExtract(parsed.primary_value),
       primary_unit: safeStringOrNull(parsed.primary_unit, 50),
-      secondary_value: parsed.secondary_value != null ? Number(parsed.secondary_value) || null : null,
+      secondary_value: safeNumericExtract(parsed.secondary_value),
       secondary_unit: safeStringOrNull(parsed.secondary_unit, 50),
       property_type: (parsed.property_type === "residential" || parsed.property_type === "commercial" || parsed.property_type === "all") ? parsed.property_type : null,
       is_one_sided: safeBoolean(parsed.is_one_sided, false),

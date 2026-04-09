@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import { safeErrorResponse } from "@/lib/api/error-response";
 
 export async function GET(request: NextRequest) {
@@ -10,7 +10,12 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "roomId required" }, { status: 400 });
   }
 
-  const supabase = createAdminClient();
+  const supabase = await createClient();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const { data, error } = await supabase
     .from("collab_votes")
     .select("*")
@@ -25,10 +30,16 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { roomId, clauseId, voterId, voterName, vote } = body;
+    const supabase = await createClient();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-    if (!roomId || !clauseId || !voterId || !vote) {
+    const body = await request.json();
+    const { roomId, clauseId, voterName, vote } = body;
+
+    if (!roomId || !clauseId || !vote) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 },
@@ -42,8 +53,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const supabase = createAdminClient();
-
     // Upsert — update if exists, insert if not
     const { data, error } = await supabase
       .from("collab_votes")
@@ -51,8 +60,8 @@ export async function POST(request: NextRequest) {
         {
           room_id: roomId,
           clause_id: clauseId,
-          voter_id: voterId,
-          voter_name: voterName || "Anonymous",
+          voter_id: user.id,
+          voter_name: voterName || user.user_metadata?.full_name || "Anonymous",
           vote,
         },
         { onConflict: "room_id,clause_id,voter_id" },
@@ -66,6 +75,6 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true, vote: data });
   } catch (error) {
-    return NextResponse.json({ error: "Failed to cast vote" }, { status: 500 });
+    return safeErrorResponse("collab-votes", error, "Failed to cast vote");
   }
 }

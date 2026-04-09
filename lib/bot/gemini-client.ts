@@ -56,14 +56,15 @@ function getApiKey(): string {
  * Mark current key as exhausted and switch to next
  */
 function switchToNextKey(): boolean {
-  console.log(`[ClauseWall] Gemini: Key ${currentKeyIndex + 1} rate limited, switching...`);
+  const exhaustedIndex = currentKeyIndex;
+  console.log(`[ClauseWall] Gemini: Key ${exhaustedIndex + 1} rate limited, switching...`);
 
-  exhaustedKeys.add(currentKeyIndex);
+  exhaustedKeys.add(exhaustedIndex);
 
   // Schedule key recovery
   setTimeout(() => {
-    exhaustedKeys.delete(currentKeyIndex);
-    console.log(`[ClauseWall] Gemini: Key ${currentKeyIndex + 1} cooldown complete`);
+    exhaustedKeys.delete(exhaustedIndex);
+    console.log(`[ClauseWall] Gemini: Key ${exhaustedIndex + 1} cooldown complete`);
   }, KEY_COOLDOWN_MS);
 
   // Find next available key

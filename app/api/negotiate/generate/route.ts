@@ -1,16 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@/lib/supabase/server";
 import { generateNegotiationPlaybook } from "@/lib/ai/negotiation-generator";
 import { sanitizeLLMInput } from "@/lib/sanitize";
 import { NegotiateGenerateSchema } from "@/lib/validation/schemas";
 import { validateBody } from "@/lib/validation/middleware";
 import { safeErrorResponse } from "@/lib/api/error-response";
 import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-);
 
 export const maxDuration = 60;
 
@@ -19,6 +14,16 @@ export async function POST(request: NextRequest) {
     const rl = await rateLimit(request, "AI_HEAVY");
     if (!rl.success) return rateLimitResponse(rl);
 
+    const supabase = await createClient();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 },
+      );
+    }
+
     const body = await request.json();
 
     // ── Schema Validation ──
@@ -26,7 +31,7 @@ export async function POST(request: NextRequest) {
     if (!parsed.success) return parsed.response;
     const { documentId } = parsed.data;
 
-    // Fetch document
+    // Fetch document (RLS scopes to user's own documents)
     const { data: doc, error: docError } = await supabase
       .from("documents")
       .select("*")
@@ -37,6 +42,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: "Document not found" },
         { status: 404 },
+      );
+    }
+
+    // Explicit ownership check (defense-in-depth alongside RLS)
+    if (doc.user_id !== user.id) {
+      return NextResponse.json(
+        { error: "Forbidden: You do not own this document" },
+        { status: 403 },
       );
     }
 
@@ -93,3 +106,4 @@ export async function POST(request: NextRequest) {
     return safeErrorResponse("negotiate-generate", error, "Negotiation playbook generation failed");
   }
 }
+

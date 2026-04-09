@@ -13,7 +13,7 @@
 import { extractValues } from "@/lib/ai/value-extractor";
 import { analyzeClause } from "@/lib/ai/clause-analyzer";
 import { matchAgainstRules } from "@/lib/core/rule-engine";
-import { safeParseJson, safeString } from "@/lib/ai/output-guards";
+import { safeParseJson, safeString, safeInt, safeEnum, safeStringOrNull, safeStringArray } from "@/lib/ai/output-guards";
 import { callGroq } from "@/lib/ai/groq-client";
 import { runNeurosymbolicAnalysis } from "@/lib/reasoning";
 import { log } from "@/lib/logger";
@@ -30,6 +30,7 @@ async function generateExplanation(
   statuteCode: string,
   severity: string
 ): Promise<string> {
+  const MAX_EXPLANATION_LENGTH = 1000;
   try {
     const response = await callGroq(
       [
@@ -57,10 +58,11 @@ Severity: ${severity}`,
     );
 
     const parsed = safeParseJson(response);
-    return safeString(parsed?.explanation, violationDescription);
+    const explanation = safeString(parsed?.explanation, violationDescription, MAX_EXPLANATION_LENGTH);
+    return explanation;
   } catch {
     // If explanation generation fails, use the template
-    return violationDescription;
+    return violationDescription.substring(0, MAX_EXPLANATION_LENGTH);
   }
 }
 
@@ -192,14 +194,19 @@ export async function hybridAnalyzeClause(
       log.warn("hybrid", "Reasoning error (non-fatal, AI path)");
     }
 
+    // ---- Re-validate AI output before trusting it ----
+    const VALID_RISK_LEVELS = ["safe", "warning", "dangerous", "illegal"] as const;
+    const validatedRiskLevel = safeEnum(aiResult.risk_level, VALID_RISK_LEVELS, "warning");
+    const validatedRiskScore = safeInt(aiResult.risk_score, 50, 0, 100);
+
     return {
-      risk_level: aiResult.risk_level,
-      risk_score: aiResult.risk_score,
-      explanation: aiResult.explanation,
-      legal_issue: aiResult.legal_issue || null,
-      applicable_law: aiResult.applicable_law || null,
-      fair_alternative: aiResult.fair_alternative || null,
-      red_flags: aiResult.red_flags,
+      risk_level: validatedRiskLevel,
+      risk_score: validatedRiskScore,
+      explanation: safeString(aiResult.explanation, "Unable to analyze this clause fully.", 2000),
+      legal_issue: safeStringOrNull(aiResult.legal_issue, 500) || null,
+      applicable_law: safeStringOrNull(aiResult.applicable_law, 500) || null,
+      fair_alternative: safeStringOrNull(aiResult.fair_alternative, 2000) || null,
+      red_flags: safeStringArray(aiResult.red_flags, 20),
       verification_source: "ai",
       confidence: "ai_suggested",
       matched_rule_id: null,
@@ -221,11 +228,16 @@ export async function hybridAnalyzeClause(
         clauseType
       );
 
+      // Re-validate AI output even in the fallback path
+      const VALID_RISK_LEVELS = ["safe", "warning", "dangerous", "illegal"] as const;
       return {
-        ...aiResult,
-        legal_issue: aiResult.legal_issue || null,
-        applicable_law: aiResult.applicable_law || null,
-        fair_alternative: aiResult.fair_alternative || null,
+        risk_level: safeEnum(aiResult.risk_level, VALID_RISK_LEVELS, "warning"),
+        risk_score: safeInt(aiResult.risk_score, 50, 0, 100),
+        explanation: safeString(aiResult.explanation, "Unable to analyze this clause fully.", 2000),
+        legal_issue: safeStringOrNull(aiResult.legal_issue, 500) || null,
+        applicable_law: safeStringOrNull(aiResult.applicable_law, 500) || null,
+        fair_alternative: safeStringOrNull(aiResult.fair_alternative, 2000) || null,
+        red_flags: safeStringArray(aiResult.red_flags, 20),
         verification_source: "ai",
         confidence: "ai_suggested",
         matched_rule_id: null,

@@ -4,7 +4,8 @@
 // ============================================
 
 import { NextRequest, NextResponse } from "next/server";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
+import { safeErrorResponse } from "@/lib/api/error-response";
 
 export async function GET(
   request: NextRequest,
@@ -12,7 +13,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const supabase = createAdminClient();
+    const supabase = await createClient();
 
     const { data: change, error } = await supabase
       .from("tos_changes")
@@ -52,10 +53,6 @@ export async function GET(
       new_snapshot: newSnapshot,
     });
   } catch (error) {
-    console.error("[Watchdog API] Change detail error:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch change details" },
-      { status: 500 },
-    );
+    return safeErrorResponse("watchdog-change-detail", error, "Failed to fetch change details");
   }
 }

@@ -3,13 +3,12 @@
 // Generates simple English + Hindi explanations
 // ============================================
 
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import { withApiHandler } from "@/lib/api/with-api-handler";
+import { ExplainSchema, type ExplainInput } from "@/lib/validation/schemas";
 import { callGroq } from "@/lib/ai/groq-client";
-import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 import { sanitizeLLMInput } from "@/lib/sanitize";
-import { ExplainSchema } from "@/lib/validation/schemas";
 import { safeParseJson, safeString } from "@/lib/ai/output-guards";
-import { validateBody } from "@/lib/validation/middleware";
 
 export const maxDuration = 30;
 
@@ -37,23 +36,20 @@ RESPOND ONLY AS JSON:
   "hindi": "<explanation in Hindi/Hinglish using Devanagari script>"
 }`;
 
-export async function POST(request: NextRequest) {
-  try {
-    // ── Rate Limiting ──
-    const rl = await rateLimit(request, "AI_MEDIUM");
-    if (!rl.success) return rateLimitResponse(rl);
-
-    const body = await request.json();
-
-    // ── Schema Validation ──
-    const parsed = validateBody(body, ExplainSchema);
-    if (!parsed.success) return parsed.response;
-    const { clauseText, explanation, riskLevel, legalCitation, clauseType } = parsed.data;
+export const POST = withApiHandler<ExplainInput>(
+  {
+    module: "explain",
+    rateLimit: "AI_MEDIUM",
+    auth: true,
+    schema: ExplainSchema,
+  },
+  async (ctx) => {
+    const { clauseText, explanation, riskLevel, legalCitation, clauseType } = ctx.body;
 
     const userMessage = `Explain this legal clause issue:
 
-Clause Type: ${clauseType || "unknown"}
-Risk Level: ${riskLevel || "warning"}
+Clause Type: ${clauseType}
+Risk Level: ${riskLevel}
 ${legalCitation ? `Law Reference: ${sanitizeLLMInput(String(legalCitation), 500)}` : ""}
 
 Original Clause:
@@ -81,11 +77,6 @@ Generate a simple English (ELI5) and Hindi explanation.`;
       simple_english: safeString(aiResponse.simple_english, "Could not generate simple explanation."),
       hindi: safeString(aiResponse.hindi, "सरल व्याख्या उपलब्ध नहीं है।"),
     });
-  } catch (error) {
-    console.error("[ClauseWall] Explain API error:", error);
-    return NextResponse.json(
-      { error: (error as Error).message || "Explanation failed" },
-      { status: 500 },
-    );
-  }
-}
+  },
+);
+

@@ -59,18 +59,18 @@ function getGroqClient(): Groq {
  * Mark current key as exhausted and switch to next
  */
 function switchToNextKey(): boolean {
-  log.info("groq", "Key rate limited, switching", { keyIndex: currentKeyIndex + 1 });
+  const exhaustedIndex = currentKeyIndex;
+  log.info("groq", "Key rate limited, switching", { keyIndex: exhaustedIndex + 1 });
   
-  exhaustedKeys.add(currentKeyIndex);
+  exhaustedKeys.add(exhaustedIndex);
   
   // Schedule key recovery
   setTimeout(() => {
-    exhaustedKeys.delete(currentKeyIndex);
-    log.info("groq", "Key cooldown complete", { keyIndex: currentKeyIndex + 1 });
+    exhaustedKeys.delete(exhaustedIndex);
+    log.info("groq", "Key cooldown complete", { keyIndex: exhaustedIndex + 1 });
   }, KEY_COOLDOWN_MS);
 
   // Find next available key
-  const previousIndex = currentKeyIndex;
   currentKeyIndex = (currentKeyIndex + 1) % API_KEYS.length;
 
   // Check if we've tried all keys

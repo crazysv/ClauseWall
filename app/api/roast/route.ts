@@ -1,24 +1,20 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import { withApiHandler } from "@/lib/api/with-api-handler";
+import { RoastSchema, type RoastInput } from "@/lib/validation/schemas";
 import { callGroq } from "@/lib/ai/groq-client";
 import { CONTRACT_ROAST_PROMPT } from "@/lib/ai/system-prompt";
-import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 import { sanitizeLLMInput } from "@/lib/sanitize";
-import { RoastSchema } from "@/lib/validation/schemas";
-import { validateBody } from "@/lib/validation/middleware";
 import { safeParseJson } from "@/lib/ai/output-guards";
 
-export async function POST(request: NextRequest) {
-  try {
-    // ── Rate Limiting ──
-    const rl = await rateLimit(request, "AI_MEDIUM");
-    if (!rl.success) return rateLimitResponse(rl);
-
-    const body = await request.json();
-
-    // ── Schema Validation ──
-    const parsed = validateBody(body, RoastSchema);
-    if (!parsed.success) return parsed.response;
-    const { clauses, jurisdiction, documentType } = parsed.data;
+export const POST = withApiHandler<RoastInput>(
+  {
+    module: "roast",
+    rateLimit: "AI_MEDIUM",
+    auth: true,
+    schema: RoastSchema,
+  },
+  async (ctx) => {
+    const { clauses, jurisdiction, documentType } = ctx.body;
 
     // Build clause list for the prompt
     const clauseList = clauses
@@ -37,7 +33,7 @@ Legal Issue: ${sanitizeLLMInput(c.explanation || "", 1000)}`,
       },
       {
         role: "user",
-        content: `Roast these clauses from a ${documentType || "unknown"} contract in ${jurisdiction || "India"}.
+        content: `Roast these clauses from a ${documentType} contract in ${jurisdiction}.
 
 Return a JSON object mapping each clause ID to its roast text.
 
@@ -69,13 +65,6 @@ ${clauseList}`,
       roasts,
       total_roasted: Object.keys(roasts).length,
     });
-  } catch (error) {
-    console.error("[ClauseWall] Roast API error:", error);
-    return NextResponse.json(
-      {
-        error: "Roast generation failed. The contract was too spicy to handle.",
-      },
-      { status: 500 },
-    );
-  }
-}
+  },
+);
+

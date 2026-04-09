@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import { safeErrorResponse } from "@/lib/api/error-response";
 
 export async function GET(request: NextRequest) {
@@ -10,7 +10,12 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "roomId required" }, { status: 400 });
   }
 
-  const supabase = createAdminClient();
+  const supabase = await createClient();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const { data, error } = await supabase
     .from("collab_annotations")
     .select("*")
@@ -26,32 +31,36 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const supabase = await createClient();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await request.json();
     const {
       roomId,
       clauseId,
-      authorId,
       authorName,
       authorColor,
       content,
       parentId,
     } = body;
 
-    if (!roomId || !clauseId || !authorId || !content) {
+    if (!roomId || !clauseId || !content) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 },
       );
     }
 
-    const supabase = createAdminClient();
     const { data, error } = await supabase
       .from("collab_annotations")
       .insert({
         room_id: roomId,
         clause_id: clauseId,
-        author_id: authorId,
-        author_name: authorName || "Anonymous",
+        author_id: user.id,
+        author_name: authorName || user.user_metadata?.full_name || "Anonymous",
         author_color: authorColor || "#6B7280",
         content,
         parent_id: parentId || null,
@@ -65,31 +74,33 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true, annotation: data });
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to create annotation" },
-      { status: 500 },
-    );
+    return safeErrorResponse("collab-annotations", error, "Failed to create annotation");
   }
 }
 
 export async function DELETE(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
-  const authorId = searchParams.get("authorId");
 
-  if (!id || !authorId) {
+  if (!id) {
     return NextResponse.json(
-      { error: "id and authorId required" },
+      { error: "id required" },
       { status: 400 },
     );
   }
 
-  const supabase = createAdminClient();
+  const supabase = await createClient();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  // Only allow deleting your own annotations
   const { error } = await supabase
     .from("collab_annotations")
     .delete()
     .eq("id", id)
-    .eq("author_id", authorId);
+    .eq("author_id", user.id);
 
   if (error) {
     return safeErrorResponse("collab-annotations", error, "Failed to delete annotation");

@@ -1,22 +1,17 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import { withApiHandler } from "@/lib/api/with-api-handler";
+import { RewriteSchema, type RewriteInput } from "@/lib/validation/schemas";
 import { rewriteClause } from "@/lib/ai/clause-rewriter";
-import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 import { sanitizeLLMInput } from "@/lib/sanitize";
-import { RewriteSchema } from "@/lib/validation/schemas";
-import { validateBody } from "@/lib/validation/middleware";
 
-export async function POST(req: NextRequest) {
-  try {
-    // ── Rate Limiting ──
-    const rl = await rateLimit(req, "AI_MEDIUM");
-    if (!rl.success) return rateLimitResponse(rl);
-
-    const body = await req.json();
-
-    // ── Schema Validation ──
-    const parsed = validateBody(body, RewriteSchema);
-    if (!parsed.success) return parsed.response;
-
+export const POST = withApiHandler<RewriteInput>(
+  {
+    module: "rewrite",
+    rateLimit: "AI_MEDIUM",
+    auth: true,
+    schema: RewriteSchema,
+  },
+  async (ctx) => {
     const {
       clauseText,
       clauseType,
@@ -26,7 +21,7 @@ export async function POST(req: NextRequest) {
       explanation,
       legalCitation,
       fairAlternative,
-    } = parsed.data;
+    } = ctx.body;
 
     const result = await rewriteClause(
       sanitizeLLMInput(clauseText, 10_000),
@@ -40,11 +35,6 @@ export async function POST(req: NextRequest) {
     );
 
     return NextResponse.json(result);
-  } catch (error) {
-    console.error("[ClauseWall] Rewrite API failed:", error);
-    return NextResponse.json(
-      { error: "Failed to rewrite clause. Please try again." },
-      { status: 500 },
-    );
-  }
-}
+  },
+);
+

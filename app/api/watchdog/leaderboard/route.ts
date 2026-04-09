@@ -4,7 +4,8 @@
 // ============================================
 
 import { NextRequest, NextResponse } from "next/server";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
+import { safeErrorResponse } from "@/lib/api/error-response";
 import type { MonitoredCompany } from "@/types";
 
 export async function GET(request: NextRequest) {
@@ -14,7 +15,7 @@ export async function GET(request: NextRequest) {
     const sortBy = searchParams.get("sort") || "score";
     const order = searchParams.get("order") || "asc";
 
-    const supabase = createAdminClient();
+    const supabase = await createClient();
 
     let query = supabase
       .from("monitored_companies")
@@ -44,7 +45,9 @@ export async function GET(request: NextRequest) {
 
     const { data, error } = await query;
 
-    if (error) throw error;
+    if (error) {
+      return safeErrorResponse("watchdog-leaderboard", error, "Failed to fetch leaderboard");
+    }
 
     const companies = (data as MonitoredCompany[]) || [];
 
@@ -64,10 +67,6 @@ export async function GET(request: NextRequest) {
       total: companies.length,
     });
   } catch (error) {
-    console.error("[Watchdog API] Leaderboard error:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch leaderboard" },
-      { status: 500 },
-    );
+    return safeErrorResponse("watchdog-leaderboard", error, "Failed to fetch leaderboard");
   }
 }

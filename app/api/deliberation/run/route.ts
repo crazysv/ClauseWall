@@ -3,11 +3,9 @@
 // Run full deliberation on a document or single clause
 // ============================================
 
-import { NextRequest, NextResponse } from "next/server";
-import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
-import { createClient } from "@/lib/supabase/server";
-import { DeliberationRunSchema } from "@/lib/validation/schemas";
-import { validateBody } from "@/lib/validation/middleware";
+import { NextResponse } from "next/server";
+import { withApiHandler } from "@/lib/api/with-api-handler";
+import { DeliberationRunSchema, type DeliberationRunInput } from "@/lib/validation/schemas";
 import { deliberateClause, deliberateDocument } from "@/lib/deliberation";
 import type {
   DeliberationResult,
@@ -59,26 +57,20 @@ function summarizeProofTree(proofData: unknown): string | undefined {
   }
 }
 
-export async function POST(request: NextRequest) {
-  try {
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    
-    const rl = await rateLimit(request, "AI_HEAVY", user.id);
-    if (!rl.success) return rateLimitResponse(rl);
-
-    const body = await request.json();
-
-    // ── Schema Validation ──
-    const parsed = validateBody(body, DeliberationRunSchema);
-    if (!parsed.success) return parsed.response;
-    const { documentId, clauseText, documentType, jurisdiction } = parsed.data;
+export const POST = withApiHandler<DeliberationRunInput>(
+  {
+    module: "deliberation",
+    rateLimit: "AI_HEAVY",
+    rateLimitIdentifier: "user",
+    auth: true,
+    schema: DeliberationRunSchema,
+  },
+  async (ctx) => {
+    const { documentId, clauseText, documentType, jurisdiction } = ctx.body;
+    const supabase = ctx.supabase;
 
     // ── MODE 1: Full document deliberation ──
     if (documentId) {
-      
-
       // Fetch document
       const { data: doc, error: docError } = await supabase
         .from("documents")
@@ -148,8 +140,7 @@ export async function POST(request: NextRequest) {
       );
 
       // Store result in documents table
-      const supabase2 = await createClient();
-      await supabase2
+      await supabase
         .from("documents")
         .update({
           deliberation_data: result as unknown as Record<string, unknown>,
@@ -185,14 +176,5 @@ export async function POST(request: NextRequest) {
       { success: false, error: "Either documentId or clauseText is required" },
       { status: 400 },
     );
-  } catch (error) {
-    console.error("[ClauseWall] [API] Deliberation run failed:", error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: "Deliberation failed. Please try again.",
-      },
-      { status: 500 },
-    );
-  }
-}
+  },
+);

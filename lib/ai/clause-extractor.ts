@@ -240,17 +240,32 @@ export async function extractClauses(
       );
     }
 
+    // Cap total clause count to prevent hallucinated floods
+    const MAX_CLAUSES = 200;
+    const cappedClauses = rawClauses.slice(0, MAX_CLAUSES);
+    if (rawClauses.length > MAX_CLAUSES) {
+      log.warn("extractor", "Clause count exceeded cap, truncating", { raw: rawClauses.length, cap: MAX_CLAUSES });
+    }
+
     // ---- Sanitize clauses with per-item guards ----
-    parsed.clauses = rawClauses
+    const MAX_CLAUSE_TEXT_LENGTH = 5000;
+    parsed.clauses = cappedClauses
       .map((c: unknown, index: number) => {
         const item = c as Record<string, unknown> | null;
         if (!item) return null;
         const text = safeString(item.text, "").trim();
+        // Reject empty or absurdly long clause text (hallucination signal)
         if (text.length === 0) return null;
+        if (text.length > MAX_CLAUSE_TEXT_LENGTH) {
+          log.warn("extractor", "Clause text too long, truncating", { index, length: text.length });
+        }
+        const clauseType = safeString(item.clause_type, "general", 100);
+        // Reject clause_type values that contain newlines or look like prose
+        const sanitizedClauseType = /\n|\r|.{60,}/.test(clauseType) ? "general" : clauseType;
         return {
-          clause_number: safeInt(item.clause_number, index + 1, 0),
-          clause_type: safeString(item.clause_type, "general", 100),
-          text,
+          clause_number: safeInt(item.clause_number, index + 1, 0, MAX_CLAUSES),
+          clause_type: sanitizedClauseType,
+          text: text.substring(0, MAX_CLAUSE_TEXT_LENGTH),
         };
       })
       .filter((c): c is ExtractedClause => c !== null);

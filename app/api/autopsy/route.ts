@@ -1,20 +1,19 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import { withApiHandler } from "@/lib/api/with-api-handler";
+import { AutopsySchema, type AutopsyInput } from "@/lib/validation/schemas";
 import { callGroq } from "@/lib/ai/groq-client";
 import { CLAUSE_AUTOPSY_PROMPT } from "@/lib/ai/system-prompt";
 import { safeParseJson, safeString, safeEnum, safeArrayMap, safeStringOrNull } from "@/lib/ai/output-guards";
 
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const { clauseText, clauseType, jurisdiction, documentType, riskLevel } =
-      body;
-
-    if (!clauseText || !clauseType) {
-      return NextResponse.json(
-        { error: "Missing required fields: clauseText, clauseType" },
-        { status: 400 },
-      );
-    }
+export const POST = withApiHandler<AutopsyInput>(
+  {
+    module: "autopsy",
+    rateLimit: "AI_HEAVY",
+    auth: true,
+    schema: AutopsySchema,
+  },
+  async (ctx) => {
+    const { clauseText, clauseType, jurisdiction, documentType, riskLevel } = ctx.body;
 
     const response = await callGroq([
       {
@@ -25,10 +24,10 @@ export async function POST(request: NextRequest) {
         role: "user",
         content: `Perform a word-level autopsy on this clause.
 
-Document type: ${documentType || "unknown"}
-Jurisdiction: ${jurisdiction || "India"}
+Document type: ${documentType}
+Jurisdiction: ${jurisdiction}
 Clause type: ${clauseType}
-Current risk assessment: ${riskLevel || "unknown"}
+Current risk assessment: ${riskLevel}
 
 Clause text:
 "${clauseText}"`,
@@ -82,11 +81,6 @@ Clause text:
     };
 
     return NextResponse.json(result);
-  } catch (error) {
-    console.error("[ClauseWall] Autopsy API error:", error);
-    return NextResponse.json(
-      { error: "Autopsy analysis failed. Please try again." },
-      { status: 500 },
-    );
-  }
-}
+  },
+);
+

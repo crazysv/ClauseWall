@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import { analyzeDocument } from "@/lib/core/analyzer";
 
 export const maxDuration = 60;
@@ -23,7 +23,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const supabase = createAdminClient();
+    const supabase = await createClient();
+
+    // 1. Authenticate user
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
 
     // Fetch the document
     const { data: document, error: fetchError } = await supabase
@@ -36,6 +45,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: "Document not found" },
         { status: 404 },
+      );
+    }
+
+    // 2. Enforce explicit ownership
+    if (document.user_id !== user.id) {
+      return NextResponse.json(
+        { error: "Forbidden: You do not own this document" },
+        { status: 403 }
       );
     }
 
