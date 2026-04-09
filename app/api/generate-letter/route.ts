@@ -1,25 +1,21 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import { withApiHandler } from "@/lib/api/with-api-handler";
+import { GenerateLetterSchema, type GenerateLetterInput } from "@/lib/validation/schemas";
 import { generateDemandLetter } from "@/lib/ai/letter-generator";
-import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 import { sanitizeLLMInput } from "@/lib/sanitize";
-import { GenerateLetterSchema } from "@/lib/validation/schemas";
-import { validateBody } from "@/lib/validation/middleware";
 import type { Clause } from "@/types";
 
 export const maxDuration = 60;
 
-export async function POST(request: NextRequest) {
-  try {
-    // ── Rate Limiting ──
-    const rl = await rateLimit(request, "AI_HEAVY");
-    if (!rl.success) return rateLimitResponse(rl);
-
-    const body = await request.json();
-
-    // ── Schema Validation ──
-    const parsed = validateBody(body, GenerateLetterSchema);
-    if (!parsed.success) return parsed.response;
-    const { documentType, jurisdiction, entityName, clauses } = parsed.data;
+export const POST = withApiHandler<GenerateLetterInput>(
+  {
+    module: "generate-letter",
+    rateLimit: "AI_HEAVY",
+    auth: true,
+    schema: GenerateLetterSchema,
+  },
+  async (ctx) => {
+    const { documentType, jurisdiction, entityName, clauses } = ctx.body;
 
     // Convert to Clause format expected by the generator
     const formattedClauses: Clause[] = clauses.map((c, index) => ({
@@ -51,11 +47,5 @@ export async function POST(request: NextRequest) {
     );
 
     return NextResponse.json({ letter });
-  } catch (error) {
-    console.error("[ClauseWall] Letter generation error:", error);
-    return NextResponse.json(
-      { error: (error as Error).message || "Failed to generate letter" },
-      { status: 500 },
-    );
-  }
-}
+  },
+);

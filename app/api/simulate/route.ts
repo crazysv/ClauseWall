@@ -1,26 +1,21 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import { withApiHandler } from "@/lib/api/with-api-handler";
+import { SimulateSchema, type SimulateInput } from "@/lib/validation/schemas";
 import { callGroq } from "@/lib/ai/groq-client";
 import { CONTRACT_SIMULATOR_PROMPT } from "@/lib/ai/system-prompt";
-import { createClient } from "@/lib/supabase/server";
 import { sanitizeLLMInput } from "@/lib/sanitize";
-import { SimulateSchema } from "@/lib/validation/schemas";
-import { validateBody } from "@/lib/validation/middleware";
 import { safeParseJson } from "@/lib/ai/output-guards";
-import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
-export async function POST(request: NextRequest) {
-  try {
-    const rl = await rateLimit(request, "AI_HEAVY");
-    if (!rl.success) return rateLimitResponse(rl);
-
-    const body = await request.json();
-
-    // ── Schema Validation ──
-    const parsed = validateBody(body, SimulateSchema);
-    if (!parsed.success) return parsed.response;
-    const { documentId } = parsed.data;
-
-    const supabase = await createClient();
+export const POST = withApiHandler<SimulateInput>(
+  {
+    module: "simulate",
+    rateLimit: "AI_HEAVY",
+    auth: true,
+    schema: SimulateSchema,
+  },
+  async (ctx) => {
+    const { documentId } = ctx.body;
+    const supabase = ctx.supabase;
 
     const { data: doc, error: docError } = await supabase
       .from("documents")
@@ -227,11 +222,5 @@ ${clauseContext}`,
     };
 
     return NextResponse.json(result);
-  } catch (error) {
-    console.error("[ClauseWall] Simulator API error:", error);
-    return NextResponse.json(
-      { error: "Failed to generate simulation. Please try again." },
-      { status: 500 },
-    );
-  }
-}
+  },
+);
