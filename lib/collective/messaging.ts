@@ -3,7 +3,7 @@
 // All messages use anonymous IDs, PII is stripped
 // ============================================
 
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import type { CollectiveMessage, CollectiveMessageType } from "@/types";
 
 // Basic PII patterns to strip from messages
@@ -45,7 +45,7 @@ export async function sendMessage(
   replyTo?: string
 ): Promise<CollectiveMessage | null> {
   try {
-    const supabase = createAdminClient();
+    const supabase = await createClient();
 
     // Verify membership and get anonymous ID
     const { data: membership } = await supabase
@@ -98,7 +98,7 @@ export async function getMessages(
   before?: string
 ): Promise<CollectiveMessage[]> {
   try {
-    const supabase = createAdminClient();
+    const supabase = await createClient();
 
     // Verify membership
     const { data: membership } = await supabase
@@ -139,7 +139,7 @@ export async function togglePinMessage(
   collectiveId: string
 ): Promise<boolean> {
   try {
-    const supabase = createAdminClient();
+    const supabase = await createClient();
 
     // Verify membership and role
     const { data: membership } = await supabase
@@ -181,7 +181,7 @@ export async function getPinnedMessages(
   userId: string
 ): Promise<CollectiveMessage[]> {
   try {
-    const supabase = createAdminClient();
+    const supabase = await createClient();
 
     // Verify membership
     const { data: membership } = await supabase

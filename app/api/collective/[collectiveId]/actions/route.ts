@@ -4,7 +4,6 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { proposeAction } from "@/lib/collective";
-import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
 export async function GET(
@@ -13,7 +12,7 @@ export async function GET(
 ) {
   try {
     const { collectiveId } = await params;
-    const supabase = createAdminClient();
+    const supabase = await createClient();
 
     const { data: actions, error } = await supabase
       .from("collective_actions")

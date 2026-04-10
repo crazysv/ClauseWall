@@ -100,3 +100,28 @@ export async function closeRoom(roomCode: string, sessionId: string): Promise<bo
 
   return !error;
 }
+
+/**
+ * Delete collab rooms that have been naturally expired for over 72 hours.
+ * Relies on Supabase foreign-key ON DELETE CASCADE to also wipe the 
+ * associated collab_annotations and collab_votes.
+ */
+export async function cleanupStaleRooms(): Promise<number> {
+  const supabase = createAdminClient();
+  
+  // 72 hours grace period past the natural expiration
+  const cutoff = new Date(Date.now() - 72 * 60 * 60 * 1000).toISOString();
+
+  const { data, error } = await supabase
+    .from("collab_rooms")
+    .delete()
+    .lt("expires_at", cutoff)
+    .select("id");
+
+  if (error) {
+    console.error("[ClauseWall] [Collab] Cleanup failed:", error);
+    return 0;
+  }
+
+  return data?.length || 0;
+}

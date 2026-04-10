@@ -11,13 +11,16 @@ export const maxDuration = 60;
 
 export async function POST(request: NextRequest) {
   try {
-    // Verify authorization (CRON_SECRET or admin)
+    // 1. STRICT AUTHORIZATION GATEWAY
     const cronSecret = process.env.CRON_SECRET;
-    if (cronSecret) {
-      const authHeader = request.headers.get("authorization");
-      if (authHeader !== `Bearer ${cronSecret}`) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-      }
+    if (!cronSecret) {
+      console.error("[Watchdog Security] CRON_SECRET is missing. Failsafe activated.");
+      return NextResponse.json({ error: "System Misconfigured" }, { status: 500 });
+    }
+
+    const authHeader = request.headers.get("authorization");
+    if (authHeader !== `Bearer ${cronSecret}`) {
+      return NextResponse.json({ error: "Unauthorized Gateway" }, { status: 401 });
     }
 
     const body = await request.json().catch(() => ({}));

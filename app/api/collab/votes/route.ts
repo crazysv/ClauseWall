@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { safeErrorResponse } from "@/lib/api/error-response";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export async function GET(request: NextRequest) {
+  const rl = await rateLimit(request, "PUBLIC");
+  if (!rl.success) return rateLimitResponse(rl);
+
   const { searchParams } = new URL(request.url);
   const roomId = searchParams.get("roomId");
 
@@ -30,6 +34,9 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const rl = await rateLimit(request, "PUBLIC");
+    if (!rl.success) return rateLimitResponse(rl);
+
     const supabase = await createClient();
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {

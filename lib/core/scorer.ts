@@ -4,6 +4,7 @@
 // ============================================
 
 import type { Clause, RiskLevel } from "@/types";
+import { RISK_WEIGHTS } from "@/types";
 
 /**
  * Calculate weighted overall risk score for a document
@@ -18,23 +19,7 @@ export function calculateWeightedScore(
   let totalWeight = 0;
 
   for (const clause of clauses) {
-    let weight = 1;
-
-    switch (clause.risk_level) {
-      case "illegal":
-        weight = 3;
-        break;
-      case "dangerous":
-        weight = 2;
-        break;
-      case "warning":
-        weight = 1.5;
-        break;
-      case "safe":
-        weight = 1;
-        break;
-    }
-
+    const weight = RISK_WEIGHTS[clause.risk_level] || 1;
     weightedSum += clause.risk_score * weight;
     totalWeight += weight;
   }

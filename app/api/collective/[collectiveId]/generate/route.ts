@@ -5,7 +5,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCollective, generateCollectiveDocument } from "@/lib/collective";
 import { createClient } from "@/lib/supabase/server";
-import { createAdminClient } from "@/lib/supabase/admin";
 
 export async function POST(
   request: NextRequest,
@@ -27,8 +26,7 @@ export async function POST(
     const { collectiveId } = await params;
 
     // Verify membership
-    const adminSupabase = createAdminClient();
-    const { data: membership } = await adminSupabase
+    const { data: membership } = await supabase
       .from("collective_memberships")
       .select("id")
       .eq("collective_id", collectiveId)

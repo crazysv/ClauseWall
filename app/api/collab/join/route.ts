@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { joinRoom } from "@/lib/collab/room-manager";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export async function POST(request: NextRequest) {
   try {
+    const rl = await rateLimit(request, "PUBLIC");
+    if (!rl.success) return rateLimitResponse(rl);
+
     const { roomCode } = await request.json();
 
     if (!roomCode) {

@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createRoom } from "@/lib/collab/room-manager";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
 
 export async function POST(request: NextRequest) {
   try {
+    const rl = await rateLimit(request, "DB_WRITE");
+    if (!rl.success) return rateLimitResponse(rl);
+
     const { documentId, hostName, sessionId } = await request.json();
 
     if (!documentId || !hostName || !sessionId) {

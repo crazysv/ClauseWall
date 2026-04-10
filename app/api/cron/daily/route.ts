@@ -99,6 +99,21 @@ export async function GET(request: NextRequest) {
       };
     }
 
+    // ─── Job 5: Collab Room Garbage Collection ───
+    try {
+      const { cleanupStaleRooms } = await import("@/lib/collab/room-manager");
+      console.log("[Daily Cron] Starting Collab TTL cleanup...");
+      const deletedCount = await cleanupStaleRooms();
+      console.log(`[Daily Cron] Collab cleanup: deleted ${deletedCount} stale rooms`);
+      results.collab_cleanup = { deleted: deletedCount };
+    } catch (cleanupError) {
+      console.error("[Daily Cron] Collab cleanup failed:", cleanupError);
+      results.collab_cleanup = {
+        error: (cleanupError as Error).message,
+        deleted: 0,
+      };
+    }
+
     return NextResponse.json(results);
   } catch (error) {
     console.error("[Daily Cron] Error:", error);

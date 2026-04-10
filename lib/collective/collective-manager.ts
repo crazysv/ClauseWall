@@ -4,6 +4,7 @@
 // ============================================
 
 import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import type {
   Collective,
   CollectiveMembership,
@@ -169,7 +170,7 @@ export async function getCollective(
   collectiveId: string
 ): Promise<Collective | null> {
   try {
-    const supabase = createAdminClient();
+    const supabase = await createClient();
 
     const { data, error } = await supabase
       .from("collectives")
@@ -204,7 +205,7 @@ export async function getUserCollectives(
   userId: string
 ): Promise<{ collective: Collective; membership: CollectiveMembership }[]> {
   try {
-    const supabase = createAdminClient();
+    const supabase = await createClient();
 
     const { data: memberships } = await supabase
       .from("collective_memberships")

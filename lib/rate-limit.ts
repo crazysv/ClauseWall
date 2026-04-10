@@ -255,23 +255,16 @@ export function rateLimitResponse(result: RateLimitResult): NextResponse {
 /**
  * Verify the internal API secret for server-to-server calls.
  *
- * - Production/Preview: REJECTS all requests if INTERNAL_API_SECRET is not set (fail closed).
- * - Development: Allows requests through without a secret for local dev convenience.
+ * - REJECTS all requests if INTERNAL_API_SECRET is not set (fail closed).
  */
 export function verifyInternalSecret(request: NextRequest): boolean {
   const secret = process.env.INTERNAL_API_SECRET;
 
   if (!secret) {
-    // Fail closed in production — never allow requests if the secret is missing
-    if (process.env.NODE_ENV === "production") {
-      console.error(
-        "[RateLimit] CRITICAL: INTERNAL_API_SECRET is not configured. Rejecting request.",
-      );
-      return false;
-    }
-
-    // Dev-only passthrough — allow without secret for local development
-    return true;
+    console.error(
+      "[Security] CRITICAL: INTERNAL_API_SECRET is not configured. Rejecting request.",
+    );
+    return false;
   }
 
   const provided = request.headers.get("x-internal-secret");

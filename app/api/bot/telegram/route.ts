@@ -79,6 +79,22 @@ interface TelegramUpdate {
 // ---- WEBHOOK ENDPOINT ----
 
 export async function POST(request: NextRequest) {
+  // 1. STRICT INGRESS VALIDATION
+  const expectedSecret = process.env.TELEGRAM_WEBHOOK_SECRET;
+  if (!expectedSecret) {
+    console.error("[ClauseWall Bot] Security Guard: TELEGRAM_WEBHOOK_SECRET is missing. Failsafe activated.");
+    return new Response("System Misconfigured", { status: 500 });
+  }
+
+  const incomingSecret = request.headers.get("x-telegram-bot-api-secret-token");
+  if (!incomingSecret || incomingSecret !== expectedSecret) {
+    return new Response("Unauthorized Gateway", { status: 401 });
+  }
+
+  // 2. RATE LIMIT BY STRUCTURAL IP (Not unparsed JSON payload evasion)
+  const rl = await rateLimit(request, "TELEGRAM");
+  if (!rl.success) return rateLimitResponse(rl);
+
   let update: TelegramUpdate;
 
   try {
@@ -89,10 +105,6 @@ export async function POST(request: NextRequest) {
 
   const message = update.message;
   const callbackQuery = update.callback_query;
-
-  const chatIdStr = message?.chat.id ? String(message.chat.id) : (callbackQuery?.message?.chat.id ? String(callbackQuery.message.chat.id) : undefined);
-  const rl = await rateLimit(request, "TELEGRAM", chatIdStr);
-  if (!rl.success) return rateLimitResponse(rl);
 
   // Handle callback queries (inline keyboard)
   if (callbackQuery?.data?.startsWith("bhasha_")) {

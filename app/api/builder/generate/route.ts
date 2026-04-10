@@ -3,56 +3,24 @@
 // POST /api/builder/generate
 // ============================================
 
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { generateContract } from "@/lib/builder/contract-generator";
-import { ContractTemplateType } from "@/types";
+import { withApiHandler } from "@/lib/api/with-api-handler";
+import { BuilderGenerateSchema, type BuilderGenerateInput } from "@/lib/validation/schemas";
 
-const VALID_TYPES: ContractTemplateType[] = [
-  "rental",
-  "employment",
-  "freelance",
-  "nda",
-  "loan",
-  "partnership",
-  "sale",
-  "service",
-  "mou",
-  "poa",
-];
-
-export async function POST(request: NextRequest) {
-  try {
+export const POST = withApiHandler<BuilderGenerateInput>(
+  {
+    module: "builder-generate",
+    rateLimit: "AI_HEAVY",
+    auth: true,
+    schema: BuilderGenerateSchema,
+  },
+  async (ctx) => {
     const supabase = await createClient();
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    const user = ctx.user!;
 
-    if (authError || !user) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized. You must be logged in to generate contracts." },
-        { status: 401 }
-      );
-    }
-
-    const body = await request.json();
-    const { template_type, jurisdiction, values } = body;
-
-    // Validate inputs
-    if (!template_type || !jurisdiction || !values) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Missing required fields: template_type, jurisdiction, values",
-        },
-        { status: 400 },
-      );
-    }
-
-    if (!VALID_TYPES.includes(template_type)) {
-      return NextResponse.json(
-        { success: false, error: `Invalid template type: ${template_type}` },
-        { status: 400 },
-      );
-    }
+    const { template_type, jurisdiction, values } = ctx.body;
 
     // Generate contract
     const result = await generateContract(template_type, jurisdiction, values);
@@ -102,11 +70,5 @@ export async function POST(request: NextRequest) {
       generated_clauses: result.clauses,
       stamp_paper_note: result.stamp_paper_note,
     });
-  } catch (error: any) {
-    console.error("[ClauseWall Builder] API error:", error);
-    return NextResponse.json(
-      { success: false, error: error.message || "Internal server error" },
-      { status: 500 },
-    );
   }
-}
+);

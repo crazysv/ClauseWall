@@ -89,7 +89,7 @@ export async function downloadFile(fileId: string): Promise<Buffer> {
 /**
  * Register webhook URL with Telegram
  */
-export async function setWebhook(url: string): Promise<any> {
+export async function setWebhook(url: string, secretToken?: string): Promise<any> {
   const token = getToken();
   const response = await fetch(`${BASE_URL}${token}/setWebhook`, {
     method: "POST",
@@ -98,6 +98,7 @@ export async function setWebhook(url: string): Promise<any> {
       url,
       allowed_updates: ["message"],
       drop_pending_updates: true,
+      ...(secretToken ? { secret_token: secretToken } : {}),
     }),
   });
   return response.json();

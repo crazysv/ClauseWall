@@ -8,6 +8,17 @@ import { NextRequest, NextResponse } from "next/server";
 import { setWebhook, getWebhookInfo } from "@/lib/bot/telegram-client";
 
 export async function GET(request: NextRequest) {
+  const expectedSecret = process.env.TELEGRAM_WEBHOOK_SECRET;
+  if (!expectedSecret) {
+    return NextResponse.json({ error: "System misconfigured: TELEGRAM_WEBHOOK_SECRET missing." }, { status: 500 });
+  }
+
+  // Authorize the setup call via query parameter matching the system configuration
+  const providedSecret = request.nextUrl.searchParams.get("secret");
+  if (providedSecret !== expectedSecret) {
+    return NextResponse.json({ error: "Unauthorized Gateway" }, { status: 401 });
+  }
+
   const action = request.nextUrl.searchParams.get("action") || "info";
 
   try {
@@ -15,7 +26,7 @@ export async function GET(request: NextRequest) {
       const baseUrl = process.env.NEXT_PUBLIC_APP_URL || request.nextUrl.origin;
       const webhookUrl = `${baseUrl}/api/bot/telegram`;
 
-      const result = await setWebhook(webhookUrl);
+      const result = await setWebhook(webhookUrl, expectedSecret);
 
       return NextResponse.json({
         success: true,
