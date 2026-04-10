@@ -42,7 +42,7 @@ const publicRoutes = [
   "/collab",      // Public collaboration room links
 ];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Update Supabase auth session (always runs — refreshes tokens)
