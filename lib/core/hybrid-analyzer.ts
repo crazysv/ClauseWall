@@ -18,6 +18,7 @@ import { callGroq } from "@/lib/ai/groq-client";
 import { runNeurosymbolicAnalysis } from "@/lib/reasoning";
 import { log } from "@/lib/logger";
 import type { HybridAnalysisResult } from "@/types";
+import { VALID_RISK_LEVELS } from "@/types";
 import type { ProofTree } from "@/lib/reasoning/types";
 
 /**
@@ -195,7 +196,7 @@ export async function hybridAnalyzeClause(
     }
 
     // ---- Re-validate AI output before trusting it ----
-    const VALID_RISK_LEVELS = ["safe", "warning", "dangerous", "illegal"] as const;
+
     const validatedRiskLevel = safeEnum(aiResult.risk_level, VALID_RISK_LEVELS, "warning");
     const validatedRiskScore = safeInt(aiResult.risk_score, 50, 0, 100);
 
@@ -229,7 +230,7 @@ export async function hybridAnalyzeClause(
       );
 
       // Re-validate AI output even in the fallback path
-      const VALID_RISK_LEVELS = ["safe", "warning", "dangerous", "illegal"] as const;
+
       return {
         risk_level: safeEnum(aiResult.risk_level, VALID_RISK_LEVELS, "warning"),
         risk_score: safeInt(aiResult.risk_score, 50, 0, 100),

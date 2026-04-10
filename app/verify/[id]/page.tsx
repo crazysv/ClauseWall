@@ -6,7 +6,7 @@
 
 import { Metadata } from "next";
 import Link from "next/link";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import { getTierConfig } from "@/lib/qr";
 import type { VerificationTier, ShareSettings } from "@/lib/qr";
 import {
@@ -44,7 +44,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id: shareId } = await params;
-  const supabase = createAdminClient();
+  const supabase = await createClient();
 
   const { data: doc } = await supabase
     .from("documents")
@@ -83,7 +83,7 @@ export default async function VerifyPage({
   params: Promise<{ id: string }>;
 }) {
   const { id: shareId } = await params;
-  const supabase = createAdminClient();
+  const supabase = await createClient();
 
   // Fetch document by share ID
   const { data: doc, error } = await supabase

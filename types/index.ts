@@ -7,7 +7,15 @@
 // ENUMS / UNION TYPES
 // ============================================
 
-export type RiskLevel = "safe" | "warning" | "dangerous" | "illegal";
+export const VALID_RISK_LEVELS = ["safe", "warning", "dangerous", "illegal"] as const;
+export type RiskLevel = typeof VALID_RISK_LEVELS[number];
+
+export const RISK_WEIGHTS: Record<RiskLevel, number> = {
+  illegal: 3,
+  dangerous: 2,
+  warning: 1.5,
+  safe: 1,
+};
 
 export type DocumentType =
   | "rental"

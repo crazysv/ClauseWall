@@ -4,7 +4,7 @@
 
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, AlertTriangle, Scale } from "lucide-react";
@@ -24,7 +24,7 @@ export default async function ChangeDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const supabase = createAdminClient();
+  const supabase = await createClient();
 
   const { data: changeData } = await supabase
     .from("tos_changes")

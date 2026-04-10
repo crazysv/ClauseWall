@@ -3,7 +3,7 @@
 // ============================================
 
 import { notFound } from "next/navigation";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import TosScoreBadge from "@/components/watchdog/tos-score-badge";
@@ -48,7 +48,7 @@ export default async function CompanyDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const supabase = createAdminClient();
+  const supabase = await createClient();
 
   const { data: company } = await supabase
     .from("monitored_companies")

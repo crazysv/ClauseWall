@@ -4,6 +4,7 @@
 // ============================================
 
 import { createAdminClient } from '@/lib/supabase/admin';
+import { createClient } from '@/lib/supabase/server';
 import type { ComplaintFiling, ComplaintStatus, HearingRecord } from '@/types';
 
 /**
@@ -13,7 +14,7 @@ export async function createFiling(
   userId: string,
   data: Partial<ComplaintFiling>
 ): Promise<ComplaintFiling | null> {
-  const supabase = createAdminClient();
+  const supabase = await createClient();
 
   const { data: filing, error } = await supabase
     .from('complaint_filings')
@@ -59,7 +60,7 @@ export async function updateFiling(
   userId: string,
   updates: Partial<ComplaintFiling>
 ): Promise<ComplaintFiling | null> {
-  const supabase = createAdminClient();
+  const supabase = await createClient();
 
   const { data, error } = await supabase
     .from('complaint_filings')
@@ -87,7 +88,7 @@ export async function getFiling(
   filingId: string,
   userId: string
 ): Promise<ComplaintFiling | null> {
-  const supabase = createAdminClient();
+  const supabase = await createClient();
 
   const { data, error } = await supabase
     .from('complaint_filings')
@@ -107,7 +108,7 @@ export async function listFilings(
   userId: string,
   documentId?: string
 ): Promise<ComplaintFiling[]> {
-  const supabase = createAdminClient();
+  const supabase = await createClient();
 
   let query = supabase
     .from('complaint_filings')
@@ -138,7 +139,7 @@ export async function updateFilingStatus(
     notes?: string;
   }
 ): Promise<boolean> {
-  const supabase = createAdminClient();
+  const supabase = await createClient();
 
   const updateData: Record<string, unknown> = {
     status,
@@ -166,7 +167,7 @@ export async function addHearingRecord(
   userId: string,
   hearing: HearingRecord
 ): Promise<boolean> {
-  const supabase = createAdminClient();
+  const supabase = await createClient();
 
   const { data: filing } = await supabase
     .from('complaint_filings')
