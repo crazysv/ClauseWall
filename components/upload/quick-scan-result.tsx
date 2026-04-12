@@ -156,45 +156,41 @@ export default function QuickScanResult({
   const getTrafficLight = (score: number) => {
     if (score >= 80)
       return {
-        color: "text-purple-600",
-        bg: "bg-purple-500/10",
-        border:
-          "card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)]",
+        color: "text-red-500",
+        bg: "bg-red-950/10",
+        border: "border border-red-900/40 shadow-[0_0_30px_rgba(220,38,38,0.15)]",
         label: "CRITICAL RISK",
         sublabel: "Do NOT sign this contract",
-        icon: <Scale className="h-12 w-12 text-purple-600" />,
+        icon: <Scale className="h-12 w-12 text-red-500" />,
         emoji: "⛔",
       };
     if (score >= 60)
       return {
-        color: "text-red-600",
-        bg: "bg-red-500/10",
-        border:
-          "card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)]",
+        color: "text-red-400",
+        bg: "bg-red-950/10",
+        border: "border border-red-900/30",
         label: "HIGH RISK",
         sublabel: "Significant issues found",
-        icon: <XCircle className="h-12 w-12 text-red-600" />,
+        icon: <XCircle className="h-12 w-12 text-red-400" />,
         emoji: "🔴",
       };
     if (score >= 30)
       return {
-        color: "text-yellow-600",
-        bg: "bg-yellow-500/10",
-        border:
-          "card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)]",
+        color: "text-amber-500",
+        bg: "bg-amber-950/10",
+        border: "border border-amber-900/30",
         label: "MEDIUM RISK",
         sublabel: "Some concerns to review",
-        icon: <AlertTriangle className="h-12 w-12 text-yellow-600" />,
+        icon: <AlertTriangle className="h-12 w-12 text-amber-500" />,
         emoji: "🟡",
       };
     return {
-      color: "text-green-600",
-      bg: "bg-green-500/10",
-      border:
-        "card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)]",
+      color: "text-emerald-500",
+      bg: "bg-emerald-950/10",
+      border: "border border-emerald-900/30",
       label: "LOW RISK",
       sublabel: "Looks mostly fair",
-      icon: <CheckCircle2 className="h-12 w-12 text-green-600" />,
+      icon: <CheckCircle2 className="h-12 w-12 text-emerald-500" />,
       emoji: "🟢",
     };
   };
@@ -202,26 +198,26 @@ export default function QuickScanResult({
   const getSeverityIcon = (severity: string) => {
     switch (severity) {
       case "illegal":
-        return <Scale className="h-5 w-5 text-purple-600" />;
+        return <Scale className="h-5 w-5 text-red-500" />;
       case "dangerous":
-        return <XCircle className="h-5 w-5 text-primary" />;
+        return <XCircle className="h-5 w-5 text-red-400" />;
       case "warning":
-        return <AlertTriangle className="h-5 w-5 text-yellow-600" />;
+        return <AlertTriangle className="h-5 w-5 text-amber-500" />;
       default:
-        return <AlertTriangle className="h-5 w-5 text-yellow-600" />;
+        return <AlertTriangle className="h-5 w-5 text-amber-500" />;
     }
   };
 
   const getSeverityBadge = (severity: string) => {
     switch (severity) {
       case "illegal":
-        return "bg-purple-600 text-white font-black uppercase tracking-wider border-2 border-foreground";
+        return "bg-red-950/30 text-red-500 border border-red-900/50 font-mono text-[10px] uppercase tracking-widest";
       case "dangerous":
-        return "bg-primary text-primary-foreground font-black uppercase tracking-wider border-2 border-foreground";
+        return "bg-red-950/30 text-red-400 border border-red-900/50 font-mono text-[10px] uppercase tracking-widest";
       case "warning":
-        return "bg-yellow-500 text-foreground font-black uppercase tracking-wider border-2 border-foreground";
+        return "bg-amber-950/30 text-amber-500 border border-amber-900/50 font-mono text-[10px] uppercase tracking-widest";
       default:
-        return "bg-yellow-500 text-foreground font-black uppercase tracking-wider border-2 border-foreground";
+        return "bg-amber-950/30 text-amber-500 border border-amber-900/50 font-mono text-[10px] uppercase tracking-widest";
     }
   };
 
@@ -239,34 +235,30 @@ export default function QuickScanResult({
     switch (risk) {
       case "illegal":
         return {
-          color: "text-purple-600",
-          bg: "bg-background",
-          border:
-            "border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(147,51,234,1)]",
+          color: "text-red-500",
+          bg: "bg-[#0a0a0a]",
+          border: "border border-red-900/50",
           label: "CRITICAL",
         };
       case "dangerous":
         return {
-          color: "text-primary",
-          bg: "bg-background",
-          border:
-            "border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(220,38,38,1)]",
+          color: "text-red-400",
+          bg: "bg-[#0a0a0a]",
+          border: "border border-red-900/50",
           label: "HIGH RISK",
         };
       case "warning":
         return {
-          color: "text-yellow-600",
-          bg: "bg-background",
-          border:
-            "border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(202,138,4,1)]",
+          color: "text-amber-500",
+          bg: "bg-[#0a0a0a]",
+          border: "border border-amber-900/50",
           label: "CAUTION",
         };
       default:
         return {
-          color: "text-green-600",
-          bg: "bg-background",
-          border:
-            "border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(22,163,74,1)]",
+          color: "text-emerald-500",
+          bg: "bg-[#0a0a0a]",
+          border: "border border-emerald-900/50",
           label: "LOW RISK",
         };
     }
@@ -291,61 +283,60 @@ export default function QuickScanResult({
       {/* ============================================ */}
       {/* 1. TRAFFIC LIGHT BANNER                      */}
       {/* ============================================ */}
-      <Card className={`${traffic.border} overflow-hidden`}>
-        <CardContent className="p-0">
+      <div className={`bg-[#0a0a0a] rounded-sm overflow-hidden relative ${traffic.border}`}>
+        <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-red-500/20 to-transparent" />
+        <div className="p-0">
           <div className={`${traffic.bg} p-8 text-center`}>
             {/* Preliminary badge — ML only mode */}
             {isPreliminary && (
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mb-4"
+                className="mb-4 flex justify-center"
               >
-                <Badge className="bg-foreground text-background font-bold border-2 border-foreground gap-1.5 px-3 py-1">
+                <div className="flex items-center gap-2 bg-[#0e0e0e] text-cyan-400 font-mono text-[10px] tracking-widest uppercase border border-cyan-900/50 px-3 py-1.5 rounded-sm">
                   <Zap className="h-3.5 w-3.5" />
                   PRELIMINARY — On-device AI scan
-                </Badge>
+                </div>
               </motion.div>
             )}
 
             <div className="flex justify-center mb-4">{traffic.icon}</div>
             <div className="flex items-center justify-center gap-3 mb-2">
-              <span className="text-3xl">{traffic.emoji}</span>
-              <h2 className={`text-lg font-bold mt-2 ${traffic.color}`}>
+              <h2 className={`text-sm font-mono tracking-widest uppercase ${traffic.color}`}>
                 {traffic.label}
               </h2>
-              <span className="text-3xl">{traffic.emoji}</span>
             </div>
-            <p className="text-base font-semibold text-foreground text-lg">
+            <p className="text-base font-bold text-neutral-300">
               {traffic.sublabel}
             </p>
-            <div className="mt-4 flex items-center justify-center gap-2">
+            <div className="mt-4 flex items-center justify-center gap-2 drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]">
               <span
-                className={`text-6xl font-black tabular-nums ${traffic.color}`}
+                className={`text-7xl font-bold tracking-tighter ${traffic.color}`}
               >
                 {animatedScore}
               </span>
-              <span className="text-3xl font-bold text-foreground">
+              <span className="text-2xl font-bold text-neutral-600 mt-4">
                 /100
               </span>
             </div>
-            <div className="mt-2 flex items-center justify-center gap-3 text-sm text-foreground">
+            <div className="mt-4 flex items-center justify-center gap-3 text-[11px] font-mono tracking-widest uppercase text-neutral-500">
               <span>📄 {displayDocType}</span>
-              <span>•</span>
-              <span>{displayClauses} clauses detected</span>
+              <span className="text-neutral-800">•</span>
+              <span>{displayClauses} clauses</span>
               {isPreliminary && mlResult && (
                 <>
-                  <span>•</span>
-                  <span className="flex items-center gap-1">
-                    <Cpu className="h-3 w-3 text-amber-400" />
+                  <span className="text-neutral-800">•</span>
+                  <span className="flex items-center gap-1 text-amber-500/70">
+                    <Cpu className="h-3 w-3" />
                     {mlResult.inferenceTimeMs.toFixed(0)}ms
                   </span>
                 </>
               )}
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* ============================================ */}
       {/* 2. ENHANCING INDICATOR — ML only mode         */}
@@ -358,24 +349,23 @@ export default function QuickScanResult({
             exit={{ opacity: 0, y: -10, height: 0, marginBottom: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] bg-background">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3">
-                  <div className="relative">
-                    <Loader2 className="h-5 w-5 text-blue-400 animate-spin" />
-                    <div className="absolute inset-0 bg-blue-400/20 blur-md rounded-full" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium">
-                      Enhancing with AI analysis...
-                    </p>
-                    <p className="text-xs text-foreground">
-                      Verifying against 750+ Indian legal rules • 3-5 seconds
-                    </p>
-                  </div>
+            <div className="bg-[#050505] border border-cyan-900/30 shadow-[0_0_20px_rgba(6,182,212,0.05)] rounded-sm p-4 relative overflow-hidden">
+              <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent" />
+              <div className="flex items-center gap-4 px-2">
+                <div className="relative">
+                  <Loader2 className="h-5 w-5 text-cyan-500 animate-spin" />
+                  <div className="absolute inset-0 bg-cyan-500/20 blur-md rounded-full" />
                 </div>
-              </CardContent>
-            </Card>
+                <div className="flex-1">
+                  <p className="text-[11px] font-mono tracking-widest uppercase text-cyan-400 mb-0.5">
+                    Engaging Deep Verification...
+                  </p>
+                  <p className="text-[10px] uppercase tracking-widest font-mono text-neutral-600">
+                    Comparing against 750+ localized rules
+                  </p>
+                </div>
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -391,10 +381,11 @@ export default function QuickScanResult({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] mt-6">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-black uppercase tracking-wider text-foreground mb-4 flex items-center gap-2">
-                  🚩 Red Flags Found
+            <div className="bg-[#0a0a0a] border border-neutral-800 rounded-sm mt-6 shadow-2xl relative overflow-hidden">
+              <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-red-500/30 to-transparent" />
+              <div className="p-6">
+                <h3 className="text-[11px] font-mono uppercase tracking-widest text-red-500 mb-6 flex items-center gap-2">
+                  <ShieldAlert className="w-4 h-4" /> 🚩 RED FLAGS FOUND
                 </h3>
                 <div className="space-y-4">
                   {result.red_flags.map((flag, i) => (
@@ -403,34 +394,35 @@ export default function QuickScanResult({
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: i * 0.08 }}
-                      className="flex items-start gap-4 p-4 border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] bg-card border-l-8 border-l-primary"
+                      className="flex items-start gap-4 p-5 bg-[#050505] border border-red-900/40 rounded-sm shadow-[0_0_15px_rgba(220,38,38,0.05)] relative"
                     >
+                      <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-red-600/50" />
                       <div className="mt-0.5">
                         {getSeverityIcon(flag.severity)}
                       </div>
                       <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2 flex-wrap">
-                          <Badge className={getSeverityBadge(flag.severity)}>
+                        <div className="flex items-center gap-3 mb-2 flex-wrap">
+                          <span className={getSeverityBadge(flag.severity) + " px-2 py-0.5 rounded-sm"}>
                             {flag.severity.toUpperCase()}
-                          </Badge>
-                          <span className="font-black uppercase tracking-wider text-base text-foreground">
+                          </span>
+                          <span className="font-mono uppercase tracking-widest text-[11px] text-neutral-300">
                             {flag.title}
                           </span>
                         </div>
-                        <p className="text-sm font-medium text-foreground">
+                        <p className="text-sm font-medium text-neutral-400 leading-relaxed">
                           {flag.explanation}
                         </p>
                         {flag.law_reference && (
-                          <p className="text-xs text-blue-400 mt-1 flex items-center gap-1">
-                            📖 {flag.law_reference}
+                          <p className="text-[10px] uppercase tracking-widest font-mono text-cyan-500/80 mt-3 flex items-center gap-1.5">
+                            <Database className="w-3 h-3" /> {flag.law_reference}
                           </p>
                         )}
                       </div>
                     </motion.div>
                   ))}
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </motion.div>
         )}
 
@@ -442,19 +434,22 @@ export default function QuickScanResult({
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
           >
-            <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] mt-6">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-black uppercase tracking-wider text-foreground mb-1 flex items-center gap-2">
-                  🚩 Preliminary Flags
-                  <Badge className="bg-foreground text-background font-bold border-2 border-foreground text-[10px] gap-1">
+            <div className="bg-[#0a0a0a] border border-neutral-800 rounded-sm mt-6 shadow-2xl relative overflow-hidden">
+              <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-[11px] font-mono uppercase tracking-widest text-amber-500 flex items-center gap-2">
+                    <ShieldAlert className="w-4 h-4" /> 🚩 PRELIMINARY FLAGS
+                  </h3>
+                  <div className="bg-[#0e0e0e] text-amber-500/80 font-mono text-[9px] uppercase tracking-widest border border-amber-900/30 px-2 py-1 rounded-sm flex items-center gap-1.5">
                     <Cpu className="h-2.5 w-2.5" />
                     ON-DEVICE
-                  </Badge>
-                </h3>
-                <p className="text-sm font-medium text-foreground mb-4">
+                  </div>
+                </div>
+                <p className="text-[10px] font-mono tracking-widest text-neutral-600 mb-6 uppercase">
                   Based on ML classification • Detailed explanations loading...
                 </p>
-                <div className="space-y-2">
+                <div className="space-y-3">
                   {preliminaryFlags.map((clause, i) => {
                     const config = getMLRiskConfig(clause.riskLevel);
                     const confPercent = Math.round(clause.confidence * 100);
@@ -465,24 +460,23 @@ export default function QuickScanResult({
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: i * 0.06 }}
-                        className={`flex items-start gap-3 p-3 ${config.bg} border ${config.border}`}
+                        className={`flex items-start gap-4 p-4 bg-[#050505] rounded-sm relative ${config.border}`}
                       >
                         <div className={`mt-0.5 ${config.color}`}>
                           {getSeverityIcon(clause.riskLevel)}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <Badge
-                              variant="outline"
-                              className={`text-[10px] font-black uppercase tracking-wider shadow-[2px_2px_0px_0px_rgba(10,10,10,1)] ${config.color} ${config.border}`}
+                          <div className="flex items-center gap-3 mb-2">
+                            <span
+                              className={`text-[9px] px-2 py-0.5 rounded-sm font-mono uppercase tracking-widest ${config.color} ${config.border} bg-[#0e0e0e]`}
                             >
                               {config.label}
-                            </Badge>
-                            <span className="text-[10px] font-bold text-foreground">
-                              {confPercent}% confident
+                            </span>
+                            <span className="text-[9px] font-mono uppercase tracking-widest text-neutral-500">
+                              {confPercent}% Match
                             </span>
                           </div>
-                          <p className="text-xs text-foreground leading-relaxed line-clamp-2">
+                          <p className="text-xs text-neutral-400 leading-relaxed line-clamp-2">
                             {clause.truncatedText}
                           </p>
                         </div>
@@ -490,8 +484,8 @@ export default function QuickScanResult({
                     );
                   })}
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </motion.div>
         )}
 
@@ -503,17 +497,16 @@ export default function QuickScanResult({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
           >
-            <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] bg-background">
-              <CardContent className="p-6 text-center">
-                <CheckCircle2 className="h-8 w-8 text-green-400 mx-auto mb-2" />
-                <p className="text-sm font-medium text-green-400">
-                  Preliminary scan looks good!
-                </p>
-                <p className="text-xs text-foreground mt-1">
-                  AI verification in progress to confirm...
-                </p>
-              </CardContent>
-            </Card>
+            <div className="bg-[#050505] border border-emerald-900/30 rounded-sm mt-6 p-8 text-center relative overflow-hidden">
+              <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent" />
+              <CheckCircle2 className="h-10 w-10 text-emerald-500 mx-auto mb-4" />
+              <p className="text-[11px] font-mono tracking-widest uppercase text-emerald-400 mb-1">
+                PRELIMINARY SCAN NOMINAL
+              </p>
+              <p className="text-[10px] font-mono tracking-widest text-neutral-600 uppercase">
+                AI verification in progress to confirm...
+              </p>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -527,24 +520,23 @@ export default function QuickScanResult({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)]">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-black uppercase tracking-wider text-foreground mb-3 flex items-center gap-2">
-                  ✅ What Looks Good
-                </h3>
-                <div className="space-y-3">
-                  {result.safe_highlights.map((highlight, i) => (
-                    <div
-                      key={i}
-                      className="flex items-start gap-2 text-sm font-medium text-foreground"
-                    >
-                      <CheckCircle2 className="h-5 w-5 shrink-0 text-green-600" />
-                      {highlight}
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+            <div className="bg-[#050505] border border-emerald-900/30 rounded-sm p-6 relative overflow-hidden mt-6">
+              <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent" />
+              <h3 className="text-[11px] font-mono uppercase tracking-widest text-emerald-500 mb-4 flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4" /> SAFE PROVISIONS
+              </h3>
+              <div className="space-y-3">
+                {result.safe_highlights.map((highlight, i) => (
+                  <div
+                    key={i}
+                    className="flex items-start gap-3 text-xs text-neutral-400 font-mono tracking-wide"
+                  >
+                    <span className="text-emerald-500/50 mt-0.5">●</span>
+                    {highlight}
+                  </div>
+                ))}
+              </div>
+            </div>
           </motion.div>
         ) : (
           isPreliminary && (
@@ -553,15 +545,13 @@ export default function QuickScanResult({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <Card className="card-impact">
-                <CardContent className="p-6">
-                  <Skeleton className="h-5 w-40 mb-3" />
-                  <div className="space-y-4">
-                    <Skeleton className="h-4 w-full" />
-                    <Skeleton className="h-4 w-3/4" />
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="bg-[#050505] border border-neutral-900 rounded-sm p-6 mt-6">
+                <Skeleton className="h-4 w-40 mb-4 bg-neutral-900" />
+                <div className="space-y-4">
+                  <Skeleton className="h-3 w-full bg-neutral-900" />
+                  <Skeleton className="h-3 w-3/4 bg-neutral-900" />
+                </div>
+              </div>
             </motion.div>
           )
         )}
@@ -575,17 +565,16 @@ export default function QuickScanResult({
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
+            className="mt-6"
           >
-            <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] bg-muted">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-black uppercase tracking-wider text-foreground mb-2 flex items-center gap-2">
-                  💬 Quick Verdict
-                </h3>
-                <p className="text-foreground font-black italic text-lg leading-relaxed">
-                  &quot;{result.one_line_verdict}&quot;
-                </p>
-              </CardContent>
-            </Card>
+            <div className="bg-[#0a0a0a] border border-neutral-800 rounded-sm p-6 bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,rgba(255,255,255,0.01)_10px,rgba(255,255,255,0.01)_20px)]">
+              <h3 className="text-[11px] font-mono uppercase tracking-widest text-neutral-500 mb-3 flex items-center gap-2">
+                <Brain className="w-4 h-4" /> SYSTEM VERDICT
+              </h3>
+              <p className="text-cyan-400 font-mono tracking-widest uppercase text-[11px] leading-relaxed">
+                &gt; {result.one_line_verdict}
+              </p>
+            </div>
           </motion.div>
         ) : (
           isPreliminary && (
@@ -593,13 +582,12 @@ export default function QuickScanResult({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              className="mt-6"
             >
-              <Card className="card-impact">
-                <CardContent className="p-6">
-                  <Skeleton className="h-5 w-32 mb-2" />
-                  <Skeleton className="h-4 w-full" />
-                </CardContent>
-              </Card>
+              <div className="bg-[#0a0a0a] border border-neutral-800 rounded-sm p-6">
+                <Skeleton className="h-4 w-32 mb-3 bg-neutral-900" />
+                <Skeleton className="h-3 w-full bg-neutral-900" />
+              </div>
             </motion.div>
           )
         )}
@@ -609,32 +597,32 @@ export default function QuickScanResult({
       {/* 6. ML ATTRIBUTION — when both ML + Quick Scan */}
       {/* ============================================ */}
       {hasML && result && (
-        <div className="flex items-center justify-center gap-4 text-xs text-foreground">
-          <span className="flex items-center gap-1">
-            <Zap className="h-3 w-3 text-amber-400" />
-            Pre-scanned on-device in {mlResult!.inferenceTimeMs.toFixed(0)}ms
+        <div className="flex flex-wrap items-center justify-center gap-4 text-[10px] uppercase font-mono tracking-widest text-neutral-500 mt-8">
+          <span className="flex items-center gap-1.5 border border-neutral-800 bg-[#0e0e0e] px-2 py-1 rounded-sm">
+            <Zap className="h-3 w-3 text-cyan-500" />
+            ON-DEVICE: {mlResult!.inferenceTimeMs.toFixed(0)}ms
           </span>
-          <span className="flex items-center gap-1">
-            <Lock className="h-3 w-3 text-green-400" />
-            No data left your device
+          <span className="flex items-center gap-1.5 border border-neutral-800 bg-[#0e0e0e] px-2 py-1 rounded-sm">
+            <Lock className="h-3 w-3 text-emerald-500" />
+            0 BYTES EXFILTRATED
           </span>
         </div>
       )}
 
       {/* ML-only privacy badge */}
       {isPreliminary && (
-        <div className="flex items-center justify-center gap-4 text-xs text-foreground">
-          <span className="flex items-center gap-1">
-            <Cpu className="h-3 w-3 text-amber-400" />
+        <div className="flex flex-wrap items-center justify-center gap-4 text-[10px] uppercase font-mono tracking-widest text-neutral-500 mt-8">
+          <span className="flex items-center gap-1.5 border border-neutral-800 bg-[#0e0e0e] px-2 py-1 rounded-sm">
+            <Cpu className="h-3 w-3 text-cyan-500" />
             TF.js v{mlResult!.modelVersion}
           </span>
-          <span className="flex items-center gap-1">
-            <Lock className="h-3 w-3 text-green-400" />
-            No data left your device
+          <span className="flex items-center gap-1.5 border border-neutral-800 bg-[#0e0e0e] px-2 py-1 rounded-sm">
+            <Lock className="h-3 w-3 text-emerald-500" />
+            LOCAL COMPUTE
           </span>
-          <span className="flex items-center gap-1">
-            <Brain className="h-3 w-3 text-blue-400" />
-            {mlResult!.featureCount} features
+          <span className="flex items-center gap-1.5 border border-neutral-800 bg-[#0e0e0e] px-2 py-1 rounded-sm">
+            <Brain className="h-3 w-3 text-cyan-500" />
+            {mlResult!.featureCount} VECTORS
           </span>
         </div>
       )}
@@ -643,10 +631,13 @@ export default function QuickScanResult({
       {/* 7. FULL ANALYSIS PROGRESS                     */}
       {/* ============================================ */}
       {documentId && (
-        <Card
-          className={`card-impact border-2 border-foreground transition-all duration-500 hover:-translate-y-[2px] shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] ${isCompleted ? "bg-green-100" : isFailed ? "bg-red-100" : "bg-muted"}`}
+        <div
+          className={`border border-neutral-800 rounded-sm mt-8 transition-all duration-500 overflow-hidden relative shadow-2xl ${isCompleted ? "bg-[#050905] border-emerald-900/30" : isFailed ? "bg-[#090505] border-red-900/30" : "bg-[#0a0a0a]"}`}
         >
-          <CardContent className="p-6">
+          {isCompleted && <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent" />}
+          {isFailed && <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-red-500/50 to-transparent" />}
+          
+          <div className="p-8">
             <AnimatePresence mode="wait">
               {isAnalyzing && (
                 <motion.div
@@ -655,99 +646,87 @@ export default function QuickScanResult({
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                 >
-                  <div className="flex items-center gap-3 mb-4">
+                  <div className="flex items-center gap-4 mb-6">
                     <div className="relative">
-                      <Loader2 className="h-6 w-6 text-blue-400 animate-spin" />
-                      <div className="absolute inset-0 bg-blue-400/20 blur-md rounded-full" />
+                      <Loader2 className="h-5 w-5 text-cyan-500 animate-spin" />
+                      <div className="absolute inset-0 bg-cyan-500/20 blur-md rounded-full" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold">
-                        Full Analysis in Progress
+                      <h3 className="text-[11px] font-mono tracking-widest uppercase text-cyan-400">
+                        DEEP VERIFICATION SEQUENCE
                       </h3>
-                      <p className="text-xs text-foreground">
-                        Verifying against 750+ Indian legal rules
+                      <p className="text-[10px] font-mono tracking-widest uppercase text-neutral-600 mt-1">
+                        Cross-referencing legal database
                       </p>
                     </div>
                   </div>
 
-                  <div className="mb-3">
-                    <div className="flex justify-between text-xs text-foreground mb-1.5">
-                      <span className="flex items-center gap-1.5">
+                  <div className="mb-6">
+                    <div className="flex justify-between text-[10px] font-mono uppercase tracking-widest text-neutral-500 mb-2">
+                      <span className="flex items-center gap-2">
                         {getStepIcon(progressData.step)}
                         <span className="truncate max-w-[250px]">
                           {progressData.step}
                         </span>
                       </span>
-                      <span className="font-mono font-medium text-blue-400">
+                      <span className="text-cyan-500">
                         {progressData.progress}%
                       </span>
                     </div>
-                    <div className="relative">
+                    <div className="relative bg-black border border-neutral-800 rounded-full h-1.5 overflow-hidden">
                       <Progress
                         value={progressData.progress}
-                        className="h-2.5"
-                      />
-                      <motion.div
-                        className="absolute top-0 h-2.5 bg-background from-transparent to-transparent rounded-full"
-                        style={{ width: "20%" }}
-                        animate={{ left: ["0%", "80%", "0%"] }}
-                        transition={{
-                          duration: 2,
-                          repeat: Infinity,
-                          ease: "easeInOut",
-                        }}
+                        className="h-full bg-cyan-500/20 [&>div]:bg-cyan-500"
                       />
                     </div>
                   </div>
 
                   {progressData.total_clauses > 0 && (
-                    <div className="flex items-center justify-between text-sm mb-4 p-3 rounded-none bg-muted">
-                      <div className="flex items-center gap-2">
-                        <Brain className="h-4 w-4 text-blue-400" />
-                        <span className="text-foreground">
-                          Clauses analyzed:
-                        </span>
+                    <div className="flex items-center justify-between text-[11px] font-mono tracking-widest uppercase mb-6 p-4 border border-neutral-800 bg-[#0e0e0e] rounded-sm">
+                      <div className="flex items-center gap-2 text-neutral-500">
+                        <Brain className="h-3.5 w-3.5 text-cyan-500" />
+                        <span>Clauses Processed</span>
                       </div>
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-2">
                         <motion.span
                           key={progressData.clauses_analyzed}
-                          initial={{ scale: 1.3, color: "#60a5fa" }}
-                          animate={{ scale: 1, color: "#ffffff" }}
-                          className="font-bold"
+                          initial={{ scale: 1.3, color: "#22d3ee" }}
+                          animate={{ scale: 1, color: "#d4d4d8" }}
+                          className="font-bold tracking-tight text-sm"
                         >
                           {progressData.clauses_analyzed}
                         </motion.span>
-                        <span className="text-foreground">
+                        <span className="text-neutral-600">
                           / {progressData.total_clauses}
                         </span>
                       </div>
                     </div>
                   )}
 
-                  <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[9px] font-mono tracking-widest uppercase">
                     {[
                       {
                         icon: <Scale className="h-3 w-3" />,
-                        text: "Legal citations",
+                        text: "CITATIONS",
                       },
                       {
                         icon: <Shield className="h-3 w-3" />,
-                        text: "Fair alternatives",
+                        text: "ALTERNATIVES",
                       },
                       {
                         icon: <FileText className="h-3 w-3" />,
-                        text: "Negotiation scripts",
+                        text: "SCRIPTS",
                       },
                       {
                         icon: <Database className="h-3 w-3" />,
-                        text: "Penalty info",
+                        text: "PENALTIES",
                       },
                     ].map((item, i) => (
                       <div
                         key={i}
-                        className="flex items-center gap-1.5 text-foreground p-2 rounded bg-white/[0.02]"
+                        className="flex items-center justify-center sm:justify-start gap-2 text-neutral-500 p-2 border border-neutral-900 bg-black/30 rounded-sm"
                       >
-                        <span className="text-blue-400">{item.icon}</span>
+                        <span className="text-cyan-500/70">{item.icon}</span>
                         {item.text}
                       </div>
                     ))}
@@ -761,61 +740,60 @@ export default function QuickScanResult({
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                 >
-                  <div className="flex items-center gap-3 mb-4">
+                  <div className="flex items-center gap-4 mb-6">
                     <div className="relative">
-                      <ShieldCheck className="h-7 w-7 text-green-500" />
+                      <ShieldCheck className="h-6 w-6 text-emerald-500" />
                       <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ delay: 0.2 }}
                       >
-                        <Sparkles className="h-3.5 w-3.5 text-green-400 absolute -top-1 -right-1" />
+                        <Sparkles className="h-3.5 w-3.5 text-emerald-400 absolute -top-1 -right-1" />
                       </motion.div>
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-green-400">
-                        ✅ Full Report Ready!
+                      <h3 className="text-[11px] font-mono tracking-widest uppercase text-emerald-500">
+                        DEEP VERIFICATION COMPLETE
                       </h3>
-                      <p className="text-xs text-foreground">
-                        All {progressData.total_clauses} clauses verified
+                      <p className="text-[10px] font-mono tracking-widest uppercase text-neutral-600 mt-1">
+                        All {progressData.total_clauses} components verified
                       </p>
                     </div>
                   </div>
 
                   {progressData.overall_risk_score !== null && (
-                    <div className="flex items-center gap-6 mb-5 p-4 rounded-none bg-muted">
-                      <div>
-                        <span className="text-xs text-foreground block mb-1">
-                          Verified Score
+                    <div className="grid grid-cols-2 gap-4 mb-8">
+                      <div className="p-4 border border-neutral-800 bg-[#0a0a0a] rounded-sm text-center">
+                        <span className="text-[9px] font-mono tracking-widest uppercase text-neutral-500 block mb-2">
+                          Calculated Base Risk
                         </span>
                         <span
-                          className={`text-3xl font-bold ${getTrafficLight(progressData.overall_risk_score).color}`}
+                          className={`text-3xl tracking-tighter font-bold ${getTrafficLight(progressData.overall_risk_score).color}`}
                         >
                           {progressData.overall_risk_score}/100
                         </span>
                       </div>
-                      <div>
-                        <span className="text-xs text-foreground block mb-1">
-                          Clauses Analyzed
+                      <div className="p-4 border border-neutral-800 bg-[#0a0a0a] rounded-sm text-center">
+                        <span className="text-[9px] font-mono tracking-widest uppercase text-neutral-500 block mb-2">
+                          Vectors Parsed
                         </span>
-                        <span className="text-3xl font-bold">
+                        <span className="text-3xl tracking-tighter font-bold text-neutral-300">
                           {progressData.total_clauses}
                         </span>
                       </div>
                     </div>
                   )}
 
-                  <Link href={`/results/${documentId}`} scroll={true}>
-                    <Button className="w-full button text-impact-heading border-2 border-foreground bg-green-600 hover:bg-green-700 text-foreground gap-2 py-6 text-lg hover:-translate-y-[2px] shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] group">
+                  <Link href={`/results/${documentId}`} scroll={true} className="block group">
+                    <Button className="w-full py-8 text-lg font-bold gap-3 rounded-sm bg-cyan-600 hover:bg-cyan-500 text-white shadow-[0_0_20px_rgba(8,145,178,0.15)] hover:shadow-[0_0_40px_rgba(8,145,178,0.3)] hover:-translate-y-0.5 transition-all duration-300 border-0">
                       <FileText className="h-5 w-5" />
-                      View Full Report
+                      ACCESS FORENSIC DOSSIER
                       <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </Link>
 
-                  <p className="text-xs text-foreground text-center mt-3">
-                    ⚖️ Verified citations • Negotiation scripts • Penalty info •
-                    Fair alternatives
+                  <p className="text-[9px] font-mono tracking-widest text-neutral-600 text-center mt-6 uppercase">
+                    ⚖️ Citations • Negotiation Scripts • Revisions • Anomalies
                   </p>
                 </motion.div>
               )}
@@ -826,48 +804,46 @@ export default function QuickScanResult({
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                 >
-                  <div className="flex items-center gap-3 mb-3">
-                    <ShieldAlert className="h-6 w-6 text-red-400" />
-                    <h3 className="text-lg font-semibold text-red-400">
-                      Full Analysis Failed
+                  <div className="flex items-center gap-3 mb-4">
+                    <ShieldAlert className="h-5 w-5 text-red-500" />
+                    <h3 className="text-[11px] font-mono tracking-widest uppercase text-red-500">
+                      SEQUENCE FAILURE
                     </h3>
                   </div>
-                  <p className="text-sm text-foreground mb-4">
-                    The detailed analysis encountered an error. The scan results
-                    above are still valid.
+                  <p className="text-xs font-medium text-neutral-400 mb-6 leading-relaxed">
+                    The deep analysis core encountered an irrecoverable error. Preliminary data remains valid.
                   </p>
-                  <Button variant="outline" onClick={onReset} className="gap-2">
+                  <Button variant="outline" onClick={onReset} className="w-full py-6 bg-transparent border-red-900/50 hover:bg-red-950/30 text-red-400 hover:text-red-300 gap-2 font-mono text-[11px] tracking-widest uppercase rounded-sm">
                     <Upload className="h-4 w-4" />
-                    Try Again
+                    ABORT AND RETRY
                   </Button>
                 </motion.div>
               )}
             </AnimatePresence>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       )}
 
       {/* ============================================ */}
       {/* 8. ACTIONS                                    */}
       {/* ============================================ */}
-      <div className="flex justify-center gap-4">
+      <div className="flex justify-center gap-4 mt-8">
         <Button
           variant="outline"
           size="lg"
           onClick={onReset}
-          className="button text-impact-heading border-2 border-foreground hover:-translate-y-[2px] shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] hover:bg-background gap-2"
+          className="bg-transparent border border-neutral-800 text-neutral-400 hover:text-white hover:bg-[#0e0e0e] hover:border-neutral-700 font-mono text-[10px] uppercase tracking-widest gap-2 py-6 rounded-sm w-full md:w-auto px-8"
         >
-          <Upload className="h-5 w-5" />
-          Analyze Another Contract
+          <Upload className="h-4 w-4" />
+          UPLOAD NEW EVIDENCE
         </Button>
       </div>
 
       {/* ============================================ */}
       {/* 9. DISCLAIMER                                 */}
       {/* ============================================ */}
-      <p className="text-xs text-foreground text-center">
-        🤖 Quick scan uses AI analysis. Full report includes verification
-        against our legal database for higher accuracy.
+      <p className="text-[9px] font-mono tracking-widest uppercase text-neutral-600 text-center mt-6">
+        ROUTINE SCANS UTILIZE PRELIMINARY ON-DEVICE MODELS. FULL RESOLUTION REQUIRES DATABASE VERIFICATION.
       </p>
     </div>
   );

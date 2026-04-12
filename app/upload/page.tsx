@@ -543,19 +543,26 @@ export default function UploadPage() {
     (activeTab === "paste" && pastedText.trim().length > 50);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-[#0a0a0a] text-neutral-300 font-sans selection:bg-red-500/30 selection:text-red-200">
       <div className="relative mx-auto max-w-4xl px-4 md:px-6 py-12 md:py-20">
-        {/* SCANNING STATE — Only shows when ML didn't run */}
+        {/* SCANNING STATE */}
         {pageState === "scanning" && (
-          <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6">
-            <div className="relative">
-              <Loader2 className="h-16 w-16 text-primary animate-spin" />
-              <div className="absolute inset-0 h-16 w-16 bg-primary/20 blur-xl rounded-full animate-pulse" />
+          <div className="flex flex-col items-center justify-center min-h-[60vh] gap-8">
+            <div className="relative w-full max-w-md h-1 bg-[#111] overflow-hidden rounded-full">
+              <motion.div 
+                className="absolute top-0 left-0 h-full bg-cyan-500 shadow-[0_0_15px_rgba(6,182,212,0.8)]"
+                initial={{ width: "0%" }}
+                animate={{ width: "100%" }}
+                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+              />
             </div>
             <div className="text-center">
-              <h2 className="text-2xl font-bold mb-2">Quick Scanning...</h2>
-              <p className="text-foreground font-medium">
-                Finding red flags in your contract. This takes 3-5 seconds.
+              <h2 className="text-2xl font-bold text-white mb-2 tracking-tight flex items-center justify-center gap-3">
+                <span className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse" />
+                Executing Forensic Scan...
+              </h2>
+              <p className="text-neutral-500 font-mono text-sm uppercase tracking-widest mt-4">
+                Identifying predatory vectors. This takes 3-5 seconds.
               </p>
             </div>
           </div>
@@ -564,18 +571,18 @@ export default function UploadPage() {
         {/* RESULTS STATE — Unified progressive screen */}
         {pageState === "results" && (quickScanResult || mlResult) && (
           <>
-            <div className="text-center mb-8">
-              <h1 className="text-impact-heading text-foreground mb-3">
+            <div className="text-center mb-12">
+              <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight mb-4">
                 {!quickScanResult && mlResult ? (
-                  <>⚡ Instant Analysis</>
+                  <span className="flex items-center justify-center gap-3"><Zap className="w-8 h-8 text-cyan-500" /> Instant Autopsy</span>
                 ) : (
-                  <>🛡️ Contract Analysis</>
+                  <span className="flex items-center justify-center gap-3"><Shield className="w-8 h-8 text-red-500" /> Forensic Results</span>
                 )}
               </h1>
-              <p className="text-lg md:text-xl text-foreground">
+              <p className="text-neutral-400 font-medium text-lg">
                 {!quickScanResult && mlResult
-                  ? "On-device scan complete • Enhancing with AI..."
-                  : "AI analysis of your contract"}
+                  ? "On-device triage complete • Initializing deeper network analysis..."
+                  : "Finalized AI analysis of extracted legal clauses"}
               </p>
               {mlResult && quickScanResult && (
                 <Badge
@@ -605,108 +612,107 @@ export default function UploadPage() {
 
         {/* UPLOAD STATE */}
         {pageState === "upload" && (
-          <>
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
             {/* Header */}
-            <div className="text-center mb-10">
-              <div className="inline-flex items-center justify-center w-16 h-16 border-2 border-foreground bg-primary shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] mb-6">
-                <Shield className="h-8 w-8 text-foreground" />
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-950/30 border border-red-500/20 text-red-500 text-xs font-mono uppercase tracking-widest mb-6 rounded-sm">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                Intake Module Active
               </div>
-              <h1 className="text-impact-heading text-foreground mb-4">
-                Analyze Your Contract
+              <h1 className="text-5xl md:text-6xl font-black text-white tracking-tighter mb-6 leading-tight font-display">
+                Submit Evidence <br className="md:hidden" />
+                <span className="text-red-500 border-b-4 border-red-600 pb-2">For Dissection.</span>
               </h1>
-              <p className="text-lg md:text-xl text-foreground mt-4 max-w-2xl mx-auto">
-                Upload your document or paste the text. Get instant red flags in
-                5 seconds, then a full verified analysis in 60 seconds.
+              <p className="text-neutral-400 text-lg max-w-2xl mx-auto font-medium">
+                Upload your lease, employment bond, or loan agreement entirely locally. We will extract the text, redact your identity, and begin the autopsy.
               </p>
 
               {/* ML Model Status Badge */}
-              <div className="mt-3 flex justify-center">
+              <div className="mt-8 flex justify-center">
                 {mlStatus === "ready" && (
                   <Badge
                     variant="outline"
-                    className="border-2 border-primary text-primary font-black uppercase tracking-wider bg-primary/10"
+                    className="border border-green-500/30 text-green-400 font-mono text-[10px] uppercase tracking-wider bg-green-950/20 px-3 py-1 rounded-sm"
                   >
-                    <Cpu className="h-3 w-3 mr-1 text-primary" />
-                    On-device AI ready
+                    <Cpu className="h-3 w-3 mr-2" />
+                    On-device Analysis Engine Loaded
                   </Badge>
                 )}
                 {mlStatus === "loading" && (
                   <Badge
                     variant="outline"
-                    className="border-2 border-foreground text-foreground font-black uppercase tracking-wider bg-muted"
+                    className="border border-cyan-500/30 text-cyan-400 font-mono text-[10px] uppercase tracking-wider bg-cyan-950/20 px-3 py-1 rounded-sm"
                   >
-                    <Loader2 className="h-3 w-3 animate-spin mr-1" />
-                    Loading on-device AI...
+                    <Loader2 className="h-3 w-3 animate-spin mr-2" />
+                    Booting Neural Engine...
                   </Badge>
                 )}
               </div>
             </div>
 
             {/* Upload Card */}
-            <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] bg-card">
-              <CardContent className="p-6 sm:p-8 space-y-8">
-                <Tabs
-                  value={activeTab}
-                  onValueChange={setActiveTab}
-                  className="mb-6"
-                >
-                  <TabsList className="grid w-full grid-cols-2 border-2 border-foreground bg-muted p-1 rounded-none shadow-[4px_4px_0px_0px_rgba(10,10,10,1)]">
+            <div className="bg-[#0e0e0e] border border-neutral-900 shadow-2xl rounded-sm overflow-hidden mb-8 relative">
+              <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-[#0e0e0e] via-red-600/50 to-[#0e0e0e] opacity-50" />
+              <div className="p-6 md:p-10 space-y-8">
+                <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-8">
+                  <TabsList className="grid w-full grid-cols-2 bg-[#050505] border border-neutral-800 p-1 rounded-sm mb-4">
                     <TabsTrigger
                       value="upload"
-                      className="gap-2 font-black uppercase tracking-wider data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:border-2 data-[state=active]:border-foreground data-[state=active]:shadow-sm"
+                      className="gap-2 font-mono text-[11px] uppercase tracking-widest text-neutral-500 data-[state=active]:bg-neutral-800 data-[state=active]:text-white rounded-sm py-2.5 transition-all"
                     >
-                      <Upload className="h-4 w-4" />
-                      Upload PDF
+                      <Upload className="h-3.5 w-3.5" />
+                      Evidence Upload
                     </TabsTrigger>
                     <TabsTrigger
                       value="paste"
-                      className="gap-2 font-black uppercase tracking-wider data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:border-2 data-[state=active]:border-foreground data-[state=active]:shadow-sm"
+                      className="gap-2 font-mono text-[11px] uppercase tracking-widest text-neutral-500 data-[state=active]:bg-neutral-800 data-[state=active]:text-white rounded-sm py-2.5 transition-all"
                     >
-                      <ClipboardPaste className="h-4 w-4" />
-                      Paste Text
+                      <ClipboardPaste className="h-3.5 w-3.5" />
+                      Raw Text Source
                     </TabsTrigger>
                   </TabsList>
 
-                  <TabsContent value="upload" className="mt-6">
+                  <TabsContent value="upload" className="mt-2 outline-none">
                     {!file ? (
                       <div
                         {...getRootProps()}
-                        className={`border-4 border-dashed rounded-none p-12 md:p-16 text-center cursor-pointer transition-all duration-150 ${isDragActive ? "border-primary bg-primary/10" : "border-foreground/50 bg-background hover:border-foreground hover:bg-muted"}`}
+                        className={`border border-dashed rounded-sm p-12 md:p-20 text-center cursor-pointer transition-all duration-300 flex flex-col items-center justify-center ${isDragActive ? "border-red-500 bg-red-950/10 shadow-[0_0_30px_rgba(220,38,38,0.05)]" : "border-neutral-800 hover:border-red-500/40 hover:bg-[#111]"}`}
                       >
                         <input {...getInputProps()} />
-                        <Upload
-                          className={`w-12 h-12 mx-auto mb-4 transition-colors ${isDragActive ? "text-primary" : "text-foreground"}`}
-                        />
+                        <div className={`p-4 rounded-full mb-6 transition-colors ${isDragActive ? "bg-red-950/50 text-red-500" : "bg-neutral-900/50 text-neutral-500"}`}>
+                           <Upload className="w-8 h-8" />
+                        </div>
                         {isDragActive ? (
-                          <p className="text-xl font-black uppercase tracking-wider text-primary mt-4">
-                            Drop your contract here...
+                          <p className="text-xl font-bold text-red-500 font-display tracking-tight">
+                            Release to begin intake...
                           </p>
                         ) : (
                           <>
-                            <p className="text-xl font-black uppercase tracking-wider text-foreground mt-4">
-                              Drag & drop your PDF here
+                            <p className="text-lg font-bold text-white mb-2 tracking-tight">
+                              Drag & Drop Evidence
                             </p>
-                            <p className="text-sm font-bold text-foreground mt-2">
-                              or click to browse
+                            <p className="text-sm text-neutral-500">
+                              Or click to browse local filesystem
                             </p>
-                            <p className="text-xs font-bold text-foreground mt-4 uppercase tracking-wider">
-                              PDF or TXT • Max 10MB
-                            </p>
+                            <div className="mt-8 flex gap-3 justify-center">
+                              <Badge variant="outline" className="border-neutral-800 text-neutral-400 font-mono text-[10px] uppercase bg-black">PDF / TXT</Badge>
+                              <Badge variant="outline" className="border-neutral-800 text-neutral-400 font-mono text-[10px] uppercase bg-black">Max 10MB</Badge>
+                            </div>
                           </>
                         )}
                       </div>
                     ) : (
-                      <div className="border-2 border-foreground bg-muted card-impact p-4 flex items-center justify-between mt-4">
-                        <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 border-2 border-foreground bg-primary flex items-center justify-center">
-                            <FileText className="h-5 w-5 text-foreground" />
+                      <div className="border border-red-900/30 bg-[#160a0a] p-4 flex items-center justify-between mt-4 rounded-sm">
+                        <div className="flex items-center gap-4">
+                          <div className="h-12 w-12 rounded-sm bg-red-950/50 border border-red-900/50 flex items-center justify-center">
+                            <FileText className="h-5 w-5 text-red-500" />
                           </div>
                           <div>
-                            <p className="text-base font-black uppercase tracking-wider text-foreground">
+                            <p className="text-sm font-bold text-white mb-1 truncate max-w-[200px] md:max-w-sm">
                               {file.name}
                             </p>
-                            <p className="text-sm font-bold text-foreground">
-                              {(file.size / 1024).toFixed(1)} KB
+                            <p className="text-[11px] font-mono text-red-400/80 uppercase tracking-wider">
+                              {(file.size / 1024).toFixed(1)} KB • Evidence Locked
                             </p>
                           </div>
                         </div>
@@ -714,37 +720,34 @@ export default function UploadPage() {
                           variant="ghost"
                           size="sm"
                           onClick={removeFile}
-                          className="text-sm text-primary hover:text-red-700 font-semibold hover:bg-transparent"
+                          className="text-neutral-500 hover:text-red-400 hover:bg-transparent"
                         >
-                          <X className="h-4 w-4 mr-1" /> Remove
+                          <X className="h-5 w-5" />
                         </Button>
                       </div>
                     )}
                   </TabsContent>
 
-                  <TabsContent value="paste" className="mt-6">
-                    <div className="space-y-2">
-                      <label className="text-sm font-black uppercase tracking-wider text-foreground">
-                        Paste Contract Text
+                  <TabsContent value="paste" className="mt-2 outline-none">
+                    <div className="space-y-3">
+                      <label className="text-[11px] font-mono uppercase tracking-widest text-neutral-500">
+                        Paste Raw Evidence Text
                       </label>
-                      <Textarea
-                        placeholder="Paste your contract text here...
-
-                                  Example:
-                                  1. RENT: The Licensee agrees to pay a monthly rent of ₹25,000...
-                                  2. SECURITY DEPOSIT: The Licensee shall deposit ₹1,50,000...
-                                  3. LOCK-IN PERIOD: The Licensee cannot terminate this agreement for the first 11 months..."
-                        value={pastedText}
-                        onChange={(e) => setPastedText(e.target.value)}
-                        className="min-h-[200px] w-full resize-none font-bold border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] focus-visible:ring-0 focus-visible:ring-offset-0 bg-background text-foreground"
-                      />
+                      <div className="relative">
+                        <Textarea
+                          placeholder="Initialize string sequence...&#10;&#10;e.g., '1. The Licensee agrees to waive all rights to participate in a class-action lawsuit...'&#10;"
+                          value={pastedText}
+                          onChange={(e) => setPastedText(e.target.value)}
+                          className="min-h-[200px] w-full resize-none font-mono text-sm leading-relaxed border border-neutral-800 bg-black/50 text-neutral-300 focus-visible:ring-1 focus-visible:ring-red-500/50 focus-visible:border-red-500/50 focus-visible:ring-offset-0 placeholder:text-neutral-700 rounded-sm p-5"
+                        />
+                      </div>
                     </div>
-                    <div className="flex justify-between mt-3">
-                      <p className="text-xs font-black uppercase tracking-wider text-foreground tabular-nums">
-                        Minimum 50 characters required
+                    <div className="flex justify-between mt-4">
+                      <p className="text-[10px] font-mono uppercase tracking-widest text-neutral-600">
+                        Min 50 chars required
                       </p>
-                      <p className="text-xs font-black uppercase tracking-wider text-foreground tabular-nums text-right">
-                        {pastedText.length} characters
+                      <p className={`text-[10px] font-mono uppercase tracking-widest ${pastedText.length >= 50 ? "text-cyan-500" : "text-neutral-600"}`}>
+                        {pastedText.length} chars
                       </p>
                     </div>
                   </TabsContent>
@@ -756,21 +759,21 @@ export default function UploadPage() {
                   <motion.div 
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
-                    className="space-y-6 pt-4 mb-8"
+                    className="space-y-6 pt-4 mb-8 overflow-hidden"
                   >
                     
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
-                      <label className="text-sm font-bold text-foreground mb-2 block">
-                        Document Type <span className="text-primary">*</span>
+                      <label className="text-[11px] font-mono tracking-widest uppercase text-neutral-500 mb-2 block">
+                        Evidence Type <span className="text-red-500">*</span>
                       </label>
                       <Select value={documentType} onValueChange={setDocumentType}>
-                        <SelectTrigger className="h-11 font-medium bg-background border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(10,10,10,1)]">
-                          <SelectValue placeholder="Select type..." />
+                        <SelectTrigger className="h-12 bg-black border border-neutral-800 text-neutral-300 rounded-sm hover:border-neutral-700 transition-colors focus:ring-1 focus:ring-red-500/50">
+                          <SelectValue placeholder="Select classification..." />
                         </SelectTrigger>
-                        <SelectContent className="border-2 border-foreground shadow-[4px_4px_0_0_rgba(10,10,10,1)] font-medium">
+                        <SelectContent className="bg-[#0a0a0a] border-neutral-800 text-neutral-300 rounded-sm shadow-2xl">
                           {DOCUMENT_TYPES.map((type) => (
-                            <SelectItem key={type.value} value={type.value}>
+                            <SelectItem key={type.value} value={type.value} className="focus:bg-neutral-900 focus:text-white cursor-pointer">
                               {type.label}
                             </SelectItem>
                           ))}
@@ -779,16 +782,16 @@ export default function UploadPage() {
                     </div>
 
                     <div>
-                      <label className="text-sm font-bold text-foreground mb-2 block">
-                        State <span className="text-primary">*</span>
+                      <label className="text-[11px] font-mono tracking-widest uppercase text-neutral-500 mb-2 block">
+                        Jurisdiction <span className="text-red-500">*</span>
                       </label>
                       <Select value={jurisdiction} onValueChange={setJurisdiction}>
-                        <SelectTrigger className="h-11 font-medium bg-background border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(10,10,10,1)]">
-                          <SelectValue placeholder="Select state..." />
+                        <SelectTrigger className="h-12 bg-black border border-neutral-800 text-neutral-300 rounded-sm hover:border-neutral-700 transition-colors focus:ring-1 focus:ring-red-500/50">
+                          <SelectValue placeholder="Select state laws..." />
                         </SelectTrigger>
-                        <SelectContent className="border-2 border-foreground shadow-[4px_4px_0_0_rgba(10,10,10,1)] font-medium">
+                        <SelectContent className="bg-[#0a0a0a] border-neutral-800 text-neutral-300 rounded-sm shadow-2xl">
                           {JURISDICTIONS.map((j) => (
-                            <SelectItem key={j.value} value={j.value}>
+                            <SelectItem key={j.value} value={j.value} className="focus:bg-neutral-900 focus:text-white cursor-pointer">
                               {j.label}
                             </SelectItem>
                           ))}
@@ -799,36 +802,36 @@ export default function UploadPage() {
 
 
                     {/* Advanced Settings Accordion */}
-                    <Accordion type="single" collapsible className="w-full">
-                      <AccordionItem value="advanced" className="border-2 border-foreground bg-muted hover:bg-muted/50 transition-colors">
-                        <AccordionTrigger className="text-sm font-black uppercase tracking-wider py-4 px-4 data-[state=open]:text-primary data-[state=open]:border-b-2 data-[state=open]:border-foreground transition-all">
+                    <Accordion type="single" collapsible className="w-full mt-6">
+                      <AccordionItem value="advanced" className="border border-neutral-800 bg-black/30 rounded-sm px-1">
+                        <AccordionTrigger className="text-[11px] font-mono uppercase tracking-widest py-4 px-4 text-neutral-500 hover:text-neutral-300 hover:no-underline transition-all group">
                           <div className="flex items-center gap-2">
-                            <span>⚙️ Advanced Settings</span>
+                            <span className="w-1.5 h-1.5 rounded-full bg-neutral-700 group-hover:bg-neutral-500 transition-colors" /> Settings Configuration
                           </div>
                         </AccordionTrigger>
-                        <AccordionContent className="pt-6 pb-6 px-4 space-y-8 bg-background border-t-0 p-4">
+                        <AccordionContent className="pt-2 pb-6 px-4 space-y-8 bg-transparent">
                           
                           {/* Privacy Slider Inside Advanced */}
                           <div>
                             <div className="mb-4">
-                              <h4 className="text-sm font-black uppercase tracking-wider text-foreground">Data Exfiltration & Privacy Rules</h4>
-                              <p className="text-xs font-medium text-foreground mt-1">ClauseWall anonymizes personally identifiable indicators locally by default before network transitions.</p>
+                              <h4 className="text-[11px] font-mono uppercase tracking-widest text-neutral-400">Data Exfiltration & Privacy Rules</h4>
+                              <p className="text-sm font-medium text-neutral-600 mt-2">ClauseWall anonymizes personally identifiable indicators locally by default before network transitions.</p>
                             </div>
                             <PrivacyToggle />
                           </div>
 
-                          <div className="h-px bg-foreground/10 my-4" />
+                          <div className="h-px bg-neutral-900 my-6" />
 
                           {/* LanguageSelector Inside Advanced */}
                           <div>
-                            <label className="text-sm font-black uppercase tracking-wider text-foreground mb-2 block">
+                            <label className="text-[11px] font-mono tracking-widest uppercase text-neutral-400 mb-3 block">
                               Source Language
                             </label>
                             <LanguageSelector
                               value={sourceLanguage}
                               onChange={setSourceLanguage}
                             />
-                            <p className="text-xs text-foreground mt-2 font-medium">
+                            <p className="text-xs text-neutral-600 mt-3 font-medium">
                               Auto-detect correctly parses major Indian and global languages.
                             </p>
                           </div>
@@ -839,9 +842,9 @@ export default function UploadPage() {
                   </motion.div>
                 )}
 
-{error && (
-                  <div className="flex items-center gap-2 text-destructive text-sm font-medium mb-4 p-3 rounded-none bg-destructive/5 border border-destructive">
-                    <AlertCircle className="h-4 w-4 flex-shrink-0" />
+                {error && (
+                  <div className="flex items-center gap-3 text-red-400 text-sm font-medium mt-6 mb-2 p-4 rounded-sm bg-red-950/30 border border-red-900/50">
+                    <AlertCircle className="h-5 w-5 flex-shrink-0 text-red-500" />
                     {error}
                   </div>
                 )}
@@ -849,53 +852,53 @@ export default function UploadPage() {
                 <Button
                   onClick={handleAnalyze}
                   disabled={!hasContent || !documentType || !jurisdiction}
-                  className="w-full py-6 text-lg gap-2 button text-impact-heading border-2 border-foreground hover:-translate-y-[2px] shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] disabled:opacity-50 disabled:hover:translate-y-0 disabled:shadow-none"
+                  className="w-full py-8 text-xl font-bold gap-3 bg-red-600 hover:bg-red-500 text-white rounded-sm hover:-translate-y-0.5 transition-all duration-300 shadow-[0_0_20px_rgba(220,38,38,0.15)] hover:shadow-[0_0_40px_rgba(220,38,38,0.3)] disabled:opacity-30 disabled:hover:translate-y-0 disabled:shadow-none disabled:bg-neutral-800 disabled:text-neutral-500 mt-4"
                 >
                   {mlStatus === "ready" ? (
                     <>
-                      <Zap className="h-6 w-6" />
-                      INSTANT SCAN CONTRACT
+                      <Zap className="h-5 w-5" />
+                      Initialize Dissection
                     </>
                   ) : (
                     <>
-                      <Zap className="h-6 w-6" />
-                      QUICK SCAN CONTRACT
+                      <Loader2 className="h-5 w-5 animate-spin" />
+                      Initializing Core Systems...
                     </>
                   )}
                 </Button>
 
                 
                 {/* TRUST LOCKUP */}
-                <div className="flex flex-col items-center justify-center gap-4 mt-6 pt-6 border-t-2 border-foreground">
-                  <div className="flex flex-wrap items-center justify-center gap-5 text-sm font-black uppercase tracking-wider text-foreground">
-                    <span className="flex items-center gap-1.5"><Shield className="w-4 h-4 text-primary"/> On-Device Privacy</span>
-                    <span className="flex items-center gap-1.5"><Zap className="w-4 h-4 text-amber-500"/> 5-sec Scan</span>
-                    <span className="flex items-center gap-1.5"><Shield className="w-4 h-4 text-emerald-500"/> Auto-Deleted</span>
+                <div className="flex flex-col items-center justify-center gap-4 mt-8 pt-8 border-t border-neutral-900">
+                  <div className="flex flex-wrap items-center justify-center gap-6 text-[10px] font-mono uppercase tracking-widest text-neutral-500">
+                    <span className="flex items-center gap-2"><Shield className="w-3.5 h-3.5 text-cyan-500"/> On-Device Privacy</span>
+                    <span className="flex items-center gap-2"><Zap className="w-3.5 h-3.5 text-red-500"/> 5-sec Scan</span>
+                    <span className="flex items-center gap-2"><Shield className="w-3.5 h-3.5 text-red-500"/> Auto-Deleted</span>
                   </div>
-                  <p className="text-xs font-bold text-foreground text-center">
-                    Confidential mode encrypts clauses. No full documents sent.
+                  <p className="text-xs text-neutral-600 text-center font-medium">
+                    Evidence is strictly encrypted. No full documents ever traverse the network.
                   </p>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
-            <div className="mt-8 text-center">
-              <p className="text-sm text-foreground mb-3">
-                Supported document types:
+            <div className="mt-12 text-center pb-8">
+              <p className="text-[10px] font-mono uppercase tracking-widest text-neutral-600 mb-4">
+                Supported Classifications
               </p>
               <div className="flex flex-wrap justify-center gap-2">
                 {DOCUMENT_TYPES.slice(0, 5).map((type) => (
                   <Badge
                     key={type.value}
                     variant="outline"
-                    className="border-foreground border-2 text-foreground"
+                    className="border-neutral-800 bg-[#0e0e0e]/50 text-neutral-500 font-mono text-[10px] rounded-sm py-1"
                   >
                     {type.label}
                   </Badge>
                 ))}
               </div>
             </div>
-          </>
+          </motion.div>
         )}
 
         {/* Voice Mic Button */}
