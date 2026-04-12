@@ -89,14 +89,14 @@ export default function TimebombPage() {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="flex flex-col items-center gap-4"
         >
-          <Loader2 className="w-10 h-10 text-orange-500 animate-spin" />
-          <p className="text-muted-foreground font-black uppercase tracking-widest">
+          <Loader2 className="w-8 h-8 text-amber-500 animate-spin" />
+          <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-600">
             LOADING DEFUSER...
           </p>
         </motion.div>
@@ -105,27 +105,31 @@ export default function TimebombPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-[#0a0a0a] text-neutral-200">
       {/* Top bar */}
-      <div className="sticky top-0 z-30 bg-background border-b-4 border-foreground shadow-[0px_4px_0px_0px_rgba(0,0,0,1)]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+      <div className="sticky top-0 z-30 bg-[#0a0a0a] border-b border-neutral-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link
               href={`/results/${documentId}`}
-              className="p-3 border-4 border-black bg-white dark:bg-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all"
+              className="p-2 border border-neutral-800 bg-[#050505] text-neutral-600 hover:text-neutral-300 hover:border-neutral-600 transition-colors"
               aria-label="Back to results"
             >
-              <ArrowLeft className="w-5 h-5" />
+              <ArrowLeft className="w-3.5 h-3.5" />
             </Link>
-            <div>
-              <h1 className="text-xl font-black uppercase tracking-widest flex items-center gap-2">
-                <Clock className="w-6 h-6 text-orange-500 stroke-[3px]" />
-                TIME BOMB DEFUSER
-              </h1>
-              <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mt-1">
-                {deadlines.length} DEADLINE{deadlines.length !== 1 ? "S" : ""}{" "}
-                TRACKED
-              </p>
+            <div className="flex items-center gap-3">
+              <div className="p-2 border border-neutral-800 bg-[#050505]">
+                <Clock className="w-4 h-4 text-amber-500" />
+              </div>
+              <div>
+                <h1 className="text-xs font-mono uppercase tracking-widest text-neutral-200">
+                  TIME_BOMB_DEFUSER
+                </h1>
+                <p className="text-[8px] font-mono uppercase tracking-widest text-neutral-600 mt-0.5">
+                  {deadlines.length} DEADLINE{deadlines.length !== 1 ? "S" : ""}{" "}
+                  TRACKED
+                </p>
+              </div>
             </div>
           </div>
 
@@ -133,9 +137,9 @@ export default function TimebombPage() {
             <Link
               href={`/api/timebomb/calendar/${documentId}`}
               target="_blank"
-              className="flex items-center gap-2 px-4 py-2 border-4 border-black bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/30 font-black uppercase tracking-widest text-sm shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all"
+              className="flex items-center gap-2 px-3 py-1.5 border border-cyan-900/50 bg-cyan-950/10 font-mono uppercase tracking-widest text-[8px] text-cyan-400 hover:text-cyan-300 hover:border-cyan-800 transition-colors"
             >
-              <Download className="w-4 h-4 stroke-[3px]" />
+              <Download className="w-3 h-3" />
               EXPORT CALENDAR
             </Link>
           )}

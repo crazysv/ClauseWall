@@ -91,11 +91,11 @@ export function DeadlineTimeline({
 
   if (deadlines.length === 0) {
     return (
-      <div className="text-center py-16 border-4 border-dashed border-black bg-white dark:bg-zinc-950">
-        <p className="text-foreground font-black uppercase tracking-widest text-xl mb-2">
-          NO DEADLINES FOUND IN THIS CONTRACT 🎉
+      <div className="text-center py-16 border border-dashed border-neutral-800">
+        <p className="text-[10px] font-mono uppercase tracking-widest text-neutral-300 mb-2">
+          [ NO_DEADLINES_FOUND ] 🎉
         </p>
-        <p className="text-muted-foreground font-bold uppercase tracking-widest text-sm">
+        <p className="text-[8px] font-mono uppercase tracking-widest text-neutral-600">
           THIS CONTRACT HAS NO SIGNIFICANT TEMPORAL OBLIGATIONS.
         </p>
       </div>
@@ -107,13 +107,13 @@ export function DeadlineTimeline({
       <motion.div
         initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        className="text-center py-16 border-4 border-black bg-green-100 dark:bg-green-950 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+        className="text-center py-16 border border-emerald-900/50 bg-emerald-950/10"
       >
-        <PartyPopper className="w-16 h-16 mx-auto text-green-600 dark:text-green-500 mb-6 stroke-[3px]" />
-        <h3 className="text-2xl font-black text-green-700 dark:text-green-400 mb-2 uppercase tracking-widest">
-          ALL DEADLINES DEFUSED! 🛡️
+        <PartyPopper className="w-12 h-12 mx-auto text-emerald-500 mb-6" />
+        <h3 className="text-xs font-mono uppercase tracking-widest text-emerald-400 mb-2">
+          ALL DEADLINES DEFUSED 🛡️
         </h3>
-        <p className="text-green-900 dark:text-green-300 font-bold uppercase tracking-widest max-w-md mx-auto leading-relaxed">
+        <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-500 max-w-md mx-auto leading-relaxed">
           YOU&apos;VE ADDRESSED EVERY DEADLINE IN THIS CONTRACT. YOU&apos;RE
           PROTECTED.
         </p>
@@ -124,9 +124,9 @@ export function DeadlineTimeline({
   return (
     <div>
       {/* Filter bar */}
-      <div className="flex items-center gap-3 mb-8 flex-wrap border-b-4 border-black pb-4">
-        <div className="p-2 border-4 border-black bg-white dark:bg-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-          <Filter className="w-5 h-5 text-black dark:text-white stroke-[3px]" />
+      <div className="flex items-center gap-1.5 mb-6 flex-wrap border-b border-neutral-900 pb-3">
+        <div className="p-1.5 border border-neutral-800 bg-[#050505] mr-1">
+          <Filter className="w-3.5 h-3.5 text-neutral-500" />
         </div>
         {(
           [
@@ -140,16 +140,16 @@ export function DeadlineTimeline({
           <button
             key={f.key}
             onClick={() => setFilter(f.key)}
-            className={`px-4 py-2 font-black uppercase tracking-widest text-xs border-4 border-black transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none ${
+            className={`px-2.5 py-1 font-mono uppercase tracking-widest text-[7px] border transition-colors ${
               filter === f.key
-                ? "bg-black text-white dark:bg-white dark:text-black"
-                : "bg-white text-black dark:bg-zinc-900 dark:text-white hover:bg-gray-100 dark:hover:bg-zinc-800"
+                ? "bg-amber-950/20 text-amber-400 border-amber-900/50"
+                : "bg-[#050505] text-neutral-600 border-neutral-800 hover:border-neutral-700 hover:text-neutral-400"
             }`}
             aria-label={`Filter ${f.label}`}
           >
             {f.label}
             <span
-              className={`ml-2 px-1.5 py-0.5 border-2 border-black text-[10px] ${filter === f.key ? "bg-white text-black dark:bg-black dark:text-white" : "bg-gray-200 text-black dark:bg-zinc-800 dark:text-white"}`}
+              className={`ml-1.5 px-1 py-0.5 text-[7px] ${filter === f.key ? "text-amber-400/70" : "text-neutral-700"}`}
             >
               {counts[f.key]}
             </span>
@@ -159,12 +159,12 @@ export function DeadlineTimeline({
 
       {/* Timeline */}
       <div className="relative pt-4">
-        {/* Vertical line mt-4 is optional, handled by wrapper padding */}
+        {/* Vertical line */}
         <motion.div
           initial={{ scaleY: 0 }}
           animate={{ scaleY: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="absolute left-6 md:left-1/2 top-4 bottom-0 w-1.5 border-l-4 border-r-4 border-black bg-black origin-top -translate-x-[3px]"
+          className="absolute left-6 md:left-1/2 top-4 bottom-0 w-px bg-neutral-800 origin-top -translate-x-[0.5px]"
         />
 
         <AnimatePresence mode="popLayout">
@@ -188,18 +188,18 @@ export function DeadlineTimeline({
                     animate={{ opacity: 1 }}
                     className="relative flex items-center gap-4 mb-8 pl-8 md:pl-0 md:justify-center z-10"
                   >
-                    <div className="h-1 flex-1 bg-black max-w-[80px]" />
+                    <div className="h-px flex-1 bg-neutral-800 max-w-[80px]" />
                     <motion.span
                       animate={{ scale: [1, 1.05, 1] }}
                       transition={{
                         repeat: Infinity,
                         duration: 2,
                       }}
-                      className="text-xs font-black uppercase tracking-widest text-orange-600 dark:text-orange-400 px-4 py-2 border-4 border-black bg-orange-100 dark:bg-orange-950 shadow-[4px_4px_0px_0px_rgba(249,115,22,1)]"
+                      className="text-[8px] font-mono uppercase tracking-widest text-amber-400 px-3 py-1 border border-amber-900/50 bg-amber-950/20"
                     >
                       TODAY
                     </motion.span>
-                    <div className="h-1 flex-1 bg-black max-w-[80px]" />
+                    <div className="h-px flex-1 bg-neutral-800 max-w-[80px]" />
                   </motion.div>
                 )}
 
@@ -223,7 +223,7 @@ export function DeadlineTimeline({
                   {/* Dot on the line */}
                   <div className="relative z-10 flex-shrink-0 -ml-[5px] md:ml-[3px]">
                     <motion.div
-                      className="w-5 h-5 border-4 border-black bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                      className="w-3 h-3 border border-neutral-700"
                       style={{ backgroundColor: event.urgency_color }}
                       animate={
                         event.deadline.urgency === "critical" &&
@@ -240,7 +240,7 @@ export function DeadlineTimeline({
                       }
                     />
                     {/* Date label */}
-                    <span className="absolute left-8 md:hidden top-0 text-[10px] font-black uppercase tracking-widest text-muted-foreground whitespace-nowrap bg-background px-1">
+                    <span className="absolute left-8 md:hidden top-0 text-[8px] font-mono uppercase tracking-widest text-neutral-600 whitespace-nowrap bg-[#0a0a0a] px-1">
                       {new Date(event.date).toLocaleDateString("en-IN", {
                         day: "numeric",
                         month: "short",
@@ -282,7 +282,7 @@ export function DeadlineTimeline({
                     animate={{ scale: 1 }}
                     className="absolute left-[3px] md:left-1/2 md:-translate-x-1/2 -top-1"
                   >
-                    <ShieldCheck className="w-5 h-5 text-green-600 dark:text-green-500 fill-white dark:fill-black stroke-[3px] z-20" />
+                    <ShieldCheck className="w-4 h-4 text-emerald-500 z-20" />
                   </motion.div>
                 )}
               </motion.div>
@@ -292,13 +292,13 @@ export function DeadlineTimeline({
 
         {/* Empty filter state */}
         {filteredEvents.length === 0 && (
-          <div className="text-center py-12 border-4 border-dashed border-black bg-gray-50 dark:bg-zinc-900 my-8">
-            <p className="text-muted-foreground font-black uppercase tracking-widest text-sm">
+          <div className="text-center py-12 border border-dashed border-neutral-800 my-8">
+            <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-600">
               NO {filter.toUpperCase()} DEADLINES FOUND.
             </p>
             <button
               onClick={() => setFilter("all")}
-              className="mt-4 px-4 py-2 border-4 border-black bg-white dark:bg-black font-black uppercase tracking-widest text-xs shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all"
+              className="mt-4 px-3 py-1.5 border border-neutral-800 bg-[#050505] font-mono uppercase tracking-widest text-[8px] text-neutral-500 hover:text-neutral-300 hover:border-neutral-600 transition-colors"
             >
               SHOW ALL DEADLINES
             </button>

@@ -79,12 +79,12 @@ export function ReminderSettings({ onSaved }: ReminderSettingsProps) {
 
   if (loading) {
     return (
-      <div className="rounded-none border border-foreground border-2 bg-white/[0.02] p-5">
-        <div className="animate-pulse space-y-4">
-          <div className="h-5 w-40 bg-muted rounded" />
-          <div className="h-10 bg-muted rounded" />
-          <div className="h-10 bg-muted rounded" />
-          <div className="h-10 bg-muted rounded" />
+      <div className="border border-neutral-900 bg-[#0a0a0a] p-5">
+        <div className="animate-pulse space-y-3">
+          <div className="h-4 w-40 bg-neutral-900" />
+          <div className="h-10 bg-neutral-900" />
+          <div className="h-10 bg-neutral-900" />
+          <div className="h-10 bg-neutral-900" />
         </div>
       </div>
     );
@@ -93,16 +93,16 @@ export function ReminderSettings({ onSaved }: ReminderSettingsProps) {
   if (!settings) return null;
 
   return (
-    <div className="border-4 border-black bg-white dark:bg-zinc-900 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-      <h4 className="text-lg font-black uppercase tracking-widest text-foreground flex items-center gap-3 mb-6 border-b-4 border-black pb-4">
-        <Bell className="w-6 h-6 text-orange-500 stroke-[3px]" />
-        REMINDER SETTINGS
+    <div className="border border-neutral-900 bg-[#0a0a0a] p-5">
+      <h4 className="text-[9px] font-mono uppercase tracking-widest text-neutral-400 flex items-center gap-2 mb-5 border-b border-neutral-900 pb-3">
+        <Bell className="w-3.5 h-3.5 text-amber-500" />
+        REMINDER_SETTINGS
       </h4>
 
-      <div className="space-y-3">
+      <div className="space-y-1">
         {/* Telegram */}
         <ToggleRow
-          icon={<MessageCircle className="w-4 h-4 text-blue-400" />}
+          icon={<MessageCircle className="w-3.5 h-3.5 text-cyan-400" />}
           label="Telegram Reminders"
           description={
             settings.telegram_chat_id
@@ -115,7 +115,7 @@ export function ReminderSettings({ onSaved }: ReminderSettingsProps) {
         />
 
         {!settings.telegram_chat_id && settings.telegram_enabled && (
-          <div className="ml-8">
+          <div className="ml-6 mb-2">
             <TelegramLink
               onLinked={() => {
                 fetchSettings();
@@ -126,7 +126,7 @@ export function ReminderSettings({ onSaved }: ReminderSettingsProps) {
 
         {/* Email */}
         <ToggleRow
-          icon={<Mail className="w-4 h-4 text-green-400" />}
+          icon={<Mail className="w-3.5 h-3.5 text-emerald-400" />}
           label="Email Reminders"
           description="Receive deadline alerts via email"
           enabled={settings.email_enabled}
@@ -135,7 +135,7 @@ export function ReminderSettings({ onSaved }: ReminderSettingsProps) {
 
         {/* Push */}
         <ToggleRow
-          icon={<Smartphone className="w-4 h-4 text-purple-400" />}
+          icon={<Smartphone className="w-3.5 h-3.5 text-purple-400" />}
           label="Browser Push Notifications"
           description="Get desktop/mobile notification alerts"
           enabled={settings.push_enabled}
@@ -166,7 +166,7 @@ export function ReminderSettings({ onSaved }: ReminderSettingsProps) {
         {/* In-app */}
         <ToggleRow
           icon={
-            <Bell className="w-5 h-5 text-yellow-600 dark:text-yellow-400 stroke-[3px]" />
+            <Bell className="w-3.5 h-3.5 text-amber-400" />
           }
           label="IN-APP NOTIFICATIONS"
           description="SHOW ALERTS IN CLAUSEWALL"
@@ -175,10 +175,10 @@ export function ReminderSettings({ onSaved }: ReminderSettingsProps) {
         />
 
         {/* Time picker */}
-        <div className="flex items-center justify-between pt-6 mt-4 border-t-4 border-black">
-          <div className="flex items-center gap-3">
-            <Clock className="w-5 h-5 text-muted-foreground stroke-[3px]" />
-            <span className="text-xs font-black uppercase tracking-widest text-foreground">
+        <div className="flex items-center justify-between pt-4 mt-3 border-t border-neutral-900">
+          <div className="flex items-center gap-2">
+            <Clock className="w-3.5 h-3.5 text-neutral-600" />
+            <span className="text-[8px] font-mono uppercase tracking-widest text-neutral-400">
               PREFERRED TIME
             </span>
           </div>
@@ -186,7 +186,7 @@ export function ReminderSettings({ onSaved }: ReminderSettingsProps) {
             type="time"
             value={settings.reminder_time}
             onChange={(e) => updateSetting("reminder_time", e.target.value)}
-            className="px-4 py-2 border-4 border-black bg-white dark:bg-black text-black dark:text-foreground font-black uppercase tracking-widest shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:-translate-y-1 focus:shadow-none transition-all"
+            className="px-3 py-1.5 border border-neutral-800 bg-[#050505] text-neutral-300 font-mono text-sm focus:outline-none focus:border-neutral-600 transition-colors"
           />
         </div>
       </div>
@@ -195,13 +195,13 @@ export function ReminderSettings({ onSaved }: ReminderSettingsProps) {
       <button
         onClick={handleSave}
         disabled={saving}
-        className="w-full mt-8 px-6 py-4 border-4 border-black bg-orange-500 hover:bg-orange-600 font-black uppercase tracking-widest text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+        className="w-full mt-6 px-4 py-2.5 border border-amber-900/50 bg-amber-950/10 font-mono uppercase tracking-widest text-[8px] text-amber-400 hover:text-amber-300 hover:border-amber-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
         aria-label="Save reminder settings"
       >
         {saving ? (
-          <Loader2 className="w-5 h-5 animate-spin stroke-[3px]" />
+          <Loader2 className="w-3.5 h-3.5 animate-spin" />
         ) : (
-          <Save className="w-5 h-5 stroke-[3px]" />
+          <Save className="w-3.5 h-3.5" />
         )}
         SAVE SETTINGS
       </button>
@@ -225,14 +225,14 @@ function ToggleRow({
   disabled?: boolean;
 }) {
   return (
-    <div className="flex items-center justify-between gap-4 py-4 border-b-2 border-black/10 dark:border-foreground border-2 last:border-0 border-dashed">
-      <div className="flex items-start gap-4">
-        <div className="mt-1">{icon}</div>
+    <div className="flex items-center justify-between gap-3 py-3 border-b border-neutral-900 last:border-0">
+      <div className="flex items-start gap-3">
+        <div className="mt-0.5">{icon}</div>
         <div>
-          <span className="text-sm font-black uppercase tracking-widest text-foreground block">
+          <span className="text-[9px] font-mono uppercase tracking-widest text-neutral-300 block">
             {label}
           </span>
-          <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mt-1">
+          <p className="text-[7px] font-mono uppercase tracking-widest text-neutral-600 mt-0.5">
             {description}
           </p>
         </div>
@@ -240,13 +240,13 @@ function ToggleRow({
       <button
         onClick={() => onToggle(!enabled)}
         disabled={disabled}
-        className={`relative w-14 h-8 border-4 transition-all ${enabled ? "bg-orange-500 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]" : "bg-gray-200 dark:bg-zinc-800 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"} ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:-translate-y-1 hover:shadow-none"}`}
+        className={`relative w-14 h-8 border transition-colors ${enabled ? "bg-amber-950/30 border-amber-900/50" : "bg-[#050505] border-neutral-800"} ${disabled ? "opacity-40 cursor-not-allowed" : "cursor-pointer hover:border-neutral-600"}`}
         role="switch"
         aria-checked={enabled}
         aria-label={`Toggle ${label}`}
       >
         <span
-          className={`absolute top-0.5 w-5 h-5 border-2 border-black bg-white transition-transform ${enabled ? "translate-x-[22px]" : "translate-x-[2px]"}`}
+          className={`absolute top-1.5 w-5 h-5 border transition-transform ${enabled ? "translate-x-[22px] border-amber-500 bg-amber-500" : "translate-x-[2px] border-neutral-700 bg-neutral-700"}`}
         />
       </button>
     </div>

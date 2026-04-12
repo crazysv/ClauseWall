@@ -41,42 +41,42 @@ export function TelegramLink({ onLinked }: TelegramLinkProps) {
 
   if (confirmed) {
     return (
-      <div className="flex items-center gap-2 py-2 text-green-400 text-xs">
-        <CheckCircle className="w-4 h-4" />
+      <div className="flex items-center gap-2 py-2 text-emerald-400 text-[9px] font-mono">
+        <CheckCircle className="w-3.5 h-3.5" />
         <span>Telegram linking initiated. Save settings to complete.</span>
       </div>
     );
   }
 
   return (
-    <div className="border-4 border-black bg-blue-100 dark:bg-blue-900/30 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] space-y-4">
-      <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground leading-relaxed">
+    <div className="border border-cyan-900/50 bg-cyan-950/10 p-4 space-y-3">
+      <p className="text-[8px] font-mono uppercase tracking-widest text-neutral-500 leading-relaxed">
         SEND THIS COMMAND TO{" "}
         <a
           href={botUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-blue-700 dark:text-blue-400 font-black hover:underline inline-flex items-center gap-1"
+          className="text-cyan-400 hover:underline inline-flex items-center gap-1"
         >
           @CLAUSEWALLBOT
-          <ExternalLink className="w-4 h-4 stroke-[3px]" />
+          <ExternalLink className="w-3 h-3" />
         </a>
         :
       </p>
 
-      <div className="flex items-center gap-3">
-        <code className="flex-1 px-4 py-3 border-4 border-black bg-white dark:bg-black text-black dark:text-white text-sm font-black tracking-widest shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-center">
+      <div className="flex items-center gap-2">
+        <code className="flex-1 px-3 py-2 border border-neutral-800 bg-[#050505] text-neutral-200 text-sm font-mono tracking-widest text-center">
           {linkCode}
         </code>
         <button
           onClick={handleCopy}
-          className="p-3 border-4 border-black bg-gray-100 dark:bg-zinc-800 text-black dark:text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all"
+          className="p-2 border border-neutral-800 bg-[#050505] text-neutral-500 hover:text-neutral-200 hover:border-neutral-600 transition-colors"
           aria-label="Copy command"
         >
           {copied ? (
-            <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-500 stroke-[3px]" />
+            <CheckCircle className="w-3.5 h-3.5 text-emerald-500" />
           ) : (
-            <Copy className="w-5 h-5 stroke-[3px]" />
+            <Copy className="w-3.5 h-3.5" />
           )}
         </button>
       </div>
@@ -85,15 +85,15 @@ export function TelegramLink({ onLinked }: TelegramLinkProps) {
         href={`${botUrl}?start=link`}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center justify-center gap-2 w-full px-4 py-3 border-4 border-black bg-blue-500 hover:bg-blue-600 text-black font-black uppercase tracking-widest text-xs shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all"
+        className="flex items-center justify-center gap-2 w-full px-3 py-2 border border-cyan-900/50 bg-cyan-950/10 text-cyan-400 font-mono uppercase tracking-widest text-[8px] hover:text-cyan-300 hover:border-cyan-800 transition-colors"
       >
-        <MessageCircle className="w-5 h-5 stroke-[3px]" />
+        <MessageCircle className="w-3.5 h-3.5" />
         OPEN @CLAUSEWALLBOT
       </a>
 
       <button
         onClick={handleConfirm}
-        className="w-full text-xs font-black uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors mt-2"
+        className="w-full text-[8px] font-mono uppercase tracking-widest text-neutral-600 hover:text-neutral-300 transition-colors mt-1"
       >
         I&apos;VE SENT THE COMMAND →
       </button>

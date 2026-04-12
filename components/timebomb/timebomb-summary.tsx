@@ -63,37 +63,37 @@ export function TimebombSummary({
   }
 
   const riskColors = {
-    low: "text-blue-900 bg-blue-100 border-4 border-blue-500",
-    medium: "text-yellow-900 bg-yellow-100 border-4 border-yellow-500",
-    high: "text-orange-900 bg-orange-100 border-4 border-orange-500",
-    extreme: "text-red-900 bg-red-100 border-4 border-red-500",
+    low: "text-cyan-400 bg-cyan-950/20 border border-cyan-900/50",
+    medium: "text-amber-400 bg-amber-950/20 border border-amber-900/50",
+    high: "text-amber-500 bg-amber-950/20 border border-amber-900/50",
+    extreme: "text-red-500 bg-red-950/20 border border-red-900/50",
   };
 
   return (
-    <div className="border-4 border-black bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6">
-      <div className="flex items-center justify-between mb-6 pb-4 border-b-4 border-black">
-        <h3 className="text-sm font-black uppercase tracking-widest text-foreground flex items-center gap-2">
-          <Target className="w-6 h-6 text-orange-500 stroke-[3px]" />
-          DEADLINE SUMMARY
+    <div className="border border-neutral-900 bg-[#0a0a0a] p-5">
+      <div className="flex items-center justify-between mb-5 pb-3 border-b border-neutral-900">
+        <h3 className="text-[9px] font-mono uppercase tracking-widest text-neutral-400 flex items-center gap-2">
+          <Target className="w-3.5 h-3.5 text-amber-500" />
+          DEADLINE_SUMMARY
         </h3>
         {temporalRisk && (
           <span
-            className={`text-xs px-3 py-1 font-black uppercase tracking-widest shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${riskColors[temporalRisk]}`}
+            className={`text-[8px] px-2 py-0.5 font-mono uppercase tracking-widest ${riskColors[temporalRisk]}`}
           >
             {temporalRisk.toUpperCase()} RISK
           </span>
         )}
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {/* Total */}
-        <StatBox label="TOTAL" value={stats.total} color="text-foreground" />
+        <StatBox label="TOTAL" value={stats.total} color="text-neutral-200" />
 
         {/* Critical */}
         <StatBox
           label="CRITICAL"
           value={stats.critical}
-          color="text-red-600 dark:text-red-500"
+          color="text-red-500"
           pulse={stats.critical > 0}
         />
 
@@ -107,27 +107,27 @@ export function TimebombSummary({
           }
           color={
             stats.total_financial_exposure > 100000
-              ? "text-red-600 dark:text-red-500"
-              : "text-amber-600 dark:text-amber-500"
+              ? "text-red-500"
+              : "text-amber-400"
           }
         />
 
         {/* Defused Progress */}
-        <div className="border-4 border-black bg-gray-50 dark:bg-black p-4 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-          <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground block mb-2">
+        <div className="border border-neutral-800 bg-[#050505] p-3 flex flex-col justify-between h-full">
+          <span className="text-[8px] font-mono uppercase tracking-widest text-neutral-600 block mb-2">
             DEFUSED
           </span>
           <div className="flex items-center gap-2">
-            <ShieldCheck className="w-6 h-6 text-green-600 dark:text-green-500 stroke-[3px]" />
-            <span className="text-2xl font-black text-green-600 dark:text-green-500">
+            <ShieldCheck className="w-4 h-4 text-emerald-500" />
+            <span className="text-lg font-mono tabular-nums text-emerald-400">
               {stats.defused}
-              <span className="text-sm text-muted-foreground ml-1">
+              <span className="text-[9px] text-neutral-600 ml-1">
                 /{stats.total}
               </span>
             </span>
           </div>
           {/* Progress bar */}
-          <div className="mt-3 h-3 border-2 border-black bg-white dark:bg-black overflow-hidden flex">
+          <div className="mt-2 h-1 border border-neutral-800 bg-[#050505] overflow-hidden flex">
             <motion.div
               initial={{ width: 0 }}
               animate={{
@@ -137,7 +137,7 @@ export function TimebombSummary({
                     : "0%",
               }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="h-full bg-green-500 border-r-2 border-black"
+              className="h-full bg-emerald-500"
             />
           </div>
         </div>
@@ -145,21 +145,21 @@ export function TimebombSummary({
 
       {/* Next critical deadline */}
       {stats.next_critical && nextCriticalDays !== null && (
-        <div className="mt-6 border-4 border-red-500 bg-red-100 dark:bg-red-950 p-4 shadow-[4px_4px_0px_0px_rgba(239,68,68,1)]">
-          <span className="text-xs font-bold uppercase tracking-widest text-red-800 dark:text-red-400">
-            NEXT CRITICAL
+        <div className="mt-4 border-l-2 border-red-500 bg-red-950/20 p-4">
+          <span className="text-[8px] font-mono uppercase tracking-widest text-red-400">
+            NEXT_CRITICAL
           </span>
           <div className="flex items-center justify-between mt-2">
-            <span className="text-sm font-black uppercase tracking-wide text-red-950 dark:text-red-300 truncate flex-1 mr-4">
+            <span className="text-[10px] font-mono uppercase tracking-widest text-neutral-300 truncate flex-1 mr-4">
               {stats.next_critical.title}
             </span>
             <span
-              className={`text-lg font-black uppercase tracking-widest px-3 py-1 border-2 ${
+              className={`text-sm font-mono tabular-nums uppercase tracking-widest px-2 py-0.5 border ${
                 nextCriticalDays <= 7
-                  ? "text-red-700 dark:text-red-400 border-red-500 bg-red-200 dark:bg-red-900/50"
+                  ? "text-red-500 border-red-900/50 bg-red-950/20"
                   : nextCriticalDays <= 30
-                    ? "text-orange-700 dark:text-orange-400 border-orange-500 bg-orange-200 dark:bg-orange-900/50"
-                    : "text-amber-700 dark:text-amber-400 border-amber-500 bg-amber-200 dark:bg-amber-900/50"
+                    ? "text-amber-400 border-amber-900/50 bg-amber-950/20"
+                    : "text-neutral-400 border-neutral-800 bg-[#050505]"
               }`}
             >
               {nextCriticalDays <= 0
@@ -186,14 +186,14 @@ function StatBox({
 }) {
   return (
     <motion.div
-      className="border-4 border-black bg-gray-50 dark:bg-black p-4 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex flex-col justify-between h-full"
+      className="border border-neutral-800 bg-[#050505] p-3 flex flex-col justify-between h-full"
       animate={pulse ? { scale: [1, 1.02, 1] } : {}}
       transition={pulse ? { repeat: Infinity, duration: 2 } : {}}
     >
-      <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground block mb-2">
+      <span className="text-[8px] font-mono uppercase tracking-widest text-neutral-600 block mb-2">
         {label}
       </span>
-      <span className={`text-2xl font-black ${color}`}>{value}</span>
+      <span className={`text-lg font-mono tabular-nums ${color}`}>{value}</span>
     </motion.div>
   );
 }

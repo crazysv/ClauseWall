@@ -103,34 +103,34 @@ export function SigningDateModal({
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 10 }}
             transition={{ type: "spring", duration: 0.3 }}
-            className="relative w-full max-w-md border-4 border-black bg-white dark:bg-zinc-950 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] rounded-none"
+            className="relative w-full max-w-md border border-neutral-800 bg-[#0a0a0a] p-6"
           >
             {/* Close button */}
             <button
               onClick={onClose}
-              className="absolute right-4 top-4 text-muted-foreground hover:text-foreground transition-colors"
+              className="absolute right-4 top-4 text-neutral-600 hover:text-neutral-300 transition-colors"
               aria-label="Close modal"
             >
-              <X className="w-5 h-5 stroke-[3px]" />
+              <X className="w-4 h-4" />
             </button>
 
             {/* Header */}
-            <div className="flex items-center gap-4 mb-6 border-b-4 border-black pb-4">
-              <div className="w-12 h-12 border-4 border-black bg-orange-400 flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                <Shield className="w-6 h-6 text-black stroke-[3px]" />
+            <div className="flex items-center gap-4 mb-6 border-b border-neutral-900 pb-4">
+              <div className="p-3 border border-amber-900/50 bg-amber-950/10">
+                <Shield className="w-5 h-5 text-amber-500" />
               </div>
               <div>
-                <h2 className="text-xl font-black uppercase tracking-widest text-foreground">
-                  ACTIVATE DEFUSER
+                <h2 className="text-xs font-mono uppercase tracking-widest text-neutral-200">
+                  ACTIVATE_DEFUSER
                 </h2>
-                <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mt-1">
+                <p className="text-[8px] font-mono uppercase tracking-widest text-neutral-600 mt-0.5">
                   WHEN DID YOU SIGN THIS CONTRACT?
                 </p>
               </div>
             </div>
 
             {/* Description */}
-            <p className="text-sm font-medium leading-relaxed text-muted-foreground mb-6">
+            <p className="text-[9px] font-mono text-neutral-500 leading-relaxed mb-6">
               We&apos;ll calculate all your critical deadlines from the signing
               date and set up reminders so you never miss one.
             </p>
@@ -140,12 +140,12 @@ export function SigningDateModal({
               <div>
                 <label
                   htmlFor="signing-date"
-                  className="block text-sm font-black uppercase tracking-widest text-foreground mb-2"
+                  className="block text-[9px] font-mono uppercase tracking-widest text-neutral-400 mb-2"
                 >
                   CONTRACT SIGNING DATE
                 </label>
                 <div className="relative">
-                  <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground stroke-[3px]" />
+                  <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-neutral-600" />
                   <input
                     id="signing-date"
                     type="date"
@@ -159,7 +159,7 @@ export function SigningDateModal({
                       setUseToday(false);
                     }}
                     disabled={useToday}
-                    className="w-full pl-12 pr-4 py-3 border-4 border-black bg-white dark:bg-black font-bold uppercase tracking-widest shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:translate-y-[2px] focus:translate-x-[2px] focus:shadow-none transition-all disabled:opacity-50"
+                    className="w-full pl-10 pr-4 py-2.5 border border-neutral-800 bg-[#050505] font-mono text-sm text-neutral-300 focus:outline-none focus:border-neutral-600 transition-colors disabled:opacity-50"
                   />
                 </div>
               </div>
@@ -167,10 +167,10 @@ export function SigningDateModal({
               {/* Use today checkbox */}
               <label className="flex items-center gap-3 cursor-pointer group mt-4">
                 <div
-                  className={`w-6 h-6 border-4 flex items-center justify-center transition-all ${useToday ? "border-orange-500 bg-orange-500 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]" : "border-black bg-white dark:bg-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"}`}
+                  className={`w-4 h-4 border flex items-center justify-center transition-colors ${useToday ? "border-amber-500 bg-amber-500" : "border-neutral-700 bg-[#050505]"}`}
                 >
                   {useToday && (
-                    <Shield className="w-3 h-3 text-black stroke-[4px]" />
+                    <Shield className="w-2.5 h-2.5 text-black" />
                   )}
                 </div>
                 <input
@@ -179,7 +179,7 @@ export function SigningDateModal({
                   onChange={(e) => setUseToday(e.target.checked)}
                   className="hidden"
                 />
-                <span className="text-sm font-bold uppercase tracking-widest text-foreground group-hover:text-orange-600 transition-colors">
+                <span className="text-[9px] font-mono uppercase tracking-widest text-neutral-400 group-hover:text-amber-400 transition-colors">
                   USE TODAY&apos;S DATE (NOT SIGNED YET)
                 </span>
               </label>
@@ -189,17 +189,17 @@ export function SigningDateModal({
             <button
               onClick={handleActivate}
               disabled={loading}
-              className="w-full mt-8 px-6 py-4 border-4 border-black bg-orange-500 hover:bg-orange-600 font-black uppercase tracking-widest text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center gap-2"
+              className="w-full mt-8 px-6 py-3 border border-amber-900/50 bg-amber-950/10 font-mono uppercase tracking-widest text-[9px] text-amber-400 hover:text-amber-300 hover:border-amber-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
               aria-label="Activate Time Bomb Defuser"
             >
               {loading ? (
                 <>
-                  <Loader2 className="w-5 h-5 stroke-[3px] animate-spin" />
+                  <Loader2 className="w-4 h-4 animate-spin" />
                   SCANNING FOR DEADLINES...
                 </>
               ) : (
                 <>
-                  <Shield className="w-5 h-5 stroke-[3px]" />
+                  <Shield className="w-4 h-4" />
                   ACTIVATE DEFUSER
                 </>
               )}
