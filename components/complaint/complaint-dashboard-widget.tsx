@@ -4,11 +4,8 @@ import { motion } from "framer-motion";
 import {
   Gavel,
   Clock,
-  AlertCircle,
-  CheckCircle2,
   ArrowRight,
 } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import type { ComplaintFiling } from "@/types";
 
@@ -36,105 +33,101 @@ export default function ComplaintDashboardWidget({
     )[0];
 
   const statusColors: Record<string, string> = {
-    draft: "text-gray-400",
-    documents_ready: "text-blue-400",
-    filing_guided: "text-blue-400",
-    filed: "text-amber-400",
-    acknowledged: "text-amber-400",
-    hearing_scheduled: "text-orange-400",
-    hearing_completed: "text-orange-400",
-    order_received: "text-purple-400",
-    resolved: "text-green-400",
-    appealed: "text-red-400",
-    closed: "text-gray-500",
+    draft: "text-neutral-500 border-neutral-800 bg-[#050505]",
+    documents_ready: "text-blue-500 border-blue-900/40 bg-blue-950/20",
+    filing_guided: "text-blue-500 border-blue-900/40 bg-blue-950/20",
+    filed: "text-amber-500 border-amber-900/40 bg-amber-950/20",
+    acknowledged: "text-amber-500 border-amber-900/40 bg-amber-950/20",
+    hearing_scheduled: "text-orange-500 border-orange-900/40 bg-orange-950/20 animate-pulse",
+    hearing_completed: "text-orange-500 border-orange-900/40 bg-orange-950/20",
+    order_received: "text-pink-500 border-pink-900/40 bg-pink-950/20",
+    resolved: "text-emerald-500 border-emerald-900/40 bg-emerald-950/20",
+    appealed: "text-red-500 border-red-900/40 bg-red-950/20",
+    closed: "text-neutral-500 border-neutral-800 bg-[#050505]",
   };
 
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-      <Card className="card-impact p-6 rounded-none">
-        <CardContent className="p-0">
-          <div className="flex items-center justify-between mb-6 pb-2 border-b-4 border-black">
-            <h3 className="font-black text-lg uppercase tracking-widest flex items-center gap-3">
-              <Gavel className="h-6 w-6 text-orange-500 stroke-[3px]" />
-              Complaint Filings
-            </h3>
-            <Link
-              href="/complaint"
-              className="font-bold uppercase tracking-widest text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 flex items-center gap-2 group"
-            >
-              View all{" "}
-              <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </div>
+      <div className="bg-[#0a0a0a] border border-neutral-900 p-6 h-full flex flex-col">
+        <div className="flex items-center justify-between mb-6 pb-4 border-b border-neutral-900">
+          <h3 className="text-[10px] font-mono uppercase tracking-widest flex items-center gap-3 text-neutral-400">
+            <Gavel className="h-4 w-4 text-orange-500" />
+            [ LITIGATION_TRACKER ]
+          </h3>
+          <Link
+            href="/complaint"
+            className="text-[9px] font-mono uppercase tracking-widest text-orange-500 hover:text-orange-400 flex items-center gap-1.5"
+          >
+            OPEN_DOCKET <ArrowRight className="h-3 w-3" />
+          </Link>
+        </div>
 
-          <div className="grid grid-cols-3 gap-4 mb-6">
-            <div className="text-center p-4 bg-orange-100 dark:bg-orange-900/30 border-4 border-orange-500 shadow-[4px_4px_0px_0px_rgba(249,115,22,1)]">
-              <p className="text-2xl font-black text-orange-700 dark:text-orange-400">
-                {active.length}
-              </p>
-              <p className="text-xs font-bold uppercase tracking-widest text-orange-900 dark:text-orange-200 mt-1">
-                Active
-              </p>
-            </div>
-            <div className="text-center p-4 bg-green-100 dark:bg-green-900/30 border-4 border-green-500 shadow-[4px_4px_0px_0px_rgba(34,197,94,1)]">
-              <p className="text-2xl font-black text-green-700 dark:text-green-400">
-                {resolved.length}
-              </p>
-              <p className="text-xs font-bold uppercase tracking-widest text-green-900 dark:text-green-200 mt-1">
-                Resolved
-              </p>
-            </div>
-            <div className="text-center p-4 bg-blue-100 dark:bg-blue-900/30 border-4 border-blue-500 shadow-[4px_4px_0px_0px_rgba(59,130,246,1)]">
-              <p className="text-2xl font-black text-blue-700 dark:text-blue-400">
-                {filings.length}
-              </p>
-              <p className="text-xs font-bold uppercase tracking-widest text-blue-900 dark:text-blue-200 mt-1">
-                Total
-              </p>
-            </div>
+        <div className="grid grid-cols-3 gap-3 mb-6">
+          <div className="flex flex-col p-3 bg-orange-950/10 border border-orange-900/30">
+            <p className="text-xl font-mono text-orange-500">
+              {active.length}
+            </p>
+            <p className="text-[8px] font-mono uppercase tracking-widest text-orange-500/70 mt-1">
+              ACTIVE_FILINGS
+            </p>
           </div>
+          <div className="flex flex-col p-3 bg-emerald-950/10 border border-emerald-900/30">
+            <p className="text-xl font-mono text-emerald-500">
+              {resolved.length}
+            </p>
+            <p className="text-[8px] font-mono uppercase tracking-widest text-emerald-500/70 mt-1">
+              RESOLVED
+            </p>
+          </div>
+          <div className="flex flex-col p-3 bg-cyan-950/10 border border-cyan-900/30">
+            <p className="text-xl font-mono text-cyan-500">
+              {filings.length}
+            </p>
+            <p className="text-[8px] font-mono uppercase tracking-widest text-cyan-500/70 mt-1">
+              TOTAL_CASES
+            </p>
+          </div>
+        </div>
 
-          {nextHearing && (
-            <div className="p-4 bg-amber-100 dark:bg-amber-900/50 border-4 border-amber-500 shadow-[4px_4px_0px_0px_rgba(245,158,11,1)] mb-6">
-              <div className="flex items-center gap-2 mb-2">
-                <Clock className="h-5 w-5 text-amber-600 dark:text-amber-400 stroke-[3px]" />
-                <span className="text-sm font-black uppercase tracking-widest text-amber-800 dark:text-amber-300">
-                  Next Hearing
+        {nextHearing && (
+          <div className="p-4 bg-amber-950/20 border-l-2 border-amber-500 mb-6 flex flex-col">
+            <div className="flex items-center gap-2 mb-2">
+              <Clock className="h-3.5 w-3.5 text-amber-500" />
+              <span className="text-[9px] font-mono uppercase tracking-widest text-amber-500">
+                PENDING_HEARING
+              </span>
+            </div>
+            <p className="text-xs font-mono uppercase text-amber-400">
+              {nextHearing.complaint_title}
+            </p>
+            <p className="text-[10px] font-mono text-amber-600 mt-1">
+              T-MINUS: {new Date(nextHearing.next_hearing_date!).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+            </p>
+          </div>
+        )}
+
+        <div className="space-y-3 flex-1">
+          {active.slice(0, 3).map((filing) => (
+            <Link key={filing.id} href={`/complaint/${filing.document_id}`}>
+              <div className="flex items-center justify-between p-3 border border-neutral-900 bg-[#050505] hover:bg-neutral-950 transition-colors group">
+                <div className="min-w-0 pr-4">
+                  <p className="text-xs font-mono uppercase tracking-widest text-neutral-300 truncate group-hover:text-white transition-colors">
+                    {filing.complaint_title}
+                  </p>
+                  <p className="text-[9px] font-mono text-neutral-600 mt-1 uppercase">
+                    {filing.case_number || "CASE_ID_PENDING"}
+                  </p>
+                </div>
+                <span
+                  className={`text-[8px] font-mono uppercase tracking-widest px-1.5 py-0.5 border whitespace-nowrap ${statusColors[filing.status] || "text-neutral-500 border-neutral-800"}`}
+                >
+                  {filing.status.replace(/_/g, " ")}
                 </span>
               </div>
-              <p className="text-sm font-bold text-amber-900 dark:text-amber-100">
-                {nextHearing.complaint_title} —{" "}
-                {new Date(nextHearing.next_hearing_date!).toLocaleDateString(
-                  "en-IN",
-                  { day: "numeric", month: "short", year: "numeric" },
-                )}
-              </p>
-            </div>
-          )}
-
-          <div className="space-y-4">
-            {active.slice(0, 3).map((filing) => (
-              <Link key={filing.id} href={`/complaint/${filing.document_id}`}>
-                <div className="flex items-center justify-between p-4 border-2 border-black bg-white dark:bg-zinc-900 hover:bg-gray-50 dark:hover:bg-zinc-800 hover:-translate-y-1 transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] cursor-pointer">
-                  <div className="min-w-0 pr-4">
-                    <p className="text-sm font-black uppercase tracking-widest truncate">
-                      {filing.complaint_title}
-                    </p>
-                    <p className="text-xs font-bold text-muted-foreground mt-1">
-                      {filing.case_number || "Case # pending"}
-                    </p>
-                  </div>
-                  <span
-                    className={`text-xs font-black uppercase tracking-widest px-2 py-1 border-2 border-black ${statusColors[filing.status] || "text-muted-foreground bg-gray-100 dark:bg-background border-2 border-foreground card-impact"}`}
-                  >
-                    {filing.status.replace(/_/g, " ")}
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+            </Link>
+          ))}
+        </div>
+      </div>
     </motion.div>
   );
 }

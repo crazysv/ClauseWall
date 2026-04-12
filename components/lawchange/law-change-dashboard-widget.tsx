@@ -5,14 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   Scale,
-  AlertCircle,
-  Bell,
-  TrendingUp,
-  ChevronRight,
-  Loader2,
 } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import type { LawChangeSummary } from "@/types";
 
 export default function LawChangeDashboardWidget() {
@@ -52,56 +45,53 @@ export default function LawChangeDashboardWidget() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.36 }}
     >
-      <Card
-        className={`relative overflow-hidden border-0 ${hasImpacts ? "bg-background /10 /10 /10" : "bg-background /10 /10 /10"}`}
+      <div
+        className={`relative overflow-hidden border p-5 sm:p-6 bg-[#0a0a0a] ${
+          hasImpacts ? "border-red-900/40" : "border-indigo-900/40"
+        }`}
       >
-        {/* Background glow */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-background /10 to-transparent rounded-full blur-3xl" />
-        </div>
-
-        <CardContent className="relative p-5 sm:p-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div
-                className={`h-14 w-14 rounded-none flex items-center justify-center shadow-lg ${hasImpacts ? "bg-background shadow-red-500/25" : "bg-background shadow-indigo-500/25"}`}
-              >
-                <Scale className="h-7 w-7 text-foreground" />
-              </div>
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <h3 className="text-lg font-bold text-foreground">
-                    Law Monitor
-                  </h3>
-                  {summary.unacknowledged_impacts > 0 && (
-                    <Badge className="bg-red-500 text-foreground text-[10px] border-0 animate-pulse">
-                      {summary.unacknowledged_impacts} NEW
-                    </Badge>
-                  )}
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  {hasImpacts
-                    ? `${summary.affected_contracts} contract${
-                        summary.affected_contracts !== 1 ? "s" : ""
-                      } affected`
-                    : summary.changes_this_week > 0
-                      ? `${summary.changes_this_week} change${
-                          summary.changes_this_week !== 1 ? "s" : ""
-                        } this week`
-                      : `${summary.total_changes_monitored} changes monitored`}
-                </p>
-              </div>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 relative z-10">
+          <div className="flex items-center gap-4">
+            <div
+              className={`h-10 w-10 flex items-center justify-center border ${
+                hasImpacts 
+                ? "bg-red-950/20 border-red-900/50 text-red-500" 
+                : "bg-indigo-950/20 border-indigo-900/50 text-indigo-500"
+              }`}
+            >
+              <Scale className="h-4 w-4" />
             </div>
-            <Link href="/lawchange">
-              <button className="inline-flex items-center gap-2 px-5 py-2.5 rounded-none bg-background hover: hover: text-foreground text-sm font-medium shadow-lg shadow-indigo-500/20 transition-all w-full sm:w-auto justify-center">
-                <Scale className="h-4 w-4" />
-                View Details
-                <ChevronRight className="h-3.5 w-3.5" />
-              </button>
-            </Link>
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <h3 className={`text-[10px] font-mono tracking-widest uppercase ${hasImpacts ? 'text-red-500' : 'text-indigo-400'}`}>
+                  [ STATUTORY_MONITOR ]
+                </h3>
+                {summary.unacknowledged_impacts > 0 && (
+                  <span className="bg-red-500/10 text-red-500 border border-red-500/50 text-[8px] font-mono tracking-widest px-1.5 py-0.5 animate-pulse">
+                    {summary.unacknowledged_impacts} NEW
+                  </span>
+                )}
+              </div>
+              <p className="text-xs font-mono uppercase tracking-widest text-neutral-400">
+                {hasImpacts
+                  ? `${summary.affected_contracts} PAYLOAD${
+                      summary.affected_contracts !== 1 ? "S" : ""
+                    } AFFECTED BY SHIFTS`
+                  : summary.changes_this_week > 0
+                    ? `${summary.changes_this_week} UPDATE${
+                        summary.changes_this_week !== 1 ? "S" : ""
+                      } DETECTED (T-7D)`
+                    : `${summary.total_changes_monitored} STATUTES MONITORED`}
+              </p>
+            </div>
           </div>
-        </CardContent>
-      </Card>
+          <Link href="/lawchange">
+            <button className="inline-flex items-center justify-center px-4 py-2 bg-neutral-950 border border-neutral-800 text-neutral-400 hover:text-white hover:border-neutral-600 transition-colors font-mono text-[9px] tracking-widest uppercase w-full sm:w-auto">
+              ACCESS_LOGS
+            </button>
+          </Link>
+        </div>
+      </div>
     </motion.div>
   );
 }

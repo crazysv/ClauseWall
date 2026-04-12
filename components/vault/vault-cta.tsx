@@ -10,8 +10,6 @@ import {
   Loader2,
   FileStack,
 } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 
 interface LatestVaultData {
   analysis: {
@@ -56,30 +54,30 @@ export function VaultCTA() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <Card className="border-4 border-black bg-indigo-50 dark:bg-indigo-950/20 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] rounded-none">
-          <CardContent className="p-6">
-            <div className="flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
-              <div className="p-4 border-4 border-black bg-white dark:bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                <FileStack className="w-8 h-8 text-black dark:text-white stroke-[3px]" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-xl font-black uppercase tracking-widest text-foreground">
-                  CONTRACT VAULT
-                </h3>
-                <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground mt-2 leading-relaxed">
-                  ANALYZE {data.contract_count}/2 CONTRACTS UPLOADED. UPLOAD{" "}
-                  {2 - data.contract_count} MORE TO UNLOCK CROSS-CONTRACT
-                  ANALYSIS.
-                </p>
-              </div>
-              <Link href="/upload" className="w-full sm:w-auto">
-                <Button className="w-full sm:w-auto border-4 border-black bg-indigo-600 hover:bg-indigo-700 text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all font-black uppercase tracking-widest rounded-none h-12">
-                  UPLOAD <ArrowRight className="w-5 h-5 ml-2 stroke-[3px]" />
-                </Button>
-              </Link>
+        <div className="bg-[#0a0a0a] border border-cyan-900/50 p-6 relative group overflow-hidden">
+          {/* Subtle accent glow */}
+          <div className="absolute top-0 left-0 w-full h-[1px] bg-cyan-500 opacity-20 group-hover:opacity-100 transition-opacity" />
+          
+          <div className="flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
+            <div className="p-4 bg-cyan-950/20 border border-cyan-900/50 text-cyan-500">
+              <FileStack className="w-6 h-6" />
             </div>
-          </CardContent>
-        </Card>
+            <div className="flex-1">
+              <h3 className="text-[10px] font-mono uppercase tracking-widest text-cyan-500 mb-1.5">
+                [ CROSS-NODE_ANALYSIS_UNAVAILABLE ]
+              </h3>
+              <p className="text-xs font-mono uppercase tracking-widest text-neutral-400 leading-relaxed">
+                INGESTED: {data.contract_count}/2. UPLOAD {" "}
+                {2 - data.contract_count} OR MORE PAYLOADS TO INITIALIZE MULTI-CONTRACT VULNERABILITY SCAN.
+              </p>
+            </div>
+            <Link href="/upload" className="w-full sm:w-auto">
+              <button className="w-full sm:w-auto px-6 h-10 flex items-center justify-center gap-2 border border-cyan-500/50 bg-cyan-500/10 text-cyan-400 hover:bg-cyan-500 hover:text-[#050505] transition-colors font-mono text-[10px] uppercase tracking-widest">
+                INITIALIZE_UPLOAD <ArrowRight className="w-4 h-4" />
+              </button>
+            </Link>
+          </div>
+        </div>
       </motion.div>
     );
   }
@@ -98,60 +96,63 @@ export function VaultCTA() {
         animate={{ opacity: 1, y: 0 }}
       >
         <Link href="/vault">
-          <Card
-            className={`cursor-pointer hover:-translate-y-2 hover:shadow-none transition-all border-4 border-black rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] ${
+          <div
+            className={`group cursor-pointer p-6 relative overflow-hidden transition-all bg-[#0a0a0a] border ${
               isHighRisk
-                ? "bg-red-50 dark:bg-red-950/20"
-                : "bg-indigo-50 dark:bg-indigo-950/20"
+                ? "border-red-900/50 hover:bg-red-950/10"
+                : "border-cyan-900/50 hover:bg-cyan-950/10"
             }`}
           >
-            <CardContent className="p-6">
-              <div className="flex items-center gap-6">
-                <div
-                  className={`p-4 border-4 border-black bg-white dark:bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex-shrink-0`}
-                >
-                  {isHighRisk ? (
-                    <AlertTriangle className="w-8 h-8 text-red-600 dark:text-red-500 stroke-[3px]" />
-                  ) : (
-                    <ShieldCheck className="w-8 h-8 text-indigo-600 dark:text-indigo-500 stroke-[3px]" />
+            {/* Subtle accent glow */}
+            <div className={`absolute top-0 left-0 w-full h-[1px] opacity-20 group-hover:opacity-100 transition-opacity ${isHighRisk ? "bg-red-500" : "bg-cyan-500"}`} />
+
+            <div className="flex items-center gap-6">
+              <div
+                className={`p-4 border ${
+                  isHighRisk ? "bg-red-950/20 border-red-900/50 text-red-500" : "bg-cyan-950/20 border-cyan-900/50 text-cyan-500"
+                } flex-shrink-0`}
+              >
+                {isHighRisk ? (
+                  <AlertTriangle className="w-6 h-6" />
+                ) : (
+                  <ShieldCheck className="w-6 h-6" />
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-3 mb-2 flex-wrap">
+                  <h3 className={`text-[10px] font-mono uppercase tracking-widest ${isHighRisk ? 'text-red-500' : 'text-cyan-500'}`}>
+                    [ VAULT_ANALYSIS_REPORT ]
+                  </h3>
+                  {data.is_stale && (
+                    <span className="text-[8px] font-mono uppercase tracking-widest border border-amber-500/50 bg-amber-500/10 text-amber-500 px-1.5 py-0.5">
+                      STALE_DATA
+                    </span>
                   )}
                 </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-3 mb-2 flex-wrap">
-                    <h3 className="text-xl font-black uppercase tracking-widest text-foreground">
-                      CONTRACT VAULT
-                    </h3>
-                    {data.is_stale && (
-                      <span className="text-[10px] font-black uppercase tracking-widest border-2 border-yellow-500 bg-yellow-100 dark:bg-yellow-950 text-yellow-700 dark:text-yellow-400 px-2 py-0.5 shadow-[2px_2px_0px_0px_rgba(234,179,8,1)]">
-                        STALE
-                      </span>
-                    )}
-                  </div>
-                  <p
-                    className={`text-sm font-bold uppercase tracking-widest leading-relaxed line-clamp-2 ${isHighRisk ? "text-red-900/60 dark:text-red-200/60" : "text-indigo-900/60 dark:text-indigo-200/60"}`}
-                  >
-                    {conflictCount > 0 &&
-                      `${conflictCount} CONFLICT${conflictCount > 1 ? "S" : ""}`}
-                    {conflictCount > 0 && gapCount > 0 && " · "}
-                    {gapCount > 0 &&
-                      `${gapCount} GAP${gapCount > 1 ? "S" : ""}`}
-                    {(conflictCount > 0 || gapCount > 0) &&
-                      cascadeCount > 0 &&
-                      " · "}
-                    {cascadeCount > 0 &&
-                      `${cascadeCount} CASCADE${cascadeCount > 1 ? "S" : ""}`}
-                    {conflictCount === 0 &&
-                      gapCount === 0 &&
-                      cascadeCount === 0 &&
-                      "ALL CLEAR - NO CRITICAL ISSUES"}
-                  </p>
-                </div>
-                <div className="p-3 border-4 border-black bg-white dark:bg-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hidden sm:block">
-                  <ArrowRight className="w-6 h-6 text-black dark:text-white stroke-[3px]" />
-                </div>
+                <p
+                  className={`text-xs font-mono uppercase tracking-widest leading-relaxed truncate ${isHighRisk ? "text-red-400/80" : "text-cyan-400/80"}`}
+                >
+                  {conflictCount > 0 &&
+                    `${conflictCount} CONFLICT${conflictCount > 1 ? "S" : ""}`}
+                  {conflictCount > 0 && gapCount > 0 && " · "}
+                  {gapCount > 0 &&
+                    `${gapCount} GAP${gapCount > 1 ? "S" : ""}`}
+                  {(conflictCount > 0 || gapCount > 0) &&
+                    cascadeCount > 0 &&
+                    " · "}
+                  {cascadeCount > 0 &&
+                    `${cascadeCount} CASCADE${cascadeCount > 1 ? "S" : ""}`}
+                  {conflictCount === 0 &&
+                    gapCount === 0 &&
+                    cascadeCount === 0 &&
+                    "ALL CLEAR - NO CRITICAL FAILURES DETECTED"}
+                </p>
               </div>
-            </CardContent>
-          </Card>
+              <div className="hidden sm:flex p-3 items-center justify-center border border-neutral-800 bg-neutral-900/50 text-neutral-400 group-hover:text-white transition-colors">
+                <ArrowRight className="w-5 h-5" />
+              </div>
+            </div>
+          </div>
         </Link>
       </motion.div>
     );
@@ -161,31 +162,31 @@ export function VaultCTA() {
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
       <Link href="/vault">
-        <Card className="cursor-pointer hover:-translate-y-2 hover:shadow-none transition-all bg-indigo-50 dark:bg-indigo-950/20 border-4 border-black rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-6">
-              <div className="p-4 border-4 border-black bg-white dark:bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex-shrink-0">
-                <FileStack className="w-8 h-8 text-black dark:text-white stroke-[3px]" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-xl font-black uppercase tracking-widest text-foreground mb-2">
-                  CONTRACT VAULT
-                </h3>
-                <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground leading-relaxed">
-                  YOU HAVE{" "}
-                  <span className="text-indigo-600 dark:text-indigo-400 font-black">
-                    {data.contract_count}
-                  </span>{" "}
-                  CONTRACTS. RUN A CROSS-CONTRACT ANALYSIS TO FIND CONFLICTS,
-                  GAPS, AND HIDDEN RISKS.
-                </p>
-              </div>
-              <div className="p-3 border-4 border-black bg-white dark:bg-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hidden sm:block">
-                <ArrowRight className="w-6 h-6 text-black dark:text-white stroke-[3px]" />
-              </div>
+        <div className="group cursor-pointer p-6 bg-[#0a0a0a] border border-emerald-900/50 hover:bg-emerald-950/10 transition-all relative overflow-hidden">
+          {/* Subtle accent glow */}
+          <div className="absolute top-0 left-0 w-full h-[1px] bg-emerald-500 opacity-20 group-hover:opacity-100 transition-opacity" />
+
+          <div className="flex items-center gap-6">
+            <div className="p-4 border border-emerald-900/50 bg-emerald-950/20 text-emerald-500 flex-shrink-0">
+              <FileStack className="w-6 h-6" />
             </div>
-          </CardContent>
-        </Card>
+            <div className="flex-1 min-w-0">
+              <h3 className="text-[10px] font-mono uppercase tracking-widest text-emerald-500 mb-2">
+                [ INIT_VAULT_ANALYSIS ]
+              </h3>
+              <p className="text-xs font-mono uppercase tracking-widest text-neutral-400 leading-relaxed">
+                VAULT CONTAINS{" "}
+                <span className="text-emerald-400 font-bold">
+                  {data.contract_count}
+                </span>{" "}
+                PAYLOADS. EXECUTE CROSS-CONTRACT SCAN TO DETECT CONFLICTS AND COVERAGE GAPS.
+              </p>
+            </div>
+            <div className="hidden sm:flex p-3 items-center justify-center border border-neutral-800 bg-neutral-900/50 text-neutral-400 group-hover:text-emerald-400 transition-colors">
+              <ArrowRight className="w-5 h-5" />
+            </div>
+          </div>
+        </div>
       </Link>
     </motion.div>
   );
