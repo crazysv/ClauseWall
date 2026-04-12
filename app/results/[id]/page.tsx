@@ -600,18 +600,18 @@ export default function ResultsPage() {
   // Loading state — skeleton layout
   if (loading) {
     return (
-      <div className="min-h-screen bg-background p-4 sm:p-8 max-w-5xl mx-auto">
-        <Skeleton className="h-8 w-64 mb-2" />
-        <Skeleton className="h-4 w-96 mb-8" />
+      <div className="min-h-screen bg-[#050505] p-4 sm:p-8 max-w-5xl mx-auto">
+        <Skeleton className="h-4 w-64 mb-2 bg-neutral-900 rounded-sm" />
+        <Skeleton className="h-3 w-96 mb-8 bg-neutral-900 rounded-sm" />
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
           {[1, 2, 3, 4].map((i) => (
-            <Skeleton key={i} className="h-24 rounded-none" />
+            <Skeleton key={i} className="h-24 rounded-sm bg-neutral-900" />
           ))}
         </div>
-        <Skeleton className="h-32 rounded-none mb-6" />
+        <Skeleton className="h-32 rounded-sm bg-neutral-900 mb-6" />
         <div className="space-y-3">
           {[1, 2, 3].map((i) => (
-            <Skeleton key={i} className="h-20 rounded-none" />
+            <Skeleton key={i} className="h-20 rounded-sm bg-neutral-900" />
           ))}
         </div>
       </div>
@@ -620,11 +620,13 @@ export default function ResultsPage() {
 
   if (error || !document) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-        <XCircle className="h-12 w-12 text-red-500" />
-        <p className="text-red-400">{error || "Document not found"}</p>
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4 bg-[#050505]">
+        <XCircle className="h-12 w-12 text-red-600" />
+        <p className="text-[10px] font-mono tracking-widest text-red-500 uppercase">{error || "[ERR: DOCUMENT_ORPHANED]"}</p>
         <Link href="/upload">
-          <Button>Upload New Document</Button>
+          <Button variant="outline" className="font-mono text-[10px] tracking-widest uppercase border-red-900/50 hover:bg-red-900/30 hover:text-red-400 mt-4">
+            [RESTART_INGESTION]
+          </Button>
         </Link>
       </div>
     );
@@ -635,20 +637,23 @@ export default function ResultsPage() {
     document.analysis_status === "analyzing"
   ) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 px-4">
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 px-4 bg-[#050505]">
         <div className="relative">
-          <Loader2 className="h-16 w-16 text-blue-500 animate-spin" />
-          <div className="absolute inset-0 h-16 w-16 bg-blue-500/20 blur-xl rounded-full animate-pulse" />
+          <Loader2 className="h-12 w-12 text-cyan-500 animate-spin" />
+          <div className="absolute inset-0 h-12 w-12 bg-cyan-500/20 blur-xl rounded-full animate-pulse" />
         </div>
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-2">Analyzing Your Contract</h2>
-          <p className="text-foreground max-w-md">
-            Checking against 750+ verified Indian legal rules. This typically
-            takes 30-60 seconds.
+          <h2 className="font-mono text-xl tracking-widest uppercase text-white mb-2">
+            [INITIALIZING FORENSIC SCAN]
+          </h2>
+          <p className="text-[10px] font-mono tracking-widest uppercase text-neutral-500 max-w-md mx-auto">
+            CROSSLINKING AGAINST 750+ VERIFIED LEGAL VECTORS.
+            <br />
+            ESTIMATED T-MINUS 30 SECONDS.
           </p>
         </div>
-        <div className="w-64">
-          <Progress value={33} className="h-2" />
+        <div className="w-64 mt-4">
+          <Progress value={33} className="h-[2px] bg-neutral-900" />
         </div>
       </div>
     );
@@ -656,14 +661,16 @@ export default function ResultsPage() {
 
   if (document.analysis_status === "failed") {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4 px-4">
-        <XCircle className="h-12 w-12 text-red-500" />
-        <h2 className="text-2xl font-bold text-red-400">Analysis Failed</h2>
-        <p className="text-foreground text-center max-w-md">
-          {document.summary || "Something went wrong. Please try again."}
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4 px-4 bg-[#050505]">
+        <XCircle className="h-12 w-12 text-red-600" />
+        <h2 className="font-mono text-xl tracking-widest uppercase text-red-500">[SCAN COLLAPSE: FATAL ERROR]</h2>
+        <p className="text-[10px] font-mono tracking-widest uppercase text-neutral-500 text-center max-w-md">
+          {document.summary || "UNHANDLED EXCEPTION IN PIPELINE."}
         </p>
         <Link href="/upload">
-          <Button>Try Again</Button>
+          <Button variant="outline" className="font-mono text-[10px] tracking-widest uppercase border-red-900/50 hover:bg-red-900/30 hover:text-red-400 mt-4">
+            [RESTART_INGESTION]
+          </Button>
         </Link>
       </div>
     );
@@ -686,20 +693,20 @@ export default function ResultsPage() {
       main={
         <>
           {/* ── Page Header ── */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 border-b border-neutral-900 pb-4">
             <div>
-              <div className="flex flex-wrap items-center gap-2 text-[#a3a3a3] text-xs font-medium tracking-wider mb-2">
-                <span className="text-[#fafafa]">
-                  {document.original_filename || "Analyzed Document"}
+              <div className="flex flex-wrap items-center gap-2 font-mono text-[9px] text-neutral-500 uppercase tracking-widest mb-2">
+                <span className="text-white bg-[#0a0a0a] border border-neutral-800 px-1 py-0.5">
+                  [{document.original_filename || "ANALYZED_DOCUMENT"}]
                 </span>
-                <span>•</span>
+                <span className="text-neutral-800">/</span>
                 <span>{getDocumentTypeLabel(document.document_type)}</span>
-                <span>•</span>
+                <span className="text-neutral-800">/</span>
                 <span>{getStateName(document.jurisdiction)}</span>
                 {document.detected_language &&
                   document.detected_language !== "en" && (
                     <>
-                      <span>•</span>
+                      <span className="text-neutral-800">/</span>
                       <LanguageBadge
                         sourceLanguage={
                           document.detected_language as SupportedLanguage
@@ -709,8 +716,8 @@ export default function ResultsPage() {
                     </>
                   )}
               </div>
-              <h1 className="font-space text-2xl sm:text-3xl font-bold text-[#fafafa] tracking-tight">
-                Analysis Results
+              <h1 className="font-mono text-2xl sm:text-3xl tracking-tighter text-white uppercase">
+                [FORENSIC_ANALYSIS_ARRAY]
               </h1>
             </div>
             <div className="flex gap-2">
@@ -719,13 +726,13 @@ export default function ResultsPage() {
                 size="sm"
                 onClick={handleRefresh}
                 disabled={refreshing}
-                className="gap-2"
+                className="gap-2 font-mono text-[10px] uppercase tracking-widest border-neutral-800 hover:bg-neutral-900 hover:text-white bg-transparent h-8"
                 aria-label="Re-analyze contract"
               >
                 <RefreshCw
-                  className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`}
+                  className={`h-3 w-3 ${refreshing ? "animate-spin" : ""}`}
                 />
-                Refresh
+                [REINITIALIZE]
               </Button>
             </div>
           </div>
@@ -767,27 +774,28 @@ export default function ResultsPage() {
 
           {/* ── Mobile: Compact summary (visible only below lg) ── */}
           <div className="lg:hidden mb-6">
-            <div className="card-results p-4 flex items-center gap-4">
-              <div
-                className="relative h-16 w-16 rounded-full border-[3px] flex items-center justify-center flex-shrink-0"
-                style={{ borderColor: riskColor, backgroundColor: '#111111' }}
-              >
-                <span
-                  className="font-space text-2xl font-black tabular-nums"
-                  style={{ color: riskColor }}
-                >
-                  {document.overall_risk_score}
-                </span>
-              </div>
+            <div className="bg-[#050505] border border-neutral-900 rounded-sm p-4 flex items-center gap-4 relative overflow-hidden">
+              <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-neutral-500/10 to-transparent pointer-events-none" />
               <div className="flex-1 min-w-0">
-                <p
-                  className="font-space text-sm font-bold uppercase tracking-wider"
-                  style={{ color: riskColor }}
-                >
-                  {getRiskLabel(riskLevel)}
+                <p className="text-[9px] font-mono text-neutral-500 tracking-widest uppercase mb-1">
+                  [OVERALL VULNERABILITY]
                 </p>
-                <p className="text-[10px] text-[#a3a3a3] font-medium mt-0.5">
-                  {document.total_clauses} clauses • {document.illegal_count} illegal • {document.dangerous_count} dangerous
+                <div className="flex items-baseline gap-3">
+                  <span
+                    className="font-mono text-4xl tracking-tighter"
+                    style={{ color: riskColor }}
+                  >
+                    {document.overall_risk_score}
+                  </span>
+                  <span
+                    className="inline-block border border-neutral-800 bg-[#0a0a0a] px-2 py-0.5 font-mono text-[9px] tracking-widest uppercase rounded-sm"
+                    style={{ color: riskColor, borderColor: `${riskColor}40` }}
+                  >
+                    {getRiskLabel(riskLevel)}
+                  </span>
+                </div>
+                <p className="text-[9px] font-mono text-neutral-600 uppercase tracking-widest mt-2">
+                  {document.total_clauses} VECTORS • {document.illegal_count} ILLEGAL • {document.dangerous_count} DANGEROUS
                 </p>
               </div>
             </div>

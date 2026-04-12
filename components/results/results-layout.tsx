@@ -41,8 +41,8 @@ export default function ResultsLayout({
 
             {/* Context rail — sticky sidebar */}
             <aside className="hidden lg:block">
-              <div className="sticky top-6 max-h-[calc(100vh-3rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-foreground/10 scrollbar-track-transparent">
-                <div className="rail-surface rounded-lg p-5 border border-[#262626]">
+              <div className="sticky top-6 max-h-[calc(100vh-3rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-800 scrollbar-track-transparent pr-2">
+                <div className="w-full">
                   {rail}
                 </div>
               </div>
