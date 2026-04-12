@@ -12,41 +12,41 @@ export function EvidenceTimeline({ items }: { items: EvidenceItem[] }) {
 
   if (sorted.length === 0) {
     return (
-      <div className="text-center py-12 text-muted-foreground">
-        <p className="text-sm">
-          No evidence items yet. Start adding evidence to build your chain.
+      <div className="text-center py-12">
+        <p className="text-[8px] font-mono uppercase tracking-widest text-neutral-600">
+          NO EVIDENCE ITEMS YET. START ADDING EVIDENCE TO BUILD YOUR CHAIN.
         </p>
       </div>
     );
   }
 
   return (
-    <div className="relative pl-8 space-y-4 pt-4 border-l-4 border-black ml-4">
+    <div className="relative pl-8 space-y-3 pt-4 border-l border-neutral-800 ml-4">
       {sorted.map((item, i) => {
         const meta = EVIDENCE_TYPE_META[item.evidence_type];
         return (
-          <div key={item.id} className="relative pb-2">
+          <div key={item.id} className="relative pb-1">
             {/* Dot */}
             <div
-              className={`absolute -left-[42px] top-4 h-4 w-4 rounded-full border-4 border-black ${item.is_certified ? "bg-emerald-500" : "bg-blue-500"}`}
+              className={`absolute -left-[33px] top-4 h-2.5 w-2.5 border ${item.is_certified ? "border-emerald-500 bg-emerald-500" : "border-cyan-500 bg-cyan-500"}`}
             />
 
-            <div className="border-4 border-black bg-white dark:bg-zinc-900 p-4 ml-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all duration-200">
-              <div className="flex items-center gap-3 mb-2">
+            <div className="border border-neutral-900 bg-[#0a0a0a] p-4 ml-4 hover:border-neutral-700 transition-colors">
+              <div className="flex items-center gap-2 mb-2">
                 <EvidenceTypeIcon
                   type={item.evidence_type}
-                  className="h-6 w-6 text-black dark:text-white stroke-[3px]"
+                  className="h-4 w-4 text-neutral-400"
                 />
-                <span className="text-lg font-black uppercase tracking-widest text-foreground">
+                <span className="text-[9px] font-mono uppercase tracking-widest text-neutral-300 truncate">
                   {item.title}
                 </span>
                 {item.is_certified && (
-                  <span className="text-xs font-black uppercase tracking-widest bg-emerald-100 dark:bg-emerald-900/30 text-emerald-900 dark:text-emerald-100 px-2 py-0.5 border-2 border-black ml-2">
+                  <span className="text-[7px] font-mono uppercase tracking-widest text-emerald-400 px-1.5 py-0.5 border border-emerald-900/50 bg-emerald-950/20 ml-1">
                     65B ✓
                   </span>
                 )}
               </div>
-              <div className="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-muted-foreground mt-3 pt-3 border-t-2 border-dashed border-black">
+              <div className="flex items-center gap-2 text-[7px] font-mono uppercase tracking-widest text-neutral-600 mt-2 pt-2 border-t border-dashed border-neutral-800">
                 <span>
                   {new Date(item.captured_at).toLocaleDateString("en-IN", {
                     day: "numeric",
@@ -54,12 +54,12 @@ export function EvidenceTimeline({ items }: { items: EvidenceItem[] }) {
                     year: "numeric",
                   })}
                 </span>
-                <span className="text-black">•</span>
+                <span className="text-neutral-700">•</span>
                 <span>{meta?.label}</span>
                 {item.issue_category && (
                   <>
-                    <span className="text-black">•</span>
-                    <span className="bg-amber-100 dark:bg-amber-900/30 text-amber-900 dark:text-amber-100 px-2 py-0.5 border-2 border-black">
+                    <span className="text-neutral-700">•</span>
+                    <span className="text-amber-400 px-1.5 py-0.5 border border-amber-900/50 bg-amber-950/20">
                       {item.issue_category}
                     </span>
                   </>

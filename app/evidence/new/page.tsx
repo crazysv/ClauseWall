@@ -2,7 +2,6 @@
 
 import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import { Shield, ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
 import type { CounterpartyType, DisputeType } from "@/types/evidence";
@@ -41,8 +40,8 @@ export default function NewEvidenceCasePage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-background flex items-center justify-center">
-          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
+          <Loader2 className="h-6 w-6 animate-spin text-amber-500/50" />
         </div>
       }
     >
@@ -106,78 +105,81 @@ function NewEvidenceCaseForm() {
     }
   };
 
+  const inputClass =
+    "w-full border border-neutral-800 p-3 bg-[#050505] text-sm font-mono text-neutral-300 focus:outline-none focus:border-neutral-600 transition-colors placeholder:text-neutral-700";
+
   return (
-    <main className="min-h-screen bg-background">
-      <div className="max-w-2xl mx-auto px-4 py-8">
+    <main className="min-h-screen bg-[#0a0a0a] text-neutral-200">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
         <Link
           href="/evidence"
-          className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest text-muted-foreground hover:text-foreground mb-6 border-b-2 border-transparent hover:border-black transition-all"
+          className="inline-flex items-center gap-2 text-[8px] font-mono uppercase tracking-widest text-neutral-600 hover:text-neutral-300 mb-6 transition-colors"
         >
-          <ArrowLeft className="h-4 w-4 stroke-[3px]" />
+          <ArrowLeft className="h-3 w-3" />
           BACK TO EVIDENCE CASES
         </Link>
 
-        <div className="flex items-center gap-4 mb-8 pb-6 border-b-4 border-black">
-          <div className="p-3 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-blue-100 dark:bg-blue-900/30">
-            <Shield className="h-8 w-8 text-blue-600 dark:text-blue-400 stroke-[3px]" />
+        <div className="flex items-center gap-3 mb-8 pb-4 border-b border-neutral-900">
+          <div className="p-2.5 border border-cyan-900/50 bg-cyan-950/10">
+            <Shield className="h-5 w-5 text-cyan-400" />
           </div>
           <div>
-            <h1 className="text-3xl font-black uppercase tracking-widest text-foreground">
-              New Evidence Case
+            <h1 className="text-xs font-mono uppercase tracking-widest text-neutral-200">
+              NEW EVIDENCE CASE
             </h1>
-            <p className="text-sm font-bold tracking-wide text-muted-foreground mt-2">
+            <p className="text-[8px] font-mono uppercase tracking-widest text-neutral-600 mt-0.5">
               CREATE A NEW EVIDENCE CASE TO START BUILDING YOUR EVIDENCE CHAIN
             </p>
           </div>
         </div>
 
         {error && (
-          <div className="mb-6 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-sm text-red-400">
+          <div className="mb-6 p-3 border-l-2 border-red-500 bg-red-950/20 text-[9px] font-mono text-red-400">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-5">
           {/* Case Title */}
-          <div className="space-y-2">
-            <label className="text-sm font-black uppercase tracking-widest text-foreground">
-              Case Title *
+          <div className="space-y-1.5">
+            <label className="text-[8px] font-mono uppercase tracking-widest text-neutral-400">
+              CASE TITLE *
             </label>
             <input
               type="text"
               placeholder="e.g., Defective Product — Amazon Order #123"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full border-4 border-black p-3 bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-bold focus:outline-none focus:translate-x-1 focus:translate-y-1 focus:shadow-none transition-all placeholder:font-medium"
+              className={inputClass}
               required
             />
           </div>
 
           {/* Counterparty */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label className="text-sm font-black uppercase tracking-widest text-foreground">
-                Counterparty Name *
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div className="space-y-1.5">
+              <label className="text-[8px] font-mono uppercase tracking-widest text-neutral-400">
+                COUNTERPARTY NAME *
               </label>
               <input
                 type="text"
                 placeholder="e.g., ABC Pvt. Ltd."
                 value={counterpartyName}
                 onChange={(e) => setCounterpartyName(e.target.value)}
-                className="w-full border-4 border-black p-3 bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-bold focus:outline-none focus:translate-x-1 focus:translate-y-1 focus:shadow-none transition-all placeholder:font-medium"
+                className={inputClass}
                 required
               />
             </div>
-            <div className="space-y-2">
-              <label className="text-sm font-black uppercase tracking-widest text-foreground">
-                Type
+            <div className="space-y-1.5">
+              <label className="text-[8px] font-mono uppercase tracking-widest text-neutral-400">
+                TYPE
               </label>
               <select
                 value={counterpartyType}
                 onChange={(e) =>
                   setCounterpartyType(e.target.value as CounterpartyType)
                 }
-                className="w-full border-4 border-black p-3 bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-bold focus:outline-none focus:translate-x-1 focus:translate-y-1 focus:shadow-none transition-all [&>option]:bg-white dark:[&>option]:bg-zinc-900"
+                className={inputClass}
               >
                 {COUNTERPARTY_TYPES.map((t) => (
                   <option key={t.value} value={t.value}>
@@ -189,15 +191,15 @@ function NewEvidenceCaseForm() {
           </div>
 
           {/* Dispute */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label className="text-sm font-black uppercase tracking-widest text-foreground">
-                Dispute Type
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div className="space-y-1.5">
+              <label className="text-[8px] font-mono uppercase tracking-widest text-neutral-400">
+                DISPUTE TYPE
               </label>
               <select
                 value={disputeType}
                 onChange={(e) => setDisputeType(e.target.value as DisputeType)}
-                className="w-full border-4 border-black p-3 bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-bold focus:outline-none focus:translate-x-1 focus:translate-y-1 focus:shadow-none transition-all [&>option]:bg-white dark:[&>option]:bg-zinc-900"
+                className={inputClass}
               >
                 {DISPUTE_TYPES.map((t) => (
                   <option key={t.value} value={t.value}>
@@ -206,52 +208,52 @@ function NewEvidenceCaseForm() {
                 ))}
               </select>
             </div>
-            <div className="space-y-2">
-              <label className="text-sm font-black uppercase tracking-widest text-foreground">
-                Description
+            <div className="space-y-1.5">
+              <label className="text-[8px] font-mono uppercase tracking-widest text-neutral-400">
+                DESCRIPTION
               </label>
               <input
                 type="text"
                 placeholder="Brief case description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="w-full border-4 border-black p-3 bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-bold focus:outline-none focus:translate-x-1 focus:translate-y-1 focus:shadow-none transition-all placeholder:font-medium"
+                className={inputClass}
               />
             </div>
           </div>
 
           {/* Dispute Description */}
-          <div className="space-y-2">
-            <label className="text-sm font-black uppercase tracking-widest text-foreground">
-              Dispute Details (optional)
+          <div className="space-y-1.5">
+            <label className="text-[8px] font-mono uppercase tracking-widest text-neutral-400">
+              DISPUTE DETAILS (OPTIONAL)
             </label>
             <textarea
               placeholder="Describe what happened in detail. This helps organize your evidence..."
               value={disputeDescription}
               onChange={(e) => setDisputeDescription(e.target.value)}
               rows={3}
-              className="w-full border-4 border-black p-3 bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-bold focus:outline-none focus:translate-x-1 focus:translate-y-1 focus:shadow-none transition-all placeholder:font-medium resize-none"
+              className={`${inputClass} resize-none`}
             />
           </div>
 
           {/* Submit */}
-          <Button
+          <button
             type="submit"
             disabled={loading}
-            className="w-full btn-impact py-6 mt-8 bg-blue-600 hover:bg-blue-700 text-white"
+            className="w-full py-3.5 mt-4 border border-emerald-900/50 bg-emerald-950/10 font-mono uppercase tracking-widest text-[9px] text-emerald-400 hover:text-emerald-300 hover:border-emerald-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
           >
             {loading ? (
               <>
-                <Loader2 className="h-6 w-6 mr-3 animate-spin stroke-[3px]" />
+                <Loader2 className="h-4 w-4 animate-spin" />
                 CREATING...
               </>
             ) : (
               <>
-                <Shield className="h-6 w-6 mr-3 stroke-[3px]" />
+                <Shield className="h-4 w-4" />
                 CREATE EVIDENCE CASE
               </>
             )}
-          </Button>
+          </button>
         </form>
       </div>
     </main>

@@ -15,7 +15,6 @@ import { EvidenceChainVisualizer } from "@/components/evidence/evidence-chain-vi
 import { ChainStatusBadge } from "@/components/evidence/chain-status-badge";
 import { StorageUsageBar } from "@/components/evidence/storage-usage-bar";
 import { EvidenceStats } from "@/components/evidence/evidence-stats";
-import { Button } from "@/components/ui/button";
 import {
   Shield,
   ArrowLeft,
@@ -263,8 +262,8 @@ export default function EvidenceCaseDetailPage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-background flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-foreground" />
+      <main className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-amber-500" />
       </main>
     );
   }
@@ -272,54 +271,53 @@ export default function EvidenceCaseDetailPage() {
   if (!evidenceCase) return null;
 
   return (
-    <main className="min-h-screen bg-background">
-      <div className="max-w-6xl mx-auto px-4 py-8">
+    <main className="min-h-screen bg-[#0a0a0a] text-neutral-200">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <Link
           href="/evidence"
-          className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest text-foreground hover:text-foreground mb-6 border-b-2 border-transparent hover:border-black transition-all"
+          className="inline-flex items-center gap-2 text-[8px] font-mono uppercase tracking-widest text-neutral-600 hover:text-neutral-300 mb-6 transition-colors"
         >
-          <ArrowLeft className="h-4 w-4 stroke-[3px]" />
+          <ArrowLeft className="h-3 w-3" />
           BACK TO CASES
         </Link>
 
-        <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6 mb-8 border-b-4 border-black pb-6">
+        <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4 mb-6 border-b border-neutral-900 pb-5">
           <div>
-            <h1 className="text-3xl font-black uppercase tracking-widest text-foreground">
+            <h1 className="text-xs font-mono uppercase tracking-widest text-neutral-200">
               {evidenceCase.title}
             </h1>
-            <p className="text-sm font-bold text-foreground mt-2 tracking-wide uppercase">
-              vs. {evidenceCase.counterparty_name}{" "}
-              <span className="mx-2">•</span>{" "}
-              {evidenceCase.dispute_type || "General"} Dispute
+            <p className="text-[8px] font-mono uppercase tracking-widest text-neutral-600 mt-1">
+              VS. {evidenceCase.counterparty_name}{" "}
+              <span className="text-neutral-700 mx-1">•</span>{" "}
+              {evidenceCase.dispute_type || "General"} DISPUTE
             </p>
           </div>
-          <div className="flex items-center gap-4 flex-wrap">
-            <Button
-              variant="outline"
+          <div className="flex items-center gap-2 flex-wrap">
+            <button
               onClick={handleVerifyChain}
               disabled={verifying}
-              className="btn-impact bg-white dark:bg-zinc-900 border-2 px-6"
+              className="flex items-center gap-1.5 px-3 py-1.5 border border-neutral-800 bg-[#050505] font-mono uppercase tracking-widest text-[8px] text-neutral-400 hover:text-neutral-200 hover:border-neutral-600 disabled:opacity-40 transition-colors"
             >
               {verifying ? (
-                <Loader2 className="h-4 w-4 mr-2 animate-spin stroke-[3px]" />
+                <Loader2 className="h-3 w-3 animate-spin" />
               ) : (
-                <CheckCircle2 className="h-4 w-4 mr-2 stroke-[3px]" />
+                <CheckCircle2 className="h-3 w-3" />
               )}
               VERIFY CHAIN
-            </Button>
-            <Button
-              variant="outline"
+            </button>
+            <button
               onClick={() => setShowUpload(!showUpload)}
-              className="btn-impact bg-white dark:bg-zinc-900 border-2 px-6"
+              className="flex items-center gap-1.5 px-3 py-1.5 border border-neutral-800 bg-[#050505] font-mono uppercase tracking-widest text-[8px] text-neutral-400 hover:text-neutral-200 hover:border-neutral-600 transition-colors"
             >
-              + ADD EVIDENCE
-            </Button>
+              <Plus className="h-3 w-3" />
+              ADD EVIDENCE
+            </button>
             <Link href={`/evidence/${caseId}/bundle`}>
-              <Button className="btn-impact bg-blue-600 hover:bg-blue-700 text-white px-6">
-                <Package className="h-4 w-4 mr-2 stroke-[3px]" />
+              <span className="flex items-center gap-1.5 px-3 py-1.5 border border-cyan-900/50 bg-cyan-950/10 font-mono uppercase tracking-widest text-[8px] text-cyan-400 hover:text-cyan-300 hover:border-cyan-800 transition-colors">
+                <Package className="h-3 w-3" />
                 GENERATE BUNDLE
-              </Button>
+              </span>
             </Link>
           </div>
         </div>
@@ -327,37 +325,41 @@ export default function EvidenceCaseDetailPage() {
         {/* Message */}
         {message && (
           <div
-            className={`mb-8 p-4 border-4 border-black font-bold uppercase tracking-widest text-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${message.type === "success" ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-900 dark:text-emerald-100" : "bg-red-100 dark:bg-red-900/30 text-red-900 dark:text-red-100"}`}
+            className={`mb-6 p-3 border-l-2 text-[9px] font-mono uppercase tracking-widest ${
+              message.type === "success"
+                ? "border-emerald-500 bg-emerald-950/20 text-emerald-400"
+                : "border-red-500 bg-red-950/20 text-red-400"
+            }`}
           >
             {message.type === "success" ? (
-              <CheckCircle2 className="inline h-5 w-5 mr-2 stroke-[3px]" />
+              <CheckCircle2 className="inline h-3.5 w-3.5 mr-2" />
             ) : (
-              <AlertTriangle className="inline h-5 w-5 mr-2 stroke-[3px]" />
+              <AlertTriangle className="inline h-3.5 w-3.5 mr-2" />
             )}
             {message.text}
           </div>
         )}
 
         {/* Stats */}
-        <div className="mb-6">
+        <div className="mb-5">
           <EvidenceStats stats={computeStats()} />
         </div>
 
         {/* Storage */}
-        <div className="mb-8 border-4 border-black bg-white dark:bg-zinc-900 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <div className="mb-6 border border-neutral-900 bg-[#0a0a0a] p-5">
           <StorageUsageBar usedBytes={evidenceCase.storage_used_bytes} />
         </div>
 
         {/* Upload area */}
         {showUpload && (
-          <div className="mb-8 border-4 border-black bg-blue-50 dark:bg-blue-900/20 p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="text-lg font-black uppercase tracking-widest text-foreground mb-6 flex items-center gap-3">
-              <Plus className="h-6 w-6 stroke-[3px]" /> ADD EVIDENCE
+          <div className="mb-6 border border-neutral-900 bg-[#0a0a0a] p-6">
+            <h3 className="text-[9px] font-mono uppercase tracking-widest text-neutral-300 mb-5 flex items-center gap-2">
+              <Plus className="h-3.5 w-3.5" /> ADD EVIDENCE
             </h3>
             <EvidenceUploadZone caseId={caseId} onUpload={handleUpload} />
             {uploading && (
-              <div className="flex items-center gap-3 mt-6 text-sm font-bold text-blue-900 dark:text-blue-100 font-bold dark:text-blue-400 uppercase tracking-widest">
-                <Loader2 className="h-5 w-5 animate-spin stroke-[3px]" />
+              <div className="flex items-center gap-2 mt-5 text-[8px] font-mono uppercase tracking-widest text-cyan-400">
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
                 PROCESSING...
               </div>
             )}
@@ -365,8 +367,8 @@ export default function EvidenceCaseDetailPage() {
         )}
 
         {/* View mode tabs */}
-        <div className="flex items-center gap-4 mb-8 border-b-4 border-black pb-4">
-          <div className="flex gap-2">
+        <div className="flex items-center gap-4 mb-6 border-b border-neutral-900 pb-3">
+          <div className="flex gap-1">
             {(["items", "timeline", "chain"] as ViewMode[]).map((mode) => {
               const Icon =
                 mode === "items"
@@ -378,13 +380,13 @@ export default function EvidenceCaseDetailPage() {
                 <button
                   key={mode}
                   onClick={() => setViewMode(mode)}
-                  className={`flex items-center gap-2 px-4 py-2 border-2 border-black text-sm font-black uppercase tracking-widest transition-all ${
+                  className={`flex items-center gap-1.5 px-3 py-2 border text-[8px] font-mono uppercase tracking-widest transition-colors ${
                     viewMode === mode
-                      ? "bg-black text-white dark:bg-white dark:text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-                      : "bg-white dark:bg-zinc-900 text-foreground hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                      ? "bg-amber-950/20 text-amber-400 border-amber-900/50"
+                      : "bg-[#050505] text-neutral-600 border-neutral-800 hover:border-neutral-700 hover:text-neutral-400"
                   }`}
                 >
-                  <Icon className="h-5 w-5 stroke-[3px]" />
+                  <Icon className="h-3.5 w-3.5" />
                   {mode === "items"
                     ? "ITEMS"
                     : mode === "timeline"
@@ -401,11 +403,13 @@ export default function EvidenceCaseDetailPage() {
 
         {/* Content */}
         {viewMode === "items" && (
-          <div className="space-y-3">
+          <div className="space-y-2">
             {items.length === 0 ? (
-              <div className="text-center py-12 text-foreground text-sm">
-                No evidence items yet. Click &quot;Add Evidence&quot; to get
-                started.
+              <div className="text-center py-12">
+                <p className="text-[8px] font-mono uppercase tracking-widest text-neutral-600">
+                  NO EVIDENCE ITEMS YET. CLICK &quot;ADD EVIDENCE&quot; TO GET
+                  STARTED.
+                </p>
               </div>
             ) : (
               items.map((item) => (

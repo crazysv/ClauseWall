@@ -19,10 +19,10 @@ const CASE_EMOJIS: Record<string, string> = {
 };
 
 const STATUS_STYLE: Record<string, string> = {
-  active: "bg-emerald-200 text-emerald-900 border-black",
-  archived: "bg-gray-200 text-gray-900 border-black bg-[url('/noise.png')]",
-  submitted: "bg-blue-200 text-blue-900 border-black",
-  resolved: "bg-purple-200 text-purple-900 border-black",
+  active: "text-emerald-400 bg-emerald-950/20 border-emerald-900/50",
+  archived: "text-neutral-500 bg-neutral-950/20 border-neutral-800",
+  submitted: "text-cyan-400 bg-cyan-950/20 border-cyan-900/50",
+  resolved: "text-purple-400 bg-purple-950/20 border-purple-900/50",
 };
 
 export function EvidenceCaseCard({
@@ -35,44 +35,43 @@ export function EvidenceCaseCard({
 
   return (
     <Link href={`/evidence/${evidenceCase.id}`} className="block group">
-      <div className="border-4 border-black bg-white dark:bg-zinc-900 p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all duration-200 h-full flex flex-col items-start justify-between">
-        <div className="flex items-start justify-between gap-3">
+      <div className="border border-neutral-900 bg-[#0a0a0a] p-5 hover:border-neutral-700 transition-colors h-full flex flex-col items-start justify-between">
+        <div className="flex items-start justify-between gap-3 w-full">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-2xl">{emoji}</span>
-              <h3 className="font-black text-lg uppercase tracking-widest text-foreground group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                vs. {evidenceCase.counterparty_name}
+              <span className="text-lg">{emoji}</span>
+              <h3 className="text-[9px] font-mono uppercase tracking-widest text-neutral-300 group-hover:text-amber-400 transition-colors truncate">
+                VS. {evidenceCase.counterparty_name}
               </h3>
             </div>
-            <p className="text-sm font-bold text-muted-foreground truncate">
+            <p className="text-[8px] font-mono text-neutral-600 truncate">
               {evidenceCase.title}
             </p>
           </div>
 
           <span
-            className={`inline-flex items-center px-3 py-1 text-xs font-black uppercase tracking-widest border-2 ${STATUS_STYLE[evidenceCase.status] || STATUS_STYLE.active}`}
+            className={`inline-flex items-center px-2 py-0.5 text-[7px] font-mono uppercase tracking-widest border ${STATUS_STYLE[evidenceCase.status] || STATUS_STYLE.active}`}
           >
             {evidenceCase.status}
           </span>
         </div>
 
-        <div className="flex items-center gap-3 mt-6 mb-4 flex-wrap w-full">
-          <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground border-2 border-black px-2 py-0.5">
+        <div className="flex items-center gap-2 mt-4 mb-3 flex-wrap w-full">
+          <span className="text-[7px] font-mono uppercase tracking-widest text-neutral-500 border border-neutral-800 px-1.5 py-0.5">
             {evidenceCase.dispute_type || "General"}
           </span>
-          <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground border-2 border-black px-2 py-0.5">
-            {evidenceCase.total_items} items
+          <span className="text-[7px] font-mono uppercase tracking-widest text-neutral-500 border border-neutral-800 px-1.5 py-0.5">
+            {evidenceCase.total_items} ITEMS
           </span>
-          <span className="text-xs text-muted-foreground">•</span>
           <ChainStatusBadge verified={evidenceCase.chain_verified} />
         </div>
 
-        <div className="flex w-full items-center justify-between mt-auto pt-4 border-t-4 border-black border-dashed">
-          <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
-            <Calendar className="h-4 w-4 stroke-[3px]" />
+        <div className="flex w-full items-center justify-between mt-auto pt-3 border-t border-neutral-800">
+          <span className="flex items-center gap-1.5 text-[7px] font-mono uppercase tracking-widest text-neutral-600">
+            <Calendar className="h-3 w-3" />
             {timeAgo}
           </span>
-          <ArrowRight className="h-5 w-5 text-black dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:translate-x-1 transition-all stroke-[3px]" />
+          <ArrowRight className="h-3 w-3 text-neutral-700 group-hover:text-amber-400 group-hover:translate-x-1 transition-all" />
         </div>
       </div>
     </Link>

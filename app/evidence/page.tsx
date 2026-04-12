@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { EvidenceCaseCard } from "@/components/evidence/evidence-case-card";
 import type { EvidenceCase } from "@/types/evidence";
 import { Plus, Shield, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export default function EvidenceListPage() {
@@ -29,58 +28,56 @@ export default function EvidenceListPage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-background">
-      <div className="max-w-6xl mx-auto px-4 py-8">
+    <main className="min-h-screen bg-[#0a0a0a] text-neutral-200">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-blue-600 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                <Shield className="h-8 w-8 text-white stroke-[3px]" />
-              </div>
-              <div>
-                <h1 className="text-3xl font-black uppercase tracking-widest text-foreground">
-                  Evidence Chain Builder
-                </h1>
-                <p className="text-sm font-bold text-foreground mt-1 tracking-wide">
-                  Build court-admissible evidence bundles with cryptographic
-                  integrity
-                </p>
-              </div>
+        <div className="flex items-center justify-between mb-8 pb-4 border-b border-neutral-900">
+          <div className="flex items-center gap-4">
+            <div className="p-2.5 border border-cyan-900/50 bg-cyan-950/10">
+              <Shield className="h-5 w-5 text-cyan-400" />
+            </div>
+            <div>
+              <h1 className="text-xs font-mono uppercase tracking-widest text-neutral-200">
+                EVIDENCE_CHAIN_BUILDER
+              </h1>
+              <p className="text-[8px] font-mono uppercase tracking-widest text-neutral-600 mt-0.5">
+                BUILD COURT-ADMISSIBLE EVIDENCE BUNDLES WITH CRYPTOGRAPHIC INTEGRITY
+              </p>
             </div>
           </div>
-          <Link href="/evidence/new">
-            <Button className="btn-impact bg-blue-600 hover:bg-blue-700 text-white px-6">
-              <Plus className="h-5 w-5 mr-2 stroke-[3px]" />
-              NEW CASE
-            </Button>
+          <Link
+            href="/evidence/new"
+            className="flex items-center gap-2 px-4 py-2 border border-cyan-900/50 bg-cyan-950/10 font-mono uppercase tracking-widest text-[8px] text-cyan-400 hover:text-cyan-300 hover:border-cyan-800 transition-colors"
+          >
+            <Plus className="h-3.5 w-3.5" />
+            NEW CASE
           </Link>
         </div>
 
         {/* Cases list */}
         {loading ? (
           <div className="flex items-center justify-center py-16">
-            <Loader2 className="h-6 w-6 animate-spin text-foreground" />
+            <Loader2 className="h-6 w-6 animate-spin text-amber-500/50" />
           </div>
         ) : cases.length === 0 ? (
-          <div className="text-center py-20 border-4 border-black border-dashed bg-white dark:bg-zinc-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <Shield className="h-16 w-16 mx-auto text-black dark:text-white opacity-20 mb-6 stroke-[3px]" />
-            <h3 className="text-2xl font-black uppercase tracking-widest text-foreground mb-2">
-              No evidence cases yet
+          <div className="text-center py-20 border border-dashed border-neutral-800 bg-[#050505]">
+            <Shield className="h-12 w-12 mx-auto text-neutral-800 mb-6" />
+            <h3 className="text-xs font-mono uppercase tracking-widest text-neutral-400 mb-2">
+              NO EVIDENCE CASES YET
             </h3>
-            <p className="text-sm font-bold text-foreground mb-8">
-              Create your first case to start building court-admissible evidence
-              chains
+            <p className="text-[8px] font-mono uppercase tracking-widest text-neutral-600 mb-8 leading-relaxed">
+              CREATE YOUR FIRST CASE TO START BUILDING COURT-ADMISSIBLE EVIDENCE CHAINS
             </p>
-            <Link href="/evidence/new">
-              <Button className="btn-impact bg-blue-600 hover:bg-blue-700 text-white px-8 py-6">
-                <Plus className="h-6 w-6 mr-2 stroke-[3px]" />
-                CREATE EVIDENCE CASE
-              </Button>
+            <Link
+              href="/evidence/new"
+              className="inline-flex items-center gap-2 px-6 py-3 border border-cyan-900/50 bg-cyan-950/10 font-mono uppercase tracking-widest text-[8px] text-cyan-400 hover:text-cyan-300 hover:border-cyan-800 transition-colors"
+            >
+              <Plus className="h-4 w-4" />
+              CREATE EVIDENCE CASE
             </Link>
           </div>
         ) : (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
             {cases.map((c) => (
               <EvidenceCaseCard key={c.id} evidenceCase={c} />
             ))}

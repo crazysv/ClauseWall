@@ -5,7 +5,6 @@ import { EvidenceTypeIcon } from "./evidence-type-icon";
 import { ChainStatusBadge } from "./chain-status-badge";
 import { EVIDENCE_TYPE_META } from "@/types/evidence";
 import { Shield, Trash2, FileText, Tag } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 export function EvidenceItemCard({
   item,
@@ -19,26 +18,26 @@ export function EvidenceItemCard({
   const meta = EVIDENCE_TYPE_META[item.evidence_type];
 
   return (
-    <div className="border-4 border-black p-4 bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all duration-200">
+    <div className="border border-neutral-900 bg-[#0a0a0a] p-4 hover:border-neutral-700 transition-colors">
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
-        <div className="flex items-center gap-4 min-w-0">
-          <div className="p-3 border-4 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] bg-blue-100 dark:bg-blue-900/30">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="p-2 border border-cyan-900/50 bg-cyan-950/10">
             <EvidenceTypeIcon
               type={item.evidence_type}
-              className="h-6 w-6 stroke-[3px]"
+              className="h-4 w-4 text-cyan-400"
             />
           </div>
           <div className="min-w-0">
-            <div className="flex items-center gap-3">
-              <span className="text-sm font-black uppercase tracking-widest text-muted-foreground border-2 border-black px-1.5 py-0.5">
+            <div className="flex items-center gap-2">
+              <span className="text-[7px] font-mono uppercase tracking-widest text-neutral-500 border border-neutral-800 px-1.5 py-0.5 bg-[#050505]">
                 #{item.sequence_number}
               </span>
-              <h4 className="font-black text-lg uppercase tracking-widest text-foreground truncate">
+              <h4 className="text-[9px] font-mono uppercase tracking-widest text-neutral-200 truncate">
                 {item.title}
               </h4>
             </div>
-            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground truncate mt-1">
+            <p className="text-[7px] font-mono uppercase tracking-widest text-neutral-600 truncate mt-1">
               {meta?.label} •{" "}
               {new Date(item.captured_at).toLocaleDateString("en-IN")}
               {item.original_filename && ` • ${item.original_filename}`}
@@ -46,50 +45,46 @@ export function EvidenceItemCard({
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
           {item.is_certified && (
             <span
-              className="text-emerald-600 dark:text-emerald-400"
+              className="text-emerald-400"
               title="65B Certified"
             >
-              <Shield className="h-6 w-6 stroke-[3px]" />
+              <Shield className="h-4 w-4" />
             </span>
           )}
           {onCertify && !item.is_certified && (
-            <Button
-              variant="outline"
-              size="sm"
+            <button
               onClick={() => onCertify(item.id)}
-              className="btn-impact px-3 text-xs bg-white dark:bg-zinc-900 border-2 border-black hover:bg-blue-100"
+              className="flex items-center gap-1 px-2 py-1 border border-cyan-900/50 bg-cyan-950/10 text-[7px] font-mono uppercase tracking-widest text-cyan-400 hover:text-cyan-300 hover:border-cyan-800 transition-colors"
             >
-              <FileText className="h-4 w-4 mr-2 stroke-[3px]" />
+              <FileText className="h-3 w-3" />
               65B
-            </Button>
+            </button>
           )}
           {onDelete && (
-            <Button
-              variant="outline"
-              size="sm"
+            <button
               onClick={() => onDelete(item.id)}
-              className="btn-impact px-2 text-xs bg-red-100 dark:bg-red-900/30 border-2 border-black hover:bg-red-200"
+              className="p-1.5 border border-red-900/50 bg-red-950/20 text-red-400 hover:text-red-300 hover:border-red-800 transition-colors"
             >
-              <Trash2 className="h-4 w-4 text-red-600 dark:text-red-400 stroke-[3px]" />
-            </Button>
+              <Trash2 className="h-3 w-3" />
+            </button>
           )}
         </div>
       </div>
 
       {/* Description */}
       {item.description && (
-        <p className="text-sm font-medium text-muted-foreground mt-4 line-clamp-2">
+        <p className="text-[8px] font-mono text-neutral-500 mt-3 line-clamp-2 leading-relaxed">
           {item.description}
         </p>
       )}
 
       {/* Footer */}
-      <div className="flex items-center gap-3 mt-4 flex-wrap pt-4 border-t-2 border-black border-dashed">
+      <div className="flex items-center gap-2 mt-3 flex-wrap pt-3 border-t border-neutral-800">
         <span
-          className="text-xs font-bold font-mono text-muted-foreground truncate max-w-[150px] bg-muted dark:bg-black/50 px-2 py-0.5 border-2 border-black"
+          className="text-[7px] font-mono text-neutral-600 truncate max-w-[150px] bg-[#050505] px-1.5 py-0.5 border border-neutral-800"
           title={item.content_hash}
         >
           HASH: {item.content_hash.substring(0, 12)}...
@@ -97,12 +92,12 @@ export function EvidenceItemCard({
         <ChainStatusBadge verified={true} />
 
         {item.tags && item.tags.length > 0 && (
-          <div className="flex items-center gap-2">
-            <Tag className="h-4 w-4 text-muted-foreground stroke-[3px]" />
+          <div className="flex items-center gap-1.5">
+            <Tag className="h-3 w-3 text-neutral-600" />
             {item.tags.slice(0, 3).map((tag) => (
               <span
                 key={tag}
-                className="px-2 py-0.5 border-2 border-black bg-gray-100 dark:bg-zinc-800 text-xs font-black uppercase tracking-widest text-muted-foreground"
+                className="px-1.5 py-0.5 border border-neutral-800 bg-[#050505] text-[7px] font-mono uppercase tracking-widest text-neutral-500"
               >
                 {tag}
               </span>
@@ -111,7 +106,7 @@ export function EvidenceItemCard({
         )}
 
         {item.issue_category && (
-          <span className="px-2 py-0.5 border-2 border-black text-xs font-black uppercase tracking-widest bg-amber-100 dark:bg-amber-900/30 text-amber-900 dark:text-amber-100">
+          <span className="px-1.5 py-0.5 border border-amber-900/50 text-[7px] font-mono uppercase tracking-widest bg-amber-950/20 text-amber-400">
             {item.issue_category}
           </span>
         )}

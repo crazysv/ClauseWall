@@ -11,8 +11,8 @@ export function ChainStatusBadge({
 }) {
   if (verified) {
     return (
-      <span className="inline-flex items-center gap-2 px-3 py-1 border-2 border-black text-xs font-black uppercase tracking-widest bg-emerald-200 dark:bg-emerald-900 dark:text-emerald-300 text-emerald-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-        <Shield className="h-4 w-4 stroke-[3px]" />
+      <span className="inline-flex items-center gap-1.5 px-2 py-0.5 border border-emerald-900/50 text-[7px] font-mono uppercase tracking-widest bg-emerald-950/20 text-emerald-400">
+        <Shield className="h-3 w-3" />
         VERIFIED ✓
       </span>
     );
@@ -20,16 +20,16 @@ export function ChainStatusBadge({
 
   if (brokenAt !== undefined && brokenAt !== null) {
     return (
-      <span className="inline-flex items-center gap-2 px-3 py-1 border-2 border-black text-xs font-black uppercase tracking-widest bg-red-200 dark:bg-red-900 dark:text-red-300 text-red-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-        <AlertTriangle className="h-4 w-4 stroke-[3px]" />
+      <span className="inline-flex items-center gap-1.5 px-2 py-0.5 border border-red-900/50 text-[7px] font-mono uppercase tracking-widest bg-red-950/20 text-red-400">
+        <AlertTriangle className="h-3 w-3" />
         BROKEN AT #{brokenAt}
       </span>
     );
   }
 
   return (
-    <span className="inline-flex items-center gap-2 px-3 py-1 border-2 border-black text-xs font-black uppercase tracking-widest bg-amber-200 dark:bg-amber-900 dark:text-amber-300 text-amber-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-      <Clock className="h-4 w-4 stroke-[3px]" />
+    <span className="inline-flex items-center gap-1.5 px-2 py-0.5 border border-amber-900/50 text-[7px] font-mono uppercase tracking-widest bg-amber-950/20 text-amber-400">
+      <Clock className="h-3 w-3" />
       VERIFYING...
     </span>
   );
