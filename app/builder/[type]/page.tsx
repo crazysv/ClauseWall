@@ -207,13 +207,13 @@ export default function BuilderFormPage() {
     const value = values[field.name] ?? "";
     const error = errors[field.name];
 
-    const baseInputClass = `w-full border-4 bg-white dark:bg-zinc-950 px-4 py-3 font-bold placeholder:font-medium transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-foreground placeholder-muted-foreground focus:outline-none focus:translate-x-1 focus:translate-y-1 focus:shadow-none ${
-      error ? "border-red-500" : "border-black"
+    const baseInputClass = `w-full border bg-[#050505] px-4 py-3 text-sm font-mono text-neutral-300 transition-colors focus:outline-none focus:border-neutral-600 placeholder:text-neutral-700 ${
+      error ? "border-red-500" : "border-neutral-800"
     }`;
 
     return (
       <div key={field.name} className="space-y-1.5">
-        <label className="block text-sm font-medium text-muted-foreground">
+        <label className="block text-[8px] font-mono uppercase tracking-widest text-neutral-400">
           {field.label}
           {field.required && <span className="text-red-400 ml-1">*</span>}
         </label>
@@ -237,11 +237,11 @@ export default function BuilderFormPage() {
             onChange={(e) => updateValue(field.name, e.target.value)}
             placeholder={field.placeholder}
             rows={3}
-            className={baseInputClass}
+            className={`${baseInputClass} resize-none`}
           />
         ) : field.type === "currency" ? (
           <div className="relative">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground text-sm">
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500 text-sm font-mono">
               ₹
             </span>
             <input
@@ -292,15 +292,15 @@ export default function BuilderFormPage() {
         )}
 
         {field.helpText && !error && (
-          <p className="text-xs text-foreground flex items-center gap-1">
-            <Info className="w-3 h-3" />
+          <p className="text-[7px] font-mono text-neutral-600 flex items-center gap-1">
+            <Info className="w-2.5 h-2.5" />
             {field.helpText}
           </p>
         )}
 
         {error && (
-          <p className="text-xs text-red-400 flex items-center gap-1">
-            <AlertCircle className="w-3 h-3" />
+          <p className="text-[7px] font-mono text-red-400 flex items-center gap-1">
+            <AlertCircle className="w-2.5 h-2.5" />
             {error}
           </p>
         )}
@@ -312,14 +312,14 @@ export default function BuilderFormPage() {
   const progress = ((currentGroup + 1) / groupNames.length) * 100;
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <div className="max-w-3xl mx-auto px-4 py-12">
+    <div className="min-h-screen bg-[#0a0a0a] text-neutral-200">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
         {/* Back button */}
         <button
           onClick={() => router.push("/builder")}
-          className="flex items-center gap-2 text-muted-foreground hover:text-foreground font-black uppercase tracking-widest mb-8 transition-colors border-b-4 border-transparent hover:border-black"
+          className="flex items-center gap-2 text-[8px] font-mono uppercase tracking-widest text-neutral-600 hover:text-neutral-300 mb-8 transition-colors"
         >
-          <ArrowLeft className="w-5 h-5 stroke-[3px]" />
+          <ArrowLeft className="w-3 w-3" />
           BACK TO TEMPLATES
         </button>
 
@@ -327,45 +327,45 @@ export default function BuilderFormPage() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8 p-6 border-4 border-black bg-blue-100 dark:bg-blue-900/30 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+          className="mb-8 p-5 border border-neutral-900 bg-[#0a0a0a]"
         >
-          <h1 className="text-3xl font-black uppercase tracking-widest mb-2 text-foreground">
+          <h1 className="text-xs font-mono uppercase tracking-widest mb-1.5 text-neutral-200">
             {config.name}
           </h1>
-          <p className="text-muted-foreground font-bold">
+          <p className="text-[8px] font-mono text-neutral-600 leading-relaxed">
             Fill in the details below. Every clause will be fair and legally
             compliant.
           </p>
         </motion.div>
 
         {/* Progress Bar */}
-        <div className="mb-10">
-          <div className="flex justify-between items-end text-sm font-black uppercase tracking-widest text-muted-foreground mb-3">
+        <div className="mb-8">
+          <div className="flex justify-between items-end text-[8px] font-mono uppercase tracking-widest text-neutral-500 mb-2">
             <span>
               STEP {currentGroup + 1} OF {groupNames.length}:{" "}
-              <span className="text-foreground border-b-4 border-emerald-500">
+              <span className="text-emerald-400">
                 {groupNames[currentGroup]}
               </span>
             </span>
-            <span className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-900 dark:text-emerald-100 px-2 border-2 border-black">
+            <span className="text-emerald-400 px-1.5 py-0.5 border border-emerald-900/50 bg-emerald-950/20">
               {Math.round(progress)}%
             </span>
           </div>
-          <div className="w-full h-8 border-4 border-black bg-white dark:bg-zinc-900 overflow-hidden shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="w-full h-2 border border-neutral-800 bg-[#050505] overflow-hidden p-px">
             <motion.div
-              className="h-full bg-emerald-400 border-r-4 border-black"
+              className="h-full bg-emerald-500"
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
               transition={{ duration: 0.3 }}
             />
           </div>
           {/* Step indicators */}
-          <div className="flex mt-4 gap-2">
+          <div className="flex mt-2 gap-1">
             {groupNames.map((name, i) => (
               <button
                 key={name}
                 onClick={() => setCurrentGroup(i)}
-                className={`flex-1 h-3 border-2 border-black transition-colors ${i <= currentGroup ? "bg-emerald-400" : "bg-white dark:bg-zinc-800"}`}
+                className={`flex-1 h-1.5 border transition-colors ${i <= currentGroup ? "border-emerald-900/50 bg-emerald-500" : "border-neutral-800 bg-[#050505]"}`}
               />
             ))}
           </div>
@@ -376,11 +376,11 @@ export default function BuilderFormPage() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-8 p-8 border-4 border-black bg-white dark:bg-zinc-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+            className="mb-8 p-6 border border-neutral-900 bg-[#0a0a0a]"
           >
-            <label className="block text-sm font-black uppercase tracking-widest text-foreground mb-4">
-              <Scale className="w-5 h-5 inline mr-2 stroke-[3px]" />
-              STATE / JURISDICTION <span className="text-red-500">*</span>
+            <label className="block text-[8px] font-mono uppercase tracking-widest text-neutral-400 mb-3">
+              <Scale className="w-3 h-3 inline mr-1.5" />
+              STATE / JURISDICTION <span className="text-red-400">*</span>
             </label>
             <select
               value={jurisdiction}
@@ -394,7 +394,7 @@ export default function BuilderFormPage() {
                   });
                 }
               }}
-              className={`w-full border-4 bg-white dark:bg-zinc-950 px-4 py-3 font-bold transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:translate-x-1 focus:translate-y-1 focus:shadow-none ${errors["_jurisdiction"] ? "border-red-500" : "border-black"}`}
+              className={`w-full border bg-[#050505] px-4 py-3 text-sm font-mono text-neutral-300 transition-colors focus:outline-none focus:border-neutral-600 ${errors["_jurisdiction"] ? "border-red-500" : "border-neutral-800"}`}
             >
               <option value="">Select your state...</option>
               {INDIAN_STATES.map((state) => (
@@ -404,12 +404,12 @@ export default function BuilderFormPage() {
               ))}
             </select>
             {errors["_jurisdiction"] && (
-              <p className="text-xs text-red-400 mt-1 flex items-center gap-1">
-                <AlertCircle className="w-3 h-3" />
+              <p className="text-[7px] font-mono text-red-400 mt-1 flex items-center gap-1">
+                <AlertCircle className="w-2.5 h-2.5" />
                 {errors["_jurisdiction"]}
               </p>
             )}
-            <p className="text-xs text-foreground mt-2">
+            <p className="text-[7px] font-mono text-neutral-600 mt-2">
               Laws vary by state. This ensures your contract references the
               correct statutes.
             </p>
@@ -424,12 +424,12 @@ export default function BuilderFormPage() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.2 }}
-            className="border-4 border-black bg-white dark:bg-zinc-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-8 mb-12"
+            className="border border-neutral-900 bg-[#0a0a0a] p-6 mb-10"
           >
-            <h2 className="text-2xl font-black uppercase tracking-widest text-emerald-600 dark:text-emerald-400 mb-8 border-b-4 border-black pb-4">
+            <h2 className="text-[9px] font-mono uppercase tracking-widest text-emerald-400 mb-6 border-b border-neutral-800 pb-3">
               {groupNames[currentGroup]}
             </h2>
-            <div className="space-y-8">
+            <div className="space-y-6">
               {groupedFields[groupNames[currentGroup]].map(renderField)}
             </div>
           </motion.div>
@@ -440,24 +440,24 @@ export default function BuilderFormPage() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-none text-red-400 text-sm flex items-start gap-3"
+            className="mb-6 p-4 border-l-2 border-red-500 bg-red-950/20 text-[9px] font-mono text-red-400 flex items-start gap-3"
           >
-            <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+            <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
             <div>
-              <p className="font-medium">Generation Failed</p>
-              <p className="mt-1">{generationError}</p>
+              <p className="uppercase tracking-widest">Generation Failed</p>
+              <p className="mt-1 text-red-400/70">{generationError}</p>
             </div>
           </motion.div>
         )}
 
         {/* Navigation Buttons */}
-        <div className="flex justify-between items-center mt-8">
+        <div className="flex justify-between items-center mt-6">
           <button
             onClick={handlePrev}
             disabled={currentGroup === 0}
-            className={`flex items-center gap-2 px-6 py-3 border-4 font-black uppercase tracking-widest transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${currentGroup === 0 ? "border-gray-300 text-muted-foreground bg-gray-100 cursor-not-allowed shadow-none" : "border-black bg-white hover:-translate-y-1 hover:shadow-none hover:bg-gray-100 text-foreground"}`}
+            className={`flex items-center gap-2 px-4 py-2.5 border text-[8px] font-mono uppercase tracking-widest transition-colors ${currentGroup === 0 ? "border-neutral-900 text-neutral-700 cursor-not-allowed" : "border-neutral-800 bg-[#050505] text-neutral-400 hover:text-neutral-200 hover:border-neutral-600"}`}
           >
-            <ArrowLeft className="w-5 h-5 stroke-[3px]" />
+            <ArrowLeft className="w-3 h-3" />
             PREVIOUS
           </button>
 
@@ -465,16 +465,16 @@ export default function BuilderFormPage() {
             <button
               onClick={handleGenerate}
               disabled={isGenerating}
-              className="flex items-center gap-2 px-8 py-3 border-4 border-black bg-emerald-400 hover:bg-emerald-500 text-black font-black uppercase tracking-widest transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none"
+              className="flex items-center gap-2 px-6 py-2.5 border border-emerald-900/50 bg-emerald-950/10 text-emerald-400 hover:text-emerald-300 hover:border-emerald-800 text-[8px] font-mono uppercase tracking-widest transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
               {isGenerating ? (
                 <>
-                  <Loader2 className="w-6 h-6 animate-spin stroke-[3px]" />
+                  <Loader2 className="w-4 h-4 animate-spin" />
                   GENERATING...
                 </>
               ) : (
                 <>
-                  <Sparkles className="w-6 h-6 stroke-[3px]" />
+                  <Sparkles className="w-4 h-4" />
                   GENERATE CONTRACT
                 </>
               )}
@@ -482,10 +482,10 @@ export default function BuilderFormPage() {
           ) : (
             <button
               onClick={handleNext}
-              className="flex items-center gap-2 px-8 py-3 border-4 border-black bg-black text-foreground hover:bg-background border-2 border-foreground card-impact font-black uppercase tracking-widest transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none"
+              className="flex items-center gap-2 px-6 py-2.5 border border-neutral-800 bg-[#050505] text-neutral-300 hover:text-neutral-100 hover:border-neutral-600 text-[8px] font-mono uppercase tracking-widest transition-colors"
             >
               NEXT
-              <ArrowRight className="w-5 h-5 stroke-[3px]" />
+              <ArrowRight className="w-3 h-3" />
             </button>
           )}
         </div>
@@ -496,23 +496,23 @@ export default function BuilderFormPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="mt-12 p-6 bg-background border-2 border-foreground card-impact/30 border border-foreground border-2/50 rounded-none"
+            className="mt-10 p-5 border border-neutral-900 bg-[#0a0a0a]"
           >
-            <h3 className="text-sm font-medium text-muted-foreground mb-3 flex items-center gap-2">
-              <Scale className="w-4 h-4" />
-              Laws Applied in This Contract
+            <h3 className="text-[8px] font-mono uppercase tracking-widest text-neutral-500 mb-3 flex items-center gap-2">
+              <Scale className="w-3 h-3" />
+              LAWS APPLIED IN THIS CONTRACT
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {config.applicableLaws.map((law, i) => (
-                <div key={i} className="flex items-start gap-2 text-sm">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                <div key={i} className="flex items-start gap-2 text-[8px] font-mono">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-400 flex-shrink-0 mt-0.5" />
                   <div>
-                    <span className="text-muted-foreground">{law.name}</span>
-                    <span className="text-muted-foreground">
+                    <span className="text-neutral-500">{law.name}</span>
+                    <span className="text-neutral-600">
                       {" "}
                       · {law.section}
                     </span>
-                    <p className="text-foreground text-xs">
+                    <p className="text-neutral-600 text-[7px] mt-0.5">
                       {law.relevance}
                     </p>
                   </div>
