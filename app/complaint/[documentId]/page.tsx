@@ -29,9 +29,6 @@ import {
   CalendarDays,
   ClipboardList,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import type {
   AuthorityRoutingResult,
@@ -160,58 +157,68 @@ export default function ComplaintFilingPage() {
     toast.success(`${label} copied!`);
   };
 
+  // ── Loading ─────────────────────────────────
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-background p-4 sm:p-8 max-w-4xl mx-auto">
+      <div className="min-h-screen bg-[#0a0a0a] p-4 sm:p-8 max-w-4xl mx-auto">
         <div className="flex items-center gap-3 mb-8">
-          <Skeleton className="h-8 w-8 rounded-none" />
-          <Skeleton className="h-6 w-48" />
+          <div className="h-8 w-8 border border-neutral-800 bg-[#050505] animate-pulse" />
+          <div className="h-4 w-48 bg-neutral-900 animate-pulse" />
         </div>
-        <Skeleton className="h-12 w-full rounded-none mb-6" />
-        <Skeleton className="h-64 w-full rounded-none mb-4" />
-        <Skeleton className="h-48 w-full rounded-none" />
+        <div className="h-10 w-full border border-neutral-900 mb-6 animate-pulse" />
+        <div className="h-64 w-full border border-neutral-900 mb-4 animate-pulse" />
+        <div className="h-48 w-full border border-neutral-900 animate-pulse" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#0a0a0a]">
       <div className="max-w-4xl mx-auto px-4 md:px-6 py-10 md:py-16">
         {/* Header */}
-        <div className="flex items-center gap-3 mb-6">
-          <Button
-            variant="outline"
-            size="sm"
+        <div className="flex items-center gap-4 mb-6">
+          <button
             onClick={() => router.back()}
-            className="border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] rounded-none"
+            className="p-2 border border-neutral-800 bg-[#050505] text-neutral-600 hover:text-neutral-300 hover:border-neutral-600 transition-colors"
           >
-            <ArrowLeft className="h-4 w-4" />
-          </Button>
-          <div>
-            <h1 className="text-impact-heading flex items-center gap-2">
-              <Gavel className="h-6 w-6 text-orange-500" />
-              File Regulatory Complaint
-            </h1>
-            <p className="text-sm font-bold uppercase tracking-wider text-foreground mt-1">
-              We{"'"}ll guide you through the entire process
-            </p>
+            <ArrowLeft className="h-3.5 w-3.5" />
+          </button>
+          <div className="flex items-center gap-3">
+            <div className="p-2 border border-neutral-800 bg-[#050505]">
+              <Gavel className="h-4 w-4 text-amber-500" />
+            </div>
+            <div>
+              <h1 className="text-xs font-mono uppercase tracking-widest text-neutral-200">
+                FILE_REGULATORY_COMPLAINT
+              </h1>
+              <p className="text-[8px] font-mono uppercase tracking-widest text-neutral-600 mt-0.5">
+                GUIDED COMPLAINT FILING PROCESS
+              </p>
+            </div>
           </div>
         </div>
 
         {/* Wizard Steps */}
-        <div className="flex items-center gap-2 mb-8 overflow-x-auto pb-2">
+        <div className="flex items-center gap-1.5 mb-8 overflow-x-auto pb-2">
           {WIZARD_STEPS.map((s, i) => {
             const Icon = s.icon;
             return (
               <button
                 key={s.id}
                 onClick={() => i <= step && setStep(i)}
-                className={`flex items-center gap-2 px-4 py-2 font-bold uppercase tracking-widest border-2 transition-all ${i === step ? "bg-orange-500 text-black border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]" : i < step ? "bg-green-500 text-black border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] opacity-80" : "bg-white dark:bg-zinc-900 text-foreground border-gray-400 opacity-50 shadow-none border-dashed"}`}
+                className={`flex items-center gap-2 px-3 py-1.5 font-mono uppercase tracking-widest text-[8px] border transition-colors ${
+                  i === step
+                    ? "bg-amber-950/20 text-amber-400 border-amber-900/50"
+                    : i < step
+                      ? "bg-emerald-950/10 text-emerald-400 border-emerald-900/50"
+                      : "bg-[#050505] text-neutral-700 border-neutral-800 border-dashed cursor-default"
+                }`}
               >
                 {i < step ? (
-                  <CheckCircle2 className="h-3.5 w-3.5" />
+                  <CheckCircle2 className="h-3 w-3" />
                 ) : (
-                  <Icon className="h-3.5 w-3.5" />
+                  <Icon className="h-3 w-3" />
                 )}
                 {s.label}
               </button>
@@ -221,14 +228,14 @@ export default function ComplaintFilingPage() {
 
         {/* Limitation Warning */}
         {routing?.limitation_check?.is_expired && (
-          <div className="mb-6 p-4 border-4 border-red-500 bg-red-100 dark:bg-red-900/30 shadow-[4px_4px_0px_0px_rgba(239,68,68,1)]">
+          <div className="mb-6 p-4 border-l-2 border-red-500 bg-red-950/20">
             <div className="flex items-center gap-2 mb-1">
-              <AlertTriangle className="h-5 w-5 text-red-600 dark:text-red-400" />
-              <span className="text-sm font-black uppercase tracking-wider text-red-600 dark:text-red-400">
-                Limitation Period Expired
+              <AlertTriangle className="h-3.5 w-3.5 text-red-500" />
+              <span className="text-[9px] font-mono uppercase tracking-widest text-red-400">
+                LIMITATION_PERIOD_EXPIRED
               </span>
             </div>
-            <p className="text-xs font-medium text-red-800 dark:text-red-300 mt-2">
+            <p className="text-[9px] font-mono text-neutral-500 mt-2 leading-relaxed">
               The limitation period may have expired. You can still file — the
               Forum may condon the delay if you show sufficient cause.
             </p>
@@ -245,147 +252,150 @@ export default function ComplaintFilingPage() {
               exit={{ opacity: 0, x: -20 }}
             >
               {/* Claim Amount Input */}
-              <Card className="card-impact mb-6 p-6 rounded-none">
-                <CardContent className="p-0">
-                  <h3 className="text-sm font-black uppercase tracking-wider mb-3 flex items-center gap-2">
-                    <IndianRupee className="h-5 w-5 text-green-500" />
-                    Claim Amount (approximate)
-                  </h3>
-                  <div className="flex gap-3">
-                    <input
-                      type="number"
-                      value={claimAmount}
-                      onChange={(e) => setClaimAmount(e.target.value)}
-                      placeholder="e.g. 50000"
-                      className="flex-1 bg-white dark:bg-black border-2 border-black px-4 py-2 text-sm font-bold focus:border-orange-500 focus:outline-none w-full"
-                    />
-                    <Button
-                      size="sm"
-                      onClick={determineAuthority}
-                      className="border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] bg-orange-600 hover:bg-orange-700 font-bold uppercase tracking-widest text-foreground rounded-none"
-                    >
-                      Update
-                    </Button>
-                  </div>
-                  <p className="text-xs font-semibold text-foreground mt-3">
-                    This determines filing fees and which forum level handles
-                    your complaint.
-                  </p>
-                </CardContent>
-              </Card>
+              <div className="border border-neutral-900 bg-[#0a0a0a] mb-6 p-5">
+                <h3 className="text-[9px] font-mono uppercase tracking-widest text-neutral-400 mb-3 flex items-center gap-2">
+                  <IndianRupee className="h-3.5 w-3.5 text-emerald-500" />
+                  CLAIM_AMOUNT (APPROXIMATE)
+                </h3>
+                <div className="flex gap-3">
+                  <input
+                    type="number"
+                    value={claimAmount}
+                    onChange={(e) => setClaimAmount(e.target.value)}
+                    placeholder="e.g. 50000"
+                    className="flex-1 bg-[#050505] border border-neutral-800 px-4 py-2 text-sm font-mono text-neutral-300 placeholder:text-neutral-700 focus:border-neutral-600 focus:outline-none w-full"
+                  />
+                  <button
+                    onClick={determineAuthority}
+                    className="px-4 py-2 border border-amber-900/50 bg-amber-950/10 font-mono uppercase tracking-widest text-[8px] text-amber-400 hover:text-amber-300 hover:border-amber-800 transition-colors"
+                  >
+                    UPDATE
+                  </button>
+                </div>
+                <p className="text-[8px] font-mono uppercase tracking-widest text-neutral-700 mt-3">
+                  THIS DETERMINES FILING FEES AND WHICH FORUM LEVEL HANDLES YOUR
+                  COMPLAINT.
+                </p>
+              </div>
 
               {/* Authority Recommendations */}
               {routing?.recommendations?.map((rec, i) => (
-                <Card
+                <div
                   key={rec.primary.id}
                   onClick={() => setSelectedAuth(rec)}
-                  className={`mb-4 cursor-pointer transition-all rounded-none p-6 ${selectedAuth?.primary.id === rec.primary.id ? "card-impact-emphasis bg-orange-50 dark:bg-orange-900/10 border-orange-500 shadow-[6px_6px_0px_0px_rgba(249,115,22,1)]" : "card-impact hover:-translate-y-1"}`}
+                  className={`mb-3 cursor-pointer transition-all p-5 border ${
+                    selectedAuth?.primary.id === rec.primary.id
+                      ? "border-amber-900/50 bg-amber-950/10"
+                      : "border-neutral-900 bg-[#0a0a0a] hover:border-neutral-700"
+                  }`}
                 >
-                  <CardContent className="p-0">
-                    <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <div className="flex items-center gap-2 mb-2">
-                          {i === 0 && (
-                            <span className="text-[10px] px-2 py-1 font-black uppercase tracking-widest bg-orange-500 text-black border-2 border-black">
-                              Recommended
-                            </span>
-                          )}
-                          <span className="text-[10px] px-2 py-1 font-black uppercase tracking-widest bg-white dark:bg-black text-foreground dark:text-foreground border-2 border-black">
-                            {rec.primary.filing_method === "online"
-                              ? "🌐 Online"
-                              : rec.primary.filing_method === "offline"
-                                ? "🏢 Offline"
-                                : "🌐+🏢 Both"}
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <div className="flex items-center gap-2 mb-2 flex-wrap">
+                        {i === 0 && (
+                          <span className="text-[7px] px-1.5 py-0.5 font-mono uppercase tracking-widest bg-amber-950/20 text-amber-400 border border-amber-900/50">
+                            RECOMMENDED
                           </span>
+                        )}
+                        <span className="text-[7px] px-1.5 py-0.5 font-mono uppercase tracking-widest border border-neutral-800 text-neutral-500 bg-[#050505]">
+                          {rec.primary.filing_method === "online"
+                            ? "ONLINE"
+                            : rec.primary.filing_method === "offline"
+                              ? "OFFLINE"
+                              : "ONLINE + OFFLINE"}
+                        </span>
+                      </div>
+                      <h4 className="text-[10px] font-mono uppercase tracking-widest text-neutral-200 mb-2">
+                        {rec.primary.name}
+                      </h4>
+                      <p className="text-[9px] font-mono text-neutral-500 leading-relaxed">
+                        {rec.reasoning}
+                      </p>
+
+                      {rec.primary.address && (
+                        <div className="flex items-start gap-1.5 mt-2 text-[8px] font-mono text-neutral-600">
+                          <MapPin className="h-3 w-3 mt-0.5 flex-shrink-0" />
+                          <span>{rec.primary.address}</span>
                         </div>
-                        <h4 className="font-black text-lg uppercase tracking-wide">
-                          {rec.primary.name}
-                        </h4>
-                        <p className="text-sm font-medium text-foreground mt-2">
-                          {rec.reasoning}
-                        </p>
-
-                        {rec.primary.address && (
-                          <div className="flex items-start gap-1.5 mt-2 text-xs text-foreground">
-                            <MapPin className="h-3 w-3 mt-0.5 flex-shrink-0" />
-                            <span>{rec.primary.address}</span>
-                          </div>
-                        )}
-                        {rec.primary.phone && (
-                          <div className="flex items-center gap-1.5 mt-1 text-xs text-foreground">
-                            <Phone className="h-3 w-3" />
-                            <span>{rec.primary.phone}</span>
-                          </div>
-                        )}
-                        {rec.primary.portal_url && (
-                          <div className="flex items-center gap-1.5 mt-1 text-xs">
-                            <Globe className="h-3 w-3 text-blue-400" />
-                            <a
-                              href={rec.primary.portal_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-blue-400 hover:underline"
-                            >
-                              {rec.primary.portal_name || "Filing Portal"}
-                            </a>
-                          </div>
-                        )}
-                      </div>
-                      <div
-                        className={`h-6 w-6 border-4 flex-shrink-0 mt-1 ${selectedAuth?.primary.id === rec.primary.id ? "border-orange-500 bg-orange-500 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]" : "border-black bg-white dark:bg-black"}`}
-                      />
+                      )}
+                      {rec.primary.phone && (
+                        <div className="flex items-center gap-1.5 mt-1 text-[8px] font-mono text-neutral-600">
+                          <Phone className="h-3 w-3" />
+                          <span>{rec.primary.phone}</span>
+                        </div>
+                      )}
+                      {rec.primary.portal_url && (
+                        <div className="flex items-center gap-1.5 mt-1 text-[8px] font-mono">
+                          <Globe className="h-3 w-3 text-cyan-500" />
+                          <a
+                            href={rec.primary.portal_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-cyan-400 hover:underline"
+                          >
+                            {rec.primary.portal_name || "Filing Portal"}
+                          </a>
+                        </div>
+                      )}
                     </div>
+                    <div
+                      className={`h-4 w-4 border flex-shrink-0 mt-1 ${
+                        selectedAuth?.primary.id === rec.primary.id
+                          ? "border-amber-500 bg-amber-500"
+                          : "border-neutral-700 bg-[#050505]"
+                      }`}
+                    />
+                  </div>
 
-                    {/* Fee Preview */}
-                    {routing.fee_calculations[i] && (
-                      <div className="mt-4 pt-4 border-t-4 border-black flex items-center gap-2">
-                        <IndianRupee className="h-4 w-4 text-green-500 stroke-[3px]" />
-                        <span className="text-sm font-black uppercase tracking-wide">
-                          Filing Fee:{" "}
-                          {routing.fee_calculations[i].is_free ? (
-                            <span className="text-green-500 shadow-sm px-2 py-1 bg-green-100 dark:bg-green-900 border-2 border-green-500">
-                              FREE ✓
-                            </span>
-                          ) : (
-                            <span className="text-amber-600 dark:text-amber-400 px-2 py-1 bg-amber-100 dark:bg-amber-900/50 border-2 border-amber-500">
-                              ₹
-                              {routing.fee_calculations[
-                                i
-                              ].filing_fee.toLocaleString("en-IN")}
-                            </span>
-                          )}
-                        </span>
-                      </div>
-                    )}
+                  {/* Fee Preview */}
+                  {routing.fee_calculations[i] && (
+                    <div className="mt-4 pt-4 border-t border-neutral-900 flex items-center gap-2">
+                      <IndianRupee className="h-3 w-3 text-emerald-500" />
+                      <span className="text-[8px] font-mono uppercase tracking-widest text-neutral-400">
+                        FILING_FEE:{" "}
+                        {routing.fee_calculations[i].is_free ? (
+                          <span className="text-emerald-400 px-1.5 py-0.5 border border-emerald-900/50 bg-emerald-950/20 ml-1">
+                            FREE ✓
+                          </span>
+                        ) : (
+                          <span className="text-amber-400 px-1.5 py-0.5 border border-amber-900/50 bg-amber-950/20 ml-1">
+                            ₹
+                            {routing.fee_calculations[
+                              i
+                            ].filing_fee.toLocaleString("en-IN")}
+                          </span>
+                        )}
+                      </span>
+                    </div>
+                  )}
 
-                    {/* Limitation */}
-                    {rec.limitation_period.days_remaining !== null && (
-                      <div className="mt-3 flex items-center gap-2">
-                        <Clock className="h-4 w-4 text-amber-500 stroke-[3px]" />
-                        <span className="text-sm font-bold uppercase tracking-wide text-foreground">
-                          {rec.limitation_period.is_expired ? (
-                            <span className="text-red-500">
-                              Limitation may have expired
-                            </span>
-                          ) : (
-                            `${rec.limitation_period.days_remaining} days remaining`
-                          )}
-                        </span>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
+                  {/* Limitation */}
+                  {rec.limitation_period.days_remaining !== null && (
+                    <div className="mt-3 flex items-center gap-2">
+                      <Clock className="h-3 w-3 text-amber-500" />
+                      <span className="text-[8px] font-mono uppercase tracking-widest text-neutral-500">
+                        {rec.limitation_period.is_expired ? (
+                          <span className="text-red-400">
+                            LIMITATION MAY HAVE EXPIRED
+                          </span>
+                        ) : (
+                          `${rec.limitation_period.days_remaining} DAYS REMAINING`
+                        )}
+                      </span>
+                    </div>
+                  )}
+                </div>
               ))}
 
               <div className="flex justify-end mt-8">
-                <Button
+                <button
                   onClick={() => setStep(1)}
                   disabled={!selectedAuth}
-                  className="border-4 border-black text-foreground bg-orange-600 hover:bg-orange-700 hover:-translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none font-black uppercase tracking-widest px-8 py-6 text-lg gap-3"
+                  className="flex items-center gap-3 px-6 py-2.5 border border-amber-900/50 bg-amber-950/10 font-mono uppercase tracking-widest text-[9px] text-amber-400 hover:text-amber-300 hover:border-amber-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                 >
-                  Next: Your Details{" "}
-                  <ArrowRight className="h-6 w-6 stroke-[3px]" />
-                </Button>
+                  NEXT: YOUR DETAILS
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </button>
               </div>
             </motion.div>
           )}
@@ -398,87 +408,82 @@ export default function ComplaintFilingPage() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
             >
-              <Card className="card-impact mb-6 p-6 rounded-none">
-                <CardContent className="p-0 space-y-6">
-                  <h3 className="font-black text-lg uppercase tracking-widest flex items-center gap-2 border-b-4 border-black pb-2 mb-4">
-                    <Users className="h-6 w-6 text-blue-500 stroke-[3px]" />
-                    Complainant Details (You)
-                  </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <input
-                      value={complainantName}
-                      onChange={(e) => setComplainantName(e.target.value)}
-                      placeholder="Full Name (as on ID)"
-                      className="bg-white dark:bg-black border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] px-4 py-3 font-bold focus:border-orange-500 focus:outline-none w-full"
-                    />
-                    <input
-                      value={complainantPhone}
-                      onChange={(e) => setComplainantPhone(e.target.value)}
-                      placeholder="Phone Number"
-                      className="bg-white dark:bg-black border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] px-4 py-3 font-bold focus:border-orange-500 focus:outline-none w-full"
-                    />
-                  </div>
-                  <textarea
-                    value={complainantAddress}
-                    onChange={(e) => setComplainantAddress(e.target.value)}
-                    placeholder="Complete Address (with PIN code)"
-                    rows={3}
-                    className="w-full bg-white dark:bg-black border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] px-4 py-3 font-bold focus:border-orange-500 focus:outline-none"
-                  />
-                </CardContent>
-              </Card>
-
-              <Card className="card-impact mb-6 p-6 rounded-none">
-                <CardContent className="p-0 space-y-6">
-                  <h3 className="font-black text-lg uppercase tracking-widest flex items-center gap-2 border-b-4 border-black pb-2 mb-4">
-                    <Building2 className="h-6 w-6 text-red-500 stroke-[3px]" />
-                    Respondent / Opposite Party
-                  </h3>
+              <div className="border border-neutral-900 bg-[#0a0a0a] mb-4 p-5">
+                <h3 className="text-[9px] font-mono uppercase tracking-widest text-cyan-400 flex items-center gap-2 border-b border-neutral-900 pb-3 mb-4">
+                  <Users className="h-3.5 w-3.5" />
+                  COMPLAINANT_DETAILS (YOU)
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <input
-                    value={respondentName}
-                    onChange={(e) => setRespondentName(e.target.value)}
-                    placeholder="Company / Person Name"
-                    className="w-full bg-white dark:bg-black border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] px-4 py-3 font-bold focus:border-orange-500 focus:outline-none"
+                    value={complainantName}
+                    onChange={(e) => setComplainantName(e.target.value)}
+                    placeholder="Full Name (as on ID)"
+                    className="bg-[#050505] border border-neutral-800 px-4 py-2.5 font-mono text-sm text-neutral-300 placeholder:text-neutral-700 focus:border-neutral-600 focus:outline-none w-full"
                   />
-                  <textarea
-                    value={respondentAddress}
-                    onChange={(e) => setRespondentAddress(e.target.value)}
-                    placeholder="Registered Address"
-                    rows={3}
-                    className="w-full bg-white dark:bg-black border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] px-4 py-3 font-bold focus:border-orange-500 focus:outline-none"
+                  <input
+                    value={complainantPhone}
+                    onChange={(e) => setComplainantPhone(e.target.value)}
+                    placeholder="Phone Number"
+                    className="bg-[#050505] border border-neutral-800 px-4 py-2.5 font-mono text-sm text-neutral-300 placeholder:text-neutral-700 focus:border-neutral-600 focus:outline-none w-full"
                   />
-                </CardContent>
-              </Card>
+                </div>
+                <textarea
+                  value={complainantAddress}
+                  onChange={(e) => setComplainantAddress(e.target.value)}
+                  placeholder="Complete Address (with PIN code)"
+                  rows={3}
+                  className="w-full mt-3 bg-[#050505] border border-neutral-800 px-4 py-2.5 font-mono text-sm text-neutral-300 placeholder:text-neutral-700 focus:border-neutral-600 focus:outline-none resize-y"
+                />
+              </div>
 
-              <Card className="card-impact mb-6 p-6 rounded-none">
-                <CardContent className="p-0">
-                  <h3 className="font-black text-lg uppercase tracking-widest mb-4">
-                    Additional Context (Optional)
-                  </h3>
-                  <textarea
-                    value={additionalContext}
-                    onChange={(e) => setAdditionalContext(e.target.value)}
-                    placeholder="Any extra details about your complaint..."
-                    rows={4}
-                    className="w-full bg-white dark:bg-black border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] px-4 py-3 font-bold focus:border-orange-500 focus:outline-none"
-                  />
-                </CardContent>
-              </Card>
+              <div className="border border-neutral-900 bg-[#0a0a0a] mb-4 p-5">
+                <h3 className="text-[9px] font-mono uppercase tracking-widest text-red-400 flex items-center gap-2 border-b border-neutral-900 pb-3 mb-4">
+                  <Building2 className="h-3.5 w-3.5" />
+                  RESPONDENT / OPPOSITE_PARTY
+                </h3>
+                <input
+                  value={respondentName}
+                  onChange={(e) => setRespondentName(e.target.value)}
+                  placeholder="Company / Person Name"
+                  className="w-full bg-[#050505] border border-neutral-800 px-4 py-2.5 font-mono text-sm text-neutral-300 placeholder:text-neutral-700 focus:border-neutral-600 focus:outline-none"
+                />
+                <textarea
+                  value={respondentAddress}
+                  onChange={(e) => setRespondentAddress(e.target.value)}
+                  placeholder="Registered Address"
+                  rows={3}
+                  className="w-full mt-3 bg-[#050505] border border-neutral-800 px-4 py-2.5 font-mono text-sm text-neutral-300 placeholder:text-neutral-700 focus:border-neutral-600 focus:outline-none resize-y"
+                />
+              </div>
+
+              <div className="border border-neutral-900 bg-[#0a0a0a] mb-4 p-5">
+                <h3 className="text-[9px] font-mono uppercase tracking-widest text-neutral-400 mb-3">
+                  ADDITIONAL_CONTEXT (OPTIONAL)
+                </h3>
+                <textarea
+                  value={additionalContext}
+                  onChange={(e) => setAdditionalContext(e.target.value)}
+                  placeholder="Any extra details about your complaint..."
+                  rows={4}
+                  className="w-full bg-[#050505] border border-neutral-800 px-4 py-2.5 font-mono text-sm text-neutral-300 placeholder:text-neutral-700 focus:border-neutral-600 focus:outline-none resize-y"
+                />
+              </div>
 
               <div className="flex justify-between mt-8">
-                <Button
-                  variant="outline"
+                <button
                   onClick={() => setStep(0)}
-                  className="border-4 border-black text-black dark:text-foreground hover:-translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none font-black uppercase tracking-widest px-6 py-6 text-lg gap-3"
+                  className="flex items-center gap-2 px-4 py-2 border border-neutral-800 bg-[#050505] font-mono uppercase tracking-widest text-[9px] text-neutral-400 hover:text-neutral-200 hover:border-neutral-600 transition-colors"
                 >
-                  <ArrowLeft className="h-6 w-6 mr-2 stroke-[3px]" /> Back
-                </Button>
-                <Button
+                  <ArrowLeft className="h-3.5 w-3.5" />
+                  BACK
+                </button>
+                <button
                   onClick={() => setStep(2)}
-                  className="border-4 border-black text-foreground bg-orange-600 hover:bg-orange-700 hover:-translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none font-black uppercase tracking-widest px-8 py-6 text-lg gap-3"
+                  className="flex items-center gap-3 px-6 py-2.5 border border-amber-900/50 bg-amber-950/10 font-mono uppercase tracking-widest text-[9px] text-amber-400 hover:text-amber-300 hover:border-amber-800 transition-colors"
                 >
-                  Next: Generate <ArrowRight className="h-6 w-6 stroke-[3px]" />
-                </Button>
+                  NEXT: GENERATE
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </button>
               </div>
             </motion.div>
           )}
@@ -492,44 +497,44 @@ export default function ComplaintFilingPage() {
               exit={{ opacity: 0, x: -20 }}
             >
               {!complaintDocs ? (
-                <div className="card-impact p-16 text-center rounded-none">
-                  <div className="inline-flex items-center justify-center w-20 h-20 border-4 border-black bg-orange-100 dark:bg-orange-900/50 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-6">
-                    <FileText className="h-10 w-10 text-orange-900 dark:text-orange-100 font-bold dark:text-orange-400" />
+                <div className="border border-neutral-900 bg-[#0a0a0a] p-16 text-center">
+                  <div className="inline-flex items-center justify-center p-4 border border-amber-900/50 bg-amber-950/10 mb-6">
+                    <FileText className="h-8 w-8 text-amber-400" />
                   </div>
-                  <h3 className="text-impact-subheading mb-2">
-                    Ready to Generate
+                  <h3 className="text-[10px] font-mono uppercase tracking-widest text-neutral-200 mb-2">
+                    [ READY_TO_GENERATE ]
                   </h3>
-                  <p className="font-bold text-foreground uppercase tracking-widest mb-2">
-                    Filing at:{" "}
-                    <span className="text-black dark:text-foreground underline decoration-2">
+                  <p className="text-[8px] font-mono uppercase tracking-widest text-neutral-600 mb-2">
+                    FILING AT:{" "}
+                    <span className="text-neutral-300 border-b border-neutral-600">
                       {selectedAuth?.primary.short_name}
                     </span>
                   </p>
-                  <p className="text-md font-medium text-foreground mb-8 max-w-lg mx-auto">
-                    We'll generate a formal complaint, affidavit, and index of
-                    documents.
+                  <p className="text-[9px] font-mono text-neutral-600 mb-8 max-w-lg mx-auto">
+                    WE'LL GENERATE A FORMAL COMPLAINT, AFFIDAVIT, AND INDEX OF
+                    DOCUMENTS.
                   </p>
-                  <Button
+                  <button
                     onClick={handleGenerate}
                     disabled={generating}
-                    className="border-4 border-black text-foreground bg-orange-600 hover:bg-orange-700 hover:-translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none font-black uppercase tracking-widest px-8 py-6 text-lg gap-3"
+                    className="flex items-center gap-3 mx-auto px-6 py-2.5 border border-amber-900/50 bg-amber-950/10 font-mono uppercase tracking-widest text-[9px] text-amber-400 hover:text-amber-300 hover:border-amber-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                   >
                     {generating ? (
-                      <Loader2 className="h-6 w-6 animate-spin" />
+                      <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
-                      <Gavel className="h-6 w-6 stroke-[3px]" />
+                      <Gavel className="h-4 w-4" />
                     )}
                     {generating
-                      ? "Generating…"
-                      : "Generate Complaint Documents"}
-                  </Button>
+                      ? "GENERATING..."
+                      : "GENERATE COMPLAINT DOCUMENTS"}
+                  </button>
                 </div>
               ) : (
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3 mb-8 pb-4 border-b-4 border-black">
-                    <CheckCircle2 className="h-8 w-8 text-green-500 stroke-[3px]" />
-                    <h3 className="text-impact-subheading">
-                      Documents Generated
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3 mb-8 pb-4 border-b border-neutral-900">
+                    <CheckCircle2 className="h-5 w-5 text-emerald-500" />
+                    <h3 className="text-[10px] font-mono uppercase tracking-widest text-emerald-400">
+                      DOCUMENTS_GENERATED
                     </h3>
                   </div>
 
@@ -540,95 +545,91 @@ export default function ComplaintFilingPage() {
                   ]
                     .filter(Boolean)
                     .map((doc) => (
-                      <Card
+                      <div
                         key={doc!.id}
-                        className="card-impact mb-6 p-6 rounded-none"
+                        className="border border-neutral-900 bg-[#0a0a0a] mb-3 p-5"
                       >
-                        <CardContent className="p-0">
-                          <div className="flex items-start justify-between gap-4 mb-4">
-                            <div>
-                              <h4 className="font-black text-lg uppercase tracking-wide">
-                                {doc!.title}
-                              </h4>
-                              <p className="text-sm font-bold text-foreground mt-1">
-                                {doc!.format_notes}
-                              </p>
-                            </div>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() =>
-                                copyToClipboard(doc!.content, doc!.title)
-                              }
-                              className="border-2 border-black font-bold uppercase tracking-widest bg-white dark:bg-black hover:bg-gray-100 dark:hover:bg-background border-2 border-foreground card-impact shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] rounded-none gap-2"
-                            >
-                              <Copy className="h-4 w-4" /> Copy
-                            </Button>
+                        <div className="flex items-start justify-between gap-4 mb-4">
+                          <div>
+                            <h4 className="text-[10px] font-mono uppercase tracking-widest text-neutral-200">
+                              {doc!.title}
+                            </h4>
+                            <p className="text-[8px] font-mono text-neutral-600 mt-1">
+                              {doc!.format_notes}
+                            </p>
                           </div>
-                          <details className="group border-t-2 border-black pt-4">
-                            <summary className="text-sm font-black uppercase tracking-widest text-blue-600 dark:text-blue-400 cursor-pointer hover:underline list-none ::marker:hidden flex items-center gap-2">
-                              View Document Content{" "}
-                              <ChevronDown className="h-4 w-4 group-open:rotate-180 transition-transform" />
-                            </summary>
-                            <pre className="mt-4 p-4 border-4 border-black bg-white dark:bg-black text-sm whitespace-pre-wrap max-h-96 overflow-y-auto font-mono shadow-[inset_0px_4px_0px_0px_rgba(0,0,0,0.1)]">
-                              {doc!.content}
-                            </pre>
-                          </details>
-                        </CardContent>
-                      </Card>
+                          <button
+                            onClick={() =>
+                              copyToClipboard(doc!.content, doc!.title)
+                            }
+                            className="flex items-center gap-2 px-3 py-1.5 border border-neutral-800 bg-[#050505] font-mono uppercase tracking-widest text-[8px] text-neutral-500 hover:text-neutral-200 hover:border-neutral-600 transition-colors"
+                          >
+                            <Copy className="h-3 w-3" />
+                            COPY
+                          </button>
+                        </div>
+                        <details className="group border-t border-neutral-900 pt-4">
+                          <summary className="text-[8px] font-mono uppercase tracking-widest text-cyan-400 cursor-pointer hover:text-cyan-300 list-none flex items-center gap-2 transition-colors">
+                            VIEW DOCUMENT CONTENT
+                            <ChevronDown className="h-3 w-3 group-open:rotate-180 transition-transform" />
+                          </summary>
+                          <pre className="mt-4 p-4 border border-neutral-800 bg-[#050505] text-xs text-neutral-400 whitespace-pre-wrap max-h-96 overflow-y-auto font-mono">
+                            {doc!.content}
+                          </pre>
+                        </details>
+                      </div>
                     ))}
 
                   {/* Fee Summary */}
                   {complaintDocs.fee && (
-                    <Card className="card-impact mb-6 p-6 rounded-none">
-                      <CardContent className="p-0">
-                        <h4 className="font-black uppercase tracking-wide text-lg mb-4 flex items-center gap-2 border-b-4 border-black pb-2">
-                          <IndianRupee className="h-6 w-6 text-green-500 stroke-[3px]" />
-                          Filing Fee
-                        </h4>
-                        <p className="text-4xl font-black mb-4">
-                          {complaintDocs.fee.is_free ? (
-                            <span className="text-green-500 bg-green-100 dark:bg-green-900 border-4 border-green-500 px-4 py-2 inline-block">
-                              FREE ✓
-                            </span>
-                          ) : (
-                            <span className="text-amber-500 bg-amber-100 dark:bg-amber-900/50 border-4 border-amber-500 px-4 py-2 inline-block">
-                              ₹
-                              {complaintDocs.fee.filing_fee.toLocaleString(
-                                "en-IN",
-                              )}
-                            </span>
-                          )}
-                        </p>
-                        <div className="space-y-2">
-                          {complaintDocs.fee.notes.map((note, i) => (
-                            <p
-                              key={i}
-                              className="text-sm font-bold text-foreground uppercase flex items-center gap-2 pr-4"
-                            >
-                              <ArrowRight className="h-4 w-4" /> {note}
-                            </p>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
+                    <div className="border border-neutral-900 bg-[#0a0a0a] mb-3 p-5">
+                      <h4 className="text-[9px] font-mono uppercase tracking-widest text-neutral-400 mb-4 flex items-center gap-2 border-b border-neutral-900 pb-3">
+                        <IndianRupee className="h-3.5 w-3.5 text-emerald-500" />
+                        FILING_FEE
+                      </h4>
+                      <p className="text-2xl font-mono tabular-nums mb-4">
+                        {complaintDocs.fee.is_free ? (
+                          <span className="text-emerald-400 px-2 py-1 border border-emerald-900/50 bg-emerald-950/20">
+                            FREE ✓
+                          </span>
+                        ) : (
+                          <span className="text-amber-400 px-2 py-1 border border-amber-900/50 bg-amber-950/20">
+                            ₹
+                            {complaintDocs.fee.filing_fee.toLocaleString(
+                              "en-IN",
+                            )}
+                          </span>
+                        )}
+                      </p>
+                      <div className="space-y-2">
+                        {complaintDocs.fee.notes.map((note, i) => (
+                          <p
+                            key={i}
+                            className="text-[9px] font-mono text-neutral-500 flex items-center gap-2 leading-relaxed"
+                          >
+                            <ArrowRight className="h-3 w-3 text-neutral-700 flex-shrink-0" />
+                            {note}
+                          </p>
+                        ))}
+                      </div>
+                    </div>
                   )}
 
                   <div className="flex justify-between mt-8">
-                    <Button
-                      variant="outline"
+                    <button
                       onClick={() => setStep(1)}
-                      className="border-4 border-black text-black dark:text-foreground hover:-translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none font-black uppercase tracking-widest px-6 py-6 text-lg gap-3"
+                      className="flex items-center gap-2 px-4 py-2 border border-neutral-800 bg-[#050505] font-mono uppercase tracking-widest text-[9px] text-neutral-400 hover:text-neutral-200 hover:border-neutral-600 transition-colors"
                     >
-                      <ArrowLeft className="h-6 w-6 mr-2 stroke-[3px]" /> Back
-                    </Button>
-                    <Button
+                      <ArrowLeft className="h-3.5 w-3.5" />
+                      BACK
+                    </button>
+                    <button
                       onClick={() => setStep(3)}
-                      className="border-4 border-black text-foreground bg-orange-600 hover:bg-orange-700 hover:-translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none font-black uppercase tracking-widest px-8 py-6 text-lg gap-3"
+                      className="flex items-center gap-3 px-6 py-2.5 border border-amber-900/50 bg-amber-950/10 font-mono uppercase tracking-widest text-[9px] text-amber-400 hover:text-amber-300 hover:border-amber-800 transition-colors"
                     >
-                      Next: Filing Guide{" "}
-                      <ArrowRight className="h-6 w-6 stroke-[3px]" />
-                    </Button>
+                      NEXT: FILING GUIDE
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </button>
                   </div>
                 </div>
               )}
@@ -644,104 +645,102 @@ export default function ComplaintFilingPage() {
               exit={{ opacity: 0, x: -20 }}
             >
               {guide ? (
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between mb-8 pb-4 border-b-4 border-black">
-                    <h3 className="text-impact-subheading flex items-center gap-3">
-                      <BookOpen className="h-8 w-8 text-blue-500 stroke-[3px]" />
-                      Step-by-Step Filing Guide
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between mb-8 pb-4 border-b border-neutral-900">
+                    <h3 className="text-[10px] font-mono uppercase tracking-widest text-cyan-400 flex items-center gap-3">
+                      <BookOpen className="h-3.5 w-3.5" />
+                      STEP_BY_STEP_FILING_GUIDE
                     </h3>
-                    <span className="font-black uppercase tracking-widest px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 border-2 border-blue-500">
+                    <span className="font-mono uppercase tracking-widest text-[8px] px-2 py-1 border border-cyan-900/50 bg-cyan-950/10 text-cyan-400">
                       ~{guide.estimated_time}
                     </span>
                   </div>
 
                   {guide.steps.map((gs) => (
-                    <Card
+                    <div
                       key={gs.step_number}
-                      className="card-impact mb-6 p-6 rounded-none"
+                      className="border border-neutral-900 bg-[#0a0a0a] mb-3 p-5"
                     >
-                      <CardContent className="p-0">
-                        <div className="flex items-start gap-6">
-                          <div className="flex-shrink-0 w-12 h-12 border-4 border-black bg-orange-400 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center text-xl font-black text-black">
-                            {gs.step_number}
-                          </div>
-                          <div className="flex-1">
-                            <h4 className="font-black text-lg uppercase tracking-wide mb-2">
-                              {gs.title}
-                            </h4>
-                            <p className="font-medium text-foreground leading-relaxed text-sm mb-4">
-                              {gs.description}
-                            </p>
-                            {gs.url && (
-                              <a
-                                href={gs.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 font-bold uppercase tracking-widest text-sm text-blue-600 dark:text-blue-400 bg-white dark:bg-black border-2 border-black px-4 py-2 hover:bg-blue-50 dark:hover:bg-blue-900 transition-colors shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] mb-4"
-                              >
-                                <Globe className="h-5 w-5" /> Visit Portal
-                              </a>
-                            )}
-                            {gs.tips.length > 0 && (
-                              <div className="space-y-2 bg-green-50 dark:bg-green-900/10 border-l-4 border-green-500 p-4">
-                                {gs.tips.map((tip, ti) => (
-                                  <p
-                                    key={ti}
-                                    className="font-bold text-sm text-green-900 dark:text-green-100 font-bold dark:text-green-400"
-                                  >
-                                    💡 {tip}
-                                  </p>
-                                ))}
-                              </div>
-                            )}
-                          </div>
+                      <div className="flex items-start gap-5">
+                        <div className="flex-shrink-0 w-8 h-8 border border-amber-900/50 bg-amber-950/20 flex items-center justify-center text-sm font-mono tabular-nums text-amber-400">
+                          {gs.step_number}
                         </div>
-                      </CardContent>
-                    </Card>
+                        <div className="flex-1">
+                          <h4 className="text-[10px] font-mono uppercase tracking-widest text-neutral-200 mb-2">
+                            {gs.title}
+                          </h4>
+                          <p className="text-[9px] font-mono text-neutral-500 leading-relaxed mb-4">
+                            {gs.description}
+                          </p>
+                          {gs.url && (
+                            <a
+                              href={gs.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-2 font-mono uppercase tracking-widest text-[8px] text-cyan-400 border border-cyan-900/50 bg-cyan-950/10 px-3 py-1.5 hover:text-cyan-300 hover:border-cyan-800 transition-colors mb-4"
+                            >
+                              <Globe className="h-3 w-3" />
+                              VISIT PORTAL
+                            </a>
+                          )}
+                          {gs.tips.length > 0 && (
+                            <div className="space-y-2 border-l-2 border-emerald-900/50 bg-emerald-950/10 p-3">
+                              {gs.tips.map((tip, ti) => (
+                                <p
+                                  key={ti}
+                                  className="text-[9px] font-mono text-emerald-400/70 leading-relaxed flex items-start gap-2"
+                                >
+                                  <span className="text-emerald-600 shrink-0">→</span>
+                                  {tip}
+                                </p>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
                   ))}
 
                   {/* Document Checklist */}
-                  <Card className="card-impact mb-6 p-6 rounded-none">
-                    <CardContent className="p-0">
-                      <h4 className="font-black text-lg uppercase tracking-widest mb-6 flex items-center gap-3 border-b-4 border-black pb-2">
-                        <ClipboardList className="h-6 w-6 text-amber-500 stroke-[3px]" />
-                        Document Checklist
-                      </h4>
-                      <div className="space-y-4">
-                        {guide.documents_checklist.map((item, i) => (
-                          <div
-                            key={i}
-                            className="flex items-start gap-4 p-4 border-2 border-gray-200 dark:border-foreground border-2 bg-white dark:bg-zinc-900 hover:border-black dark:hover:border-white transition-colors"
-                          >
-                            <span className="text-2xl pt-1">
-                              {item.available
-                                ? "✅"
-                                : item.required
-                                  ? "⚠️"
-                                  : "📎"}
-                            </span>
-                            <div>
-                              <p className="font-bold text-lg uppercase tracking-wide">
-                                {item.document}
+                  <div className="border border-neutral-900 bg-[#0a0a0a] mb-3 p-5">
+                    <h4 className="text-[9px] font-mono uppercase tracking-widest text-amber-400 mb-4 flex items-center gap-3 border-b border-neutral-900 pb-3">
+                      <ClipboardList className="h-3.5 w-3.5" />
+                      DOCUMENT_CHECKLIST
+                    </h4>
+                    <div className="space-y-2">
+                      {guide.documents_checklist.map((item, i) => (
+                        <div
+                          key={i}
+                          className="flex items-start gap-4 p-3 border border-neutral-800 bg-[#050505] hover:border-neutral-700 transition-colors"
+                        >
+                          <span className="text-base pt-0.5">
+                            {item.available
+                              ? "✅"
+                              : item.required
+                                ? "⚠️"
+                                : "📎"}
+                          </span>
+                          <div>
+                            <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-300">
+                              {item.document}
+                            </p>
+                            {item.how_to_get && (
+                              <p className="text-[8px] font-mono text-neutral-600 mt-1 border-l border-neutral-800 pl-2">
+                                {item.how_to_get}
                               </p>
-                              {item.how_to_get && (
-                                <p className="font-medium text-sm text-foreground mt-2 border-l-2 border-gray-300 pl-3">
-                                  {item.how_to_get}
-                                </p>
-                              )}
-                            </div>
+                            )}
                           </div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
 
                   {/* Helpline */}
                   {guide.helpline && (
-                    <div className="p-6 bg-blue-100 dark:bg-blue-900/30 border-4 border-blue-500 text-center shadow-[4px_4px_0px_0px_rgba(59,130,246,1)]">
-                      <p className="font-black text-xl uppercase tracking-widest text-blue-900 dark:text-blue-100 font-bold dark:text-blue-300">
-                        📞 Need help? Call:{" "}
-                        <span className="bg-white dark:bg-black px-4 py-2 border-2 border-blue-500 ml-2 shadow-[2px_2px_0px_0px_rgba(59,130,246,1)] text-black dark:text-foreground">
+                    <div className="p-5 border border-cyan-900/50 bg-cyan-950/10 text-center">
+                      <p className="text-[9px] font-mono uppercase tracking-widest text-cyan-400">
+                        NEED HELP? CALL:{" "}
+                        <span className="text-neutral-200 px-2 py-0.5 border border-neutral-800 bg-[#050505] ml-2">
                           {guide.helpline}
                         </span>
                       </p>
@@ -749,26 +748,26 @@ export default function ComplaintFilingPage() {
                   )}
 
                   <div className="flex justify-between mt-12 pb-16">
-                    <Button
-                      variant="outline"
+                    <button
                       onClick={() => setStep(2)}
-                      className="border-4 border-black text-black dark:text-foreground hover:-translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none font-black uppercase tracking-widest px-6 py-6 text-lg gap-3"
+                      className="flex items-center gap-2 px-4 py-2 border border-neutral-800 bg-[#050505] font-mono uppercase tracking-widest text-[9px] text-neutral-400 hover:text-neutral-200 hover:border-neutral-600 transition-colors"
                     >
-                      <ArrowLeft className="h-6 w-6 mr-2 stroke-[3px]" /> Back
-                    </Button>
+                      <ArrowLeft className="h-3.5 w-3.5" />
+                      BACK
+                    </button>
                     <Link href={`/complaint`}>
-                      <Button className="border-4 border-black text-foreground bg-green-600 hover:bg-green-700 hover:-translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none font-black uppercase tracking-widest px-8 py-6 text-lg gap-3">
-                        <CheckCircle2 className="h-6 w-6 stroke-[3px]" /> Done —
-                        View All
-                      </Button>
+                      <button className="flex items-center gap-3 px-6 py-2.5 border border-emerald-900/50 bg-emerald-950/10 font-mono uppercase tracking-widest text-[9px] text-emerald-400 hover:text-emerald-300 hover:border-emerald-800 transition-colors">
+                        <CheckCircle2 className="h-3.5 w-3.5" />
+                        DONE — VIEW ALL
+                      </button>
                     </Link>
                   </div>
                 </div>
               ) : (
                 <div className="text-center py-12">
-                  <Loader2 className="h-8 w-8 animate-spin text-orange-400 mx-auto mb-3" />
-                  <p className="text-sm text-foreground">
-                    Loading filing guide...
+                  <Loader2 className="h-6 w-6 animate-spin text-amber-400 mx-auto mb-3" />
+                  <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-600">
+                    LOADING FILING GUIDE...
                   </p>
                 </div>
               )}
