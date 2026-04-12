@@ -7,9 +7,9 @@ const trendConfig: Record<
   string,
   { icon: typeof TrendingUp; color: string; label: string }
 > = {
-  improving: { icon: TrendingUp, color: "text-green-400", label: "Improving" },
-  declining: { icon: TrendingDown, color: "text-red-400", label: "Declining" },
-  stable: { icon: Minus, color: "text-foreground", label: "Stable" },
+  improving: { icon: TrendingUp, color: "text-emerald-500", label: "IMPROVING" },
+  declining: { icon: TrendingDown, color: "text-red-500", label: "DECLINING" },
+  stable: { icon: Minus, color: "text-neutral-500", label: "STABLE" },
 };
 
 export default function TrendIndicator({
@@ -23,9 +23,9 @@ export default function TrendIndicator({
   const Icon = config.icon;
 
   return (
-    <div className={`flex items-center gap-1 text-sm ${config.color}`}>
-      <Icon className="h-4 w-4" />
-      <span>{detail || config.label}</span>
+    <div className={`flex items-center gap-1 font-mono uppercase tracking-widest text-[10px] ${config.color}`}>
+      <Icon className="h-3 w-3" />
+      <span>{detail ? `[ ${detail.toUpperCase()} ]` : `[ ${config.label} ]`}</span>
     </div>
   );
 }

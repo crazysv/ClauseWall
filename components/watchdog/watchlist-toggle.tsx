@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 export default function WatchlistToggle({
@@ -48,21 +47,25 @@ export default function WatchlistToggle({
   };
 
   return (
-    <Button
-      variant={watching ? "outline" : "default"}
-      size="sm"
+    <button
       onClick={toggle}
       disabled={loading}
-      className={`gap-2 ${watching ? "border-blue-500/30 text-blue-400" : "bg-blue-600 hover:bg-blue-700"}`}
+      className={`flex items-center gap-2 px-3 py-1.5 border font-mono uppercase tracking-widest text-[9px] transition-all
+        ${watching 
+          ? "border-cyan-900/50 bg-cyan-950/20 text-cyan-500 hover:bg-cyan-900/30" 
+          : "border-neutral-800 bg-[#0a0a0a] text-neutral-400 hover:bg-neutral-900 hover:text-neutral-300"
+        }
+        ${loading ? "opacity-50 cursor-not-allowed" : ""}
+      `}
     >
       {loading ? (
-        <Loader2 className="h-4 w-4 animate-spin" />
+        <Loader2 className="h-3 w-3 animate-spin" />
       ) : watching ? (
-        <EyeOff className="h-4 w-4" />
+        <EyeOff className="h-3 w-3" />
       ) : (
-        <Eye className="h-4 w-4" />
+        <Eye className="h-3 w-3" />
       )}
-      {watching ? "Watching" : "Watch"}
-    </Button>
+      {watching ? "[ TRACKING ENGAGED ]" : "[ INITIATE TRACKING ]"}
+    </button>
   );
 }

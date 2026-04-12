@@ -4,42 +4,26 @@
 
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import TosScoreBadge from "@/components/watchdog/tos-score-badge";
 import TrendIndicator from "@/components/watchdog/trend-indicator";
 import TosTimeline from "@/components/watchdog/tos-timeline";
 import WatchlistToggle from "@/components/watchdog/watchlist-toggle";
 import type { MonitoredCompany, TosChange } from "@/types";
+import { Box, ExternalLink, Activity, ScanLine, LayoutDashboard } from "lucide-react";
 
 const SECTOR_LABELS: Record<string, string> = {
-  ride_hailing: "Ride-hailing",
-  food_delivery: "Food Delivery",
-  ecommerce: "E-commerce",
-  payments: "Payments",
-  social: "Social",
-  streaming: "Streaming",
-  travel: "Travel",
-  banking: "Banking",
-  telecom: "Telecom",
-  edtech: "EdTech",
-  government: "Government",
-  other: "Other",
-};
-
-const SECTOR_ICONS: Record<string, string> = {
-  ride_hailing: "🚗",
-  food_delivery: "🍔",
-  ecommerce: "🛒",
-  payments: "💳",
-  social: "💬",
-  streaming: "🎬",
-  travel: "✈️",
-  banking: "🏦",
-  telecom: "📱",
-  edtech: "📚",
-  government: "🏛️",
-  other: "📋",
+  ride_hailing: "RIDE_HAILING",
+  food_delivery: "FOOD_DELIVERY",
+  ecommerce: "E_COMMERCE",
+  payments: "PAYMENTS",
+  social: "SOCIAL",
+  streaming: "STREAMING",
+  travel: "TRAVEL",
+  banking: "BANKING",
+  telecom: "TELECOM",
+  edtech: "ED_TECH",
+  government: "GOVERNMENT",
+  other: "OTHER_NODE",
 };
 
 export default async function CompanyDetailPage({
@@ -75,117 +59,144 @@ export default async function CompanyDetailPage({
   }>;
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8 max-w-5xl">
-        {/* Header */}
-        <div className="flex items-start justify-between gap-4 mb-8">
-          <div className="flex items-center gap-4">
-            <div className="h-14 w-14 rounded-none bg-muted flex items-center justify-center text-2xl">
-              {SECTOR_ICONS[typedCompany.sector] || "📋"}
+    <div className="min-h-screen bg-[#050505]">
+      <div className="container mx-auto px-4 py-12 max-w-5xl">
+        {/* Header Block Array */}
+        <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-12 border-b border-neutral-900 pb-8">
+          <div className="flex items-start gap-5">
+            <div className="h-16 w-16 bg-[#0a0a0a] border border-neutral-800 flex items-center justify-center relative overflow-hidden">
+              <div className="absolute top-0 inset-x-0 h-px bg-cyan-900/50" />
+              <Box className="h-6 w-6 text-neutral-500" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold mb-1">{typedCompany.name}</h1>
-              <div className="flex items-center gap-2 flex-wrap">
-                <Badge
-                  variant="outline"
-                  className="border-foreground border-2 text-xs"
-                >
-                  {SECTOR_LABELS[typedCompany.sector] || typedCompany.sector}
-                </Badge>
-                <a
-                  href={`https://${typedCompany.website}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-blue-400 hover:underline"
-                >
-                  {typedCompany.website}
-                </a>
+              <div className="flex items-center gap-3 mb-2">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-neutral-600">
+                  [ TARGET NODE ]
+                </span>
+                <span className="font-mono text-[9px] uppercase tracking-widest px-1.5 py-0.5 border border-cyan-900/30 text-cyan-500 bg-cyan-950/10">
+                  SECTOR: {SECTOR_LABELS[typedCompany.sector] || typedCompany.sector.toUpperCase()}
+                </span>
               </div>
+              <h1 className="text-3xl font-mono uppercase tracking-widest text-neutral-200 mb-2">
+                {typedCompany.name}
+              </h1>
+              <a
+                href={`https://${typedCompany.website}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-widest text-cyan-600 hover:text-cyan-400 transition-colors"
+              >
+                <ExternalLink className="h-3 w-3" />
+                {typedCompany.website}
+              </a>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          
+          <div className="flex flex-col items-end gap-4">
             <TosScoreBadge score={typedCompany.current_tos_score} size="lg" />
             <WatchlistToggle companyId={typedCompany.id} isWatching={false} />
           </div>
         </div>
 
-        {/* Stats row */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <Card className="bg-background/50 border-foreground border-2">
-            <CardContent className="p-4 text-center">
-              <p className="text-2xl font-bold">{typedCompany.total_changes}</p>
-              <p className="text-xs text-foreground">Total Changes</p>
-            </CardContent>
-          </Card>
-          <Card className="bg-background/50 border-foreground border-2">
-            <CardContent className="p-4 text-center">
-              <p className="text-2xl font-bold text-red-400">
+        {/* Telemetry Row */}
+        <div className="mb-12">
+          <h2 className="text-[10px] font-mono font-bold uppercase tracking-widest text-neutral-500 mb-4 flex items-center gap-2">
+            <Activity className="h-3 w-3" />
+            [ EXECUTIVE TELEMETRY ]
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-neutral-900 border border-neutral-900">
+            <div className="bg-[#0a0a0a] p-5 flex flex-col justify-center items-center relative">
+              <span className="text-3xl font-mono tracking-tighter text-neutral-300">
+                {typedCompany.total_changes}
+              </span>
+              <span className="text-[9px] font-mono text-neutral-600 tracking-widest uppercase mt-2">
+                TOTAL VECTOR CHANGES
+              </span>
+            </div>
+            <div className="bg-[#0a0a0a] p-5 flex flex-col justify-center items-center relative">
+              <span className="text-3xl font-mono tracking-tighter text-red-500">
                 {typedCompany.pro_company_changes}
-              </p>
-              <p className="text-xs text-foreground">Pro-Company</p>
-            </CardContent>
-          </Card>
-          <Card className="bg-background/50 border-foreground border-2">
-            <CardContent className="p-4 text-center">
-              <p className="text-2xl font-bold text-green-400">
+              </span>
+              <span className="text-[9px] font-mono text-red-700 tracking-widest uppercase mt-2">
+                PRO-ENTITY VECTORS
+              </span>
+            </div>
+            <div className="bg-[#0a0a0a] p-5 flex flex-col justify-center items-center relative">
+              <span className="text-3xl font-mono tracking-tighter text-emerald-500">
                 {typedCompany.pro_consumer_changes}
-              </p>
-              <p className="text-xs text-foreground">Pro-Consumer</p>
-            </CardContent>
-          </Card>
-          <Card className="bg-background/50 border-foreground border-2">
-            <CardContent className="p-4 text-center">
-              <TrendIndicator trend={typedCompany.score_trend} />
-              <p className="text-xs text-foreground mt-1">Trend</p>
-            </CardContent>
-          </Card>
+              </span>
+              <span className="text-[9px] font-mono text-emerald-700 tracking-widest uppercase mt-2">
+                PRO-CLIENT VECTORS
+              </span>
+            </div>
+            <div className="bg-[#0a0a0a] p-5 flex flex-col justify-center items-center relative">
+              <div className="mb-3">
+                <TrendIndicator trend={typedCompany.score_trend} />
+              </div>
+              <span className="text-[9px] font-mono text-neutral-600 tracking-widest uppercase mt-2">
+                THREAT TRAJECTORY
+              </span>
+            </div>
+          </div>
         </div>
 
-        {/* Monitored URLs */}
-        <Card className="bg-background/50 border-foreground border-2 mb-8">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-base">📄 Monitored Documents</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              {tosUrls.map((tos, i) => (
-                <div
-                  key={i}
-                  className="flex items-center justify-between py-2 border-b border-foreground border-2 last:border-0"
-                >
-                  <div>
-                    <span className="text-sm font-medium">{tos.label}</span>
-                    <Badge
-                      variant="outline"
-                      className="ml-2 text-[10px] border-foreground border-2"
-                    >
-                      {tos.type}
-                    </Badge>
-                  </div>
-                  <a
-                    href={tos.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs text-blue-400 hover:underline truncate max-w-[200px]"
-                  >
-                    {new URL(tos.url).hostname}
-                  </a>
-                </div>
-              ))}
-            </div>
-            {typedCompany.last_scraped_at && (
-              <p className="text-[10px] text-foreground mt-3">
-                Last scraped:{" "}
-                {new Date(typedCompany.last_scraped_at).toLocaleString("en-IN")}
-              </p>
-            )}
-          </CardContent>
-        </Card>
+        {/* Grid Layout for Logs & Documents */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          
+          {/* Main Log Column */}
+          <div className="lg:col-span-2">
+            <h2 className="text-[10px] font-mono font-bold uppercase tracking-widest text-neutral-500 mb-6 flex items-center gap-2">
+              <LayoutDashboard className="h-3 w-3" />
+              [ SYSTEM ALTERATION LOG ]
+            </h2>
+            <TosTimeline changes={(changes as TosChange[]) || []} />
+          </div>
 
-        {/* Change history */}
-        <div>
-          <h2 className="text-lg font-semibold mb-4">📜 Change History</h2>
-          <TosTimeline changes={(changes as TosChange[]) || []} />
+          {/* Right Rail: Document Targets */}
+          <div className="lg:col-span-1">
+            <h2 className="text-[10px] font-mono font-bold uppercase tracking-widest text-neutral-500 mb-6 flex items-center gap-2">
+              <ScanLine className="h-3 w-3" />
+              [ MONITORED SURFACES ]
+            </h2>
+            
+            <div className="bg-[#0a0a0a] border border-neutral-900 p-4">
+              <div className="space-y-4">
+                {tosUrls.map((tos, i) => (
+                  <div
+                    key={i}
+                    className="pb-4 border-b border-neutral-900 last:border-0 last:pb-0"
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-mono text-neutral-300 tracking-wide">
+                        {tos.label}
+                      </span>
+                      <span className="font-mono text-[9px] uppercase tracking-widest px-1 py-0.5 border border-neutral-800 text-neutral-500 bg-[#050505]">
+                        {tos.type}
+                      </span>
+                    </div>
+                    <a
+                      href={tos.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 font-mono text-[10px] text-cyan-600 hover:text-cyan-400 transition-colors truncate max-w-full"
+                    >
+                      <ExternalLink className="h-3 w-3 flex-shrink-0" />
+                      <span className="truncate">{tos.url}</span>
+                    </a>
+                  </div>
+                ))}
+              </div>
+              
+              {typedCompany.last_scraped_at && (
+                <div className="mt-6 pt-4 border-t border-neutral-900">
+                  <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-600">
+                    [ LAST INGESTION: {new Date(typedCompany.last_scraped_at).toLocaleString("en-IN")} ]
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

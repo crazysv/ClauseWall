@@ -1,7 +1,5 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
-
 export default function TosScoreBadge({
   score,
   size = "md",
@@ -11,40 +9,37 @@ export default function TosScoreBadge({
 }) {
   if (score === null) {
     return (
-      <Badge
-        variant="outline"
-        className="text-muted-foreground border-foreground border-2 text-xs"
-      >
-        N/A
-      </Badge>
+      <span className="font-mono text-neutral-500 border border-neutral-800 text-[10px] px-2 py-0.5 uppercase tracking-widest bg-[#0a0a0a]">
+        [SCORE_PENDING]
+      </span>
     );
   }
 
   const getColor = () => {
     if (score >= 71)
-      return "bg-green-500/15 text-green-400 border-green-500/30";
-    if (score >= 51) return "bg-blue-500/15 text-blue-400 border-blue-500/30";
+      return "bg-emerald-950/20 text-emerald-500 border-emerald-900/50";
+    if (score >= 51) return "bg-cyan-950/20 text-cyan-500 border-cyan-900/50";
     if (score >= 31)
-      return "bg-amber-500/15 text-amber-400 border-amber-500/30";
-    return "bg-red-500/15 text-red-400 border-red-500/30";
+      return "bg-amber-950/20 text-amber-500 border-amber-900/50";
+    return "bg-red-950/20 text-red-500 border-red-900/50";
   };
 
-  const getEmoji = () => {
-    if (score >= 71) return "🟢";
-    if (score >= 51) return "🔵";
-    if (score >= 31) return "🟡";
-    return "🔴";
+  const getLabel = () => {
+    if (score >= 71) return "SAFE";
+    if (score >= 51) return "NOMINAL";
+    if (score >= 31) return "WARNING";
+    return "DANGER";
   };
 
   const sizeClasses = {
-    sm: "text-[10px] px-1.5 py-0.5",
-    md: "text-xs px-2 py-1",
-    lg: "text-sm px-3 py-1.5 font-semibold",
+    sm: "text-[9px] px-1.5 py-0.5",
+    md: "text-[10px] px-2 py-0.5",
+    lg: "text-[10px] px-3 py-1", // Force mono smaller even on LG
   };
 
   return (
-    <Badge className={`${getColor()} ${sizeClasses[size]} gap-1`}>
-      {getEmoji()} {score}/100
-    </Badge>
+    <span className={`inline-flex items-center font-mono uppercase tracking-widest border ${getColor()} ${sizeClasses[size]}`}>
+      [ {getLabel()} // {score}/100 ]
+    </span>
   );
 }
