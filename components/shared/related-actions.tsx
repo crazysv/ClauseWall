@@ -38,7 +38,7 @@ const ALL_ACTIONS: Array<{
     label: "Negotiate",
     description: "Get scripts to push back on risky clauses",
     href: (id) => `/negotiate/${id}`,
-    icon: <MessageSquare className="w-4 h-4" />,
+    icon: <MessageSquare className="w-3.5 h-3.5" />,
     pages: ["letter", "escape", "battle", "simulate", "statemachine"],
   },
   {
@@ -46,7 +46,7 @@ const ALL_ACTIONS: Array<{
     label: "Legal Notice",
     description: "Generate a formal notice citing violations",
     href: (id) => `/letter/${id}`,
-    icon: <FileText className="w-4 h-4" />,
+    icon: <FileText className="w-3.5 h-3.5" />,
     pages: ["negotiate", "escape", "battle", "statemachine"],
   },
   {
@@ -54,7 +54,7 @@ const ALL_ACTIONS: Array<{
     label: "Escape Plan",
     description: "Step-by-step plan to exit this contract",
     href: (id) => `/escape/${id}`,
-    icon: <DoorOpen className="w-4 h-4" />,
+    icon: <DoorOpen className="w-3.5 h-3.5" />,
     pages: ["negotiate", "letter", "simulate", "statemachine"],
   },
   {
@@ -62,7 +62,7 @@ const ALL_ACTIONS: Array<{
     label: "Benchmark",
     description: "Compare your contract to state averages",
     href: (id) => `/battle/${id}`,
-    icon: <BarChart3 className="w-4 h-4" />,
+    icon: <BarChart3 className="w-3.5 h-3.5" />,
     pages: ["negotiate", "letter", "escape", "simulate"],
   },
   {
@@ -70,7 +70,7 @@ const ALL_ACTIONS: Array<{
     label: "Cost Calculator",
     description: "Project the financial impact over time",
     href: (id) => `/simulate/${id}`,
-    icon: <Calculator className="w-4 h-4" />,
+    icon: <Calculator className="w-3.5 h-3.5" />,
     pages: ["escape", "battle", "statemachine"],
   },
   {
@@ -78,7 +78,7 @@ const ALL_ACTIONS: Array<{
     label: "Trap Detector",
     description: "Find hidden trap paths in your contract",
     href: (id) => `/statemachine/${id}`,
-    icon: <Map className="w-4 h-4" />,
+    icon: <Map className="w-3.5 h-3.5" />,
     pages: ["escape", "simulate"],
   },
   {
@@ -86,7 +86,7 @@ const ALL_ACTIONS: Array<{
     label: "Back to Analysis",
     description: "Review the full clause breakdown",
     href: (id) => `/results/${id}`,
-    icon: <ArrowLeft className="w-4 h-4" />,
+    icon: <ArrowLeft className="w-3.5 h-3.5" />,
     pages: [
       "negotiate",
       "letter",
@@ -109,25 +109,25 @@ export function RelatedActions({
   if (actions.length === 0) return null;
 
   return (
-    <div className="mt-8 pt-6 border-t border-foreground border-2">
-      <h4 className="text-[10px] font-medium text-foreground uppercase tracking-widest mb-3">
-        Related Actions
+    <div className="mt-8 pt-6 border-t border-neutral-900">
+      <h4 className="text-[9px] font-mono uppercase tracking-widest text-neutral-600 mb-4">
+        RELATED_ACTIONS
       </h4>
       <div className="flex flex-wrap gap-2">
         {actions.map((action) => (
           <Link
             key={action.key}
             href={action.href(documentId)}
-            className="group inline-flex items-center gap-2.5 px-3 py-2 rounded-none bg-white/[0.02] border border-foreground border-2 hover:bg-white/[0.05] hover:border-foreground border-2 transition-all"
+            className="group inline-flex items-center gap-2.5 px-3 py-2 bg-[#050505] border border-neutral-800 hover:border-neutral-600 transition-colors"
           >
-            <span className="text-foreground group-hover:text-foreground transition-colors">
+            <span className="text-neutral-600 group-hover:text-neutral-300 transition-colors">
               {action.icon}
             </span>
             <div>
-              <p className="text-[11px] font-medium text-foreground group-hover:text-foreground transition-colors">
+              <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-400 group-hover:text-neutral-200 transition-colors">
                 {action.label}
               </p>
-              <p className="text-[9px] text-foreground hidden sm:block">
+              <p className="text-[8px] font-mono text-neutral-700 hidden sm:block">
                 {action.description}
               </p>
             </div>

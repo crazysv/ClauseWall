@@ -31,9 +31,6 @@ import {
   Check,
   Link as LinkIcon,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { createClient } from "@/lib/supabase/client";
 import { getStateName, getDocumentTypeLabel } from "@/lib/utils/constants";
 import type { NegotiationPlaybook, NegotiationScript } from "@/types";
@@ -259,26 +256,26 @@ export default function NegotiatePage() {
   const getRiskIcon = (level: string) => {
     switch (level) {
       case "illegal":
-        return <Scale className="h-4 w-4 text-purple-500" />;
+        return <Scale className="h-3.5 w-3.5 text-purple-400" />;
       case "dangerous":
-        return <XCircle className="h-4 w-4 text-red-500" />;
+        return <XCircle className="h-3.5 w-3.5 text-red-500" />;
       case "warning":
-        return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
+        return <AlertTriangle className="h-3.5 w-3.5 text-amber-500" />;
       default:
-        return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
+        return <AlertTriangle className="h-3.5 w-3.5 text-amber-500" />;
     }
   };
 
   const getRiskBadgeClass = (level: string) => {
     switch (level) {
       case "illegal":
-        return "bg-purple-500/15 text-purple-400 border-purple-500/30";
+        return "text-purple-400 bg-purple-950/20 border-purple-900/50";
       case "dangerous":
-        return "bg-red-500/15 text-red-400 border-red-500/30";
+        return "text-red-500 bg-red-950/20 border-red-900/50";
       case "warning":
-        return "bg-yellow-500/15 text-yellow-400 border-yellow-500/30";
+        return "text-amber-500 bg-amber-950/20 border-amber-900/50";
       default:
-        return "bg-yellow-500/15 text-yellow-400 border-yellow-500/30";
+        return "text-amber-500 bg-amber-950/20 border-amber-900/50";
     }
   };
 
@@ -286,21 +283,21 @@ export default function NegotiatePage() {
     switch (strength) {
       case "strong":
         return (
-          <Badge className="bg-green-500/15 text-green-400 border-green-500/30 text-[10px]">
-            💪 Strong Position
-          </Badge>
+          <span className="text-[8px] font-mono uppercase tracking-widest px-1.5 py-0.5 border border-emerald-900/50 text-emerald-400 bg-emerald-950/20">
+            STRONG POSITION
+          </span>
         );
       case "moderate":
         return (
-          <Badge className="bg-yellow-500/15 text-yellow-400 border-yellow-500/30 text-[10px]">
-            ⚖️ Moderate Position
-          </Badge>
+          <span className="text-[8px] font-mono uppercase tracking-widest px-1.5 py-0.5 border border-amber-900/50 text-amber-400 bg-amber-950/20">
+            MODERATE POSITION
+          </span>
         );
       case "weak":
         return (
-          <Badge className="bg-gray-500/15 text-foreground border-gray-500/30 text-[10px]">
-            🤝 Diplomatic Approach
-          </Badge>
+          <span className="text-[8px] font-mono uppercase tracking-widest px-1.5 py-0.5 border border-neutral-800 text-neutral-500 bg-neutral-900">
+            DIPLOMATIC
+          </span>
         );
       default:
         return null;
@@ -311,20 +308,20 @@ export default function NegotiatePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-6">
-        <div className="relative">
-          <Swords className="h-16 w-16 text-primary animate-pulse" />
+      <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center gap-6">
+        <div className="p-4 border border-neutral-800 bg-[#050505]">
+          <Swords className="h-10 w-10 text-cyan-500 animate-pulse" />
         </div>
         <div className="text-center">
-          <h2 className="text-2xl font-black uppercase tracking-tight mb-2">
-            Building Your Negotiation Playbook
+          <h2 className="text-[10px] font-mono uppercase tracking-widest text-neutral-400 mb-2">
+            [ GENERATING_PLAYBOOK ]
           </h2>
-          <p className="text-foreground text-sm max-w-md font-medium uppercase tracking-wider">
-            Crafting personalized scripts with counter-responses and escalation
-            paths...
+          <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-600 max-w-md">
+            CRAFTING PERSONALIZED NEGOTIATION SCRIPTS WITH COUNTER-RESPONSES AND
+            ESCALATION PATHS...
           </p>
         </div>
-        <Loader2 className="h-6 w-6 text-primary animate-spin" />
+        <Loader2 className="h-5 w-5 text-cyan-500 animate-spin" />
       </div>
     );
   }
@@ -333,17 +330,20 @@ export default function NegotiatePage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4 px-4">
-        <AlertCircle className="h-12 w-12 text-red-500" />
-        <h2 className="text-xl font-black uppercase tracking-tight">{error}</h2>
-        <Button
+      <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center gap-6 px-4">
+        <div className="p-3 border border-red-900/50 bg-red-950/20">
+          <AlertCircle className="h-8 w-8 text-red-500" />
+        </div>
+        <h2 className="text-[10px] font-mono uppercase tracking-widest text-neutral-300">
+          {error}
+        </h2>
+        <button
           onClick={() => router.back()}
-          variant="outline"
-          className="gap-2 border-2 border-black font-bold uppercase tracking-wider"
+          className="flex items-center gap-2 px-4 py-2 border border-neutral-800 bg-[#050505] font-mono uppercase tracking-widest text-[9px] text-neutral-400 hover:text-neutral-200 hover:border-neutral-600 transition-colors"
         >
-          <ArrowLeft className="h-4 w-4" />
-          Go Back
-        </Button>
+          <ArrowLeft className="h-3.5 w-3.5" />
+          GO BACK
+        </button>
       </div>
     );
   }
@@ -355,15 +355,15 @@ export default function NegotiatePage() {
   // ── Render ──────────────────────────────────
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#0a0a0a]">
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-10 md:py-16">
         {/* Back */}
         <button
           onClick={() => router.push(`/results/${documentId}`)}
-          className="flex items-center gap-2 text-foreground hover:text-foreground font-bold uppercase tracking-wider text-sm mb-8 transition-colors print:hidden"
+          className="flex items-center gap-2 text-neutral-600 hover:text-neutral-300 font-mono uppercase tracking-widest text-[9px] mb-8 transition-colors print:hidden"
         >
-          <ArrowLeft className="w-4 h-4" />
-          Back to results
+          <ArrowLeft className="w-3.5 h-3.5" />
+          BACK TO RESULTS
         </button>
 
         {/* Header */}
@@ -373,37 +373,36 @@ export default function NegotiatePage() {
           className="mb-8"
         >
           <div className="flex items-center gap-4 mb-4">
-            <div className="p-3 border-2 border-black bg-primary text-primary-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-              <Swords className="w-6 h-6" />
+            <div className="p-3 border border-neutral-800 bg-[#050505]">
+              <Swords className="w-6 h-6 text-cyan-500" />
             </div>
             <div>
-              <h1 className="text-impact-heading mb-1 text-3xl md:text-5xl">
-                Negotiation Playbook
+              <h1 className="text-xs font-mono uppercase tracking-widest text-neutral-200 mb-1">
+                NEGOTIATION_PLAYBOOK
               </h1>
-              <p className="text-sm font-bold uppercase tracking-wider text-foreground">
-                {docInfo.filename} ·{" "}
-                {getDocumentTypeLabel(docInfo.document_type)} ·{" "}
-                {jurisdictionName}
+              <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-600">
+                {docInfo.filename} · {getDocumentTypeLabel(docInfo.document_type)}{" "}
+                · {jurisdictionName}
               </p>
             </div>
           </div>
 
           {/* Stats Bar */}
-          <div className="flex flex-wrap gap-4 mt-6">
-            <div className="px-4 py-2 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] bg-white text-sm font-bold uppercase tracking-wider">
-              <span className="text-foreground mr-2">Issues:</span>
-              <span className="text-black">{playbook.total_issues}</span>
+          <div className="flex flex-wrap gap-3 mt-6">
+            <div className="px-3 py-1.5 border border-neutral-800 bg-[#050505] text-[9px] font-mono uppercase tracking-widest">
+              <span className="text-neutral-600 mr-2">ISSUES:</span>
+              <span className="text-neutral-200">{playbook.total_issues}</span>
             </div>
-            <div className="px-4 py-2 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] bg-white text-sm font-bold uppercase tracking-wider">
-              <span className="text-foreground mr-2">Priority:</span>
-              <span className="text-black">{playbook.priority_order}</span>
+            <div className="px-3 py-1.5 border border-neutral-800 bg-[#050505] text-[9px] font-mono uppercase tracking-widest">
+              <span className="text-neutral-600 mr-2">PRIORITY:</span>
+              <span className="text-neutral-200">
+                {playbook.priority_order}
+              </span>
             </div>
             {docInfo.entity_name && (
-              <div className="px-4 py-2 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] bg-white text-sm font-bold uppercase tracking-wider">
-                <span className="text-foreground mr-2">
-                  Negotiating with:
-                </span>
-                <span className="text-black">{docInfo.entity_name}</span>
+              <div className="px-3 py-1.5 border border-neutral-800 bg-[#050505] text-[9px] font-mono uppercase tracking-widest">
+                <span className="text-neutral-600 mr-2">TARGET:</span>
+                <span className="text-neutral-200">{docInfo.entity_name}</span>
               </div>
             )}
           </div>
@@ -414,54 +413,46 @@ export default function NegotiatePage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.1 }}
-          className="flex flex-wrap items-center gap-3 mb-10 print:hidden"
+          className="flex flex-wrap items-center gap-2 mb-10 print:hidden"
         >
-          <Button
-            variant="outline"
-            size="sm"
+          <button
             onClick={handleCopyAll}
-            className="gap-2 border-2 border-black uppercase font-bold tracking-wider"
+            className="flex items-center gap-2 px-3 py-1.5 border border-neutral-800 bg-[#050505] font-mono uppercase tracking-widest text-[9px] text-neutral-500 hover:text-neutral-200 hover:border-neutral-600 transition-colors"
           >
             {copied ? (
-              <Check className="h-4 w-4 text-green-600" />
+              <Check className="h-3.5 w-3.5 text-emerald-500" />
             ) : (
-              <Copy className="h-4 w-4" />
+              <Copy className="h-3.5 w-3.5" />
             )}
-            {copied ? "Copied!" : "Copy All"}
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
+            {copied ? "COPIED" : "COPY ALL"}
+          </button>
+          <button
             onClick={handleDownload}
-            className="gap-2 border-2 border-black uppercase font-bold tracking-wider"
+            className="flex items-center gap-2 px-3 py-1.5 border border-neutral-800 bg-[#050505] font-mono uppercase tracking-widest text-[9px] text-neutral-500 hover:text-neutral-200 hover:border-neutral-600 transition-colors"
           >
-            <Download className="h-4 w-4" />
-            Download
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
+            <Download className="h-3.5 w-3.5" />
+            DOWNLOAD
+          </button>
+          <button
             onClick={handlePrint}
-            className="gap-2 border-2 border-black uppercase font-bold tracking-wider"
+            className="flex items-center gap-2 px-3 py-1.5 border border-neutral-800 bg-[#050505] font-mono uppercase tracking-widest text-[9px] text-neutral-500 hover:text-neutral-200 hover:border-neutral-600 transition-colors"
           >
-            <Printer className="h-4 w-4" />
-            Print
-          </Button>
+            <Printer className="h-3.5 w-3.5" />
+            PRINT
+          </button>
 
           {/* WhatsApp Share Dropdown */}
           <div className="relative">
-            <Button
-              variant="outline"
-              size="sm"
+            <button
               onClick={() => setShowShareMenu(!showShareMenu)}
-              className="gap-2 border-2 border-green-600 text-green-700 hover:bg-green-100 uppercase font-bold tracking-wider"
+              className="flex items-center gap-2 px-3 py-1.5 border border-emerald-900/50 bg-emerald-950/10 font-mono uppercase tracking-widest text-[9px] text-emerald-500 hover:text-emerald-300 hover:border-emerald-800 transition-colors"
             >
               <WhatsAppIcon />
-              Share
+              SHARE
               <ChevronDown
-                className={`h-4 w-4 transition-transform ${showShareMenu ? "rotate-180" : ""}`}
+                className={`h-3 w-3 transition-transform ${showShareMenu ? "rotate-180" : ""}`}
               />
-            </Button>
+            </button>
 
             {/* Dropdown Menu */}
             <AnimatePresence>
@@ -471,44 +462,44 @@ export default function NegotiatePage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
                   transition={{ duration: 0.15 }}
-                  className="absolute top-full left-0 mt-2 w-64 bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] z-50 overflow-hidden"
+                  className="absolute top-full left-0 mt-2 w-64 bg-[#0a0a0a] border border-neutral-800 z-50 overflow-hidden"
                 >
                   <div className="p-2">
                     <button
                       onClick={handleWhatsAppFullPlaybook}
-                      className="w-full flex items-start gap-3 p-3 rounded-none hover:bg-gray-100 transition-colors text-left border-b-2 border-transparent hover:border-black"
+                      className="w-full flex items-start gap-3 p-3 hover:bg-neutral-900 transition-colors text-left"
                     >
-                      <MessageSquare className="h-5 w-5 text-green-600 flex-shrink-0" />
+                      <MessageSquare className="h-4 w-4 text-emerald-500 flex-shrink-0 mt-0.5" />
                       <div>
-                        <p className="text-sm font-black uppercase tracking-tight text-black">
-                          Full Playbook
+                        <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-200">
+                          FULL PLAYBOOK
                         </p>
-                        <p className="text-xs font-semibold uppercase text-foreground">
-                          Send entire playbook
+                        <p className="text-[8px] font-mono text-neutral-600 mt-0.5">
+                          SEND ENTIRE PLAYBOOK
                         </p>
                       </div>
                     </button>
 
                     <button
                       onClick={handleWhatsAppLink}
-                      className="w-full flex items-start gap-3 p-3 rounded-none hover:bg-gray-100 transition-colors text-left mt-2 border-b-2 border-transparent hover:border-black"
+                      className="w-full flex items-start gap-3 p-3 hover:bg-neutral-900 transition-colors text-left mt-1"
                     >
-                      <LinkIcon className="h-5 w-5 text-green-600 flex-shrink-0" />
+                      <LinkIcon className="h-4 w-4 text-emerald-500 flex-shrink-0 mt-0.5" />
                       <div>
-                        <p className="text-sm font-black uppercase tracking-tight text-black">
-                          Share Link
+                        <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-200">
+                          SHARE LINK
                         </p>
-                        <p className="text-xs font-semibold uppercase text-foreground">
-                          Send page link
+                        <p className="text-[8px] font-mono text-neutral-600 mt-0.5">
+                          SEND PAGE LINK
                         </p>
                       </div>
                     </button>
                   </div>
 
-                  <div className="border-t-2 border-black p-3 bg-gray-50">
-                    <p className="text-[10px] font-bold uppercase text-foreground">
-                      You can also share individual scripts from inside each
-                      card
+                  <div className="border-t border-neutral-800 p-3 bg-[#050505]">
+                    <p className="text-[8px] font-mono uppercase tracking-widest text-neutral-600">
+                      YOU CAN ALSO SHARE INDIVIDUAL SCRIPTS FROM INSIDE EACH
+                      CARD
                     </p>
                   </div>
                 </motion.div>
@@ -519,16 +510,16 @@ export default function NegotiatePage() {
           <div className="flex-1" />
           <button
             onClick={expandAllScripts}
-            className="text-xs font-bold uppercase tracking-wider text-foreground hover:text-black"
+            className="text-[9px] font-mono uppercase tracking-widest text-neutral-600 hover:text-neutral-300 transition-colors"
           >
-            Expand All
+            EXPAND ALL
           </button>
-          <span className="text-foreground mx-2">|</span>
+          <span className="text-neutral-800 mx-1">|</span>
           <button
             onClick={collapseAllScripts}
-            className="text-xs font-bold uppercase tracking-wider text-foreground hover:text-black"
+            className="text-[9px] font-mono uppercase tracking-widest text-neutral-600 hover:text-neutral-300 transition-colors"
           >
-            Collapse All
+            COLLAPSE ALL
           </button>
         </motion.div>
 
@@ -546,15 +537,15 @@ export default function NegotiatePage() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
-            className="mb-10 card-impact-emphasis bg-blue-100 border-blue-900"
+            className="mb-10 border-l-2 border-cyan-900/50 bg-cyan-950/10 p-6"
           >
-            <div className="flex items-center gap-2 border-b-2 border-blue-900 pb-3 mb-4">
-              <Target className="h-5 w-5 text-blue-700" />
-              <p className="text-sm font-black uppercase tracking-tight text-blue-900">
-                How To Start The Conversation
+            <div className="flex items-center gap-2 border-b border-cyan-900/30 pb-3 mb-4">
+              <Target className="h-3.5 w-3.5 text-cyan-400" />
+              <p className="text-[9px] font-mono uppercase tracking-widest text-cyan-400">
+                OPENING_APPROACH
               </p>
             </div>
-            <p className="text-lg text-blue-900 font-bold leading-relaxed">
+            <p className="text-sm font-mono text-cyan-300/80 leading-relaxed">
               &quot;{playbook.opening_approach}&quot;
             </p>
           </motion.div>
@@ -562,21 +553,19 @@ export default function NegotiatePage() {
 
         {/* No Issues */}
         {playbook.scripts.length === 0 && (
-          <Card className="card-impact bg-green-50 border-green-900">
-            <CardContent className="p-10 text-center">
-              <CheckCircle2 className="h-16 w-16 text-green-900 dark:text-green-100 font-bold mx-auto mb-6" />
-              <h3 className="text-2xl font-black uppercase tracking-tight text-green-900 mb-2">
-                No Negotiation Needed!
-              </h3>
-              <p className="text-green-800 font-semibold uppercase tracking-wider text-sm max-w-lg mx-auto">
-                This contract appears fair. No risky clauses found to negotiate.
-              </p>
-            </CardContent>
-          </Card>
+          <div className="border border-emerald-900/50 bg-emerald-950/10 p-10 text-center">
+            <CheckCircle2 className="h-10 w-10 text-emerald-500 mx-auto mb-6" />
+            <h3 className="text-[10px] font-mono uppercase tracking-widest text-emerald-400 mb-2">
+              [ NO_NEGOTIATION_NEEDED ]
+            </h3>
+            <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-600 max-w-lg mx-auto">
+              THIS CONTRACT APPEARS FAIR. NO RISKY CLAUSES FOUND TO NEGOTIATE.
+            </p>
+          </div>
         )}
 
         {/* Script Cards */}
-        <div className="space-y-4 mb-8">
+        <div className="space-y-3 mb-8">
           {playbook.scripts.map((script, index) => {
             const isExpanded = expandedScripts.has(index);
             const isScriptCopied = copiedScript === index;
@@ -588,39 +577,38 @@ export default function NegotiatePage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 + index * 0.08 }}
               >
-                <Card className="card-impact overflow-hidden mb-4 rounded-none border-2 border-black">
+                <div className="border border-neutral-900 bg-[#0a0a0a] overflow-hidden mb-3">
                   {/* Script Header */}
                   <button
                     onClick={() => toggleScript(index)}
-                    className="w-full p-5 lg:p-6 flex items-start justify-between text-left hover:bg-gray-50 transition-colors"
+                    className="w-full p-5 lg:p-6 flex items-start justify-between text-left hover:bg-neutral-900/50 transition-colors"
                   >
                     <div className="flex items-start gap-4">
-                      <div className="flex items-center justify-center w-10 h-10 border-2 border-black bg-black text-lg font-black text-white flex-shrink-0">
+                      <div className="flex items-center justify-center w-8 h-8 border border-neutral-700 bg-[#050505] text-sm font-mono tabular-nums text-neutral-400 flex-shrink-0">
                         {index + 1}
                       </div>
                       <div>
                         <div className="flex items-center gap-2 flex-wrap mb-2">
                           {getRiskIcon(script.risk_level)}
-                          <Badge className="border-2 border-black bg-white text-black font-bold uppercase tracking-wider text-[10px]">
-                            {script.risk_level.toUpperCase()}
-                          </Badge>
-                          <Badge
-                            variant="outline"
-                            className="border-2 border-dashed border-gray-400 text-gray-600 font-bold uppercase tracking-wider text-[10px]"
+                          <span
+                            className={`text-[8px] font-mono uppercase tracking-widest px-1.5 py-0.5 border ${getRiskBadgeClass(script.risk_level)}`}
                           >
+                            {script.risk_level.toUpperCase()}
+                          </span>
+                          <span className="text-[8px] font-mono uppercase tracking-widest px-1.5 py-0.5 border border-neutral-800 text-neutral-500 bg-neutral-900">
                             {script.clause_type}
-                          </Badge>
+                          </span>
                           {getStrengthBadge(script.strength)}
                         </div>
-                        <p className="text-sm font-semibold uppercase tracking-wider text-foreground">
+                        <p className="text-[10px] font-mono uppercase tracking-widest text-neutral-300">
                           {script.clause_summary}
                         </p>
                       </div>
                     </div>
                     {isExpanded ? (
-                      <ChevronUp className="h-6 w-6 text-black flex-shrink-0" />
+                      <ChevronUp className="h-4 w-4 text-neutral-600 flex-shrink-0" />
                     ) : (
-                      <ChevronDown className="h-6 w-6 text-black flex-shrink-0" />
+                      <ChevronDown className="h-4 w-4 text-neutral-600 flex-shrink-0" />
                     )}
                   </button>
 
@@ -632,16 +620,16 @@ export default function NegotiatePage() {
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="overflow-hidden bg-gray-50 border-t-2 border-black"
+                        className="overflow-hidden border-t border-neutral-900 bg-[#050505]"
                       >
                         <div className="px-5 lg:px-6 pb-6 pt-6 space-y-6">
                           {/* Opening Statement */}
-                          <div className="p-5 border-2 border-blue-900 bg-blue-100 shadow-[4px_4px_0px_0px_rgba(30,58,138,1)]">
-                            <p className="text-xs font-black uppercase tracking-tight text-blue-900 mb-3 flex items-center gap-2">
-                              <MessageSquare className="h-4 w-4" />
-                              YOUR OPENING
+                          <div className="p-5 border-l-2 border-cyan-900/50 bg-cyan-950/10">
+                            <p className="text-[9px] font-mono uppercase tracking-widest text-cyan-400 mb-3 flex items-center gap-2">
+                              <MessageSquare className="h-3.5 w-3.5" />
+                              YOUR_OPENING
                             </p>
-                            <p className="text-base font-bold text-blue-950 leading-relaxed">
+                            <p className="text-sm font-mono text-cyan-300/80 leading-relaxed">
                               &quot;{script.opening_statement}&quot;
                             </p>
                           </div>
@@ -650,11 +638,11 @@ export default function NegotiatePage() {
                           {script.counter_responses &&
                             script.counter_responses.length > 0 && (
                               <div className="mt-8">
-                                <p className="text-xs font-black uppercase tracking-tight text-foreground mb-4 flex items-center gap-2">
-                                  <Swords className="h-4 w-4" />
-                                  IF THEY PUSH BACK...
+                                <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-400 mb-4 flex items-center gap-2 border-l-2 border-neutral-700 pl-3">
+                                  <Swords className="h-3.5 w-3.5" />
+                                  IF_THEY_PUSH_BACK
                                 </p>
-                                <div className="space-y-4">
+                                <div className="space-y-3">
                                   {script.counter_responses.map(
                                     (cr, crIndex) => {
                                       const counterKey = `${index}-${crIndex}`;
@@ -664,24 +652,24 @@ export default function NegotiatePage() {
                                       return (
                                         <div
                                           key={crIndex}
-                                          className="border-2 border-black bg-white"
+                                          className="border border-neutral-800 bg-[#0a0a0a]"
                                         >
                                           <button
                                             onClick={() =>
                                               toggleCounter(counterKey)
                                             }
-                                            className="w-full flex items-center gap-3 p-4 text-left hover:bg-gray-50 transition-colors"
+                                            className="w-full flex items-center gap-3 p-4 text-left hover:bg-neutral-900/50 transition-colors"
                                           >
-                                            <span className="text-red-600 font-bold uppercase tracking-wider text-xs flex-shrink-0">
-                                              They say:
+                                            <span className="text-red-500 font-mono uppercase tracking-widest text-[8px] flex-shrink-0">
+                                              THEY_SAY:
                                             </span>
-                                            <span className="text-sm font-medium text-black flex-1 italic">
+                                            <span className="text-[10px] font-mono text-neutral-400 flex-1 italic">
                                               &quot;{cr.they_say}&quot;
                                             </span>
                                             {isCounterExpanded ? (
-                                              <ChevronUp className="h-5 w-5 text-black flex-shrink-0" />
+                                              <ChevronUp className="h-3.5 w-3.5 text-neutral-700 flex-shrink-0" />
                                             ) : (
-                                              <ChevronDown className="h-5 w-5 text-black flex-shrink-0" />
+                                              <ChevronDown className="h-3.5 w-3.5 text-neutral-700 flex-shrink-0" />
                                             )}
                                           </button>
 
@@ -698,13 +686,13 @@ export default function NegotiatePage() {
                                                 }}
                                                 exit={{ height: 0, opacity: 0 }}
                                                 transition={{ duration: 0.15 }}
-                                                className="overflow-hidden border-t-2 border-black bg-green-50"
+                                                className="overflow-hidden border-t border-neutral-800 bg-emerald-950/10"
                                               >
-                                                <div className="p-4">
-                                                  <span className="text-green-900 dark:text-green-100 font-bold font-bold uppercase tracking-wider text-xs block mb-2">
-                                                    You say:
+                                                <div className="p-4 border-l-2 border-emerald-900/50">
+                                                  <span className="text-emerald-500 font-mono uppercase tracking-widest text-[8px] block mb-2">
+                                                    YOU_SAY:
                                                   </span>
-                                                  <p className="text-base font-semibold text-green-950 leading-relaxed">
+                                                  <p className="text-sm font-mono text-emerald-300/80 leading-relaxed">
                                                     &quot;{cr.you_say}&quot;
                                                   </p>
                                                 </div>
@@ -721,33 +709,33 @@ export default function NegotiatePage() {
 
                           {/* Escalation */}
                           {script.escalation && (
-                            <div className="p-5 border-2 border-red-900 bg-red-100 shadow-[4px_4px_0px_0px_rgba(127,29,29,1)] mt-8">
-                              <p className="text-xs font-black uppercase tracking-tight text-red-900 mb-3 flex items-center gap-2">
-                                <Flag className="h-4 w-4" />
-                                IF THEY COMPLETELY REFUSE
+                            <div className="p-5 border-l-2 border-red-900/50 bg-red-950/10 mt-8">
+                              <p className="text-[9px] font-mono uppercase tracking-widest text-red-400 mb-3 flex items-center gap-2">
+                                <Flag className="h-3.5 w-3.5" />
+                                IF_THEY_REFUSE
                               </p>
                               <div className="space-y-3 text-sm">
                                 <div className="flex items-start gap-3">
-                                  <span className="text-red-800 font-bold uppercase tracking-wider text-xs mt-0.5">
-                                    Action:
+                                  <span className="text-red-500/70 font-mono uppercase tracking-widest text-[8px] mt-0.5 flex-shrink-0">
+                                    ACTION:
                                   </span>
-                                  <span className="text-red-950 font-semibold">
+                                  <span className="text-[10px] font-mono text-neutral-300">
                                     {script.escalation.action}
                                   </span>
                                 </div>
                                 <div className="flex items-start gap-3">
-                                  <span className="text-red-800 font-bold uppercase tracking-wider text-xs mt-0.5">
-                                    Authority:
+                                  <span className="text-red-500/70 font-mono uppercase tracking-widest text-[8px] mt-0.5 flex-shrink-0">
+                                    AUTHORITY:
                                   </span>
-                                  <span className="text-red-950 font-semibold">
+                                  <span className="text-[10px] font-mono text-neutral-300">
                                     {script.escalation.authority}
                                   </span>
                                 </div>
                                 <div className="flex items-start gap-3">
-                                  <span className="text-red-800 font-bold uppercase tracking-wider text-xs mt-0.5">
-                                    Law:
+                                  <span className="text-red-500/70 font-mono uppercase tracking-widest text-[8px] mt-0.5 flex-shrink-0">
+                                    LAW_REF:
                                   </span>
-                                  <span className="text-blue-700 font-bold underline decoration-2">
+                                  <span className="text-[10px] font-mono text-cyan-400">
                                     {script.escalation.law_reference}
                                   </span>
                                 </div>
@@ -756,20 +744,20 @@ export default function NegotiatePage() {
                           )}
 
                           {/* Per-Script Action Buttons */}
-                          <div className="flex flex-wrap gap-3 pt-6 mt-6 border-t-2 border-black">
+                          <div className="flex flex-wrap gap-2 pt-6 mt-6 border-t border-neutral-900">
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleCopyScript(script, index);
                               }}
-                              className="flex items-center gap-2 px-4 py-2 border-2 border-black text-xs font-bold uppercase tracking-wider text-black hover:bg-gray-200 bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
+                              className="flex items-center gap-2 px-3 py-1.5 border border-neutral-800 bg-[#0a0a0a] text-[9px] font-mono uppercase tracking-widest text-neutral-500 hover:text-neutral-200 hover:border-neutral-600 transition-colors"
                             >
                               {isScriptCopied ? (
-                                <Check className="h-3.5 w-3.5 text-green-400" />
+                                <Check className="h-3 w-3 text-emerald-500" />
                               ) : (
-                                <Copy className="h-3.5 w-3.5" />
+                                <Copy className="h-3 w-3" />
                               )}
-                              {isScriptCopied ? "Copied!" : "Copy Script"}
+                              {isScriptCopied ? "COPIED" : "COPY SCRIPT"}
                             </button>
 
                             <button
@@ -777,17 +765,17 @@ export default function NegotiatePage() {
                                 e.stopPropagation();
                                 handleWhatsAppScript(script);
                               }}
-                              className="flex items-center gap-2 px-4 py-2 border-2 border-green-700 text-xs font-bold uppercase tracking-wider text-green-900 hover:bg-green-200 bg-green-100 shadow-[2px_2px_0px_0px_rgba(21,128,61,1)] transition-all"
+                              className="flex items-center gap-2 px-3 py-1.5 border border-emerald-900/50 bg-emerald-950/10 text-[9px] font-mono uppercase tracking-widest text-emerald-500 hover:text-emerald-300 hover:border-emerald-800 transition-colors"
                             >
-                              <WhatsAppIcon size={16} />
-                              Share Script
+                              <WhatsAppIcon size={14} />
+                              SHARE SCRIPT
                             </button>
                           </div>
                         </div>
                       </motion.div>
                     )}
                   </AnimatePresence>
-                </Card>
+                </div>
               </motion.div>
             );
           })}
@@ -799,15 +787,15 @@ export default function NegotiatePage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
-            className="mb-10 card-impact-emphasis bg-green-100 border-green-900"
+            className="mb-10 border-l-2 border-emerald-900/50 bg-emerald-950/10 p-6"
           >
-            <div className="flex items-center gap-2 border-b-2 border-green-900 pb-3 mb-4">
-              <CheckCircle2 className="h-5 w-5 text-green-700" />
-              <p className="text-sm font-black uppercase tracking-tight text-green-900">
-                How To End The Conversation
+            <div className="flex items-center gap-2 border-b border-emerald-900/30 pb-3 mb-4">
+              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+              <p className="text-[9px] font-mono uppercase tracking-widest text-emerald-400">
+                CLOSING_APPROACH
               </p>
             </div>
-            <p className="text-lg text-green-900 font-bold leading-relaxed italic">
+            <p className="text-sm font-mono text-emerald-300/80 leading-relaxed italic">
               &quot;{playbook.closing_statement}&quot;
             </p>
           </motion.div>
@@ -819,21 +807,21 @@ export default function NegotiatePage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
-            className="mb-10 card-impact bg-yellow-100 border-yellow-900"
+            className="mb-10 border border-amber-900/50 bg-amber-950/10 p-6"
           >
-            <div className="flex items-center gap-2 border-b-2 border-yellow-900 pb-3 mb-4">
-              <Lightbulb className="h-5 w-5 text-yellow-700" />
-              <p className="text-sm font-black uppercase tracking-tight text-yellow-900">
-                General Negotiation Tips
+            <div className="flex items-center gap-2 border-b border-amber-900/30 pb-3 mb-4">
+              <Lightbulb className="h-3.5 w-3.5 text-amber-400" />
+              <p className="text-[9px] font-mono uppercase tracking-widest text-amber-400">
+                NEGOTIATION_INTEL
               </p>
             </div>
             <ul className="space-y-3">
               {playbook.general_tips.map((tip, i) => (
                 <li
                   key={i}
-                  className="flex items-start gap-3 text-base font-medium text-yellow-950"
+                  className="flex items-start gap-3 text-[10px] font-mono text-amber-300/70 leading-relaxed"
                 >
-                  <span className="text-yellow-600 mt-0.5 text-lg">💡</span>
+                  <span className="text-amber-600 shrink-0 mt-0.5">→</span>
                   {tip}
                 </li>
               ))}
@@ -845,10 +833,10 @@ export default function NegotiatePage() {
         <RelatedActions documentId={documentId} currentPage="negotiate" />
 
         {/* Disclaimer */}
-        <p className="text-xs font-bold uppercase tracking-wider text-foreground text-center mt-12 print:hidden border-t-2 border-black pt-8">
-          These scripts are AI-generated guidance, not legal advice. Adapt them
-          to your situation. ClauseWall is not a substitute for professional
-          legal counsel.
+        <p className="text-[8px] font-mono uppercase tracking-widest text-neutral-700 text-center mt-12 print:hidden border-t border-neutral-900 pt-8">
+          THESE SCRIPTS ARE AI-GENERATED GUIDANCE, NOT LEGAL ADVICE. ADAPT THEM
+          TO YOUR SITUATION. CLAUSEWALL IS NOT A SUBSTITUTE FOR PROFESSIONAL
+          LEGAL COUNSEL.
         </p>
       </div>
     </div>
