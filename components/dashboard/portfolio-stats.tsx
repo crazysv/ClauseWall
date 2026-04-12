@@ -21,156 +21,125 @@ interface PortfolioStatsProps {
 export default function PortfolioStatsSection({ stats }: PortfolioStatsProps) {
   const cards = [
     {
-      label: "Contracts Scanned",
+      label: "NODES_SCANNED",
       value: stats.totalContracts.toString(),
-      subtext: `${stats.totalClauses} clauses analyzed`,
-      icon: <FileSearch className="w-5 h-5" />,
-      color: "blue",
-      bg: "bg-blue-500/10",
-      border: "border-blue-500/20",
-      iconColor: "text-blue-400",
+      subtext: `${stats.totalClauses} CLAUSES_EXTRACTED`,
+      icon: <FileSearch className="w-4 h-4" />,
+      color: "cyan",
     },
     {
-      label: "Risky Clauses Found",
+      label: "RISK_VECTORS",
       value: (
         stats.dangerousClausesCount + stats.illegalClausesCount
       ).toString(),
-      subtext: `${stats.illegalClausesCount} illegal · ${stats.dangerousClausesCount} dangerous`,
-      icon: <ShieldAlert className="w-5 h-5" />,
+      subtext: `${stats.illegalClausesCount} ILL · ${stats.dangerousClausesCount} DNG`,
+      icon: <ShieldAlert className="w-4 h-4" />,
       color: "red",
-      bg: "bg-red-500/10",
-      border: "border-red-500/20",
-      iconColor: "text-red-400",
     },
     {
-      label: "Risk Trend",
+      label: "BASELINE_TREND",
       value:
         stats.riskTrend === "improving"
-          ? `↓ ${stats.riskTrendPercentage}%`
+          ? `[↓ ${stats.riskTrendPercentage}%]`
           : stats.riskTrend === "worsening"
-            ? `↑ ${stats.riskTrendPercentage}%`
-            : "Stable",
+            ? `[↑ ${stats.riskTrendPercentage}%]`
+            : "[ STABLE ]",
       subtext:
         stats.riskTrend === "improving"
-          ? "Your contracts are getting safer!"
+          ? "RISK_MITIGATED"
           : stats.riskTrend === "worsening"
-            ? "Recent contracts are riskier"
-            : `Average risk: ${stats.averageRiskScore}/100`,
+            ? "EXPOSURE_ELEVATED"
+            : `AVG: ${stats.averageRiskScore}/100`,
       icon:
         stats.riskTrend === "improving" ? (
-          <TrendingDown className="w-5 h-5" />
+          <TrendingDown className="w-4 h-4" />
         ) : stats.riskTrend === "worsening" ? (
-          <TrendingUp className="w-5 h-5" />
+          <TrendingUp className="w-4 h-4" />
         ) : (
-          <Minus className="w-5 h-5" />
+          <Minus className="w-4 h-4" />
         ),
       color:
         stats.riskTrend === "improving"
           ? "emerald"
           : stats.riskTrend === "worsening"
             ? "amber"
-            : "gray",
-      bg:
-        stats.riskTrend === "improving"
-          ? "bg-emerald-500/10"
-          : stats.riskTrend === "worsening"
-            ? "bg-amber-500/10"
-            : "bg-gray-500/10",
-      border:
-        stats.riskTrend === "improving"
-          ? "border-emerald-500/20"
-          : stats.riskTrend === "worsening"
-            ? "border-amber-500/20"
-            : "border-gray-500/20",
-      iconColor:
-        stats.riskTrend === "improving"
-          ? "text-emerald-400"
-          : stats.riskTrend === "worsening"
-            ? "text-amber-400"
-            : "text-foreground",
+            : "neutral",
     },
     {
-      label: "Potential Savings",
+      label: "CAPITAL_SAVED",
       value: formatIndianCurrency(stats.estimatedSavings),
       subtext:
         stats.contractsBuilt > 0
-          ? `${stats.contractsBuilt} fair contract${stats.contractsBuilt > 1 ? "s" : ""} built`
-          : "By spotting risky clauses",
-      icon: <IndianRupee className="w-5 h-5" />,
+          ? `${stats.contractsBuilt} DOC_GENERATED`
+          : "VIA_PREVENTION",
+      icon: <IndianRupee className="w-4 h-4" />,
       color: "emerald",
-      bg: "bg-emerald-500/10",
-      border: "border-emerald-500/20",
-      iconColor: "text-emerald-400",
     },
   ];
 
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
       {cards.map((card, index) => {
-        // Derive bold impact classes based on card.color
-        const shadowColor =
-          card.color === "blue"
-            ? "rgba(37,99,235,1)"
-            : card.color === "red"
-              ? "rgba(220,38,38,1)"
-              : card.color === "emerald"
-                ? "rgba(22,163,74,1)"
-                : card.color === "amber"
-                  ? "rgba(234,179,8,1)"
-                  : "rgba(10,10,10,1)";
+        let borderColor = "border-neutral-900";
+        let iconColor = "text-neutral-500";
+        let iconBg = "bg-neutral-950/50";
+        let glowColor = "bg-transparent";
 
-        const borderColor =
-          card.color === "blue"
-            ? "border-blue-600"
-            : card.color === "red"
-              ? "border-red-600"
-              : card.color === "emerald"
-                ? "border-green-600"
-                : card.color === "amber"
-                  ? "border-yellow-500"
-                  : "border-foreground";
-
-        const iconBg =
-          card.color === "blue"
-            ? "bg-blue-100 text-blue-800"
-            : card.color === "red"
-              ? "bg-red-100 text-red-800"
-              : card.color === "emerald"
-                ? "bg-green-100 text-green-800"
-                : card.color === "amber"
-                  ? "bg-yellow-100 text-yellow-800"
-                  : "bg-muted text-foreground";
+        if (card.color === "cyan") {
+          borderColor = "border-cyan-900/40";
+          iconColor = "text-cyan-500";
+          iconBg = "bg-cyan-950/20 text-cyan-500 border border-cyan-900/50";
+          glowColor = "bg-cyan-500";
+        } else if (card.color === "red") {
+          borderColor = "border-red-900/40";
+          iconColor = "text-red-500";
+          iconBg = "bg-red-950/20 text-red-500 border border-red-900/50";
+          glowColor = "bg-red-500";
+        } else if (card.color === "emerald") {
+          borderColor = "border-emerald-900/40";
+          iconColor = "text-emerald-500";
+          iconBg = "bg-emerald-950/20 text-emerald-500 border border-emerald-900/50";
+          glowColor = "bg-emerald-500";
+        } else if (card.color === "amber") {
+          borderColor = "border-amber-900/40";
+          iconColor = "text-amber-500";
+          iconBg = "bg-amber-950/20 text-amber-500 border border-amber-900/50";
+          glowColor = "bg-amber-500";
+        } else if (card.color === "neutral") {
+          borderColor = "border-neutral-800";
+          iconColor = "text-neutral-400";
+          iconBg = "bg-neutral-900/50 text-neutral-400 border border-neutral-800";
+          glowColor = "bg-neutral-600";
+        }
 
         return (
           <motion.div
             key={card.label}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className={`card-impact border-2 ${borderColor} bg-background p-5 hover:-translate-y-1 transition-transform`}
-            style={{ boxShadow: `4px 4px 0px 0px ${shadowColor}` }}
+            className={`relative bg-[#0a0a0a] border ${borderColor} p-5 group overflow-hidden`}
           >
-            {/* Icon */}
-            <div
-              className={`inline-flex items-center justify-center p-2 border-2 border-current shadow-[2px_2px_0px_0px_currentColor] mb-4 ${iconBg}`}
-            >
-              {card.icon}
+            {/* Top accent glow line */}
+            <div className={`absolute top-0 left-0 w-full h-[1px] opacity-20 group-hover:opacity-100 transition-opacity ${glowColor}`} />
+
+            <div className="flex items-start justify-between mb-8">
+              <p className="text-[10px] font-mono tracking-widest uppercase text-neutral-500 max-w-[70%]">
+                {card.label}
+              </p>
+              <div className={`p-1.5 flex items-center justify-center ${iconBg}`}>
+                {card.icon}
+              </div>
             </div>
 
-            {/* Value */}
-            <p className="text-2xl font-black text-foreground mb-1 tracking-tighter">
-              {card.value}
-            </p>
-
-            {/* Label */}
-            <p className="text-xs font-black uppercase tracking-wider text-muted-foreground mb-1">
-              {card.label}
-            </p>
-
-            {/* Subtext */}
-            <p className="text-[10px] font-bold text-foreground/70 uppercase">
-              {card.subtext}
-            </p>
+            <div>
+              <p className={`text-2xl font-mono tracking-tighter mb-1.5 ${iconColor}`}>
+                {card.value}
+              </p>
+              <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-600">
+                {card.subtext}
+              </p>
+            </div>
           </motion.div>
         );
       })}

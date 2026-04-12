@@ -26,16 +26,16 @@ function CustomTooltip({ active, payload }: any) {
 
   const riskLabel =
     score >= 81
-      ? "Critical"
+      ? "CRITICAL"
       : score >= 51
-        ? "Dangerous"
+        ? "DANGEROUS"
         : score >= 21
-          ? "Warning"
-          : "Safe";
+          ? "WARNING"
+          : "SAFE";
 
   const riskColor =
     score >= 81
-      ? "#a855f7"
+      ? "#c084fc"
       : score >= 51
         ? "#ef4444"
         : score >= 21
@@ -43,23 +43,23 @@ function CustomTooltip({ active, payload }: any) {
           : "#10b981";
 
   return (
-    <div className="bg-background border-2 border-foreground rounded-none shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] p-3">
-      <p className="text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-1">
+    <div className="bg-[#050505] border border-neutral-800 p-3 shadow-2xl">
+      <p className="text-[9px] font-mono tracking-widest text-neutral-500 mb-1">
         {point.date}
       </p>
-      <p className="text-sm font-bold text-foreground truncate max-w-[200px]">
+      <p className="text-xs font-mono text-neutral-300 truncate max-w-[200px] uppercase">
         {point.label}
       </p>
-      <div className="flex items-center gap-2 mt-2">
+      <div className="flex items-center gap-3 mt-2">
         <span
-          className="text-lg font-black tracking-tighter"
-          style={{ color: riskColor === "#a855f7" ? "#9333ea" : riskColor }}
+          className="text-sm font-mono tracking-tighter"
+          style={{ color: riskColor }}
         >
           {score}
         </span>
         <span
-          className="text-[10px] font-black uppercase tracking-wider px-1.5 py-0.5 border-2 border-current bg-background"
-          style={{ color: riskColor === "#a855f7" ? "#9333ea" : riskColor }}
+          className="text-[8px] font-mono tracking-widest uppercase px-1.5 py-0.5 border"
+          style={{ color: riskColor, borderColor: riskColor }}
         >
           {riskLabel}
         </span>
@@ -72,23 +72,23 @@ export default function RiskTrendChart({ data }: RiskTrendChartProps) {
   if (data.length < 2) {
     return (
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] bg-background p-6 h-full flex flex-col"
+        className="bg-[#0a0a0a] border border-neutral-900 p-6 h-full flex flex-col"
       >
-        <div className="flex items-center gap-2 mb-4 pb-4 border-b-2 border-foreground">
-          <TrendingUp className="w-6 h-6 text-blue-600 bg-blue-100 p-1 border-2 border-blue-600" />
-          <h3 className="text-xl font-black uppercase tracking-wider text-foreground">
-            Risk Trend
+        <div className="flex items-center gap-3 mb-4 pb-4 border-b border-neutral-900">
+          <TrendingUp className="w-4 h-4 text-cyan-500" />
+          <h3 className="text-[10px] font-mono uppercase tracking-widest text-neutral-400">
+            [ RISK_TREND_TELEMETRY ]
           </h3>
         </div>
-        <div className="flex flex-1 flex-col items-center justify-center p-6 text-center border-2 border-dashed border-muted-foreground/30 bg-muted/10 mt-2">
-          <Info className="w-8 h-8 text-muted-foreground mb-3" />
-          <p className="font-bold text-foreground text-sm uppercase tracking-wider">
-            Analyze 2+ contracts to see your risk trend
+        <div className="flex flex-1 flex-col items-center justify-center p-6 text-center border border-dashed border-neutral-800 bg-[#050505] mt-2">
+          <Info className="w-6 h-6 text-neutral-600 mb-3" />
+          <p className="font-mono text-neutral-400 text-[10px] uppercase tracking-widest">
+            INSUFFICIENT_DATA_POINTS
           </p>
-          <p className="text-foreground text-xs mt-2 font-bold">
-            Each contract will appear as a data point
+          <p className="text-neutral-600 text-[9px] font-mono uppercase tracking-widest mt-2">
+            INGEST 2+ CONTRACTS TO GENERATE TREND CURVE
           </p>
         </div>
       </motion.div>
@@ -97,30 +97,30 @@ export default function RiskTrendChart({ data }: RiskTrendChartProps) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 }}
-      className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] bg-background p-6 h-full flex flex-col"
+      className="bg-[#0a0a0a] border border-neutral-900 p-6 h-full flex flex-col"
     >
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-5 gap-3 pb-4 border-b-2 border-foreground">
-        <div className="flex items-center gap-2">
-          <TrendingUp className="w-6 h-6 text-blue-600 bg-blue-100 p-1 border-2 border-blue-600" />
-          <h3 className="text-xl font-black uppercase tracking-wider text-foreground">
-            Risk Trend
+      <div className="flex flex-col xl:flex-row xl:items-center justify-between mb-5 gap-4 pb-4 border-b border-neutral-900">
+        <div className="flex items-center gap-3">
+          <TrendingUp className="w-4 h-4 text-cyan-500" />
+          <h3 className="text-[10px] font-mono uppercase tracking-widest text-neutral-400">
+            [ RISK_TREND_TELEMETRY ]
           </h3>
         </div>
-        <div className="flex flex-wrap items-center gap-3 text-[10px] font-black uppercase tracking-wider text-muted-foreground">
-          <div className="flex items-center gap-1.5 border-2 border-foreground bg-muted px-2 py-1 shadow-[2px_2px_0px_0px_rgba(10,10,10,1)]">
-            <div className="w-2.5 h-2.5 bg-green-500 border border-current" />
-            <span className="text-green-700">Safe &lt;30</span>
+        <div className="flex flex-wrap items-center gap-2 text-[8px] font-mono uppercase tracking-widest text-neutral-500">
+          <div className="flex items-center gap-1.5 border border-emerald-900/40 bg-emerald-950/20 px-2 py-1">
+            <div className="w-1.5 h-1.5 bg-emerald-500" />
+            <span className="text-emerald-500">SAFE &lt;30</span>
           </div>
-          <div className="flex items-center gap-1.5 border-2 border-foreground bg-muted px-2 py-1 shadow-[2px_2px_0px_0px_rgba(10,10,10,1)]">
-            <div className="w-2.5 h-2.5 bg-yellow-500 border border-current" />
-            <span className="text-yellow-700">Warning</span>
+          <div className="flex items-center gap-1.5 border border-amber-900/40 bg-amber-950/20 px-2 py-1">
+            <div className="w-1.5 h-1.5 bg-amber-500" />
+            <span className="text-amber-500">WARNING</span>
           </div>
-          <div className="flex items-center gap-1.5 border-2 border-foreground bg-muted px-2 py-1 shadow-[2px_2px_0px_0px_rgba(10,10,10,1)]">
-            <div className="w-2.5 h-2.5 bg-red-600 border border-current" />
-            <span className="text-red-700">Danger &gt;60</span>
+          <div className="flex items-center gap-1.5 border border-red-900/40 bg-red-950/20 px-2 py-1">
+            <div className="w-1.5 h-1.5 bg-red-500" />
+            <span className="text-red-500">DANGER &gt;60</span>
           </div>
         </div>
       </div>
@@ -138,73 +138,72 @@ export default function RiskTrendChart({ data }: RiskTrendChartProps) {
           >
             <defs>
               <linearGradient id="riskGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.3} />
-                <stop offset="100%" stopColor="#3b82f6" stopOpacity={0.0} />
+                <stop offset="0%" stopColor="#06b6d4" stopOpacity={0.3} />
+                <stop offset="100%" stopColor="#06b6d4" stopOpacity={0.0} />
               </linearGradient>
             </defs>
             <CartesianGrid
-              strokeDasharray="3 3"
-              stroke="#1f2937"
+              strokeDasharray="2 4"
+              stroke="#171717"
               vertical={false}
             />
             <XAxis
               dataKey="date"
               axisLine={false}
               tickLine={false}
-              tick={{ fill: "#6b7280", fontSize: 11 }}
+              tick={{ fill: "#525252", fontSize: 9, fontFamily: "monospace" }}
               dy={10}
             />
             <YAxis
               domain={[0, 100]}
               axisLine={false}
               tickLine={false}
-              tick={{ fill: "#6b7280", fontSize: 11 }}
+              tick={{ fill: "#525252", fontSize: 9, fontFamily: "monospace" }}
               dx={-5}
             />
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#262626', strokeWidth: 1, strokeDasharray: '4 4' }} />
 
             {/* Risk zone reference lines */}
             <ReferenceLine
               y={30}
               stroke="#10b981"
-              strokeDasharray="4 4"
-              strokeOpacity={0.3}
+              strokeDasharray="2 4"
+              strokeOpacity={0.2}
             />
             <ReferenceLine
               y={60}
               stroke="#f59e0b"
-              strokeDasharray="4 4"
-              strokeOpacity={0.3}
+              strokeDasharray="2 4"
+              strokeOpacity={0.2}
             />
             <ReferenceLine
               y={80}
               stroke="#ef4444"
-              strokeDasharray="4 4"
-              strokeOpacity={0.3}
+              strokeDasharray="2 4"
+              strokeOpacity={0.2}
             />
 
             <Area
               type="monotone"
               dataKey="score"
-              stroke="#3b82f6"
-              strokeWidth={2}
+              stroke="#06b6d4"
+              strokeWidth={1}
               fill="url(#riskGradient)"
               dot={{
-                r: 4,
-                fill: "#1e293b",
-                stroke: "#3b82f6",
-                strokeWidth: 2,
+                r: 3,
+                fill: "#050505",
+                stroke: "#06b6d4",
+                strokeWidth: 1,
               }}
               activeDot={{
-                r: 6,
-                fill: "#3b82f6",
-                stroke: "#1e293b",
-                strokeWidth: 2,
+                r: 4,
+                fill: "#06b6d4",
+                stroke: "#fff",
+                strokeWidth: 0,
               }}
             />
           </AreaChart>
         </ResponsiveContainer>
-      </div>
-    </motion.div>
+      </div>    </motion.div>
   );
 }

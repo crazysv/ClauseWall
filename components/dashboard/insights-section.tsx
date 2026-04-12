@@ -33,26 +33,22 @@ function generateInsights(
     if (stats.riskTrend === "improving") {
       insights.push({
         icon: "trending_down",
-        title: "You're Getting Smarter!",
-        description: `Your recent contracts are ${stats.riskTrendPercentage}% safer than your earlier ones. You're learning to spot better deals.`,
+        title: "RISK PROFILE: IMPROVED",
+        description: `Recent evaluations measure ${stats.riskTrendPercentage}% lower risk exposure compared to baseline analytics.`,
         type: "positive",
       });
     } else if (stats.riskTrend === "worsening") {
       insights.push({
         icon: "trending_up",
-        title: "Be More Careful",
-        description: `Your recent contracts are ${stats.riskTrendPercentage}% riskier than before. Take extra time reviewing before signing.`,
+        title: "RISK PROFILE: DEGRADED",
+        description: `Recent evaluations measure ${stats.riskTrendPercentage}% higher risk exposure. Stricter clearance protocols advised.`,
         type: "warning",
       });
     } else {
       insights.push({
         icon: "stable",
-        title: "Consistent Risk Level",
-        description: `Your average risk score is ${stats.averageRiskScore}/100. ${
-          stats.averageRiskScore < 40
-            ? "That's pretty good!"
-            : "Try negotiating tougher clauses."
-        }`,
+        title: "RISK PROFILE: STABLE",
+        description: `Variance within expected thresholds. Average system risk maintains at ${stats.averageRiskScore}/100.`,
         type: "neutral",
       });
     }
@@ -67,29 +63,29 @@ function generateInsights(
     )[0];
 
     const typeLabels: Record<string, string> = {
-      rental: "Rental",
-      employment: "Employment",
-      loan: "Loan",
-      tos: "Terms of Service",
-      freelance: "Freelance",
+      rental: "RENTAL",
+      employment: "EMPLOYMENT",
+      loan: "LOAN",
+      tos: "TOS",
+      freelance: "FREELANCE",
       nda: "NDA",
-      sale: "Sale",
-      partnership: "Partnership",
-      other: "Other",
+      sale: "SALE",
+      partnership: "PARTNERSHIP",
+      other: "GENERIC",
     };
 
     if (typeBreakdown.length >= 2 && riskiest.avgRisk > 40) {
       insights.push({
         icon: "alert",
-        title: `${typeLabels[riskiest.type] || riskiest.type} Contracts Are Riskiest`,
-        description: `Your ${(typeLabels[riskiest.type] || riskiest.type).toLowerCase()} contracts have an average risk of ${riskiest.avgRisk}/100. Pay extra attention to these.`,
+        title: `CRITICAL DETECTED: [${typeLabels[riskiest.type] || riskiest.type}]`,
+        description: `Highest risk vector identified in ${(typeLabels[riskiest.type] || riskiest.type).toLowerCase()} parameters. Average severity index: ${riskiest.avgRisk}/100.`,
         type: "warning",
       });
     } else {
       insights.push({
         icon: "chart",
-        title: `Mostly ${typeLabels[mostCommon.type] || mostCommon.type} Contracts`,
-        description: `${mostCommon.count} out of ${stats.totalContracts} contracts are ${(typeLabels[mostCommon.type] || mostCommon.type).toLowerCase()} agreements.`,
+        title: `VOLUME ANALYSIS: [${typeLabels[mostCommon.type] || mostCommon.type}]`,
+        description: `Primary ingestion payload consists of ${mostCommon.count} ${(typeLabels[mostCommon.type] || mostCommon.type).toLowerCase()} documents.`,
         type: "neutral",
       });
     }
@@ -106,22 +102,22 @@ function generateInsights(
     if (riskyPercent > 30) {
       insights.push({
         icon: "alert",
-        title: `${riskyPercent}% of Clauses Are Risky`,
-        description: `That's higher than usual. Consider using ClauseWall's Contract Builder to generate fairer alternatives.`,
+        title: `SYSTEM ALERT: ${riskyPercent}% ANOMALY RATE`,
+        description: `Density of hostile clauses exceeds safe threshold. Recommend utilizing Contract Generator for cleaner base templates.`,
         type: "warning",
       });
     } else if (riskyPercent < 10) {
       insights.push({
         icon: "check",
-        title: "Your Contracts Are Mostly Clean",
-        description: `Only ${riskyPercent}% of clauses are dangerous or illegal. You're dealing with relatively fair agreements.`,
+        title: "ANALYSIS: CLEAN PAYLOAD",
+        description: `Hostile clause density (${riskyPercent}%) remains below critical thresholds. Current parameters acceptable.`,
         type: "positive",
       });
     } else {
       insights.push({
         icon: "info",
-        title: `${stats.dangerousClausesCount + stats.illegalClausesCount} Risky Clauses Found`,
-        description: `Out of ${stats.totalClauses} total clauses, ${riskyPercent}% need attention. Always negotiate before signing.`,
+        title: `SCAN COMPLETE: ${stats.dangerousClausesCount + stats.illegalClausesCount} FLAGGED`,
+        description: `Out of ${stats.totalClauses} total extracted clauses, ${riskyPercent}% require manual clearance verification.`,
         type: "neutral",
       });
     }
@@ -131,22 +127,22 @@ function generateInsights(
   if (stats.illegalClausesCount > 0) {
     insights.push({
       icon: "tip",
-      title: "💡 Pro Tip",
-      description: `You've found ${stats.illegalClausesCount} illegal clauses. Use the Legal Notice Generator to formally challenge them — most parties back down when served a notice.`,
+      title: "TACTICAL RECOMMENDATION",
+      description: `Analysis detected ${stats.illegalClausesCount} illegal parameters. Deploy the Legal Notice Generator to initiate formal countermeasures.`,
       type: "tip",
     });
   } else if (stats.contractsBuilt === 0 && stats.totalContracts >= 1) {
     insights.push({
       icon: "tip",
-      title: "💡 Pro Tip",
-      description: `Try the Contract Builder to generate a fair agreement yourself. Don't just spot bad contracts — create good ones.`,
+      title: "SYSTEM RECOMMENDATION",
+      description: `Shift from defensive scanning to offensive generation. Initialize the Contract Builder for pre-secured agreements.`,
       type: "tip",
     });
   } else {
     insights.push({
       icon: "tip",
-      title: "💡 Pro Tip",
-      description: `Always ask for the contract 48 hours before signing. Rushed signatures are how predatory clauses slip through.`,
+      title: "PROTOCOL REMINDER",
+      description: `Enforce 48-hour buffer protocol prior to execution signature. Rapid deployment increases risk slip-through.`,
       type: "tip",
     });
   }
@@ -171,24 +167,24 @@ const TYPE_STYLES: Record<
   { bg: string; border: string; iconColor: string }
 > = {
   positive: {
-    bg: "bg-green-100",
-    border: "border-green-600 shadow-[4px_4px_0px_0px_rgba(22,163,74,1)]",
-    iconColor: "text-green-800 bg-green-200 border-2 border-green-600",
+    bg: "bg-[#050505]",
+    border: "border-emerald-900/50",
+    iconColor: "text-emerald-500 bg-emerald-950/20 border border-emerald-900/40",
   },
   warning: {
-    bg: "bg-amber-100",
-    border: "border-yellow-500 shadow-[4px_4px_0px_0px_rgba(234,179,8,1)]",
-    iconColor: "text-amber-800 bg-amber-200 border-2 border-yellow-500",
+    bg: "bg-[#050505]",
+    border: "border-red-900/50",
+    iconColor: "text-red-500 bg-red-950/20 border border-red-900/40",
   },
   neutral: {
-    bg: "bg-blue-100",
-    border: "border-blue-600 shadow-[4px_4px_0px_0px_rgba(37,99,235,1)]",
-    iconColor: "text-blue-800 bg-blue-200 border-2 border-blue-600",
+    bg: "bg-[#050505]",
+    border: "border-cyan-900/50",
+    iconColor: "text-cyan-500 bg-cyan-950/20 border border-cyan-900/40",
   },
   tip: {
-    bg: "bg-purple-100",
-    border: "border-purple-600 shadow-[4px_4px_0px_0px_rgba(147,51,234,1)]",
-    iconColor: "text-purple-800 bg-purple-200 border-2 border-purple-600",
+    bg: "bg-[#050505]",
+    border: "border-pink-900/50",
+    iconColor: "text-pink-500 bg-pink-950/20 border border-pink-900/40",
   },
 };
 
@@ -202,38 +198,38 @@ export default function InsightsSection({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.25 }}
-      className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] bg-background p-6 h-full flex flex-col"
+      className="bg-[#0a0a0a] border border-neutral-900 p-6 h-full flex flex-col"
     >
-      <div className="flex items-center gap-2 mb-5 pb-4 border-b-2 border-foreground">
-        <Lightbulb className="w-6 h-6 text-purple-600 fill-purple-100" />
-        <h3 className="text-xl font-black uppercase tracking-wider text-foreground">
-          Smart Insights
+      <div className="flex items-center gap-3 mb-5 pb-4 border-b border-neutral-900">
+        <Lightbulb className="w-4 h-4 text-pink-500" />
+        <h3 className="text-[10px] font-mono uppercase tracking-widest text-neutral-400">
+          [ SYSTEM_INSIGHTS ]
         </h3>
       </div>
 
-      <div className="space-y-4 flex-1">
+      <div className="space-y-3 flex-1">
         {insights.map((insight, index) => {
           const style = TYPE_STYLES[insight.type] || TYPE_STYLES.neutral;
 
           return (
             <motion.div
               key={index}
-              initial={{ opacity: 0, x: -10 }}
+              initial={{ opacity: 0, x: -5 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3 + index * 0.1 }}
-              className={`flex items-start gap-4 p-4 border-2 transition-transform hover:-translate-y-1 ${style.bg} ${style.border}`}
+              className={`flex items-start gap-4 p-4 border transition-colors hover:bg-neutral-950 ${style.bg} ${style.border}`}
             >
-              <div className={`mt-0.5 p-2 ${style.iconColor}`}>
-                {ICON_MAP[insight.icon] || <Info className="w-5 h-5" />}
+              <div className={`p-1.5 ${style.iconColor} flex items-center justify-center shrink-0 mt-0.5`}>
+                {ICON_MAP[insight.icon] || <Info className="w-4 h-4" />}
               </div>
               <div>
-                <p className="text-sm font-black uppercase tracking-wider text-foreground mb-1">
+                <p className="text-[10px] font-mono uppercase tracking-widest text-neutral-300 mb-1.5">
                   {insight.title}
                 </p>
-                <p className="text-xs font-bold text-foreground/80 leading-relaxed">
+                <p className="text-xs font-mono text-neutral-500 leading-relaxed uppercase">
                   {insight.description}
                 </p>
               </div>
