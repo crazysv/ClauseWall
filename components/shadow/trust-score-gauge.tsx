@@ -16,34 +16,29 @@ export default function TrustScoreGauge({
   const getColor = (s: number) => {
     if (s >= 80)
       return {
-        stroke: "#16a34a",
-        glow: "transparent",
+        stroke: "#22c55e",
         label: "PROMISES MOSTLY KEPT",
         labelColor:
-          "text-green-700 bg-green-100 border-2 border-green-600 block px-2 py-1 mt-2",
+          "text-emerald-400 bg-emerald-950/20 border border-emerald-900/50",
       };
     if (s >= 50)
       return {
-        stroke: "#ca8a04",
-        glow: "transparent",
+        stroke: "#eab308",
         label: "SOME PROMISES BROKEN",
         labelColor:
-          "text-yellow-700 bg-yellow-100 border-2 border-yellow-500 block px-2 py-1 mt-2",
+          "text-amber-400 bg-amber-950/20 border border-amber-900/50",
       };
     if (s >= 20)
       return {
-        stroke: "#ea580c",
-        glow: "transparent",
+        stroke: "#f97316",
         label: "MANY PROMISES BROKEN",
         labelColor:
-          "text-orange-700 bg-orange-100 border-2 border-orange-500 block px-2 py-1 mt-2",
+          "text-amber-500 bg-amber-950/20 border border-amber-900/50",
       };
     return {
-      stroke: "#dc2626",
-      glow: "transparent",
+      stroke: "#ef4444",
       label: "MOST PROMISES CONTRADICTED",
-      labelColor:
-        "text-red-700 bg-red-100 border-2 border-red-600 block px-2 py-1 mt-2",
+      labelColor: "text-red-400 bg-red-950/20 border border-red-900/50",
     };
   };
 
@@ -55,20 +50,17 @@ export default function TrustScoreGauge({
   const progress = ((100 - score) / 100) * circumference;
 
   return (
-    <div className="flex flex-col items-center justify-center p-6 bg-white w-full">
+    <div className="flex flex-col items-center justify-center p-6 w-full">
       <div className="relative w-40 h-40">
-        <svg
-          className="w-full h-full -rotate-90 drop-shadow-[4px_4px_0px_rgba(0,0,0,1)]"
-          viewBox="0 0 120 120"
-        >
+        <svg className="w-full h-full -rotate-90" viewBox="0 0 120 120">
           {/* Background circle */}
           <circle
             cx="60"
             cy="60"
             r={radius}
-            fill="#f3f4f6"
-            stroke="#000000"
-            strokeWidth="8"
+            fill="#0a0a0a"
+            stroke="#262626"
+            strokeWidth="6"
           />
           {/* Progress circle */}
           <motion.circle
@@ -77,50 +69,50 @@ export default function TrustScoreGauge({
             r={radius}
             fill="none"
             stroke={stroke}
-            strokeWidth="10"
+            strokeWidth="8"
             strokeLinecap="square"
             strokeDasharray={circumference}
             initial={{ strokeDashoffset: circumference }}
             animate={{ strokeDashoffset: progress }}
             transition={{ duration: 1.5, ease: "easeOut" }}
           />
-          {/* Inner ring for border effect */}
+          {/* Inner ring */}
           <circle
             cx="60"
             cy="60"
             r={radius - 4}
             fill="none"
-            stroke="#000000"
-            strokeWidth="2"
+            stroke="#171717"
+            strokeWidth="1"
           />
         </svg>
 
         {/* Center text */}
         <div className="absolute inset-0 flex flex-col items-center justify-center pt-2">
           <motion.span
-            className="text-4xl font-black text-black"
+            className="text-3xl font-mono tabular-nums text-neutral-200"
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.5, duration: 0.5 }}
           >
             {score}
           </motion.span>
-          <span className="text-[10px] font-black uppercase tracking-widest text-black/60 bg-gray-200 mt-1 px-1">
-            Trust Score
+          <span className="text-[7px] font-mono uppercase tracking-widest text-neutral-600 mt-1">
+            TRUST SCORE
           </span>
         </div>
       </div>
 
-      <div className="mt-6 text-center w-full">
+      <div className="mt-5 text-center w-full">
         <span
-          className={`text-xs font-black uppercase tracking-widest ${labelColor}`}
+          className={`text-[8px] font-mono uppercase tracking-widest px-2 py-1 block ${labelColor}`}
         >
           {label}
         </span>
-        <p className="text-xs font-bold uppercase tracking-widest text-black/60 mt-3 p-2 border-2 border-black border-dashed bg-gray-50">
-          <strong className="text-black">{totalMismatches}</strong> of{" "}
-          <strong className="text-black">{totalPromises}</strong> promises
-          don&apos;t match contract
+        <p className="text-[8px] font-mono uppercase tracking-widest text-neutral-600 mt-3 p-2 border border-dashed border-neutral-800 bg-[#050505]">
+          <strong className="text-neutral-300">{totalMismatches}</strong> OF{" "}
+          <strong className="text-neutral-300">{totalPromises}</strong> PROMISES
+          DON&apos;T MATCH CONTRACT
         </p>
       </div>
     </div>

@@ -4,8 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { FileSearch, ArrowLeft, Download, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { FileSearch, ArrowLeft, Download, Loader2, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 import type {
   ShadowAnalysis,
@@ -143,60 +142,59 @@ export default function ShadowPage() {
   // Loading
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-amber-400" />
+      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
       </div>
     );
   }
 
   return (
-    <div className="relative min-h-screen bg-white text-black">
+    <div className="min-h-screen bg-[#0a0a0a] text-neutral-200">
       <div className="relative px-4 sm:px-6 lg:px-8 py-8 max-w-6xl mx-auto">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 pb-4 border-b-4 border-black gap-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 pb-4 border-b border-neutral-900 gap-4">
           <div className="flex items-center gap-4">
-            <Link href={`/results/${documentId}`}>
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-12 w-12 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all rounded-none"
-              >
-                <ArrowLeft className="w-6 h-6 text-black" />
-              </Button>
+            <Link
+              href={`/results/${documentId}`}
+              className="p-2 border border-neutral-800 bg-[#050505] text-neutral-600 hover:text-neutral-300 hover:border-neutral-600 transition-colors"
+              aria-label="Back to results"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
             </Link>
-            <div>
-              <h1 className="text-2xl sm:text-4xl font-black uppercase tracking-tight flex items-center gap-3">
-                <span className="bg-black text-white p-2 border-2 border-black">
-                  <FileSearch className="w-8 h-8" />
-                </span>
-                Shadow Agreement Detector
-              </h1>
-              <p className="text-sm font-bold uppercase tracking-widest text-foreground mt-2 bg-gray-100 inline-block px-2 py-1">
-                Compare verbal promises against your contract
-              </p>
+            <div className="flex items-center gap-3">
+              <div className="p-2 border border-amber-900/50 bg-amber-950/10">
+                <FileSearch className="w-5 h-5 text-amber-500" />
+              </div>
+              <div>
+                <h1 className="text-xs font-mono uppercase tracking-widest text-neutral-200">
+                  SHADOW_AGREEMENT_DETECTOR
+                </h1>
+                <p className="text-[8px] font-mono uppercase tracking-widest text-neutral-600 mt-0.5">
+                  COMPARE VERBAL PROMISES AGAINST YOUR CONTRACT
+                </p>
+              </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             {analysis && (
               <>
-                <Button
-                  variant="outline"
+                <button
                   onClick={() => {
                     setViewMode("upload");
                   }}
-                  className="h-12 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-widest rounded-none text-xs gap-2"
+                  className="flex items-center gap-2 px-3 py-1.5 border border-neutral-800 bg-[#050505] font-mono uppercase tracking-widest text-[8px] text-neutral-400 hover:text-neutral-200 hover:border-neutral-600 transition-colors"
                 >
-                  Re-Analyze
-                </Button>
-                <Button
-                  variant="default"
+                  <RotateCcw className="w-3 h-3" />
+                  RE-ANALYZE
+                </button>
+                <button
                   onClick={handleDownloadReport}
-                  className="h-12 bg-black text-white border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,0.5)] transition-all font-black uppercase tracking-widest rounded-none text-xs gap-2"
+                  className="flex items-center gap-2 px-3 py-1.5 border border-amber-900/50 bg-amber-950/10 font-mono uppercase tracking-widest text-[8px] text-amber-400 hover:text-amber-300 hover:border-amber-800 transition-colors"
                 >
-                  <Download className="w-4 h-4" />
-                  PDF Report
-                </Button>
+                  <Download className="w-3 h-3" />
+                  PDF REPORT
+                </button>
               </>
             )}
           </div>
@@ -223,20 +221,20 @@ export default function ShadowPage() {
                   animate={{ opacity: 1 }}
                   className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
                 >
-                  <div className="bg-white border-8 border-black shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] p-8 sm:p-12 max-w-lg w-full text-center space-y-6">
-                    <div className="relative mx-auto w-20 h-20">
-                      <Loader2 className="w-20 h-20 text-black animate-spin" />
+                  <div className="border border-neutral-800 bg-[#0a0a0a] p-8 sm:p-12 max-w-lg w-full text-center space-y-6">
+                    <div className="relative mx-auto w-16 h-16">
+                      <Loader2 className="w-16 h-16 text-amber-500 animate-spin" />
                     </div>
-                    <h3 className="text-2xl font-black uppercase tracking-widest text-black border-b-4 border-black pb-4">
-                      Analyzing Evidence
+                    <h3 className="text-xs font-mono uppercase tracking-widest text-neutral-200 border-b border-neutral-800 pb-4">
+                      ANALYZING EVIDENCE
                     </h3>
-                    <div className="space-y-3 text-sm font-bold uppercase tracking-widest text-black/70 text-left bg-gray-100 p-4 border-4 border-black">
-                      <p>📝 Extracting promises from evidence...</p>
-                      <p>🔍 Cross-referencing against contract...</p>
-                      <p>⚖️ Checking legal enforceability...</p>
+                    <div className="space-y-2 text-[9px] font-mono uppercase tracking-widest text-neutral-500 text-left border border-neutral-800 bg-[#050505] p-4">
+                      <p>📝 EXTRACTING PROMISES FROM EVIDENCE...</p>
+                      <p>🔍 CROSS-REFERENCING AGAINST CONTRACT...</p>
+                      <p>⚖️ CHECKING LEGAL ENFORCEABILITY...</p>
                     </div>
-                    <p className="text-xs font-black text-black bg-yellow-200 py-2 border-2 border-black uppercase">
-                      Takes 30-90 seconds
+                    <p className="text-[8px] font-mono uppercase tracking-widest text-amber-400 bg-amber-950/20 border border-amber-900/50 py-2">
+                      TAKES 30-90 SECONDS
                     </p>
                   </div>
                 </motion.div>
@@ -248,42 +246,42 @@ export default function ShadowPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="space-y-8"
+              className="space-y-6"
             >
               {/* Trust Score + Summary */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="flex justify-center border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="flex justify-center border border-neutral-900 bg-[#0a0a0a] p-6">
                   <TrustScoreGauge
                     score={analysis.overall_trust_score}
                     totalPromises={analysis.total_promises_found}
                     totalMismatches={analysis.total_mismatches}
                   />
                 </div>
-                <div className="border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white p-0">
+                <div className="border border-neutral-900 bg-[#0a0a0a]">
                   <ShadowSummaryCard analysis={analysis} />
                 </div>
               </div>
 
               {/* Tab Navigation */}
-              <div className="flex flex-wrap sm:flex-nowrap gap-2 bg-gray-100 border-4 border-black p-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              <div className="flex flex-wrap sm:flex-nowrap gap-1 border-b border-neutral-900 pb-3">
                 {[
                   {
                     key: "mismatches" as const,
-                    label: `Mismatches (${analysis.mismatches.length})`,
+                    label: `MISMATCHES (${analysis.mismatches.length})`,
                   },
                   {
                     key: "timeline" as const,
-                    label: `Timeline (${analysis.promises.length})`,
+                    label: `TIMELINE (${analysis.promises.length})`,
                   },
-                  { key: "table" as const, label: "Comparison" },
+                  { key: "table" as const, label: "COMPARISON" },
                 ].map((tab) => (
                   <button
                     key={tab.key}
                     onClick={() => setActiveTab(tab.key)}
-                    className={`flex-1 py-3 px-4 text-xs sm:text-sm font-black uppercase tracking-widest transition-all border-4 border-transparent ${
+                    className={`flex-1 py-2.5 px-4 text-[8px] font-mono uppercase tracking-widest transition-colors border ${
                       activeTab === tab.key
-                        ? "bg-black text-white border-black shadow-[inset_4px_4px_0px_0px_rgba(255,255,255,0.2)]"
-                        : "text-black hover:bg-gray-300 hover:border-black"
+                        ? "bg-amber-950/20 text-amber-400 border-amber-900/50"
+                        : "bg-[#050505] text-neutral-600 border-neutral-800 hover:border-neutral-700 hover:text-neutral-400"
                     }`}
                   >
                     {tab.label}
@@ -300,32 +298,26 @@ export default function ShadowPage() {
                   exit={{ opacity: 0, y: -10 }}
                 >
                   {activeTab === "mismatches" && (
-                    <div className="card-impact p-6 bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-                      <MismatchList mismatches={analysis.mismatches} />
-                    </div>
+                    <MismatchList mismatches={analysis.mismatches} />
                   )}
                   {activeTab === "timeline" && (
-                    <div className="card-impact p-6 bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-                      <PromiseTimeline promises={analysis.promises} />
-                    </div>
+                    <PromiseTimeline promises={analysis.promises} />
                   )}
                   {activeTab === "table" && (
-                    <div className="card-impact p-6 bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-                      <ComparisonTable mismatches={analysis.mismatches} />
-                    </div>
+                    <ComparisonTable mismatches={analysis.mismatches} />
                   )}
                 </motion.div>
               </AnimatePresence>
 
               {/* Legal Notice */}
-              <div className="p-6 bg-blue-100 border-4 border-blue-600 shadow-[6px_6px_0px_0px_rgba(37,99,235,1)]">
-                <p className="font-black uppercase tracking-widest text-blue-900 mb-3 text-lg border-b-4 border-blue-600 pb-2 inline-block">
-                  ⚖️ Legal Note
+              <div className="p-5 border-l-2 border-cyan-500 bg-cyan-950/20">
+                <p className="text-[9px] font-mono uppercase tracking-widest text-cyan-400 mb-3">
+                  ⚖️ LEGAL NOTE
                 </p>
-                <p className="text-sm font-bold uppercase tracking-widest text-blue-800 leading-relaxed">
+                <p className="text-[8px] font-mono text-neutral-500 leading-relaxed">
                   Under Section 92 of the Indian Evidence Act, oral agreements
-                  that contradict written contracts are generally not
-                  admissible. However, provisos 1-3 allow evidence of fraud,
+                  that contradict written contracts are generally not admissible.
+                  However, provisos 1-3 allow evidence of fraud,
                   misrepresentation, or separate oral agreements on matters not
                   covered by the written document. WhatsApp and email evidence
                   may be admissible under Section 65B of the IT Act, 2000 with a

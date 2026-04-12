@@ -7,10 +7,10 @@ interface ComparisonTableProps {
 }
 
 const SEVERITY_DOT: Record<MismatchSeverity, string> = {
-  critical: "bg-red-600 border-red-900 border-2",
-  major: "bg-orange-500 border-orange-900 border-2",
-  minor: "bg-yellow-400 border-yellow-900 border-2",
-  info: "bg-blue-500 border-blue-900 border-2",
+  critical: "bg-red-500 border border-red-400",
+  major: "bg-amber-500 border border-amber-400",
+  minor: "bg-amber-400 border border-amber-300",
+  info: "bg-cyan-500 border border-cyan-400",
 };
 
 const TYPE_LABELS: Record<string, string> = {
@@ -28,28 +28,28 @@ export default function ComparisonTable({ mismatches }: ComparisonTableProps) {
 
   return (
     <div className="space-y-4">
-      <h3 className="text-xl font-black uppercase tracking-widest text-black border-b-4 border-black pb-2">
-        📊 Promise vs. Contract
+      <h3 className="text-[9px] font-mono uppercase tracking-widest text-neutral-400 border-b border-neutral-800 pb-2">
+        📊 PROMISE VS. CONTRACT
       </h3>
 
-      <div className="overflow-x-auto border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-white">
+      <div className="overflow-x-auto border border-neutral-900 bg-[#0a0a0a]">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b-4 border-black bg-gray-100">
-              <th className="py-3 px-4 text-left text-xs font-black uppercase tracking-widest text-black w-8 border-r-4 border-black">
+            <tr className="border-b border-neutral-800">
+              <th className="py-3 px-3 text-left text-[7px] font-mono uppercase tracking-widest text-neutral-600 w-8 border-r border-neutral-800">
                 #
               </th>
-              <th className="py-3 px-4 text-left text-xs font-black uppercase tracking-widest text-black border-r-4 border-black bg-yellow-200">
-                💬 Promise
+              <th className="py-3 px-3 text-left text-[7px] font-mono uppercase tracking-widest text-amber-400 border-r border-neutral-800">
+                💬 PROMISE
               </th>
-              <th className="py-3 px-4 text-left text-xs font-black uppercase tracking-widest text-white border-r-4 border-black bg-black">
-                📄 Contract
+              <th className="py-3 px-3 text-left text-[7px] font-mono uppercase tracking-widest text-cyan-400 border-r border-neutral-800">
+                📄 CONTRACT
               </th>
-              <th className="py-3 px-4 text-left text-xs font-black uppercase tracking-widest text-black border-r-4 border-black">
-                Status
+              <th className="py-3 px-3 text-left text-[7px] font-mono uppercase tracking-widest text-neutral-500 border-r border-neutral-800">
+                STATUS
               </th>
-              <th className="py-3 px-4 text-left text-xs font-black uppercase tracking-widest text-black">
-                Clause
+              <th className="py-3 px-3 text-left text-[7px] font-mono uppercase tracking-widest text-neutral-500">
+                CLAUSE
               </th>
             </tr>
           </thead>
@@ -57,37 +57,37 @@ export default function ComparisonTable({ mismatches }: ComparisonTableProps) {
             {mismatches.map((m, i) => (
               <tr
                 key={m.id}
-                className="border-b-4 border-black last:border-b-0 hover:bg-gray-50 transition-colors"
+                className="border-b border-neutral-900 last:border-b-0 hover:bg-neutral-900/50 transition-colors"
               >
-                <td className="py-4 px-4 text-sm font-black text-black align-top border-r-4 border-black">
+                <td className="py-3 px-3 text-[8px] font-mono tabular-nums text-neutral-600 align-top border-r border-neutral-900">
                   {i + 1}
                 </td>
-                <td className="py-4 px-4 align-top max-w-[250px] border-r-4 border-black bg-yellow-50">
-                  <p className="text-sm font-bold text-black leading-relaxed line-clamp-4">
+                <td className="py-3 px-3 align-top max-w-[250px] border-r border-neutral-900">
+                  <p className="text-[9px] font-mono text-neutral-300 leading-relaxed line-clamp-4">
                     {m.promise_says}
                   </p>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mt-2 bg-yellow-200 inline-block px-1 border-2 border-black">
+                  <p className="text-[7px] font-mono uppercase tracking-widest text-neutral-600 mt-2">
                     — {m.promise.promised_by}
                     {m.promise.date ? `, ${m.promise.date}` : ""}
                   </p>
                 </td>
-                <td className="py-4 px-4 align-top max-w-[250px] border-r-4 border-black bg-gray-50">
-                  <p className="text-sm font-bold text-black leading-relaxed line-clamp-4">
+                <td className="py-3 px-3 align-top max-w-[250px] border-r border-neutral-900">
+                  <p className="text-[9px] font-mono text-neutral-400 leading-relaxed line-clamp-4">
                     {m.contract_says}
                   </p>
                 </td>
-                <td className="py-4 px-4 align-top border-r-4 border-black">
+                <td className="py-3 px-3 align-top border-r border-neutral-900">
                   <div className="flex items-center gap-2">
                     <div
-                      className={`w-3 h-3 flex-shrink-0 ${SEVERITY_DOT[m.severity]}`}
+                      className={`w-2 h-2 flex-shrink-0 ${SEVERITY_DOT[m.severity]}`}
                     />
-                    <span className="text-xs font-black uppercase tracking-widest text-black whitespace-nowrap">
+                    <span className="text-[7px] font-mono uppercase tracking-widest text-neutral-400 whitespace-nowrap">
                       {TYPE_LABELS[m.mismatch_type] || m.mismatch_type}
                     </span>
                   </div>
                 </td>
-                <td className="py-4 px-4 align-top">
-                  <span className="text-xs font-black uppercase tracking-widest text-black bg-gray-200 px-2 py-1 border-2 border-black">
+                <td className="py-3 px-3 align-top">
+                  <span className="text-[7px] font-mono uppercase tracking-widest text-neutral-500 border border-neutral-800 bg-[#050505] px-1.5 py-0.5">
                     {m.clause_number ? `#${m.clause_number}` : "—"}
                   </span>
                 </td>
