@@ -9,7 +9,6 @@ import {
   AlertTriangle,
   Loader2,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import type { VaultAnalysisResult } from "@/types";
 import VaultOverview from "@/components/vault/vault-overview";
@@ -73,32 +72,32 @@ export default function VaultPage() {
   };
 
   return (
-    <div className="relative min-h-screen px-4 sm:px-6 lg:px-8 py-8 pb-24 sm:pb-8 bg-background">
+    <div className="relative min-h-screen px-4 sm:px-6 lg:px-8 py-8 pb-24 sm:pb-8 bg-[#050505]">
       {/* Background decoration */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
-        <div className="absolute top-0 w-full h-[2px] bg-black/10" />
-        <div className="absolute top-1/4 left-0 w-full h-[4px] border-y-2 border-black" />
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 w-full h-[1px] bg-neutral-800" />
+        <div className="absolute top-[25%] left-0 w-full h-[1px] bg-neutral-900/50" />
       </div>
 
       <div className="relative mx-auto max-w-5xl">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
-            <div className="flex items-center gap-3 text-muted-foreground mb-4">
-              <div className="p-2 border-4 border-black bg-white dark:bg-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                <FileStack className="h-5 w-5 text-black dark:text-white stroke-[3px]" />
+            <div className="flex items-center gap-3 text-neutral-500 mb-4">
+              <div className="p-2 border border-cyan-900/50 bg-cyan-950/20">
+                <FileStack className="h-4 w-4 text-cyan-500" />
               </div>
-              <span className="font-black uppercase tracking-widest text-xs">
-                CROSS-CONTRACT ANALYSIS
+              <span className="font-mono uppercase tracking-widest text-[10px] text-cyan-500">
+                [ CROSS-CONTRACT_INTELLIGENCE ]
               </span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-widest text-foreground">
+            <h1 className="text-2xl sm:text-3xl font-mono uppercase tracking-widest text-neutral-200">
               CONTRACT{" "}
-              <span className="text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-950 px-2 py-1 border-4 border-black shadow-[4px_4px_0px_0px_rgba(79,70,229,1)]">
+              <span className="text-cyan-400">
                 VAULT
               </span>
             </h1>
-            <p className="font-bold uppercase tracking-widest text-muted-foreground mt-4 max-w-2xl text-sm leading-relaxed">
+            <p className="font-mono uppercase tracking-widest text-neutral-500 mt-4 max-w-2xl text-[10px] leading-relaxed">
               DETECT CONFLICTS, COVERAGE GAPS, CASCADING FAILURES, AND HIDDEN
               RISKS ACROSS ALL YOUR CONTRACTS.
             </p>
@@ -106,10 +105,10 @@ export default function VaultPage() {
           {state === "results" && (
             <button
               onClick={resetToSelector}
-              className="flex items-center gap-2 px-4 py-2 border-4 border-black bg-white dark:bg-black font-black uppercase tracking-widest text-xs shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all"
+              className="flex items-center gap-2 px-4 py-2 border border-neutral-800 bg-neutral-950 font-mono uppercase tracking-widest text-[10px] text-neutral-400 hover:text-white hover:border-neutral-600 transition-colors"
             >
-              <RefreshCw className="h-4 w-4 stroke-[3px]" />
-              NEW ANALYSIS
+              <RefreshCw className="h-3.5 w-3.5" />
+              NEW_ANALYSIS
             </button>
           )}
         </div>
@@ -124,11 +123,11 @@ export default function VaultPage() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <div className="border-4 border-black bg-white dark:bg-zinc-900 p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-                <h2 className="text-xl font-black uppercase tracking-widest text-foreground mb-2">
-                  SELECT CONTRACTS TO ANALYZE
+              <div className="border border-neutral-900 bg-[#0a0a0a] p-6 sm:p-8">
+                <h2 className="text-[10px] font-mono uppercase tracking-widest text-neutral-400 mb-2">
+                  [ SELECT_PAYLOADS_FOR_SCAN ]
                 </h2>
-                <p className="font-bold uppercase tracking-widest text-muted-foreground mb-8 text-sm">
+                <p className="font-mono uppercase tracking-widest text-neutral-600 mb-8 text-[9px]">
                   CHOOSE AT LEAST 2 ANALYZED CONTRACTS FOR CROSS-CONTRACT
                   ANALYSIS.
                 </p>
@@ -138,15 +137,15 @@ export default function VaultPage() {
                   onSelectionChange={setSelectedIds}
                 />
 
-                <div className="mt-8 flex justify-end pt-6 border-t-4 border-black">
+                <div className="mt-8 flex justify-end pt-6 border-t border-neutral-900">
                   <button
                     onClick={runAnalysis}
                     disabled={selectedIds.length < 2}
-                    className="flex items-center gap-3 px-6 py-4 border-4 border-black bg-indigo-500 hover:bg-indigo-600 font-black uppercase tracking-widest text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                    className="flex items-center gap-3 px-6 py-3 border border-cyan-500/50 bg-cyan-500/10 text-cyan-400 hover:bg-cyan-500 hover:text-[#050505] font-mono uppercase tracking-widest text-[10px] transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-cyan-500/10 disabled:hover:text-cyan-400"
                   >
-                    ANALYZE {selectedIds.length} CONTRACT
+                    EXECUTE_SCAN — {selectedIds.length} PAYLOAD
                     {selectedIds.length !== 1 ? "S" : ""}
-                    <ArrowRight className="w-5 h-5 stroke-[3px]" />
+                    <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>
               </div>
@@ -186,19 +185,20 @@ export default function VaultPage() {
               exit={{ opacity: 0 }}
               className="flex flex-col items-center justify-center py-16 text-center"
             >
-              <AlertTriangle className="w-12 h-12 text-red-400 mb-4" />
-              <h3 className="text-lg font-semibold text-red-400 mb-2">
-                Analysis Failed
+              <div className="p-4 border border-red-900/50 bg-red-950/20 mb-6">
+                <AlertTriangle className="w-8 h-8 text-red-500" />
+              </div>
+              <h3 className="text-[10px] font-mono uppercase tracking-widest text-red-500 mb-3">
+                [ ANALYSIS_FAILED ]
               </h3>
-              <p className="text-sm text-white max-w-md mb-6">{error}</p>
-              <Button
+              <p className="text-xs font-mono text-neutral-400 max-w-md mb-6">{error}</p>
+              <button
                 onClick={resetToSelector}
-                variant="outline"
-                className="gap-2"
+                className="flex items-center gap-2 px-5 py-2 border border-neutral-800 bg-neutral-950 text-neutral-400 hover:text-white hover:border-neutral-600 transition-colors font-mono text-[10px] uppercase tracking-widest"
               >
-                <RefreshCw className="w-4 h-4" />
-                Try Again
-              </Button>
+                <RefreshCw className="w-3.5 h-3.5" />
+                RETRY_SCAN
+              </button>
             </motion.div>
           )}
         </AnimatePresence>
