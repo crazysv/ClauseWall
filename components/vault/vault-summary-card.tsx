@@ -10,7 +10,6 @@ import {
   GitBranch,
   Calendar,
 } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
 import type { VaultSummaryStats } from "@/types";
 
 interface VaultSummaryCardProps {
@@ -64,32 +63,32 @@ function AnimatedNumber({
 
 const RISK_CONFIG = {
   low: {
-    color: "text-green-600 dark:text-green-500",
-    bg: "bg-green-100 dark:bg-green-950",
-    border: "border-green-500",
-    gauge: "text-green-500",
-    label: "YOUR CONTRACTS ARE WELL-COORDINATED",
+    color: "text-emerald-500",
+    border: "border-emerald-900/50",
+    bg: "bg-emerald-950/20",
+    barColor: "bg-emerald-500",
+    label: "CONTRACTS WELL-COORDINATED — LOW CROSS-NODE RISK",
   },
   medium: {
-    color: "text-yellow-600 dark:text-yellow-500",
-    bg: "bg-yellow-100 dark:bg-yellow-950",
-    border: "border-yellow-500",
-    gauge: "text-yellow-500",
-    label: "SOME CROSS-CONTRACT ISSUES FOUND",
+    color: "text-amber-500",
+    border: "border-amber-900/50",
+    bg: "bg-amber-950/20",
+    barColor: "bg-amber-500",
+    label: "MODERATE CROSS-CONTRACT ISSUES DETECTED",
   },
   high: {
-    color: "text-orange-600 dark:text-orange-500",
-    bg: "bg-orange-100 dark:bg-orange-950",
-    border: "border-orange-500",
-    gauge: "text-orange-500",
-    label: "SIGNIFICANT CROSS-CONTRACT RISKS",
+    color: "text-orange-500",
+    border: "border-orange-900/50",
+    bg: "bg-orange-950/20",
+    barColor: "bg-orange-500",
+    label: "SIGNIFICANT CROSS-CONTRACT RISKS IDENTIFIED",
   },
   extreme: {
-    color: "text-red-700 dark:text-red-500",
-    bg: "bg-red-100 dark:bg-red-950",
-    border: "border-red-500",
-    gauge: "text-red-500",
-    label: "CRITICAL CROSS-CONTRACT DANGERS",
+    color: "text-red-500",
+    border: "border-red-900/50",
+    bg: "bg-red-950/20",
+    barColor: "bg-red-500",
+    label: "CRITICAL CROSS-CONTRACT DANGERS — IMMEDIATE ACTION REQUIRED",
   },
 };
 
@@ -111,125 +110,117 @@ export default function VaultSummaryCard({ stats }: VaultSummaryCardProps) {
       icon: FileStack,
       label: "CONTRACTS",
       value: stats.total_contracts,
-      color: "text-blue-600 dark:text-blue-500",
+      color: "text-cyan-500",
     },
     {
       icon: AlertTriangle,
-      label: "CRITICAL CONFLICTS",
+      label: "CRITICAL_CONFLICTS",
       value: stats.critical_conflicts,
       color:
         stats.critical_conflicts > 0
-          ? "text-red-600 dark:text-red-500"
-          : "text-green-600 dark:text-green-500",
+          ? "text-red-500"
+          : "text-emerald-500",
     },
     {
       icon: ShieldOff,
-      label: "COVERAGE GAPS",
+      label: "COVERAGE_GAPS",
       value: stats.coverage_gaps,
       color:
         stats.essential_gaps > 0
-          ? "text-orange-600 dark:text-orange-500"
-          : "text-blue-600 dark:text-blue-500",
+          ? "text-amber-500"
+          : "text-cyan-500",
     },
     {
       icon: IndianRupee,
-      label: "FINANCIAL EXPOSURE",
+      label: "FINANCIAL_EXPOSURE",
       value: stats.total_financial_exposure,
       isRupee: true,
       color:
         stats.total_financial_exposure > 500000
-          ? "text-red-600 dark:text-red-500"
-          : "text-yellow-600 dark:text-yellow-500",
+          ? "text-red-500"
+          : "text-amber-500",
     },
     {
       icon: GitBranch,
-      label: "CASCADE CHAINS",
+      label: "CASCADE_CHAINS",
       value: stats.cascading_failure_chains,
       color:
         stats.cascading_failure_chains > 0
-          ? "text-orange-600 dark:text-orange-500"
-          : "text-green-600 dark:text-green-500",
+          ? "text-orange-500"
+          : "text-emerald-500",
     },
     {
       icon: Calendar,
-      label: "MONTHLY OBLIGATIONS",
+      label: "MONTHLY_OBLIGATIONS",
       value: stats.total_monthly_obligations,
       isRupee: true,
-      color: "text-indigo-600 dark:text-indigo-500",
+      color: "text-indigo-400",
     },
   ];
 
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-      <div
-        className={`border-8 border-black ${config.bg} p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]`}
-      >
-        <div className="flex flex-col lg:flex-row gap-8 items-center lg:items-start border-b-4 lg:border-b-0 lg:border-r-4 border-black pb-8 lg:pb-0 lg:pr-8">
-          {/* Left: Risk Gauge */}
-          <div className="flex flex-col items-center justify-center min-w-[240px]">
-            <div className="relative w-40 h-40">
-              {/* Background circle */}
-              <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="42"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="12"
-                  className="text-black/10 dark:text-white/10"
-                />
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="42"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="12"
-                  strokeDasharray={`${gaugeWidth * 2.64} ${264 - gaugeWidth * 2.64}`}
-                  strokeLinecap="butt"
-                  className={`${config.gauge} transition-all duration-1000 ease-out drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]`}
-                />
-              </svg>
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-white dark:bg-black rounded-full m-5 border-4 border-black shadow-[inset_2px_2px_0px_0px_rgba(0,0,0,1)]">
-                <span
-                  className={`text-2xl font-black uppercase tracking-widest ${config.color}`}
-                >
-                  {stats.overall_vault_risk}
-                </span>
-              </div>
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+      <div className="border border-neutral-900 bg-[#0a0a0a] p-6 sm:p-8">
+        {/* Risk header */}
+        <div className="flex flex-col lg:flex-row gap-8 items-stretch">
+          {/* Left: Risk Gauge — rectilinear bar */}
+          <div className="flex flex-col justify-center min-w-[220px] lg:border-r lg:border-neutral-900 lg:pr-8">
+            <div className="text-[9px] font-mono uppercase tracking-widest text-neutral-600 mb-3">
+              VAULT_RISK_ASSESSMENT
             </div>
+
+            {/* Horizontal bar gauge */}
+            <div className="w-full h-2 bg-neutral-900 mb-4 overflow-hidden">
+              <motion.div
+                className={`h-full ${config.barColor}`}
+                initial={{ width: 0 }}
+                animate={{ width: `${gaugeWidth}%` }}
+                transition={{ duration: 1, ease: "easeOut" }}
+              />
+            </div>
+
+            <div className="flex items-baseline gap-3 mb-4">
+              <span
+                className={`text-3xl font-mono uppercase tracking-widest ${config.color}`}
+              >
+                {stats.overall_vault_risk}
+              </span>
+              <span className="text-[8px] font-mono uppercase tracking-widest text-neutral-600">
+                SEVERITY_LEVEL
+              </span>
+            </div>
+
             <p
-              className={`text-sm font-bold uppercase tracking-widest mt-6 text-center ${config.color} px-4 py-2 border-4 border-black bg-white dark:bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]`}
+              className={`text-[9px] font-mono uppercase tracking-widest leading-relaxed ${config.color} border-l-2 ${config.border} pl-3 py-1`}
             >
               {config.label}
             </p>
           </div>
 
           {/* Right: Metrics Grid */}
-          <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 gap-4 w-full">
+          <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 gap-3 w-full">
             {metrics.map((metric, i) => {
               const Icon = metric.icon;
               return (
                 <motion.div
                   key={metric.label}
-                  initial={{ opacity: 0, scale: 0.9 }}
+                  initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.1 + i * 0.05 }}
-                  className="border-4 border-black bg-white dark:bg-zinc-900 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all flex flex-col justify-between"
+                  className="border border-neutral-900 bg-[#050505] p-4 flex flex-col justify-between hover:border-neutral-700 transition-colors"
                 >
-                  <div className="flex items-center gap-3 mb-4 flex-wrap">
-                    <div className="p-1.5 border-2 border-black bg-gray-100 dark:bg-black w-fit">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="p-1 border border-neutral-800 bg-neutral-950">
                       <Icon
-                        className={`w-4 h-4 ${metric.color} stroke-[3px]`}
+                        className={`w-3.5 h-3.5 ${metric.color}`}
                       />
                     </div>
-                    <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground w-full sm:w-auto">
+                    <span className="text-[8px] font-mono uppercase tracking-widest text-neutral-600">
                       {metric.label}
                     </span>
                   </div>
                   <p
-                    className={`text-2xl font-black tabular-nums tracking-tighter ${metric.color}`}
+                    className={`text-xl font-mono tabular-nums ${metric.color}`}
                   >
                     {metric.isRupee ? (
                       <AnimatedNumber value={metric.value} prefix="₹" />
