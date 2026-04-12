@@ -125,56 +125,58 @@ export default function ContextRail({
   return (
     <div className="space-y-6">
       {/* ── Risk Score ── */}
-      <div className="card-results-emphasis p-5 text-center">
-        <p className="results-section-label mb-4">Risk Assessment</p>
-        <div
-          className="relative h-24 w-24 mx-auto rounded-full border-[3px] flex items-center justify-center mb-3"
-          style={{ borderColor: riskColor, backgroundColor: '#111111' }}
-        >
+      <div className="bg-[#050505] border border-neutral-900 rounded-sm p-5 relative overflow-hidden">
+        <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-neutral-500/10 to-transparent pointer-events-none" />
+        <p className="text-[9px] font-mono text-neutral-500 tracking-widest uppercase mb-4 text-center">
+          [OVERALL VULNERABILITY FACTOR]
+        </p>
+        <div className="text-center mb-2">
           <span
-            className="font-space text-4xl font-black tabular-nums"
+            className="font-mono text-5xl tracking-tighter"
             style={{ color: riskColor }}
           >
             {document.overall_risk_score}
           </span>
         </div>
-        <p
-          className="font-space text-xs font-bold uppercase tracking-widest"
-          style={{ color: riskColor }}
-        >
-          {getRiskLabel(riskLevel)}
-        </p>
-        <p className="text-[10px] text-[#6b6b6b] font-medium uppercase tracking-wider mt-1">
-          {document.total_clauses} clauses analyzed
+        <div className="text-center">
+          <span
+            className="inline-block border border-neutral-800 bg-[#0a0a0a] px-3 py-1 font-mono text-[10px] tracking-widest uppercase rounded-sm"
+            style={{ color: riskColor, borderColor: `${riskColor}40` }}
+          >
+            {getRiskLabel(riskLevel)}
+          </span>
+        </div>
+        <p className="text-[9px] font-mono text-neutral-600 tracking-widest uppercase text-center mt-3">
+          ARRAY SPAN: {document.total_clauses} VECTORS
         </p>
       </div>
 
       {/* ── Breakdown ── */}
       <div className="grid grid-cols-2 gap-2">
         {[
-          { count: document.safe_count, label: "Safe", borderColor: "#22c55e", textColor: "#22c55e" },
-          { count: document.warning_count, label: "Warning", borderColor: "#eab308", textColor: "#eab308" },
-          { count: document.dangerous_count, label: "Dangerous", borderColor: "#ef4444", textColor: "#ef4444" },
-          { count: document.illegal_count, label: "Illegal", borderColor: "#a855f7", textColor: "#a855f7" },
+          { count: document.safe_count, label: "SAFE", borderColor: "#10b981", textColor: "#10b981", bg: "bg-[#050a05]" },
+          { count: document.warning_count, label: "WARNING", borderColor: "#f59e0b", textColor: "#f59e0b", bg: "bg-[#0a0805]" },
+          { count: document.dangerous_count, label: "DANGEROUS", borderColor: "#ef4444", textColor: "#ef4444", bg: "bg-[#0a0505]" },
+          { count: document.illegal_count, label: "ILLEGAL", borderColor: "#dc2626", textColor: "#dc2626", bg: "bg-[#1a0505]" },
         ].map((s) => (
           <div
             key={s.label}
-            className="card-results p-3 border-l-4"
-            style={{ borderLeftColor: s.borderColor }}
+            className={`border border-neutral-800 rounded-sm p-3 ${s.bg}`}
+            style={{ borderLeftColor: s.borderColor, borderLeftWidth: "2px" }}
           >
-            <p className="font-space text-lg font-bold tabular-nums" style={{ color: s.textColor }}>{s.count}</p>
-            <p className="text-[10px] font-medium uppercase tracking-wider text-[#a3a3a3]">{s.label}</p>
+            <p className="font-mono text-xl tracking-tighter" style={{ color: s.textColor }}>{s.count}</p>
+            <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-500 mt-1">{s.label}</p>
           </div>
         ))}
       </div>
 
       {/* ── Entity ── */}
       {document.entity_name && (
-        <div>
-          <p className="results-section-label mb-1">
-            Identified Entity
+        <div className="bg-[#050505] border border-neutral-900 rounded-sm p-4">
+          <p className="text-[9px] font-mono text-cyan-600 tracking-widest uppercase mb-1">
+            [IDENTIFIED ENTITY]
           </p>
-          <p className="text-sm font-semibold text-[#fafafa] truncate">
+          <p className="text-xs font-mono text-neutral-300 truncate">
             {document.entity_name}
           </p>
         </div>
@@ -182,9 +184,11 @@ export default function ContextRail({
 
       {/* ── Summary ── */}
       {document.summary && (
-        <div>
-          <p className="results-section-label mb-2">Summary</p>
-          <p className="text-sm text-[#a3a3a3] leading-relaxed font-medium">
+        <div className="bg-[#050505] border border-neutral-900 rounded-sm p-4">
+          <p className="text-[9px] font-mono text-cyan-600 tracking-widest uppercase mb-2">
+            [SUMMARY CONTEXT]
+          </p>
+          <p className="text-[10px] font-mono text-neutral-400 leading-relaxed">
             {document.summary}
           </p>
         </div>
@@ -193,7 +197,9 @@ export default function ContextRail({
       {/* ── Detected Issues ── */}
       {hasAnyDetectedIssue && (
         <div>
-          <p className="results-section-label mb-3">Detected Issues</p>
+          <p className="text-[9px] font-mono text-neutral-500 tracking-widest uppercase mb-3">
+            [DETECTED ANOMALIES]
+          </p>
           <div className="space-y-2">
             {hasTimebombs && (
               <div id="timebomb-cta">
@@ -227,7 +233,9 @@ export default function ContextRail({
 
       {/* ── Next Steps / Actions ── */}
       <div>
-        <p className="results-section-label mb-3">Actions</p>
+        <p className="text-[9px] font-mono text-cyan-600 tracking-widest uppercase mb-3">
+          [RECOMMENDED ACTIONS]
+        </p>
         <NextSteps
           overallRiskScore={document.overall_risk_score ?? 0}
           illegalCount={document.illegal_count ?? 0}
@@ -241,22 +249,22 @@ export default function ContextRail({
       </div>
 
       {/* ── Analysis Details ── */}
-      <div className="border-t border-[#262626] pt-4">
+      <div className="border-t border-neutral-900 pt-4 mt-6">
         <button
           onClick={() => onSetAnalysisDetailsOpen(!analysisDetailsOpen)}
           className="w-full flex items-center justify-between py-2 group"
         >
-          <span className="results-section-label group-hover:text-[#a3a3a3] transition-colors">
-            Analysis Details
+          <span className="text-[10px] font-mono text-neutral-400 group-hover:text-white transition-colors uppercase tracking-widest">
+            [SYS.META_DATA]
           </span>
           <div className="flex items-center gap-2">
             {!analysisDetailsOpen && (
-              <span className="text-[9px] text-foreground/30">
-                {verificationStats.verification_rate}% verified
+              <span className="text-[9px] font-mono text-neutral-600 tracking-widest uppercase">
+                {verificationStats.verification_rate}% VERIFIED
               </span>
             )}
             <ChevronDown
-              className={`w-3 h-3 text-foreground/30 transition-transform ${analysisDetailsOpen ? "rotate-180" : ""}`}
+              className={`w-3 h-3 text-neutral-600 transition-transform ${analysisDetailsOpen ? "rotate-180" : ""}`}
             />
           </div>
         </button>
@@ -300,22 +308,22 @@ export default function ContextRail({
                 />
 
                 {/* Verification Stats */}
-                <div className="grid grid-cols-4 gap-1.5">
-                  <div className="text-center p-2 border border-green-600 bg-green-950/30">
-                    <p className="text-sm font-black tabular-nums text-green-400">{verificationStats.verified}</p>
-                    <p className="text-[7px] font-bold uppercase text-green-300/60">Verified</p>
+                <div className="grid grid-cols-4 gap-1.5 pt-2">
+                  <div className="text-center p-2 border border-emerald-900/50 bg-[#050a05]">
+                    <p className="text-xs font-mono text-emerald-500">{verificationStats.verified}</p>
+                    <p className="text-[7px] font-mono uppercase tracking-widest text-emerald-600">VERIFIED</p>
                   </div>
-                  <div className="text-center p-2 border border-yellow-600 bg-yellow-950/30">
-                    <p className="text-sm font-black tabular-nums text-yellow-400">{verificationStats.partial}</p>
-                    <p className="text-[7px] font-bold uppercase text-yellow-300/60">Partial</p>
+                  <div className="text-center p-2 border border-amber-900/50 bg-[#0a0805]">
+                    <p className="text-xs font-mono text-amber-500">{verificationStats.partial}</p>
+                    <p className="text-[7px] font-mono uppercase tracking-widest text-amber-600">PARTIAL</p>
                   </div>
-                  <div className="text-center p-2 border border-blue-600 bg-blue-950/30">
-                    <p className="text-sm font-black tabular-nums text-blue-400">{verificationStats.ai_suggested}</p>
-                    <p className="text-[7px] font-bold uppercase text-blue-300/60">AI-Only</p>
+                  <div className="text-center p-2 border border-cyan-900/50 bg-[#050b14]">
+                    <p className="text-xs font-mono text-cyan-500">{verificationStats.ai_suggested}</p>
+                    <p className="text-[7px] font-mono uppercase tracking-widest text-cyan-600">AI-ONLY</p>
                   </div>
-                  <div className="text-center p-2 border border-foreground/20 bg-foreground/5">
-                    <p className="text-sm font-black tabular-nums text-foreground">{verificationStats.verification_rate}%</p>
-                    <p className="text-[7px] font-bold uppercase text-foreground/40">Rate</p>
+                  <div className="text-center p-2 border border-neutral-800 bg-[#050505]">
+                    <p className="text-xs font-mono text-neutral-400">{verificationStats.verification_rate}%</p>
+                    <p className="text-[7px] font-mono uppercase tracking-widest text-neutral-600">COVERAGE</p>
                   </div>
                 </div>
               </div>
@@ -325,17 +333,17 @@ export default function ContextRail({
       </div>
 
       {/* ── Advanced Tools ── */}
-      <div className="border-t border-[#262626] pt-4">
+      <div className="border-t border-neutral-900 pt-4">
         <button
           onClick={() => onSetForensicsLabOpen(!forensicsLabOpen)}
           className="w-full flex items-center gap-2 py-2 group"
         >
-          <span className="results-section-label group-hover:text-[#a3a3a3] transition-colors">
-            More Tools
+          <span className="text-[10px] font-mono text-neutral-400 group-hover:text-white transition-colors uppercase tracking-widest">
+            [DEEP_LAB_TOOLS]
           </span>
-          <div className="flex-1 border-t border-[#262626]" />
+          <div className="flex-1 border-t border-neutral-900" />
           <ChevronDown
-            className={`w-3 h-3 text-foreground/20 group-hover:text-foreground/40 transition-all ${forensicsLabOpen ? "rotate-180" : ""}`}
+            className={`w-3 h-3 text-neutral-600 group-hover:text-neutral-400 transition-all ${forensicsLabOpen ? "rotate-180" : ""}`}
           />
         </button>
 
@@ -351,8 +359,8 @@ export default function ContextRail({
               <div className="space-y-3 pt-2 pb-2">
                 {/* Actions */}
                 <div className="space-y-2">
-                  <p className="results-section-label">
-                    Take Action
+                  <p className="text-[9px] font-mono text-cyan-600 tracking-widest uppercase mb-1">
+                    [TACTICAL RESPONSES]
                   </p>
                   <EscapeCTA
                     documentId={documentId}
@@ -380,9 +388,9 @@ export default function ContextRail({
                   </div>
                 </div>
 
-                <div className="space-y-2 pt-2 border-t border-[#262626]">
-                  <p className="results-section-label">
-                    Deep Analysis
+                <div className="space-y-2 pt-3 border-t border-neutral-900">
+                  <p className="text-[9px] font-mono text-cyan-600 tracking-widest uppercase mb-1">
+                    [SIMULATION & FORENSICS]
                   </p>
                   <SimulatorCTA
                     documentId={documentId}
@@ -390,16 +398,16 @@ export default function ContextRail({
                   />
                   <div id="ruin-calculator-cta">
                     <Link href={`/ruin-calculator/${documentId}`}>
-                      <div className="card-results p-3 hover:bg-[#1f1f1f] transition-colors cursor-pointer group">
+                      <div className="bg-[#050505] border border-neutral-800 rounded-sm p-3 hover:border-red-900 hover:bg-[#0a0505] transition-colors cursor-pointer group">
                         <div className="flex items-center gap-2.5">
-                          <div className="p-1.5 bg-[#dc2626] rounded-lg">
-                            <BarChart3 className="w-3.5 h-3.5 text-white" />
+                          <div className="p-1.5 bg-red-900/30 border border-red-900/50 rounded-sm">
+                            <BarChart3 className="w-3.5 h-3.5 text-red-500" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h4 className="text-[10px] font-bold uppercase text-red-100">
+                            <h4 className="text-[10px] font-mono uppercase tracking-widest text-red-500">
                               Financial Risk Calculator
                             </h4>
-                            <p className="text-[9px] text-[#a3a3a3] mt-0.5">
+                            <p className="text-[9px] font-mono text-neutral-500 mt-1 uppercase tracking-widest">
                               Monte Carlo simulation
                             </p>
                           </div>
@@ -431,16 +439,16 @@ export default function ContextRail({
 
                   <div id="vault-cta">
                     <Link href="/vault">
-                      <div className="card-results p-3 hover:bg-[#1f1f1f] transition-colors cursor-pointer group">
+                      <div className="bg-[#050505] border border-neutral-800 rounded-sm p-3 hover:border-indigo-900 hover:bg-[#05050a] transition-colors cursor-pointer group">
                         <div className="flex items-center gap-2.5">
-                          <div className="p-1.5 bg-indigo-600 rounded-lg">
-                            <FileStack className="w-3.5 h-3.5 text-white" />
+                          <div className="p-1.5 bg-indigo-900/30 border border-indigo-900/50 rounded-sm">
+                            <FileStack className="w-3.5 h-3.5 text-indigo-400" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h4 className="text-[10px] font-bold uppercase text-indigo-100">
+                            <h4 className="text-[10px] font-mono uppercase tracking-widest text-indigo-400">
                               Contract Vault
                             </h4>
-                            <p className="text-[9px] text-[#a3a3a3] mt-0.5">
+                            <p className="text-[9px] font-mono text-neutral-500 mt-1 uppercase tracking-widest">
                               Cross-analyze for conflicts
                             </p>
                           </div>

@@ -96,35 +96,35 @@ export default function ClauseCard({
     // Invalid proof data — ignore
   }
 
-  // Risk styling
+  // Risk stylin  // Risk styling
   const riskConfig = {
     safe: {
-      icon: <CheckCircle2 className="h-4 w-4 text-green-500" />,
-      borderClass: "border-l-4 border-l-green-500",
+      icon: <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />,
+      borderClass: "border-l-[2px] border-l-emerald-900/50",
       badgeClass:
-        "bg-green-500/10 text-green-400 font-bold border border-green-500/30 uppercase text-[10px] rounded-lg",
-      label: "Safe",
+        "bg-[#0e0e0e] text-emerald-500 font-mono border border-emerald-900/30 uppercase tracking-widest text-[9px] rounded-sm px-2 py-0.5",
+      label: "SAFE",
     },
     warning: {
-      icon: <AlertTriangle className="h-4 w-4 text-yellow-500" />,
-      borderClass: "border-l-4 border-l-yellow-500",
+      icon: <AlertTriangle className="h-3.5 w-3.5 text-amber-500" />,
+      borderClass: "border-l-[2px] border-l-amber-900/50",
       badgeClass:
-        "bg-yellow-500/10 text-yellow-400 font-bold border border-yellow-500/30 uppercase text-[10px] rounded-lg",
-      label: "Warning",
+        "bg-[#0e0e0e] text-amber-500 font-mono border border-amber-900/30 uppercase tracking-widest text-[9px] rounded-sm px-2 py-0.5",
+      label: "WARNING",
     },
     dangerous: {
-      icon: <XCircle className="h-4 w-4 text-red-500" />,
-      borderClass: "border-l-4 border-l-red-500",
+      icon: <XCircle className="h-3.5 w-3.5 text-red-500" />,
+      borderClass: "border-l-[2px] border-l-red-900/50 bg-[#1a0505]/20",
       badgeClass:
-        "bg-red-500/10 text-red-400 font-bold border border-red-500/30 uppercase text-[10px] rounded-lg",
-      label: "Dangerous",
+        "bg-[#0e0e0e] text-red-500 font-mono border border-red-900/50 uppercase tracking-widest text-[9px] rounded-sm px-2 py-0.5",
+      label: "DANGEROUS",
     },
     illegal: {
-      icon: <Scale className="h-4 w-4 text-purple-500" />,
-      borderClass: "border-l-4 border-l-purple-500",
+      icon: <Scale className="h-3.5 w-3.5 text-red-600" />,
+      borderClass: "border-l-[2px] border-l-red-600/60 bg-[#1a0505]/40",
       badgeClass:
-        "bg-purple-500/10 text-purple-400 font-bold border border-purple-500/30 uppercase text-[10px] rounded-lg",
-      label: "Illegal",
+        "bg-[#1a0505] text-red-500 font-mono border border-red-900 uppercase tracking-widest text-[9px] rounded-sm px-2 py-0.5 shadow-[0_0_10px_rgba(220,38,38,0.15)]",
+      label: "ILLEGAL",
     },
   };
 
@@ -143,34 +143,34 @@ export default function ClauseCard({
       clause.confidence === "verified"
     ) {
       return (
-        <Badge
-          className="bg-green-500/15 text-green-400 border-green-500/30 text-[10px] px-1.5 gap-1"
+        <span
+          className="bg-[#0e0e0e] border border-emerald-900/30 text-emerald-500 font-mono tracking-widest uppercase text-[9px] rounded-sm px-1.5 py-0.5 flex items-center gap-1"
           title="Verified against Indian legal database"
         >
           <ShieldCheck className="h-3 w-3" />
-          Verified
-        </Badge>
+          VERIFIED
+        </span>
       );
     }
     if (clause.verification_source === "database") {
       return (
-        <Badge
-          className="bg-yellow-500/15 text-yellow-400 border-yellow-500/30 text-[10px] px-1.5 gap-1"
+        <span
+          className="bg-[#0e0e0e] border border-amber-900/30 text-amber-500 font-mono tracking-widest uppercase text-[9px] rounded-sm px-1.5 py-0.5 flex items-center gap-1"
           title="Partially verified against legal database"
         >
           <ShieldAlert className="h-3 w-3" />
-          Partial
-        </Badge>
+          PARTIAL
+        </span>
       );
     }
     return (
-      <Badge
-        className="bg-blue-500/15 text-blue-400 border-blue-500/30 text-[10px] px-1.5 gap-1"
+      <span
+        className="bg-[#050505] border border-cyan-900/30 text-cyan-500 font-mono tracking-widest uppercase text-[9px] rounded-sm px-1.5 py-0.5 flex items-center gap-1"
         title="AI-based assessment, not formally verified"
       >
         <Bot className="h-3 w-3" />
-        AI
-      </Badge>
+        AI INF
+      </span>
     );
   };
 
@@ -180,37 +180,42 @@ export default function ClauseCard({
 
   return (
     <div
-      className={`card-results overflow-hidden transition-all ${risk.borderClass} ${
-        showRoast ? "ring-2 ring-orange-500" : ""
+      className={`bg-[#0a0a0a] border border-neutral-800 rounded-sm mb-2 relative overflow-hidden transition-all duration-200 ${risk.borderClass} ${
+        showRoast ? "ring-1 ring-orange-500/50" : "hover:border-neutral-700"
       }`}
     >
+      <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-neutral-500/10 to-transparent pointer-events-none" />
+
       {/* ── HEADER ── */}
       <div
-        className="flex items-start justify-between p-4 cursor-pointer hover:bg-muted/50 transition-colors"
+        className="flex items-start justify-between p-4 cursor-pointer hover:bg-[#0e0e0e] transition-colors"
         onClick={onToggle}
       >
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-2 flex-wrap">
+        <div className="flex-1 min-w-0 pr-4">
+          <div className="flex items-center gap-2 mb-3 flex-wrap">
             {risk.icon}
-            <Badge className={risk.badgeClass}>{risk.label}</Badge>
+            <span className={risk.badgeClass}>{risk.label}</span>
             <span
-              className="text-[10px] font-bold tracking-wider text-[#a3a3a3] uppercase"
+              className={`text-[9px] font-mono tracking-widest uppercase ${
+                clause.risk_level === "illegal" || clause.risk_level === "dangerous"
+                  ? "text-red-500/70"
+                  : "text-neutral-500"
+              }`}
               title="Risk score for this clause (0-100)"
             >
-              {clause.risk_score}/100
+              RISK: {clause.risk_score}
             </span>
-            <Badge
-              variant="outline"
-              className="text-[10px] uppercase font-bold text-[#a3a3a3] border border-[#404040] rounded-lg"
+            <span
+              className="text-[9px] font-mono tracking-widest uppercase text-neutral-400 border border-neutral-800 bg-[#050505] px-2 py-0.5 rounded-sm"
             >
               {formatClauseType(clause.clause_type)}
-            </Badge>
+            </span>
             {verificationBadge()}
             {showRoast && (
-              <Badge className="bg-orange-50 text-orange-900 dark:text-orange-100 font-bold border-2 border-orange-600 uppercase text-[10px] px-1.5 gap-1">
-                <Flame className="h-3.5 w-3.5" />
-                Roasted
-              </Badge>
+              <span className="bg-[#1a0f05] text-orange-500 font-mono border border-orange-900/50 uppercase tracking-widest text-[9px] rounded-sm px-1.5 py-0.5 flex items-center gap-1">
+                <Flame className="h-3 w-3" />
+                ROASTED
+              </span>
             )}
             {detectedLanguage && detectedLanguage !== "en" && (
               <AudioPlayerInline
@@ -220,26 +225,27 @@ export default function ClauseCard({
               />
             )}
           </div>
-          <p className="text-sm font-medium text-[#a3a3a3] line-clamp-2">
-            &quot;
-            {(clause.explanation || clause.original_text || "").substring(
-              0,
-              120
-            )}
-            {(clause.explanation || clause.original_text || "").length > 120
+          <p className="text-[11px] font-mono text-neutral-400 leading-relaxed line-clamp-2">
+            "{
+              (clause.explanation || clause.original_text || "").substring(
+                0,
+                140
+              )
+            }
+            {(clause.explanation || clause.original_text || "").length > 140
               ? "..."
               : ""}
-            &quot;
+            "
           </p>
         </div>
         <button
-          className="p-1 ml-2 text-foreground/50 flex-shrink-0"
+          className="p-1 mt-1 text-neutral-500 hover:text-white transition-colors flex-shrink-0"
           aria-label={isExpanded ? "Collapse clause" : "Expand clause"}
         >
           {isExpanded ? (
-            <ChevronUp className="h-5 w-5" />
+            <ChevronUp className="h-4 w-4" />
           ) : (
-            <ChevronDown className="h-5 w-5" />
+            <ChevronDown className="h-4 w-4" />
           )}
         </button>
       </div>
@@ -255,15 +261,15 @@ export default function ClauseCard({
             className="overflow-hidden"
           >
             <div className="px-4 pb-4 space-y-4">
-              <div className="border-t border-foreground/20" />
+              <div className="border-t border-neutral-900/50" />
 
               {/* Full Clause Text */}
               <div>
-                <p className="results-section-label mb-1.5">
-                  Original Text
+                <p className="text-[9px] font-mono text-neutral-500 tracking-widest uppercase mb-2">
+                  [EXTRACTED VECTOR]
                 </p>
-                <div className="well-recessed p-3">
-                  <p className="text-sm text-[#e5e5e5] leading-relaxed font-medium">
+                <div className="bg-[#050505] border border-neutral-900/50 p-4 rounded-sm">
+                  <p className="text-[11px] font-mono text-neutral-300 leading-relaxed break-words">
                     {clause.original_text}
                   </p>
                 </div>
@@ -279,18 +285,15 @@ export default function ClauseCard({
                     exit={{ opacity: 0, y: -5 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <p className="text-xs font-black uppercase tracking-wider text-orange-600 mb-2 flex items-center gap-1.5">
-                      <Flame className="h-4 w-4" />
-                      Roasted Analysis 🔥
+                    <p className="text-[9px] font-mono tracking-widest text-orange-500 uppercase flex items-center gap-1.5 mb-2">
+                      <Flame className="h-3 w-3" />
+                      [ROASTED INFERENCE]
                     </p>
-                    <div className="p-4 bg-orange-50 dark:bg-orange-950 border-2 border-orange-600 text-orange-900 dark:text-orange-100">
-                      <p className="text-sm leading-relaxed font-bold">
+                    <div className="p-4 bg-[#1a0f05] border border-orange-900/30 text-orange-400 rounded-sm">
+                      <p className="text-[11px] font-mono leading-relaxed">
                         {roastText}
                       </p>
                     </div>
-                    <p className="text-[10px] text-foreground/50 mt-2 font-medium">
-                      Roast mode — entertainment + education. Toggle off for formal analysis.
-                    </p>
                   </motion.div>
                 ) : (
                   <motion.div
@@ -300,10 +303,10 @@ export default function ClauseCard({
                     exit={{ opacity: 0, y: -5 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <p className="results-section-label mb-1.5">
-                      Analysis
+                    <p className="text-[9px] font-mono text-cyan-600 tracking-widest uppercase mb-2">
+                      [AI ANALYSIS / LEGAL IMPLICATIONS]
                     </p>
-                    <p className="text-sm text-[#a3a3a3] font-medium leading-relaxed">
+                    <p className="text-[11px] font-mono text-cyan-400/90 leading-relaxed bg-[#050b14] border border-cyan-900/30 p-4 rounded-sm">
                       {clause.explanation}
                     </p>
                   </motion.div>
@@ -312,17 +315,17 @@ export default function ClauseCard({
 
               {/* Red Flags */}
               {clause.red_flags && clause.red_flags.length > 0 && (
-                <div>
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-red-500/80 mb-1.5">
-                    🚩 Red Flags
+                <div className="bg-[#1a0505] border border-red-900/30 p-4 rounded-sm mt-2">
+                  <p className="text-[9px] font-mono tracking-widest uppercase text-red-500 mb-2">
+                    [CRITICAL ANOMALIES]
                   </p>
-                  <ul className="space-y-1">
+                  <ul className="space-y-1.5">
                     {clause.red_flags.map((flag, i) => (
                       <li
                         key={i}
-                        className="flex items-start gap-2 text-sm text-red-400/90"
+                        className="flex items-start gap-2 text-[11px] font-mono text-red-400/90"
                       >
-                        <span className="text-red-500 mt-1 text-xs">•</span>
+                        <span className="text-red-600 mt-0.5 text-[9px]">•</span>
                         {flag}
                       </li>
                     ))}
@@ -332,16 +335,18 @@ export default function ClauseCard({
 
               {/* Legal Proof Summary (compact, only if proof exists) */}
               {proofTree && (
-                <ProofSummary
-                  proofTree={proofTree}
-                  onViewProof={() => onDeepDive?.(clause, "proof")}
-                  documentId={documentId}
-                />
+                <div className="pt-2">
+                  <ProofSummary
+                    proofTree={proofTree}
+                    onViewProof={() => onDeepDive?.(clause, "proof")}
+                    documentId={documentId}
+                  />
+                </div>
               )}
 
               {/* ── SINGLE ACTION LINE ── */}
               {clause.risk_level !== "safe" && (
-                <div className="flex items-center justify-between pt-2 border-t border-foreground/10">
+                <div className="flex items-center justify-between pt-3 border-t border-neutral-900/50 mt-2">
                   {/* Primary: Deep Dive button */}
                   {onDeepDive && (
                     <button
@@ -349,25 +354,25 @@ export default function ClauseCard({
                         e.stopPropagation();
                         onDeepDive(clause, "eli5");
                       }}
-                      className="inline-flex items-center gap-1.5 text-xs py-1.5 px-3 rounded-lg bg-[#fafafa] text-[#0a0a0a] hover:bg-[#e5e5e5] transition-colors font-semibold uppercase tracking-wider"
+                      className="inline-flex items-center gap-2 text-[9px] font-mono py-2 px-4 rounded-sm bg-neutral-200 text-[#0a0a0a] hover:bg-white transition-colors tracking-widest uppercase border border-neutral-400 shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]"
                     >
-                      Deep Dive
+                      EXECUTE DEEP DIVE
                       <ArrowRight className="w-3 h-3" />
                     </button>
                   )}
 
                   {/* Secondary: subtle text links */}
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-4">
                     {showAutopsy && (
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           onAutopsy!();
                         }}
-                        className="inline-flex items-center gap-1 text-[11px] text-foreground/50 hover:text-foreground transition-colors font-medium"
+                        className="inline-flex items-center gap-1.5 text-[9px] font-mono tracking-widest uppercase text-neutral-500 hover:text-cyan-400 transition-colors"
                       >
-                        <Scan className="w-3 h-3" />
-                        Breakdown
+                        <Scan className="w-3 w-3" />
+                        AUTOPSY MODE
                       </button>
                     )}
                     {!!onRewrite && (
@@ -376,10 +381,10 @@ export default function ClauseCard({
                           e.stopPropagation();
                           onRewrite();
                         }}
-                        className="inline-flex items-center gap-1 text-[11px] text-foreground/50 hover:text-foreground transition-colors font-medium"
+                        className="inline-flex items-center gap-1.5 text-[9px] font-mono tracking-widest uppercase text-neutral-500 hover:text-emerald-400 transition-colors"
                       >
-                        <Pencil className="w-3 h-3" />
-                        Rewrite
+                        <Pencil className="w-3 w-3" />
+                        REWRITE SECTOR
                       </button>
                     )}
                   </div>

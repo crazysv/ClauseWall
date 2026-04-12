@@ -81,95 +81,97 @@ export default function ClauseList({
   onDeepDive,
 }: ClauseListProps) {
   const filters = [
-    { value: "all", label: "All", count: clauses.length },
+    { value: "all", label: "ALL", count: clauses.length, color: "text-neutral-400" },
     {
       value: "illegal",
-      label: "Illegal",
+      label: "ILLEGAL",
       count: document.illegal_count,
-      color: "text-purple-400",
+      color: "text-red-600",
     },
     {
       value: "dangerous",
-      label: "Dangerous",
+      label: "DANGEROUS",
       count: document.dangerous_count,
-      color: "text-red-400",
+      color: "text-red-500",
     },
     {
       value: "warning",
-      label: "Warning",
+      label: "WARNING",
       count: document.warning_count,
-      color: "text-yellow-400",
+      color: "text-amber-500",
     },
     {
       value: "safe",
-      label: "Safe",
+      label: "SAFE",
       count: document.safe_count,
-      color: "text-green-400",
+      color: "text-emerald-500",
     },
   ];
 
   return (
     <div id="clause-list">
       {/* Clause Header + Filters */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
-        <h2 className="font-space text-lg font-bold text-[#fafafa] tracking-wide uppercase">
-          Clause Analysis
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+        <h2 className="font-mono text-sm tracking-widest text-neutral-400 uppercase flex items-center gap-2">
+          <span className="w-1.5 h-1.5 bg-cyan-500 rounded-sm"></span>
+          ARRAY ANALYSIS
         </h2>
         <div className="flex items-center gap-1.5 flex-wrap">
           {filters.map((filter) => (
             <button
               key={filter.value}
               onClick={() => onSetFilterRisk(filter.value)}
-              className={`px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all ${
+              className={`px-3 py-1.5 text-[9px] font-mono uppercase tracking-widest rounded-sm border transition-all ${
                 filterRisk === filter.value
-                  ? "bg-[#fafafa] text-[#0a0a0a]"
-                  : "bg-[#171717] border border-[#262626] text-[#a3a3a3] hover:border-[#404040] hover:text-[#fafafa]"
+                  ? "bg-neutral-200 border-neutral-400 text-[#0a0a0a] shadow-[0_0_10px_rgba(255,255,255,0.1)]"
+                  : "bg-[#050505] border-neutral-800 text-neutral-500 hover:border-neutral-600 hover:text-neutral-300"
               }`}
             >
               <span
                 className={
                   filterRisk === filter.value
-                    ? "text-[#0a0a0a]"
+                    ? "text-[#0a0a0a] font-bold"
                     : filter.color
                 }
               >
-                {filter.count}
+                [{filter.count}]
               </span>{" "}
               {filter.label}
             </button>
           ))}
 
-          <span className="text-foreground/20 mx-1">|</span>
+          <span className="text-neutral-800 mx-1">/</span>
 
           <button
             onClick={() => onSetSortByRisk(!sortByRisk)}
-            className="text-[10px] text-foreground/50 hover:text-foreground transition-colors font-medium"
+            className="text-[9px] font-mono tracking-widest uppercase text-neutral-500 hover:text-cyan-400 transition-colors"
             aria-label="Toggle sort order"
           >
-            {sortByRisk ? "↕ By order" : "↕ By risk"}
+            {sortByRisk ? "[SORT: DESCENDING]" : "[SORT: SEVERITY]"}
           </button>
 
-          <span className="text-foreground/20">|</span>
+          <span className="text-neutral-800">/</span>
 
           <button
             onClick={onExpandAll}
-            className="text-[10px] text-foreground/50 hover:text-foreground transition-colors font-medium"
+            className="text-[9px] font-mono tracking-widest uppercase text-neutral-500 hover:text-white transition-colors"
           >
-            Expand All
+            [EXPAND]
           </button>
           <button
             onClick={onCollapseAll}
-            className="text-[10px] text-foreground/50 hover:text-foreground transition-colors font-medium"
+            className="text-[9px] font-mono tracking-widest uppercase text-neutral-500 hover:text-white transition-colors"
           >
-            Collapse All
+            [COLLAPSE]
           </button>
         </div>
       </div>
 
       {/* Sort indicator */}
       {sortByRisk && (
-        <p className="text-[10px] text-foreground/40 mb-3 font-medium">
-          Sorted by risk level — most critical first
+        <p className="text-[9px] font-mono tracking-widest uppercase text-cyan-600/70 mb-4 flex items-center gap-1.5">
+          <span className="w-1 h-3 bg-cyan-600/50 block"></span>
+          PRIORITIZING CRITICAL ANOMALIES
         </p>
       )}
 
