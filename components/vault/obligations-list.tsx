@@ -3,30 +3,32 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ListChecks, CheckCircle2 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
 import type { UnifiedObligation, RiskLevel } from "@/types";
 
 interface ObligationsListProps {
   obligations: UnifiedObligation[];
 }
 
-const RISK_COLORS: Record<RiskLevel, { color: string; bg: string }> = {
+const RISK_COLORS: Record<RiskLevel, { color: string; bg: string; border: string }> = {
   illegal: {
-    color: "text-purple-600 dark:text-purple-400",
-    bg: "bg-purple-100 dark:bg-purple-900/30",
+    color: "text-purple-400",
+    bg: "bg-purple-950/20",
+    border: "border-purple-900/50",
   },
   dangerous: {
-    color: "text-red-600 dark:text-red-400",
-    bg: "bg-red-100 dark:bg-red-900/30",
+    color: "text-red-500",
+    bg: "bg-red-950/20",
+    border: "border-red-900/50",
   },
   warning: {
-    color: "text-yellow-600 dark:text-yellow-400",
-    bg: "bg-yellow-100 dark:bg-yellow-900/30",
+    color: "text-amber-500",
+    bg: "bg-amber-950/20",
+    border: "border-amber-900/50",
   },
   safe: {
-    color: "text-green-600 dark:text-green-400",
-    bg: "bg-green-100 dark:bg-green-900/30",
+    color: "text-emerald-500",
+    bg: "bg-emerald-950/20",
+    border: "border-emerald-900/50",
   },
 };
 
@@ -70,12 +72,12 @@ export default function ObligationsList({ obligations }: ObligationsListProps) {
 
   if (obligations.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 text-center border-4 border-black bg-gray-50 dark:bg-zinc-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-        <ListChecks className="w-16 h-16 text-muted-foreground mb-6 stroke-[3px]" />
-        <h3 className="text-xl font-black uppercase tracking-widest text-foreground mb-4">
-          NO OBLIGATIONS FOUND
+      <div className="flex flex-col items-center justify-center py-16 text-center border border-neutral-900 bg-[#0a0a0a]">
+        <ListChecks className="w-8 h-8 text-neutral-700 mb-4" />
+        <h3 className="text-[10px] font-mono uppercase tracking-widest text-neutral-400 mb-2">
+          [ NO_OBLIGATIONS_FOUND ]
         </h3>
-        <p className="text-sm font-bold uppercase tracking-widest text-muted-foreground max-w-md leading-relaxed">
+        <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-600 max-w-md leading-relaxed">
           NO OBLIGATIONS COULD BE EXTRACTED FROM YOUR CONTRACTS.
         </p>
       </div>
@@ -85,7 +87,7 @@ export default function ObligationsList({ obligations }: ObligationsListProps) {
   return (
     <div className="space-y-4">
       {/* Type Filters */}
-      <div className="flex gap-3 flex-wrap p-4 border-4 border-black bg-white dark:bg-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+      <div className="flex gap-2 flex-wrap p-3 border border-neutral-900 bg-[#0a0a0a]">
         {(
           [
             "all",
@@ -103,17 +105,17 @@ export default function ObligationsList({ obligations }: ObligationsListProps) {
             <button
               key={f}
               onClick={() => setTypeFilter(f)}
-              className={`px-4 py-2 font-black uppercase tracking-widest text-xs border-4 transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none ${
+              className={`px-3 py-1.5 font-mono uppercase tracking-widest text-[9px] border transition-colors ${
                 isActive
-                  ? "bg-black text-white border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] translate-y-[-2px] dark:bg-white dark:text-black"
-                  : "bg-white text-black border-black dark:bg-zinc-800 dark:text-white"
+                  ? "border-cyan-900/50 bg-cyan-950/20 text-cyan-400"
+                  : "border-neutral-800 bg-[#050505] text-neutral-500 hover:text-neutral-300 hover:border-neutral-700"
               }`}
             >
               {f === "all"
                 ? "ALL"
-                : `${typeInfo?.emoji || ""} ${typeInfo?.label.toUpperCase() || f.toUpperCase()}`}{" "}
+                : `${typeInfo?.label.toUpperCase() || f.toUpperCase()}`}{" "}
               <span
-                className={isActive ? "opacity-80" : "text-muted-foreground"}
+                className={isActive ? "text-cyan-500/70" : "text-neutral-700"}
               >
                 ({count})
               </span>
@@ -138,48 +140,46 @@ export default function ObligationsList({ obligations }: ObligationsListProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: Math.min(index * 0.02, 0.5) }}
             >
-              <Card className="border-4 border-black bg-white dark:bg-zinc-900 rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none transition-all mb-4">
-                <CardContent className="p-4 sm:p-6">
-                  <div className="flex items-start gap-4">
-                    <span className="text-2xl mt-0.5 p-2 border-4 border-black bg-gray-50 dark:bg-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex-shrink-0">
-                      {typeInfo.emoji}
-                    </span>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-3 mb-2 flex-wrap">
-                        <Badge
-                          className={`${risk.bg} ${risk.color} text-[10px] border-2 border-black rounded-none shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] font-black uppercase tracking-widest`}
-                        >
-                          {obligation.risk_level}
-                        </Badge>
-                        <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground truncate bg-gray-100 dark:bg-zinc-800 px-2 py-0.5 border-2 border-black">
-                          {obligation.document_title}
-                        </span>
-                      </div>
-                      <p className="text-base font-black uppercase tracking-widest text-foreground">
-                        {obligation.title}
-                      </p>
-                      <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mt-2 line-clamp-2 leading-relaxed">
-                        {obligation.description}
-                      </p>
+              <div className="border border-neutral-900 bg-[#0a0a0a] hover:border-neutral-700 transition-colors p-4 sm:p-5">
+                <div className="flex items-start gap-4">
+                  <span className="text-xl mt-0.5 p-2 border border-neutral-800 bg-[#050505] flex-shrink-0">
+                    {typeInfo.emoji}
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-2 flex-wrap">
+                      <span
+                        className={`${risk.color} ${risk.bg} text-[8px] border ${risk.border} font-mono uppercase tracking-widest px-1.5 py-0.5`}
+                      >
+                        {obligation.risk_level}
+                      </span>
+                      <span className="text-[8px] font-mono uppercase tracking-widest text-neutral-600 truncate bg-neutral-900 px-1.5 py-0.5 border border-neutral-800">
+                        {obligation.document_title}
+                      </span>
                     </div>
-                    <div className="text-right flex-shrink-0 flex flex-col items-end">
-                      {obligation.amount != null && obligation.amount > 0 && (
-                        <p className="text-sm font-black tabular-nums tracking-tighter bg-red-100 dark:bg-red-950 text-red-600 dark:text-red-400 px-2 py-1 border-2 border-red-500 shadow-[1px_1px_0px_0px_rgba(239,68,68,1)] mb-2">
-                          ₹{obligation.amount.toLocaleString("en-IN")}
-                        </p>
-                      )}
-                      <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mt-auto px-2 py-1 border-b-2 border-black">
-                        {freq}
-                      </p>
-                    </div>
+                    <p className="text-xs font-mono uppercase tracking-widest text-neutral-200">
+                      {obligation.title}
+                    </p>
+                    <p className="text-[10px] font-mono text-neutral-500 mt-2 line-clamp-2 leading-relaxed">
+                      {obligation.description}
+                    </p>
                   </div>
-                </CardContent>
-              </Card>
+                  <div className="text-right flex-shrink-0 flex flex-col items-end">
+                    {obligation.amount != null && obligation.amount > 0 && (
+                      <span className="text-[10px] font-mono text-red-500 border border-red-900/50 bg-red-950/20 px-2 py-0.5 mb-2">
+                        ₹{obligation.amount.toLocaleString("en-IN")}
+                      </span>
+                    )}
+                    <span className="text-[8px] font-mono uppercase tracking-widest text-neutral-600 mt-auto">
+                      {freq}
+                    </span>
+                  </div>
+                </div>
+              </div>
             </motion.div>
           );
         })}
         {filtered.length > 50 && (
-          <p className="text-xs font-black uppercase tracking-widest text-muted-foreground text-center py-4 border-t-4 border-black mt-4">
+          <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-600 text-center py-4 border-t border-neutral-900 mt-4">
             SHOWING 50 OF {filtered.length} OBLIGATIONS
           </p>
         )}

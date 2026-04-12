@@ -11,7 +11,6 @@ import {
   ListChecks,
   Zap,
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import type { VaultAnalysisResult } from "@/types";
 import { getVaultSummaryStats } from "@/lib/vault/vault-scorer";
 import VaultSummaryCard from "./vault-summary-card";
@@ -101,7 +100,7 @@ export default function VaultOverview({ analysis }: VaultOverviewProps) {
       <VaultSummaryCard stats={stats} />
 
       {/* Tab Navigation */}
-      <div className="flex gap-3 overflow-x-auto pb-4 -mx-1 px-1 scrollbar-none border-b-4 border-black">
+      <div className="flex gap-2 overflow-x-auto pb-4 -mx-1 px-1 scrollbar-none border-b border-neutral-900">
         {TABS.map((tab) => {
           const count = getTabCount(tab.id);
           const isActive = activeTab === tab.id;
@@ -111,24 +110,24 @@ export default function VaultOverview({ analysis }: VaultOverviewProps) {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-3 px-6 py-3 font-black uppercase tracking-widest text-xs border-4 border-black transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-none ${
+              className={`flex items-center gap-2 px-4 py-2.5 font-mono uppercase tracking-widest text-[9px] border transition-colors whitespace-nowrap ${
                 isActive
-                  ? "bg-indigo-500 text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] translate-y-[-2px]"
-                  : "bg-white text-black dark:bg-zinc-900 dark:text-white"
+                  ? "border-cyan-900/50 bg-cyan-950/20 text-cyan-400"
+                  : "border-neutral-900 bg-[#050505] text-neutral-500 hover:text-neutral-300 hover:border-neutral-700"
               }`}
             >
-              <Icon className="w-5 h-5 stroke-[3px]" />
+              <Icon className="w-3.5 h-3.5" />
               {tab.label}
               {count > 0 && (
-                <Badge
-                  className={`text-[10px] px-2 py-0.5 border-2 border-black rounded-none shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] ${
+                <span
+                  className={`text-[8px] px-1.5 py-0.5 border font-mono ${
                     isActive
-                      ? "bg-white text-black"
-                      : "bg-indigo-100 dark:bg-indigo-900 text-black dark:text-white"
+                      ? "border-cyan-800 text-cyan-300 bg-cyan-950/30"
+                      : "border-neutral-800 text-neutral-600 bg-neutral-950"
                   }`}
                 >
                   {count}
-                </Badge>
+                </span>
               )}
             </button>
           );
