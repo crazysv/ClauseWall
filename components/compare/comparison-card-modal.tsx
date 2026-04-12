@@ -13,7 +13,6 @@ import {
   Monitor,
   Trophy,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -171,28 +170,28 @@ export default function ComparisonCardModal({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="bg-white border-4 border-black rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] max-w-lg max-h-[90vh] overflow-y-auto">
+        <DialogContent className="bg-[#0a0a0a] border border-neutral-800 rounded-none max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-3 text-2xl font-black uppercase tracking-tighter text-black border-b-4 border-black pb-4">
-              <Share2 className="h-6 w-6 text-black" />
-              SHARE COMPARISON
+            <DialogTitle className="flex items-center gap-3 text-[10px] font-mono uppercase tracking-widest text-neutral-200 border-b border-neutral-900 pb-4">
+              <Share2 className="h-4 w-4 text-cyan-500" />
+              SHARE_COMPARISON
             </DialogTitle>
-            <DialogDescription className="text-sm font-bold text-muted-foreground uppercase tracking-widest pt-2">
+            <DialogDescription className="text-[8px] font-mono uppercase tracking-widest text-neutral-600 pt-2">
               DOWNLOAD OR SHARE YOUR CONTRACT COMPARISON CARD
             </DialogDescription>
           </DialogHeader>
 
           {/* Format Toggle */}
-          <div className="flex gap-1.5 p-1 bg-gray-100 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+          <div className="flex gap-1 p-1 bg-[#050505] border border-neutral-800">
             {(Object.keys(FORMATS) as CardFormat[]).map((f) => {
               const Icon = FORMATS[f].icon;
               return (
                 <button
                   key={f}
                   onClick={() => setFormat(f)}
-                  className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 text-xs font-black uppercase tracking-widest transition-colors ${format === f ? "bg-black text-foreground" : "text-black hover:bg-gray-200"}`}
+                  className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 text-[8px] font-mono uppercase tracking-widest transition-colors ${format === f ? "bg-neutral-800 text-neutral-200" : "text-neutral-600 hover:text-neutral-400"}`}
                 >
-                  <Icon className="h-4 w-4" />
+                  <Icon className="h-3.5 w-3.5" />
                   {FORMATS[f].label}
                 </button>
               );
@@ -203,15 +202,15 @@ export default function ComparisonCardModal({
           <div className="flex justify-center py-6">
             {generating || !preview ? (
               <div
-                className="flex flex-col items-center justify-center gap-3 bg-gray-50 border-4 border-black border-dashed"
+                className="flex flex-col items-center justify-center gap-3 bg-[#050505] border border-dashed border-neutral-800"
                 style={{
                   width: "100%",
                   maxWidth: 360,
                   aspectRatio: `${fmt.width}/${fmt.height}`,
                 }}
               >
-                <Loader2 className="h-10 w-10 text-black animate-spin" />
-                <p className="text-sm font-black uppercase tracking-widest text-black">
+                <Loader2 className="h-8 w-8 text-cyan-500 animate-spin" />
+                <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-600">
                   GENERATING...
                 </p>
               </div>
@@ -219,7 +218,7 @@ export default function ComparisonCardModal({
               <img
                 src={preview}
                 alt="Comparison Card"
-                className="border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                className="border border-neutral-800"
                 style={{
                   width: "100%",
                   maxWidth: format === "story" ? 280 : 360,
@@ -229,45 +228,51 @@ export default function ComparisonCardModal({
           </div>
 
           {/* Buttons */}
-          <div className="grid grid-cols-2 gap-3">
-            <Button
+          <div className="grid grid-cols-2 gap-2">
+            <button
               onClick={handleDownload}
               disabled={!preview}
-              className="gap-2 bg-[#FAEA5F] hover:bg-yellow-400 text-black border-2 border-black font-black uppercase tracking-widest rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none"
+              className="flex items-center justify-center gap-2 px-3 py-2 border border-amber-900/50 bg-amber-950/10 text-[8px] font-mono uppercase tracking-widest text-amber-400 hover:text-amber-300 hover:border-amber-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
-              <Download className="h-4 w-4" />
+              <Download className="h-3.5 w-3.5" />
               DOWNLOAD
-            </Button>
-            <Button
+            </button>
+            <button
               onClick={handleWhatsApp}
-              className="gap-2 bg-[#25D366] hover:bg-[#20b858] text-foreground border-2 border-black font-black uppercase tracking-widest rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none"
+              className="flex items-center justify-center gap-2 px-3 py-2 border border-emerald-900/50 bg-emerald-950/10 text-[8px] font-mono uppercase tracking-widest text-emerald-400 hover:text-emerald-300 hover:border-emerald-800 transition-colors"
             >
-              <Share2 className="h-4 w-4" />
+              <Share2 className="h-3.5 w-3.5" />
               WHATSAPP
-            </Button>
-            <Button
+            </button>
+            <button
               onClick={handleTwitter}
-              className="gap-2 bg-black hover:bg-background border-2 border-foreground card-impact text-foreground border-2 border-black font-black uppercase tracking-widest rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none"
+              className="flex items-center justify-center gap-2 px-3 py-2 border border-neutral-800 bg-[#050505] text-[8px] font-mono uppercase tracking-widest text-neutral-400 hover:text-neutral-200 hover:border-neutral-600 transition-colors"
             >
-              <Share2 className="h-4 w-4" />
+              <Share2 className="h-3.5 w-3.5" />
               TWITTER
-            </Button>
-            <Button
+            </button>
+            <button
               onClick={handleCopyLink}
-              className="gap-2 bg-white hover:bg-gray-100 text-black border-2 border-black font-black uppercase tracking-widest rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none"
+              className="flex items-center justify-center gap-2 px-3 py-2 border border-neutral-800 bg-[#050505] text-[8px] font-mono uppercase tracking-widest text-neutral-400 hover:text-neutral-200 hover:border-neutral-600 transition-colors"
             >
               {copied ? (
-                <Check className="h-4 w-4 text-green-600" />
+                <Check className="h-3.5 w-3.5 text-emerald-500" />
               ) : (
-                <Copy className="h-4 w-4" />
+                <Copy className="h-3.5 w-3.5" />
               )}
-              {copied ? "COPIED PLAN!" : "COPY LINK"}
-            </Button>
+              {copied ? "COPIED!" : "COPY LINK"}
+            </button>
           </div>
         </DialogContent>
       </Dialog>
 
-      {/* Hidden Card */}
+      {/* ═══════════════════════════════════════════
+          HIDDEN CARD — DO NOT RESTYLE
+          This offscreen div is captured as a PNG by html-to-image.
+          All styles are inline and intentionally brutalist for the
+          exported share card brand asset. Any change here alters
+          the generated image.
+          ═══════════════════════════════════════════ */}
       <div style={{ position: "fixed", left: "-9999px", top: 0 }}>
         <div
           ref={cardRef}

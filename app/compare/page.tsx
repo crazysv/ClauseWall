@@ -17,17 +17,6 @@ import {
   ChevronUp,
   Share2,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import type { ComparisonResult } from "@/lib/bot/compare-analyzer";
 import ComparisonCardModal from "@/components/compare/comparison-card-modal";
@@ -126,106 +115,139 @@ export default function ComparePage() {
     setExpandedClauses(newExpanded);
   };
 
+  // ── Risk Helpers (forensic palette) ─────────
+
   const getRiskIcon = (level: string) => {
     switch (level) {
       case "safe":
-        return <CheckCircle2 className="h-4 w-4 text-green-500" />;
+        return <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />;
       case "warning":
-        return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
+        return <AlertTriangle className="h-3.5 w-3.5 text-amber-500" />;
       case "dangerous":
-        return <XCircle className="h-4 w-4 text-red-500" />;
+        return <XCircle className="h-3.5 w-3.5 text-red-500" />;
       case "illegal":
-        return <Scale className="h-4 w-4 text-purple-500" />;
+        return <Scale className="h-3.5 w-3.5 text-purple-400" />;
       default:
-        return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
+        return <AlertTriangle className="h-3.5 w-3.5 text-amber-500" />;
     }
   };
 
   const getRiskColor = (level: string) => {
     switch (level) {
       case "safe":
-        return "text-green-500";
+        return "text-emerald-400";
       case "warning":
-        return "text-yellow-500";
+        return "text-amber-400";
       case "dangerous":
         return "text-red-500";
       case "illegal":
-        return "text-purple-500";
+        return "text-purple-400";
       default:
-        return "text-yellow-500";
+        return "text-amber-400";
     }
   };
 
   const getScoreColor = (score: number) => {
-    if (score >= 80) return "text-purple-700";
-    if (score >= 60) return "text-red-700";
-    if (score >= 30) return "text-yellow-700";
-    return "text-green-700";
+    if (score >= 80) return "text-purple-400";
+    if (score >= 60) return "text-red-500";
+    if (score >= 30) return "text-amber-400";
+    return "text-emerald-400";
   };
 
-  const getScoreBg = (score: number) => {
-    if (score >= 80)
-      return "bg-purple-200 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]";
-    if (score >= 60)
-      return "bg-red-200 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]";
-    if (score >= 30)
-      return "bg-yellow-200 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]";
-    return "bg-green-200 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]";
+  const getScoreBorder = (score: number) => {
+    if (score >= 80) return "border-purple-900/50 bg-purple-950/20";
+    if (score >= 60) return "border-red-900/50 bg-red-950/20";
+    if (score >= 30) return "border-amber-900/50 bg-amber-950/20";
+    return "border-emerald-900/50 bg-emerald-950/20";
   };
+
+  const getScoreLabel = (score: number) => {
+    if (score >= 80) return "border-purple-900/50 text-purple-400 bg-purple-950/20";
+    if (score >= 60) return "border-red-900/50 text-red-500 bg-red-950/20";
+    if (score >= 30) return "border-amber-900/50 text-amber-400 bg-amber-950/20";
+    return "border-emerald-900/50 text-emerald-400 bg-emerald-950/20";
+  };
+
+  const getRiskBadgeClass = (level: string) => {
+    switch (level) {
+      case "safe":
+        return "text-emerald-400 bg-emerald-950/20 border-emerald-900/50";
+      case "warning":
+        return "text-amber-400 bg-amber-950/20 border-amber-900/50";
+      case "dangerous":
+        return "text-red-500 bg-red-950/20 border-red-900/50";
+      case "illegal":
+        return "text-purple-400 bg-purple-950/20 border-purple-900/50";
+      default:
+        return "text-amber-400 bg-amber-950/20 border-amber-900/50";
+    }
+  };
+
+  // ── Document type options ───────────────────
+
+  const docTypeOptions = [
+    { value: "rental", label: "RENTAL AGREEMENT" },
+    { value: "employment", label: "EMPLOYMENT" },
+    { value: "loan", label: "LOAN AGREEMENT" },
+    { value: "freelance", label: "FREELANCE" },
+    { value: "tos", label: "TERMS OF SERVICE" },
+    { value: "nda", label: "NDA" },
+    { value: "other", label: "OTHER" },
+  ];
 
   return (
-    <div className="relative px-4 sm:px-6 lg:px-8 py-8 bg-gray-50 min-h-screen">
+    <div className="relative px-4 sm:px-6 lg:px-8 py-8 bg-[#0a0a0a] min-h-screen">
       <div className="relative mx-auto max-w-6xl">
         {/* Header */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-4 mb-4">
-            <div className="h-16 w-16 border-4 border-black bg-blue-400 flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-              <ArrowLeftRight className="h-8 w-8 text-black" />
+            <div className="p-3 border border-neutral-800 bg-[#050505]">
+              <ArrowLeftRight className="h-6 w-6 text-cyan-500" />
             </div>
-            <h1 className="text-4xl sm:text-5xl font-black uppercase tracking-tighter text-black">
-              COMPARE CONTRACTS
+            <h1 className="text-xs font-mono uppercase tracking-widest text-neutral-200">
+              COMPARATIVE_ANALYSIS
             </h1>
           </div>
-          <p className="text-sm font-bold uppercase tracking-widest text-foreground w-full max-w-xl mx-auto border-t-2 border-black/10 pt-4">
+          <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-600 w-full max-w-xl mx-auto border-t border-neutral-900 pt-4">
             UPLOAD TWO CONTRACTS SIDE-BY-SIDE. WE WILL COMPARE THEM
-            CLAUSE-BY-CLAUSE AND TELL YOU WHICH ONE IS SAFER.
+            CLAUSE-BY-CLAUSE AND IDENTIFY WHICH ONE IS SAFER.
           </p>
         </div>
 
         {/* Upload Section */}
         {!result && (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               {/* Contract A */}
-              <Card className="border-4 border-black rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between mb-6 pb-4 border-b-4 border-black">
-                    <h3 className="text-xl font-black uppercase tracking-tighter flex items-center gap-3">
-                      <span className="bg-black text-white px-2 py-1 border-2 border-black">
+              <div className="border border-neutral-900 bg-[#0a0a0a]">
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-6 pb-4 border-b border-neutral-900">
+                    <h3 className="text-[10px] font-mono uppercase tracking-widest text-neutral-300 flex items-center gap-3">
+                      <span className="px-1.5 py-0.5 border border-cyan-900/50 text-cyan-400 bg-cyan-950/20 text-[8px]">
                         A
-                      </span>{" "}
-                      CONTRACT A
+                      </span>
+                      CONTRACT_A
                     </h3>
-                    <div className="flex bg-gray-100 border-2 border-black p-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                    <div className="flex border border-neutral-800 bg-[#050505]">
                       <button
-                        className={`px-4 py-1 text-xs font-black uppercase tracking-widest transition-colors ${
+                        className={`px-3 py-1 text-[8px] font-mono uppercase tracking-widest transition-colors ${
                           inputModeA === "file"
-                            ? "bg-black text-white"
-                            : "text-black hover:bg-gray-200"
+                            ? "bg-neutral-800 text-neutral-200"
+                            : "text-neutral-600 hover:text-neutral-400"
                         }`}
                         onClick={() => setInputModeA("file")}
                       >
-                        File
+                        FILE
                       </button>
                       <button
-                        className={`px-4 py-1 text-xs font-black uppercase tracking-widest transition-colors ${
+                        className={`px-3 py-1 text-[8px] font-mono uppercase tracking-widest transition-colors ${
                           inputModeA === "text"
-                            ? "bg-black text-white"
-                            : "text-black hover:bg-gray-200"
+                            ? "bg-neutral-800 text-neutral-200"
+                            : "text-neutral-600 hover:text-neutral-400"
                         }`}
                         onClick={() => setInputModeA("text")}
                       >
-                        Text
+                        TEXT
                       </button>
                     </div>
                   </div>
@@ -233,75 +255,75 @@ export default function ComparePage() {
                   {inputModeA === "file" ? (
                     <div
                       {...dropzoneA.getRootProps()}
-                      className={`border-4 border-dashed rounded-none p-8 sm:p-12 text-center cursor-pointer transition-all ${
+                      className={`border border-dashed p-8 sm:p-12 text-center cursor-pointer transition-all ${
                         dropzoneA.isDragActive
-                          ? "border-blue-700 bg-blue-100"
+                          ? "border-cyan-500 bg-cyan-950/10"
                           : fileA
-                            ? "border-green-700 bg-green-50 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] border-solid"
-                            : "border-black hover:bg-gray-50 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                            ? "border-emerald-900/50 bg-emerald-950/10"
+                            : "border-neutral-800 hover:border-neutral-600 hover:bg-neutral-900/30"
                       }`}
                     >
                       <input {...dropzoneA.getInputProps()} />
                       {fileA ? (
                         <div className="flex flex-col items-center gap-3">
-                          <FileText className="h-10 w-10 text-green-900 dark:text-green-100 font-bold" />
-                          <p className="text-base font-black uppercase tracking-tight truncate max-w-[200px]">
+                          <FileText className="h-8 w-8 text-emerald-500" />
+                          <p className="text-[10px] font-mono uppercase tracking-widest text-neutral-300 truncate max-w-[200px]">
                             {fileA.name}
                           </p>
-                          <p className="text-xs font-bold text-foreground uppercase tracking-widest">
+                          <p className="text-[8px] font-mono uppercase tracking-widest text-neutral-600">
                             CLICK TO CHANGE
                           </p>
                         </div>
                       ) : (
                         <div className="flex flex-col items-center gap-3">
-                          <Upload className="h-10 w-10 text-black mb-2" />
-                          <p className="text-sm font-black uppercase tracking-widest text-black">
+                          <Upload className="h-8 w-8 text-neutral-600 mb-2" />
+                          <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-500">
                             DROP PDF/TXT OR CLICK TO UPLOAD
                           </p>
                         </div>
                       )}
                     </div>
                   ) : (
-                    <Textarea
+                    <textarea
                       placeholder="PASTE CONTRACT A TEXT HERE..."
                       value={textA}
                       onChange={(e) => setTextA(e.target.value)}
-                      className="min-h-[250px] bg-white border-4 border-black text-black font-medium placeholder:font-black placeholder:uppercase placeholder:text-foreground rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
+                      className="w-full min-h-[250px] bg-[#050505] border border-neutral-800 text-neutral-300 font-mono text-xs p-4 placeholder:text-neutral-700 placeholder:uppercase focus:outline-none focus:border-neutral-600 transition-colors resize-y"
                     />
                   )}
-                </CardContent>
-              </Card>
+                </div>
+              </div>
 
               {/* Contract B */}
-              <Card className="border-4 border-black rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between mb-6 pb-4 border-b-4 border-black">
-                    <h3 className="text-xl font-black uppercase tracking-tighter flex items-center gap-3">
-                      <span className="bg-black text-white px-2 py-1 border-2 border-black">
+              <div className="border border-neutral-900 bg-[#0a0a0a]">
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-6 pb-4 border-b border-neutral-900">
+                    <h3 className="text-[10px] font-mono uppercase tracking-widest text-neutral-300 flex items-center gap-3">
+                      <span className="px-1.5 py-0.5 border border-purple-900/50 text-purple-400 bg-purple-950/20 text-[8px]">
                         B
-                      </span>{" "}
-                      CONTRACT B
+                      </span>
+                      CONTRACT_B
                     </h3>
-                    <div className="flex bg-gray-100 border-2 border-black p-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                    <div className="flex border border-neutral-800 bg-[#050505]">
                       <button
-                        className={`px-4 py-1 text-xs font-black uppercase tracking-widest transition-colors ${
+                        className={`px-3 py-1 text-[8px] font-mono uppercase tracking-widest transition-colors ${
                           inputModeB === "file"
-                            ? "bg-black text-white"
-                            : "text-black hover:bg-gray-200"
+                            ? "bg-neutral-800 text-neutral-200"
+                            : "text-neutral-600 hover:text-neutral-400"
                         }`}
                         onClick={() => setInputModeB("file")}
                       >
-                        File
+                        FILE
                       </button>
                       <button
-                        className={`px-4 py-1 text-xs font-black uppercase tracking-widest transition-colors ${
+                        className={`px-3 py-1 text-[8px] font-mono uppercase tracking-widest transition-colors ${
                           inputModeB === "text"
-                            ? "bg-black text-white"
-                            : "text-black hover:bg-gray-200"
+                            ? "bg-neutral-800 text-neutral-200"
+                            : "text-neutral-600 hover:text-neutral-400"
                         }`}
                         onClick={() => setInputModeB("text")}
                       >
-                        Text
+                        TEXT
                       </button>
                     </div>
                   </div>
@@ -309,81 +331,80 @@ export default function ComparePage() {
                   {inputModeB === "file" ? (
                     <div
                       {...dropzoneB.getRootProps()}
-                      className={`border-4 border-dashed rounded-none p-8 sm:p-12 text-center cursor-pointer transition-all ${
+                      className={`border border-dashed p-8 sm:p-12 text-center cursor-pointer transition-all ${
                         dropzoneB.isDragActive
-                          ? "border-blue-700 bg-blue-100"
+                          ? "border-cyan-500 bg-cyan-950/10"
                           : fileB
-                            ? "border-green-700 bg-green-50 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] border-solid"
-                            : "border-black hover:bg-gray-50 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                            ? "border-emerald-900/50 bg-emerald-950/10"
+                            : "border-neutral-800 hover:border-neutral-600 hover:bg-neutral-900/30"
                       }`}
                     >
                       <input {...dropzoneB.getInputProps()} />
                       {fileB ? (
                         <div className="flex flex-col items-center gap-3">
-                          <FileText className="h-10 w-10 text-green-900 dark:text-green-100 font-bold" />
-                          <p className="text-base font-black uppercase tracking-tight truncate max-w-[200px]">
+                          <FileText className="h-8 w-8 text-emerald-500" />
+                          <p className="text-[10px] font-mono uppercase tracking-widest text-neutral-300 truncate max-w-[200px]">
                             {fileB.name}
                           </p>
-                          <p className="text-xs font-bold text-foreground uppercase tracking-widest">
+                          <p className="text-[8px] font-mono uppercase tracking-widest text-neutral-600">
                             CLICK TO CHANGE
                           </p>
                         </div>
                       ) : (
                         <div className="flex flex-col items-center gap-3">
-                          <Upload className="h-10 w-10 text-black mb-2" />
-                          <p className="text-sm font-black uppercase tracking-widest text-black">
+                          <Upload className="h-8 w-8 text-neutral-600 mb-2" />
+                          <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-500">
                             DROP PDF/TXT OR CLICK TO UPLOAD
                           </p>
                         </div>
                       )}
                     </div>
                   ) : (
-                    <Textarea
+                    <textarea
                       placeholder="PASTE CONTRACT B TEXT HERE..."
                       value={textB}
                       onChange={(e) => setTextB(e.target.value)}
-                      className="min-h-[250px] bg-white border-4 border-black text-black font-medium placeholder:font-black placeholder:uppercase placeholder:text-foreground rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
+                      className="w-full min-h-[250px] bg-[#050505] border border-neutral-800 text-neutral-300 font-mono text-xs p-4 placeholder:text-neutral-700 placeholder:uppercase focus:outline-none focus:border-neutral-600 transition-colors resize-y"
                     />
                   )}
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             </div>
 
             {/* Document Type + Compare Button */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-12">
-              <Select value={documentType} onValueChange={setDocumentType}>
-                <SelectTrigger className="w-56 bg-white border-4 border-black text-black font-black uppercase tracking-widest rounded-none h-14 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                  <SelectValue placeholder="DOCUMENT TYPE" />
-                </SelectTrigger>
-                <SelectContent className="border-4 border-black font-bold text-black rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white">
-                  <SelectItem value="rental">RENTAL AGREEMENT</SelectItem>
-                  <SelectItem value="employment">EMPLOYMENT</SelectItem>
-                  <SelectItem value="loan">LOAN AGREEMENT</SelectItem>
-                  <SelectItem value="freelance">FREELANCE</SelectItem>
-                  <SelectItem value="tos">TERMS OF SERVICE</SelectItem>
-                  <SelectItem value="nda">NDA</SelectItem>
-                  <SelectItem value="other">OTHER</SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+              <div className="relative">
+                <select
+                  value={documentType}
+                  onChange={(e) => setDocumentType(e.target.value)}
+                  className="appearance-none bg-[#050505] border border-neutral-800 text-neutral-300 font-mono uppercase tracking-widest text-[9px] h-10 px-4 pr-8 focus:outline-none focus:border-neutral-600 transition-colors cursor-pointer"
+                >
+                  {docTypeOptions.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-3 w-3 text-neutral-600 pointer-events-none" />
+              </div>
 
-              <Button
-                size="lg"
+              <button
                 onClick={handleCompare}
                 disabled={loading}
-                className="h-14 bg-[#FAEA5F] hover:bg-yellow-400 text-black border-4 border-black font-black uppercase tracking-widest rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none transition-all px-8 text-base group"
+                className="flex items-center gap-3 h-10 px-8 border border-cyan-900/50 bg-cyan-950/10 font-mono uppercase tracking-widest text-[9px] text-cyan-400 hover:text-cyan-300 hover:border-cyan-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors group"
               >
                 {loading ? (
                   <>
-                    <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
                     COMPARING...
                   </>
                 ) : (
                   <>
-                    <ArrowLeftRight className="h-5 w-5 mr-3 group-hover:rotate-180 transition-transform duration-500" />
+                    <ArrowLeftRight className="h-3.5 w-3.5 group-hover:rotate-180 transition-transform duration-500" />
                     COMPARE CONTRACTS
                   </>
                 )}
-              </Button>
+              </button>
             </div>
           </>
         )}
@@ -392,285 +413,270 @@ export default function ComparePage() {
         {result && (
           <>
             {/* Verdict Banner */}
-            <Card className="border-4 border-black rounded-none bg-blue-100 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] mb-12 overflow-hidden">
-              <CardContent className="p-0">
-                <div className="p-8 sm:p-12 text-center bg-[url('/noise.png')]">
-                  <div className="bg-white border-4 border-black h-20 w-20 mx-auto flex items-center justify-center mb-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                    <Trophy className="h-10 w-10 text-yellow-500" />
-                  </div>
-                  <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter text-black mb-4">
-                    {result.winner === "A"
-                      ? "CONTRACT A IS SAFER"
-                      : result.winner === "B"
-                        ? "CONTRACT B IS SAFER"
-                        : "BOTH ARE EQUALLY RISKY"}
-                  </h2>
-                  <p className="text-base font-bold text-gray-800 leading-relaxed max-w-2xl mx-auto border-t-2 border-black/10 pt-4">
-                    {result.verdict}
-                  </p>
+            <div className="border border-neutral-900 bg-[#0a0a0a] mb-8 overflow-hidden">
+              <div className="p-8 sm:p-12 text-center">
+                <div className="p-3 border border-neutral-800 bg-[#050505] inline-flex items-center justify-center mb-6">
+                  <Trophy className="h-8 w-8 text-amber-500" />
                 </div>
-              </CardContent>
-            </Card>
+                <h2 className="text-sm sm:text-base font-mono uppercase tracking-widest text-neutral-200 mb-4">
+                  {result.winner === "A"
+                    ? "[ CONTRACT_A IS SAFER ]"
+                    : result.winner === "B"
+                      ? "[ CONTRACT_B IS SAFER ]"
+                      : "[ BOTH ARE EQUALLY RISKY ]"}
+                </h2>
+                <p className="text-[10px] font-mono text-neutral-500 leading-relaxed max-w-2xl mx-auto border-t border-neutral-900 pt-4">
+                  {result.verdict}
+                </p>
+              </div>
+            </div>
 
             {/* Score Comparison */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-              <Card
-                className={`border-4 border-black rounded-none bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] ${
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <div
+                className={`border bg-[#0a0a0a] ${
                   result.winner === "A"
-                    ? "ring-4 ring-green-400 ring-offset-4"
-                    : ""
+                    ? "border-emerald-900/50"
+                    : "border-neutral-900"
                 }`}
               >
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between mb-6 border-b-4 border-black pb-4">
-                    <h3 className="text-xl font-black uppercase tracking-tighter flex items-center gap-2 text-black">
-                      <span className="bg-black text-white px-2 border-2 border-black">
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-6 border-b border-neutral-900 pb-4">
+                    <h3 className="text-[10px] font-mono uppercase tracking-widest text-neutral-300 flex items-center gap-2">
+                      <span className="px-1.5 py-0.5 border border-cyan-900/50 text-cyan-400 bg-cyan-950/20 text-[8px]">
                         A
                       </span>
-                      CONTRACT A
+                      CONTRACT_A
                     </h3>
                     {result.winner === "A" && (
-                      <Badge className="bg-green-400 text-black border-2 border-black font-black uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] rounded-none py-1">
-                        <Trophy className="h-4 w-4 mr-2" />
-                        BETTER CHOICE
-                      </Badge>
+                      <span className="text-[8px] font-mono uppercase tracking-widest px-2 py-0.5 border border-emerald-900/50 text-emerald-400 bg-emerald-950/20">
+                        ▲ SAFER CHOICE
+                      </span>
                     )}
                   </div>
                   <div
-                    className={`text-center p-8 ${getScoreBg(result.score_a)}`}
+                    className={`text-center p-8 border ${getScoreBorder(result.score_a)}`}
                   >
                     <p
-                      className={`text-6xl font-black ${getScoreColor(result.score_a)} uppercase tracking-tighter drop-shadow-md`}
+                      className={`text-4xl font-mono tabular-nums ${getScoreColor(result.score_a)}`}
                     >
                       {result.score_a}
                     </p>
-                    <p className="text-xs font-black uppercase tracking-widest text-black mt-2">
-                      /100 RISK SCORE
+                    <p className="text-[8px] font-mono uppercase tracking-widest text-neutral-600 mt-2">
+                      /100 RISK_SCORE
                     </p>
-                    <p
-                      className={`text-lg font-black uppercase tracking-widest mt-4 bg-white border-2 border-black inline-block px-4 py-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${getScoreColor(result.score_a)}`}
+                    <span
+                      className={`inline-block mt-4 text-[8px] font-mono uppercase tracking-widest px-2 py-0.5 border ${getScoreLabel(result.score_a)}`}
                     >
                       {result.label_a}
-                    </p>
+                    </span>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
 
-              <Card
-                className={`border-4 border-black rounded-none bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] ${
+              <div
+                className={`border bg-[#0a0a0a] ${
                   result.winner === "B"
-                    ? "ring-4 ring-green-400 ring-offset-4"
-                    : ""
+                    ? "border-emerald-900/50"
+                    : "border-neutral-900"
                 }`}
               >
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between mb-6 border-b-4 border-black pb-4">
-                    <h3 className="text-xl font-black uppercase tracking-tighter flex items-center gap-2 text-black">
-                      <span className="bg-black text-white px-2 border-2 border-black">
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-6 border-b border-neutral-900 pb-4">
+                    <h3 className="text-[10px] font-mono uppercase tracking-widest text-neutral-300 flex items-center gap-2">
+                      <span className="px-1.5 py-0.5 border border-purple-900/50 text-purple-400 bg-purple-950/20 text-[8px]">
                         B
                       </span>
-                      CONTRACT B
+                      CONTRACT_B
                     </h3>
                     {result.winner === "B" && (
-                      <Badge className="bg-green-400 text-black border-2 border-black font-black uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] rounded-none py-1">
-                        <Trophy className="h-4 w-4 mr-2" />
-                        BETTER CHOICE
-                      </Badge>
+                      <span className="text-[8px] font-mono uppercase tracking-widest px-2 py-0.5 border border-emerald-900/50 text-emerald-400 bg-emerald-950/20">
+                        ▲ SAFER CHOICE
+                      </span>
                     )}
                   </div>
                   <div
-                    className={`text-center p-8 ${getScoreBg(result.score_b)}`}
+                    className={`text-center p-8 border ${getScoreBorder(result.score_b)}`}
                   >
                     <p
-                      className={`text-6xl font-black ${getScoreColor(result.score_b)} uppercase tracking-tighter drop-shadow-md`}
+                      className={`text-4xl font-mono tabular-nums ${getScoreColor(result.score_b)}`}
                     >
                       {result.score_b}
                     </p>
-                    <p className="text-xs font-black uppercase tracking-widest text-black mt-2">
-                      /100 RISK SCORE
+                    <p className="text-[8px] font-mono uppercase tracking-widest text-neutral-600 mt-2">
+                      /100 RISK_SCORE
                     </p>
-                    <p
-                      className={`text-lg font-black uppercase tracking-widest mt-4 bg-white border-2 border-black inline-block px-4 py-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${getScoreColor(result.score_b)}`}
+                    <span
+                      className={`inline-block mt-4 text-[8px] font-mono uppercase tracking-widest px-2 py-0.5 border ${getScoreLabel(result.score_b)}`}
                     >
                       {result.label_b}
-                    </p>
+                    </span>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             </div>
 
             {/* Key Differences */}
             {result.key_differences.length > 0 && (
-              <Card className="border-4 border-black rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white mb-12">
-                <CardContent className="p-8">
-                  <h3 className="text-2xl font-black uppercase tracking-tighter text-black mb-6 flex items-center gap-3 border-b-4 border-black pb-4">
-                    <AlertTriangle className="h-8 w-8 text-yellow-500" />
-                    KEY DIFFERENCES
+              <div className="border border-neutral-900 bg-[#0a0a0a] mb-8">
+                <div className="p-6 sm:p-8">
+                  <h3 className="text-[10px] font-mono uppercase tracking-widest text-amber-400 mb-6 flex items-center gap-3 border-b border-neutral-900 pb-4">
+                    <AlertTriangle className="h-3.5 w-3.5" />
+                    KEY_DIFFERENCES
                   </h3>
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     {result.key_differences.map((diff, i) => (
                       <div
                         key={i}
-                        className="flex items-start gap-4 p-4 bg-yellow-50 border-2 border-black"
+                        className="flex items-start gap-4 p-4 border-l-2 border-amber-900/50 bg-amber-950/10"
                       >
-                        <ArrowRight className="h-6 w-6 text-black mt-0.5 shrink-0" />
-                        <p className="text-base font-bold text-black">{diff}</p>
+                        <ArrowRight className="h-3.5 w-3.5 text-amber-600 mt-0.5 shrink-0" />
+                        <p className="text-[10px] font-mono text-neutral-400 leading-relaxed">
+                          {diff}
+                        </p>
                       </div>
                     ))}
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             )}
 
             {/* Clause-by-Clause */}
-            <Card className="border-4 border-black rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white mb-12">
-              <CardContent className="p-0">
-                <div className="p-6 border-b-4 border-black bg-blue-100">
-                  <h3 className="text-2xl font-black uppercase tracking-tighter text-black flex items-center gap-3">
-                    <Scale className="h-8 w-8 text-black" />
-                    CLAUSE-BY-CLAUSE COMPARISON
-                  </h3>
-                </div>
-                <div className="p-6 sm:p-8 space-y-6 bg-white">
-                  {result.clause_comparisons.map((comp, i) => (
-                    <div
-                      key={i}
-                      className="border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+            <div className="border border-neutral-900 bg-[#0a0a0a] mb-8">
+              <div className="p-4 sm:p-6 border-b border-neutral-900 bg-[#050505]">
+                <h3 className="text-[10px] font-mono uppercase tracking-widest text-cyan-400 flex items-center gap-3">
+                  <Scale className="h-3.5 w-3.5" />
+                  CLAUSE_BY_CLAUSE_COMPARISON
+                </h3>
+              </div>
+              <div className="p-4 sm:p-6 space-y-3">
+                {result.clause_comparisons.map((comp, i) => (
+                  <div
+                    key={i}
+                    className="border border-neutral-900 bg-[#0a0a0a]"
+                  >
+                    <button
+                      className="w-full flex items-center justify-between p-4 sm:p-5 text-left hover:bg-neutral-900/50 transition-colors"
+                      onClick={() => toggleClause(i)}
                     >
-                      <button
-                        className="w-full flex items-center justify-between p-4 sm:p-6 text-left hover:bg-gray-50 transition-colors"
-                        onClick={() => toggleClause(i)}
-                      >
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                          <span className="text-xl font-black uppercase tracking-tight text-black">
-                            {comp.clause_type.replace(/_/g, " ").toUpperCase()}
-                          </span>
-                          <Badge
-                            variant="outline"
-                            className={`rounded-none border-2 border-black font-black uppercase tracking-widest text-xs px-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${
-                              comp.winner === "A"
-                                ? "bg-blue-100 text-blue-900"
-                                : comp.winner === "B"
-                                  ? "bg-purple-100 text-purple-900"
-                                  : "bg-gray-200 text-black"
-                            }`}
-                          >
-                            {comp.winner === "A"
-                              ? "A WINS"
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                        <span className="text-[10px] font-mono uppercase tracking-widest text-neutral-300">
+                          {comp.clause_type.replace(/_/g, " ").toUpperCase()}
+                        </span>
+                        <span
+                          className={`text-[8px] font-mono uppercase tracking-widest px-1.5 py-0.5 border ${
+                            comp.winner === "A"
+                              ? "border-cyan-900/50 text-cyan-400 bg-cyan-950/20"
                               : comp.winner === "B"
-                                ? "B WINS"
-                                : "TIE"}
-                          </Badge>
-                        </div>
-                        <div className="flex flex-col sm:flex-row items-end sm:items-center gap-4">
-                          <div className="hidden sm:flex items-center gap-6">
-                            <div className="flex items-center gap-2 bg-gray-100 border-2 border-black px-3 py-1">
-                              <span className="text-sm font-black text-black">
-                                A:
-                              </span>
-                              {getRiskIcon(comp.contract_a.risk_level)}
-                            </div>
-                            <div className="flex items-center gap-2 bg-gray-100 border-2 border-black px-3 py-1">
-                              <span className="text-sm font-black text-black">
-                                B:
-                              </span>
-                              {getRiskIcon(comp.contract_b.risk_level)}
-                            </div>
+                                ? "border-purple-900/50 text-purple-400 bg-purple-950/20"
+                                : "border-neutral-800 text-neutral-500 bg-neutral-900"
+                          }`}
+                        >
+                          {comp.winner === "A"
+                            ? "A WINS"
+                            : comp.winner === "B"
+                              ? "B WINS"
+                              : "TIE"}
+                        </span>
+                      </div>
+                      <div className="flex flex-col sm:flex-row items-end sm:items-center gap-3">
+                        <div className="hidden sm:flex items-center gap-4">
+                          <div className="flex items-center gap-2 px-2 py-1 border border-neutral-800 bg-[#050505]">
+                            <span className="text-[8px] font-mono text-neutral-600">
+                              A:
+                            </span>
+                            {getRiskIcon(comp.contract_a.risk_level)}
                           </div>
-                          <div className="border-2 border-black bg-white p-1 ml-4 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                            {expandedClauses.has(i) ? (
-                              <ChevronUp className="h-6 w-6 text-black" />
-                            ) : (
-                              <ChevronDown className="h-6 w-6 text-black" />
-                            )}
+                          <div className="flex items-center gap-2 px-2 py-1 border border-neutral-800 bg-[#050505]">
+                            <span className="text-[8px] font-mono text-neutral-600">
+                              B:
+                            </span>
+                            {getRiskIcon(comp.contract_b.risk_level)}
                           </div>
                         </div>
-                      </button>
+                        {expandedClauses.has(i) ? (
+                          <ChevronUp className="h-4 w-4 text-neutral-600" />
+                        ) : (
+                          <ChevronDown className="h-4 w-4 text-neutral-600" />
+                        )}
+                      </div>
+                    </button>
 
-                      {expandedClauses.has(i) && (
-                        <div className="border-t-4 border-black p-4 sm:p-6 bg-gray-50">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                            <div className="p-4 bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                              <p className="text-sm font-black uppercase tracking-widest text-black mb-3 border-b-2 border-black/10 pb-2 flex items-center gap-2">
-                                <span className="bg-black text-white px-1 border-2 border-black">
-                                  A
-                                </span>{" "}
-                                CONTRACT A
-                              </p>
-                              <div className="flex items-center gap-3 mb-3">
-                                <div className="p-1 border-2 border-black">
-                                  {getRiskIcon(comp.contract_a.risk_level)}
-                                </div>
-                                <span
-                                  className={`text-base font-black uppercase tracking-widest ${getRiskColor(
-                                    comp.contract_a.risk_level,
-                                  )}`}
-                                >
-                                  {comp.contract_a.value}
-                                </span>
-                              </div>
-                              <p className="text-sm font-bold text-gray-700">
-                                {comp.contract_a.summary}
-                              </p>
+                    {expandedClauses.has(i) && (
+                      <div className="border-t border-neutral-900 p-4 sm:p-5 bg-[#050505]">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                          <div className="p-4 border border-neutral-800 bg-[#0a0a0a]">
+                            <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-500 mb-3 border-b border-neutral-900 pb-2 flex items-center gap-2">
+                              <span className="px-1 py-0.5 border border-cyan-900/50 text-cyan-400 bg-cyan-950/20 text-[7px]">
+                                A
+                              </span>
+                              CONTRACT_A
+                            </p>
+                            <div className="flex items-center gap-3 mb-3">
+                              {getRiskIcon(comp.contract_a.risk_level)}
+                              <span
+                                className={`text-[10px] font-mono uppercase tracking-widest ${getRiskColor(
+                                  comp.contract_a.risk_level,
+                                )}`}
+                              >
+                                {comp.contract_a.value}
+                              </span>
                             </div>
-                            <div className="p-4 bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                              <p className="text-sm font-black uppercase tracking-widest text-black mb-3 border-b-2 border-black/10 pb-2 flex items-center gap-2">
-                                <span className="bg-black text-white px-1 border-2 border-black">
-                                  B
-                                </span>{" "}
-                                CONTRACT B
-                              </p>
-                              <div className="flex items-center gap-3 mb-3">
-                                <div className="p-1 border-2 border-black">
-                                  {getRiskIcon(comp.contract_b.risk_level)}
-                                </div>
-                                <span
-                                  className={`text-base font-black uppercase tracking-widest ${getRiskColor(
-                                    comp.contract_b.risk_level,
-                                  )}`}
-                                >
-                                  {comp.contract_b.value}
-                                </span>
-                              </div>
-                              <p className="text-sm font-bold text-gray-700">
-                                {comp.contract_b.summary}
-                              </p>
-                            </div>
+                            <p className="text-[10px] font-mono text-neutral-500 leading-relaxed">
+                              {comp.contract_a.summary}
+                            </p>
                           </div>
-                          <div className="bg-yellow-50 border-2 border-yellow-400 p-4 border-l-4 border-l-yellow-600">
-                            <p className="text-base font-bold text-black flex items-start gap-3">
-                              <span className="text-xl">💡</span>
-                              {comp.explanation}
+                          <div className="p-4 border border-neutral-800 bg-[#0a0a0a]">
+                            <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-500 mb-3 border-b border-neutral-900 pb-2 flex items-center gap-2">
+                              <span className="px-1 py-0.5 border border-purple-900/50 text-purple-400 bg-purple-950/20 text-[7px]">
+                                B
+                              </span>
+                              CONTRACT_B
+                            </p>
+                            <div className="flex items-center gap-3 mb-3">
+                              {getRiskIcon(comp.contract_b.risk_level)}
+                              <span
+                                className={`text-[10px] font-mono uppercase tracking-widest ${getRiskColor(
+                                  comp.contract_b.risk_level,
+                                )}`}
+                              >
+                                {comp.contract_b.value}
+                              </span>
+                            </div>
+                            <p className="text-[10px] font-mono text-neutral-500 leading-relaxed">
+                              {comp.contract_b.summary}
                             </p>
                           </div>
                         </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                        <div className="border-l-2 border-amber-900/50 bg-amber-950/10 p-4">
+                          <p className="text-[10px] font-mono text-amber-300/70 flex items-start gap-3 leading-relaxed">
+                            <span className="text-amber-600 shrink-0">→</span>
+                            {comp.explanation}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
 
             {/* Recommendation */}
-            <Card className="border-4 border-black rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-green-50 mb-12">
-              <CardContent className="p-8">
-                <h3 className="text-2xl font-black uppercase tracking-tighter text-black mb-4 flex items-center gap-3">
-                  <span className="bg-yellow-400 border-2 border-black text-black px-2 py-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                    💡
-                  </span>
-                  FINAL RECOMMENDATION
+            <div className="border border-emerald-900/50 bg-emerald-950/10 mb-8">
+              <div className="p-6 sm:p-8">
+                <h3 className="text-[10px] font-mono uppercase tracking-widest text-emerald-400 mb-4 flex items-center gap-3">
+                  <CheckCircle2 className="h-3.5 w-3.5" />
+                  FINAL_RECOMMENDATION
                 </h3>
-                <p className="text-xl font-bold text-black border-l-4 border-black pl-4 py-2 leading-relaxed">
+                <p className="text-sm font-mono text-emerald-300/80 border-l-2 border-emerald-900/50 pl-4 py-2 leading-relaxed">
                   {result.recommendation}
                 </p>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
             {/* Actions */}
-            <div className="flex flex-col sm:flex-row justify-center gap-6">
-              <Button
-                variant="outline"
-                size="lg"
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <button
                 onClick={() => {
                   setResult(null);
                   setFileA(null);
@@ -679,19 +685,18 @@ export default function ComparePage() {
                   setTextB("");
                   setExpandedClauses(new Set());
                 }}
-                className="h-14 gap-3 bg-white border-4 border-black font-black uppercase tracking-widest rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none hover:bg-gray-100 text-black"
+                className="flex items-center justify-center gap-3 h-10 px-8 border border-neutral-800 bg-[#050505] font-mono uppercase tracking-widest text-[9px] text-neutral-400 hover:text-neutral-200 hover:border-neutral-600 transition-colors"
               >
-                <ArrowLeftRight className="h-5 w-5" />
+                <ArrowLeftRight className="h-3.5 w-3.5" />
                 COMPARE AGAIN
-              </Button>
-              <Button
-                size="lg"
+              </button>
+              <button
                 onClick={() => setShowShareCard(true)}
-                className="h-14 gap-3 bg-blue-400 hover:bg-blue-500 text-black border-4 border-black font-black uppercase tracking-widest rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none transition-all"
+                className="flex items-center justify-center gap-3 h-10 px-8 border border-cyan-900/50 bg-cyan-950/10 font-mono uppercase tracking-widest text-[9px] text-cyan-400 hover:text-cyan-300 hover:border-cyan-800 transition-colors"
               >
-                <Share2 className="h-5 w-5" />
+                <Share2 className="h-3.5 w-3.5" />
                 SHARE COMPARISON
-              </Button>
+              </button>
             </div>
 
             {/* Comparison Card Modal */}
