@@ -42,19 +42,19 @@ const V_SPACE = 130;
 const PAD = 80;
 
 // ============================================
-// COLOR MAP
+// COLOR MAP — dark-optimized
 // ============================================
 
 const STATE_COLORS: Record<StateType, { fill: string; stroke: string }> = {
-  initial: { fill: "#000000", stroke: "#eab308" }, // black filled, yellow stroke
-  normal: { fill: "#ffffff", stroke: "#000000" }, // white filled
-  restricted: { fill: "#000000", stroke: "#000000" },
-  dangerous: { fill: "#facc15", stroke: "#000000" }, // yellow filled
-  trap: { fill: "#ef4444", stroke: "#000000" }, // red filled
-  absorbing_trap: { fill: "#b91c1c", stroke: "#000000" }, // dark red
-  terminal_safe: { fill: "#22c55e", stroke: "#000000" }, // green
-  terminal_warning: { fill: "#f59e0b", stroke: "#000000" },
-  terminal_loss: { fill: "#ef4444", stroke: "#000000" },
+  initial: { fill: "#171717", stroke: "#facc15" },       // dark fill, yellow stroke
+  normal: { fill: "#171717", stroke: "#404040" },        // dark fill, neutral stroke
+  restricted: { fill: "#1c1917", stroke: "#78716c" },    // warm dark, stone stroke
+  dangerous: { fill: "#422006", stroke: "#f59e0b" },     // amber depth, amber stroke
+  trap: { fill: "#450a0a", stroke: "#ef4444" },          // red depth, red stroke
+  absorbing_trap: { fill: "#7f1d1d", stroke: "#ef4444" },// deeper red
+  terminal_safe: { fill: "#052e16", stroke: "#22c55e" }, // green depth
+  terminal_warning: { fill: "#422006", stroke: "#f59e0b" },
+  terminal_loss: { fill: "#450a0a", stroke: "#ef4444" },
 };
 
 const STATE_ICONS: Record<StateType, string> = {
@@ -207,7 +207,7 @@ function MobileListView({
   }, [stateMachine.states, positions]);
 
   return (
-    <div className="space-y-4 p-4">
+    <div className="space-y-3 p-4">
       {sortedStates.map((state, idx) => {
         const colors = STATE_COLORS[state.type];
         const icon = STATE_ICONS[state.type];
@@ -220,42 +220,37 @@ function MobileListView({
           <div key={state.id}>
             <button
               onClick={() => onStateClick?.(state)}
-              className={`w-full text-left p-4 border-4 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] ${
-                isTrap ? "border-red-600 bg-red-100" : "border-black bg-white"
+              className={`w-full text-left p-3 border transition-colors hover:border-neutral-600 ${
+                isTrap ? "border-red-900/50 bg-red-950/10" : "border-neutral-800 bg-[#050505]"
               }`}
               style={{
-                borderLeftWidth: 8,
-                borderLeftColor:
-                  colors.stroke !== "#000000" && colors.fill === "#000000"
-                    ? colors.stroke
-                    : colors.stroke === "#000000" && colors.fill !== "#ffffff"
-                      ? colors.fill
-                      : colors.stroke,
+                borderLeftWidth: 3,
+                borderLeftColor: colors.stroke,
               }}
             >
-              <div className="flex items-center gap-3">
-                <span className="text-lg bg-gray-100 border-2 border-black p-1">
+              <div className="flex items-center gap-2.5">
+                <span className="text-lg bg-[#0a0a0a] border border-neutral-800 p-0.5">
                   {icon}
                 </span>
-                <span className="font-black uppercase tracking-widest text-black/90">
+                <span className="text-[9px] font-mono uppercase tracking-widest text-neutral-300">
                   {state.name}
                 </span>
                 <span
-                  className="text-[10px] font-black uppercase tracking-widest px-2 py-1 ml-auto"
+                  className="text-[7px] font-mono uppercase tracking-widest px-1.5 py-0.5 ml-auto border"
                   style={{
                     backgroundColor: colors.fill,
-                    color: colors.fill === "#ffffff" ? "#000000" : "#ffffff",
-                    border: `2px solid ${colors.stroke}`,
+                    color: "#a3a3a3",
+                    borderColor: colors.stroke,
                   }}
                 >
                   {state.type.replace(/_/g, " ")}
                 </span>
               </div>
-              <p className="text-xs font-bold text-black/70 mt-3 line-clamp-2">
+              <p className="text-[8px] font-mono text-neutral-500 mt-2 line-clamp-2 leading-relaxed">
                 {state.description}
               </p>
               {state.financialImpact.amount && (
-                <p className="text-xs font-black uppercase tracking-widest text-red-700 mt-2 bg-red-100 inline-block px-1 border-2 border-red-700">
+                <p className="text-[7px] font-mono uppercase tracking-widest text-red-400 mt-1.5 bg-red-950/10 inline-block px-1 border border-red-900/50">
                   💰 {state.financialImpact.amount}
                 </p>
               )}
@@ -263,18 +258,18 @@ function MobileListView({
 
             {/* Show outgoing transitions */}
             {outgoing.length > 0 && idx < sortedStates.length - 1 && (
-              <div className="pl-8 py-3 space-y-1">
+              <div className="pl-6 py-2 space-y-1">
                 {outgoing.slice(0, 2).map((t) => (
                   <div
                     key={t.id}
-                    className="flex items-center gap-2 text-xs font-bold text-black/60 uppercase tracking-widest"
+                    className="flex items-center gap-2 text-[7px] font-mono text-neutral-600 uppercase tracking-widest"
                   >
-                    <span className="text-black font-black">↓</span>
+                    <span className="text-neutral-500">↓</span>
                     <span className="truncate">{t.trigger}</span>
                   </div>
                 ))}
                 {outgoing.length > 2 && (
-                  <span className="text-[10px] font-black uppercase tracking-widest text-black/50">
+                  <span className="text-[7px] font-mono uppercase tracking-widest text-neutral-700">
                     +{outgoing.length - 2} more
                   </span>
                 )}
@@ -321,45 +316,45 @@ function DetailPanel({
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: 20 }}
-        className="absolute right-0 top-0 bottom-0 w-[300px] sm:w-[350px] bg-white border-l-4 border-black overflow-y-auto z-20 shadow-[-8px_0_0_0_rgba(0,0,0,1)]"
+        className="absolute right-0 top-0 bottom-0 w-[300px] sm:w-[350px] bg-[#0a0a0a] border-l border-neutral-800 overflow-y-auto z-20"
       >
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-6 pb-4 border-b-4 border-black">
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">{STATE_ICONS[state.type]}</span>
-              <h3 className="font-black uppercase tracking-widest text-black">
+        <div className="p-5">
+          <div className="flex items-center justify-between mb-5 pb-3 border-b border-neutral-800">
+            <div className="flex items-center gap-2.5">
+              <span className="text-xl">{STATE_ICONS[state.type]}</span>
+              <h3 className="text-[9px] font-mono uppercase tracking-widest text-neutral-200">
                 {state.name}
               </h3>
             </div>
             <button
               onClick={onClose}
-              className="p-2 border-2 border-black hover:bg-gray-200 hover:translate-y-0.5 shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:shadow-none transition-all"
+              className="p-1.5 border border-neutral-800 hover:border-neutral-600 transition-colors"
             >
-              <X className="h-5 w-5 text-black" />
+              <X className="h-3.5 w-3.5 text-neutral-500" />
             </button>
           </div>
 
           <span
-            className="text-[10px] font-black uppercase tracking-widest px-3 py-1"
+            className="text-[7px] font-mono uppercase tracking-widest px-2 py-0.5 border"
             style={{
               backgroundColor: colors.fill,
-              color: colors.fill === "#ffffff" ? "#000000" : "#ffffff",
-              border: `2px solid ${colors.stroke}`,
+              color: "#a3a3a3",
+              borderColor: colors.stroke,
             }}
           >
             {state.type.replace(/_/g, " ")}
           </span>
 
-          <p className="text-sm font-bold text-black mt-5 leading-relaxed bg-gray-100 p-4 border-4 border-black">
+          <p className="text-[8px] font-mono text-neutral-400 mt-4 leading-relaxed bg-[#050505] p-3 border border-neutral-800">
             {state.description}
           </p>
 
           {state.duration && (
-            <div className="mt-5 p-3 border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
-              <p className="text-[10px] font-black uppercase tracking-widest text-black/60">
+            <div className="mt-4 p-3 border border-neutral-800 bg-[#050505]">
+              <p className="text-[7px] font-mono uppercase tracking-widest text-neutral-600">
                 Duration
               </p>
-              <p className="text-sm font-black text-black">
+              <p className="text-[9px] font-mono text-neutral-300 mt-0.5">
                 {state.duration.value} {state.duration.unit}
                 {state.duration.isFixed ? " (fixed)" : ""}
               </p>
@@ -367,25 +362,25 @@ function DetailPanel({
           )}
 
           {state.financialImpact.type !== "none" && (
-            <div className="mt-4 p-3 bg-red-100 border-4 border-red-900 shadow-[4px_4px_0_0_rgba(127,29,29,1)]">
-              <p className="text-[10px] font-black uppercase tracking-widest text-red-900">
+            <div className="mt-3 p-3 bg-red-950/10 border border-red-900/50">
+              <p className="text-[7px] font-mono uppercase tracking-widest text-red-400">
                 Financial Impact
               </p>
-              <p className="text-sm font-black text-red-900">
+              <p className="text-[9px] font-mono text-red-400 mt-0.5">
                 {state.financialImpact.amount || state.financialImpact.type}
               </p>
             </div>
           )}
 
           {state.legalIssues && state.legalIssues.length > 0 && (
-            <div className="mt-5">
-              <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-2">
+            <div className="mt-4">
+              <p className="text-[7px] font-mono uppercase tracking-widest text-neutral-600 mb-2">
                 Legal Issues
               </p>
               {state.legalIssues.map((issue, i) => (
                 <p
                   key={i}
-                  className="text-xs font-bold text-black bg-blue-100 border-2 border-blue-900 px-2 py-1 mb-2 shadow-[2px_2px_0_0_rgba(30,58,138,1)]"
+                  className="text-[8px] font-mono text-cyan-400 bg-cyan-950/10 border border-cyan-900/50 px-2 py-1 mb-1.5"
                 >
                   ⚖️ {issue}
                 </p>
@@ -394,19 +389,19 @@ function DetailPanel({
           )}
 
           {trap && (
-            <div className="mt-5 p-4 bg-yellow-400 border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
-              <p className="text-xs font-black uppercase tracking-widest text-black mb-2">
+            <div className="mt-4 p-3 bg-amber-950/20 border border-amber-900/50">
+              <p className="text-[8px] font-mono uppercase tracking-widest text-amber-400 mb-1.5">
                 🪤 Trap State — {trap.severity.toUpperCase()}
               </p>
-              <p className="text-xs font-bold text-black leading-relaxed">
+              <p className="text-[8px] font-mono text-neutral-400 leading-relaxed">
                 {trap.description.substring(0, 150)}
               </p>
             </div>
           )}
 
           {incoming.length > 0 && (
-            <div className="mt-5 border-t-4 border-black pt-5">
-              <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-2">
+            <div className="mt-4 border-t border-neutral-800 pt-4">
+              <p className="text-[7px] font-mono uppercase tracking-widest text-neutral-600 mb-2">
                 Incoming ({incoming.length})
               </p>
               {incoming.slice(0, 5).map((t) => {
@@ -416,13 +411,13 @@ function DetailPanel({
                 return (
                   <p
                     key={t.id}
-                    className="text-xs font-bold text-black mt-2 bg-gray-50 border-2 border-black p-2"
+                    className="text-[8px] font-mono text-neutral-400 mt-1.5 bg-[#050505] border border-neutral-800 p-2"
                   >
-                    <span className="font-black text-black">
+                    <span className="text-neutral-300">
                       ← {from?.name || "Unknown"}
                     </span>
                     <br />
-                    <span className="text-black/60 uppercase text-[10px]">
+                    <span className="text-neutral-600 uppercase text-[7px]">
                       {truncate(t.trigger, 40)}
                     </span>
                   </p>
@@ -432,8 +427,8 @@ function DetailPanel({
           )}
 
           {outgoing.length > 0 && (
-            <div className="mt-5 border-t-4 border-black pt-5">
-              <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-2">
+            <div className="mt-4 border-t border-neutral-800 pt-4">
+              <p className="text-[7px] font-mono uppercase tracking-widest text-neutral-600 mb-2">
                 Outgoing ({outgoing.length})
               </p>
               {outgoing.slice(0, 5).map((t) => {
@@ -443,13 +438,13 @@ function DetailPanel({
                 return (
                   <p
                     key={t.id}
-                    className="text-xs font-bold text-black mt-2 bg-gray-50 border-2 border-black p-2"
+                    className="text-[8px] font-mono text-neutral-400 mt-1.5 bg-[#050505] border border-neutral-800 p-2"
                   >
-                    <span className="font-black text-black">
+                    <span className="text-neutral-300">
                       → {to?.name || "Unknown"}
                     </span>
                     <br />
-                    <span className="text-black/60 uppercase text-[10px]">
+                    <span className="text-neutral-600 uppercase text-[7px]">
                       {truncate(t.trigger, 40)}
                     </span>
                   </p>
@@ -459,15 +454,15 @@ function DetailPanel({
           )}
 
           {state.clauseReferences && state.clauseReferences.length > 0 && (
-            <div className="mt-5 border-t-4 border-black pt-5">
-              <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-2">
+            <div className="mt-4 border-t border-neutral-800 pt-4">
+              <p className="text-[7px] font-mono uppercase tracking-widest text-neutral-600 mb-2">
                 Referenced Clauses
               </p>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1.5">
                 {state.clauseReferences.map((ref) => (
                   <span
                     key={ref}
-                    className="text-xs font-black bg-white border-2 border-black px-2 py-1 shadow-[2px_2px_0_0_rgba(0,0,0,1)]"
+                    className="text-[7px] font-mono bg-[#050505] border border-neutral-800 px-1.5 py-0.5 text-neutral-400"
                   >
                     {ref}
                   </span>
@@ -486,106 +481,89 @@ function DetailPanel({
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: 20 }}
-        className="absolute right-0 top-0 bottom-0 w-[300px] sm:w-[350px] bg-white border-l-4 border-black overflow-y-auto z-20 shadow-[-8px_0_0_0_rgba(0,0,0,1)]"
+        className="absolute right-0 top-0 bottom-0 w-[300px] sm:w-[350px] bg-[#0a0a0a] border-l border-neutral-800 overflow-y-auto z-20"
       >
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-6 pb-4 border-b-4 border-black">
-            <h3 className="font-black uppercase tracking-widest text-black">
+        <div className="p-5">
+          <div className="flex items-center justify-between mb-5 pb-3 border-b border-neutral-800">
+            <h3 className="text-[9px] font-mono uppercase tracking-widest text-neutral-200">
               Transition Details
             </h3>
             <button
               onClick={onClose}
-              className="p-2 border-2 border-black hover:bg-gray-200 hover:translate-y-0.5 shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:shadow-none transition-all"
+              className="p-1.5 border border-neutral-800 hover:border-neutral-600 transition-colors"
             >
-              <X className="h-5 w-5 text-black" />
+              <X className="h-3.5 w-3.5 text-neutral-500" />
             </button>
           </div>
 
-          <p className="text-sm font-bold text-black bg-gray-100 p-4 border-4 border-black mb-6 leading-relaxed">
+          <p className="text-[8px] font-mono text-neutral-400 bg-[#050505] p-3 border border-neutral-800 mb-5 leading-relaxed">
             {transition.trigger}
           </p>
 
-          <div className="grid grid-cols-2 gap-3 mt-3">
-            <div className="p-3 bg-white border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
-              <p className="text-[10px] font-black uppercase tracking-widest text-black/60">
-                Type
-              </p>
-              <p className="text-xs font-black text-black">
-                {transition.triggerType.replace(/_/g, " ")}
-              </p>
-            </div>
-            <div className="p-3 bg-white border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
-              <p className="text-[10px] font-black uppercase tracking-widest text-black/60">
-                Party
-              </p>
-              <p className="text-xs font-black text-black">
-                {transition.party}
-              </p>
-            </div>
-            <div className="p-3 bg-white border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
-              <p className="text-[10px] font-black uppercase tracking-widest text-black/60">
-                Voluntary
-              </p>
-              <p className="text-xs font-black text-black">
-                {transition.isVoluntary ? "Yes" : "No"}
-              </p>
-            </div>
-            <div className="p-3 bg-white border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
-              <p className="text-[10px] font-black uppercase tracking-widest text-black/60">
-                Reversible
-              </p>
-              <p className="text-xs font-black text-black">
-                {transition.isReversible ? "Yes" : "No"}
-              </p>
-            </div>
+          <div className="grid grid-cols-2 gap-2 mt-3">
+            {[
+              { label: "Type", value: transition.triggerType.replace(/_/g, " ") },
+              { label: "Party", value: transition.party },
+              { label: "Voluntary", value: transition.isVoluntary ? "Yes" : "No" },
+              { label: "Reversible", value: transition.isReversible ? "Yes" : "No" },
+            ].map((item) => (
+              <div key={item.label} className="p-2.5 bg-[#050505] border border-neutral-800">
+                <p className="text-[7px] font-mono uppercase tracking-widest text-neutral-600">
+                  {item.label}
+                </p>
+                <p className="text-[8px] font-mono text-neutral-300 mt-0.5">
+                  {item.value}
+                </p>
+              </div>
+            ))}
           </div>
 
           {transition.condition && (
-            <div className="mt-6 pt-5 border-t-4 border-black">
-              <p className="text-[10px] font-black uppercase tracking-widest text-black/60">
+            <div className="mt-5 pt-4 border-t border-neutral-800">
+              <p className="text-[7px] font-mono uppercase tracking-widest text-neutral-600">
                 Condition
               </p>
-              <p className="text-xs font-bold text-black mt-2 bg-yellow-100 border-2 border-yellow-600 p-2 shadow-[2px_2px_0_0_rgba(202,138,4,1)]">
+              <p className="text-[8px] font-mono text-amber-400 mt-1.5 bg-amber-950/10 border border-amber-900/50 p-2">
                 {transition.condition}
               </p>
             </div>
           )}
 
           {transition.financialConsequence && (
-            <div className="mt-5 p-3 bg-red-100 border-4 border-red-900 shadow-[4px_4px_0_0_rgba(127,29,29,1)]">
-              <p className="text-[10px] font-black uppercase tracking-widest text-red-900 mb-1">
+            <div className="mt-4 p-3 bg-red-950/10 border border-red-900/50">
+              <p className="text-[7px] font-mono uppercase tracking-widest text-red-400 mb-1">
                 Financial Impact
               </p>
-              <p className="text-xs font-black text-red-900">
+              <p className="text-[8px] font-mono text-red-400">
                 💰 {transition.financialConsequence}
               </p>
             </div>
           )}
 
           {transition.clauseReference && (
-            <div className="mt-5 border-t-4 border-black pt-5">
-              <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-2">
+            <div className="mt-4 border-t border-neutral-800 pt-4">
+              <p className="text-[7px] font-mono uppercase tracking-widest text-neutral-600 mb-1.5">
                 Clause Reference
               </p>
-              <span className="text-xs font-black bg-white border-2 border-black px-2 py-1 shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
+              <span className="text-[7px] font-mono bg-[#050505] border border-neutral-800 px-1.5 py-0.5 text-neutral-400">
                 {transition.clauseReference}
               </span>
             </div>
           )}
 
-          <div className="mt-5 border-t-4 border-black pt-5">
-            <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-2">
+          <div className="mt-4 border-t border-neutral-800 pt-4">
+            <p className="text-[7px] font-mono uppercase tracking-widest text-neutral-600 mb-1.5">
               Probability
             </p>
             <span
-              className={`text-xs font-black uppercase tracking-widest px-3 py-1 border-2 border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)] inline-block ${
+              className={`text-[7px] font-mono uppercase tracking-widest px-2 py-0.5 border inline-block ${
                 transition.probability === "certain"
-                  ? "bg-green-400 text-black"
+                  ? "bg-emerald-950/20 text-emerald-400 border-emerald-900/50"
                   : transition.probability === "likely"
-                    ? "bg-blue-400 text-black"
+                    ? "bg-cyan-950/20 text-cyan-400 border-cyan-900/50"
                     : transition.probability === "possible"
-                      ? "bg-yellow-400 text-black"
-                      : "bg-gray-200 text-black"
+                      ? "bg-amber-950/20 text-amber-400 border-amber-900/50"
+                      : "bg-[#050505] text-neutral-500 border-neutral-800"
               }`}
             >
               {transition.probability}
@@ -772,13 +750,13 @@ export default function StateGraph({
   if (viewMode === "list") {
     return (
       <div className={`relative ${className}`}>
-        <div className="flex items-center justify-between px-6 py-4 bg-gray-100 border-4 border-black mb-4">
-          <span className="text-xs font-black uppercase tracking-widest text-black/60">
+        <div className="flex items-center justify-between px-4 py-3 bg-[#050505] border border-neutral-800 mb-3">
+          <span className="text-[7px] font-mono uppercase tracking-widest text-neutral-600">
             {stateMachine.metadata.totalStates} states
           </span>
           <button
             onClick={() => setViewMode("graph")}
-            className="text-xs font-black uppercase tracking-widest text-black hover:text-blue-700 bg-white border-2 border-black px-3 py-1 shadow-[2px_2px_0_0_rgba(0,0,0,1)] transition-all hover:translate-y-0.5 hover:shadow-none"
+            className="text-[7px] font-mono uppercase tracking-widest text-neutral-400 hover:text-neutral-200 bg-[#0a0a0a] border border-neutral-800 px-2 py-1 hover:border-neutral-600 transition-colors"
           >
             Switch to Graph View
           </button>
@@ -794,31 +772,31 @@ export default function StateGraph({
 
   return (
     <div
-      className={`relative overflow-hidden bg-gray-100 border-4 border-black shadow-[inset_6px_6px_0_0_rgba(0,0,0,0.1)] ${className}`}
+      className={`relative overflow-hidden bg-[#050505] border border-neutral-800 ${className}`}
     >
       {/* TOOLBAR */}
-      <div className="absolute top-4 left-4 z-10 flex gap-2">
+      <div className="absolute top-3 left-3 z-10 flex gap-1">
         <button
           onClick={() => handleZoom(0.15)}
-          className="p-2 bg-white hover:bg-yellow-400 border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none transition-all text-black"
+          className="p-1.5 bg-[#0a0a0a] hover:bg-neutral-800 border border-neutral-800 hover:border-neutral-600 transition-colors text-neutral-400"
         >
-          <ZoomIn className="h-5 w-5" />
+          <ZoomIn className="h-3.5 w-3.5" />
         </button>
         <button
           onClick={() => handleZoom(-0.15)}
-          className="p-2 bg-white hover:bg-yellow-400 border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none transition-all text-black"
+          className="p-1.5 bg-[#0a0a0a] hover:bg-neutral-800 border border-neutral-800 hover:border-neutral-600 transition-colors text-neutral-400"
         >
-          <ZoomOut className="h-5 w-5" />
+          <ZoomOut className="h-3.5 w-3.5" />
         </button>
         <button
           onClick={handleFit}
-          className="p-2 bg-white hover:bg-yellow-400 border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none transition-all text-black"
+          className="p-1.5 bg-[#0a0a0a] hover:bg-neutral-800 border border-neutral-800 hover:border-neutral-600 transition-colors text-neutral-400"
         >
-          <Maximize2 className="h-5 w-5" />
+          <Maximize2 className="h-3.5 w-3.5" />
         </button>
         <button
           onClick={() => setViewMode("list")}
-          className="px-4 py-2 text-xs font-black uppercase tracking-widest text-black bg-white hover:bg-yellow-400 border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none transition-all"
+          className="px-2.5 py-1.5 text-[7px] font-mono uppercase tracking-widest text-neutral-400 bg-[#0a0a0a] hover:bg-neutral-800 border border-neutral-800 hover:border-neutral-600 transition-colors"
         >
           List
         </button>
@@ -826,19 +804,19 @@ export default function StateGraph({
 
       {/* SIMULATE CONTROLS */}
       {mode === "simulate" && (
-        <div className="absolute top-4 right-4 z-10 flex gap-2">
+        <div className="absolute top-3 right-3 z-10 flex gap-1">
           <button
             onClick={handleSimUndo}
             disabled={simulateHistory.length === 0}
-            className="p-2 bg-white text-black hover:bg-yellow-400 disabled:bg-gray-200 disabled:text-gray-500 border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] disabled:shadow-none disabled:translate-y-1 hover:translate-y-1 hover:shadow-none transition-all"
+            className="p-1.5 bg-[#0a0a0a] text-neutral-400 hover:bg-neutral-800 disabled:text-neutral-700 disabled:bg-[#050505] border border-neutral-800 disabled:border-neutral-900 hover:border-neutral-600 transition-colors"
           >
-            <Undo2 className="h-5 w-5" />
+            <Undo2 className="h-3.5 w-3.5" />
           </button>
           <button
             onClick={handleSimReset}
-            className="p-2 bg-white text-black hover:bg-yellow-400 hover:text-black border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none transition-all"
+            className="p-1.5 bg-[#0a0a0a] text-neutral-400 hover:bg-neutral-800 border border-neutral-800 hover:border-neutral-600 transition-colors"
           >
-            <RotateCcw className="h-5 w-5" />
+            <RotateCcw className="h-3.5 w-3.5" />
           </button>
         </div>
       )}
@@ -870,7 +848,7 @@ export default function StateGraph({
             refY="3.5"
             orient="auto"
           >
-            <polygon points="0 0, 10 3.5, 0 7" fill="#64748b" opacity="0.7" />
+            <polygon points="0 0, 10 3.5, 0 7" fill="#525252" opacity="0.7" />
           </marker>
           <marker
             id="arrowhead-red"
@@ -921,7 +899,7 @@ export default function StateGraph({
             );
             const hasFinancialConsequence = !!trans.financialConsequence;
 
-            let strokeColor = "#64748b50";
+            let strokeColor = "#40404050";
             let markerEnd = "url(#arrowhead)";
             if (hasFinancialConsequence) {
               strokeColor = "#ef444450";
@@ -932,7 +910,7 @@ export default function StateGraph({
               markerEnd = "url(#arrowhead-green)";
             }
             if (isSimAvailable) {
-              strokeColor = "#3b82f6";
+              strokeColor = "#22d3ee";
             }
 
             const opacity =
@@ -971,10 +949,10 @@ export default function StateGraph({
                       y={midY - 10 - (isSameLayer || isBackEdge ? 20 : 0)}
                       width={120}
                       height={18}
-                      rx={4}
-                      fill="#0f172a"
-                      fillOpacity={0.9}
-                      stroke="#334155"
+                      rx={0}
+                      fill="#0a0a0a"
+                      fillOpacity={0.95}
+                      stroke="#262626"
                       strokeWidth={0.5}
                     />
                     <text
@@ -982,7 +960,8 @@ export default function StateGraph({
                       y={midY + 2 - (isSameLayer || isBackEdge ? 20 : 0)}
                       textAnchor="middle"
                       fontSize={9}
-                      fill="#94a3b8"
+                      fill="#737373"
+                      fontFamily="monospace"
                       className="pointer-events-none select-none"
                     >
                       {truncate(trans.trigger, 22)}
@@ -997,7 +976,8 @@ export default function StateGraph({
                     y={midY + 18}
                     textAnchor="middle"
                     fontSize={8}
-                    fill="#3b82f6"
+                    fill="#22d3ee"
+                    fontFamily="monospace"
                     className="pointer-events-none animate-pulse"
                   >
                     Click to move →
@@ -1040,27 +1020,28 @@ export default function StateGraph({
                   duration: 0.3,
                 }}
               >
-                {/* Shadow */}
+                {/* Subtle shadow — dark offset */}
                 <rect
-                  x={pos.x + 8}
-                  y={pos.y + 8}
+                  x={pos.x + 4}
+                  y={pos.y + 4}
                   width={NODE_W}
                   height={NODE_H}
                   rx={0}
-                  fill="black"
+                  fill="#000000"
+                  fillOpacity={0.4}
                   className="pointer-events-none"
                 />
 
                 {/* Trap pulse background */}
                 {isTrap && (
                   <rect
-                    x={pos.x - 6}
-                    y={pos.y - 6}
-                    width={NODE_W + 12}
-                    height={NODE_H + 12}
+                    x={pos.x - 4}
+                    y={pos.y - 4}
+                    width={NODE_W + 8}
+                    height={NODE_H + 8}
                     fill="none"
-                    stroke={colors.fill}
-                    strokeWidth={4}
+                    stroke={colors.stroke}
+                    strokeWidth={2}
                     opacity={0.3}
                     className="animate-pulse pointer-events-none"
                   />
@@ -1069,13 +1050,13 @@ export default function StateGraph({
                 {/* Simulate active border */}
                 {isSimActive && (
                   <rect
-                    x={pos.x - 6}
-                    y={pos.y - 6}
-                    width={NODE_W + 12}
-                    height={NODE_H + 12}
+                    x={pos.x - 4}
+                    y={pos.y - 4}
+                    width={NODE_W + 8}
+                    height={NODE_H + 8}
                     fill="none"
-                    stroke="#2563eb"
-                    strokeWidth={6}
+                    stroke="#22d3ee"
+                    strokeWidth={3}
                     className="animate-pulse pointer-events-none"
                   />
                 )}
@@ -1088,12 +1069,8 @@ export default function StateGraph({
                   height={NODE_H}
                   rx={0}
                   fill={colors.fill}
-                  stroke={
-                    colors.stroke === "#000000" && colors.fill === "#000000"
-                      ? "#ffffff"
-                      : colors.stroke
-                  }
-                  strokeWidth={isSelected ? 6 : 4}
+                  stroke={colors.stroke}
+                  strokeWidth={isSelected ? 3 : 1.5}
                   className="cursor-pointer transition-all duration-200"
                   onMouseEnter={() => setHoveredStateId(state.id)}
                   onMouseLeave={() => setHoveredStateId(null)}
@@ -1115,13 +1092,9 @@ export default function StateGraph({
                   y={pos.y}
                   width={NODE_H}
                   height={NODE_H}
-                  fill="white"
-                  stroke={
-                    colors.stroke === "#000000" && colors.fill === "#000000"
-                      ? "#ffffff"
-                      : colors.stroke
-                  }
-                  strokeWidth={4}
+                  fill="#0a0a0a"
+                  stroke={colors.stroke}
+                  strokeWidth={1.5}
                   className="pointer-events-none"
                 />
 
@@ -1140,10 +1113,10 @@ export default function StateGraph({
                   x={pos.x + NODE_H + (NODE_W - NODE_H) / 2}
                   y={pos.y + (subtitle ? 35 : 45)}
                   textAnchor="middle"
-                  fontSize={14}
-                  fontFamily="sans-serif"
-                  fontWeight={900}
-                  fill={colors.fill === "#ffffff" ? "#000000" : "#ffffff"}
+                  fontSize={12}
+                  fontFamily="monospace"
+                  fontWeight={600}
+                  fill="#d4d4d4"
                   className="uppercase tracking-wider pointer-events-none select-none"
                 >
                   {truncate(state.name, 12)}
@@ -1155,13 +1128,10 @@ export default function StateGraph({
                     x={pos.x + NODE_H + (NODE_W - NODE_H) / 2}
                     y={pos.y + 55}
                     textAnchor="middle"
-                    fontSize={11}
-                    fontWeight={700}
-                    fill={
-                      colors.fill === "#ffffff"
-                        ? "rgba(0,0,0,0.6)"
-                        : "rgba(255,255,255,0.7)"
-                    }
+                    fontSize={10}
+                    fontWeight={500}
+                    fontFamily="monospace"
+                    fill="#737373"
                     className="pointer-events-none select-none uppercase tracking-widest"
                   >
                     {truncate(subtitle, 15)}
@@ -1173,20 +1143,21 @@ export default function StateGraph({
                   <g className="pointer-events-none">
                     <rect
                       x={pos.x + NODE_W / 2 - 45}
-                      y={pos.y - 25}
+                      y={pos.y - 22}
                       width={90}
-                      height={20}
-                      fill="#2563eb"
-                      stroke="#000000"
-                      strokeWidth={2}
+                      height={18}
+                      fill="#22d3ee"
+                      stroke="#0a0a0a"
+                      strokeWidth={1}
                     />
                     <text
                       x={pos.x + NODE_W / 2}
-                      y={pos.y - 12}
+                      y={pos.y - 10}
                       textAnchor="middle"
-                      fontSize={10}
-                      fontWeight={900}
-                      fill="white"
+                      fontSize={9}
+                      fontWeight={700}
+                      fontFamily="monospace"
+                      fill="#0a0a0a"
                       className="uppercase tracking-widest"
                     >
                       YOU ARE HERE
@@ -1219,25 +1190,25 @@ export default function StateGraph({
 
       {/* Simulate breadcrumbs */}
       {mode === "simulate" && simulateHistory.length > 0 && (
-        <div className="absolute bottom-4 left-4 right-4 z-10 flex flex-wrap">
-          <div className="flex items-center gap-2 p-3 bg-white border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] overflow-x-auto max-w-full">
-            <span className="text-xs font-black uppercase tracking-widest text-black flex-shrink-0 bg-yellow-400 px-2 py-1 border-2 border-black">
+        <div className="absolute bottom-3 left-3 right-3 z-10 flex flex-wrap">
+          <div className="flex items-center gap-1.5 p-2.5 bg-[#0a0a0a] border border-neutral-800 overflow-x-auto max-w-full">
+            <span className="text-[7px] font-mono uppercase tracking-widest text-neutral-200 flex-shrink-0 bg-cyan-950/30 border border-cyan-900/50 px-1.5 py-0.5 text-cyan-400">
               Path
             </span>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
               {[...simulateHistory, simulateCurrentId].map((sid, i) => {
                 const st = stateMachine.states.find((s) => s.id === sid);
                 return (
                   <span
                     key={`${sid}-${i}`}
-                    className="flex items-center gap-2 flex-shrink-0"
+                    className="flex items-center gap-1.5 flex-shrink-0"
                   >
-                    {i > 0 && <span className="text-black font-black">→</span>}
+                    {i > 0 && <span className="text-neutral-600 font-mono">→</span>}
                     <span
-                      className={`text-xs font-bold uppercase tracking-widest px-2 py-1 border-2 border-black ${
+                      className={`text-[7px] font-mono uppercase tracking-widest px-1.5 py-0.5 border ${
                         sid === simulateCurrentId
-                          ? "bg-blue-200 text-blue-900"
-                          : "bg-gray-100 text-gray-800"
+                          ? "bg-cyan-950/20 text-cyan-400 border-cyan-900/50"
+                          : "bg-[#050505] text-neutral-500 border-neutral-800"
                       }`}
                     >
                       {st?.name || sid}

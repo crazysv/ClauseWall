@@ -141,23 +141,24 @@ export default function TimelineSlider({
   }, [totalMonths]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {/* Current state label */}
       {currentState && (
-        <div className="flex items-center justify-between p-4 bg-white border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
+        <div className="flex items-center justify-between p-3 bg-[#050505] border border-neutral-800">
           <div>
-            <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mb-1">
+            <p className="text-[7px] font-mono uppercase tracking-widest text-neutral-600 mb-0.5">
               Month {currentMonth}
             </p>
-            <p className="text-lg font-black uppercase tracking-widest text-black">
+            <p className="text-xs font-mono uppercase tracking-widest text-neutral-200">
               {currentState.name}
             </p>
           </div>
           <span
-            className="text-xs font-black uppercase tracking-widest px-3 py-1 border-2 border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)]"
+            className="text-[7px] font-mono uppercase tracking-widest px-2 py-0.5 border"
             style={{
-              backgroundColor: currentState.isTrap ? "#fca5a5" : "#6ee7b7",
-              color: "#000000",
+              backgroundColor: currentState.isTrap ? "rgba(239,68,68,0.15)" : "rgba(16,185,129,0.15)",
+              borderColor: currentState.isTrap ? "rgba(239,68,68,0.3)" : "rgba(16,185,129,0.3)",
+              color: currentState.isTrap ? "#f87171" : "#34d399",
             }}
           >
             {currentState.type.replace(/_/g, " ")}
@@ -169,7 +170,7 @@ export default function TimelineSlider({
       <div className="relative pt-8 pb-10">
         <div
           ref={trackRef}
-          className="relative h-6 bg-white border-4 border-black shadow-[inset_0_-4px_0_0_rgba(0,0,0,0.1)] cursor-pointer overflow-hidden"
+          className="relative h-3 bg-[#050505] border border-neutral-800 cursor-pointer overflow-hidden"
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
@@ -187,8 +188,8 @@ export default function TimelineSlider({
                   left: `${left}%`,
                   width: `${width}%`,
                   backgroundColor: seg.color,
-                  opacity: 0.3,
-                  borderLeft: i > 0 ? `2px solid black` : undefined,
+                  opacity: 0.2,
+                  borderLeft: i > 0 ? `1px solid rgba(255,255,255,0.1)` : undefined,
                 }}
               />
             );
@@ -196,21 +197,21 @@ export default function TimelineSlider({
 
           {/* Progress fill */}
           <div
-            className="absolute inset-y-0 left-0 bg-blue-500 border-r-4 border-black"
+            className="absolute inset-y-0 left-0 bg-cyan-500/40 border-r border-cyan-400/50"
             style={{ width: `${(currentMonth / totalMonths) * 100}%` }}
           />
         </div>
 
         {/* Draggable thumb */}
         <motion.div
-          className="absolute top-[26px] w-6 h-10 -mt-2 -ml-3 bg-yellow-400 border-4 border-black cursor-grab active:cursor-grabbing z-10 shadow-[2px_2px_0_0_rgba(0,0,0,1)]"
+          className="absolute top-[28px] w-4 h-7 -mt-2 -ml-2 bg-cyan-400 border border-cyan-300 cursor-grab active:cursor-grabbing z-10"
           style={{ left: `${(currentMonth / totalMonths) * 100}%` }}
           animate={{ scale: isDragging ? 1.1 : 1 }}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
         >
-          <div className="w-1 h-4 bg-black mx-auto mt-2" />
+          <div className="w-px h-3 bg-cyan-900 mx-auto mt-1.5" />
         </motion.div>
 
         {/* Event markers */}
@@ -227,22 +228,22 @@ export default function TimelineSlider({
               onMouseLeave={() => setHoveredEvent(null)}
             >
               <div
-                className="w-4 h-4 -ml-2 border-2 border-black"
+                className="w-3 h-3 -ml-1.5"
                 style={{ backgroundColor: color }}
               />
 
               {/* Tooltip */}
               {hoveredEvent === ev && (
                 <div className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 w-48 z-30">
-                  <div className="bg-white border-4 border-black p-3 shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
-                    <p className="font-black text-black leading-tight">
+                  <div className="bg-[#0a0a0a] border border-neutral-800 p-3">
+                    <p className="text-[8px] font-mono text-neutral-200 leading-tight">
                       {ev.event}
                     </p>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-black/60 mt-1">
+                    <p className="text-[7px] font-mono uppercase tracking-widest text-neutral-600 mt-1">
                       Month {ev.month}
                     </p>
                     {ev.userAction && (
-                      <p className="text-xs font-bold text-blue-800 mt-2 bg-blue-100 p-1 border-2 border-blue-900 border-dashed">
+                      <p className="text-[7px] font-mono text-cyan-400 mt-1.5 bg-cyan-950/10 p-1 border border-dashed border-cyan-900/50">
                         📋 {ev.userAction}
                       </p>
                     )}
@@ -254,11 +255,11 @@ export default function TimelineSlider({
         })}
 
         {/* Tick marks */}
-        <div className="absolute top-[60px] left-0 right-0 flex justify-between pointer-events-none">
+        <div className="absolute top-[52px] left-0 right-0 flex justify-between pointer-events-none">
           {ticks.map((month) => (
             <span
               key={month}
-              className="text-[10px] font-black text-black"
+              className="text-[7px] font-mono tabular-nums text-neutral-600"
               style={{
                 position: "absolute",
                 left: `${(month / totalMonths) * 100}%`,
@@ -273,29 +274,29 @@ export default function TimelineSlider({
 
       {/* Events at current month */}
       {nearbyEvents.length > 0 && (
-        <div className="space-y-3 mt-4">
-          <p className="text-[10px] text-black font-black uppercase tracking-widest border-b-2 border-black pb-1 inline-block">
+        <div className="space-y-2 mt-3">
+          <p className="text-[7px] text-neutral-500 font-mono uppercase tracking-widest border-b border-neutral-800 pb-1 inline-block">
             Events near month {currentMonth}
           </p>
           {nearbyEvents.map((ev, i) => (
             <div
               key={i}
-              className="flex items-center gap-3 p-3 bg-white border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]"
+              className="flex items-center gap-2.5 p-3 bg-[#050505] border border-neutral-800"
             >
-              <span className="text-2xl flex-shrink-0 bg-gray-100 p-1 border-2 border-black">
+              <span className="text-lg flex-shrink-0 bg-[#0a0a0a] p-1 border border-neutral-800">
                 {EVENT_ICONS[ev.type]}
               </span>
               <div className="min-w-0">
-                <p className="text-sm font-black uppercase tracking-widest text-black truncate">
+                <p className="text-[8px] font-mono uppercase tracking-widest text-neutral-300 truncate">
                   {ev.event}
                 </p>
                 {ev.userAction && (
-                  <p className="text-xs font-bold text-blue-900 mt-1 bg-blue-100 inline-block px-1 border-2 border-blue-900">
+                  <p className="text-[7px] font-mono text-cyan-400 mt-1 bg-cyan-950/10 inline-block px-1 border border-dashed border-cyan-900/50">
                     📋 {ev.userAction}
                   </p>
                 )}
               </div>
-              <span className="text-[10px] font-black text-black ml-auto bg-yellow-400 border-2 border-black px-2 py-1 shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
+              <span className="text-[7px] font-mono text-neutral-200 ml-auto bg-amber-950/20 border border-amber-900/50 px-1.5 py-0.5">
                 M{ev.month}
               </span>
             </div>
