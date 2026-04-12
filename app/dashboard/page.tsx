@@ -19,9 +19,10 @@ import {
   Timer,
   ChevronRight,
   Handshake,
+  Terminal,
+  Activity
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -125,7 +126,7 @@ export default function DashboardPage() {
         setAchievements(achievementsList);
       } catch (err) {
         console.error("Dashboard fetch error:", err);
-        toast.error("Failed to load dashboard data");
+        toast.error("SYSTEM ERROR: FAILED TO MOUNT DASHBOARD DATA");
       } finally {
         setLoading(false);
       }
@@ -152,36 +153,38 @@ export default function DashboardPage() {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "completed":
-        return <CheckCircle2 className="h-4 w-4 text-green-500" />;
+        return <CheckCircle2 className="h-3 w-3 text-emerald-500" />;
       case "analyzing":
       case "pending":
-        return <Loader2 className="h-4 w-4 text-blue-500 animate-spin" />;
+        return <Loader2 className="h-3 w-3 text-cyan-500 animate-spin" />;
       case "failed":
-        return <AlertTriangle className="h-4 w-4 text-red-500" />;
+        return <AlertTriangle className="h-3 w-3 text-red-500" />;
       default:
-        return <Clock className="h-4 w-4 text-foreground" />;
+        return <Clock className="h-3 w-3 text-neutral-500" />;
     }
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background p-4 sm:p-8 max-w-7xl mx-auto px-4 md:px-6 pt-12 md:pt-20">
-        <Skeleton className="h-8 w-64 mb-2 bg-muted border-2 border-foreground" />
-        <Skeleton className="h-4 w-48 mb-8 bg-muted border-2 border-foreground" />
+      <div className="min-h-screen bg-[#050505] p-4 sm:p-8 max-w-7xl mx-auto px-4 md:px-6 pt-12 md:pt-20">
+        <div className="flex flex-col gap-2 mb-8">
+           <Skeleton className="h-6 w-48 bg-neutral-900 border border-neutral-800" />
+           <Skeleton className="h-3 w-32 bg-neutral-900" />
+        </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-6">
           {[1, 2, 3, 4].map((i) => (
             <Skeleton
               key={i}
-              className="h-28 rounded-lg bg-muted border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)]"
+              className="h-28 bg-[#0a0a0a] border border-neutral-900"
             />
           ))}
         </div>
-        <Skeleton className="h-10 w-full rounded-lg mb-4 bg-muted border-2 border-foreground" />
+        <Skeleton className="h-10 w-full mb-4 bg-neutral-900 border border-neutral-800" />
         <div className="space-y-3">
           {[1, 2, 3, 4, 5].map((i) => (
             <Skeleton
               key={i}
-              className="h-16 rounded-lg bg-muted border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(10,10,10,1)]"
+              className="h-16 bg-[#0a0a0a] border border-neutral-900"
             />
           ))}
         </div>
@@ -192,36 +195,39 @@ export default function DashboardPage() {
   // Empty State — No documents at all
   if (documents.length === 0) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#050505]">
         <div className="max-w-7xl mx-auto px-4 md:px-6 pt-12 md:pt-20">
-          <div className="text-center py-20 card-impact border-2 border-foreground shadow-[12px_12px_0px_0px_rgba(10,10,10,1)] rounded-lg p-10 mt-10">
+          <div className="text-center py-24 bg-[#0a0a0a] border border-neutral-900 relative overflow-hidden mt-10">
+            <div className="absolute top-0 left-0 w-full h-1 bg-neutral-800" />
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
             >
-              <Shield className="h-16 w-16 text-foreground mx-auto mb-6" />
-              <h2 className="text-impact-heading text-foreground mb-3">
-                Your Contract Portfolio
+              <Terminal className="h-12 w-12 text-neutral-500 mx-auto mb-6" />
+              <h2 className="text-xl font-mono uppercase tracking-widest text-neutral-300 mb-3">
+                [ INIT: PORTFOLIO EMPTY ]
               </h2>
-              <p className="text-lg md:text-xl text-foreground mb-8 max-w-2xl mx-auto border-2 border-transparent border-t-foregroundpt-4">
-                Upload your first contract to start building your portfolio.
-                Track risks, earn achievements, and get smarter about contracts.
+              <p className="text-xs font-mono text-neutral-500 mb-8 max-w-lg mx-auto leading-relaxed">
+                NO ACTIVE CONTRACT NODES DETECTED. INGEST CONTRACT TO BEGIN INTELLIGENCE EXTRACTION EXERCISE.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Link href="/upload">
-                  <Button className="button text-impact-heading border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] hover:-translate-y-[2px] transition-all gap-2 py-6 text-lg">
-                    <Upload className="h-5 w-5" />
-                    Analyze Contract
-                  </Button>
+                  <div className="group relative px-6 py-3 bg-[#050505] border border-neutral-700 hover:border-cyan-500/50 transition-colors cursor-pointer flex items-center gap-3">
+                     <div className="absolute inset-0 bg-cyan-500/5 group-hover:bg-cyan-500/10 transition-colors" />
+                     <Upload className="h-4 w-4 text-cyan-500 relative z-10" />
+                     <span className="font-mono text-[10px] uppercase tracking-widest text-cyan-500 relative z-10">
+                       [ INGEST_NEW_CONTRACT ]
+                     </span>
+                  </div>
                 </Link>
                 <Link href="/builder">
-                  <Button
-                    variant="outline"
-                    className="button border-2 border-foreground hover:bg-muted font-bold uppercase tracking-wider shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] hover:-translate-y-[2px] transition-all gap-2 py-6 text-lg"
-                  >
-                    <Sparkles className="h-5 w-5 text-amber-500" />
-                    Build Fair Contract
-                  </Button>
+                  <div className="group relative px-6 py-3 bg-[#050505] border border-neutral-800 hover:border-amber-500/50 transition-colors cursor-pointer flex items-center gap-3">
+                     <div className="absolute inset-0 bg-amber-500/5 group-hover:bg-amber-500/10 transition-colors" />
+                     <Sparkles className="h-4 w-4 text-amber-500 relative z-10" />
+                     <span className="font-mono text-[10px] uppercase tracking-widest text-amber-500 relative z-10">
+                       [ DEPLOY_FAIR_CONTRACT ]
+                     </span>
+                  </div>
                 </Link>
               </div>
             </motion.div>
@@ -232,379 +238,373 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#050505]">
       <div className="max-w-7xl mx-auto px-4 md:px-6 pt-12 md:pt-20 pb-8">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex flex-col md:flex-row md:items-center justify-between gap-6"
+           initial={{ opacity: 0, y: -10 }}
+           animate={{ opacity: 1, y: 0 }}
+           className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-neutral-900 pb-8"
         >
           <div>
-            <h1 className="text-impact-heading text-foreground">
-              Your Contract Portfolio
+            <h1 className="text-3xl font-mono uppercase tracking-widest text-neutral-200 flex items-center gap-3">
+               <Activity className="h-6 w-6 text-cyan-500" />
+               [ COMMAND CENTER ]
             </h1>
-            <p className="text-lg text-foreground mt-4 max-w-2xl font-bold">
-              {documents.length} contract{documents.length !== 1 ? "s" : ""}{" "}
-              analyzed
-              {contractsBuilt > 0 && ` · ${contractsBuilt} built`}
-            </p>
+            <div className="flex items-center gap-3 mt-4">
+              <span className="text-[10px] font-mono tracking-widest uppercase border border-neutral-800 bg-[#0a0a0a] px-2 py-0.5 text-neutral-400">
+                 ACTIVE_NODES: {documents.length}
+              </span>
+              {contractsBuilt > 0 && (
+                <span className="text-[10px] font-mono tracking-widest uppercase border border-amber-900/30 bg-amber-950/20 px-2 py-0.5 text-amber-500">
+                   DEPLOYED: {contractsBuilt}
+                </span>
+              )}
+            </div>
           </div>
-          <div className="flex items-center gap-4">
-            <Link href="/builder">
-              <Button
-                variant="outline"
-                size="sm"
-                className="button border-2 border-foreground hover:bg-muted font-bold uppercase tracking-wider shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] hover:-translate-y-[2px] transition-all gap-2 py-5 px-6 hidden sm:flex"
-              >
-                <Sparkles className="h-4 w-4 text-amber-500" />
-                Build
-              </Button>
-            </Link>
-            <Link href="/upload">
-              <Button
-                size="sm"
-                className="button text-impact-heading border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] hover:-translate-y-[2px] transition-all gap-2 py-5 px-6"
-              >
-                <Upload className="h-4 w-4" />
-                Analyze New
-              </Button>
-            </Link>
+          
+          <div className="flex flex-wrap items-center gap-4">
+             <Link href="/builder">
+               <div className="group relative px-5 py-2.5 bg-[#0a0a0a] border border-neutral-800 hover:border-amber-500/50 transition-colors cursor-pointer flex items-center gap-2">
+                  <div className="absolute inset-0 bg-amber-500/5 group-hover:bg-amber-500/10 transition-colors" />
+                  <Sparkles className="h-3 w-3 text-amber-500 relative z-10" />
+                  <span className="font-mono text-[9px] uppercase tracking-widest text-amber-500 relative z-10">
+                    [ BUILD_FAIR_CONTRACT ]
+                  </span>
+               </div>
+             </Link>
+             <Link href="/upload">
+               <div className="group relative px-5 py-2.5 bg-[#0a0a0a] border border-neutral-800 hover:border-cyan-500/50 transition-colors cursor-pointer flex items-center gap-2">
+                  <div className="absolute inset-0 bg-cyan-500/5 group-hover:bg-cyan-500/10 transition-colors" />
+                  <Upload className="h-3 w-3 text-cyan-500 relative z-10" />
+                  <span className="font-mono text-[9px] uppercase tracking-widest text-cyan-500 relative z-10">
+                    [ INGEST_NEW ]
+                  </span>
+               </div>
+             </Link>
           </div>
         </motion.div>
 
-        <div className="max-w-7xl mx-auto py-8">
+        <div className="max-w-7xl mx-auto py-4">
 
-          <Tabs defaultValue="contracts" className="space-y-8">
-            <TabsList className="bg-muted border-2 border-foreground p-1 h-auto flex flex-wrap gap-2 justify-start max-w-full rounded-lg shadow-[4px_4px_0_0_rgba(10,10,10,1)]">
-              <TabsTrigger value="contracts" className="font-black uppercase tracking-wider text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground border-2 border-transparent data-[state=active]:border-foreground data-[state=active]:shadow-[2px_2px_0_0_rgba(10,10,10,1)] px-4 py-2 hover:-translate-y-0.5 transition-transform">My Contracts</TabsTrigger>
-              <TabsTrigger value="intelligence" className="font-black uppercase tracking-wider text-sm data-[state=active]:bg-purple-500 data-[state=active]:text-white border-2 border-transparent data-[state=active]:border-foreground data-[state=active]:shadow-[2px_2px_0_0_rgba(10,10,10,1)] px-4 py-2 hover:-translate-y-0.5 transition-transform">Intelligence Map</TabsTrigger>
-              <TabsTrigger value="workspace" className="font-black uppercase tracking-wider text-sm data-[state=active]:bg-blue-500 data-[state=active]:text-white border-2 border-transparent data-[state=active]:border-foreground data-[state=active]:shadow-[2px_2px_0_0_rgba(10,10,10,1)] px-4 py-2 hover:-translate-y-0.5 transition-transform">Workspace & Discovery</TabsTrigger>
+          <Tabs defaultValue="contracts" className="space-y-12">
+            <TabsList className="bg-transparent border-b border-neutral-900 h-auto flex gap-6 justify-start max-w-full rounded-none p-0">
+               <TabsTrigger 
+                 value="contracts" 
+                 className="font-mono uppercase tracking-widest text-[10px] data-[state=active]:bg-transparent data-[state=active]:text-cyan-400 text-neutral-500 border-b-2 border-transparent data-[state=active]:border-cyan-500 rounded-none px-0 py-3 shadow-none transition-colors"
+               >
+                 [ MY_DOCUMENTS ]
+               </TabsTrigger>
+               <TabsTrigger 
+                 value="intelligence" 
+                 className="font-mono uppercase tracking-widest text-[10px] data-[state=active]:bg-transparent data-[state=active]:text-emerald-400 text-neutral-500 border-b-2 border-transparent data-[state=active]:border-emerald-500 rounded-none px-0 py-3 shadow-none transition-colors"
+               >
+                 [ INTELLIGENCE_MAP ]
+               </TabsTrigger>
+               <TabsTrigger 
+                 value="workspace" 
+                 className="font-mono uppercase tracking-widest text-[10px] data-[state=active]:bg-transparent data-[state=active]:text-amber-400 text-neutral-500 border-b-2 border-transparent data-[state=active]:border-amber-500 rounded-none px-0 py-3 shadow-none transition-colors"
+               >
+                 [ WORKSPACE_&_DISCOVERY ]
+               </TabsTrigger>
             </TabsList>
 
             {/* TAB 1: MY CONTRACTS */}
             <TabsContent value="contracts" className="space-y-8 mt-6 outline-none">
-{/* ── SECTION 1: Portfolio Stats ── */}
-          {stats && <PortfolioStatsSection stats={stats} />}
+              {/* NOTE: Child components may retain brutalist styles temporarily until their specific audits. */}
+              {stats && <PortfolioStatsSection stats={stats} />}
 
-          {/* ── SECTION 3.6: Upcoming Deadlines ── */}
-          <UpcomingDeadlinesSection />
+              <UpcomingDeadlinesSection />
 
-          {/* ── SECTION 3.5: Contract Vault CTA ── */}
-          {documents.length >= 2 && <VaultCTA />}
+              {documents.length >= 2 && <VaultCTA />}
 
-          {/* ── SECTION 4: Recent Documents ── */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(10,10,10,1)] rounded-lg overflow-hidden bg-background mt-10"
-          >
-            <div className="bg-muted px-6 py-4 border-b-2 border-foreground">
-              <h2 className="text-xl font-black uppercase tracking-wider text-foreground mb-4">
-                Recent Documents
-              </h2>
+              {/* SECTION: Recent Documents */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="bg-[#0a0a0a] border border-neutral-900 mt-12"
+              >
+                <div className="px-6 py-4 border-b border-neutral-900 bg-[#050505]">
+                  <h2 className="text-[10px] font-mono font-bold uppercase tracking-widest text-neutral-500 mb-4 flex items-center gap-2">
+                     <Terminal className="h-3 w-3" />
+                     [ DOC_ARCHIVE: RECENT INGESTION STREAM ]
+                  </h2>
 
-              {/* Search & Filter Bar */}
-              <div className="flex flex-col sm:flex-row gap-3">
-                <div className="relative flex-1">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground" />
-                  <input
-                    type="text"
-                    placeholder="Search by filename..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 text-sm font-bold bg-background border-2 border-foreground rounded shadow-[inset_2px_2px_0px_0px_rgba(10,10,10,0.05)] text-foreground placeholder:text-foreground focus:outline-none focus:border-primary focus:ring-0 transition-colors"
-                  />
-                </div>
-                <select
-                  value={filterType}
-                  onChange={(e) => setFilterType(e.target.value)}
-                  className="px-4 py-3 text-sm font-bold bg-background border-2 border-foreground rounded shadow-[inset_2px_2px_0px_0px_rgba(10,10,10,0.05)] text-foreground focus:outline-none focus:border-primary cursor-pointer min-w-[160px]"
-                >
-                  <option value="all">All Types</option>
-                  <option value="rental">Rental</option>
-                  <option value="employment">Employment</option>
-                  <option value="loan">Loan</option>
-                  <option value="freelance">Freelance</option>
-                  <option value="nda">NDA</option>
-                  <option value="tos">Terms of Service</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
+                  {/* Search & Filter Bar */}
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <div className="relative flex-1">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cyan-700" />
+                      <input
+                        type="text"
+                        placeholder="ENTER QUERY / FILENAME"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full pl-9 pr-4 py-2.5 text-[10px] font-mono uppercase bg-[#050505] border border-neutral-800 text-neutral-300 placeholder:text-neutral-700 focus:outline-none focus:border-cyan-500/50 transition-colors"
+                      />
+                    </div>
+                    <select
+                      value={filterType}
+                      onChange={(e) => setFilterType(e.target.value)}
+                      className="px-4 py-2.5 text-[10px] font-mono uppercase bg-[#050505] border border-neutral-800 text-neutral-400 focus:outline-none focus:border-cyan-500/50 min-w-[160px]"
+                    >
+                      <option value="all">[ ALL_TYPES ]</option>
+                      <option value="rental">RENTAL</option>
+                      <option value="employment">EMPLOYMENT</option>
+                      <option value="loan">LOAN</option>
+                      <option value="freelance">FREELANCE</option>
+                      <option value="nda">NDA</option>
+                      <option value="tos">TERMS OF SERVICE</option>
+                      <option value="other">OTHER</option>
+                    </select>
+                  </div>
 
-              {/* Results count */}
-              {(searchQuery || filterType !== "all") && (
-                <p className="text-xs font-bold text-foreground mt-3 uppercase tracking-wider">
-                  Showing {filteredDocuments.length} of {documents.length}{" "}
-                  documents
-                </p>
-              )}
-            </div>
-
-            <div className="divide-y-2 divide-foreground">
-              {filteredDocuments.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-16 px-4 bg-background">
-                  <Search className="w-12 h-12 text-foreground mb-4" />
-                  {searchQuery || filterType !== "all" ? (
-                    <>
-                      <p className="text-sm font-black uppercase text-foreground mb-1">
-                        No matching documents
-                      </p>
-                      <p className="text-xs font-bold text-foreground mb-4">
-                        Try adjusting your search or filters
-                      </p>
-                      <button
-                        onClick={() => {
-                          setSearchQuery("");
-                          setFilterType("all");
-                        }}
-                        className="text-xs font-black uppercase tracking-wider text-primary hover:text-red-700 transition-colors"
-                      >
-                        Clear filters
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <p className="text-sm font-black uppercase text-foreground mb-1">
-                        No contracts analyzed yet
-                      </p>
-                      <p className="text-xs font-bold text-foreground mb-4">
-                        Upload your first contract to get started
-                      </p>
-                      <Link
-                        href="/upload"
-                        className="inline-flex items-center gap-2 px-6 py-3 text-sm font-black uppercase tracking-wider bg-primary border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(10,10,10,1)] text-primary-foreground hover:-translate-y-[1px] transition-transform"
-                      >
-                        <Upload className="w-4 h-4" />
-                        Analyze a Contract
-                      </Link>
-                    </>
+                  {(searchQuery || filterType !== "all") && (
+                    <p className="text-[9px] font-mono text-cyan-600 mt-3 tracking-widest uppercase">
+                      QUERY RESULTS: {filteredDocuments.length} / {documents.length} ENTITIES LOCATED
+                    </p>
                   )}
                 </div>
-              ) : (
-                filteredDocuments.map((doc, index) => {
-                  const riskLevel = getRiskLevel(doc.overall_risk_score);
-                  const riskColor = RISK_COLORS[riskLevel];
 
-                  return (
-                    <div
-                      key={doc.id}
-                      onClick={() => router.push(`/results/${doc.id}`)}
-                      className="group bg-background hover:bg-muted/50 transition-colors cursor-pointer block"
-                    >
-                      <div className="p-4 sm:p-5">
-                        <div className="flex items-center justify-between gap-4">
-                          {/* Left Side */}
-                          <div className="flex items-center gap-4 min-w-0 flex-1">
-                            <div className="h-12 w-12 border-2 border-foreground flex items-center justify-center flex-shrink-0 bg-background shadow-[2px_2px_0px_0px_rgba(10,10,10,1)]">
-                              <span
-                                className="text-lg font-black tracking-tighter"
-                                style={{
-                                  color:
-                                    riskColor === "#a855f7"
-                                      ? "#9333ea"
-                                      : riskColor,
-                                }}
-                              >
-                                {doc.overall_risk_score ?? "-"}
-                              </span>
-                            </div>
-                            <div className="min-w-0">
-                              <div className="flex items-center gap-2 mb-0.5">
-                                {getStatusIcon(doc.analysis_status)}
-                                <p className="font-bold text-sm truncate text-foreground">
-                                  {doc.original_filename || "Untitled Document"}
-                                </p>
-                              </div>
-                              <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-foreground uppercase tracking-wider">
-                                <span>
-                                  {getDocumentTypeLabel(doc.document_type)}
-                                </span>
-                                <span className="opacity-50">·</span>
-                                <span>{getStateName(doc.jurisdiction)}</span>
-                                <span className="opacity-50">·</span>
-                                <span>{formatDate(doc.created_at)}</span>
-                              </div>
-                            </div>
-                          </div>
+                <div className="divide-y divide-neutral-900/50">
+                  {filteredDocuments.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center py-16 px-4 bg-[#050505]">
+                      <Search className="w-8 h-8 text-neutral-800 mb-4" />
+                      {searchQuery || filterType !== "all" ? (
+                        <>
+                          <p className="text-[10px] font-mono uppercase tracking-widest text-neutral-400 mb-1">
+                            [ NO_MATCHES_FOUND ]
+                          </p>
+                          <button
+                            onClick={() => {
+                              setSearchQuery("");
+                              setFilterType("all");
+                            }}
+                            className="text-[9px] font-mono uppercase tracking-widest text-cyan-600 hover:text-cyan-400 mt-4 transition-colors"
+                          >
+                            [ CLEAR_QUERY_PARAMETERS ]
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <p className="text-[10px] font-mono uppercase tracking-widest text-neutral-400 mb-1">
+                            [ ARCHIVE_EMPTY ]
+                          </p>
+                        </>
+                      )}
+                    </div>
+                  ) : (
+                    filteredDocuments.map((doc) => {
+                      const riskLevel = getRiskLevel(doc.overall_risk_score);
+                      const riskColor = RISK_COLORS[riskLevel] || "#3b82f6";
 
-                          {/* Right Side */}
-                          <div className="flex items-center flex-col sm:flex-row gap-2 flex-shrink-0">
-                            {doc.analysis_status === "completed" && (
-                              <div className="hidden sm:flex items-center gap-2 mr-4">
-                                {doc.illegal_count > 0 && (
-                                  <Badge className="bg-purple-100 text-purple-800 border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(147,51,234,1)] text-[10px] uppercase font-black px-2">
-                                    {doc.illegal_count} illegal
-                                  </Badge>
+                      return (
+                        <div
+                          key={doc.id}
+                          onClick={() => router.push(`/results/${doc.id}`)}
+                          className="group bg-[#0a0a0a] hover:bg-[#111111] transition-colors cursor-pointer block border-l-2 border-transparent hover:border-cyan-500/50"
+                        >
+                          <div className="p-4 sm:p-5">
+                            <div className="flex items-center justify-between gap-4">
+                              {/* Left Side */}
+                              <div className="flex items-center gap-4 min-w-0 flex-1">
+                                <div className="h-10 w-10 flex items-center justify-center flex-shrink-0 bg-[#050505] border border-neutral-900 rounded-sm overflow-hidden relative">
+                                  <div className="absolute inset-x-0 bottom-0 top-auto h-0.5" style={{ backgroundColor: riskColor, opacity: 0.5 }} />
+                                  <span
+                                    className="text-[14px] font-mono tracking-tighter"
+                                    style={{ color: riskColor === "#a855f7" ? "#c084fc" : riskColor }}
+                                  >
+                                    {doc.overall_risk_score ?? "-"}
+                                  </span>
+                                </div>
+                                <div className="min-w-0">
+                                  <div className="flex items-center gap-2 mb-1.5">
+                                    {getStatusIcon(doc.analysis_status)}
+                                    <p className="font-mono text-xs truncate text-neutral-200">
+                                      {doc.original_filename || "UNNAMED_ENTITY"}
+                                    </p>
+                                  </div>
+                                  <div className="flex flex-wrap items-center gap-2 text-[9px] font-mono text-neutral-500 uppercase tracking-widest">
+                                    <span>{getDocumentTypeLabel(doc.document_type)}</span>
+                                    <span className="opacity-30">/</span>
+                                    <span>{getStateName(doc.jurisdiction)}</span>
+                                    <span className="opacity-30">/</span>
+                                    <span>{formatDate(doc.created_at)}</span>
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Right Side */}
+                              <div className="flex items-center flex-col sm:flex-row gap-4 flex-shrink-0">
+                                {doc.analysis_status === "completed" && (
+                                  <div className="hidden sm:flex items-center gap-2">
+                                    {doc.illegal_count > 0 && (
+                                      <span className="text-[9px] uppercase font-mono tracking-widest px-2 py-0.5 border border-purple-900/40 text-purple-400 bg-purple-950/20">
+                                        ILLEGAL:{doc.illegal_count}
+                                      </span>
+                                    )}
+                                    {doc.dangerous_count > 0 && (
+                                      <span className="text-[9px] uppercase font-mono tracking-widest px-2 py-0.5 border border-red-900/40 text-red-400 bg-red-950/20">
+                                        DANGER:{doc.dangerous_count}
+                                      </span>
+                                    )}
+                                  </div>
                                 )}
-                                {doc.dangerous_count > 0 && (
-                                  <Badge className="bg-red-100 text-red-800 border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(220,38,38,1)] text-[10px] uppercase font-black px-2">
-                                    {doc.dangerous_count} danger
-                                  </Badge>
-                                )}
-                              </div>
-                            )}
 
-                            <div className="flex items-center gap-2">
-                              <Badge
-                                variant="outline"
-                                className={`text-[10px] font-black uppercase tracking-wider bg-background border-2 border-foreground ${
-                                  doc.analysis_status === "completed"
-                                    ? "shadow-[2px_2px_0px_0px_rgba(22,163,74,1)] text-green-700"
-                                    : doc.analysis_status === "failed"
-                                      ? "shadow-[2px_2px_0px_0px_rgba(220,38,38,1)] text-red-700"
-                                      : "shadow-[2px_2px_0px_0px_rgba(59,130,246,1)] text-blue-700"
-                                }`}
-                              >
-                                {doc.analysis_status}
-                              </Badge>
+                                <div className="flex items-center gap-3">
+                                  <span
+                                    className={`text-[8px] font-mono uppercase tracking-widest px-1.5 py-0.5 border ${
+                                      doc.analysis_status === "completed"
+                                        ? "border-emerald-900/30 text-emerald-500 bg-emerald-950/10"
+                                        : doc.analysis_status === "failed"
+                                          ? "border-red-900/30 text-red-500 bg-red-950/10"
+                                          : "border-cyan-900/30 text-cyan-500 bg-cyan-950/10"
+                                    }`}
+                                  >
+                                    [{doc.analysis_status}]
+                                  </span>
 
-                              <div className="hidden md:flex ml-2 items-center text-xs font-black uppercase tracking-wider text-primary group-hover:text-red-700 transition-colors">
-                                View <ChevronRight className="w-4 h-4 ml-1" />
+                                  <div className="hidden md:flex items-center text-[9px] font-mono uppercase tracking-widest text-neutral-600 group-hover:text-cyan-500 transition-colors">
+                                    OPEN <ChevronRight className="w-3 h-3 ml-0.5" />
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  );
-                })
-              )}
-            </div>
-          </motion.div>
+                      );
+                    })
+                  )}
+                </div>
+              </motion.div>
             </TabsContent>
 
             {/* TAB 2: INTELLIGENCE MAP */}
             <TabsContent value="intelligence" className="space-y-8 mt-6 outline-none">
-{/* ── SECTION 2: Chart + Insights (side by side on desktop) ── */}
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-            <div className="lg:col-span-3">
-              <RiskTrendChart data={chartData} />
-            </div>
-            <div className="lg:col-span-2">
-              {stats && <InsightsSection stats={stats} documents={documents} />}
-            </div>
-          </div>
+              <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                <div className="lg:col-span-3">
+                  {/* NOTE: Child component styling untouched */}
+                  <RiskTrendChart data={chartData} />
+                </div>
+                <div className="lg:col-span-2">
+                  {stats && <InsightsSection stats={stats} documents={documents} />}
+                </div>
+              </div>
 
-          {/* ── SECTION 3.7: Law Monitor ── */}
-          <LawChangeDashboardWidget />
+              <LawChangeDashboardWidget />
 
-          {/* ── CONTRACT WRAPPED CTA ── */}
-          {showWrapped && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-            >
-              <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(236,72,153,1)] bg-pink-100 rounded-lg overflow-hidden relative">
-                {/* Dismiss button */}
-                <button
-                  onClick={() => {
-                    setShowWrapped(false);
-                    if (typeof window !== "undefined") {
-                      localStorage.setItem(
-                        `clausewall_wrapped_dismissed_${currentYear}`,
-                        "true",
-                      );
-                    }
-                  }}
-                  className="absolute top-3 right-3 p-1.5 border-2 border-foreground rounded hover:bg-pink-200 transition-colors z-10"
-                  aria-label="Dismiss"
+              {/* Wrapped CTA Redesign */}
+              {showWrapped && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
                 >
-                  <X className="w-4 h-4 text-foreground font-black" />
-                </button>
+                  <div className="bg-pink-950/10 border border-pink-900/50 relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-1 h-full bg-pink-500" />
+                    
+                    <button
+                      onClick={() => {
+                        setShowWrapped(false);
+                        if (typeof window !== "undefined") {
+                          localStorage.setItem(`clausewall_wrapped_dismissed_${currentYear}`, "true");
+                        }
+                      }}
+                      className="absolute top-2 right-2 p-1 text-pink-700 hover:text-pink-400 transition-colors z-10"
+                      aria-label="Dismiss"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
 
-                <CardContent className="relative p-6">
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-                    <div className="flex items-center gap-5">
-                      <div className="h-16 w-16 border-2 border-foreground bg-pink-400 flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(10,10,10,1)]">
-                        <Gift className="h-8 w-8 text-foreground" />
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-3 mb-2">
-                          <h3 className="text-xl font-black uppercase tracking-wider text-foreground">
-                            Your {currentYear} Contract Wrapped
-                          </h3>
-                          <Badge className="bg-pink-500 text-foreground border-2 border-foreground font-black uppercase shadow-[2px_2px_0px_0px_rgba(10,10,10,1)] px-2">
-                            NEW
-                          </Badge>
+                    <div className="p-6">
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+                        <div className="flex items-center gap-5">
+                          <div className="h-10 w-10 flex items-center justify-center bg-pink-950/30 border border-pink-900/50">
+                            <Gift className="h-5 w-5 text-pink-500" />
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-3 mb-1">
+                              <h3 className="text-[12px] font-mono uppercase tracking-widest text-pink-100">
+                                {currentYear}_CONTRACT_WRAPPED
+                              </h3>
+                              <span className="text-[8px] font-mono text-pink-400 border border-pink-500/50 px-1 py-0.5 animate-pulse">
+                                [ SYSTEM ALERT ]
+                              </span>
+                            </div>
+                            <p className="text-[10px] font-mono text-pink-600/80 uppercase tracking-widest">
+                              ANNUAL TELEMETRY COMPILED. VIEW SAVINGS AND BADGES.
+                            </p>
+                          </div>
                         </div>
-                        <p className="text-sm font-bold text-pink-900 max-w-md">
-                          See your contract journey — stats, savings, badges &
-                          more!
-                        </p>
+                        <Link href="/wrapped" className="w-full sm:w-auto">
+                           <div className="group relative px-5 py-2.5 bg-pink-950/20 border border-pink-800 hover:border-pink-500 transition-colors cursor-pointer flex items-center justify-center gap-2">
+                             <Sparkles className="h-3 w-3 text-pink-400" />
+                             <span className="font-mono text-[9px] uppercase tracking-widest text-pink-400 group-hover:text-pink-300">
+                               [ INIT_WRAPPED ]
+                             </span>
+                           </div>
+                        </Link>
                       </div>
                     </div>
-                    <Link href="/wrapped">
-                      <Button className="button border-2 border-foreground bg-pink-500 hover:bg-pink-600 text-foreground text-impact-heading shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] hover:-translate-y-[2px] transition-all gap-2 py-6 px-6 w-full sm:w-auto">
-                        <Sparkles className="h-5 w-5" />
-                        View Wrapped
-                      </Button>
-                    </Link>
                   </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          )}
-
-                      </TabsContent>
+                </motion.div>
+              )}
+            </TabsContent>
 
             {/* TAB 3: WORKSPACE & DISCOVERY */}
             <TabsContent value="workspace" className="space-y-8 mt-6 outline-none">
-{/* ── SECTION 3.55: Live Negotiation CTA ── */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.32 }}
-          >
-            <Card className="card-impact border-2 border-foreground shadow-[8px_8px_0px_0px_rgba(59,130,246,1)] bg-blue-100 rounded-lg overflow-hidden relative">
-              <CardContent className="relative p-6">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-                  <div className="flex items-center gap-5">
-                    <div className="h-16 w-16 border-2 border-foreground bg-blue-400 flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(10,10,10,1)]">
-                      <Handshake className="h-8 w-8 text-foreground" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-3 mb-2">
-                        <h3 className="text-xl font-black uppercase tracking-wider text-foreground">
-                          Live Negotiation Companion
-                        </h3>
-                        <Badge className="bg-blue-500 text-foreground border-2 border-foreground font-black uppercase shadow-[2px_2px_0px_0px_rgba(10,10,10,1)] px-2 animate-pulse">
-                          NEW
-                        </Badge>
+              
+              {/* Live Negotiation CTA Redesign */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+              >
+                <div className="bg-blue-950/10 border border-blue-900/50 relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-1 h-full bg-blue-500" />
+                  <div className="p-6">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+                      <div className="flex items-center gap-5">
+                        <div className="h-10 w-10 flex items-center justify-center bg-blue-950/30 border border-blue-900/50">
+                          <Handshake className="h-5 w-5 text-blue-500" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-3 mb-1">
+                            <h3 className="text-[12px] font-mono uppercase tracking-widest text-blue-100">
+                              LIVE NEGOTIATION COMPANION
+                            </h3>
+                            <span className="text-[8px] font-mono text-blue-400 border border-blue-500/50 px-1 py-0.5 animate-pulse">
+                              [ REALTIME_MODULE ]
+                            </span>
+                          </div>
+                          <p className="text-[10px] font-mono text-blue-600/80 uppercase tracking-widest">
+                            TACTICAL INTELLIGENCE UPLINK FOR IN-PERSON DISPUTES.
+                          </p>
+                        </div>
                       </div>
-                      <p className="text-sm font-bold text-blue-900">
-                        Real-time legal intelligence for in-person negotiations
-                      </p>
+                      <Link href="/negotiate/live" className="w-full sm:w-auto">
+                         <div className="group relative px-5 py-2.5 bg-blue-950/20 border border-blue-800 hover:border-blue-500 transition-colors cursor-pointer flex items-center justify-center gap-2">
+                           <Handshake className="h-3 w-3 text-blue-400" />
+                           <span className="font-mono text-[9px] uppercase tracking-widest text-blue-400 group-hover:text-blue-300">
+                             [ ENGAGE_SESSION ]
+                           </span>
+                         </div>
+                      </Link>
                     </div>
                   </div>
-                  <Link href="/negotiate/live">
-                    <Button className="button border-2 border-foreground bg-blue-500 hover:bg-blue-600 text-foreground text-impact-heading shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] hover:-translate-y-[2px] transition-all gap-2 py-6 px-6 w-full sm:w-auto">
-                      <Handshake className="h-5 w-5" />
-                      Start Session
-                    </Button>
-                  </Link>
                 </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+              </motion.div>
 
-          {/* ── SECTION 3.58: My Collectives ── */}
-          <MyCollectivesSection />
+              <MyCollectivesSection />
+              <ComplaintDashboardWidgetWrapper />
 
-          {/* ── SECTION 3.8: Complaint Filings ── */}
-          <ComplaintDashboardWidgetWrapper />
-
-          {/* ── SECTION 3: Achievements ── */}
-          {achievements.length > 0 && (
-            <AchievementsSection achievements={achievements} />
-          )}
-
-                      </TabsContent>
+              {achievements.length > 0 && (
+                <AchievementsSection achievements={achievements} />
+              )}
+            </TabsContent>
           </Tabs>
 
-                  </div>
+        </div>
       </div>
     </div>
   );
@@ -618,7 +618,6 @@ function UpcomingDeadlinesSection() {
   useEffect(() => {
     const fetchUpcoming = async () => {
       try {
-        // We'll fetch from a simple endpoint — get all documents and check for activated ones
         const supabase = createClient();
         const { data } = await supabase
           .from("contract_deadlines")
@@ -647,57 +646,66 @@ function UpcomingDeadlinesSection() {
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.35 }}
+      transition={{ delay: 0.1 }}
+      className="mt-8 mb-6"
     >
-      <div className="flex items-center justify-between mb-4 mt-8">
-        <h2 className="text-xl font-black uppercase tracking-wider text-foreground flex items-center gap-2">
-          <Timer className="w-5 h-5 text-orange-600" />
-          Upcoming Deadlines
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-[10px] font-mono font-bold uppercase tracking-widest text-neutral-500 flex items-center gap-2">
+          <Timer className="w-3 h-3 text-orange-500" />
+          [ TIMEBOMB_DECTECTOR: OBLIGATION DEADLINES ]
         </h2>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {deadlines.map((d) => {
           const days = getDaysUntil(d.deadline_date);
-          const color =
-            days <= 3
-              ? "border-red-600 shadow-[4px_4px_0px_0px_rgba(220,38,38,1)] bg-red-50"
-              : days <= 7
-                ? "border-orange-500 shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] bg-orange-50"
-                : days <= 30
-                  ? "border-yellow-500 shadow-[4px_4px_0px_0px_rgba(234,179,8,1)] bg-yellow-50"
-                  : "border-foreground shadow-[4px_4px_0px_0px_rgba(10,10,10,1)] bg-background";
-          const textColor =
-            days <= 3
-              ? "text-red-900 dark:text-red-100 font-bold"
-              : days <= 7
-                ? "text-orange-900 dark:text-orange-100 font-bold"
-                : days <= 30
-                  ? "text-yellow-900 dark:text-yellow-100 font-bold"
-                  : "text-foreground";
+          const isUrgent = days <= 3;
+          const isWarning = days > 3 && days <= 7;
+          
+          let borderColor = "border-neutral-900";
+          let bgColor = "bg-[#0a0a0a]";
+          let accentColor = "text-neutral-500";
+          let badgeClass = "text-neutral-500 border-neutral-800";
+
+          if (isUrgent) {
+             borderColor = "border-red-900/50";
+             bgColor = "bg-red-950/10";
+             accentColor = "text-red-400";
+             badgeClass = "text-red-400 border-red-900/50 bg-red-950/20";
+          } else if (isWarning) {
+             borderColor = "border-orange-900/50";
+             bgColor = "bg-orange-950/10";
+             accentColor = "text-orange-400";
+             badgeClass = "text-orange-400 border-orange-900/50 bg-orange-950/20";
+          } else if (days <= 30) {
+             borderColor = "border-yellow-900/30";
+             badgeClass = "text-yellow-500 border-yellow-900/30";
+             accentColor = "text-yellow-500";
+          }
 
           return (
             <Link
               key={d.id}
               href={`/timebomb/${d.document_id}`}
-              className={`border-2 p-5 hover:-translate-y-[2px] transition-transform group rounded-none mb-2 block ${color}`}
+              className={`block border p-4 ${borderColor} ${bgColor} hover:bg-[#111111] transition-colors relative group`}
             >
+              {isUrgent && <div className="absolute top-0 left-0 w-full h-0.5 bg-red-500" />}
+              {isWarning && <div className="absolute top-0 left-0 w-full h-0.5 bg-orange-500" />}
+
               <div className="flex items-center justify-between mb-3">
-                <span
-                  className={`text-xs font-black uppercase tracking-wider px-2 py-0.5 border-2 border-current bg-background ${textColor}`}
-                >
-                  {days <= 0 ? "OVERDUE" : `${days}D REC. LEFT`}
+                <span className={`text-[9px] font-mono uppercase tracking-widest px-1.5 py-0.5 border ${badgeClass}`}>
+                  {days <= 0 ? "[ DEADLINE_BREACHED ]" : `[ T_MINUS: ${days}D ]`}
                 </span>
-                <ChevronRight className="w-4 h-4 text-foreground group-hover:text-foreground transition-colors" />
+                <ChevronRight className="w-3 h-3 text-neutral-600 group-hover:text-cyan-500 transition-colors" />
               </div>
-              <p className="text-sm font-bold text-foreground truncate">
+              <p className="text-[11px] font-mono text-neutral-200 truncate mt-2">
                 {d.title}
               </p>
-              <p className="text-xs font-bold text-foreground mt-2 uppercase tracking-wider">
-                {new Date(d.deadline_date).toLocaleDateString("en-IN", {
-                  day: "numeric",
+              <p className={`text-[9px] font-mono uppercase tracking-widest mt-1.5 ${accentColor}`}>
+                EXECUTE BY: {new Date(d.deadline_date).toLocaleDateString("en-IN", {
+                  day: "2-digit",
                   month: "short",
                   year: "numeric",
-                })}
+                }).replace(/ /g, '-')}
               </p>
             </Link>
           );
@@ -706,3 +714,4 @@ function UpcomingDeadlinesSection() {
     </motion.div>
   );
 }
+
