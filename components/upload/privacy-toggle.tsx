@@ -1,9 +1,7 @@
 "use client";
 
 import { Shield, ShieldCheck, ShieldOff, Info } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { usePrivacy } from "@/lib/privacy";
-import { Card, CardContent } from "@/components/ui/card";
 import type { PrivacyLevel } from "@/lib/privacy";
 
 const PRIVACY_CONFIG: Record<
@@ -15,35 +13,31 @@ const PRIVACY_CONFIG: Record<
     color: string;
     borderColor: string;
     bgColor: string;
-    badgeColor: string;
   }
 > = {
   maximum: {
     label: "Maximum Privacy",
     description: "ML only • No data sent • Works offline",
     icon: <ShieldCheck className="h-4 w-4" />,
-    color: "text-green-400",
-    borderColor: "border-green-500/30",
-    bgColor: "bg-green-500/10",
-    badgeColor: "bg-green-500/15 text-green-400 border-green-500/30",
+    color: "text-emerald-500",
+    borderColor: "border-emerald-900/50",
+    bgColor: "bg-emerald-950/20",
   },
   balanced: {
     label: "Balanced",
     description: "Anonymized clauses sent • PII redacted",
     icon: <Shield className="h-4 w-4" />,
-    color: "text-blue-400",
-    borderColor: "border-blue-500/30",
-    bgColor: "bg-blue-500/10",
-    badgeColor: "bg-blue-500/15 text-blue-400 border-blue-500/30",
+    color: "text-cyan-500",
+    borderColor: "border-cyan-900/50",
+    bgColor: "bg-cyan-950/20",
   },
   standard: {
     label: "Standard",
     description: "Full text sent to AI • Best accuracy",
     icon: <ShieldOff className="h-4 w-4" />,
-    color: "text-yellow-400",
-    borderColor: "border-yellow-500/30",
-    bgColor: "bg-yellow-500/10",
-    badgeColor: "bg-yellow-500/15 text-yellow-400 border-yellow-500/30",
+    color: "text-amber-500",
+    borderColor: "border-amber-900/50",
+    bgColor: "bg-amber-950/20",
   },
 };
 
@@ -55,28 +49,39 @@ export default function PrivacyToggle() {
   const isPrivacyMode = level === "maximum";
 
   return (
-    <Card
-      className={`card-impact border-2 border-foreground transition-all duration-300 ${isPrivacyMode ? "bg-green-50 shadow-[8px_8px_0px_0px_rgba(22,163,74,1)]" : "bg-card shadow-[4px_4px_0px_0px_rgba(10,10,10,1)]"}`}
+    <div
+      className={`border transition-all duration-300 rounded-sm relative overflow-hidden ${
+        isPrivacyMode
+          ? "bg-[#0a0a0a] border-emerald-900/50 shadow-[0_0_15px_rgba(16,185,129,0.1)]"
+          : "bg-[#0a0a0a] border-neutral-800"
+      }`}
     >
-      <CardContent className="p-4">
+      {isPrivacyMode && (
+        <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent" />
+      )}
+      <div className="p-4">
         <div className="flex items-center justify-between mb-4">
           <h3
-            className={`font-black uppercase tracking-wider ${isPrivacyMode ? "text-green-900 dark:text-green-100 font-bold" : "text-foreground"}`}
+            className={`font-mono text-[11px] uppercase tracking-widest flex items-center gap-2 ${
+              isPrivacyMode ? "text-emerald-500" : "text-neutral-500"
+            }`}
           >
+            {isPrivacyMode ? <ShieldCheck className="w-3.5 h-3.5" /> : <Shield className="w-3.5 h-3.5" />}
             Quantum Privacy Mode
           </h3>
           {isPrivacyMode && (
-            <Badge className="bg-green-600 text-white border-2 border-foreground text-[10px] h-5 px-1.5 font-bold font-mono">
+            <span className="bg-[#0e0e0e] text-emerald-500 border border-emerald-900/30 text-[9px] px-2 py-0.5 rounded-sm font-mono uppercase tracking-widest flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               ACTIVE
-            </Badge>
+            </span>
           )}
         </div>
-        <p className="text-sm font-bold text-foreground mb-4">
+        <p className="text-xs font-medium text-neutral-400 mb-4 leading-relaxed">
           Pre-process sensitive data locally in your browser before sending
           array references to the server for analysis.
         </p>
 
-        <div className="flex gap-1 p-1 bg-muted border-2 border-foreground shadow-[inset_0px_0px_0px_2px_rgba(10,10,10,0.05)]">
+        <div className="flex gap-1 p-1 bg-[#050505] border border-neutral-900 rounded-sm">
           {LEVELS.map((l) => {
             const c = PRIVACY_CONFIG[l] as any;
             const isActive = level === l;
@@ -85,10 +90,10 @@ export default function PrivacyToggle() {
               <button
                 key={l}
                 onClick={() => setLevel(l)}
-                className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 text-[10px] sm:text-xs font-black uppercase tracking-wider transition-all ${
+                className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 text-[9px] sm:text-[10px] font-mono uppercase tracking-widest rounded transition-all ${
                   isActive
-                    ? "bg-foreground text-background border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(10,10,10,1)] -translate-y-[1px]"
-                    : "text-foreground hover:text-foreground hover:bg-background border-2 border-transparent hover:border-foreground"
+                    ? `bg-[#0e0e0e] shadow-[0_2px_10px_rgba(0,0,0,0.5)] border ${c.borderColor} ${c.color}`
+                    : "text-neutral-500 hover:text-neutral-300 hover:bg-[#111] border border-transparent"
                 }`}
               >
                 {c.icon}
@@ -101,11 +106,11 @@ export default function PrivacyToggle() {
           })}
         </div>
 
-        <p className="text-[10px] text-foreground flex items-center gap-1 mt-3">
-          <Info className="h-3 w-3 flex-shrink-0" />
+        <p className="text-[10px] uppercase font-mono tracking-widest text-neutral-500 flex items-center gap-1.5 mt-4 pt-4 border-t border-neutral-900/50">
+          <Info className="h-3.5 w-3.5 flex-shrink-0" />
           {config.description}
         </p>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

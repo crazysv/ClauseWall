@@ -13,19 +13,7 @@ import {
   Shield,
   Cpu,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+
 import { motion } from "framer-motion";
 import { DOCUMENT_TYPES, JURISDICTIONS } from "@/lib/utils/constants";
 import { toast } from "sonner";
@@ -585,14 +573,11 @@ export default function UploadPage() {
                   : "Finalized AI analysis of extracted legal clauses"}
               </p>
               {mlResult && quickScanResult && (
-                <Badge
-                  variant="outline"
-                  className="mt-2 border-amber-500/30 text-amber-400 gap-1"
-                >
+                <div className="mt-2 inline-flex items-center border border-amber-500/30 text-amber-400 gap-1 px-2.5 py-0.5 rounded-sm text-xs font-mono uppercase tracking-widest">
                   <Cpu className="h-3 w-3" />
                   Pre-scanned on-device in {mlResult.inferenceTimeMs.toFixed(0)}
                   ms
-                </Badge>
+                </div>
               )}
             </div>
 
@@ -630,22 +615,16 @@ export default function UploadPage() {
               {/* ML Model Status Badge */}
               <div className="mt-8 flex justify-center">
                 {mlStatus === "ready" && (
-                  <Badge
-                    variant="outline"
-                    className="border border-green-500/30 text-green-400 font-mono text-[10px] uppercase tracking-wider bg-green-950/20 px-3 py-1 rounded-sm"
-                  >
+                  <div className="inline-flex items-center border border-green-500/30 text-green-400 font-mono text-[10px] uppercase tracking-wider bg-green-950/20 px-3 py-1 rounded-sm">
                     <Cpu className="h-3 w-3 mr-2" />
                     On-device Analysis Engine Loaded
-                  </Badge>
+                  </div>
                 )}
                 {mlStatus === "loading" && (
-                  <Badge
-                    variant="outline"
-                    className="border border-cyan-500/30 text-cyan-400 font-mono text-[10px] uppercase tracking-wider bg-cyan-950/20 px-3 py-1 rounded-sm"
-                  >
+                  <div className="inline-flex items-center border border-cyan-500/30 text-cyan-400 font-mono text-[10px] uppercase tracking-wider bg-cyan-950/20 px-3 py-1 rounded-sm">
                     <Loader2 className="h-3 w-3 animate-spin mr-2" />
                     Booting Neural Engine...
-                  </Badge>
+                  </div>
                 )}
               </div>
             </div>
@@ -654,26 +633,36 @@ export default function UploadPage() {
             <div className="bg-[#0e0e0e] border border-neutral-900 shadow-2xl rounded-sm overflow-hidden mb-8 relative">
               <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-[#0e0e0e] via-red-600/50 to-[#0e0e0e] opacity-50" />
               <div className="p-6 md:p-10 space-y-8">
-                <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-8">
-                  <TabsList className="grid w-full grid-cols-2 bg-[#050505] border border-neutral-800 p-1 rounded-sm mb-4">
-                    <TabsTrigger
-                      value="upload"
-                      className="gap-2 font-mono text-[11px] uppercase tracking-widest text-neutral-500 data-[state=active]:bg-neutral-800 data-[state=active]:text-white rounded-sm py-2.5 transition-all"
+                <div className="mb-8">
+                  <div className="grid w-full grid-cols-2 bg-[#050505] border border-neutral-800 p-1 rounded-sm mb-4">
+                    <button
+                      onClick={() => setActiveTab("upload")}
+                      className={`flex items-center justify-center gap-2 font-mono text-[11px] uppercase tracking-widest rounded-sm py-2.5 transition-all outline-none ${
+                        activeTab === "upload"
+                          ? "bg-neutral-800 text-white"
+                          : "text-neutral-500 hover:text-neutral-300 cursor-pointer bg-transparent border-0"
+                      }`}
                     >
                       <Upload className="h-3.5 w-3.5" />
                       Evidence Upload
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="paste"
-                      className="gap-2 font-mono text-[11px] uppercase tracking-widest text-neutral-500 data-[state=active]:bg-neutral-800 data-[state=active]:text-white rounded-sm py-2.5 transition-all"
+                    </button>
+                    <button
+                      onClick={() => setActiveTab("paste")}
+                      className={`flex items-center justify-center gap-2 font-mono text-[11px] uppercase tracking-widest rounded-sm py-2.5 transition-all outline-none ${
+                        activeTab === "paste"
+                          ? "bg-neutral-800 text-white"
+                          : "text-neutral-500 hover:text-neutral-300 cursor-pointer bg-transparent border-0"
+                      }`}
                     >
                       <ClipboardPaste className="h-3.5 w-3.5" />
                       Raw Text Source
-                    </TabsTrigger>
-                  </TabsList>
+                    </button>
+                  </div>
 
-                  <TabsContent value="upload" className="mt-2 outline-none">
-                    {!file ? (
+                  <div className="mt-2 outline-none">
+                    {activeTab === "upload" && (
+                      <>
+                        {!file ? (
                       <div
                         {...getRootProps()}
                         className={`border border-dashed rounded-sm p-12 md:p-20 text-center cursor-pointer transition-all duration-300 flex flex-col items-center justify-center ${isDragActive ? "border-red-500 bg-red-950/10 shadow-[0_0_30px_rgba(220,38,38,0.05)]" : "border-neutral-800 hover:border-red-500/40 hover:bg-[#111]"}`}
@@ -695,8 +684,8 @@ export default function UploadPage() {
                               Or click to browse local filesystem
                             </p>
                             <div className="mt-8 flex gap-3 justify-center">
-                              <Badge variant="outline" className="border-neutral-800 text-neutral-400 font-mono text-[10px] uppercase bg-black">PDF / TXT</Badge>
-                              <Badge variant="outline" className="border-neutral-800 text-neutral-400 font-mono text-[10px] uppercase bg-black">Max 10MB</Badge>
+                              <span className="border border-neutral-800 text-neutral-400 font-mono text-[10px] uppercase bg-black px-2.5 py-0.5 rounded-sm">PDF / TXT</span>
+                              <span className="border border-neutral-800 text-neutral-400 font-mono text-[10px] uppercase bg-black px-2.5 py-0.5 rounded-sm">Max 10MB</span>
                             </div>
                           </>
                         )}
@@ -716,42 +705,43 @@ export default function UploadPage() {
                             </p>
                           </div>
                         </div>
-                        <Button
-                          variant="ghost"
-                          size="sm"
+                        <button
                           onClick={removeFile}
-                          className="text-neutral-500 hover:text-red-400 hover:bg-transparent"
+                          className="text-neutral-500 hover:text-red-400 cursor-pointer bg-transparent border-0 p-2 rounded-sm outline-none transition-colors"
                         >
                           <X className="h-5 w-5" />
-                        </Button>
+                        </button>
                       </div>
                     )}
-                  </TabsContent>
-
-                  <TabsContent value="paste" className="mt-2 outline-none">
-                    <div className="space-y-3">
-                      <label className="text-[11px] font-mono uppercase tracking-widest text-neutral-500">
-                        Paste Raw Evidence Text
-                      </label>
-                      <div className="relative">
-                        <Textarea
-                          placeholder="Initialize string sequence...&#10;&#10;e.g., '1. The Licensee agrees to waive all rights to participate in a class-action lawsuit...'&#10;"
-                          value={pastedText}
-                          onChange={(e) => setPastedText(e.target.value)}
-                          className="min-h-[200px] w-full resize-none font-mono text-sm leading-relaxed border border-neutral-800 bg-black/50 text-neutral-300 focus-visible:ring-1 focus-visible:ring-red-500/50 focus-visible:border-red-500/50 focus-visible:ring-offset-0 placeholder:text-neutral-700 rounded-sm p-5"
-                        />
+                    </>
+                    )}
+                    {activeTab === "paste" && (
+                      <div className="mt-2 outline-none">
+                        <div className="space-y-3">
+                          <label className="text-[11px] font-mono uppercase tracking-widest text-neutral-500">
+                            Paste Raw Evidence Text
+                          </label>
+                          <div className="relative">
+                            <textarea
+                              placeholder="Initialize string sequence...&#10;&#10;e.g., '1. The Licensee agrees to waive all rights to participate in a class-action lawsuit...'&#10;"
+                              value={pastedText}
+                              onChange={(e) => setPastedText(e.target.value)}
+                              className="min-h-[200px] w-full resize-none font-mono text-[13px] leading-relaxed border border-neutral-800 bg-black/50 text-neutral-300 focus-visible:ring-1 focus-visible:ring-red-500/50 focus-visible:border-red-500/50 outline-none placeholder:text-neutral-700 rounded-sm p-5"
+                            />
+                          </div>
+                        </div>
+                        <div className="flex justify-between mt-4">
+                          <p className="text-[10px] font-mono uppercase tracking-widest text-neutral-600">
+                            Min 50 chars required
+                          </p>
+                          <p className={`text-[10px] font-mono uppercase tracking-widest ${pastedText.length >= 50 ? "text-cyan-500" : "text-neutral-600"}`}>
+                            {pastedText.length} chars
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex justify-between mt-4">
-                      <p className="text-[10px] font-mono uppercase tracking-widest text-neutral-600">
-                        Min 50 chars required
-                      </p>
-                      <p className={`text-[10px] font-mono uppercase tracking-widest ${pastedText.length >= 50 ? "text-cyan-500" : "text-neutral-600"}`}>
-                        {pastedText.length} chars
-                      </p>
-                    </div>
-                  </TabsContent>
-                </Tabs>
+                    )}
+                  </div>
+                </div>
 
                 
                 {/* --- DEFERRED SETTINGS: ONLY SHOW AFTER INGESTION --- */}
@@ -767,49 +757,48 @@ export default function UploadPage() {
                       <label className="text-[11px] font-mono tracking-widest uppercase text-neutral-500 mb-2 block">
                         Evidence Type <span className="text-red-500">*</span>
                       </label>
-                      <Select value={documentType} onValueChange={setDocumentType}>
-                        <SelectTrigger className="h-12 bg-black border border-neutral-800 text-neutral-300 rounded-sm hover:border-neutral-700 transition-colors focus:ring-1 focus:ring-red-500/50">
-                          <SelectValue placeholder="Select classification..." />
-                        </SelectTrigger>
-                        <SelectContent className="bg-[#0a0a0a] border-neutral-800 text-neutral-300 rounded-sm shadow-2xl">
-                          {DOCUMENT_TYPES.map((type) => (
-                            <SelectItem key={type.value} value={type.value} className="focus:bg-neutral-900 focus:text-white cursor-pointer">
-                              {type.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      <select
+                        value={documentType}
+                        onChange={(e) => setDocumentType(e.target.value)}
+                        className="w-full h-12 bg-black border border-neutral-800 text-neutral-300 rounded-sm hover:border-neutral-700 transition-colors focus:ring-1 focus:ring-red-500/50 px-4 appearance-none outline-none"
+                      >
+                        <option value="" disabled className="text-neutral-500">Select classification...</option>
+                        {DOCUMENT_TYPES.map((type) => (
+                          <option key={type.value} value={type.value} className="bg-[#0a0a0a] text-white py-2">
+                            {type.label}
+                          </option>
+                        ))}
+                      </select>
                     </div>
 
                     <div>
                       <label className="text-[11px] font-mono tracking-widest uppercase text-neutral-500 mb-2 block">
                         Jurisdiction <span className="text-red-500">*</span>
                       </label>
-                      <Select value={jurisdiction} onValueChange={setJurisdiction}>
-                        <SelectTrigger className="h-12 bg-black border border-neutral-800 text-neutral-300 rounded-sm hover:border-neutral-700 transition-colors focus:ring-1 focus:ring-red-500/50">
-                          <SelectValue placeholder="Select state laws..." />
-                        </SelectTrigger>
-                        <SelectContent className="bg-[#0a0a0a] border-neutral-800 text-neutral-300 rounded-sm shadow-2xl">
-                          {JURISDICTIONS.map((j) => (
-                            <SelectItem key={j.value} value={j.value} className="focus:bg-neutral-900 focus:text-white cursor-pointer">
-                              {j.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      <select
+                        value={jurisdiction}
+                        onChange={(e) => setJurisdiction(e.target.value)}
+                        className="w-full h-12 bg-black border border-neutral-800 text-neutral-300 rounded-sm hover:border-neutral-700 transition-colors focus:ring-1 focus:ring-red-500/50 px-4 appearance-none outline-none"
+                      >
+                        <option value="" disabled className="text-neutral-500">Select state laws...</option>
+                        {JURISDICTIONS.map((j) => (
+                          <option key={j.value} value={j.value} className="bg-[#0a0a0a] text-white py-2">
+                            {j.label}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                   </div>
 
 
-                    {/* Advanced Settings Accordion */}
-                    <Accordion type="single" collapsible className="w-full mt-6">
-                      <AccordionItem value="advanced" className="border border-neutral-800 bg-black/30 rounded-sm px-1">
-                        <AccordionTrigger className="text-[11px] font-mono uppercase tracking-widest py-4 px-4 text-neutral-500 hover:text-neutral-300 hover:no-underline transition-all group">
-                          <div className="flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 rounded-full bg-neutral-700 group-hover:bg-neutral-500 transition-colors" /> Settings Configuration
-                          </div>
-                        </AccordionTrigger>
-                        <AccordionContent className="pt-2 pb-6 px-4 space-y-8 bg-transparent">
+                    {/* Advanced Settings Details */}
+                    <details className="w-full mt-6 group/details transition-all">
+                      <summary className="border border-neutral-800 bg-black/30 rounded-sm px-4 py-4 text-[11px] font-mono uppercase tracking-widest text-neutral-500 hover:text-neutral-300 cursor-pointer list-none flex items-center justify-between outline-none">
+                        <div className="flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-neutral-700 group-hover/details:bg-neutral-500 transition-colors" /> Settings Configuration
+                        </div>
+                      </summary>
+                      <div className="pt-4 pb-6 px-4 space-y-8 bg-transparent border-x border-b border-neutral-800 rounded-b-sm">
                           
                           {/* Privacy Slider Inside Advanced */}
                           <div>
@@ -836,9 +825,8 @@ export default function UploadPage() {
                             </p>
                           </div>
 
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
+                      </div>
+                    </details>
                   </motion.div>
                 )}
 
@@ -849,10 +837,10 @@ export default function UploadPage() {
                   </div>
                 )}
 
-                <Button
+                <button
                   onClick={handleAnalyze}
                   disabled={!hasContent || !documentType || !jurisdiction}
-                  className="w-full py-8 text-xl font-bold gap-3 bg-red-600 hover:bg-red-500 text-white rounded-sm hover:-translate-y-0.5 transition-all duration-300 shadow-[0_0_20px_rgba(220,38,38,0.15)] hover:shadow-[0_0_40px_rgba(220,38,38,0.3)] disabled:opacity-30 disabled:hover:translate-y-0 disabled:shadow-none disabled:bg-neutral-800 disabled:text-neutral-500 mt-4"
+                  className="flex justify-center items-center w-full py-8 text-xl font-bold gap-3 bg-red-600 hover:bg-red-500 text-white rounded-sm hover:-translate-y-0.5 transition-all duration-300 shadow-[0_0_20px_rgba(220,38,38,0.15)] hover:shadow-[0_0_40px_rgba(220,38,38,0.3)] disabled:opacity-30 disabled:hover:translate-y-0 disabled:shadow-none disabled:bg-neutral-800 disabled:text-neutral-500 mt-4 cursor-pointer border-0"
                 >
                   {mlStatus === "ready" ? (
                     <>
@@ -865,7 +853,7 @@ export default function UploadPage() {
                       Initializing Core Systems...
                     </>
                   )}
-                </Button>
+                </button>
 
                 
                 {/* TRUST LOCKUP */}
@@ -888,13 +876,12 @@ export default function UploadPage() {
               </p>
               <div className="flex flex-wrap justify-center gap-2">
                 {DOCUMENT_TYPES.slice(0, 5).map((type) => (
-                  <Badge
+                  <span
                     key={type.value}
-                    variant="outline"
-                    className="border-neutral-800 bg-[#0e0e0e]/50 text-neutral-500 font-mono text-[10px] rounded-sm py-1"
+                    className="border border-neutral-800 bg-[#0e0e0e]/50 text-neutral-500 font-mono text-[10px] rounded-sm py-1 px-2.5"
                   >
                     {type.label}
-                  </Badge>
+                  </span>
                 ))}
               </div>
             </div>

@@ -24,11 +24,6 @@ import {
   Lock,
   Zap,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { Skeleton } from "@/components/ui/skeleton";
 import { createClient } from "@/lib/supabase/client";
 import type { QuickAnalysisResult } from "@/lib/bot/quick-analyzer";
 import type { MLScanResult, MLClauseResult } from "@/lib/ml/types";
@@ -546,10 +541,10 @@ export default function QuickScanResult({
               exit={{ opacity: 0 }}
             >
               <div className="bg-[#050505] border border-neutral-900 rounded-sm p-6 mt-6">
-                <Skeleton className="h-4 w-40 mb-4 bg-neutral-900" />
+                <div className="h-4 w-40 mb-4 bg-neutral-900 rounded animate-pulse" />
                 <div className="space-y-4">
-                  <Skeleton className="h-3 w-full bg-neutral-900" />
-                  <Skeleton className="h-3 w-3/4 bg-neutral-900" />
+                  <div className="h-3 w-full bg-neutral-900 rounded animate-pulse" />
+                  <div className="h-3 w-3/4 bg-neutral-900 rounded animate-pulse" />
                 </div>
               </div>
             </motion.div>
@@ -585,8 +580,8 @@ export default function QuickScanResult({
               className="mt-6"
             >
               <div className="bg-[#0a0a0a] border border-neutral-800 rounded-sm p-6">
-                <Skeleton className="h-4 w-32 mb-3 bg-neutral-900" />
-                <Skeleton className="h-3 w-full bg-neutral-900" />
+                <div className="h-4 w-32 mb-3 bg-neutral-900 rounded animate-pulse" />
+                <div className="h-3 w-full bg-neutral-900 rounded animate-pulse" />
               </div>
             </motion.div>
           )
@@ -674,10 +669,9 @@ export default function QuickScanResult({
                       </span>
                     </div>
                     <div className="relative bg-black border border-neutral-800 rounded-full h-1.5 overflow-hidden">
-                      <Progress
-                        value={progressData.progress}
-                        className="h-full bg-cyan-500/20 [&>div]:bg-cyan-500"
-                      />
+                      <div className="h-full bg-cyan-500/20 w-full relative">
+                        <div className="absolute top-0 bottom-0 left-0 bg-cyan-500 transition-all duration-300 ease-in-out" style={{ width: `${progressData.progress}%` }} />
+                      </div>
                     </div>
                   </div>
 
@@ -785,11 +779,11 @@ export default function QuickScanResult({
                   )}
 
                   <Link href={`/results/${documentId}`} scroll={true} className="block group">
-                    <Button className="w-full py-8 text-lg font-bold gap-3 rounded-sm bg-cyan-600 hover:bg-cyan-500 text-white shadow-[0_0_20px_rgba(8,145,178,0.15)] hover:shadow-[0_0_40px_rgba(8,145,178,0.3)] hover:-translate-y-0.5 transition-all duration-300 border-0">
+                    <button className="flex justify-center items-center w-full py-4 text-lg font-bold gap-3 rounded-sm bg-cyan-600 hover:bg-cyan-500 text-white shadow-[0_0_20px_rgba(8,145,178,0.15)] hover:shadow-[0_0_40px_rgba(8,145,178,0.3)] hover:-translate-y-0.5 transition-all duration-300 border-0 cursor-pointer">
                       <FileText className="h-5 w-5" />
                       ACCESS FORENSIC DOSSIER
                       <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                    </Button>
+                    </button>
                   </Link>
 
                   <p className="text-[9px] font-mono tracking-widest text-neutral-600 text-center mt-6 uppercase">
@@ -813,10 +807,10 @@ export default function QuickScanResult({
                   <p className="text-xs font-medium text-neutral-400 mb-6 leading-relaxed">
                     The deep analysis core encountered an irrecoverable error. Preliminary data remains valid.
                   </p>
-                  <Button variant="outline" onClick={onReset} className="w-full py-6 bg-transparent border-red-900/50 hover:bg-red-950/30 text-red-400 hover:text-red-300 gap-2 font-mono text-[11px] tracking-widest uppercase rounded-sm">
+                  <button onClick={onReset} className="flex justify-center items-center w-full py-4 bg-transparent border border-red-900/50 hover:bg-red-950/30 text-red-400 hover:text-red-300 gap-2 font-mono text-[11px] tracking-widest uppercase rounded-sm cursor-pointer transition-colors">
                     <Upload className="h-4 w-4" />
                     ABORT AND RETRY
-                  </Button>
+                  </button>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -828,15 +822,13 @@ export default function QuickScanResult({
       {/* 8. ACTIONS                                    */}
       {/* ============================================ */}
       <div className="flex justify-center gap-4 mt-8">
-        <Button
-          variant="outline"
-          size="lg"
+        <button
           onClick={onReset}
-          className="bg-transparent border border-neutral-800 text-neutral-400 hover:text-white hover:bg-[#0e0e0e] hover:border-neutral-700 font-mono text-[10px] uppercase tracking-widest gap-2 py-6 rounded-sm w-full md:w-auto px-8"
+          className="flex justify-center items-center bg-transparent border border-neutral-800 text-neutral-400 hover:text-white hover:bg-[#0e0e0e] hover:border-neutral-700 font-mono text-[10px] uppercase tracking-widest gap-2 py-4 rounded-sm w-full md:w-auto px-8 cursor-pointer transition-colors"
         >
           <Upload className="h-4 w-4" />
           UPLOAD NEW EVIDENCE
-        </Button>
+        </button>
       </div>
 
       {/* ============================================ */}

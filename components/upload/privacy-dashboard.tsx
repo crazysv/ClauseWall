@@ -15,8 +15,6 @@ import {
   Brain,
   Scan,
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { usePrivacy } from "@/lib/privacy";
 import type { ProcessingStep, RedactionResult } from "@/lib/privacy";
 
@@ -79,7 +77,7 @@ export default function PrivacyDashboard({
       animate={{ opacity: 1, y: 0 }}
       className="h-full"
     >
-      <div className="bg-[#0a0a0a] border border-neutral-800 rounded-sm h-full flex flex-col relative overflow-hidden shadow-2xl">
+      <div className="bg-[#0a0a0a] border border-neutral-800 rounded-sm h-full flex flex-col relative overflow-hidden">
         <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-neutral-500/20 to-transparent" />
         
         <div className="pb-4 pt-5 px-6 border-b border-neutral-900/50 bg-[#050505]/50">
