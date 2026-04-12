@@ -1,51 +1,54 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import DirectionBadge from "./direction-badge";
 import type { SemanticChange } from "@/types";
+import { AlertCircle, Target, Fingerprint, MapPin, Activity, Scale, Users } from "lucide-react";
 
 const severityConfig: Record<
   string,
-  { color: string; emoji: string; label: string; bgColor: string }
+  { color: string; label: string; border: string; glow: string; icon: any }
 > = {
   critical: {
-    color: "text-red-400",
-    emoji: "🔴",
+    color: "text-red-500",
     label: "CRITICAL",
-    bgColor: "border-red-500/20",
+    border: "border-red-900/50",
+    glow: "shadow-[0_0_15px_rgba(239,68,68,0.15)]",
+    icon: AlertCircle
   },
   major: {
-    color: "text-amber-400",
-    emoji: "🟡",
+    color: "text-amber-500",
     label: "MAJOR",
-    bgColor: "border-amber-500/20",
+    border: "border-amber-900/50",
+    glow: "",
+    icon: Target
   },
   minor: {
-    color: "text-blue-400",
-    emoji: "🔵",
+    color: "text-cyan-500",
     label: "MINOR",
-    bgColor: "border-blue-500/20",
+    border: "border-cyan-900/50",
+    glow: "",
+    icon: Activity
   },
   cosmetic: {
-    color: "text-foreground",
-    emoji: "⚪",
+    color: "text-neutral-500",
     label: "COSMETIC",
-    bgColor: "border-gray-500/20",
+    border: "border-neutral-800",
+    glow: "",
+    icon: Fingerprint
   },
 };
 
 const changeTypeLabels: Record<string, string> = {
-  rights_gained: "Rights Gained",
-  rights_lost: "Rights Lost",
-  obligation_added: "Obligation Added",
-  obligation_removed: "Obligation Removed",
-  liability_changed: "Liability Changed",
-  data_usage_changed: "Data Usage Changed",
-  dispute_resolution_changed: "Dispute Resolution Changed",
-  pricing_terms_changed: "Pricing Changed",
-  termination_changed: "Termination Changed",
-  neutral_clarification: "Clarification",
+  rights_gained: "RIGHTS_GAINED",
+  rights_lost: "RIGHTS_LOST",
+  obligation_added: "OBLIGATION_ADDED",
+  obligation_removed: "OBLIGATION_REMOVED",
+  liability_changed: "LIABILITY_CHANGED",
+  data_usage_changed: "DATA_USAGE_CHANGED",
+  dispute_resolution_changed: "DISPUTE_RESOLUTION_CHANGED",
+  pricing_terms_changed: "PRICING_CHANGED",
+  termination_changed: "TERMINATION_CHANGED",
+  neutral_clarification: "CLARIFICATION",
 };
 
 export default function ChangeDiffView({
@@ -54,126 +57,127 @@ export default function ChangeDiffView({
   changes: SemanticChange[];
 }) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {changes.map((change, index) => {
         const config = severityConfig[change.severity] || severityConfig.minor;
+        const Icon = config.icon;
 
         return (
-          <Card
+          <div
             key={index}
-            className={`bg-background/50 ${config.bgColor} overflow-hidden`}
+            className={`bg-[#0a0a0a] border ${config.border} ${config.glow} relative`}
           >
+            {/* Top Indicator Line */}
             {change.severity === "critical" && (
-              <div className="h-0.5 bg-red-500" />
+              <div className="absolute top-0 inset-x-0 h-[1px] bg-red-500" />
             )}
             {change.severity === "major" && (
-              <div className="h-0.5 bg-amber-500" />
+              <div className="absolute top-0 inset-x-0 h-[1px] bg-amber-500" />
             )}
 
-            <CardContent className="p-5">
+            <div className="p-5 md:p-6">
               {/* Header */}
-              <div className="flex items-center gap-2 flex-wrap mb-3">
-                <Badge
-                  className={`bg-${change.severity === "critical" ? "red" : change.severity === "major" ? "amber" : change.severity === "minor" ? "blue" : "gray"}-500/15 ${config.color} border-${change.severity === "critical" ? "red" : change.severity === "major" ? "amber" : change.severity === "minor" ? "blue" : "gray"}-500/30 text-[10px]`}
-                >
-                  {config.emoji} {config.label}
-                </Badge>
-                <Badge
-                  variant="outline"
-                  className="text-[10px] border-foreground border-2"
-                >
+              <div className="flex items-center gap-3 flex-wrap mb-4">
+                <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 border text-[9px] font-mono uppercase tracking-widest ${config.color} ${config.border} bg-[#050505]`}>
+                  <Icon className="h-3 w-3" />
+                  [ {config.label} ]
+                </span>
+                
+                <span className="text-[9px] font-mono uppercase tracking-widest border border-neutral-800 text-neutral-400 bg-[#050505] px-2 py-0.5">
                   {changeTypeLabels[change.change_type] || change.change_type}
-                </Badge>
+                </span>
+
                 <DirectionBadge direction={change.direction} />
               </div>
 
-              <h4 className="font-semibold mb-3">{change.section_title}</h4>
+              <h4 className="text-sm font-mono text-neutral-200 mb-5 uppercase tracking-wide border-l-2 border-neutral-800 pl-3">
+                {change.section_title}
+              </h4>
 
-              {/* Before / After */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+              {/* Before / After Diff Board */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-neutral-900 border border-neutral-900 mb-6 font-mono">
                 {change.old_text && (
-                  <div className="rounded-lg bg-red-500/5 border border-red-500/10 p-3">
-                    <p className="text-[10px] text-red-400 font-semibold mb-1.5 uppercase tracking-wider">
-                      Before
+                  <div className="bg-[#050505] p-4 relative overflow-hidden group">
+                    <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-red-900/50" />
+                    <p className="text-[9px] text-red-500/70 mb-2 uppercase tracking-widest flex items-center gap-2">
+                       <span className="line-through">[- PREVIOUS_STATE]</span>
                     </p>
-                    <p className="text-sm text-foreground leading-relaxed">
+                    <p className="text-[11px] text-neutral-400 leading-relaxed pl-2 z-10">
                       {change.old_text}
                     </p>
                   </div>
                 )}
                 {change.new_text && (
-                  <div className="rounded-lg bg-green-500/5 border border-green-500/10 p-3">
-                    <p className="text-[10px] text-green-400 font-semibold mb-1.5 uppercase tracking-wider">
-                      After
+                  <div className="bg-[#050505] p-4 relative overflow-hidden group">
+                    <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-emerald-900/50" />
+                    <p className="text-[9px] text-emerald-500/70 mb-2 uppercase tracking-widest flex items-center gap-2">
+                      <span>[+ CURRENT_STATE]</span>
                     </p>
-                    <p className="text-sm text-foreground leading-relaxed">
+                    <p className="text-[11px] text-neutral-300 leading-relaxed pl-2 z-10">
                       {change.new_text}
                     </p>
                   </div>
                 )}
               </div>
 
-              {/* Impact */}
-              <div className="space-y-2">
-                <div className="flex items-start gap-2">
-                  <span className="text-sm">📌</span>
+              {/* Impact / Telemetry Specs */}
+              <div className="space-y-4 border-t border-neutral-900 pt-5">
+                <div className="flex items-start gap-3">
+                   <Target className="h-4 w-4 text-cyan-700 flex-shrink-0 mt-0.5" />
                   <div>
-                    <span className="text-xs font-semibold text-foreground uppercase tracking-wider">
-                      Impact
+                    <span className="text-[9px] font-mono text-cyan-600 uppercase tracking-widest block mb-1">
+                      [ PRIMARY IMPACT VECTOR ]
                     </span>
-                    <p className="text-sm mt-0.5">
+                    <p className="text-[11px] font-mono text-neutral-300 leading-relaxed">
                       {change.user_impact_summary}
                     </p>
                   </div>
                 </div>
 
-                {change.legal_implications &&
-                  change.legal_implications !== "No legal implications." && (
-                    <div className="flex items-start gap-2">
-                      <span className="text-sm">⚖️</span>
-                      <div>
-                        <span className="text-xs font-semibold text-foreground uppercase tracking-wider">
-                          Legal
-                        </span>
-                        <p className="text-sm mt-0.5 text-amber-300/80">
-                          {change.legal_implications}
-                        </p>
-                      </div>
+                {change.legal_implications && change.legal_implications !== "No legal implications." && (
+                  <div className="flex items-start gap-3">
+                    <Scale className="h-4 w-4 text-amber-700 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <span className="text-[9px] font-mono text-amber-600 uppercase tracking-widest block mb-1">
+                        [ LEGAL IMPLICATIONS ]
+                      </span>
+                      <p className="text-[11px] font-mono text-amber-500/80 leading-relaxed">
+                        {change.legal_implications}
+                      </p>
                     </div>
-                  )}
+                  </div>
+                )}
 
-                {change.affected_user_actions &&
-                  change.affected_user_actions.length > 0 && (
-                    <div className="flex items-start gap-2">
-                      <span className="text-sm">👤</span>
-                      <div>
-                        <span className="text-xs font-semibold text-foreground uppercase tracking-wider">
-                          Affected Actions
-                        </span>
-                        <div className="flex flex-wrap gap-1 mt-1">
-                          {change.affected_user_actions.map((action, i) => (
-                            <Badge
-                              key={i}
-                              variant="outline"
-                              className="text-[10px] border-foreground border-2"
-                            >
-                              {action}
-                            </Badge>
-                          ))}
-                        </div>
+                {change.affected_user_actions && change.affected_user_actions.length > 0 && (
+                  <div className="flex items-start gap-3">
+                    <Users className="h-4 w-4 text-neutral-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <span className="text-[9px] font-mono text-neutral-500 uppercase tracking-widest block mb-2">
+                        [ AFFECTED USER ACTIONS ]
+                      </span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {change.affected_user_actions.map((action, i) => (
+                          <span
+                            key={i}
+                            className="text-[9px] font-mono border border-neutral-800 bg-[#050505] text-neutral-400 px-1.5 py-0.5 uppercase tracking-wider"
+                          >
+                            {action}
+                          </span>
+                        ))}
                       </div>
                     </div>
-                  )}
+                  </div>
+                )}
               </div>
 
-              {/* Confidence */}
-              <div className="mt-3 flex items-center justify-end">
-                <span className="text-[10px] text-foreground">
-                  Confidence: {Math.round(change.confidence * 100)}%
+              {/* Confidence Readout */}
+              <div className="mt-6 pt-4 border-t border-neutral-900 flex items-center justify-end">
+                <span className="text-[9px] font-mono text-neutral-600 uppercase tracking-widest">
+                  SYS.CONFIDENCE_INTERVAL: {Math.round(change.confidence * 100)}%
                 </span>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         );
       })}
     </div>
