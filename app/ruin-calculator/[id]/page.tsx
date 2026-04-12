@@ -15,9 +15,7 @@ import {
   AlertTriangle,
   Target,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
+
 import { toast } from "sonner";
 import { getStateName, getDocumentTypeLabel } from "@/lib/utils/constants";
 import { PRESET_SCENARIOS } from "@/lib/simulation/stress-test-engine";
@@ -217,69 +215,65 @@ export default function RuinCalculatorPage() {
   // LOADING
   // ═══════════════════════════════════════════
   if (loading) {
-    return (
-      <div className="min-h-screen bg-background p-4 sm:p-8 max-w-7xl mx-auto py-10 md:py-16">
-        <Skeleton className="h-10 w-64 mb-6 border-4 border-black" />
-        <Skeleton className="h-6 w-96 mb-8 border-2 border-black" />
+      <div className="min-h-screen bg-[#050505] p-4 sm:p-8 max-w-7xl mx-auto py-10 md:py-16">
+        <div className="h-10 w-64 mb-6 bg-neutral-900 animate-pulse rounded-sm" />
+        <div className="h-6 w-96 mb-8 bg-neutral-900 border border-neutral-800 animate-pulse rounded-sm" />
         <div className="space-y-6">
-          <Skeleton className="h-48 rounded-none border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]" />
-          <Skeleton className="h-80 rounded-none border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]" />
+          <div className="h-48 border border-neutral-900 bg-[#0a0a0a] animate-pulse rounded-sm" />
+          <div className="h-80 border border-neutral-900 bg-[#0a0a0a] animate-pulse rounded-sm" />
           <div className="grid grid-cols-4 gap-4">
             {[1, 2, 3, 4].map((i) => (
-              <Skeleton
+              <div
                 key={i}
-                className="h-24 rounded-none border-4 border-black"
+                className="h-24 border border-neutral-900 bg-[#0a0a0a] animate-pulse rounded-sm"
               />
             ))}
           </div>
         </div>
         <div className="flex flex-col items-center justify-center mt-12 gap-4">
-          <div className="relative p-6 border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <Loader2 className="h-12 w-12 text-black animate-spin" />
+          <div className="relative p-6 border border-neutral-800 bg-[#0a0a0a] rounded-sm">
+            <Loader2 className="h-12 w-12 text-cyan-500 animate-spin" />
+            <div className="absolute inset-0 h-12 w-12 bg-cyan-500/20 blur-xl rounded-full animate-pulse mx-auto my-auto top-0 bottom-0 left-0 right-0" />
           </div>
           <div className="text-center mt-4">
-            <p className="text-xl font-black uppercase tracking-tight">
-              Running Monte Carlo Simulation
+            <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-cyan-500">
+              [RUNNING MONTE CARLO SIMULATION]
             </p>
-            <p className="text-sm font-bold text-gray-600 uppercase tracking-widest mt-2">
-              10,000 scenarios × 36 months — pure computation, no AI
+            <p className="text-[9px] font-mono text-neutral-500 uppercase tracking-widest mt-2">
+              10,000 SCENARIOS × 36 MONTHS
             </p>
           </div>
         </div>
       </div>
-    );
   }
 
   // ═══════════════════════════════════════════
   // ERROR
   // ═══════════════════════════════════════════
   if (error || !analysis) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 px-4">
-        <div className="border-4 border-black p-6 bg-red-100 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-          <XCircle className="h-16 w-16 text-red-600 mx-auto mb-4" />
-          <p className="text-red-900 text-center font-black uppercase text-xl">
-            {error || "Something went wrong"}
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 px-4 bg-[#050505]">
+        <div className="border border-red-900/50 p-6 bg-red-950/20 rounded-sm">
+          <XCircle className="h-16 w-16 text-red-500 mx-auto mb-4" />
+          <p className="text-red-400 text-center font-mono uppercase tracking-widest text-[10px]">
+            {error || "[CALCULATION FAILURE]"}
           </p>
         </div>
         <div className="flex gap-4">
-          <Button
+          <button
             onClick={fetchAnalysis}
-            className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-wider"
+            className="px-6 py-3 bg-red-900/40 text-red-400 border border-red-900/50 hover:bg-red-900/60 font-mono text-[10px] uppercase tracking-widest transition-colors rounded-sm"
           >
-            Try Again
-          </Button>
+            [RE-INITIALIZE]
+          </button>
           <Link href={`/results/${documentId}`}>
-            <Button
-              variant="outline"
-              className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-wider"
+            <button
+              className="px-6 py-3 bg-[#0a0a0a] text-neutral-400 border border-neutral-800 hover:bg-neutral-900 font-mono text-[10px] uppercase tracking-widest transition-colors rounded-sm"
             >
-              Back to Results
-            </Button>
+              [RETURN TO RESULTS]
+            </button>
           </Link>
         </div>
       </div>
-    );
   }
 
   return (
@@ -311,11 +305,11 @@ export default function RuinCalculatorPage() {
           <div className="mt-8 flex justify-center">
             <button
               onClick={() => setConfigOpen(!configOpen)}
-              className="text-xs font-bold uppercase tracking-widest text-foreground hover:text-foreground transition-colors border-2 border-black px-4 py-2"
+              className="text-[9px] font-mono uppercase tracking-widest text-neutral-500 hover:text-white transition-colors border border-neutral-800 bg-[#0a0a0a] px-4 py-2 rounded-sm"
             >
               {configOpen
-                ? "Hide Settings ▲"
-                : "Adjust Monthly Cost / Income ▼"}
+                ? "[HIDE SETTINGS ▲]"
+                : "[ADJUST MONTHLY COST / INCOME ▼]"}
             </button>
           </div>
 
@@ -327,9 +321,9 @@ export default function RuinCalculatorPage() {
                 exit={{ height: 0, opacity: 0 }}
                 className="overflow-hidden"
               >
-                <div className="flex flex-wrap gap-4 mt-6 p-6 card-impact bg-muted/30">
+                <div className="flex flex-wrap gap-4 mt-6 p-6 border border-neutral-900 bg-[#050505] rounded-sm">
                   <div className="flex-1 min-w-[180px]">
-                    <label className="text-xs font-black uppercase tracking-widest block mb-2">
+                    <label className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest block mb-2">
                       Monthly Cost (₹)
                     </label>
                     <input
@@ -338,11 +332,11 @@ export default function RuinCalculatorPage() {
                       onChange={(e) =>
                         setBaseMonthlyCost(parseInt(e.target.value) || 0)
                       }
-                      className="w-full px-4 py-3 border-4 border-black rounded-none font-bold focus:outline-none focus:ring-0 focus:border-red-600 transition-colors"
+                      className="w-full px-4 py-3 bg-[#0a0a0a] border border-neutral-800 rounded-sm text-white font-mono focus:outline-none focus:ring-1 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-colors"
                     />
                   </div>
                   <div className="flex-1 min-w-[180px]">
-                    <label className="text-xs font-black uppercase tracking-widest block mb-2">
+                    <label className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest block mb-2">
                       Monthly Income (₹)
                     </label>
                     <input
@@ -351,17 +345,17 @@ export default function RuinCalculatorPage() {
                       onChange={(e) =>
                         setMonthlyIncome(parseInt(e.target.value) || 0)
                       }
-                      className="w-full px-4 py-3 border-4 border-black rounded-none font-bold focus:outline-none focus:ring-0 focus:border-green-600 transition-colors"
+                      className="w-full px-4 py-3 bg-[#0a0a0a] border border-neutral-800 rounded-sm text-white font-mono focus:outline-none focus:ring-1 focus:ring-emerald-500/50 focus:border-emerald-500/50 transition-colors"
                     />
                   </div>
                   <div className="flex items-end">
-                    <Button
+                    <button
                       onClick={fetchAnalysis}
-                      className="h-[52px] px-8 rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-wider gap-2"
+                      className="h-[50px] px-8 bg-cyan-950/20 text-cyan-400 border border-cyan-900/50 hover:bg-cyan-900/40 transition-colors font-mono text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 rounded-sm"
                     >
                       <BarChart3 className="h-4 w-4" />
-                      Re-run
-                    </Button>
+                      [RE-RUN SIMULATION]
+                    </button>
                   </div>
                 </div>
               </motion.div>
@@ -373,12 +367,12 @@ export default function RuinCalculatorPage() {
             SECTION 2: Monte Carlo Distribution
             ═══════════════════════════════════════════ */}
         <section className="mb-12">
-          <div className="card-impact p-6">
-            <h3 className="text-2xl font-black uppercase tracking-tight mb-8 flex items-center gap-3">
-              <span className="p-2 border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                <BarChart3 className="h-6 w-6 text-black" />
+          <div className="border border-neutral-900 bg-[#050505] p-6 rounded-sm">
+            <h3 className="font-mono text-lg text-white uppercase tracking-widest mb-8 flex items-center gap-3">
+              <span className="p-1.5 bg-[#0a0a0a] border border-neutral-800 rounded-sm">
+                <BarChart3 className="h-4 w-4 text-cyan-500" />
               </span>
-              Probability of Financial Loss
+              [Probability of Financial Loss]
             </h3>
 
             <MonteCarloChart
@@ -403,11 +397,11 @@ export default function RuinCalculatorPage() {
             SECTION 3: Stress Test Scenarios
             ═══════════════════════════════════════════ */}
         <section className="mb-12">
-          <h3 className="text-2xl font-black uppercase tracking-tight mb-8 flex items-center gap-3">
-            <span className="p-2 border-4 border-black bg-orange-400 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-              <AlertTriangle className="h-6 w-6 text-black" />
+          <h3 className="font-mono text-lg text-white uppercase tracking-widest mb-8 flex items-center gap-3">
+            <span className="p-1.5 bg-[#0a0a0a] border border-neutral-800 rounded-sm">
+              <AlertTriangle className="h-4 w-4 text-amber-500" />
             </span>
-            What-If Stress Tests
+            [WHAT-IF STRESS TESTS]
           </h3>
 
           <StressTestGrid
@@ -444,16 +438,16 @@ export default function RuinCalculatorPage() {
             SECTION 4: Fair Contract Comparison
             ═══════════════════════════════════════════ */}
         <section className="mb-12">
-          <div className="card-impact p-6">
-            <h3 className="text-2xl font-black uppercase tracking-tight mb-4 flex items-center gap-3">
-              <span className="p-2 border-4 border-black bg-green-400 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                <Shield className="h-6 w-6 text-black" />
+          <div className="border border-neutral-900 bg-[#050505] p-6 rounded-sm">
+            <h3 className="font-mono text-lg text-white uppercase tracking-widest mb-4 flex items-center gap-3">
+              <span className="p-1.5 bg-[#0a0a0a] border border-neutral-800 rounded-sm">
+                <Shield className="h-4 w-4 text-emerald-500" />
               </span>
-              Your Contract vs Fair Market Contract
+              [YOUR CONTRACT VS FAIR MARKET]
             </h3>
 
-            <p className="text-sm font-bold uppercase tracking-widest text-foreground mb-8">
-              Expected loss at 90th percentile (reasonable worst case):
+            <p className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest mb-8">
+              [EXPECTED LOSS AT 90TH PERCENTILE // REASONABLE WORST CASE]:
             </p>
 
             <FairComparisonBar comparison={analysis.fairComparison} />
@@ -472,12 +466,13 @@ export default function RuinCalculatorPage() {
             ═══════════════════════════════════════════ */}
         {insuranceGap && (
           <section className="mb-12">
-            <div className="card-impact p-6 bg-amber-50">
-              <h3 className="text-2xl font-black uppercase tracking-tight mb-8 flex items-center gap-3">
-                <span className="p-2 border-4 border-black bg-amber-400 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                  <TrendingUp className="h-6 w-6 text-black" />
+            <div className="border border-amber-900/30 bg-[#0a0a0a] p-6 rounded-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 blur-[80px] rounded-full pointer-events-none" />
+              <h3 className="font-mono text-lg text-white uppercase tracking-widest mb-8 flex items-center gap-3 relative z-10">
+                <span className="p-1.5 bg-[#050505] border border-amber-900/50 rounded-sm">
+                  <TrendingUp className="h-4 w-4 text-amber-500" />
                 </span>
-                Insurance Gap Analysis
+                [INSURANCE GAP ANALYSIS]
               </h3>
 
               <InsuranceGapMeter
@@ -492,11 +487,11 @@ export default function RuinCalculatorPage() {
             SECTION 6: Risk Clause Ranking
             ═══════════════════════════════════════════ */}
         <section className="mb-12">
-          <h3 className="text-2xl font-black uppercase tracking-tight mb-8 flex items-center gap-3">
-            <span className="p-2 border-4 border-black bg-red-400 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-              <Target className="h-6 w-6 text-black" />
+          <h3 className="font-mono text-lg text-white uppercase tracking-widest mb-8 flex items-center gap-3">
+            <span className="p-1.5 bg-[#0a0a0a] border border-red-900/50 rounded-sm">
+              <Target className="h-4 w-4 text-red-500" />
             </span>
-            Clauses Ranked by Financial Risk
+            [CLAUSES RANKED BY FINANCIAL RISK]
           </h3>
 
           <RiskClauseRanking
@@ -508,37 +503,34 @@ export default function RuinCalculatorPage() {
         {/* ═══════════════════════════════════════════
             FOOTER
             ═══════════════════════════════════════════ */}
-        <div className="border-t-4 border-black pt-8 text-center space-y-6">
+        <div className="border-t border-neutral-900 pt-8 text-center space-y-6">
           <div className="flex flex-wrap justify-center gap-4">
             <Link href={`/negotiate/${documentId}`}>
-              <Button
-                variant="outline"
-                className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-wider"
+              <button
+                className="px-6 py-3 bg-[#0a0a0a] text-neutral-400 border border-neutral-800 hover:text-white hover:border-neutral-700 font-mono text-[10px] uppercase tracking-widest transition-colors rounded-sm"
               >
-                📝 Negotiate Clauses
-              </Button>
+                [NEGOTIATE CLAUSES]
+              </button>
             </Link>
             <Link href={`/escape/${documentId}`}>
-              <Button
-                variant="outline"
-                className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-wider"
+              <button
+                className="px-6 py-3 bg-[#0a0a0a] text-neutral-400 border border-neutral-800 hover:text-white hover:border-neutral-700 font-mono text-[10px] uppercase tracking-widest transition-colors rounded-sm"
               >
-                🚪 Escape Plan
-              </Button>
+                [ESCAPE PLAN]
+              </button>
             </Link>
             <Link href={`/letter/${documentId}`}>
-              <Button
-                variant="outline"
-                className="rounded-none border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all font-black uppercase tracking-wider"
+              <button
+                className="px-6 py-3 bg-[#0a0a0a] text-neutral-400 border border-neutral-800 hover:text-white hover:border-neutral-700 font-mono text-[10px] uppercase tracking-widest transition-colors rounded-sm"
               >
-                📄 Legal Notice
-              </Button>
+                [LEGAL NOTICE]
+              </button>
             </Link>
           </div>
 
-          <p className="text-xs font-bold uppercase tracking-widest text-foreground max-w-xl mx-auto">
-            Generated by ClauseWall — Actuarial risk simulation for Indian
-            contracts. This is illustrative analysis, not financial advice.
+          <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-600 max-w-xl mx-auto">
+            [GENERATED BY CLAUSEWALL] — ACTUARIAL RISK SIMULATION FOR INDIAN
+            CONTRACTS. THIS IS ILLUSTRATIVE ANALYSIS, NOT FINANCIAL ADVICE.
           </p>
         </div>
       </div>

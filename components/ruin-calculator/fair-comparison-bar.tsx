@@ -18,16 +18,16 @@ export default function FairComparisonBar({ comparison }: Props) {
       {/* Current contract bar */}
       <div>
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs font-black uppercase tracking-widest text-red-600 bg-red-100 px-2 py-1 border-2 border-red-600 shadow-[2px_2px_0px_0px_rgba(220,38,38,1)]">
-            This Contract
+          <span className="text-[10px] font-mono uppercase tracking-widest text-red-500 bg-red-950/20 px-2 py-1 border border-red-900/50 rounded-sm">
+            [THIS CONTRACT]
           </span>
-          <span className="text-sm font-black text-red-600">
+          <span className="text-[10px] font-mono text-red-500">
             {formatINRCompact(comparison.currentP90)}
           </span>
         </div>
-        <div className="w-full h-8 bg-gray-100 border-4 border-black border-dashed overflow-hidden shadow-[inset_4px_4px_0px_0px_rgba(0,0,0,0.1)]">
+        <div className="w-full h-4 bg-[#0a0a0a] border border-neutral-800 border-dashed overflow-hidden rounded-sm relative">
           <motion.div
-            className="h-full bg-red-500 border-r-4 border-black"
+            className="absolute top-0 left-0 bottom-0 bg-red-500/80 border-r border-red-400"
             initial={{ width: 0 }}
             animate={{ width: `${currentWidth}%` }}
             transition={{ duration: 1, delay: 0.2 }}
@@ -38,16 +38,16 @@ export default function FairComparisonBar({ comparison }: Props) {
       {/* Fair contract bar */}
       <div>
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs font-black uppercase tracking-widest text-green-700 bg-green-100 px-2 py-1 border-2 border-green-600 shadow-[2px_2px_0px_0px_rgba(22,163,74,1)]">
-            Fair Contract
+          <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-500 bg-emerald-950/20 px-2 py-1 border border-emerald-900/50 rounded-sm">
+            [FAIR CONTRACT]
           </span>
-          <span className="text-sm font-black text-green-600">
+          <span className="text-[10px] font-mono text-emerald-500">
             {formatINRCompact(comparison.fairP90)}
           </span>
         </div>
-        <div className="w-full h-8 bg-gray-100 border-4 border-black border-dashed overflow-hidden shadow-[inset_4px_4px_0px_0px_rgba(0,0,0,0.1)]">
+        <div className="w-full h-4 bg-[#0a0a0a] border border-neutral-800 border-dashed overflow-hidden rounded-sm relative">
           <motion.div
-            className="h-full bg-green-500 border-r-4 border-black"
+            className="absolute top-0 left-0 bottom-0 bg-emerald-500/80 border-r border-emerald-400"
             initial={{ width: 0 }}
             animate={{ width: `${fairWidth}%` }}
             transition={{ duration: 1, delay: 0.4 }}
@@ -61,13 +61,13 @@ export default function FairComparisonBar({ comparison }: Props) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
-          className="p-4 bg-orange-100 border-4 border-orange-500 text-center shadow-[4px_4px_0px_0px_rgba(249,115,22,1)]"
+          className="p-4 bg-orange-950/20 border border-orange-900/50 text-center rounded-sm"
         >
-          <p className="text-sm font-black uppercase tracking-widest text-orange-600">
-            PREDATORY PREMIUM:{" "}
-            {formatINRCompact(comparison.totalPredatoryPremium)}{" "}
-            <span className="text-orange-900 ml-2">
-              ({Math.round(comparison.excessPercent)}% excess risk)
+          <p className="text-[10px] font-mono uppercase tracking-widest text-orange-500">
+            [PREDATORY PREMIUM:{" "}
+            {formatINRCompact(comparison.totalPredatoryPremium)}]
+            <span className="text-orange-600/70 ml-2">
+              // {Math.round(comparison.excessPercent)}% EXCESS RISK
             </span>
           </p>
         </motion.div>

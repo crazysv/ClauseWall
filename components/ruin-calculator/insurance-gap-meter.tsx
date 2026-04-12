@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Card, CardContent } from "@/components/ui/card";
 import type { InsuranceGapResult } from "@/lib/simulation/types";
 import { formatINRCompact } from "@/lib/simulation/formatters";
 
@@ -31,17 +30,17 @@ export default function InsuranceGapMeter({ gap, onCoverageChange }: Props) {
       {/* Total exposure */}
       <div>
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs font-black uppercase tracking-widest text-red-700 bg-red-100 px-2 py-1">
-            Total Exposure
+          <span className="text-[10px] font-mono uppercase tracking-widest text-red-500 bg-red-950/20 border border-red-900/50 px-2 py-1 rounded-sm">
+            [TOTAL EXPOSURE]
           </span>
-          <span className="text-sm font-black text-red-600">
+          <span className="text-[10px] font-mono text-red-500">
             {formatINRCompact(gap.totalExposure)}
           </span>
         </div>
-        <div className="w-full h-8 bg-gray-100 border-4 border-black border-dashed overflow-hidden shadow-[inset_4px_4px_0px_0px_rgba(0,0,0,0.1)]">
-          <div className="h-full w-full bg-red-500 border-r-4 border-black" />
+        <div className="w-full h-4 bg-[#0a0a0a] border border-neutral-800 border-dashed overflow-hidden rounded-sm">
+          <div className="h-full w-full bg-red-500/80 border-r border-red-400" />
         </div>
-        <p className="text-xs font-bold uppercase tracking-widest text-black/50 mt-2">
+        <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-500 mt-2">
           100%
         </p>
       </div>
@@ -49,41 +48,41 @@ export default function InsuranceGapMeter({ gap, onCoverageChange }: Props) {
       {/* Coverage */}
       <div>
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs font-black uppercase tracking-widest text-green-700 bg-green-100 px-2 py-1">
-            Your Coverage
+          <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-500 bg-emerald-950/20 border border-emerald-900/50 px-2 py-1 rounded-sm">
+            [YOUR COVERAGE]
           </span>
           <div className="flex items-center gap-4">
-            <span className="text-sm font-black text-green-600">
+            <span className="text-[10px] font-mono text-emerald-500">
               {formatINRCompact(gap.userCoverage)}
             </span>
             <input
               type="text"
               value={inputValue}
               onChange={(e) => handleChange(e.target.value)}
-              placeholder="Enter ₹"
-              className="w-28 px-3 py-2 bg-white border-4 border-black text-sm font-bold text-black focus:outline-none focus:ring-0 focus:border-green-600 transition-colors"
+              placeholder="ENTER ₹"
+              className="w-28 px-3 py-1.5 bg-[#0a0a0a] border border-neutral-800 text-[10px] font-mono text-white focus:outline-none focus:ring-1 focus:ring-emerald-500/50 transition-colors rounded-sm"
             />
           </div>
         </div>
-        <div className="w-full h-8 bg-gray-100 border-4 border-black border-dashed overflow-hidden shadow-[inset_4px_4px_0px_0px_rgba(0,0,0,0.1)]">
+        <div className="w-full h-4 bg-[#0a0a0a] border border-neutral-800 border-dashed overflow-hidden rounded-sm relative">
           <motion.div
-            className="h-full bg-green-500 border-r-4 border-black"
+            className="absolute top-0 left-0 bottom-0 bg-emerald-500/80 border-r border-emerald-400"
             initial={{ width: 0 }}
             animate={{ width: `${Math.min(100, gap.coveragePercent)}%` }}
             transition={{ duration: 0.8 }}
           />
         </div>
-        <p className="text-xs font-bold uppercase tracking-widest text-black/50 mt-2">
+        <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-500 mt-2">
           {Math.round(gap.coveragePercent)}%
         </p>
       </div>
 
       {/* Gap warning */}
       {gap.gap > 0 && (
-        <div className="card-impact p-4 bg-yellow-100 border-4 border-yellow-500 shadow-[4px_4px_0px_0px_rgba(234,179,8,1)] text-center">
-          <p className="text-sm font-black uppercase tracking-widest text-yellow-700">
-            ⚠️ UNCOVERED GAP: <strong>{formatINRCompact(gap.gap)}</strong>{" "}
-            <span className="text-yellow-900 ml-2">
+        <div className="p-4 bg-amber-950/20 border border-amber-900/50 text-center rounded-sm">
+          <p className="text-[10px] font-mono uppercase tracking-widest text-amber-500">
+            [WARNING] // UNCOVERED GAP: <strong>{formatINRCompact(gap.gap)}</strong>{" "}
+            <span className="text-amber-600/70 ml-2">
               ({Math.round(gap.gapPercent)}%)
             </span>
           </p>
@@ -92,29 +91,29 @@ export default function InsuranceGapMeter({ gap, onCoverageChange }: Props) {
 
       {/* Recommendations */}
       {gap.recommendations.length > 0 && (
-        <div className="space-y-3 mt-6 border-t-4 border-black pt-6">
-          <p className="text-xs font-black uppercase tracking-widest text-black">
-            Recommended Policies:
+        <div className="space-y-3 mt-6 border-t border-neutral-800 pt-6">
+          <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-400">
+            [RECOMMENDED POLICIES]:
           </p>
           {gap.recommendations.map((rec, i) => (
             <div
               key={i}
-              className="flex items-center justify-between p-4 bg-white border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] transition-all"
+              className="flex items-center justify-between p-4 bg-[#050505] border border-neutral-900 hover:border-neutral-700 transition-colors rounded-sm"
             >
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-black uppercase tracking-widest text-black">
+                <p className="text-[10px] font-mono uppercase tracking-widest text-neutral-300">
                   {rec.product}
                 </p>
-                <p className="text-xs font-bold uppercase tracking-widest text-black/60 mt-1">
+                <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-500 mt-1">
                   {rec.relevance}
                 </p>
               </div>
-              <div className="text-right flex-shrink-0 ml-4 pl-4 border-l-4 border-black">
-                <p className="text-sm font-black text-green-600 bg-green-100 px-2 py-1 mb-1 inline-block border-2 border-green-600">
+              <div className="text-right flex-shrink-0 ml-4 pl-4 border-l border-neutral-800">
+                <p className="text-[10px] font-mono text-emerald-500 bg-emerald-950/20 px-2 py-1 mb-1 inline-block border border-emerald-900/50 rounded-sm">
                   {rec.annualCost}
                 </p>
-                <p className="text-xs font-bold uppercase tracking-widest text-black/50 block">
-                  covers {rec.coverageAmount}
+                <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-500 block">
+                  COVERS {rec.coverageAmount}
                 </p>
               </div>
             </div>

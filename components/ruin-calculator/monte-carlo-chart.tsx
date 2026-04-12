@@ -38,10 +38,10 @@ export default function MonteCarloChart({ histogram, percentiles }: Props) {
 
   const percentileLines = useMemo(
     () => [
-      { value: percentiles.p50, label: "P50", color: "#22c55e" },
+      { value: percentiles.p50, label: "P50", color: "#10b981" },
       { value: percentiles.p75, label: "P75", color: "#f59e0b" },
-      { value: percentiles.p90, label: "P90", color: "#ef4444" },
-      { value: percentiles.p95, label: "P95", color: "#a855f7" },
+      { value: percentiles.p90, label: "P90", color: "#f97316" },
+      { value: percentiles.p95, label: "P95", color: "#ef4444" },
     ],
     [percentiles],
   );
@@ -57,37 +57,39 @@ export default function MonteCarloChart({ histogram, percentiles }: Props) {
         >
           <XAxis
             dataKey="range"
-            tick={{ fill: "#000000", fontSize: 10, fontWeight: 900 }}
-            axisLine={{ stroke: "#000000", strokeWidth: 4 }}
+            tick={{ fill: "#737373", fontSize: 9, fontFamily: "monospace" }}
+            axisLine={{ stroke: "#262626", strokeWidth: 1 }}
             tickLine={false}
             interval="preserveStartEnd"
           />
           <YAxis
-            tick={{ fill: "#000000", fontSize: 10, fontWeight: 900 }}
+            tick={{ fill: "#737373", fontSize: 9, fontFamily: "monospace" }}
             axisLine={false}
             tickLine={false}
             tickFormatter={(v: number) => `${v}%`}
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: "#ffffff",
-              border: "4px solid #000000",
-              borderRadius: "0px",
+              backgroundColor: "#050505",
+              border: "1px solid #262626",
+              borderRadius: "2px",
               padding: "12px",
-              boxShadow: "4px 4px 0px 0px rgba(0,0,0,1)",
-              color: "#000000",
-              fontWeight: 900,
+              boxShadow: "none",
+              color: "#a3a3a3",
+              fontFamily: "monospace",
+              fontSize: "10px",
             }}
-            itemStyle={{ color: "#000000" }}
+            itemStyle={{ color: "#d4d4d4" }}
             labelStyle={{
-              color: "#000000",
-              fontSize: 12,
-              fontWeight: 900,
+              color: "#525252",
+              fontSize: 9,
               textTransform: "uppercase",
+              letterSpacing: "0.1em",
+              marginBottom: "8px",
             }}
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             formatter={(value: any, _name: any, props: any) => [
-              `${value}% of scenarios (${props.payload.count} runs)`,
+              `${value}% OF SCENARIOS (${props.payload.count} RUNS)`,
               `${formatINRCompact(props.payload.lower)} – ${formatINRCompact(props.payload.upper)}`,
             ]}
           />
@@ -102,13 +104,13 @@ export default function MonteCarloChart({ histogram, percentiles }: Props) {
                 x={chartData[binIndex]?.range}
                 stroke={pl.color}
                 strokeDasharray="4 4"
-                strokeWidth={4}
+                strokeWidth={1}
                 label={{
                   value: pl.label,
                   position: "top",
                   fill: pl.color,
-                  fontSize: 12,
-                  fontWeight: 900,
+                  fontSize: 9,
+                  fontFamily: "monospace",
                 }}
               />
             );
@@ -118,17 +120,17 @@ export default function MonteCarloChart({ histogram, percentiles }: Props) {
               <Cell
                 key={entry.index}
                 fill={getHistogramBarColor(entry.index, chartData.length)}
-                fillOpacity={1}
-                stroke="#000000"
-                strokeWidth={2}
+                fillOpacity={0.8}
+                stroke="#050505"
+                strokeWidth={1}
               />
             ))}
           </Bar>
         </BarChart>
       </ResponsiveContainer>
-      <div className="flex items-center justify-center gap-4 mt-6 text-xs font-bold uppercase tracking-widest text-black/50">
-        <span>X: Total cost over contract period</span>
-        <span>Y: % of scenarios</span>
+      <div className="flex items-center justify-center gap-4 mt-6 text-[9px] font-mono uppercase tracking-widest text-neutral-600">
+        <span>[X: TOTAL COST OVER PERIOD]</span>
+        <span>[Y: % OF SCENARIOS]</span>
       </div>
     </div>
   );

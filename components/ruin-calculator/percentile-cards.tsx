@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Card, CardContent } from "@/components/ui/card";
 import type { PercentileData } from "@/lib/simulation/types";
 import {
   formatINRCompact,
@@ -35,21 +34,25 @@ export default function PercentileCards({ percentiles }: Props) {
             transition={{ delay: i * 0.1 }}
           >
             <div
-              className={`p-4 text-center border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all`}
-              style={{ borderTopWidth: "8px", borderTopColor: color.fill }}
+              className={`p-4 text-center border bg-[#050505] transition-all relative overflow-hidden`}
+              style={{ borderColor: color.fill }}
             >
-              <p className="text-xs text-black font-black uppercase tracking-widest mb-2">
-                {p.label}
+              <div 
+                className="absolute top-0 left-0 right-0 h-[2px]" 
+                style={{ backgroundColor: color.fill }}
+              />
+              <p className="text-[10px] text-neutral-500 font-mono uppercase tracking-widest mb-2">
+                [{p.label}]
               </p>
               <motion.p
-                className={`text-3xl font-black text-black`}
+                className={`text-2xl font-mono ${color.text}`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: i * 0.1 + 0.3 }}
               >
                 {formatINRCompact(value)}
               </motion.p>
-              <p className="text-[10px] font-bold uppercase tracking-widest text-black/50 mt-3 bg-gray-100 py-1 inline-block px-2">
+              <p className="text-[9px] font-mono uppercase tracking-widest text-neutral-500 mt-3 bg-[#0a0a0a] border border-neutral-800 py-1 inline-block px-2 rounded-sm">
                 {getPercentileLabel(p.percentile)}
               </p>
             </div>
