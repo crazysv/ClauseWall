@@ -215,6 +215,7 @@ export default function RuinCalculatorPage() {
   // LOADING
   // ═══════════════════════════════════════════
   if (loading) {
+    return (
       <div className="min-h-screen bg-[#050505] p-4 sm:p-8 max-w-7xl mx-auto py-10 md:py-16">
         <div className="h-10 w-64 mb-6 bg-neutral-900 animate-pulse rounded-sm" />
         <div className="h-6 w-96 mb-8 bg-neutral-900 border border-neutral-800 animate-pulse rounded-sm" />
@@ -245,12 +246,14 @@ export default function RuinCalculatorPage() {
           </div>
         </div>
       </div>
+    );
   }
 
   // ═══════════════════════════════════════════
   // ERROR
   // ═══════════════════════════════════════════
   if (error || !analysis) {
+    return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 px-4 bg-[#050505]">
         <div className="border border-red-900/50 p-6 bg-red-950/20 rounded-sm">
           <XCircle className="h-16 w-16 text-red-500 mx-auto mb-4" />
@@ -274,6 +277,7 @@ export default function RuinCalculatorPage() {
           </Link>
         </div>
       </div>
+    );
   }
 
   return (
